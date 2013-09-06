@@ -137,7 +137,14 @@
             closable: true,
             draggable:true
         });
-   
+        new Ext.ToolTip({
+            target: 'dateManagingRepair_r_Id',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="managingRepairLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
     }
 
 </script>
@@ -368,6 +375,20 @@
                     <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                </tr>
+            </s:else>
+            <s:if test="managingRepairLastModified != null">
+                <tr>
+                    <td><label class="std-label-ro">CHO Managing Repair?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="managingRepair==true">Yes</s:if><s:else>No</s:else> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateManagingRepair_r_Id" /></label></td>
+                </tr>
+            </s:if>
+            <s:else>
+                <tr>
+                    <td><label class="std-label-ro">CHO Managing Repair?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="managingRepair==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateManagingRepair_r_Id" /></label></td>
                 </tr>
             </s:else>
 

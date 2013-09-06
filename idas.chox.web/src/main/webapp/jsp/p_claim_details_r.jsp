@@ -6,9 +6,10 @@
     <div style="display:none" class="form-container" id="claimDetailsRId">
         <table class="chox-table-form" >
         <tr>
-            <td><label class="std-label-ro">Managing Repair?</label></td>
+            <td><label class="std-label-ro">CHO Managing Repair?</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="isManagingRepairDesc" /></label></td>
+            <td><label id="managingRepairCheckboxReadScreenId" class="std-data-ro"><s:property value="isManagingRepairDesc" /></label>
+            <label id="managingRepairCheckboxReadScreenOriginalId" class="std-data-ro"><s:property value="managingRepairOriginalDesc" /></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">GTA 4.1 Notice Date</label></td>

@@ -45,11 +45,18 @@ $(document).ready(function(){
 function saveChanges(){
 		
 //   	var msgBox = $("#claimDetailsMsgBox");
-   	var resultMsgBox = $("#claimDetailsResultMsgBox");
+    var resultMsgBox = $("#claimDetailsResultMsgBox");
     resultMsgBox.empty();
    		
-    if ($("form#formUpdateClaimDetailsForm").valid())
+    if ($("form#formUpdateClaimDetailsForm").valid()) {
         $("#formUpdateClaimDetailsForm").submit();
+    }
+    
+    if ($('#managingRepairCheckboxWriteScreenId').is(':checked') === true) {
+        $("#managingRepairCheckId").prop('checked', true);
+    } else {
+        $("#managingRepairCheckId").prop('checked', false);
+    }
 }
 
 </script>
@@ -61,8 +68,8 @@ function saveChanges(){
         <legend>Claim Details</legend>
         <div class="form-container" id="claimDetailsWId">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Managing Repair?</label>
-                <s:checkbox name="managingRepair" />
+                <label class="chox-form-std-label">CHO Managing Repair?</label>
+                <s:checkbox id="managingRepairCheckboxWriteScreenId" name="managingRepair" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">GTA 4.1 Notice Date</label>
