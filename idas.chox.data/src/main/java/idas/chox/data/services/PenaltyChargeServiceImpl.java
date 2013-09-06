@@ -107,7 +107,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         }
         
         if (penaltyCharges == null || penaltyCharges.isEmpty()) {
-            LOG.error("No penelty charges found for hireStart='{}', PenaltyType='{}', PenaltyName='{}'",
+            LOG.warn("No penalty charges found for hireStart='{}', PenaltyType='{}', PenaltyName='{}'",
                     new Object[]{hireStart, penaltyType, penaltyName});
         }
         return penaltyCharges;
