@@ -10,6 +10,7 @@
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="managing_repair" name="managingRepair" not-null="true"/>
+    <property column="managing_repair_original" name="managingRepairOriginal"/>
     <property column="managing_repair_last_modified_date" name="managingRepairLastModified"/>
     <property column="policy_holder_contact_date" name="policyHolderContactDate"/>
     <property column="cho_reference" name="choReference"/>

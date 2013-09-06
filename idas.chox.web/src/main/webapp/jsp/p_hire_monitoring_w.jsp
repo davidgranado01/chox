@@ -282,11 +282,18 @@
         var managingRepairCheckboxReadScreenId = document.getElementById("managingRepairCheckboxReadScreenId");
         
         if (managingRepairCheckboxReadScreenId) { // In read screen
+            var originalValue = $('#managingRepairCheckboxReadScreenOriginalId').html();
             if ($('#managingRepairCheckId').is(':checked') === true) {
                 document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'Yes';
+                if (originalValue.length == 0) {
+                    document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(No)';
+                }
             }
             else {
                 document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'No';
+                if (originalValue.length == 0) {
+                    document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(Yes)';
+                }
             }            
         }
         else { // in write screen

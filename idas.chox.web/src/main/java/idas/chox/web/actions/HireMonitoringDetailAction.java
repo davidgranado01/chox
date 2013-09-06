@@ -28,7 +28,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private String labourHour;
     private String labourCost;
     private boolean managingRepair;
-    private Date managingRepairLastModified;
     
     public String getLabourCost() {
         return labourCost;
@@ -62,6 +61,15 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         return claim.isManagingRepair();
     }
 
+    public String getManagingRepairOriginalDesc() {
+        if (claim.getManagingRepairOriginal() == null) {
+            return "";
+        }
+        else {
+            return claim.getManagingRepairOriginal() ? "(Yes)" : "(No)";
+        }
+    }
+    
     public void setManagingRepair(boolean managingRepair) {
         this.managingRepair = managingRepair;
     }
@@ -97,6 +105,9 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 claim.setCustomer(customer);
             }
             if (claim.getManagingRepair() != managingRepair) {
+                if (claim.getManagingRepairOriginal() == null) {
+                    claim.setManagingRepairOriginal(claim.getManagingRepair());
+                }
                 claim.setManagingRepair(managingRepair);
                 claim.setManagingRepairLastModified(new Date());
             }
