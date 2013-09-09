@@ -40,12 +40,16 @@ public class BordereauSchemaValidation {
                 String macroVersion = XMLUtils.getElementValue(root, "macroversion");
                 String xmlVersion = XMLUtils.getElementValue(root, "xmlversion");
 
+                // If no xml version present, allow macro versions 2.8 & 2.9
                 if (macroVersion != null && xmlVersion == null) {
                     if (macroVersion.equals("2.8") || macroVersion.equals("2.9")) {
                         xmlVersion = VALID_XMLVERSIONS;
                     } else {
                         xmlVersion = macroVersion;
                     }
+                } else if (xmlVersion.equals("2.8") || xmlVersion.equals("2.9")) {
+                    // Allow xml versions 2.8 and 2.9
+                        xmlVersion = VALID_XMLVERSIONS;
                 }
                 
                 bordereau.setMacroVersion(macroVersion);
