@@ -73,8 +73,10 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         sb.append(insurerId);
         if (triggerPoint.equals("Manual Invoice Paid")) {
             sb.append(" and trigger_point = 'Manual Invoice Paid'");
+        } else if (triggerPoint.equals("Payment Received")) {
+            sb.append(" and trigger_point = 'Payment Received'");
         } else {
-            sb.append(" and trigger_point != 'Manual Invoice Paid'");
+            sb.append(" and trigger_point = 'Manual Invoice Paid'");
         }
 
         String query = sb.toString();
@@ -84,8 +86,8 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         for (Object object : valList) {
             LOG.debug("Object value: {}", ((Boolean) object).booleanValue());
             if (((Boolean) object).booleanValue()) {
-                checkmap.put("dateTo", "From or To date overlaps existing schedule.");
-                checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
+                checkmap.put("dateTo", "From or To date overlaps existing schedule with same trigger status.");
+                checkmap.put("dateFrom", "From or To date overlaps existing schedule with same trigger status.");
                 break;
             }
         }
