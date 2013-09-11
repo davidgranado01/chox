@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
---   7.6.4 Managing Repair Field to be duplicated on Hire Monitoring tab        --
+--   7.6.3 Managing Repair Field to be duplicated on Hire Monitoring tab        --
 ----------------------------------------------------------------------------------
 
 ALTER TABLE claim ADD COLUMN managing_repair_last_modified_date timestamp without time zone;
@@ -7,6 +7,6 @@ ALTER TABLE claim ADD COLUMN managing_repair_last_modified_date timestamp withou
 ALTER TABLE claim ADD COLUMN managing_repair_original boolean;
 
 ------------------------
--- END of 7.6.4       --
+-- END of 7.6.3       --
 ------------------------
 
