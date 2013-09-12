@@ -1,21 +1,24 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.struts2.interceptor.ParameterAware;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.dashboard.ChoDashboardBuilder;
 import idas.chox.service.dashboard.DashBoardViewData;
 import idas.chox.service.dashboard.InsurerDashboardBuilder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.sf.json.JSONArray;
-import java.util.ArrayList;
-import org.apache.struts2.interceptor.ParameterAware;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,14 +34,11 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private BaseDataService baseDataService;
     private LookupService lookupService;
     private UserService userService;
-    private ClaimService claimService;
    // private List suppliers;
    // private List insurers;
     private Map extParameters;
     private Long numberOfActiveUser;
     private Long numberOfClaimPending;
-    private int insurerId;
-    private int supplierId;
     private List<Chorganisation> suppliers;
     private List<Insurer> insurers;
     
@@ -80,9 +80,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             cumulativeInsurerBoardViewData = builder.getCumulative();
 
         } catch (Exception ex) {
-
-
-            LOG.debug("Exception",ex);
+            LOG.error("Exception",ex);
         }
 
         return SUCCESS;
@@ -98,18 +96,13 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
         } catch (Exception ex) {
-
-            LOG.debug("Exception",ex);
+            LOG.error("Exception",ex);
         }
         return SUCCESS;
     }
 
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
     }
 
     public void setLookupService(LookupService service) {
@@ -178,22 +171,6 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public Long getNumberOfClaimPending() {
         return numberOfClaimPending;
-    }
-
-    public int getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public int getInsurerId() {
-        return insurerId;
-    }
-
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
     }
 
     public boolean isUploadEnabled() {

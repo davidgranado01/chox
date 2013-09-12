@@ -57,7 +57,8 @@
                 
             });
 
-            choCombo = new Ext.form.ComboBox({
+            var choComboNumberOfSelectedRecord = 0;
+            choCombo = new Ext.ux.form.SuperBoxSelect({
                 store : choStore,
                 width: 200,
                 listWidth:200,
@@ -68,18 +69,26 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
+                removeValuesFromStore : false,
                 selectOnFocus : true,
-                allowBlank : true,
+//                allowBlank : true,
                 forceSelection : true,
-                listeners: { select:loadDashBoardData,
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.clearValue();this.reset();
-                                loadDashBoardData();
-                        }
-                    }
+                listeners: { 
+                    select : function(){ 
+                                    choComboNumberOfSelectedRecord ++;
+                                    loadDashBoardData();
+                                },
+                    removeitem : function() {
+                                    if (!this.getValue() && choComboNumberOfSelectedRecord >=1) {
+                                        choComboNumberOfSelectedRecord = 0;
+                                        loadDashBoardData();
+                                    } else if (choComboNumberOfSelectedRecord >=1) {
+                                        choComboNumberOfSelectedRecord --;
+                                        loadDashBoardData();
+                                    }
+                                }
                 }
-            });
+               });
             
             choCombo.render('searchScreenCHODropDownDiv');
             // end of supplier/CHO drop-down menu
@@ -104,7 +113,8 @@
                 reader : workGroupJsonReader
             });
 
-            dashBoardWorkgroupCombo = new Ext.form.ComboBox({
+            var workgroupComboNumberOfSelectedRecord = 0;
+            dashBoardWorkgroupCombo = new Ext.ux.form.SuperBoxSelect({
                 store : dashBoardWorkgroupStore,
                 width: 200,
                 listWidth:200,
@@ -115,21 +125,26 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
+                removeValuesFromStore : false,
                 selectOnFocus : true,
-                allowBlank : true,
+//                allowBlank : true,
                 forceSelection : true,
-                listeners: { select: doInsurerSearchWorkgroupOnChange,
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.clearValue();this.reset();
-                            doDashBoardShowClaimHandler(-1, dashBoardInsurerId);
-                        }
-                        //doDashBoardShowClaimHandler(-1, dashBoardInsurerId);
-                    }}
-
-
+                listeners: { 
+                    select : function(){ 
+                                    workgroupComboNumberOfSelectedRecord ++;
+                                    doInsurerSearchWorkgroupOnChange();
+                                },
+                    removeitem : function() {
+                                    if (!this.getValue() && workgroupComboNumberOfSelectedRecord >=1) {
+                                        workgroupComboNumberOfSelectedRecord = 0;
+                                        doInsurerSearchWorkgroupOnChange();
+                                    } else if (workgroupComboNumberOfSelectedRecord >=1) {
+                                        workgroupComboNumberOfSelectedRecord --;
+                                        doInsurerSearchWorkgroupOnChange();
+                                    }
+                                }
+                }
             });
-
             dashBoardWorkgroupCombo.render('dashBoardWorkgroupComboDiv');
         </s:if>
 
@@ -150,8 +165,9 @@
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
                 reader : claimOwnerReader
             });
-
-            dashBoardClaimOwnerCombo = new Ext.form.ComboBox({
+            
+            var claimOwnerComboNumberOfSelectedRecord = 0;
+            dashBoardClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
                 store : dashBoardClaimOwnerStore,
                 width: 200,
                 listWidth:200,
@@ -162,22 +178,26 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
+                removeValuesFromStore : false,
                 selectOnFocus : true,
-                allowBlank : true,
+//                allowBlank : true,
                 forceSelection : true,
-                listeners: { select:loadDashBoardData,
-
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.clearValue();this.reset();
-                            loadDashBoardData();
-                           
-                        }
-                        
-                    }}
-
+                listeners: { 
+                    select : function(){ 
+                                    claimOwnerComboNumberOfSelectedRecord ++;
+                                    loadDashBoardData();
+                                },
+                    removeitem : function() {
+                                    if (!this.getValue() && claimOwnerComboNumberOfSelectedRecord >=1) {
+                                        claimOwnerComboNumberOfSelectedRecord = 0;
+                                        loadDashBoardData();
+                                    } else if (claimOwnerComboNumberOfSelectedRecord >=1) {
+                                        claimOwnerComboNumberOfSelectedRecord --;
+                                        loadDashBoardData();
+                                    }
+                                }
+                }
             });
-
             dashBoardClaimOwnerCombo.render('dashBoardClaimOwnerComboDiv');
         </s:if>
         // workgroup end
@@ -243,6 +263,7 @@
             dashBoardWorkgroupStore.removeAll();
             dashBoardWorkgroupStore.load({ params : {"orgId":dashBoardInsurerId}});
             dashBoardWorkgroupCombo.reset();
+            dashBoardWorkgroupCombo.clearValue();
         }
         doDashBoardShowClaimHandler(-1, dashBoardInsurerId);
 
@@ -263,9 +284,10 @@
 
      
         if (dashBoardClaimOwnerStore != -1) {
-            dashBoardClaimOwnerCombo.reset();
             dashBoardClaimOwnerStore.removeAll();
             dashBoardClaimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+            dashBoardClaimOwnerCombo.reset();
+            dashBoardClaimOwnerCombo.clearValue();
         }
 
          // If claimownership is switched on and a claims handler
@@ -283,7 +305,7 @@
 
         var workgroupId = -1;
         if (dashBoardWorkgroupCombo!= -1 && dashBoardWorkgroupCombo.getValue() != null) {
-            workgroupId = dashBoardWorkgroupCombo.getValue();
+            workgroupId = dashBoardWorkgroupCombo.getValue().split(",");
         }
         doDashBoardShowClaimHandler(workgroupId, dashBoardInsurerId);
         
