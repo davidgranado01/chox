@@ -1,0 +1,63 @@
+--------------------------------------------------------
+--   7.6.1 Protocol Ceilings Per Vehicle Class       --
+--------------------------------------------------------
+
+CREATE TABLE protocol_vehicle_class_ceiling (
+   bre_band_id integer NOT NULL,
+   vehicle_class_id integer NOT NULL,
+   created_by integer,
+   created_date timestamp without time zone,
+   last_modified_by integer,
+   last_modified_date timestamp without time zone,
+   hire_net_ceiling numeric(10,2) NOT NULL DEFAULT 0,
+   repair_net_ceiling numeric(10,2) NOT NULL DEFAULT 0,
+   id serial NOT NULL,
+   version integer,
+   CONSTRAINT protocol_vehicle_class_ceiling_pkey PRIMARY KEY (bre_band_id , vehicle_class_id ),
+   CONSTRAINT ceiling_bre_band_fkey FOREIGN KEY (bre_band_id)
+       REFERENCES bre_band (id) MATCH SIMPLE
+       ON UPDATE NO ACTION ON DELETE NO ACTION,
+   CONSTRAINT ceiling_vehicle_class_fkey FOREIGN KEY (vehicle_class_id)
+       REFERENCES vehicle_class (id) MATCH SIMPLE
+       ON UPDATE NO ACTION ON DELETE NO ACTION,
+   CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+       REFERENCES web_user (id) MATCH SIMPLE
+       ON UPDATE NO ACTION ON DELETE NO ACTION,
+   CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+       REFERENCES web_user (id) MATCH SIMPLE
+       ON UPDATE NO ACTION ON DELETE NO ACTION
+ );
+GRANT ALL ON TABLE protocol_vehicle_class_ceiling TO chox;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE protocol_vehicle_class_ceiling TO chox_user;
+GRANT SELECT ON TABLE protocol_vehicle_class_ceiling TO chox_mi;
+GRANT SELECT, UPDATE ON TABLE protocol_vehicle_class_ceiling_id_seq TO chox_user;
+
+ALTER TABLE bre_band ADD COLUMN hire_net_does_not_exceed_protocol_vc_hire_net_ceiling boolean NOT NULL DEFAULT false;
+ALTER TABLE bre_band ADD COLUMN repair_net_does_not_exceed_protocol_vc_repair_net_ceiling boolean NOT NULL DEFAULT false;
+
+INSERT INTO 
+    protocol_vehicle_class_ceiling 
+    (bre_band_id, vehicle_class_id, created_by, created_date, last_modified_by, last_modified_date, hire_net_ceiling, repair_net_ceiling, version) 
+SELECT  
+    bre.id,
+    vh.id,
+    999,
+    now(),
+    999,
+    now(),
+    vhc.hire_net_ceiling,
+    vhc.repair_net_ceiling,
+    0
+FROM
+    bre_band bre,
+    vehicle_class vh,
+    vehicle_class_ceiling vhc,
+    insurer ins
+WHERE
+    ins.id = vhc.insurer_id
+    AND vhc.vehicle_class_id = vh.id
+    AND bre.insurer_id = ins.id;
+
+------------------------
+-- END of 7.6.1       --
+------------------------

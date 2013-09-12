@@ -99,6 +99,12 @@
                     <property name="claimService" ref="claimService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.MaximumLabourRate" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling">
+                    <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling">
+                    <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
+                </bean>
             </list>
         </property>
     </bean>

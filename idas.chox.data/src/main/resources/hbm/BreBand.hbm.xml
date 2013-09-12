@@ -57,6 +57,7 @@
         <property column="has_allowed_vehicle_class" name="hasAllowedVehicleClass"/>
         <property column="has_calculated_correct_daily_rate" name="hasCalculatedCorrectDailyRate"/>
         <property column="hire_net_does_not_exceed_vehicle_class_hire_net_ceiling" name="hireNetDoesNotExceedVehicleClassHireNetCeiling"/>
+        <property column="hire_net_does_not_exceed_protocol_vc_hire_net_ceiling" name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling"/>
         <property column="hire_day_count_does_not_exceed_band_hire_day_ceiling" name="hireDayCountDoesNotExceedBandHireDayCeiling"/>
         <property column="actual_hire_days_does_not_exceed_allowable_hire_days" name="actualHireDaysDoesNotExceedAllowableHireDays"/>
         <property column="actualhire_days_does_not_exceed_total_loss_inspection" name="actualHireDaysDoesNotExceedTotalLossInspection"/>
@@ -80,6 +81,7 @@
         <property column="labour_cost_business_rule" name="labourCostBusinessRule"/>
         <property column="total_labour_cost_business_rule" name="totalLabourCostBusinessRule"/>
         <property column="repair_net_does_not_exceed_vehicle_class_repair_net_ceiling" name="repairNetDoesNotExceedVehicleClassRepairNetCeiling"/>
+        <property column="repair_net_does_not_exceed_protocol_vc_repair_net_ceiling" name="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling"/>
         <property column="number_of_hire_days_reconcile" name="numberOfHireDaysReconcile"/>
         <property column="corrent_admin_fee" name="correntAdminFee"/>
         <property column="repair_booked_in_date_on_thursday" name="repairBookedInDateOnThursday"/>
@@ -142,7 +144,11 @@
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
-        
+        <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="protocolVehicleClassCeilings">
+            <key column="bre_band_id"/>
+            <one-to-many class="idas.chox.core.model.ProtocolVehicleClassCeiling"/>
+        </bag>
+    
         <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
         
     </class>
