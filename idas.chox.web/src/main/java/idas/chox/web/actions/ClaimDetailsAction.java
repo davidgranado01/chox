@@ -1,5 +1,7 @@
 package idas.chox.web.actions;
 
+import java.util.Date;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.TabAccessibility;
@@ -10,9 +12,12 @@ import idas.chox.service.security.TabAccessibility;
  */
 public class ClaimDetailsAction extends ClaimModelAction<Claim> {
 
+    private boolean managingRepair;
+    
     @Override
     public Claim loadModel() {
-        return getClaim();
+        managingRepair = claim.isManagingRepair();
+        return claim;
     }
 
     @Override
@@ -20,6 +25,17 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
         return TabAccessibility.TAB_CLAIM_DETAIL;
     }
 
+    @Override
+    public String updateModel() {
+        if (managingRepair != model.getManagingRepair() && model.getManagingRepairOriginal() == null) {
+            model.setManagingRepairOriginal(managingRepair);
+        }
+        if (managingRepair != model.getManagingRepair()) {
+            model.setManagingRepairLastModified(new Date());
+        }
+        return super.updateModel();
+    }
+    
     public String getGtaNoticeDate() {
         return DateHelper.getLocalDateTimeFormat().format(model.getGtaNoticeDate());
     }
