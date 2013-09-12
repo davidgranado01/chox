@@ -24,7 +24,7 @@ public class BillingViewData {
     private BigDecimal amountReceived;
     private boolean manual;
     private boolean reconciled;
-    private boolean manualClaimsOnly;
+    private String triggerPoint;
 
     public BillingViewData(Billing record) {
         LOG.debug("Billing constructor: {}", record.getClass().getName());
@@ -44,7 +44,7 @@ public class BillingViewData {
         this.amountReceived = record.getAmountReceived();
         this.manual = record.isManual();
         this.reconciled = record.isReconciled();
-        this.manualClaimsOnly = record.isManualClaimsOnly();
+        this.triggerPoint = record.getTriggerPoint();
         LOG.debug("From date is: {}, To date is {}", dateFrom, dateTo);
     }
 
@@ -109,12 +109,12 @@ public class BillingViewData {
         this.manual = manual;
     }
 
-    public boolean isManualClaimsOnly() {
-        return manualClaimsOnly;
+    public String getTriggerPoint() {
+        return triggerPoint;
     }
 
-    public void setManualClaimsOnly(boolean manualClaimsOnly) {
-        this.manualClaimsOnly = manualClaimsOnly;
+    public void setTriggerPoint(String triggerPoint) {
+        this.triggerPoint = triggerPoint;
     }
 
     public boolean isReconciled() {

@@ -62,6 +62,7 @@ WHERE
 -- END of 7.6.1       --
 ------------------------
 
+
 ----------------------------------------------------------------------------------
 --   7.6.3 Managing Repair Field to be duplicated on Hire Monitoring tab        --
 ----------------------------------------------------------------------------------
@@ -74,3 +75,15 @@ ALTER TABLE claim ADD COLUMN managing_repair_original boolean;
 -- END of 7.6.3       --
 ------------------------
 
+
+----------------------------------------------------------------------
+--   7.6.7 Add Option For Invoice Payment Logged To Insurer Billing --
+----------------------------------------------------------------------
+ALTER TABLE billing_insurer ADD COLUMN trigger_point varchar(22);
+UPDATE billing_insurer SET trigger_point = 'Payment Received' WHERE manual_claims_only = false;
+UPDATE billing_insurer SET trigger_point = 'Manual Invoice Paid' WHERE manual_claims_only = true;
+ALTER TABLE billing_insurer ALTER COLUMN trigger_point SET NOT NULL;
+ALTER TABLe billing_insurer DROP COLUMN manual_claims_only;
+------------------------
+-- END of 7.6.7       --
+------------------------
