@@ -45,7 +45,9 @@
                 data : mychoinsurers,
                 reader : choinsurersJsonReader
             });
-            choInsurerCombo = new Ext.form.ComboBox({
+            
+            var choInsurerComboNumberOfSelectedRecord = 0;
+            choInsurerCombo = new Ext.ux.form.SuperBoxSelect({
                 store : choInsurersStore,
                 width: 200,
                 listWidth:200,
@@ -56,17 +58,24 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
+                removeValuesFromStore : false,
                 selectOnFocus : true,
-                allowBlank : true,
+//                allowBlank : true,
                 forceSelection : true,
-                listeners: { select:loadChoDashBoardData,
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.clearValue();this.reset();
-                            loadChoDashBoardData();
-                            
-                        }
-                    }
+                listeners: {
+                    select : function(){ 
+                                    choInsurerComboNumberOfSelectedRecord ++;
+                                    loadChoDashBoardData();
+                                },
+                    removeitem : function() {
+                                    if (!this.getValue() && choInsurerComboNumberOfSelectedRecord >=1) {
+                                        choInsurerComboNumberOfSelectedRecord = 0;
+                                        loadChoDashBoardData();
+                                    } else if (choInsurerComboNumberOfSelectedRecord >=1) {
+                                        choInsurerComboNumberOfSelectedRecord --;
+                                        loadChoDashBoardData();
+                                    }
+                                }
                 }
             });
 
@@ -104,7 +113,8 @@
                 reader : choClaimOwnerReader
             });
 
-            dashBoardChoClaimOwnerCombo = new Ext.form.ComboBox({
+            var choOwnerComboNumberOfSelectedRecord = 0;
+            dashBoardChoClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
                 store : dashBoardChoClaimOwnerStore,
                 width: 200,
                 listWidth:200,
@@ -115,16 +125,25 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
+                removeValuesFromStore : false,
                 selectOnFocus : true,
-                allowBlank : true,
+//                allowBlank : true,
                 forceSelection : true,
-                listeners: {select:loadChoDashBoardData,
-                            blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue(); this.reset();
+                listeners: {
+                        select : function(){ 
+                                        choOwnerComboNumberOfSelectedRecord ++;
+                                        loadChoDashBoardData();
+                                    },
+                        removeitem : function() {
+                                        if (!this.getValue() && choOwnerComboNumberOfSelectedRecord >=1) {
+                                            choOwnerComboNumberOfSelectedRecord = 0;
+                                            loadChoDashBoardData();
+                                        } else if (choOwnerComboNumberOfSelectedRecord >=1) {
+                                            choOwnerComboNumberOfSelectedRecord --;
                                             loadChoDashBoardData();
                                         }
-                               }}
+                                    }
+                }
             });
 
             dashBoardChoClaimOwnerCombo.render('dashBoardChoClaimOwnerComboDiv');
@@ -166,6 +185,7 @@
         if (dashBoardChoClaimOwnerStore != -1) {
             dashBoardChoClaimOwnerCombo.reset();
             dashBoardChoClaimOwnerStore.removeAll();
+            dashBoardChoClaimOwnerCombo.clearValue();
             dashBoardChoClaimOwnerStore.load({ params : {"supplierId":selectedSupplierId}});
         }
 

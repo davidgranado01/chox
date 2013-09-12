@@ -1,10 +1,13 @@
 package idas.chox.service.dashboard;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.data.services.BaseDataService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.data.services.BaseDataService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +51,7 @@ public class ChoDashboardBuilder {
         sb.append("avg(avg_inv_payment_time_w) as Avg_InvPaymentTime, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_w) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_w) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and  (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id = :pChorganisationId and complete=true");
+        sb.append("from dashboard where (insurer_id in (:pInsurerId) or -1 in (:pInsurerId)) and  (cho_claim_owner_id in (:pCHOClaimOwnerId) or -1 in (:pCHOClaimOwnerId)) and chorganisation_id = :pChorganisationId and complete=true");
 
         return build(queryParameters, sb.toString());
     }
@@ -78,7 +81,7 @@ public class ChoDashboardBuilder {
         sb.append("avg(avg_inv_payment_time_m) as Avg_InvPaymentTime, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_m) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_m) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and  (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id = :pChorganisationId and complete=true");
+        sb.append("from dashboard where (insurer_id in (:pInsurerId) or -1 in (:pInsurerId)) and  (cho_claim_owner_id in (:pCHOClaimOwnerId) or -1 in (:pCHOClaimOwnerId)) and chorganisation_id = :pChorganisationId and complete=true");
         
         return build(queryParameters, sb.toString());
     }
@@ -113,7 +116,7 @@ public class ChoDashboardBuilder {
         sb.append("avg(avg_inv_payment_time_c) as Avg_InvPaymentTime, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_c) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_c) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and  (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id = :pChorganisationId and complete=true");
+        sb.append("from dashboard where (insurer_id in (:pInsurerId) or -1 in (:pInsurerId)) and  (cho_claim_owner_id in (:pCHOClaimOwnerId) or -1 in (:pCHOClaimOwnerId)) and chorganisation_id = :pChorganisationId and complete=true");
         
         return build(queryParameters, sb.toString());
     }
@@ -139,24 +142,32 @@ public class ChoDashboardBuilder {
     private Map getQueryParameters() {
         Map queryParameters = new HashMap();
 
-        Integer insurerId = -1;
-        Integer choClaimOwnerId = -1;
+        List<Integer> insurerIds = new ArrayList<Integer>();
+        List<Integer> claimOwnerIds = new ArrayList<Integer>();
 
         String insurerIdRaw = ((String[]) this.extParameters.get("insurerId"))[0].toString();
         if (!insurerIdRaw.isEmpty()) {
-            insurerId = Integer.parseInt(insurerIdRaw);
+            for (String insId : insurerIdRaw.split(",")) {
+                insurerIds.add(Integer.parseInt(insId));
+            }
+        } else {
+            insurerIds.add(-1);
         }
 
         String choClaimOwnerIdRaw = ((String[]) this.extParameters.get("choClaimOwnerId"))[0].toString();
         if (!choClaimOwnerIdRaw.isEmpty()) {
-            choClaimOwnerId = Integer.parseInt(choClaimOwnerIdRaw);
+            for (String ownerId : choClaimOwnerIdRaw.split(",")) {
+                claimOwnerIds.add(Integer.parseInt(ownerId));
+            }
+        } else {
+            claimOwnerIds.add(-1);
         }
 
         queryParameters.put("pChorganisationId", chorganisation.getId());
-        queryParameters.put("pInsurerId", insurerId);
-        queryParameters.put("pCHOClaimOwnerId", choClaimOwnerId);
+        queryParameters.put("pInsurerId", insurerIds);
+        queryParameters.put("pCHOClaimOwnerId", claimOwnerIds);
 
-        logger.debug("pChorganisationId :" + chorganisation.getId() + "pInsurerId :" + insurerId + "choClaimOwnerId :" + choClaimOwnerId );
+        logger.debug("pChorganisationId :" + chorganisation.getId() + "pInsurerId :" + insurerIds.toString() + "choClaimOwnerId :" + claimOwnerIds.toString());
         
         return queryParameters;
         
