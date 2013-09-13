@@ -960,7 +960,7 @@
             });
             liabilityStatusSearchScreenCombo.render('searchScreenLiabilityDropDownDiv');
 
-            var hireAndRepairSearchParamData = [['Hire Only', 1],['Repair Only', 2], ['Hire and Repair', 3]];
+            var hireAndRepairSearchParamData = [['Hire Only', 1],['Repair Only', 2], ['Hire and Repair', 3], ['No Hire or Repair', 4]];
             
             var hireAndRepairSearchParamStore = new Ext.data.ArrayStore({
                     fields: [

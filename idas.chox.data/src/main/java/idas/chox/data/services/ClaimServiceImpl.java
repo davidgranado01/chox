@@ -737,13 +737,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             /* The SQL Query for the below criteria is:
                 OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = false) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = false))) OR (iv.id is not null AND (iv.hire_net > 0 and iv.repair_net = 0)))
-                OR ((iv.id is null AND hmd.id is not null and and hmd.is_repair_only_check = true) OR (iv.id is not null AND (iv.repair_net > 0 and iv.hire_net <= 37)))
+                OR ((iv.id is null AND hmd.id is not null and hmd.is_repair_only_check = true) OR (iv.id is not null AND (iv.repair_net > 0 and iv.hire_net <= 37)))
                 OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = true) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = true))) OR (iv.id is not null AND (iv.hire_net > 37 and iv.repair_net > 0)))
+                OR (iv.id is not null AND iv.hire_net = 0 AND iv.repair_net = 0)
              */
 
             Criterion hireOnlyClaims = Restrictions.eq("id", -1);
             Criterion repairOnlyClaims = Restrictions.eq("id", -1);
             Criterion hireAndRepairOnlyClaims = Restrictions.eq("id", -1);
+            Criterion noHireAndNoRepair = Restrictions.eq("id", -1);
 
             for (Integer restrictionId : searchCriteria.getHireAndRepairSearchParamIds()) {
                 if (restrictionId == 1) {
@@ -797,12 +799,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                                                                 .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
                                                                 .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
                     
+                } else if (restrictionId == 4) {
+                    
+                    noHireAndNoRepair = Restrictions.conjunction()
+                                                        .add(Restrictions.isNotNull("iv.id"))
+                                                        .add(Restrictions.eq("iv.hireNet", BigDecimal.ZERO))
+                                                        .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO));
+                    
                 }
             }
             criteria.add(Restrictions.disjunction()
                     .add(hireOnlyClaims)
                     .add(repairOnlyClaims)
-                    .add(hireAndRepairOnlyClaims));
+                    .add(hireAndRepairOnlyClaims)
+                    .add(noHireAndNoRepair));
         }
         
         if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
