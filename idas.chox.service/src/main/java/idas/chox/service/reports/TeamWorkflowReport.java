@@ -30,6 +30,7 @@ public class TeamWorkflowReport implements Report {
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
+    boolean isInsurerInvoiceUploadEnabled;
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {
@@ -61,6 +62,9 @@ public class TeamWorkflowReport implements Report {
             user = ((WebUser) externalParameter.get("CurrentUser"));
             // GET INSURER INFORMATION
             if (RoleHelper.isInsurerUser(user)) {
+                if (user.getInsurer().isInvoiceUploadEnabled() || user.getInsurer().isClaimUploadEnabled()) {
+                    isInsurerInvoiceUploadEnabled = true;
+                }
                 insurerId = user.getInsurer().getId();
                 rptInsurerName = user.getInsurer().getName();
             }
@@ -411,7 +415,40 @@ public class TeamWorkflowReport implements Report {
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                       sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
+                      
+                        if (isInsurerInvoiceUploadEnabled) {
+                            /*
+                             * count ManualInvoiceBREApproved:
+                             *      Counts the number of claims in status 'ManualInvoiceBREApproved' at
+                             *      the period end date for the workgroup of the site/team in question
+                             */
+                            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
+                            sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                            sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
+                            sb.append("and a.reverted=false and a.new_status = 'ManualInvoiceBREApproved' ) as countManualInvoiceBREApproved,");
 
+                            /*
+                             * count ManualInvoiceBRERejected:
+                             *      Counts the number of claims in status 'ManualInvoiceBRERejected' at
+                             *      the period end date for the workgroup of the site/team in question
+                             */
+                            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
+                            sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                            sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
+                            sb.append("and a.reverted=false and a.new_status = 'ManualInvoiceBRERejected' ) as countManualInvoiceBRERejected,");
+
+                            /*
+                             * count ManualInvoiceContested:
+                             *      Counts the number of claims in status 'ManualInvoiceContested' at
+                             *      the period end date for the workgroup of the site/team in question
+                             */
+                            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
+                            sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                            sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
+                            sb.append("and a.reverted=false and a.new_status = 'ManualInvoiceContested' ) as countManualInvoiceContested,");
+
+                        }
+                      
                       /*
                        * Weeks In Service:
                        *      Counts the number of weeks the site/team 'achieved90' since the service commencing date
@@ -432,7 +469,7 @@ public class TeamWorkflowReport implements Report {
                       List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                       // parse query results and add to workflowLineItem
                       if (detailData.size() > 0) {
-                          workflowLineItem.updateObject((Map)detailData.get(0));
+                          workflowLineItem.updateObject((Map)detailData.get(0), isInsurerInvoiceUploadEnabled);
                           obj.getTeams().add(workflowLineItem);
                       }
                     }
@@ -458,7 +495,7 @@ public class TeamWorkflowReport implements Report {
     }
 
     private String getOutstandingStatusList() {
-        return "(" + ClaimStatus.getHandlerOutstandingWorkflowStatusListAsString() + ")";
+        return "(" + ClaimStatus.getHandlerOutstandingStatusListAsString() + ")";
     }
 
     @Override
@@ -479,7 +516,11 @@ public class TeamWorkflowReport implements Report {
     
     @Override
     public short[] getColumnsToHide() {
-        return null;
+        short[] columnsToHide = null;
+        if (!isInsurerInvoiceUploadEnabled) {
+            columnsToHide = new short[]{(short) 34, (short) 35, (short) 36};
+        }
+        return columnsToHide;
     }
 
 }
