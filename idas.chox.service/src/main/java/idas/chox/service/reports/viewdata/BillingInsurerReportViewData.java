@@ -4,11 +4,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author abrar
  */
 public class BillingInsurerReportViewData {
+    private static final Logger LOG = LoggerFactory.getLogger(BillingInsurerReportViewData.class);
     private String supplierReferenceNumber;
     private String supplierName;
     private String claimNumber;
@@ -21,7 +25,7 @@ public class BillingInsurerReportViewData {
     private BigDecimal grossClaimCost;
 
     public static BillingInsurerReportViewData getObject(Map data) {
-
+        LOG.debug("Creating billing report view data entry...");
         BillingInsurerReportViewData result = new BillingInsurerReportViewData();
         result.setSupplierReferenceNumber(data.get("cho_reference".toLowerCase()).toString());
         result.setClaimNumber(data.get("claim_number".toLowerCase()).toString());
@@ -33,6 +37,8 @@ public class BillingInsurerReportViewData {
         result.setNetClaimCost((BigDecimal)data.get("net_claim_cost"));
         result.setVatOnClaimCost((BigDecimal)data.get("vat_claim_cost"));
         result.setGrossClaimCost((BigDecimal)data.get("gross_claim_cost"));
+        
+        LOG.debug("Created billing insurer report entry for claim {}", result.getSupplierReferenceNumber());
         return result;
     }
 
