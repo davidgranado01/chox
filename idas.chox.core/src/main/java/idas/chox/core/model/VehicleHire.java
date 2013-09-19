@@ -429,4 +429,34 @@ public class VehicleHire extends Entity implements Serializable {
     public void setCourtesyCarProvided(boolean courtesyCarProvided) {
         this.courtesyCarProvided = courtesyCarProvided;
     }
+    
+    public enum DisplayName {
+        
+        VEHICLE_MANUFACTURER    ("vehicleManufacturer", "Manufacturer"),
+        VEHICLE_MODEL           ("vehicleModel", "Model"),
+        VEHICLE_REGISTRATION    ("vehicleRegistration", "Registration"),
+        VEHICLE_CLASS           ("vehicleClass", "Replacement Vehicle Class"),
+        RENTAL_START_DATE       ("rentalStart", "Hire Start (Date)"),
+        RENTAL_END_DATE         ("rentalEnd", "Hire End (Date)"),
+        COLLECTION_REASON       ("collectionReason", "Reason For Collection"),
+        DAYS                    ("days", "No. Days Hire");
+        
+        
+        private final String ParameterName;
+        private final String displayName;
+
+        DisplayName(String name, String displayName) {
+            this.ParameterName = name;
+            this.displayName = displayName;
+        }
+
+        public String getParameterName() {
+            return ParameterName;
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
 }

@@ -90,7 +90,7 @@
                 msg += " (Private Note)";
             }
             msg += "</b>: <br/>" + comment.get("comment");
-            propmtMsg(title, msg);
+            propmtMsg(title, getFormatedMessage(msg));
         }
         else if(columnIndex == 3 && comment.get("delete")!=""){
             deleteComment(fileId);
@@ -143,6 +143,25 @@
         loadComments();
     }
 
+    function getFormatedMessage(msg){
+        if(msg.length > 0){
+            var messageList=msg.split('). ');
+            var messageHTML="";
+            if(messageList.length>0){
+                for(var i=0;i<messageList.length;i++){
+                    if((i+1) < messageList.length){
+                        messageHTML+=(messageList[i]+')<br/>');
+                    }else{
+                        messageHTML+=(messageList[i]);
+                    }
+                }
+                return messageHTML;
+            }  
+        }else{
+            return "";
+        }
+    }
+    
     function loadComments(){
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
         // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'

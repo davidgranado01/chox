@@ -343,4 +343,39 @@ public class EngineerReport extends Entity implements Serializable {
         return isUsable ? "Yes" : "No";
 
     }
+    
+    public enum DisplayName {
+
+        LABOUR_AMOUNT       ("labourAmount", "Estimated Labour Amount"),
+        TOTAL_AMOUNT        ("totalAmount", "Estimated Total Repair Amount"),
+        ESTIMATED_DAYS      ("days", "Estimated Days Under Repair"),
+        IS_USABLE           ("isUsable", "Usable?"),
+        NAME                ("name", "Name"),
+        COMPANY             ("company", "Company"),
+        ADDRESS1            ("address1", "Engineer Address 1"),
+        ADDRESS2            ("address2", "Engineer Address 2"),
+        ADDRESS3            ("address3", "Engineer Address 3"),
+        ADDRESS4            ("address4", "Engineer Address 4"),
+        ADDRESS5            ("address5", "Engineer Address 5"),
+        POSTCODE            ("postcode", "Engineer Postcode"),
+        TELEPHONE           ("telephone", "Engineer Telephone"),
+        EMAIL               ("email", "Engineer Email");
+        
+        private final String parameterName;
+        private final String displayName;
+
+        DisplayName(String name, String displayName) {
+            this.parameterName = name;
+            this.displayName = displayName;
+        }
+
+        public String getParameterName() {
+            return parameterName;
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
 }
