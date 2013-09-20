@@ -8,7 +8,7 @@
     
     <jaxws:client id="uploadService"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="https://www.idaschox.com:8443/services/UploadService">
+                  address="https://www.idaschox.com/services/UploadService">
         <jaxws:outInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
             <ref bean="wss4jOutInterceptor" />
