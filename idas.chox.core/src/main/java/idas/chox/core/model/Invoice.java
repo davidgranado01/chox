@@ -1608,7 +1608,7 @@ public class Invoice extends Entity implements Serializable {
     }
     
     public enum DisplayName {
-
+        // Insert in the order as they are displayed in the UI. 
         HANDLING_INVOICE_NO                 ("handlingInvoiceNo", "Supplier Claims Handling #"),
         CLAIM_INVOICE_NO                    ("claimInvoiceNo", "Supplier Claim Invoice #"),
         HIRE_RATE_CHARGED_PER_DAY           ("hireRateChargedPerDay", "Hire Rate Charged Per Day"),
@@ -1639,9 +1639,9 @@ public class Invoice extends Entity implements Serializable {
         VAT_AMOUNT_COLLECTED                ("vatAmountCollected", "VAT Collected From Policyholder"),
         DATE_INVOICED                       ("dateInvoiced", "Date Invoiced"),
         ACQUISITION_FEE                     ("acquisitionFee", "Acquisition Fee"),
+        MISCELLANEOUS_FEE                   ("miscellaneousFee", "Miscellaneous Costs"),
         AUTOMATIC_FEE                       ("automaticFee", "Automatic Fee"),
         AUTOMATIC_QTY                       ("automaticQty", "Automatic Quantity"),
-        MISCELLANEOUS_FEE                   ("miscellaneousFee", "Miscellaneous Costs"),
         ADDITIONAL_DRIVER_FEE               ("additionalDriverFee", "Additional Driver Fee"),
         ADDITIONAL_DRIVER_QTY               ("additionalDriverQty", "Additional Driver Quantity"),
         SAT_NAV_FEE                         ("satNavFee", "Sat Nav Fee"),
