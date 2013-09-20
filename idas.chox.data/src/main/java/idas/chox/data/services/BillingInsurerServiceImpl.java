@@ -76,7 +76,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         } else if (triggerPoint.equals("Payment Received")) {
             sb.append(" and trigger_point = 'Payment Received'");
         } else {
-            sb.append(" and trigger_point = 'Manual Invoice Paid'");
+            sb.append(" and trigger_point = 'Invoice Payment Logged'");
         }
 
         String query = sb.toString();

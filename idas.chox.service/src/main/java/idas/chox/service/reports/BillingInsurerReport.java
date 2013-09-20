@@ -51,12 +51,13 @@ public class BillingInsurerReport implements Report {
     public Map<String, Object> getReportParameters() throws Exception {
         Map<String, Object> reportParameters = new HashMap<String, Object>();
         try {
-
+            String billingStatus="PaymentReceived";
+            
             final String billingId = ((String[]) externalParameter.get("billingId"))[0];
             BillingInsurer bi = getBillingInsurer(Integer.parseInt(billingId));
 
-            LOG.debug("Data Start " + bi.getDateFrom());
-            LOG.debug("Data End " + bi.getDateTo());
+            LOG.debug("Data Start: {}", bi.getDateFrom());
+            LOG.debug("Data End: {} ", bi.getDateTo());
 
             if(bi.getDateTo() == null || bi.getDateFrom() == null){
                 throw new Exception("Start and End dates must not be empty.");
@@ -70,37 +71,42 @@ public class BillingInsurerReport implements Report {
 
             StringBuilder sb = new StringBuilder();
 
-
-            sb.append("select ");
-                sb.append("cm.cho_reference, ");
-                sb.append("cm.claim_number, ");
-                sb.append("cho.name as cho_name, ");
-                sb.append("tp.policy_number, ");
-                sb.append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ");
-                sb.append("case when tp.first_name is null and tp.last_name is null then '-' when tp.first_name is null then tp.last_name when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ");
-                sb.append("at.update_date as received_date, ");
-                sb.append("bid.net_claim_cost as net_claim_cost, ");
-                sb.append("bid.vat_claim_cost as vat_claim_cost, ");
-                sb.append("bid.gross_claim_cost as gross_claim_cost ");
+            if (bi.getTriggerPoint().equals("Manual Invoice Paid")) {
+                billingStatus = "ManualInvoicePaid";
+            } else if (bi.getTriggerPoint().equals("Invoice Payment Logged")) {
+                billingStatus = "InvoicePaymentLogged";
+            }
+            
+            sb.append("select ")
+                .append("cm.cho_reference, ")
+                .append("cm.claim_number, ")
+                .append("cho.name as cho_name, ")
+                .append("tp.policy_number, ")
+                .append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ")
+                .append("case when tp.first_name is null and tp.last_name is null then '-' when tp.first_name is null then tp.last_name when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ")
+                .append("at.update_date as received_date, ")
+                .append("bid.net_claim_cost as net_claim_cost, ")
+                .append("bid.vat_claim_cost as vat_claim_cost, ")
+                .append("bid.gross_claim_cost as gross_claim_cost ");
             // to fetch total to pay liability after libility change
                 //sb.append("inv.total_to_pay ");
-            sb.append("from ");
-                sb.append("claim as cm, ");
-                sb.append("billing_insurer_detail as bid, ");
-                sb.append("audit_trail as at, ");
-                sb.append("customer as cr, ");
-                sb.append("chorganisation as cho, ");
-                sb.append("third_party as tp ");
+            sb.append("from ")
+                .append("claim as cm, ")
+                .append("billing_insurer_detail as bid, ")
+                .append("audit_trail as at, ")
+                .append("customer as cr, ")
+                .append("chorganisation as cho, ")
+                .append("third_party as tp ");
                 
-            sb.append("where ");
-                sb.append("cm.id=bid.claim_reference_id ");
-                sb.append("and cr.id = cm.customer_id ");
-                sb.append("and tp.id = cm.third_party_id ");
-                sb.append("and cm.id = at.claim_id ");
-                sb.append("and at.reverted=false and (at.new_status='PaymentReceived' or at.new_status='ManualInvoicePaid')");
-                sb.append("and cm.chorganisation_id = cho.id ");
-                sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id ");
-                sb.append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date < at.update_date)");
+            sb.append("where ")
+                .append("cm.id=bid.claim_reference_id ")
+                .append("and cr.id = cm.customer_id ")
+                .append("and tp.id = cm.third_party_id ")
+                .append("and cm.id = at.claim_id ")
+                .append("and at.reverted=false and at.new_status='").append(billingStatus)
+                .append("' and cm.chorganisation_id = cho.id ")
+                .append("and bid.billing_insurer_id =  :p_billing_insurer_id ")
+                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date < at.update_date)");
 
             
 
@@ -111,6 +117,7 @@ public class BillingInsurerReport implements Report {
             paramMap.put("p_billing_insurer_id",bi.getId());
             List result = reportDataService.getReportData(query, paramMap);
 
+            LOG.debug("Found {} matching claims to bill", result.size());
 
             for (Object o : result) {
 
