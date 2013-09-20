@@ -174,9 +174,25 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public String getReportGenerationStatus() {
         synchronized (getSessionLock()) {
-            setExportFinished((Boolean) getSession().get("isExportFinished"));
-            setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-            setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+            if (getSession() != null) { // Add extra null checks as session sometimes empty!
+                if (getSession().get("isExportFinished") != null) {
+                    setExportFinished((Boolean) getSession().get("isExportFinished"));
+                } else {
+                    setExportFinished(Boolean.FALSE);
+                }
+                if (getSession().get("cancelExportOperation") != null) {
+                    setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
+                } else {
+                    setExportCanceled(Boolean.FALSE);
+                }
+                if (getSession().get("exceptionThrown") != null) {
+                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                } else {
+                    setExceptionOccured(Boolean.FALSE);
+                }
+            } else {
+                LOG.warn("Session is null.");
+            }
         }
         return SUCCESS;
     }

@@ -76,7 +76,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     public void markTaskAsComplete(int webUserId, int taskId) {
         Task task = (Task) get(Task.class, taskId);
         if (task == null) {
-            LOG.error("No such task found with id={}", taskId);
+            LOG.warn("No such task found with id={}", taskId);
             throw new IllegalArgumentException("No such task.");
         } else if (task.getComplete()) {
             LOG.info("Task already complete: id={}", taskId);
@@ -86,7 +86,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
             if (webUser == null) {
-                LOG.error("No such user found with id={}", webUserId);
+                LOG.warn("No such user found with id={}", webUserId);
                 throw new IllegalArgumentException("No such user.");
             }
         }
@@ -694,7 +694,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
             if (webUser == null) {
-                LOG.error("No such user found with id={}", webUserId);
+                LOG.warn("No such user found with id={}", webUserId);
                 throw new IllegalArgumentException("No such user.");
             }
         }
@@ -706,7 +706,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
             if (webUser == null) {
-                LOG.error("No such user found with id={}", webUserId);
+                LOG.warn("No such user found with id={}", webUserId);
                 throw new IllegalArgumentException("No such user.");
             }
         }

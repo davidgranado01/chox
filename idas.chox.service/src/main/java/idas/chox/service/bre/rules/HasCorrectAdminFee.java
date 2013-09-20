@@ -55,7 +55,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
           } catch (Exception ex) {
-              LOG.error("Exception thrown applying BRE rule to claim with id={}: {}", claim.getId(), ex.getMessage());
+              LOG.warn("Exception thrown applying BRE rule to claim with id={}: {}", claim.getId(), ex.getMessage());
               narrative="An error occurred applying this rule and the rule was skipped.";
               res.setResult(RuleEvaluationResult.RULE_SKIPPED);
           }
