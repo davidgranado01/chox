@@ -431,7 +431,7 @@ public class VehicleHire extends Entity implements Serializable {
     }
     
     public enum DisplayName {
-        
+        // Insert in the order as they are displayed in the UI. 
         VEHICLE_MANUFACTURER    ("vehicleManufacturer", "Manufacturer"),
         VEHICLE_MODEL           ("vehicleModel", "Model"),
         VEHICLE_REGISTRATION    ("vehicleRegistration", "Registration"),

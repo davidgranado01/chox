@@ -25,6 +25,7 @@ import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
+import java.text.DateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -2435,43 +2436,61 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     private void addModifiedFieldsComment() {
         try {
-            Map<String, String> filedNames = new HashMap<String, String>();
+            Map<String, String> fieldNames = new LinkedHashMap<String, String>();
             StringBuilder sb = new StringBuilder();
             boolean isSubscriberClaim = false;
+            boolean isCollaborationProtocolClaim = false;
+            int stringLength = 0;
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 isSubscriberClaim = true;
+            } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                isCollaborationProtocolClaim = true;
             }
             // get the list of fields name and corresponding dispaly name of Invoice.
             for (Invoice.DisplayName displayName : Invoice.DisplayName.values()) {
                 if (isSubscriberClaim) {
                     if (displayName.getParameterName().equals("miscellaneousFee")) {
-                        filedNames.put(displayName.getParameterName(), "Acquisition Fee");
-                    } else {
-                        filedNames.put(displayName.getParameterName(), displayName.toString());
+                        fieldNames.put(displayName.getParameterName(), "Acquisition Fee");
+                        continue;
                     }
-                } else {
-                    filedNames.put(displayName.getParameterName(), displayName.toString());
                 }
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
+            }
+            // remove acquisitionFee otherwise for subscriber claims 'Acquisition Fee' will be duplicated.
+            if (!isCollaborationProtocolClaim) { 
+                fieldNames.remove("acquisitionFee");
             }
             // get the changes made to invoice detail section.
-            getModifiedFieldAsText(Invoice.class, originalInvoice, invoice, filedNames, sb);
+            stringLength = sb.length();
+            getModifiedFieldAsText(Invoice.class, originalInvoice, invoice, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Invoice Details:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
             
             // get the list of fields name and corresponding dispaly name of VehicleHire.
             for (VehicleHire.DisplayName displayName : VehicleHire.DisplayName.values()) {
-                filedNames.put(displayName.getParameterName(), displayName.toString());
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
             }
             // get the changes made to vehicleHire detail section.
-            getModifiedFieldAsText(VehicleHire.class, originalVehicleHire, vehicleHire, filedNames, sb);
+            stringLength = sb.length();
+            getModifiedFieldAsText(VehicleHire.class, originalVehicleHire, vehicleHire, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Hire Vehicle Details:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
 
             // get the list of fields name and corresponding dispaly name of EngineerReport.
             for (EngineerReport.DisplayName displayName : EngineerReport.DisplayName.values()) {
-                filedNames.put(displayName.getParameterName(), displayName.toString());
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
             }
             // get the changes made to engineer report detail section.
-            getModifiedFieldAsText(EngineerReport.class, originalEngineerReport, engineerReport, filedNames, sb);
+            stringLength = sb.length();
+            getModifiedFieldAsText(EngineerReport.class, originalEngineerReport, engineerReport, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Engineer Report:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
             
             if (sb.length() > 0) {
-                sb.insert(0, "An invoice amendment has been made to the following fields: ");
+                sb.insert(0, "An invoice amendment has been made to the following fields: "); // if this text needs changing, also change in p_claim_detail_comment.jsp page.
                 claim.addComment(Comment.newComment(0, sb.toString()));
             }
         } catch (Exception ex) {
@@ -2479,14 +2498,27 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
     
-    private void getModifiedFieldAsText(Class model, Object originalObject, Object modifiedObject, Map filedNames, StringBuilder sb) {
-        Map<String, Object[]> modifiedFields = CompareUtil.compare(model, originalObject, modifiedObject, filedNames);
-        for (String key : modifiedFields.keySet()) {
-            sb.append(key).append(": ")
-                    .append(modifiedFields.get(key)[1]).append(" ")
-                    .append("(").append(modifiedFields.get(key)[0]).append("). ");
-
+    private void getModifiedFieldAsText(Class model, Object originalObject, Object modifiedObject, Map<String, String> fieldNames, StringBuilder sb) {
+        Map<String, Object[]> modifiedFields = CompareUtil.compare(model, originalObject, modifiedObject, fieldNames);
+        // iterate through enum fieldNames instead modifiedFields so that the order the text added is same as in the UI.
+        for (String key : fieldNames.keySet()) {
+            if (modifiedFields.containsKey(fieldNames.get(key))) {
+                if ((modifiedFields.get(fieldNames.get(key))[0]) instanceof Number && (modifiedFields.get(fieldNames.get(key))[1]) instanceof Number) {
+                    if (!fieldNames.get(key).equalsIgnoreCase("No. Days Hire")
+                            && !fieldNames.get(key).equalsIgnoreCase("Estimated Days Under Repair")) {
+                        sb.append(fieldNames.get(key)).append(": £")
+                                .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
+                                .append("(£").append(modifiedFields.get(fieldNames.get(key))[0]).append("). ");
+                        continue;
+                    }
+                }
+                sb.append(fieldNames.get(key)).append(": ")
+                        .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
+                        .append("(").append(modifiedFields.get(fieldNames.get(key))[0]).append("). ");
+                
+            }
         }
+        fieldNames.clear(); // clear the values in the map to avoid duplicate key being entered by another entity.
     }
     
     public boolean isPenaltyChargeDateModified() {

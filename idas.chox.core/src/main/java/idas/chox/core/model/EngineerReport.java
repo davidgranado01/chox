@@ -345,7 +345,7 @@ public class EngineerReport extends Entity implements Serializable {
     }
     
     public enum DisplayName {
-
+        // Insert in the order as they are displayed in the UI. 
         LABOUR_AMOUNT       ("labourAmount", "Estimated Labour Amount"),
         TOTAL_AMOUNT        ("totalAmount", "Estimated Total Repair Amount"),
         ESTIMATED_DAYS      ("days", "Estimated Days Under Repair"),
