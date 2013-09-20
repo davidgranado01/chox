@@ -21,6 +21,9 @@ public class HandlerActionsStatusLineItem {
     private Integer countInvoiceApprovedByBRE ;
     private Integer countAwaitingLiabilityResolution ;
     private Integer countAwaitingInvoicePayment ;
+    private Integer countManualInvoiceBREApproved;
+    private Integer countManualInvoiceBRERejected;
+    private Integer countManualInvoiceContested;
 
     public static HandlerActionsStatusLineItem getObject(Map<String, Object> data) {
         HandlerActionsStatusLineItem result = new HandlerActionsStatusLineItem();
@@ -42,7 +45,7 @@ public class HandlerActionsStatusLineItem {
         return result;
     }
 
-    public void updateObject(Map<String, Object> data) {
+    public void updateObject(Map<String, Object> data, boolean isInsurerInvoiceUploadEnabled) {
         this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase())));
         this.setCountClaimPending(getIntegerValue(data.get("countClaimPending".toLowerCase())));
         this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase())));
@@ -52,6 +55,11 @@ public class HandlerActionsStatusLineItem {
         this.setCountInvoiceApprovedByBRE(getIntegerValue(data.get("countInvoiceApprovedByBRE".toLowerCase())));
         this.setCountAwaitingLiabilityResolution(getIntegerValue(data.get("countAwaitingLiabilityResolution".toLowerCase())));
         this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase())));
+        if (isInsurerInvoiceUploadEnabled) {
+            this.setCountManualInvoiceBREApproved(getIntegerValue(data.get("countManualInvoiceBREApproved".toLowerCase())));
+            this.setCountManualInvoiceBRERejected(getIntegerValue(data.get("countManualInvoiceBRERejected".toLowerCase())));
+            this.setCountManualInvoiceContested(getIntegerValue(data.get("countManualInvoiceContested".toLowerCase())));
+        }
     }
 
     private Integer getIntegerValue(Object v) {
@@ -166,5 +174,28 @@ public class HandlerActionsStatusLineItem {
     public void setCountAwaitingInvoicePayment(Integer countAwaitingInvoicePayment) {
         this.countAwaitingInvoicePayment = countAwaitingInvoicePayment;
     }
-    
+
+    public Integer getCountManualInvoiceBREApproved() {
+        return countManualInvoiceBREApproved;
+    }
+
+    public void setCountManualInvoiceBREApproved(Integer countManualInvoiceBREApproved) {
+        this.countManualInvoiceBREApproved = countManualInvoiceBREApproved;
+    }
+
+    public Integer getCountManualInvoiceBRERejected() {
+        return countManualInvoiceBRERejected;
+    }
+
+    public void setCountManualInvoiceBRERejected(Integer countManualInvoiceBRERejected) {
+        this.countManualInvoiceBRERejected = countManualInvoiceBRERejected;
+    }
+
+    public Integer getCountManualInvoiceContested() {
+        return countManualInvoiceContested;
+    }
+
+    public void setCountManualInvoiceContested(Integer countManualInvoiceContested) {
+        this.countManualInvoiceContested = countManualInvoiceContested;
+    }
 }

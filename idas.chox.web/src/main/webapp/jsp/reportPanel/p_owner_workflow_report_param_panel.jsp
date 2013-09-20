@@ -15,7 +15,7 @@
         	id: 'serviceCommencingDate',
             name: 'serviceCommencingDate',
             renderTo: 'serviceCommencingDiv',
-            width: 120,
+            width: 100,
             allowBlank: false,
             format: 'd/m/Y',
             disabledDays: [0,2,3,4,5,6],

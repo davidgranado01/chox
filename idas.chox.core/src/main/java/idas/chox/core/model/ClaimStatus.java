@@ -229,13 +229,6 @@ public class ClaimStatus {
                 + MANUAL_INVOICE_REJECTED + "'";
     }
 
-    public static String getHandlerOutstandingWorkflowStatusListAsString() {
-        return "'" + CLAIM_UNACKNOWLEDGED_ROUTED + "','" + CLAIM_REJECTION_CONTESTED + "','"
-                + CLAIM_UPDATE_BY_ENG + "','" + INVOICE_REF_TO_CH + "','"
-                + INVOICE_ESCALATED_TO_CH + "','" + CONTESTED_INVOICE_REF_TO_INS + "','"
-                + INVOICE_APPROVED_BY_BRE + "','" + AWAITING_INVOICE_PAYMENT + "'";
-    }
-
     public static List<String> getPenaltyChargeExclusionStatus() {
         List<String> exclusionList = new ArrayList<String>();
         exclusionList.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
