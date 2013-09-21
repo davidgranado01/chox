@@ -2503,14 +2503,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         // iterate through enum fieldNames instead modifiedFields so that the order the text added is same as in the UI.
         for (String key : fieldNames.keySet()) {
             if (modifiedFields.containsKey(fieldNames.get(key))) {
-                if ((modifiedFields.get(fieldNames.get(key))[0]) instanceof Number && (modifiedFields.get(fieldNames.get(key))[1]) instanceof Number) {
-                    if (!fieldNames.get(key).equalsIgnoreCase("No. Days Hire")
-                            && !fieldNames.get(key).equalsIgnoreCase("Estimated Days Under Repair")) {
+                if ((modifiedFields.get(fieldNames.get(key))[0]) instanceof BigDecimal && (modifiedFields.get(fieldNames.get(key))[1]) instanceof BigDecimal) {
                         sb.append(fieldNames.get(key)).append(": £")
                                 .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
                                 .append("(£").append(modifiedFields.get(fieldNames.get(key))[0]).append("). ");
                         continue;
-                    }
                 }
                 sb.append(fieldNames.get(key)).append(": ")
                         .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
