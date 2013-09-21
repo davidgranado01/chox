@@ -52,12 +52,8 @@ public class CompareUtil {
                         // Compare
                         Object oldObj = field.get(originalObject);
                         Object newObj = field.get(modifiedObject);
-                        if (oldObj != null && newObj != null 
-                                && ((oldObj instanceof Number && newObj instanceof Number && !compareNumber((Number) oldObj, (Number) newObj))
-                                    || (oldObj instanceof Date && newObj instanceof Date && ((Date) oldObj).compareTo((Date) newObj) != 0)
-                                || (!(oldObj instanceof Number) && !(newObj instanceof Number)
-                                    && !(oldObj instanceof Date) && !(newObj instanceof Date) && !oldObj.equals(newObj)))) {
-                            
+                        if (oldObj != null && newObj != null && !compareObect(oldObj, newObj)) {
+
                             // if date object is modified then format it and add it to the map.
                             if (oldObj instanceof Date && newObj instanceof Date) {
                                 if (field.getName().equalsIgnoreCase("rentalStart") || field.getName().equalsIgnoreCase("rentalEnd")) {
@@ -72,13 +68,11 @@ public class CompareUtil {
 
                             // if string object is modified then add custom name for empty string. 
                             if (oldObj instanceof String && newObj instanceof String) {
-                                if (!((String) oldObj).trim().equals(((String) newObj).trim())) {
-                                    ret.put((String) fieldNames.get(field.getName()), new Object[]{((String) oldObj).trim().isEmpty() ? "No Value" : oldObj,
-                                        ((String) newObj).trim().isEmpty() ? "Entry Removed" : newObj});
-                                }
+                                ret.put((String) fieldNames.get(field.getName()), new Object[]{((String) oldObj).trim().isEmpty() ? "No Value" : oldObj,
+                                    ((String) newObj).trim().isEmpty() ? "Entry Removed" : newObj});
                                 continue;
                             }
-                            
+
                             // if hire vehicle vehicleClass is modified then add the vehicleClass Name(not VehicleClass object).
                             if (field.getName().equalsIgnoreCase("vehicleClass") && oldObj instanceof VehicleClass && newObj instanceof VehicleClass) {
                                 VehicleClass vc1 = (VehicleClass) oldObj;
@@ -88,14 +82,16 @@ public class CompareUtil {
                                 }
                                 continue;
                             }
-                            
+
                             // for all other modified objects
                             ret.put((String) fieldNames.get(field.getName()), new Object[]{oldObj, newObj});
-                            // if one of the original/new value is null then the other value should not be in one of ( (if it is number)zero, (if it is boolean)false, (if it is string)empty).
-                        } else if (((oldObj != null && ((oldObj instanceof Boolean && oldObj.equals(true)) || (oldObj instanceof Number && !compareNumber((Number) oldObj, (Number) 0))
-                                || (oldObj instanceof String && !((String) oldObj).trim().isEmpty()) || (!(oldObj instanceof Boolean) && !(oldObj instanceof Number) && !(oldObj instanceof String)))) && newObj == null)
-                                || ((newObj != null && ((newObj instanceof Boolean && newObj.equals(true)) || (newObj instanceof Number && !compareNumber((Number) newObj, (Number) 0))
-                                || (newObj instanceof String && !((String) newObj).trim().isEmpty()) || (!(newObj instanceof Boolean) && !(newObj instanceof Number) && !(newObj instanceof String)))) && oldObj == null)) {
+
+                            /* 
+                             * if one of the obj is null then the other obj value should not be in one of ( (if it is number)zero,
+                             * (if it is boolean)false, (if it is string)empty).
+                             */
+                        } else if ((newObj != null && oldObj == null && !compareObjValueEqulentToDefaultValue(newObj))
+                                || (newObj == null && oldObj != null && !compareObjValueEqulentToDefaultValue(oldObj))) {
                             // if Boolean then replace null with false.
                             if (newObj != null && newObj instanceof Boolean) {
                                 ret.put((String) fieldNames.get(field.getName()), new Object[]{Boolean.FALSE, newObj});
@@ -156,6 +152,30 @@ public class CompareUtil {
         } catch (final Exception ex) {
             LOG.error("Exception : ", ex);
             return BigDecimal.ZERO;
+        }
+    }
+
+    public static boolean compareObect(final Object oldObj, final Object newObj) {
+        if (oldObj instanceof Number && newObj instanceof Number) {
+            return compareNumber((Number) oldObj, (Number) newObj);
+        } else if (oldObj instanceof Date && newObj instanceof Date) {
+            return ((Date) oldObj).compareTo((Date) newObj) == 0;
+        } else if (oldObj instanceof String && newObj instanceof String) {
+            return ((String) oldObj).trim().equals(((String) newObj).trim());
+        } else {
+            return oldObj.equals(newObj);
+        }
+    }
+
+    public static boolean compareObjValueEqulentToDefaultValue(final Object obj) {
+        if (obj instanceof Boolean && obj.equals(false)) {
+            return true;
+        } else if (obj instanceof Number && compareNumber((Number) obj, (Number) 0)) {
+            return true;
+        } else if (obj instanceof String && ((String) obj).trim().isEmpty()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
