@@ -501,8 +501,6 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 
 
 
-
-
 --   Monthly
 -- RAISE NOTICE 'Monthly Start: %1', timeofday();
 
@@ -523,8 +521,6 @@ where t1.insurer_id = tmp_dashboard.insurer_id
   and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
   and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
   and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
-
-
 
 
 --   Cumulative
@@ -571,10 +567,7 @@ where t1.insurer_id = tmp_dashboard.insurer_id
   and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
 
 
-
-
 --   Monthly
-
 -- RAISE NOTICE 'Monthly Start: %1', timeofday();
 
 update tmp_dashboard
@@ -1510,7 +1503,7 @@ from claim c , invoice i
 where c.invoice_id=i.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
-and i.created_date >= SqlGetDayOfWeek()
+and c.status_modified_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1528,7 +1521,7 @@ from claim c , invoice i
 where c.invoice_id=i.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
-and i.created_date >= SqlGetDayOfMonth()
+and c.status_modified_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1565,7 +1558,7 @@ where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
-and i.created_date >= SqlGetDayOfWeek()
+and c.status_modified_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1585,7 +1578,7 @@ where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
-and i.created_date >= SqlGetDayOfMonth()
+and c.status_modified_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1621,7 +1614,7 @@ from claim c , invoice i
 where c.invoice_id=i.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
-and i.created_date >= SqlGetDayOfWeek()
+and c.status_modified_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1639,7 +1632,7 @@ from claim c , invoice i
 where c.invoice_id=i.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
-and i.created_date >= SqlGetDayOfMonth()
+and c.status_modified_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1676,7 +1669,7 @@ where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
-and i.created_date >= SqlGetDayOfWeek()
+and c.status_modified_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1696,7 +1689,7 @@ where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
-and i.created_date >= SqlGetDayOfMonth()
+and c.status_modified_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
