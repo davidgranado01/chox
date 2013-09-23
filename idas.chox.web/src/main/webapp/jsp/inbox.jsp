@@ -1552,7 +1552,7 @@
                     /*
                      *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
                      */
-                    window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex ;
+                    window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex +'&nonce=<%= session.getAttribute("SessionNonce")%>';
                 }
             }
 

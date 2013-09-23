@@ -23,6 +23,8 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  *
@@ -169,7 +171,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         } catch (NoSuchAlgorithmException ex) {
             LOG.error("Could not get algorithm SHA1PRNG");
         }
-        String nonceStr = Base64.encodeBytes(nonce);
+        String nonceStr = Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
 
         session.setAttribute("SessionNonce", nonceStr);
         LOG.debug("Nonce added to session for user '{}' (id={}): {}", new Object[]{user.getDisplayName(), user.getId(), nonceStr});

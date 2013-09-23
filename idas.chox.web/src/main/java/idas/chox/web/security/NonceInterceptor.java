@@ -1,5 +1,7 @@
 package idas.chox.web.security;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Set;
@@ -7,12 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.StrutsStatics;
+import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  *
@@ -30,11 +35,13 @@ public class NonceInterceptor extends AbstractInterceptor {
         HttpSession session = request.getSession(false);
         if (session == null) {
             LOG.error("No session in nonce interceptor for request '{}'", request.getRequestURL());
+            return invocation.invoke();
         }
         Map<String, Object> sessionMap = context.getSession();
+        LOG.debug("In NonceInterceptor with X-Requested-With = '{}', ServletPath = '{}'", request.getHeader("X-Requested-With"), request.getServletPath());
+        LOG.debug("Request parameters: {}", NonceInterceptor.dumpParams(request));
         if (sessionMap != null) {
-
-            if (request != null && (("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
+            if ((("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
                     && !request.getServletPath().contains("checkViewingStatus") && !request.getServletPath().contains("activityMonitoringAction"))
                     || !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
                 // Get nonce from session
@@ -72,7 +79,32 @@ public class NonceInterceptor extends AbstractInterceptor {
                     LOG.error("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
                     return "invalid.token";
                 }
+                
+                // If this is a HTTP request, generate a new nonce
+                if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
+                        && (request.getServletPath().contains("openClaimDetail.action") || request.getServletPath().contains("inbox.action"))) {
+                    LOG.debug("Generating new nonce for servlet '{}'...", request.getServletPath());
+                    byte[] nonce = new byte[16];
+                    SecureRandom rand;
+                    try {
+                        SecureRandom.getInstance("SHA1PRNG").nextBytes(nonce);
+                    } catch (NoSuchAlgorithmException ex) {
+                        LOG.error("Could not get algorithm SHA1PRNG");
+                    }
+                    String nonceStr = Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
+
+                    if (nonceStr != null) {
+                        session.setAttribute("SessionNonce", nonceStr);
+                        LOG.debug("Replacing nonce '{}' with '{}' ", new Object[]{sessionNonce, nonceStr});
+                    } else {
+                        LOG.error("Generated nonce is null.");
+                    }
+                }
+            } else {
+                LOG.debug("No nonce check performed.");
             }
+        } else {
+            LOG.debug("No session map in request '{}", request.getServletPath());
         }
 
         return invocation.invoke();

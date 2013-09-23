@@ -79,7 +79,7 @@ Ext.onReady(function(){
                             if ( a.result.success ){
                                 slaExtensionWindow.hide();
                                 Ext.get('claimDetailScreenDiv').mask("Refreshing claim details...");
-                                window.location = contextPath+"/prv/openClaimDetail.action" ; 
+                                window.location = contextPath+'/prv/openClaimDetail.action?nonce='+nonce ; 
                             }
                         },
                         failure : function(f, a) {
@@ -96,7 +96,7 @@ Ext.onReady(function(){
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     slaExtensionWindow.hide();
-                                    window.location = contextPath+"/prv/openClaimDetail.action" ;  
+                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;  
                                 }
                             }); 
                         }
@@ -175,7 +175,7 @@ Ext.onReady(function(){
                                     buttons : Ext.MessageBox.OK,
                                     fn : function(){
                                         switchClaimWindow.hide();
-                                        window.location = contextPath+"/prv/openClaimDetail.action" ;  
+                                        window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce; 
                                     }
                                 });
                             }
@@ -194,7 +194,7 @@ Ext.onReady(function(){
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     switchClaimWindow.hide();
-                                    window.location = contextPath+"/prv/openClaimDetail.action" ;  
+                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;
                                 }
                             }); 
                         }

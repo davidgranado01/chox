@@ -41,7 +41,7 @@
         }
     }
     function confirmOk(btn){
-                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";
     }
 
 </script>
