@@ -1,12 +1,13 @@
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
+
+import idas.chox.core.util.DateHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,9 @@ public class TeamWorkflowLineItem {
     private Integer countContestedInvoiceReferredToInsurer;
     private Integer countInvoiceApprovedByBre;
     private Integer countAwaitingInvoicePayment;
+    private Integer countManualInvoiceBREApproved;
+    private Integer countManualInvoiceBRERejected;
+    private Integer countManualInvoiceContested;
 
     public static TeamWorkflowLineItem getObject(Map data) {
         TeamWorkflowLineItem result = new TeamWorkflowLineItem();
@@ -63,7 +67,7 @@ public class TeamWorkflowLineItem {
         return result;
     }
 
-    public void updateObject(Map data) {
+    public void updateObject(Map data, boolean isInsurerInvoiceUploadEnabled) {
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
@@ -120,6 +124,11 @@ public class TeamWorkflowLineItem {
         this.setCountContestedInvoiceReferredToInsurer(getIntegerValue(data.get("countContestedInvoiceReferredToInsurer".toLowerCase())));
         this.setCountInvoiceApprovedByBre(getIntegerValue(data.get("countInvoiceApprovedByBre".toLowerCase())));
         this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase())));
+        if (isInsurerInvoiceUploadEnabled) {
+            this.setCountManualInvoiceBREApproved(getIntegerValue(data.get("countManualInvoiceBREApproved".toLowerCase())));
+            this.setCountManualInvoiceBRERejected(getIntegerValue(data.get("countManualInvoiceBRERejected".toLowerCase())));
+            this.setCountManualInvoiceContested(getIntegerValue(data.get("countManualInvoiceContested".toLowerCase())));
+        }
     }
 
     private static Integer getIntegerValue(Object v) {
@@ -395,5 +404,29 @@ public class TeamWorkflowLineItem {
 
     public void setWeeksInService(Integer weeksInService) {
         this.weeksInService = weeksInService;
+    }
+
+    public Integer getCountManualInvoiceBREApproved() {
+        return countManualInvoiceBREApproved;
+    }
+
+    public void setCountManualInvoiceBREApproved(Integer countManualInvoiceBREApproved) {
+        this.countManualInvoiceBREApproved = countManualInvoiceBREApproved;
+    }
+
+    public Integer getCountManualInvoiceBRERejected() {
+        return countManualInvoiceBRERejected;
+    }
+
+    public void setCountManualInvoiceBRERejected(Integer countManualInvoiceBRERejected) {
+        this.countManualInvoiceBRERejected = countManualInvoiceBRERejected;
+    }
+
+    public Integer getCountManualInvoiceContested() {
+        return countManualInvoiceContested;
+    }
+
+    public void setCountManualInvoiceContested(Integer countManualInvoiceContested) {
+        this.countManualInvoiceContested = countManualInvoiceContested;
     }
 }

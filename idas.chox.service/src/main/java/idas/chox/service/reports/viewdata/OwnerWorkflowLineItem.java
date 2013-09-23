@@ -6,10 +6,10 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Map;
 
+import idas.chox.core.util.DateHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -53,6 +53,9 @@ public class OwnerWorkflowLineItem {
     private Integer countContestedInvoiceReferredToInsurer;
     private Integer countInvoiceApprovedByBre;
     private Integer countAwaitingInvoicePayment;
+    private Integer countManualInvoiceBREApproved;
+    private Integer countManualInvoiceBRERejected;
+    private Integer countManualInvoiceContested;
 
     public static OwnerWorkflowLineItem getObject(Map data) {
         OwnerWorkflowLineItem result = new OwnerWorkflowLineItem();
@@ -68,7 +71,7 @@ public class OwnerWorkflowLineItem {
         return result;
     }
 
-    public void updateObject(Map data) {
+    public void updateObject(Map data, boolean isInsurerInvoiceUploadEnabled) {
       try {
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
@@ -132,6 +135,11 @@ public class OwnerWorkflowLineItem {
         this.setCountContestedInvoiceReferredToInsurer(getIntegerValue(data.get("countContestedInvoiceReferredToInsurer".toLowerCase())));
         this.setCountInvoiceApprovedByBre(getIntegerValue(data.get("countInvoiceApprovedByBre".toLowerCase())));
         this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase())));
+        if (isInsurerInvoiceUploadEnabled) {
+            this.setCountManualInvoiceBREApproved(getIntegerValue(data.get("countManualInvoiceBREApproved".toLowerCase())));
+            this.setCountManualInvoiceBRERejected(getIntegerValue(data.get("countManualInvoiceBRERejected".toLowerCase())));
+            this.setCountManualInvoiceContested(getIntegerValue(data.get("countManualInvoiceContested".toLowerCase())));
+        }
         Object lastLogin = data.get("lastLoginDate".toLowerCase());
         if (lastLogin != null && lastLogin.toString().length() > 0) {
             try {
@@ -448,5 +456,29 @@ public class OwnerWorkflowLineItem {
 
     public void setOutstandingPercentage5_10(double outstandingPercentage5_10) {
         this.outstandingPercentage5_10 = outstandingPercentage5_10;
+    }
+
+    public Integer getCountManualInvoiceBREApproved() {
+        return countManualInvoiceBREApproved;
+    }
+
+    public void setCountManualInvoiceBREApproved(Integer countManualInvoiceBREApproved) {
+        this.countManualInvoiceBREApproved = countManualInvoiceBREApproved;
+    }
+
+    public Integer getCountManualInvoiceBRERejected() {
+        return countManualInvoiceBRERejected;
+    }
+
+    public void setCountManualInvoiceBRERejected(Integer countManualInvoiceBRERejected) {
+        this.countManualInvoiceBRERejected = countManualInvoiceBRERejected;
+    }
+
+    public Integer getCountManualInvoiceContested() {
+        return countManualInvoiceContested;
+    }
+
+    public void setCountManualInvoiceContested(Integer countManualInvoiceContested) {
+        this.countManualInvoiceContested = countManualInvoiceContested;
     }
 }

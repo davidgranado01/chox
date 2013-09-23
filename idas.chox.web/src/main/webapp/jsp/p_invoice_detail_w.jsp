@@ -567,8 +567,9 @@
         }
 </script>
 
-
-<form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
+<!--<div class="x-panel-bwrap chox-form-container">
+<label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>-->
+<form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" method="post" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'/>
     <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
@@ -2133,4 +2134,5 @@
     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
 </form>
+<!--</div>-->
 

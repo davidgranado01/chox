@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import org.apache.commons.lang.SerializationUtils;
+
+import org.hibernate.proxy.HibernateProxy;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -16,12 +18,17 @@ import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.CalcHelper;
+import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
+import java.text.DateFormat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InvoiceDetailAction extends BaseAction implements Preparable {
 
@@ -75,7 +82,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysWithCHOForReview;
     private String daysWithInsurerForReview;
     private String daysAwaitingLiabilityResolution;
-
+    private Invoice originalInvoice;
+    private EngineerReport originalEngineerReport;
+    private VehicleHire originalVehicleHire;
+    
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
     public BigDecimal getHireInsurerDiscountCalculated() {
@@ -2383,7 +2393,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 claim.setVehicleHire(vehicleHire);
                 claim.setInvoice(invoice);
                 claimService.updateLiabilityPayment(claim);
-
+                addModifiedFieldsComment();
                 updateHpi();
                 for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
                     if (getCanAddTotalGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue()) {
@@ -2424,6 +2434,90 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return false;
     }
 
+    private void addModifiedFieldsComment() {
+        try {
+            Map<String, String> fieldNames = new LinkedHashMap<String, String>();
+            StringBuilder sb = new StringBuilder();
+            boolean isSubscriberClaim = false;
+            boolean isCollaborationProtocolClaim = false;
+            int stringLength = 0;
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                isSubscriberClaim = true;
+            } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                isCollaborationProtocolClaim = true;
+            }
+            // get the list of fields name and corresponding dispaly name of Invoice.
+            for (Invoice.DisplayName displayName : Invoice.DisplayName.values()) {
+                if (isSubscriberClaim) {
+                    if (displayName.getParameterName().equals("miscellaneousFee")) {
+                        fieldNames.put(displayName.getParameterName(), "Acquisition Fee");
+                        continue;
+                    }
+                }
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
+            }
+            // remove acquisitionFee otherwise for subscriber claims 'Acquisition Fee' will be duplicated.
+            if (!isCollaborationProtocolClaim) { 
+                fieldNames.remove("acquisitionFee");
+            }
+            // get the changes made to invoice detail section.
+            stringLength = sb.length();
+            getModifiedFieldAsText(Invoice.class, originalInvoice, invoice, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Invoice Details:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
+            
+            // get the list of fields name and corresponding dispaly name of VehicleHire.
+            for (VehicleHire.DisplayName displayName : VehicleHire.DisplayName.values()) {
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
+            }
+            // get the changes made to vehicleHire detail section.
+            stringLength = sb.length();
+            getModifiedFieldAsText(VehicleHire.class, originalVehicleHire, vehicleHire, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Hire Vehicle Details:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
+
+            // get the list of fields name and corresponding dispaly name of EngineerReport.
+            for (EngineerReport.DisplayName displayName : EngineerReport.DisplayName.values()) {
+                fieldNames.put(displayName.getParameterName(), displayName.toString());
+            }
+            // get the changes made to engineer report detail section.
+            stringLength = sb.length();
+            getModifiedFieldAsText(EngineerReport.class, originalEngineerReport, engineerReport, fieldNames, sb);
+            if (sb.length() > stringLength) {
+                sb.insert(stringLength, "Engineer Report:");// if this text needs changing, also change in p_claim_detail_comment.jsp page.
+            }
+            
+            if (sb.length() > 0) {
+                sb.insert(0, "An invoice amendment has been made to the following fields: "); // if this text needs changing, also change in p_claim_detail_comment.jsp page.
+                claim.addComment(Comment.newComment(0, sb.toString()));
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while adding modifiedFieldsComment : ", ex);
+        }
+    }
+    
+    private void getModifiedFieldAsText(Class model, Object originalObject, Object modifiedObject, Map<String, String> fieldNames, StringBuilder sb) {
+        Map<String, Object[]> modifiedFields = CompareUtil.compare(model, originalObject, modifiedObject, fieldNames);
+        // iterate through enum fieldNames instead modifiedFields so that the order the text added is same as in the UI.
+        for (String key : fieldNames.keySet()) {
+            if (modifiedFields.containsKey(fieldNames.get(key))) {
+                if ((modifiedFields.get(fieldNames.get(key))[0]) instanceof BigDecimal && (modifiedFields.get(fieldNames.get(key))[1]) instanceof BigDecimal) {
+                        sb.append(fieldNames.get(key)).append(": £")
+                                .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
+                                .append("(£").append(modifiedFields.get(fieldNames.get(key))[0]).append("). ");
+                        continue;
+                }
+                sb.append(fieldNames.get(key)).append(": ")
+                        .append(modifiedFields.get(fieldNames.get(key))[1]).append(" ")
+                        .append("(").append(modifiedFields.get(fieldNames.get(key))[0]).append("). ");
+                
+            }
+        }
+        fieldNames.clear(); // clear the values in the map to avoid duplicate key being entered by another entity.
+    }
+    
     public boolean isPenaltyChargeDateModified() {
         if (DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0) {
             return true;
@@ -2457,7 +2551,18 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             invoice = (claim.getInvoice() != null) ? claim.getInvoice() : new Invoice();
             invoiceOriginal = (invoice.getInvoiceOriginal() != null) ? invoice.getInvoiceOriginal() : new InvoiceOriginal();
             vehicleHire = (claim.getVehicleHire() != null) ? claim.getVehicleHire() : new VehicleHire();
-
+            /* 
+             * If the Invoice is submitted then force load all the lazy loaded collection entities into the memory 
+             * and get a deep copy of the entity before struts apply the changes to the entity.
+             * This is neede for adding note about the changes made to the form. 
+             */
+            if (actionSelected == submit) {
+                forceLoadClaimsProxyObject();
+                originalEngineerReport = (EngineerReport) SerializationUtils.clone(engineerReport);
+                originalInvoice = (Invoice) SerializationUtils.clone(invoice);
+                originalVehicleHire = (VehicleHire) SerializationUtils.clone(vehicleHire);
+            }
+            
             oldVRN = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
 
             addModelToSession(Arrays.asList(claim, engineerReport, vehicleHire, invoice));
@@ -2467,6 +2572,25 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+    /*  
+     * This method used to force load the lazyLoaded entities from the claim. 
+     * hibernate proxy objects need to be force loaded into memory when these objects are accessed by java reflection. 
+     */
+    private void forceLoadClaimsProxyObject() {
+        invoice = (Invoice) forceLoadProxyObject(invoice);
+        vehicleHire = (VehicleHire) forceLoadProxyObject(vehicleHire);
+        engineerReport = (EngineerReport) forceLoadProxyObject(engineerReport);
+        forceLoadProxyObject(invoice.getInvoiceOriginal());
+        forceLoadProxyObject(vehicleHire.getVehicleClass());
+    }
+
+    private Object forceLoadProxyObject(Object model) {
+        if (model instanceof HibernateProxy) {
+            return ((HibernateProxy) model).getHibernateLazyInitializer().getImplementation();
+        }
+        return model;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public List<VehicleClassPriceMapper> getAllVehicleClassPriceMapper() {
         List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();

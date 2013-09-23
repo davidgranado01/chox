@@ -15,8 +15,10 @@
     var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
     var tasksTabAccessibility = <s:property value="tabAccessibility.tasksTabAccessibility" />;
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
+//    var invoiceTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
+//    var invoiceTabAccessibilityDisabled = invoiceTabAccessibility === 0;
     var claimDetailsDisabled = claimDetailTabAccessibility === 0;
     var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  === 0;
     var invoiceDetailsDisabled = invoiceDetailTabAccessibility === 0;
