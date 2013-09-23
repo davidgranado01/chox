@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -12,15 +16,14 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -126,16 +129,16 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Override
-    public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
+    public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
         Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
-        if (workgroupEnable && selectedWorkgroupId > 0) {
+        if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
             criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+            criteria.add(Restrictions.in("wgs.id", selectedWorkgroupId));
         }
 
         criteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -153,16 +156,16 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Override
-    public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
+    public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
         Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
-        if (workgroupEnable && selectedWorkgroupId > 0) {
+        if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
             criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+            criteria.add(Restrictions.in("wgs.id", selectedWorkgroupId));
         }
 
         criteria.add(Restrictions.eq("insurer.id", insurerId));

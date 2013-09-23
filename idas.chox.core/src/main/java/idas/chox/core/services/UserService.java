@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import java.util.List;
+import java.util.Set;
 
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
@@ -30,9 +31,9 @@ public interface UserService {
 
     boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);
 
-    List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
+    List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable);
 
-    List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
+    List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable);
 
     List<WebUser> getOprUsersByChorganisation(int chorganisationId);
 
