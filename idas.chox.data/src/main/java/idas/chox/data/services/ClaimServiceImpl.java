@@ -534,7 +534,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
 
         Integer totalCount = ((Long) result.get(0)).intValue();
@@ -549,7 +549,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         criteria.add(Restrictions.eq("chorganisation.id", choId));
         List result = findByCriteria(criteria);
 
