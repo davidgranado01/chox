@@ -485,7 +485,7 @@
                 {header: "Supplier Reference", width:100, dataIndex: 'supplierReferenceNumber', sortable: true, resizable: true,
                     // if( (r.data['claimStatus']!=null && r.data['claimStatus']!='' && r.data['claimStatus']!='N/A' ) || r.data['valid'] )
                     renderer:function(value,p,r){ if( r.data['claimId']>0 ){
-                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId']+ '&tab=' + currentTabIndex + '">' + value + '</a>'}
+                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id=' + r.data['claimId']+ '&tab=' + currentTabIndex + '">' + value + '</a>'}
                         else{return r.data.supplierReferenceNumber}}},
                 {header: "Claim Status", width:150, dataIndex: 'claimStatus', sortable: true, resizable: true},
                 {header: "Process Status", width:150, dataIndex: 'processStatus', sortable: true, resizable: true},
@@ -759,7 +759,7 @@
                 /*
                  *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
                  */
-                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
+                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
             }
         }
     }

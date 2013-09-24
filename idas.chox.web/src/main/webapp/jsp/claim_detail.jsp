@@ -237,7 +237,7 @@
     }
 
     function pageRefresh(){
-        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce="+nonce;
     }
 
 
@@ -318,7 +318,7 @@
         </s:if>
         <s:else >
             Ext.get('claimDetailScreenDiv').mask();
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";});
         </s:else>
         
     }
@@ -494,7 +494,7 @@
                     <tr>
                         <td width="80%" align="left">
                             <div>
-                                <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
+                                <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param><s:param name="nonce"><%= session.getAttribute("SessionNonce")%></s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
                                 &nbsp;&nbsp;
                                 <s:if test="extraActionList.size()>0">
                                     <s:select

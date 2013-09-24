@@ -82,7 +82,7 @@ $(function(){
 
     function confirmOk(btn){
         Ext.get('userDetailsScreenId').mask("Loading inbox...");
-        window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+        window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";
     }
     function confirmError(btn){
         var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
