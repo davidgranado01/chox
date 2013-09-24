@@ -36,7 +36,7 @@ import idas.chox.core.util.CalcHelper;
 public class BillingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
-    private static final Object INSURER = "insurer";
+    private static final String INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
     private BillingInsurerService billingInsurerService;
     private BillingInsurerDetailService billingInsurerDetailService;
