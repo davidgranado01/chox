@@ -7,7 +7,7 @@ import idas.chox.core.util.DateHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  *
@@ -38,7 +38,7 @@ public class ClaimFileNoteData {
                         claimFileNoteData.createdBy = comment.getCreatedBy().getFullName();
                     }
                     claimFileNoteData.createdOn = DateHelper.getLocalDateTimeFormat().format(comment.getCreatedDate());
-                    claimFileNoteData.note = StringEscapeUtils.unescapeHtml(comment.getComment());
+                    claimFileNoteData.note = StringEscapeUtils.unescapeHtml4(comment.getComment());
                     claimFileNoteData.number = noteNumber++;
                     claimFileNoteDataList.add(claimFileNoteData);
                 }

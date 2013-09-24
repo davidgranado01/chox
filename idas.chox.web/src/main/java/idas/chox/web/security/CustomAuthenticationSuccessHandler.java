@@ -1,28 +1,31 @@
 package idas.chox.web.security;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Date;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.postgresql.util.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+import org.apache.commons.lang3.time.DateUtils;
+
+import org.postgresql.util.Base64;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *

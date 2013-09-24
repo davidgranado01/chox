@@ -29,6 +29,7 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -262,7 +263,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurersJsonString() {
@@ -270,7 +271,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public void setReportName(String report) {

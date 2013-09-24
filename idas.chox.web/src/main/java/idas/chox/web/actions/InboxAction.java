@@ -1,11 +1,11 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringEscapeUtils;
+
 
 import net.sf.json.JSONArray;
 
@@ -21,6 +21,9 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InboxAction extends BaseAction {
 
@@ -287,7 +290,7 @@ public class InboxAction extends BaseAction {
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getName(), supplier.getId().toString()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurersJsonString() {
@@ -295,7 +298,7 @@ public class InboxAction extends BaseAction {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getName(), insurer.getId().toString()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
     
     public String getClaimTypesJsonString() {
