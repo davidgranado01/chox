@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts2.interceptor.ParameterAware;
 
 import net.sf.json.JSONArray;
@@ -123,7 +124,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             }
            
            LOG.debug("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+           return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public List getInsurers() {
@@ -140,7 +141,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
                 luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
             }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+           return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
 

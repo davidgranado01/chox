@@ -3,8 +3,7 @@ package idas.chox.data;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
+import org.apache.commons.lang3.StringEscapeUtils;
 /**
  *
  * @author John
@@ -21,7 +20,7 @@ public class ExcelComment {
         choReference = (String) data.get("choreference");
         createdBy = (String) data.get("createdby");
         createdDate = (Date) data.get("createddate");
-        comment = StringEscapeUtils.unescapeHtml((String) data.get("comment"));
+        comment = StringEscapeUtils.unescapeHtml4((String) data.get("comment"));
         visibilityType = (Integer) data.get("visibilitytype");
     }
 

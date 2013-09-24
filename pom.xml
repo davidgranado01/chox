@@ -22,7 +22,7 @@
         
         <junit.version>4.10</junit.version>
         
-        <commons-lang.version>2.6</commons-lang.version>
+        <commons-lang.version>3.1</commons-lang.version>
         
         <logback-core.version>1.0.6</logback-core.version>
         <logback-classic.version>1.0.6</logback-classic.version>
@@ -52,7 +52,7 @@
         <spring-security-config.version>3.1.0.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.1.0.RELEASE</spring-security-web.version>
 
-        <struts.version>2.3.1</struts.version>
+        <struts.version>2.3.15.2</struts.version>
        
         <quartz-scheduler.version>2.1.7</quartz-scheduler.version>
     </properties>

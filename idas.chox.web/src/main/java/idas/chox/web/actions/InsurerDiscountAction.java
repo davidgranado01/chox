@@ -18,6 +18,7 @@ import idas.chox.core.model.*;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.InsurerDiscountViewData;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class InsurerDiscountAction extends BaseAction implements ModelDriven<InsurerDiscount>, Preparable {
 
@@ -94,7 +95,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurerDiscountTypeJsonString() {

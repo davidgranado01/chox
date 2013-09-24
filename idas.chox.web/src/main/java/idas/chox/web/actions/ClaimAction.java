@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
@@ -73,6 +72,7 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
     public static final String EMPTY = "empty";
@@ -277,7 +277,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getPolicyNumber() {
-        return StringEscapeUtils.escapeJavaScript(claim.getThirdParty().getPolicyNumber());
+        return StringEscapeUtils.escapeEcmaScript(claim.getThirdParty().getPolicyNumber());
     }
 
     public String getNonce() {
@@ -2414,7 +2414,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (Insurer insurer : mappedInsurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getRepairPenaltyPercentageJsonString() {
