@@ -516,8 +516,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setValid(true);
         bordereauSchemaValidation.validate(document, bordereau, getCurrentUser());
         if (!bordereau.isValid()) {
-            bordereau.setStatus("Error");
-            bordereau.setDescription("Invalid Schema");
+            if (bordereau.getMessage() != null && bordereau.getMessage().equals(BordereauSchemaValidation.NO_CLAIMS_FOUND)) {
+                bordereau.setStatus("Failed");
+                bordereau.setDescription("No Claims Found");
+            } else {
+                bordereau.setStatus("Error");
+                bordereau.setDescription("Invalid Schema");
+            }
             saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
             /*
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
