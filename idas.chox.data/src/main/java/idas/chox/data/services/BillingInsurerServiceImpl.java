@@ -9,6 +9,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingInsurerService;
+import idas.chox.core.util.DateHelper;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -63,14 +64,10 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
-        sb.append(getShDtStr(dateFrom));
-        sb.append("',DATE '");
-        sb.append(getShDtStr(dateTo));
-        sb.append("') ");
+        sb.append("(date(:pDateFrom)");
+        sb.append(",date(:pDateTo)) ");
         sb.append("from billing_insurer ");
-        sb.append("where insurer_id = ");
-        sb.append(insurerId);
+        sb.append("where insurer_id = :pInsurerId ");
         if (triggerPoint.equals("Manual Invoice Paid")) {
             sb.append(" and trigger_point = 'Manual Invoice Paid'");
         } else if (triggerPoint.equals("Payment Received")) {
@@ -78,14 +75,19 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         } else {
             sb.append(" and trigger_point = 'Invoice Payment Logged'");
         }
-
+        
         String query = sb.toString();
         LOG.debug(query);
-
-        List valList = getCurrentSession().createSQLQuery(query).list();
+        
+        Map extParameters = new HashMap();
+        extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
+        extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
+        extParameters.put("pInsurerId", insurerId);
+        
+        List valList = externalQuery(query, extParameters);
         for (Object object : valList) {
-            LOG.debug("Object value: {}", ((Boolean) object).booleanValue());
-            if (((Boolean) object).booleanValue()) {
+            Map data = (Map) object;
+            if ((Boolean) (data.get("overlaps"))) {
                 checkmap.put("dateTo", "From or To date overlaps existing schedule with same trigger status.");
                 checkmap.put("dateFrom", "From or To date overlaps existing schedule with same trigger status.");
                 break;

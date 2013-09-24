@@ -8,6 +8,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.BillingChoService;
+import idas.chox.core.util.DateHelper;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -60,21 +61,23 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
-        sb.append(getShDtStr(dateFrom));
-        sb.append("',DATE '");
-        sb.append(getShDtStr(dateTo));
-        sb.append("') ");
+        sb.append("(date(:pDateFrom)");
+        sb.append(",date(:pDateTo)) ");
         sb.append("from billing_cho ");
-        sb.append("where cho_id = ");
-        sb.append(choId);
+        sb.append("where cho_id = :pChoId");
 
         String query = sb.toString();
         LOG.debug("checkScheduleOverlap query is: {}", query);
 
-        List valList = getCurrentSession().createSQLQuery(query).list();
+        Map extParameters = new HashMap();
+        extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
+        extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
+        extParameters.put("pChoId", choId);
+        
+        List valList = externalQuery(query, extParameters);
         for (Object object : valList) {
-            if (((Boolean) object).booleanValue()) {
+            Map data = (Map) object;
+            if ((Boolean) (data.get("overlaps"))) {
                 checkmap.put("dateTo", "From or To date overlaps existing schedule.");
                 checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
                 break;
