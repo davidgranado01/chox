@@ -62,11 +62,11 @@ public class NonceInterceptor extends AbstractInterceptor {
                 // Get request nonce
                 if (request.getParameter("nonce") == null) {
                     if (request.getParameterMap() == null) {
-                        LOG.error("No parameter map found in request '{}' with sessionNonce='{}' and sessionId='{}'",
+                        LOG.error("No parameter map found in request '{}' with sessionNonce='{}' and sessionId='{}' - skipping nonce validation check",
                                 new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                         return invocation.invoke();
                     } else if (request.getParameterMap().entrySet() == null || request.getParameterMap().entrySet().isEmpty()) {
-                        LOG.error("No entries found in parameter map of request '{}' with sessionNonce='{}' and sessionId='{}'",
+                        LOG.warn("No entries found in parameter map of request '{}' with sessionNonce='{}' and sessionId='{}' - skipping nonce validation check",
                                 new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                         return invocation.invoke();
                     } else {
