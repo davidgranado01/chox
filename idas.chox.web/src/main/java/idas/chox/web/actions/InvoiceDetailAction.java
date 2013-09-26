@@ -6,7 +6,8 @@ import java.util.*;
 
 import org.springframework.security.access.AccessDeniedException;
 
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
+
 
 import org.hibernate.proxy.HibernateProxy;
 
@@ -25,7 +26,6 @@ import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
-import java.text.DateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

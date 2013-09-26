@@ -633,7 +633,7 @@
                 return 'green-row';
             }else if(status=='Partially Uploaded' || status=='PARTIALUPLOAD'){
                 return 'orange-row';
-            }else if(status=='All Rejected' || status=='ALLREJECTED' || status=='ERROR'){
+            } else if(status=='All Rejected' || status=='ALLREJECTED' || status=='ERROR' || status=='Failed') {
                 return 'red-row';
             }else if(record.data.valid==false || status=='Error'){
                 return 'gray-row'

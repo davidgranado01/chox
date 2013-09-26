@@ -1,10 +1,10 @@
 package idas.chox.web.security;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Date;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +27,7 @@ import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  *
@@ -188,7 +189,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             userService.updateLastLogin(user.getId());
         } catch (Exception ex) {
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
-            LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
+            LOG.warn("UserID: {}, lastlogin='{}' version={}", new Object[]{user.getVersion(), user.getId(), user.getLastLoginDate()});
         }
         LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
         checkBrowserWarning(request, response, getDefaultTargetUrl());
