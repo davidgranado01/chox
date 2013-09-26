@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +25,8 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -176,6 +178,11 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         session.setAttribute("SessionNonce", nonceStr);
         LOG.debug("Nonce added to session for user '{}' (id={}): {}", new Object[]{user.getDisplayName(), user.getId(), nonceStr});
 
+        // Add nonce to request parameters
+        Map additionalParameters = new HashMap();
+        additionalParameters.put("nonce", nonceStr);
+        WrappedRequest wrequest = new WrappedRequest(request, additionalParameters);
+
         // Update users last login time
         try {
             userService.updateLastLogin(user.getId());
@@ -185,7 +192,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
         LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
         checkBrowserWarning(request, response, getDefaultTargetUrl());
-        super.onAuthenticationSuccess(request, response, authentication);
+        super.onAuthenticationSuccess(wrequest, response, authentication);
     }
 
     
