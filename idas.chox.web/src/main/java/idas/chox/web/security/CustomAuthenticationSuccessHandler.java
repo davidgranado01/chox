@@ -2,19 +2,13 @@ package idas.chox.web.security;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -25,8 +19,6 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -164,7 +156,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
-        
+/******        
         // Add nonce
         HttpSession session = request.getSession();
         byte[] nonce = new byte[16];
@@ -183,7 +175,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         Map additionalParameters = new HashMap();
         additionalParameters.put("nonce", nonceStr);
         WrappedRequest wrequest = new WrappedRequest(request, additionalParameters);
-
+*******/
+        
         // Update users last login time
         try {
             userService.updateLastLogin(user.getId());
@@ -193,7 +186,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
         LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
         checkBrowserWarning(request, response, getDefaultTargetUrl());
-        super.onAuthenticationSuccess(wrequest, response, authentication);
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 
     

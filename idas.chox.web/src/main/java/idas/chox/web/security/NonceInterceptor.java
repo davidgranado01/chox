@@ -46,9 +46,16 @@ public class NonceInterceptor extends AbstractInterceptor {
                     || !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
                 // Get nonce from session
                 if (!sessionMap.containsKey("SessionNonce")) {
-                    // No nonce found - deny access
-                    LOG.error("No nonce found in session.");
-                    return "invalid.token";
+                    // No nonce found in session - must be first request, so add nonce
+                    String nonceStr = generateNonce();
+
+                    if (nonceStr != null) {
+                        session.setAttribute("SessionNonce", nonceStr);
+                        LOG.debug("Adding nonce '{}' to session {}", new Object[]{nonceStr, session.toString()});
+                    } else {
+                        LOG.error("Generated nonce is null.");
+                    }
+                    return invocation.invoke();
                 }
                 String sessionNonce = (String) sessionMap.get("SessionNonce");
 
@@ -56,16 +63,15 @@ public class NonceInterceptor extends AbstractInterceptor {
                 if (request.getParameter("nonce") == null) {
                     if (request.getParameterMap() == null) {
                         LOG.error("No parameter map found in request '{}' with sessionNonce='{}' and sessionId='{}'",
-                            new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
+                                new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                         return invocation.invoke();
                     } else if (request.getParameterMap().entrySet() == null || request.getParameterMap().entrySet().isEmpty()) {
                         LOG.error("No entries found in parameter map of request '{}' with sessionNonce='{}' and sessionId='{}'",
-                            new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
+                                new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                         return invocation.invoke();
-                    }
-                    else {
+                    } else {
                         LOG.error("No nonce found in parameter map of request '{}' with sessionNonce='{}' and sessionId='{}'",
-                            new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
+                                new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                         return "invalid.token";
                     }
                 }
@@ -79,19 +85,12 @@ public class NonceInterceptor extends AbstractInterceptor {
                     LOG.error("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
                     return "invalid.token";
                 }
-                
+
                 // If this is a HTTP request, generate a new nonce
                 if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
                         && (request.getServletPath().contains("openClaimDetail.action") || request.getServletPath().contains("inbox.action"))) {
                     LOG.debug("Generating new nonce for servlet '{}'...", request.getServletPath());
-                    byte[] nonce = new byte[16];
-                    SecureRandom rand;
-                    try {
-                        SecureRandom.getInstance("SHA1PRNG").nextBytes(nonce);
-                    } catch (NoSuchAlgorithmException ex) {
-                        LOG.error("Could not get algorithm SHA1PRNG");
-                    }
-                    String nonceStr = Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
+                    String nonceStr = generateNonce();
 
                     if (nonceStr != null) {
                         session.setAttribute("SessionNonce", nonceStr);
@@ -108,6 +107,17 @@ public class NonceInterceptor extends AbstractInterceptor {
         }
 
         return invocation.invoke();
+    }
+
+    private String generateNonce() {
+        byte[] nonce = new byte[16];
+        SecureRandom rand;
+        try {
+            SecureRandom.getInstance("SHA1PRNG").nextBytes(nonce);
+        } catch (NoSuchAlgorithmException ex) {
+            LOG.error("Could not get algorithm SHA1PRNG");
+        }
+        return Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
     }
 
     public static String dumpParams(HttpServletRequest req) {
