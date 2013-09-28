@@ -24,7 +24,6 @@
         var doInsurerClaimOwnerAction;
         var manualInvoiceFilter;
         var dashboardActionName;
-        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
@@ -1546,13 +1545,29 @@
             }
 
             function maskInboxScreen(grid, rowIndex, columnIndex){
+                var record = grid.getStore().getAt(rowIndex);
                 if(columnIndex === 1){
-                    var record = grid.getStore().getAt(rowIndex);
                     Ext.get('inboxScreenDiv').mask("loading claim details ...");
                     /*
                      *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
                      */
                     window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex +'&nonce=<%= session.getAttribute("SessionNonce")%>';
+                };
+                var selModel = grid.getSelectionModel();
+                var selectedRecords = selModel.getSelections();
+                var selectedCount = selModel.getCount();
+                var allInsurerInvoice = true;
+                for(var i =0;i<selectedCount;i++) {
+                    if (selectedRecords[i].get('claimType') !== 'Insurer Invoice'){
+                        allInsurerInvoice = false;
+                    }
+                }
+                if (selectedCount > 0 && allInsurerInvoice === true && !manualInvoiceFilter){
+                    Ext.state.Manager.set("manualInvoiceFilter",true);
+                    manualInvoiceFilter = true;
+                }else if (allInsurerInvoice === false && manualInvoiceFilter){
+                    Ext.state.Manager.set("manualInvoiceFilter",false);
+                    manualInvoiceFilter = false;
                 }
             }
 
