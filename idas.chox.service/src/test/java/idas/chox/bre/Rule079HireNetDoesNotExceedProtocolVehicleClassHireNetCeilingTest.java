@@ -41,7 +41,8 @@ public class Rule079HireNetDoesNotExceedProtocolVehicleClassHireNetCeilingTest e
         claim.setVehicleHire(testClaim.getTestHireDetail());
         claim.getVehicleHire().setVehicleClass(vehicleClassService.getVehicleClass(31));
         claim.setInvoice(testClaim.getTestInvoice());
-//        claim.getCustomer().setVehicleClass(vehicleClassService.getVehicleClass(31));
+        claim.setCustomer(testClaim.getTestCustomerVehicleDamage());
+        claim.getCustomer().setVehicleClass(vehicleClassService.getVehicleClass(31));
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(400.00));
@@ -126,7 +127,7 @@ public class Rule079HireNetDoesNotExceedProtocolVehicleClassHireNetCeilingTest e
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO are charging a total hire cost (net) of £340.00 for the replacement vehicle class S4, the agreed protocol cost for this vehicle class is £300.00."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £340.00 exceeds the Protocol Hire Net ceiling of £300.00 for vehicle class S4."));
         assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
