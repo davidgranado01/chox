@@ -153,15 +153,24 @@ public class ClaimHeaderReader extends BaseEntityReader {
             RentalStatus rentalStatus = RentalStatus.fromString(hireState);
             switch(rentalStatus) {
                 case COLLABORATION:
-                    if (!securityInfoProvider.getCurrentUser().getChorganisation().isEnableCollaborationProtocolClaims()) {
+                    if (!isInsurerUpload) {
+                        if (!securityInfoProvider.getCurrentUser().getChorganisation().isEnableCollaborationProtocolClaims()) {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
+                            claimResult.setValid(false);
+                            claimResult.getMessage().add("Collaboration Protocol claims have not been activated. Please contact CHOX support if you wish to upload Collaboration Protocol claims.");
+                            claim.setChoReference(choReferenceNumber);
+                            claimResult.setClaim(claim);
+                            break;
+                        }
+                        claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL);
+                    } else {
                         claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                         claimResult.setValid(false);
-                        claimResult.getMessage().add("Collaboration Protocol claims have not been activated. Please contact CHOX support if you wish to upload Collaboration Protocol claims.");
+                        claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring' or 'Invoice Only'.");
                         claim.setChoReference(choReferenceNumber);
                         claimResult.setClaim(claim);
                         break;
                     }
-                    claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL);
                 case INPROGRESS:
                 case COMPLETE:
                     LOG.debug("PROCESSING Normal Chox Claim");
