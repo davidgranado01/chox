@@ -29,10 +29,8 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal discountOriginal;
     private BigDecimal insurerDiscountOriginal;
     private BigDecimal fullTotalToPayOriginal;
-    private BigDecimal acquisitionFeeOriginal;
-    private Integer acquisitionQtyOriginal;
-    private BigDecimal overheadFeeOriginal;
-    private Integer overheadQtyOriginal;
+    private BigDecimal collaborationFeeOriginal;
+    private Integer collaborationQtyOriginal;
     private BigDecimal miscellaneousFeeOriginal;
     private Integer miscellaneousQtyOriginal;
     private BigDecimal automaticFeeOriginal;
@@ -165,36 +163,20 @@ public class InvoiceOriginal extends Entity implements Serializable {
             this.babySeatQtyOriginal = babySeatQtyOriginal;
     }
 
-    public BigDecimal getAcquisitionFeeOriginal() {
-        return acquisitionFeeOriginal;
+    public BigDecimal getCollaborationFeeOriginal() {
+        return collaborationFeeOriginal;
     }
 
-    public void setAcquisitionFeeOriginal(BigDecimal acquisitionFeeOriginal) {
-        this.acquisitionFeeOriginal = acquisitionFeeOriginal;
+    public void setCollaborationFeeOriginal(BigDecimal collaborationFeeOriginal) {
+        this.collaborationFeeOriginal = collaborationFeeOriginal;
     }
 
-    public Integer getAcquisitionQtyOriginal() {
-        return acquisitionQtyOriginal;
+    public Integer getCollaborationQtyOriginal() {
+        return collaborationQtyOriginal;
     }
 
-    public void setAcquisitionQtyOriginal(Integer acquisitionQtyOriginal) {
-        this.acquisitionQtyOriginal = acquisitionQtyOriginal;
-    }
-
-    public BigDecimal getOverheadFeeOriginal() {
-        return overheadFeeOriginal;
-    }
-
-    public void setOverheadFeeOriginal(BigDecimal overheadFeeOriginal) {
-        this.overheadFeeOriginal = overheadFeeOriginal;
-    }
-
-    public Integer getOverheadQtyOriginal() {
-        return overheadQtyOriginal;
-    }
-
-    public void setOverheadQtyOriginal(Integer overheadQtyOriginal) {
-        this.overheadQtyOriginal = overheadQtyOriginal;
+    public void setCollaborationQtyOriginal(Integer collaborationQtyOriginal) {
+        this.collaborationQtyOriginal = collaborationQtyOriginal;
     }
 
     public BigDecimal getMiscellaneousFeeOriginal() {

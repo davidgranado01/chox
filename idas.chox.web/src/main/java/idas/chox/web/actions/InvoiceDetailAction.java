@@ -490,12 +490,12 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getMiscellaneousFeeOriginal();
     }
 
-    public java.math.BigDecimal getAcquisitionFeeOriginal() {
-        return invoiceOriginal.getAcquisitionFeeOriginal();
+    public java.math.BigDecimal getCollaborationFeeOriginal() {
+        return invoiceOriginal.getCollaborationFeeOriginal();
     }
 
-    public java.math.BigDecimal getOverheadFeeOriginal() {
-        return invoiceOriginal.getOverheadFeeOriginal();
+    public Integer getCollaborationQtyOriginal() {
+        return invoiceOriginal.getCollaborationQtyOriginal();
     }
 
     public java.math.BigDecimal getAutomaticFeeOriginal() {
@@ -963,23 +963,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public java.math.BigDecimal getAcquisitionFee() {
-        return invoice.getAcquisitionFee();
+    public java.math.BigDecimal getCollaborationFee() {
+        return invoice.getCollaborationFee();
     }
 
-    public void setAcquisitionFee(java.math.BigDecimal acquisitionFee) {
+    public void setCollaborationFee(java.math.BigDecimal collaborationFee) {
         if (actionSelected != reset && invoice != null) {
-            invoice.setAcquisitionFee(acquisitionFee);
-        }
-    }
-
-    public java.math.BigDecimal getOverheadFee() {
-        return invoice.getOverheadFee();
-    }
-
-    public void setOverheadFee(java.math.BigDecimal overheadFee) {
-        if (actionSelected != reset && invoice != null) {
-            invoice.setOverheadFee(overheadFee);
+            invoice.setCollaborationFee(collaborationFee);
         }
     }
 
@@ -2569,8 +2559,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
         if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
-            totalExtras = totalExtras.add(getAcquisitionFee());
-            totalExtras = totalExtras.add(getOverheadFee());
+            totalExtras = totalExtras.add(getCollaborationFee());
         }
         if (!ClaimType.isTPI(claim.getClaimType())) {
             totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
