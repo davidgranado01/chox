@@ -1558,7 +1558,8 @@
                 var selectedCount = selModel.getCount();
                 var allInsurerInvoice = true;
                 for(var i =0;i<selectedCount;i++) {
-                    if (selectedRecords[i].get('claimType') !== 'Insurer Invoice'){
+                    if (selectedRecords[i].get('claimType') !== 'Insurer Invoice'
+                            && (selectedRecords[i].get('claimType') !== 'Insurer Claim' || selectedRecords[i].get('status') === 'ClaimUnacknowledgedUnrouted')){
                         allInsurerInvoice = false;
                     }
                 }

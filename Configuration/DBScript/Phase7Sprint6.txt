@@ -87,3 +87,200 @@ ALTER TABLe billing_insurer DROP COLUMN manual_claims_only;
 ------------------------
 -- END of 7.6.7       --
 ------------------------
+
+-----------------------------------------------------------------------------------
+-- bug#2709 - Production - The Workgroup and Claim Owner Of Insurer Invoices     --
+              Cannot Be Updated Through ‘Batch Update’                           --
+-----------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedUnassigned', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedUnassigned' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedUnassigned' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedUnassigned' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedUnassigned' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimPending', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimPending' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimPending' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimPending' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimPending' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimReferredToEngineer', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToEngineer' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.AwaitingCarHireInfo', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingCarHireInfo' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingCarHireInfo' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingCarHireInfo' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingCarHireInfo' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedRouted', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedRouted' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedRouted' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedRouted' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUnacknowledgedRouted' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimRejectionContested', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimRejectionContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimRejectionContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimRejectionContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimRejectionContested' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimUpdatedByEngineer', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUpdatedByEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUpdatedByEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUpdatedByEngineer' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimUpdatedByEngineer' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.AwaitingInvoiceData', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingInvoiceData' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingInvoiceData' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingInvoiceData' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.AwaitingInvoiceData' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.AssignManualInvoiceOwner.ClaimReferredToFNOL', false, true, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToFNOL' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToFNOL' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToFNOL' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignManualInvoiceOwner.ClaimReferredToFNOL' and claim_type=17;
+
+---------------------------------------------------
+--- END of bug#2682                         -------
+---------------------------------------------------

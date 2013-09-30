@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
@@ -95,6 +96,9 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             } else {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
             }
+        } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM && (claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                || claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED))) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
         
 
