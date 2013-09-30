@@ -642,26 +642,26 @@
 <s:if test="isCollaborationProtocolClaim">
                                 <tr>
                                     <td>
-                                        <label class="std-label-ro">Acquisition Fee</label>
+                                        <label class="std-label-ro">Collaboration Protocol Fee</label>
                                     </td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="acquisitionFee" /></label></td>
+                                    <td><label class="std-data-ro">£<s:property value="collaborationFee" /></label></td>
                                     <td>
-                                        <s:if test="acquisitionFee!=acquisitionFeeOriginal&&(acquisitionFeeOriginal!=null)">
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="acquisitionFeeOriginal" />)</label>&nbsp;
+                                        <s:if test="collaborationFee!=collaborationFeeOriginal&&(collaborationFeeOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="collaborationFeeOriginal" />)</label>&nbsp;
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                         </s:if>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="std-label-ro">Overhead and Margin Fee</label>
+                                        <label class="std-label-ro">Collaboration Protocol Quantity</label>
                                     </td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="overheadFee" /></label></td>
+                                    <td><label class="std-data-ro">£<s:property value="collaborationQty" /></label></td>
                                     <td>
-                                        <s:if test="overheadFee!=overheadFeeOriginal&&(overheadFeeOriginal!=null)">
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="overheadFeeOriginal" />)</label>&nbsp;
+                                        <s:if test="collaborationQty!=collaborationQtyOriginal&&(collaborationQtyOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="collaborationQtyOriginal" />)</label>&nbsp;
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                         </s:if>
                                     </td>

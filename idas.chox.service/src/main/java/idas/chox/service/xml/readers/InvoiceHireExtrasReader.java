@@ -60,14 +60,14 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
                 NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 
                 /*
-                 * Hard-coded check on Acquisition Fee and Overhead & Margin Fee charges for non-collaboration protocol claims
+                 * Hard-coded check on Collaboration Protocol charges for non-collaboration protocol claims
                  */
                 BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
                 if (!ClaimType.isCollaborationProtocol(claimResult.getClaim().getClaimType())
-                        && (strExtraName.equals("Acquisition") || strExtraName.equals("Overhead and Margin"))
+                        && (strExtraName.equals("Collaboration Protocol"))
                         && BigDecimal.ZERO.compareTo(dIntemCost) != 0) {
                     claimResult.setCheckDataValid(false);
-                    claimResult.getMessage().add(String.format("An '%s' fee is being charged. This charge is only accepted on Collaboration Protocol claims. Please remove and re-submit without this charge.", strExtraName, sectionName));
+                    claimResult.getMessage().add(String.format("A '%s' fee is being charged. This charge is only accepted on Collaboration Protocol claims. Please remove and re-submit without this charge.", strExtraName, sectionName));
                 }
             }
 
@@ -139,13 +139,10 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
-        } else if (nodeName.equalsIgnoreCase("Acquisition")) {
-            invoice.setAcquisitionFee(dIntemCost);
-            invoice.setAcquisitionQty(iQuantity);
-        } else if (nodeName.equalsIgnoreCase("Overhead and Margin")) {
-            invoice.setOverheadFee(dIntemCost);
-            invoice.setOverheadQty(iQuantity);
-        }
+        } else if (nodeName.equalsIgnoreCase("Collaboration Protocol")) {
+            invoice.setCollaborationFee(dIntemCost);
+            invoice.setCollaborationQty(iQuantity);
+        } 
     }
 
 }
