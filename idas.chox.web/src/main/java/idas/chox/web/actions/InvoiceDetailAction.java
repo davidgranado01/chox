@@ -972,6 +972,17 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             invoice.setCollaborationFee(collaborationFee);
         }
     }
+    
+    public Integer getCollaborationQty() {
+        return invoice.getCollaborationQty();
+    }
+
+    public void setCollaborationQty(Integer collaborationQty) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setCollaborationQty(collaborationQty);
+        }
+    }
+
 
     public java.math.BigDecimal getAutomaticFee() {
         return invoice.getAutomaticFee();
