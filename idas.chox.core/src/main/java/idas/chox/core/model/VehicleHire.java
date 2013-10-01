@@ -16,21 +16,9 @@ public class VehicleHire extends Entity implements Serializable {
     private String collectionReason;
     private int days;
     private Integer daysOriginal;
-//    private boolean acquisitionFee;
-//    private boolean overheadFee;
-//    private boolean miscellaneousFee;
-//    private boolean automaticFee;
-//    private boolean satNavFee;
-//    private boolean estateFee;
-//    private boolean babySeatFee;
-//    private boolean towBarsFee;
-//    private boolean nonStandardInsurancePremiumFee;
-//    private boolean adminFee;
-//    private boolean roofRackFee;
-//    private boolean dualControlFee;
-//    private boolean deliveryCollectionFee;
     private VehicleClass vehicleClass;
     private VehicleClass vehicleClassOriginal;
+
     /**
      * HPI attributes
      */
@@ -201,113 +189,6 @@ public class VehicleHire extends Entity implements Serializable {
        // days = (days == null) ? 0 : days;
         this.days = days;
     }
-
-/******
-    public boolean isMiscellaneousFee() {
-        return miscellaneousFee;
-    }
-
-    public void setMiscellaneousFee(boolean miscellaneousFee) {
-        this.miscellaneousFee = miscellaneousFee;
-    }
-
-    public boolean isAcquisitionFee() {
-        return acquisitionFee;
-    }
-
-    public void setAcquisitionFee(boolean acquisitionFee) {
-        this.acquisitionFee = acquisitionFee;
-    }
-
-    public boolean isOverheadFee() {
-        return overheadFee;
-    }
-
-    public void setOverheadFee(boolean overheadFee) {
-        this.overheadFee = overheadFee;
-    }
-
-
-    public boolean isAutomaticFee() {
-        return automaticFee;
-    }
-
-    public void setAutomaticFee(boolean automaticFee) {
-        this.automaticFee = automaticFee;
-    }
-
-    public boolean isSatNavFee() {
-        return satNavFee;
-    }
-
-    public void setSatNavFee(boolean satNavFee) {
-        this.satNavFee = satNavFee;
-    }
-
-    public boolean isEstateFee() {
-        return estateFee;
-    }
-
-    public void setEstateFee(boolean estateFee) {
-        this.estateFee = estateFee;
-    }
-
-    public boolean isBabySeatFee() {
-        return babySeatFee;
-    }
-
-    public void setBabySeatFee(boolean babySeatFee) {
-        this.babySeatFee = babySeatFee;
-    }
-
-    public boolean isTowBarsFee() {
-        return towBarsFee;
-    }
-
-    public void setTowBarsFee(boolean towBarsFee) {
-        this.towBarsFee = towBarsFee;
-    }
-
-    public boolean isNonStandardInsurancePremiumFee() {
-        return nonStandardInsurancePremiumFee;
-    }
-
-    public void setNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
-        this.nonStandardInsurancePremiumFee = nonStandardInsurancePremiumFee;
-    }
-
-   public boolean isAdminFee() {
-        return adminFee;
-    }
-
-     public void setAdminFee(boolean adminFee) {
-        this.adminFee = adminFee;
-    }
-
-    public boolean isRoofRackFee() {
-        return roofRackFee;
-    }
-
-    public void setRoofRackFee(boolean roofRackFee) {
-        this.roofRackFee = roofRackFee;
-    }
-
-    public boolean isDualControlFee() {
-        return dualControlFee;
-    }
-
-    public void setDualControlFee(boolean dualControlFee) {
-        this.dualControlFee = dualControlFee;
-    }
-
-    public boolean isDeliveryCollectionFee() {
-        return deliveryCollectionFee;
-    }
-
-    public void setDeliveryCollectionFee(boolean deliveryCollectionFee) {
-        this.deliveryCollectionFee = deliveryCollectionFee;
-    }
-*****/
 
     public VehicleClass getVehicleClass() {
         return vehicleClass;

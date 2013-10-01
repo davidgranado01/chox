@@ -500,12 +500,12 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getMiscellaneousFeeOriginal();
     }
 
-    public java.math.BigDecimal getAcquisitionFeeOriginal() {
-        return invoiceOriginal.getAcquisitionFeeOriginal();
+    public java.math.BigDecimal getCollaborationFeeOriginal() {
+        return invoiceOriginal.getCollaborationFeeOriginal();
     }
 
-    public java.math.BigDecimal getOverheadFeeOriginal() {
-        return invoiceOriginal.getOverheadFeeOriginal();
+    public Integer getCollaborationQtyOriginal() {
+        return invoiceOriginal.getCollaborationQtyOriginal();
     }
 
     public java.math.BigDecimal getAutomaticFeeOriginal() {
@@ -973,23 +973,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public java.math.BigDecimal getAcquisitionFee() {
-        return invoice.getAcquisitionFee();
+    public java.math.BigDecimal getCollaborationFee() {
+        return invoice.getCollaborationFee();
     }
 
-    public void setAcquisitionFee(java.math.BigDecimal acquisitionFee) {
+    public void setCollaborationFee(java.math.BigDecimal collaborationFee) {
         if (actionSelected != reset && invoice != null) {
-            invoice.setAcquisitionFee(acquisitionFee);
-        }
-    }
-
-    public java.math.BigDecimal getOverheadFee() {
-        return invoice.getOverheadFee();
-    }
-
-    public void setOverheadFee(java.math.BigDecimal overheadFee) {
-        if (actionSelected != reset && invoice != null) {
-            invoice.setOverheadFee(overheadFee);
+            invoice.setCollaborationFee(collaborationFee);
         }
     }
 
@@ -1959,138 +1949,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-/****
-    public boolean isVHAcquisitionFee() {
-        return vehicleHire.isAcquisitionFee();
-    }
-
-    public void setVHAcquisitionFee(boolean acquisitionFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setAcquisitionFee(acquisitionFee);
-        }
-    }
-
-    public boolean isVHOverheadFee() {
-        return vehicleHire.isOverheadFee();
-    }
-
-    public void setVHOverheadFee(boolean overheadFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setOverheadFee(overheadFee);
-        }
-    }
-
-    public boolean isVHMiscellaneousFee() {
-        return vehicleHire.isMiscellaneousFee();
-    }
-
-    public void setVHMiscellaneousFee(boolean miscellaneousFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setMiscellaneousFee(miscellaneousFee);
-        }
-    }
-
-    public boolean isVHAutomaticFee() {
-        return vehicleHire.isAutomaticFee();
-    }
-
-    public void setVHAutomaticFee(boolean automaticFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setAutomaticFee(automaticFee);
-        }
-    }
-
-    public boolean isVHSatNavFee() {
-        return vehicleHire.isSatNavFee();
-    }
-
-    public void setVHSatNavFee(boolean satNavFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setSatNavFee(satNavFee);
-        }
-    }
-
-    public boolean isVHEstateFee() {
-        return vehicleHire.isEstateFee();
-    }
-
-    public void setVHEstateFee(boolean estateFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setEstateFee(estateFee);
-        }
-    }
-
-    public boolean isVHBabySeatFee() {
-        return vehicleHire.isBabySeatFee();
-    }
-
-    public void setVHBabySeatFee(boolean babySeatFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setBabySeatFee(babySeatFee);
-        }
-    }
-
-    public boolean isVHTowBarsFee() {
-        return vehicleHire.isTowBarsFee();
-    }
-
-    public void setVHTowBarsFee(boolean towBarsFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setTowBarsFee(towBarsFee);
-        }
-    }
-
-    public boolean isVHNonStandardInsurancePremiumFee() {
-        return vehicleHire.isNonStandardInsurancePremiumFee();
-    }
-
-    public void setVHNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
-        }
-    }
-
-    public boolean isVHAdminFee() {
-        return vehicleHire.isAdminFee();
-    }
-
-    public void setVHAdminFee(boolean adminFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setAdminFee(adminFee);
-        }
-    }
-
-    public boolean isVHRoofRackFee() {
-        return vehicleHire.isRoofRackFee();
-    }
-
-    public void setVHRoofRackFee(boolean roofRackFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setRoofRackFee(roofRackFee);
-        }
-    }
-
-    public boolean isVHDualControlFee() {
-        return vehicleHire.isDualControlFee();
-    }
-
-    public void setVHDualControlFee(boolean dualControlFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setDualControlFee(dualControlFee);
-        }
-    }
-
-    public boolean isVHDeliveryCollectionFee() {
-        return vehicleHire.isDeliveryCollectionFee();
-    }
-
-    public void setVHDeliveryCollectionFee(boolean deliveryCollectionFee) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setDeliveryCollectionFee(deliveryCollectionFee);
-        }
-    }
-****/
-
     public VehicleClass getVehicleClass() {
         return vehicleHire.getVehicleClass();
     }
@@ -2693,8 +2551,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
         if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
-            totalExtras = totalExtras.add(getAcquisitionFee());
-            totalExtras = totalExtras.add(getOverheadFee());
+            totalExtras = totalExtras.add(getCollaborationFee());
         }
         if (!ClaimType.isTPI(claim.getClaimType())) {
             totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());

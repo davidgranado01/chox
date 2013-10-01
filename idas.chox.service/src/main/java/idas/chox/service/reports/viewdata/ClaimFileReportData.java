@@ -215,8 +215,8 @@ public class ClaimFileReportData {
     private String invoiceDate;
     private String invoiceUploadedDate;
     private String penaltyStartDate;
-    private BigDecimal extrasAcquisitionFee;
-    private BigDecimal extrasOverheadFee;
+    private BigDecimal extrasCollaborationFee;
+    private Integer extrasCollaborationQuantity;
     private BigDecimal extrasMiscellaneousFee;
     private String extrasMiscellaneousTitle;
     private Integer extrasMiscellaneousQuantity;
@@ -658,8 +658,7 @@ public class ClaimFileReportData {
             if (invoice.getAutoPenaltyStart() != null) {
                 penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
             }
-            extrasAcquisitionFee = invoice.getAcquisitionFee();
-            extrasOverheadFee = invoice.getOverheadFee();
+            extrasCollaborationFee = invoice.getCollaborationFee();
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
@@ -1202,20 +1201,20 @@ public class ClaimFileReportData {
         this.extrasMiscellaneousFee = extrasMiscellaneousFee;
     }
 
-    public BigDecimal getExtrasAcquisitionFee() {
-        return extrasAcquisitionFee;
+    public BigDecimal getExtrasCollaborationFee() {
+        return extrasCollaborationFee;
     }
 
-    public void setExtrasAcquisitionFee(BigDecimal extrasAcquisitionFee) {
-        this.extrasAcquisitionFee = extrasAcquisitionFee;
+    public void setExtrasCollaborationFee(BigDecimal extrasCollaborationFee) {
+        this.extrasCollaborationFee = extrasCollaborationFee;
     }
 
-    public BigDecimal getExtrasOverheadFee() {
-        return extrasOverheadFee;
+    public Integer getExtrasCollaborationQuantity() {
+        return extrasCollaborationQuantity;
     }
 
-    public void setExtrasOverheadFee(BigDecimal extrasOverheadFee) {
-        this.extrasOverheadFee = extrasOverheadFee;
+    public void setExtrasCollaborationQuentity(Integer extrasCollaborationQuantity) {
+        this.extrasCollaborationQuantity = extrasCollaborationQuantity;
     }
 
     public String getExtrasMiscellaneousTitle() {

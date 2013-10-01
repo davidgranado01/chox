@@ -234,10 +234,8 @@ public class Invoice extends Entity implements Serializable {
     private int penaltyBand;
     private BigDecimal repairAdminFee;
     private BigDecimal repairAcquisitionFee;
-    private BigDecimal acquisitionFee;
-    private Integer acquisitionQty;
-    private BigDecimal overheadFee;
-    private Integer overheadQty;
+    private BigDecimal collaborationFee;
+    private Integer collaborationQty;
 
     public BigDecimal getRepairAdminFee() {
         return repairAdminFee;
@@ -1505,39 +1503,22 @@ public class Invoice extends Entity implements Serializable {
         this.finalPayment = finalPayment;
     }
 
-    public BigDecimal getAcquisitionFee() {
-        return acquisitionFee;
+    public BigDecimal getCollaborationFee() {
+        return collaborationFee;
     }
 
-    public void setAcquisitionFee(BigDecimal acquisitionFee) {
-        this.acquisitionFee = acquisitionFee;
+    public void setCollaborationFee(BigDecimal collaborationFee) {
+        this.collaborationFee = collaborationFee;
     }
 
-    public Integer getAcquisitionQty() {
-        return acquisitionQty;
+    public Integer getCollaborationQty() {
+        return collaborationQty;
     }
 
-    public void setAcquisitionQty(Integer acquisitionQty) {
-        this.acquisitionQty = acquisitionQty;
+    public void setCollaborationQty(Integer collaborationQty) {
+        this.collaborationQty = collaborationQty;
     }
 
-    public BigDecimal getOverheadFee() {
-        return overheadFee;
-    }
-
-    public void setOverheadFee(BigDecimal overheadFee) {
-        this.overheadFee = overheadFee;
-    }
-
-    public Integer getOverheadQty() {
-        return overheadQty;
-    }
-
-    public void setOverheadQty(Integer overheadQty) {
-        this.overheadQty = overheadQty;
-    }
-
-    
     public String getRepairPenaltyPercentageApplied() {
         BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
         if (appliedRepairPenaltyPercentageValue != null) {

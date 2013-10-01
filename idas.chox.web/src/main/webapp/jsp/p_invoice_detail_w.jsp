@@ -264,8 +264,8 @@
                 excessAmountCollected:{required:true, number:true, min:0},
                 vatAmountCollected:{required:true, number:true, min:0},
                 dateInvoiced:{required:true, dateITA:true},
-                acquisitionFee:{required:true, number:true},
-                overheadFee:{required:true, number:true},
+                collaborationFee:{required:true, number:true},
+                collaborationQty:{required:true, digits:true},
                 miscellaneousFee:{required:true, number:true},
                 automaticFee:{required:true, number:true},
                 automaticQty:{required:true, digits:true},
@@ -319,8 +319,8 @@
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", dateITA:"Invalid date format for Date Invoiced"},
 <s:if test="isCollaborationProtocolClaim">
-                acquisitionFee :{required:"Please supply a valid value for 'Acquisition Fee'", number:"Please supply a valid value for 'Acquisition Fee'"},
-                overheadFee :{required:"Please supply a valid value for 'Overhead and Margin Fee'", number:"Please supply a valid value for 'Overhead and Margin Fee'"},
+                collaborationFee :{required:"Please supply a valid value for 'Collaboration Protocol Fee'", number:"Please supply a valid value for 'Collaboration Protocol Fee'"},
+                collaborationQty :{required:"Please supply a valid value for 'Collaboration Protocol Quantity'", digits:"Please supply a valid value for 'Collaboration Protocol Quantity'"},
 </s:if>
 <s:if test="isSubscriberClaim">
                 miscellaneousFee :{required:"Please supply a valid value for 'Acquisition Fee'", number:"Please supply a valid value for 'Acquisition Fee'"},
@@ -1589,26 +1589,26 @@
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-form-std-label">Acquisition Fee<span class="mandatory">*</span></label>
-                                                    <input id="acquisitionFee" type="text" class="chox-ttnum" name="acquisitionFee" value="<s:property value="acquisitionFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                    <label class="chox-form-std-label">Collaboration Protocol Fee<span class="mandatory">*</span></label>
+                                                    <input id="collaborationFee" type="text" class="chox-ttnum" name="collaborationFee" value="<s:property value="collaborationFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="acquisitionFee!=acquisitionFeeOriginal&&(acquisitionFeeOriginal!=null)">(<s:property value="acquisitionFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="collaborationFee!=collaborationFeeOriginal&&(collaborationFeeOriginal!=null)">(<s:property value="collaborationFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-form-std-label">Overhead and Margin Fee<span class="mandatory">*</span></label>
-                                                    <input id="overheadFee" type="text" class="chox-ttnum" name="overheadFee" value="<s:property value="overheadFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                    <label class="chox-form-std-label">Collaboration Protocol Quantity<span class="mandatory">*</span></label>
+                                                    <input id="collaborationQty" type="text" class="chox-ttnum" name="collaborationQty" value="<s:property value="collaborationQty"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="overheadFee!=overheadFeeOriginal&&(overheadFeeOriginal!=null)">(<s:property value="overheadFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="collaborationQty!=collaborationQtyOriginal&&(collaborationQtyOriginal!=null)">(<s:property value="collaborationQtyOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
                                                 </div>
                                             </td>
                                         </tr>

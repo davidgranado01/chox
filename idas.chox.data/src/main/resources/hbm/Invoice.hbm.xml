@@ -39,10 +39,8 @@
         <property column="total_to_pay" name="totalToPay"/>
         <property column="handling_invoice_no" name="handlingInvoiceNo"/>
         <property column="claim_invoice_no" name="claimInvoiceNo"/>
-        <property column="acquisition_fee" name="acquisitionFee"/>
-        <property column="acquisition_qty" name="acquisitionQty"/>
-        <property column="overhead_fee" name="overheadFee"/>
-        <property column="overhead_qty" name="overheadQty"/>
+        <property column="collaboration_fee" name="collaborationFee"/>
+        <property column="collaboration_qty" name="collaborationQty"/>
         <property column="miscellaneous_fee" name="miscellaneousFee"/>
         <property column="miscellaneous_qty" name="miscellaneousQty"/>
         <property column="automatic_fee" name="automaticFee"/>
