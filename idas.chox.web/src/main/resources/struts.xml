@@ -974,6 +974,7 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="getUserChangePassword" class="idas.chox.web.actions.UserAccountAction">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_user_change_password.jsp</result>
         </action>
         <action name="getUserChangeContact" class="idas.chox.web.actions.UserAccountAction">
