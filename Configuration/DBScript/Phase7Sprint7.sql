@@ -326,3 +326,13 @@ where vcc.vehicle_class_id = vc.id
 --
 
 
+--
+-- ToDo 7.7.5 - New Subscriber Estate/Automatic Charge Check BRE rules
+--
+ALTER TABLE bre_band ADD COLUMN comp_automatic_check_hpi boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN comp_estate_check_hpi boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN comp_automatic_estate_check_hpi boolean not null default false;
+
+--
+-- End Of ToDo 7.7.5
+--

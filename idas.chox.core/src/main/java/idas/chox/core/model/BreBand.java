@@ -139,7 +139,10 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
     private List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings;
-
+    private boolean compoundAutomaticChargeCheckHpiLookup;
+    private boolean compoundEstateChargeCheckHpiLookup;
+    private boolean compoundAutomaticEstateChargeCheckHpiLookup;
+    
     public BreBand() {
     }
 
@@ -1365,5 +1368,29 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setRepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling(boolean repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling) {
         this.repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling = repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling;
+    }
+
+    public boolean isCompoundAutomaticChargeCheckHpiLookup() {
+        return compoundAutomaticChargeCheckHpiLookup;
+    }
+
+    public void setCompoundAutomaticChargeCheckHpiLookup(boolean compoundAutomaticChargeCheckHpiLookup) {
+        this.compoundAutomaticChargeCheckHpiLookup = compoundAutomaticChargeCheckHpiLookup;
+    }
+
+    public boolean isCompoundEstateChargeCheckHpiLookup() {
+        return compoundEstateChargeCheckHpiLookup;
+    }
+
+    public void setCompoundEstateChargeCheckHpiLookup(boolean compoundEstateChargeCheckHpiLookup) {
+        this.compoundEstateChargeCheckHpiLookup = compoundEstateChargeCheckHpiLookup;
+    }
+
+    public boolean isCompoundAutomaticEstateChargeCheckHpiLookup() {
+        return compoundAutomaticEstateChargeCheckHpiLookup;
+    }
+
+    public void setCompoundAutomaticEstateChargeCheckHpiLookup(boolean compoundAutomaticEstateChargeCheckHpiLookup) {
+        this.compoundAutomaticEstateChargeCheckHpiLookup = compoundAutomaticEstateChargeCheckHpiLookup;
     }
 }

@@ -105,6 +105,15 @@
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling">
                     <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.CompoundAutomaticChargeCheckWithHpiLookup" scope="prototype">
+                    <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.CompoundEstateChargeCheckWithHpiLookupChargeCheckWithHpiLookup" scope="prototype">
+                    <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.CompoundAutomaticEstateChargeCheckWithHpiLookupChargeCheckWithHpiLookup" scope="prototype">
+                    <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
+                </bean>
             </list>
         </property>
     </bean>

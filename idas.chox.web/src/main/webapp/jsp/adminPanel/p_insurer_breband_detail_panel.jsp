@@ -215,7 +215,7 @@
 
         // C12 - Collection of Vehicle from garage Variable (Days)
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
-        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays)
+        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays);
 
         doTtlLossAllowableTtlDuration();
         doRepairDurationRuleforMobileVehicleWithoutECD();
@@ -238,7 +238,7 @@
 
         var iLabourCostTotalDay = 0;
         var ttl = 0;
-        var iWeekendBufferDays = 0
+        var iWeekendBufferDays = 0;
 
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
         var iCCDEngineerInspectionDelayDaysMobile = $("#CCDEngineerInspectionDelayDaysMobile").val();
@@ -261,7 +261,7 @@
 
         var iLabourCostTotalDay = 0;
         var ttl = 0;
-        var iWeekendBufferDays = 0
+        var iWeekendBufferDays = 0;
 
         var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
         var iCCDEngineerInspectionDelayDaysNonMobile = $("#CCDEngineerInspectionDelayDaysNonMobile").val();
@@ -346,7 +346,7 @@
 
         function doDeleteBreBand(){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this BRE Band?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
                 var param = {"objectId":<s:property value="objectId" />};
                 ajax.loadHtml2(url, param, doDeleteBreBandResponse);
@@ -1586,6 +1586,21 @@
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" /></div>
                             <label class="chox-form-check-label">Protocol Vehicle Class Repair Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure that the Repair Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticChargeCheckHpiLookup" value="compoundAutomaticChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Automatic Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundEstateChargeCheckHpiLookup" value="compoundEstateChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an estate.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticEstateChargeCheckHpiLookup" value="compoundAutomaticEstateChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Automatic/Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for these extras and the HPI lookup did not identify the Hire Vehicle to be an automatic and/or an estate</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
