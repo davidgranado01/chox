@@ -99,7 +99,7 @@
         <default-interceptor-ref name="authenticated" />
         <global-results>
             <!--result name="invalid.token">/j_spring_security_logout</result-->
-            <result name="invalid.token">/jsp/AccessDenied.jsp</result>
+            <result name="invalid.token">/jsp/InvalidToken.jsp</result>
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
