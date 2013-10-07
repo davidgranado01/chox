@@ -21,6 +21,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.xmlValidation.NodeRuleModel;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.service.xml.validations.DataValidationParameter;
+import java.math.BigDecimal;
 
 public final class NodeHelper {
 
@@ -415,6 +416,14 @@ public final class NodeHelper {
             bFlag = false;
         }
 
+        if (dataType.equalsIgnoreCase("numeric") && bFlag) {
+            // Try and create a BigDecimnal
+            try {
+                BigDecimal bd = new BigDecimal(dataValue);
+            } catch (NumberFormatException ex) {
+                bFlag = false;
+            }
+        }
         return bFlag;
     }
 
