@@ -108,10 +108,10 @@
                 <bean class="idas.chox.service.bre.rules.CompoundAutomaticChargeCheckWithHpiLookup" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
-                <bean class="idas.chox.service.bre.rules.CompoundEstateChargeCheckWithHpiLookupChargeCheckWithHpiLookup" scope="prototype">
+                <bean class="idas.chox.service.bre.rules.CompoundEstateChargeCheckWithHpiLookup" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
-                <bean class="idas.chox.service.bre.rules.CompoundAutomaticEstateChargeCheckWithHpiLookupChargeCheckWithHpiLookup" scope="prototype">
+                <bean class="idas.chox.service.bre.rules.CompoundAutomaticEstateChargeCheckWithHpiLookup" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
             </list>
