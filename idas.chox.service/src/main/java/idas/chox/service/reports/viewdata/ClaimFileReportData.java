@@ -659,6 +659,7 @@ public class ClaimFileReportData {
                 penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
             }
             extrasCollaborationFee = invoice.getCollaborationFee();
+            extrasCollaborationQuantity = invoice.getCollaborationQty();
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
