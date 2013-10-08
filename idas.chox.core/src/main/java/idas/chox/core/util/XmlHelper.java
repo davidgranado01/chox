@@ -67,7 +67,12 @@ public class XmlHelper {
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
 
         if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
-            bOutput = new BigDecimal(sOutput);
+            try {
+                bOutput = new BigDecimal(sOutput);
+            } catch (NumberFormatException ex) {
+                LOG.error("Exception converting node '{}' to a bigdecimal: {}", thisNodeName, sOutput);
+                throw ex;
+            }
         }
 
         return bOutput;
@@ -77,7 +82,12 @@ public class XmlHelper {
         double bOutput = 0.00;
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
         if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
-            bOutput = Double.parseDouble(sOutput);
+            try {
+                bOutput = Double.parseDouble(sOutput);
+            } catch (NumberFormatException ex) {
+                LOG.warn("Exception converting node '{}' to an integer: {}", thisNodeName, sOutput);
+                throw ex;
+            }
         }
         return bOutput;
     }
@@ -103,6 +113,7 @@ public class XmlHelper {
         Date date = null;
 
         if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("") && !thisNodeValue.equalsIgnoreCase("0") && !thisNodeValue.equalsIgnoreCase("1899-12-30T00:00:00")) {
+            
             date = parseDateTime(thisNodeValue);
         }
 
@@ -126,7 +137,13 @@ public class XmlHelper {
             LOG.error("Error getting Date from DateTime string '{}'", thisNodeValue);
             return null;
         }
-        LOG.debug("Returning date '{}' from '{}'", date, thisNodeValue.substring(0, 10));
+        if (LOG.isDebugEnabled()) {
+            if (thisNodeValue != null) {
+                LOG.debug("Returning date '{}' from '{}'", date, thisNodeValue.substring(0, 10));
+            } else {
+                LOG.debug("Returning date '{}' from 'null'", date);
+            }
+        }
         return date;
     }
 
@@ -141,7 +158,13 @@ public class XmlHelper {
             if (time.charAt(0)=='T')
                 time = time.substring(1);
         }
-        LOG.debug("Returning time '{}' from '{}'", time, thisNodeValue.substring(10).trim());
+        if (LOG.isDebugEnabled()) {
+            if (thisNodeValue != null) {
+                LOG.debug("Returning time '{}' from '{}'", time, thisNodeValue.substring(0, 10));
+            } else {
+                LOG.debug("Returning time '{}' from 'null'", time);
+            }
+        }
 
         return time;
     }
