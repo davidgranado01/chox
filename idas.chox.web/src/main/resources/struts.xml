@@ -456,6 +456,9 @@
         <action name="getUniqueWorkgroupId" class="idas.chox.web.actions.InboxAction"  method="getUniqueWorkgroupId">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getAvailableVehicleClasses" class="idas.chox.web.actions.VehicleClassDropDownAction"  method="getAvailableVehicleClasses">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="SiteDropDownActionByInsurer" class="idas.chox.web.actions.SiteDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
@@ -1281,7 +1284,7 @@
             <result name="success">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
         </action>
         <action name="VehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction">
-            <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
+            <result>/jsp/p_jsonData.jsp</result>
         </action>
         <action name="protocolVehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction" method="getAvailableVehicleClassByBreBand">
             <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>

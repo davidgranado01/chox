@@ -7,21 +7,70 @@
     var vehicleClassCeiling_gridviewData;
     var vehicleClassCeiling_gridviewGrid;
     var vehicleCeilingEditSelectionDlg;
+    var vcCeilingStore;
+    var vcCeilingCombo;
 
     $(function(){
+        
+        var vcCeilingJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        vcCeilingStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/VehicleClassDropDownAction.action", method : 'post', params : {"insurerId":<s:property value="insurerId" />}}),
+                reader : vcCeilingJsonReader
+                ,listeners: {load: function() {
+                    vcCeilingCombo.setValue('<s:property value="vehicleClass.id"/>');    
+                }}
+        });
+
+        vcCeilingCombo = new Ext.form.ComboBox({
+                store: vcCeilingStore,
+                renderTo: 'vcCeilingSelectionHolder',
+                valueField: 'text',
+                id: 'vcCeilingComboId',
+                hiddenName: 'vehicleClassId',
+                displayField:'value',
+                typeAhead: true,
+                autoWidth: true,
+                listWidth: 100,
+                width: 100,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection : true,
+                emptyText: '--- SELECT ---'
+        });
+            
+        
+        $.validator.addMethod("vcCeilingSelectionRule",
+            function(value) {
+                if(value === "" || value < 1) {
+                    return false;
+                }
+                return true;
+            }
+        )
 
         // ADD FORM
         var form = $("form#formVehicleClassCeilingDetail");
 
         form.validate({
+            ignore: [],
             errorLabelContainer: "#CDVehicleClassCeilingMessageBox",
             rules: {
-                vehicleClassId:{min:0 },
+                vehicleClassId:{vcCeilingSelectionRule : true },
                 hireNetCeiling:{ required:true, number:true, min:0 },
                 repairNetCeiling:{ required:true, number:true, min:0 }
             },
             messages: {
-                vehicleClassId: {min:"You must select a 'Vehicle Class'" },
+                vehicleClassId: {vcCeilingSelectionRule :"You must select a 'Vehicle Class'" },
                 hireNetCeiling: { required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero" },
                 repairNetCeiling: { required:"You must supply a value for 'Repair Net Ceiling'", number:"'Repair Net Ceiling' must be numeric", min:"'Repair Net Ceiling' cannot be less than zero" }
             }
@@ -154,7 +203,7 @@
     
     function onVehicleClassPageRefresh(){
         vehicleCeilingEditSelectionDlg.hide();
-        showVehicleClassDropDown();
+        vcCeilingStore.load({params : {"insurerId":<s:property value="insurerId" />}});
         vehicleClassCeiling_loadGridViewList();
         refreshForm();
     }
@@ -194,14 +243,14 @@
         $("form#editVehicleClassCeilingDetail input[name$='repairNetCeiling']").val(gridView.get("repairNetCeiling").toFixed(2));
     }
 
-    function showVehicleClassDropDown() {
-        var target = "#vehicleClassDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/VehicleClassDropDownAction.action";
-        var param = {"insurerId":<s:property value="insurerId" />};
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-        });
-    }
+//    function showVehicleClassDropDown() {
+//        var target = "#vehicleClassDropDownDiv";
+//        var url = "<%= request.getContextPath()%>/prv/p/VehicleClassDropDownAction.action";
+//        var param = {"insurerId":<s:property value="insurerId" />};
+//        ajax.loadHtml2(url,param,function(data){
+//            $(target).html(data);
+//        });
+//    }
 
 
 </script>
@@ -220,7 +269,10 @@
                             <div class="form-container">
                                 <form id="formVehicleClassCeilingDetail" name="formVehicleClassCeilingDetail" action="<%= request.getContextPath()%>/prv/p/addNewVehicleClassCeiling.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
-                                    <div id="vehicleClassDropDownDiv" class="chox-form-item"></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Vehicle Class<span class="mandatory">*</span></label>
+                                        <div id="vcCeilingSelectionHolder"></div>
+                                    </div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Hire Net Ceiling<span class="mandatory">*</span></label>
                                         <input id="hireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />"/>

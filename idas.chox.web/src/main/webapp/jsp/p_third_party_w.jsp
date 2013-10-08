@@ -11,6 +11,43 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
+        var vcTPJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        var vcTPStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+                reader : vcTPJsonReader
+                ,listeners: {load: function() {
+                    vcTPCombo.setValue('<s:property value="vehicleClass.id"/>');    
+                }}
+        });
+
+        var vcTPCombo = new Ext.form.ComboBox({
+                store: vcTPStore,
+                renderTo: 'vcTPSelectionHolder',
+                valueField: 'text',
+                id: 'vcTPComboId',
+                hiddenName: 'vehicleClassId',
+                displayField:'value',
+                typeAhead: true,
+                autoWidth: true,
+                listWidth: 100,
+                width: 100,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection : true,
+                emptyText: '--- SELECT ---'
+        });
+        vcTPStore.load();
+        
         form.validate(
         {
             errorLabelContainer: "#thirdPartyMsgBox",
@@ -120,13 +157,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Vehicle Class</label>
-                    <s:select name="vehicleClassId"
-                              list="vehicleClasses"
-                              listKey="id"
-                              listValue="name"
-                              headerKey="-1"
-                              headerValue="--SELECT--"
-                              emptyOption="false"></s:select>
+                    <div id="vcTPSelectionHolder"></div>
             </div>
             <div class="chox-form-button"><input type="submit" id="thirdPartySubmitButtonId" value="Save Changes" /></div>
             <div id="thirdPartyMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
