@@ -133,7 +133,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
                 Map error = new HashMap();
                 LOG.error("Exception in addDiscount(): ", ex);
                 result.put("success", Boolean.FALSE);
-                error.put("error", "Unexpected error occured, Please contact Chox support.");
+                error.put("error", "Unexpected error occurred, Please contact Chox support.");
                 result.put("errors",error);
             }
         }

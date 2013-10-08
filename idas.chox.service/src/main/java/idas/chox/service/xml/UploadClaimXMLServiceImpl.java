@@ -389,7 +389,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             document = DocumentHelper.getDocumentFromStream(inputStream);
         } catch (Exception ex) {
             LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
-            setErrorMessage("Error occured while processing Bordereau.");
+            setErrorMessage("Error occurred while processing Bordereau.");
             return false;
         }
 
@@ -436,7 +436,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
-            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
+            setErrorMessage("An unexpected error has occurred - please report to CHOX support.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
         }
@@ -468,7 +468,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
             bordereauService.saveBordereau(bordereau);
             LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);
-            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
+            setErrorMessage("An unexpected error has occurred - please report to CHOX support.");
             return false;
         }
     }
@@ -575,7 +575,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         } catch (Exception ex) {
             LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
-            xmlClaimsDetail.setMessage("Error occured while creating document from webservice inputStream.");
+            xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
             return xmlClaimsDetail;
         }
 
@@ -585,7 +585,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         } catch (Exception ex) {
             LOG.error("Error thrown while getting claimResult from webService document. Error Message is {}", ex.getMessage());
-            xmlClaimsDetail.setMessage("An unexpected error occured while getting claimResult from webService document.");
+            xmlClaimsDetail.setMessage("An unexpected error occurred while getting claimResult from webService document.");
             return xmlClaimsDetail;
         }
 
@@ -629,7 +629,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         } catch (Exception ex) {
             LOG.error("Unexpected error thrown while processing Webservice claim : {}", ex.getMessage());
-            xmlClaimsDetail.setMessage("An unexpected error has occured - please report to CHOX support.");
+            xmlClaimsDetail.setMessage("An unexpected error has occurred - please report to CHOX support.");
             return xmlClaimsDetail;
         }
     }

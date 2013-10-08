@@ -129,7 +129,7 @@ public class WorkgroupDropDownAction extends BaseAction {
         try {
             workgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId);
         } catch (Exception ex) {
-            LOG.error("Exception occured while getting availableWorkgroups: ", ex);
+            LOG.error("Exception occurred while getting availableWorkgroups: ", ex);
         }
         return SUCCESS;
     }

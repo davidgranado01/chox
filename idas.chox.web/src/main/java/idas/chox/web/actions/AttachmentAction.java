@@ -166,7 +166,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             if (model == null) {
                 model = loadModel();
                 if (model == null) {
-                    getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
+                    getActionResponse().AssignMessageResult("Unknown error occurred trying to delete the attachment.");
                     LOG.error("Cannot delete attachment with fileId={} - no model", fileId);
                     return ERROR;
                 }
@@ -191,7 +191,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AssignMessageResult(ex.getMessage());
             } else {
                 LOG.error("Empty Exception thrown deleting attachment!");
-                this.getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
+                this.getActionResponse().AssignMessageResult("Unknown error occurred trying to delete the attachment.");
             }
             setActionError(formErrorMessage(ex));
             return ERROR;
@@ -307,7 +307,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
             LOG.debug("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!processFile(this.attachmentFile)) {
-                this.getActionResponse().AddError("Unknown Error occured, please try again.");
+                this.getActionResponse().AddError("Unknown Error occurred, please try again.");
             } else {
                 if (notifyTask) {
                     Task task = new Task();
@@ -338,7 +338,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
             setActionError(formErrorMessage(ex));
 
-            // SUCCESS IS RETURNED EVENTHOUGH ERROR OCCURED BECAUSE THERE IS NO ERROR MAPED IN STRUTS AND IT'S A AJAX CALL NO NEED TO MAP ERROR PAGE
+            // SUCCESS IS RETURNED EVENTHOUGH ERROR OCCURRED BECAUSE THERE IS NO ERROR MAPED IN STRUTS AND IT'S A AJAX CALL NO NEED TO MAP ERROR PAGE
             return SUCCESS;
         } catch (IOException ex) {
             if (attachmentFile != null) {

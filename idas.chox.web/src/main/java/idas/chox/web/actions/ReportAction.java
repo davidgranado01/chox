@@ -230,7 +230,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             File emptyFile = File.createTempFile("emptyReport_", ".xls");
             emptyFile.deleteOnExit();
             PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occured generating this report. Please contact CHOX support.");
+            printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support.");
             printWriter.close();
             reportStream = new DeleteOnCloseFileInputStream(emptyFile);
         } catch (FileNotFoundException ex) {

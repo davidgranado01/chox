@@ -348,7 +348,7 @@ public class UploadServiceBean {
             result.setProcessStatus(ClaimProcessStatus.FAILED);
             result.setStatus(false);
             Messages messages = new Messages();
-            messages.getMessages().add("An internal error has occured processing this request: please contact Support");
+            messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
             result.setMessages(messages);
             
             webBordereau.setClaimStatus("N/A");
@@ -356,7 +356,7 @@ public class UploadServiceBean {
             webBordereau.setProcessStatus("Failed");
             webBordereau.setStatus(false);
             webBordereau.setChoReference(null);
-            webBordereau.setMessage("An internal error has occured processing this request: " + ex.getMessage());
+            webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
         }
         catch (UnsupportedEncodingException ex) {
@@ -366,7 +366,7 @@ public class UploadServiceBean {
             result.setProcessStatus(ClaimProcessStatus.FAILED);
             result.setStatus(false);
             Messages messages = new Messages();
-            messages.getMessages().add("An internal error has occured processing this request: please contact Support");
+            messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
             result.setMessages(messages);
 
             webBordereau.setClaimStatus("N/A");
@@ -374,7 +374,7 @@ public class UploadServiceBean {
             webBordereau.setProcessStatus("Failed");
             webBordereau.setStatus(false);
             webBordereau.setChoReference(null);
-            webBordereau.setMessage("An internal error has occured processing this request: " + ex.getMessage());
+            webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
         }
         finally {

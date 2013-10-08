@@ -114,7 +114,7 @@
 
                                                     Ext.MessageBox.show({
                                                         title: 'File Process failure',
-                                                        msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                        msg: 'Unexpected Error occurred. Please report to chox admin.',
                                                         width:300,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon : Ext.MessageBox.ERROR
@@ -247,7 +247,7 @@
 
                                                     Ext.MessageBox.show({
                                                         title: 'File deletion failure',
-                                                        msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                        msg: 'Unexpected Error occurred. Please report to chox admin.',
                                                         width:300,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon : Ext.MessageBox.ERROR

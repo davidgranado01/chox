@@ -83,7 +83,7 @@ Ext.onReady(function(){
                             }
                         },
                         failure : function(f, a) {
-                            var msg='Unexpected error occured. Please contact Chox support.';
+                            var msg='Unexpected error occurred. Please contact Chox support.';
                             if(a.result.errors){
                                 msg = a.result.errors;
                             }
@@ -181,7 +181,7 @@ Ext.onReady(function(){
                             }
                         },
                         failure : function(f, a) {
-                            var msg='Unexpected error occured. Please contact Chox support.';
+                            var msg='Unexpected error occurred. Please contact Chox support.';
                             if(a.result.errors){
                                 msg = a.result.errors;
                             }
