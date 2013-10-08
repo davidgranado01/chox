@@ -46,14 +46,16 @@ public class NonceInterceptor extends AbstractInterceptor {
                     || !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
                 // Get nonce from session
                 if (!sessionMap.containsKey("SessionNonce")) {
-                    // No nonce found in session - must be first request, so add nonce
-                    String nonceStr = generateNonce();
+                    // No nonce found in session - must be first request, so add nonce if not ajax request
+                    if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                        String nonceStr = generateNonce();
 
-                    if (nonceStr != null) {
-                        session.setAttribute("SessionNonce", nonceStr);
-                        LOG.debug("Adding nonce '{}' to session {}", new Object[]{nonceStr, session.toString()});
-                    } else {
-                        LOG.error("Generated nonce is null.");
+                        if (nonceStr != null) {
+                            session.setAttribute("SessionNonce", nonceStr);
+                            LOG.debug("Adding nonce '{}' to session {}", new Object[]{nonceStr, session.toString()});
+                        } else {
+                            LOG.error("Generated nonce is null.");
+                        }
                     }
                     return invocation.invoke();
                 }
@@ -83,6 +85,8 @@ public class NonceInterceptor extends AbstractInterceptor {
                 // verify nonce
                 if (!sessionNonce.equals(requestNonce)) {
                     LOG.error("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
+                    // Remove session nonce
+                    session.removeAttribute("SessionNonce");
                     return "invalid.token";
                 }
 

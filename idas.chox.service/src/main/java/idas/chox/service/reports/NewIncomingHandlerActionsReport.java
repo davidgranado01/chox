@@ -124,7 +124,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                 StringBuilder sb = new StringBuilder();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
@@ -149,7 +149,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                 StringBuilder sb = new StringBuilder();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
@@ -181,7 +181,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
                             obj.getId());
-                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
+                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' ");
                 } else if (isWorkgroupEnabled && isClaimOwnershipEnabled) {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",

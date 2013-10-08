@@ -99,7 +99,7 @@
         <default-interceptor-ref name="authenticated" />
         <global-results>
             <!--result name="invalid.token">/j_spring_security_logout</result-->
-            <result name="invalid.token">/jsp/AccessDenied.jsp</result>
+            <result name="invalid.token">/jsp/InvalidToken.jsp</result>
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
@@ -974,6 +974,7 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="getUserChangePassword" class="idas.chox.web.actions.UserAccountAction">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_user_change_password.jsp</result>
         </action>
         <action name="getUserChangeContact" class="idas.chox.web.actions.UserAccountAction">
