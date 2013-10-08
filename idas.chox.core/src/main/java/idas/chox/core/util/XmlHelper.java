@@ -13,7 +13,7 @@ public class XmlHelper {
 
     public static boolean isNotNull(String s) {
         Boolean bFlag = false;
-        if (s != null && !s.equalsIgnoreCase("")) {
+        if (s != null && !s.isEmpty()) {
             bFlag = true;
         }
         return bFlag;
@@ -21,7 +21,7 @@ public class XmlHelper {
 
     public static boolean isNotNullDate(String s) {
         Boolean bFlag = false;
-        if (s != null && !s.equalsIgnoreCase("") && !s.equalsIgnoreCase("0") && !s.equalsIgnoreCase("1899-12-30T00:00:00")) {
+        if (s != null && !s.isEmpty() && !s.equalsIgnoreCase("0") && !s.equalsIgnoreCase("1899-12-30T00:00:00")) {
             bFlag = true;
         }
         return bFlag;
@@ -50,7 +50,7 @@ public class XmlHelper {
     public static Integer getIntegerFromNode(Element thisElement, String thisNodeName) {
         Integer bOutput = 0;
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
-        if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
+        if (sOutput != null && !sOutput.isEmpty()) {
             try {
                 bOutput = Integer.parseInt(sOutput);
             } catch (NumberFormatException ex) {
@@ -66,7 +66,7 @@ public class XmlHelper {
         BigDecimal bOutput = new BigDecimal("0.00");
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
 
-        if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
+        if (sOutput != null && !sOutput.isEmpty()) {
             try {
                 bOutput = new BigDecimal(sOutput);
             } catch (NumberFormatException ex) {
@@ -81,7 +81,7 @@ public class XmlHelper {
     public static double getDoubleFromNode(Element thisElement, String thisNodeName) {
         double bOutput = 0.00;
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
-        if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
+        if (sOutput != null && !sOutput.isEmpty()) {
             try {
                 bOutput = Double.parseDouble(sOutput);
             } catch (NumberFormatException ex) {
@@ -126,7 +126,7 @@ public class XmlHelper {
         Date date = null;
         LOG.debug("Parsing date from '{}'", thisNodeValue);
         try {
-            if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("")) {
+            if (thisNodeValue != null && !thisNodeValue.isEmpty()) {
                 if (thisNodeValue.charAt(4) == '-') {
                     date = parseDateTime(thisNodeValue);
                 } else {
@@ -153,7 +153,7 @@ public class XmlHelper {
         String time = null;
 
         LOG.debug("Parsing time from '{}'", thisNodeValue);
-        if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("")) {
+        if (thisNodeValue != null && !thisNodeValue.isEmpty()) {
             time = thisNodeValue.substring(10).trim();
             if (time.charAt(0)=='T')
                 time = time.substring(1);
