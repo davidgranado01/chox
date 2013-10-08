@@ -658,7 +658,7 @@
                                         <label class="std-label-ro">Collaboration Protocol Quantity</label>
                                     </td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="collaborationQty" /></label></td>
+                                    <td><label class="std-data-ro"><s:property value="collaborationQty" /></label></td>
                                     <td>
                                         <s:if test="collaborationQty!=collaborationQtyOriginal&&(collaborationQtyOriginal!=null)">
                                             <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="collaborationQtyOriginal" />)</label>&nbsp;
