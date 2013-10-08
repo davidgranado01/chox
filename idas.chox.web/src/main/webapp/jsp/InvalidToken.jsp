@@ -10,8 +10,8 @@
             closable : false,
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR,
-            fn: function redirectToAccessDeniedPage(){
-                window.location.reload(); 
+            fn: function reloadPage(){
+                window.location.replace(document.referrer);
             }
         });
     })
