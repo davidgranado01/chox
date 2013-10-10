@@ -1147,27 +1147,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
              * manualInvoiceClaimOwnershipDisabled).
              *
              */
-            if (accessRight > 0 && actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                    && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
-                    || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
-                accessRight = 0;
-            }
+            if (accessRight > 0) {
+                if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                        && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                        || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
+                    accessRight = 0;
+                }
             
-            // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
-                    && claim.getInsurer().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
+                // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
+                else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
+                        && claim.getInsurer().isClaimOwnershipEnable()) {
+                    accessRight = 0;
+                }
             
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
-                    && claim.getInsurer().isWorkgroupEnable()) {
-                accessRight = 0;
-            }
+                else if (actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
+                        && claim.getInsurer().isWorkgroupEnable()) {
+                    accessRight = 0;
+                }
             
-            // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
-            if (accessRight > 0 && actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
-                    && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
-                accessRight = 0;
+                // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+                else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
+                        && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+                    accessRight = 0;
+                }
             }
             
             if (accessRight >= 2) {
