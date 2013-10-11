@@ -1,25 +1,56 @@
--- DROP function rsa_commercial_area_report(IN insId int, IN choId text, IN startDate text, IN endDate text);
+-- Function: rsa_commercial_area_report(integer, INTEGER[], text, text, text, text)
 
-CREATE OR REPLACE FUNCTION rsa_commercial_area_report(IN insId int, IN choId text, IN startDate text, IN endDate text)
-  RETURNS TABLE("CHO Reference" varchar, "Insurer Claim Number" varchar, "Original Hire Gross" numeric, "Current Hire Gross" numeric, "Hire Gross Paid" numeric, "Current Hire Penalty Charge" numeric, 
-  "Hire Penalty Charege Paid" numeric, "Days from Claim Upload Date to Payment Received" float, "Days from Invoice Upload Date to Payment Received" float,
-  "Days from Invoice Upload Date to Invoice Payment Logged" float, "No. Claim Touch Points" bigint, "No. Invoice Touch Points" bigint,
-  "Day Rate Of Hire Paid" numeric, "No. Days Hire" numeric, "Current Claim Status" varchar, "Claim Type" text, "CHO Name" varchar, "Workgroup Area" text, 
-  "Insurer Claim Owner" text, "Last Status Modified Date" timestamp, "Liability Status" text, "Date Claim Uploaded into CHOX" timestamp, "3rd Party Vehicle Reg Number" varchar) AS
+DROP FUNCTION rsa_commercial_area_report(integer, INTEGER[], text, text, text, text);
+
+set client_encoding to 'latin1';
+
+CREATE OR REPLACE FUNCTION rsa_commercial_area_report(
+                    IN insid integer,
+                    IN choIds INTEGER[],
+                    IN invpaylogStartDate text,
+                    IN invpaylogEndDate text,
+                    IN claimUploadStartDate text,
+                    IN claimUploadEndDate text)
+  RETURNS TABLE("CHO Reference" character varying,
+                  "Insurer Claim Number" character varying,
+                "Original Hire Gross" numeric,
+                "Current Hire Gross" numeric,
+                "Hire Gross Paid" numeric,
+                "Current Hire Penalty Charge" numeric,
+                "Hire Penalty Charege Paid" numeric,
+                "Days from Claim Upload Date to Payment Received" double precision,
+                "Days from Invoice Upload Date to Payment Received" double precision,
+                "Days from Invoice Upload Date to Invoice Payment Logged" double precision,
+                "No. Claim Touch Points" bigint,
+                "No. Invoice Touch Points" bigint,
+                "Day Rate Of Hire Paid" numeric,
+                "No. Days Hire" numeric,
+                "Current Claim Status" character varying,
+                "Claim Type" text,
+                "CHO Name" character varying,
+                "Workgroup Area" text,
+                "Insurer Claim Owner" text,
+                "Last Status Modified Date" timestamp without time zone,
+                "Liability Status" text,
+                "Date Claim Uploaded into CHOX" timestamp without time zone,
+                "3rd Party Vehicle Reg Number" character varying) AS
 $BODY$
 
 DECLARE
-   cho_id INT[] = choId::INT[];
-   END_DATE date;
-   START_DATE date;
+   INV_PAY_LOG_END_DATE date;
+   INV_PAY_LOG_START_DATE date;
+   CLAIM_UPLOAD_START_DATE date;
+   CLAIM_UPLOAD_END_DATE date;
    personal int[];
    commercial int[];
    injury int[];
    outOfScope int[];
    notAllocated int[];
 BEGIN
-   END_DATE = endDate::Date;
-   START_DATE = startDate::Date;
+   INV_PAY_LOG_START_DATE = invpaylogStartDate::Date;
+   INV_PAY_LOG_END_DATE = invpaylogEndDate::Date;
+   CLAIM_UPLOAD_START_DATE = claimUploadStartDate::Date;
+   CLAIM_UPLOAD_END_DATE = claimUploadEndDate::Date;
    -- Personal: 'Damage - Birmingham', 'Damage - Halifax', 'ProActive - Halifax'
    --   1 | Damage - Birmingham
    --  14 | Damage - Halifax
@@ -123,7 +154,7 @@ SELECT
            WHEN wg.id = ANY (injury) THEN 'Injury' 
            WHEN wg.id = ANY (outOfScope) THEN 'Out of Scope' 
            WHEN wg.id = ANY (notAllocated) THEN 'Not Allocated' ELSE '' END,
-      (wu.last_name || wu.first_name), 
+      (wu.last_name || ' ' ||wu.first_name), 
       c.status_modified_date,
       getliabilitystatus(c.liability_status),
       c.created_date,
@@ -135,18 +166,19 @@ FROM
      INNER JOIN vehicle_hire vh ON vh.id = c.vehicle_hire_id
      INNER JOIN chorganisation cho ON cho.id = c.chorganisation_id
      INNER JOIN third_party tp ON tp.id = c.third_party_id
-     INNER JOIN audit_trail a on (a.claim_id = c.id and a.reverted = false and a.new_Status = 'InvoicePaymentLogged')
-     LEFT JOIN audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_Status = 'PaymentReceived')
+     INNER JOIN audit_trail a on (a.claim_id = c.id and a.reverted = false and a.new_Status in ('InvoicePaymentLogged', 'ManualInvoicePaid'))
+     LEFT JOIN audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_Status in ('PaymentReceived', 'ManualInvoicePaid'))
      LEFT JOIN web_user wu ON c.claim_owner_id = wu.id
      LEFT JOIN workgroup wg ON c.workgroup_id = wg.id
 WHERE
      c.insurer_id = $1
-     AND (c.chorganisation_id != ANY (cho_id) OR -1 = ANY (cho_id))
-     AND a.created_date between START_DATE and END_DATE
+     AND (c.chorganisation_id != ANY (choIds) OR -1 = ANY (choIds))
+     AND a.created_date between INV_PAY_LOG_START_DATE and INV_PAY_LOG_END_DATE
+     AND c.created_date between CLAIM_UPLOAD_START_DATE and CLAIM_UPLOAD_END_DATE
      ORDER BY 18;
 
 END;
 $BODY$
-LANGUAGE plpgsql VOLATILE;
-ALTER FUNCTION rsa_commercial_area_report(IN insId int, IN choId text, IN startDate text, IN endDate text)
-OWNER TO chox;
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
