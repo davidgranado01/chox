@@ -22,8 +22,7 @@ public final class ExtrasCalcHelper {
         BigDecimal total = BigDecimal.ZERO;
         
         total = total.add(invoice.getMiscellaneousFee());
-        total = total.add(invoice.getAcquisitionFee());
-        total = total.add(invoice.getOverheadFee());
+        total = total.add(invoice.getCollaborationFee());
         total = total.add(invoice.getAutomaticFee());
         total = total.add(invoice.getAdditionalDriverFee());
         total = total.add(invoice.getSatNavFee());

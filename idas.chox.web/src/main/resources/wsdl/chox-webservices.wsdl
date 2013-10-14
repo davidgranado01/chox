@@ -182,8 +182,7 @@
                     <xsd:enumeration value="Roof Rack"/>
                     <xsd:enumeration value="Sat Nav"/>
                     <xsd:enumeration value="Tow Bars"/>
-                    <xsd:enumeration value="Acquisition"/>
-                    <xsd:enumeration value="Overhead and Margin"/>
+                    <xsd:enumeration value="Collaboration Protocol"/>
                 </xsd:restriction>
             </xsd:simpleType>
             

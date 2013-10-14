@@ -34,10 +34,8 @@
         <property column="insurer_discount" name="insurerDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
-        <property column="acquisition_fee" name="acquisitionFeeOriginal"/>
-        <property column="acquisition_qty" name="acquisitionQtyOriginal"/>
-        <property column="overhead_fee" name="overheadFeeOriginal"/>
-        <property column="overhead_qty" name="overheadQtyOriginal"/>
+        <property column="collaboration_fee" name="collaborationFeeOriginal"/>
+        <property column="collaboration_qty" name="collaborationQtyOriginal"/>
         <property column="miscellaneous_fee" name="miscellaneousFeeOriginal"/>
         <property column="miscellaneous_qty" name="miscellaneousQtyOriginal"/>
         <property column="automatic_fee" name="automaticFeeOriginal"/>

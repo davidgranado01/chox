@@ -168,7 +168,7 @@ public class ClaimsGridExportReport {
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
             .append(" c.status as claimstatus, c.cho_reference as choreference, c.claim_number as claimnumber,")
-            .append(" i.created_date as createddate, i.auto_penalty_start as autopenaltystart, i.acquisition_fee as acquisitionfee, i.overhead_fee as overheadfee, i.miscellaneous_fee as miscellaneousfee,")
+            .append(" i.created_date as createddate, i.auto_penalty_start as autopenaltystart, i.collaboration_fee as collaborationfee, i.collaboration_qty as collaborationqty, i.miscellaneous_fee as miscellaneousfee,")
             .append(" i.automatic_fee as automaticfee, i.automatic_qty as automaticqty, i.additional_driver_fee as additionaldriverfee,")
             .append(" i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,")
             .append(" i.estate_fee as estatefee, i.estate_qty as estateqty, i.baby_seat_fee as babyseatfee, i.baby_seat_qty as babyseatqty,")

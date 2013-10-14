@@ -1,0 +1,472 @@
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 11.07
+from vehicle_class where name='S1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 11.65
+from vehicle_class where name='S2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 13.38
+from vehicle_class where name='S3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 14.31
+from vehicle_class where name='S4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 17.28
+from vehicle_class where name='S5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 18.15
+from vehicle_class where name='S6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 16.20
+from vehicle_class where name='S7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 19.39
+from vehicle_class where name='M1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 16.77
+from vehicle_class where name='M2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 37.74
+from vehicle_class where name='M3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 45.45
+from vehicle_class where name='M4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 90.00
+from vehicle_class where name='M5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 112.20
+from vehicle_class where name='M6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 40.15
+from vehicle_class where name='F1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 40.91
+from vehicle_class where name='F2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 57.75
+from vehicle_class where name='F3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 70.31
+from vehicle_class where name='F4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 90.03
+from vehicle_class where name='F5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 90.53
+from vehicle_class where name='F6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 115.33
+from vehicle_class where name='F7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 110.00
+from vehicle_class where name='F8';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 120.00
+from vehicle_class where name='F9';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 17.69
+from vehicle_class where name='P1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 20.47
+from vehicle_class where name='P2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 27.48
+from vehicle_class where name='P3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 32.46
+from vehicle_class where name='P4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 32.46
+from vehicle_class where name='P5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 70.56
+from vehicle_class where name='P6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 70.56
+from vehicle_class where name='P7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 114.96
+from vehicle_class where name='P8';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 114.96
+from vehicle_class where name='P9';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 100.00
+from vehicle_class where name='P10';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 408.00
+from vehicle_class where name='P11';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 459.00
+from vehicle_class where name='P12';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 600.00
+from vehicle_class where name='P13';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 50.41
+from vehicle_class where name='SP1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 55.90
+from vehicle_class where name='SP2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 84.48
+from vehicle_class where name='SP3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 40.00
+from vehicle_class where name='SP4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 55.00
+from vehicle_class where name='SP5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.18
+from vehicle_class where name='SP6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.95
+from vehicle_class where name='SP7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 88.72
+from vehicle_class where name='SP8';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 95.00
+from vehicle_class where name='SP9';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 100.00
+from vehicle_class where name='SP10';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 105.00
+from vehicle_class where name='SP11';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 115.00
+from vehicle_class where name='SP12';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 408.00
+from vehicle_class where name='SP13';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 14.97
+from vehicle_class where name='PV1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 16.25
+from vehicle_class where name='PV2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 16.25
+from vehicle_class where name='PV3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 20.77
+from vehicle_class where name='PV4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 33.33
+from vehicle_class where name='PV5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 36.36
+from vehicle_class where name='PV6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 34.85
+from vehicle_class where name='CV1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 36.36
+from vehicle_class where name='CV2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 43.50
+from vehicle_class where name='CV3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 64.90
+from vehicle_class where name='CV4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 68.63
+from vehicle_class where name='RV1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 97.26
+from vehicle_class where name='RV2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 42.54
+from vehicle_class where name='CP1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 44.69
+from vehicle_class where name='CP2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 52.67
+from vehicle_class where name='CP3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 44.95
+from vehicle_class where name='CS1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 48.23
+from vehicle_class where name='CS2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 49.49
+from vehicle_class where name='CS3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 55.30
+from vehicle_class where name='CS4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 59.34
+from vehicle_class where name='CS5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 35.85
+from vehicle_class where name='CM1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 35.85
+from vehicle_class where name='CM2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 35.85
+from vehicle_class where name='CM3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 16.84
+from vehicle_class where name='B1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 18.30
+from vehicle_class where name='B2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 23.00
+from vehicle_class where name='B3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 26.50
+from vehicle_class where name='B4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 34.90
+from vehicle_class where name='B5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 36.00
+from vehicle_class where name='B6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 61.66
+from vehicle_class where name='T1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 72.22
+from vehicle_class where name='T2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 61.66
+from vehicle_class where name='T3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 55.00
+from vehicle_class where name='T4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 66.91
+from vehicle_class where name='T5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 90.90
+from vehicle_class where name='T6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 92.00
+from vehicle_class where name='T7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 70.00
+from vehicle_class where name='T8';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 115.00
+from vehicle_class where name='T9';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 75.00
+from vehicle_class where name='T10';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 90.00
+from vehicle_class where name='T12';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 175.00
+from vehicle_class where name='T13';
+
+
+
+--
+-- The following vehicle class do not exist
+--
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 62.75
+from vehicle_class where name='MOT1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 85.50
+from vehicle_class where name='MOT1i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 69.00
+from vehicle_class where name='MOT2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 88.00
+from vehicle_class where name='MOT2i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 83.25
+from vehicle_class where name='MOT3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 97.50
+from vehicle_class where name='MOT3i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 88.25
+from vehicle_class where name='MOT4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 119.50
+from vehicle_class where name='MOT4i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 88.25
+from vehicle_class where name='MOT5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 119.50
+from vehicle_class where name='MOT5i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 88.25
+from vehicle_class where name='MOT6';
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 119.50
+from vehicle_class where name='MOT6i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 126.50
+from vehicle_class where name='MOT7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 143.50
+from vehicle_class where name='MOT7i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 148.50
+from vehicle_class where name='MOT8';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 159.95
+from vehicle_class where name='MOT8i';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 272.50
+from vehicle_class where name='MOT9';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 80.00
+from vehicle_class where name='WAV1';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 96.50
+from vehicle_class where name='WAV1A';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 103.25
+from vehicle_class where name='WAV2';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 114.00
+from vehicle_class where name='WAV3';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 135.00
+from vehicle_class where name='WAV3A';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 129.00
+from vehicle_class where name='WAV4';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 163.00
+from vehicle_class where name='WAV4A';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 165.00
+from vehicle_class where name='WAV5';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 137.50
+from vehicle_class where name='WAV6';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 162.00
+from vehicle_class where name='WAV7';
+
+insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
+select 0, 20, 1016, 99, '2007-01-01'::timestamp without time zone, id, 999, 999, now(), now(), 151.00
+from vehicle_class where name='WAV8';
+
