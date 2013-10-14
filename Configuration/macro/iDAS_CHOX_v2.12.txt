@@ -1016,10 +1016,6 @@ For f = 1 To Len(tmpStr)
     End If
     
 Next f
-
-    If (optStr <> "a" And Right(optStr, 1) = "a") Then
-        optStr = Left(optStr, Len(optStr) - 1)
-    End If
     
     If (optStr = "other") Then
     optStr = "UNATTACHED"
