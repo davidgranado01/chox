@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
@@ -72,7 +73,6 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
     public static final String EMPTY = "empty";
@@ -280,6 +280,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return StringEscapeUtils.escapeEcmaScript(claim.getThirdParty().getPolicyNumber());
     }
 
+    @Override
     public String getNonce() {
         return nonce;
     }
@@ -1313,33 +1314,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 @Override
                 public boolean apply(Notification object) {
-                    LOG.debug("Notification " + object.getType()
-                            + " " + object.getMessage()
-                            + " " + object.getClaim().getChoReference()
-                            + " " + object.getType());
                     if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return true;
                     }
                     return false;
                 }
             });
-            LOG.debug("Notification Return List Size Insurer " + returnList.size());
+            LOG.debug("Notification Return List Size Insurer: {}", returnList.size());
             return returnList;
         } else {
             returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    LOG.debug("Notification " + object.getType()
-                            + " " + object.getMessage()
-                            + " " + object.getClaim().getChoReference());
                     if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return false;
                     }
                     return true;
                 }
             });
-            LOG.debug("Notification Return List Size Cho " + returnList.size());
+            LOG.debug("Notification Return List Size Cho: {} ", returnList.size());
             return returnList;
 
         }
@@ -1370,7 +1364,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
             notificationService.removeNotificationById(notificationId);
-        } else { // No id given so remove all notifications
+        } else if (notificationService != null && claim != null) { // No id given so remove all notifications
             if (getIsInsurer()) {
                 notificationService.removeAllInsurerNotifications(claim.getId());
             } else {
@@ -1385,7 +1379,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
                 notificationService.acknowledgeNotificationById(notificationId);
-        } else {
+        } else if (notificationService != null && claim != null) {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
@@ -1404,7 +1398,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getHasNotifications() {
-        LOG.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
+        LOG.debug("getHasNotifications called: {} ", (getFilteredNotifications().size() > 0));
         return getFilteredNotifications().size() > 0;
     }
     // </editor-fold>
