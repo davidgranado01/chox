@@ -1,6 +1,7 @@
 package idas.chox.service.bre.rules;
 
 import java.util.Date;
+import java.math.BigDecimal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
-import java.math.BigDecimal;
 
 /**
  *

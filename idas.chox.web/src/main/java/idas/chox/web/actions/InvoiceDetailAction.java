@@ -2481,13 +2481,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
         while (itr.hasNext()) {
             vehicleClass = (VehicleClass) itr.next();
-            BigDecimal price = new BigDecimal(0.0);
+            BigDecimal price;
             try {
                 price = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+                vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
             } catch (Exception e) {
-                LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}' - price set to 0.0", new Object[]{vehicleClass.getName(), age, getHireStart()});
+                LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}'", new Object[]{vehicleClass.getName(), age, getHireStart()});
             }
-            vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
         }
         LOG.debug("Total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
         Collections.sort(vehicleClassPriceMapper, new VehicleClassPriceMapperComparator());
