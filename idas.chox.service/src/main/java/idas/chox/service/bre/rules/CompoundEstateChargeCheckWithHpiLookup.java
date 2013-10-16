@@ -38,9 +38,9 @@ public class CompoundEstateChargeCheckWithHpiLookup  implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
         
-        if (claim.getBreBand().isCompoundAutomaticChargeCheckHpiLookup()
+        if (claim.getBreBand().isCompoundEstateChargeCheckHpiLookup()
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null
-                && claim.getVehicleHire().getHpiVehicleTransmission() != null
+                && claim.getVehicleHire().getHpiVehicleDoorplan() != null
                 && claim.getVehicleHire().getVehicleClass().getName().endsWith("EST")
                 && !claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate")) {
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();

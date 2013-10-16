@@ -74,8 +74,8 @@ public class CompoundAutomaticChargeCheckWithHpiLookup implements IBusinessRule 
 
                 }
             } catch (Exception ex) {
-                vehicleClassPrice = BigDecimal.ZERO;
-                LOG.debug("Vehicle Class Price set to 0.0 as no price found for Supplier ref='{}')", claim.getChoReference());
+                vehicleClassPrice = BigDecimal.ZERO.setScale(2);
+                LOG.debug("Vehicle Class Price set to 0.00 as no price found for Supplier ref='{}': ", claim.getChoReference(), ex);
 
             }
             try {

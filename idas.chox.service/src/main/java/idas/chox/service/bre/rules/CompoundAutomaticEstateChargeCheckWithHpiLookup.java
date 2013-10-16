@@ -38,9 +38,10 @@ public class CompoundAutomaticEstateChargeCheckWithHpiLookup implements IBusines
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
         
-        if (claim.getBreBand().isCompoundAutomaticChargeCheckHpiLookup()
+        if (claim.getBreBand().isCompoundAutomaticEstateChargeCheckHpiLookup()
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null
                 && claim.getVehicleHire().getHpiVehicleTransmission() != null
+                && claim.getVehicleHire().getHpiVehicleDoorplan() != null
                 && claim.getVehicleHire().getVehicleClass().getName().endsWith("ESTA")
                 && (!claim.getVehicleHire().getHpiVehicleTransmission().toLowerCase().contains("auto")
                         || !claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate"))) {
