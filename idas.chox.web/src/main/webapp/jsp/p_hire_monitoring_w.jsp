@@ -41,9 +41,9 @@
                 totalLossOfferCheckIssuedDate:{dateITA:true},
                 totalLossOfferCheckReceivedDate:{dateITA:true},
                 nextReviewDate:{dateITA:true},
-                labourRate :{number:true}, //,max: 100000
-                labourHour :{number:true}, //,max: 100000
-                labourCost :{number:true}, //,max: 100000
+                labourRate :{number:true, min : 0}, //,max: 100000
+                labourHour :{number:true, min : 0}, //,max: 100000
+                labourCost :{number:true, min : 0}, //,max: 100000
                 nonProvisionReason :{required: isNonProvisionReasonRequired},
                 date_compare_field:{required: isDateCorrect}
             },
@@ -60,9 +60,9 @@
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
                 totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
-                labourRate :{number:"You must supply a numeric value for 'Labour Rate'", max : "Labour Rate can not exceed maximum allowed limit."},
-                labourHour :{number:"You must supply a numeric value for 'Labour Hours'", max : "Labour Hour can not exceed maximum allowed limit."},
-                labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", max : "Labour Cost can not exceed maximum allowed limit."},
+                labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
+                labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
+                labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", min : "Labour Cost must not be negative."},
                 nonProvisionReason :{required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"},
                 date_compare_field:{required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"}
             }
