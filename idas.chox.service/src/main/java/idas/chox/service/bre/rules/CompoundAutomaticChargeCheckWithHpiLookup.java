@@ -25,7 +25,7 @@ import idas.chox.service.bre.util.VehicleClassHelper;
 public class CompoundAutomaticChargeCheckWithHpiLookup implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(CompoundAutomaticChargeCheckWithHpiLookup.class);
-    private String narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need.";
+    private String narrative = "No narrative specified";
     private VehicleClassPriceService vehicleClassPriceService;
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
@@ -94,6 +94,7 @@ public class CompoundAutomaticChargeCheckWithHpiLookup implements IBusinessRule 
             LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
             if (dailyHireRateCharged.compareTo(allowedDailyRate) >= 0) {
                 res.setResult(RuleEvaluationResult.RULE_FAILED);
+                narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need.";
             } else {
                 narrative = "";
                 res.setResult(RuleEvaluationResult.RULE_PASSED);

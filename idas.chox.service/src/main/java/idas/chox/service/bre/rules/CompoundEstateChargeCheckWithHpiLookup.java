@@ -24,7 +24,7 @@ import idas.chox.service.bre.util.VehicleClassHelper;
  */
 public class CompoundEstateChargeCheckWithHpiLookup  implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(CompoundEstateChargeCheckWithHpiLookup.class);
-    private String narrative = "The CHO is charging an estate fee for the hire and the HPI lookup did not identify the hire vehicle to be an estate, please review need.";
+    private String narrative = "No narrative specified";
     private VehicleClassPriceService vehicleClassPriceService;
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
@@ -92,6 +92,7 @@ public class CompoundEstateChargeCheckWithHpiLookup  implements IBusinessRule {
             LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
             if (dailyHireRateCharged.compareTo(allowedDailyRate) >= 0) {
                 res.setResult(RuleEvaluationResult.RULE_FAILED);
+                narrative = "The CHO is charging an estate fee for the hire and the HPI lookup did not identify the hire vehicle to be an estate, please review need.";
             } else {
                 narrative = "";
                 res.setResult(RuleEvaluationResult.RULE_PASSED);
