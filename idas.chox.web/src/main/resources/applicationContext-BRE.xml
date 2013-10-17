@@ -95,17 +95,17 @@
                 </bean>
                 <bean class="idas.chox.service.bre.rules.FixedFeeAdminFeeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.HireTerminatedAfterRepairCompletionCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.OverlappingHireCheck">
+                <bean class="idas.chox.service.bre.rules.OverlappingHireCheck" scope="prototype">
                     <property name="claimService" ref="claimService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.MaximumLabourRate" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling">
+                <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" scope="prototype">
                     <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
                 </bean>
-                <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling">
+                <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" scope="prototype">
                     <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
                 </bean>
-                <bean class="idas.chox.service.bre.rules.CompoundAutomaticChargeCheckWithHpiLookup" scope="prototype">
+                <bean class="idas.chox.service.bre.rules.CompoundAutomaticChargeCheckWithHpiLookup" scope="prototype" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.CompoundEstateChargeCheckWithHpiLookup" scope="prototype">
