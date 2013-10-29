@@ -82,7 +82,13 @@ public class CompareUtil {
                                 }
                                 continue;
                             }
-
+                            
+                            if (field.getName().equalsIgnoreCase("coverNoteRequired") && oldObj instanceof Boolean && newObj instanceof Boolean) {
+                                ret.put((String) fieldNames.get(field.getName()), new Object[]{((Boolean) oldObj) ? "Yes" : "No",
+                                    ((Boolean) newObj) ? "Yes" : "No"});
+                                continue;
+                            }
+                            
                             // for all other modified objects
                             ret.put((String) fieldNames.get(field.getName()), new Object[]{oldObj, newObj});
 
