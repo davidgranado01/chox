@@ -49,15 +49,15 @@ public class HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling implements I
 
             if (!success) {
 
-                String replacementVehicleClassName = "";
-                if (VehicleClassHelper.isVehicleClassValid(claim.getVehicleHire().getVehicleClass())) {
-                    replacementVehicleClassName = claim.getVehicleHire().getVehicleClass().getName();
+                String customerVehicleClassName = "";
+                if (VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
+                    customerVehicleClassName = claim.getCustomer().getVehicleClass().getName();
                 }
                 
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(hireNet.doubleValue()),
                         moneyFormat.format(protocolHireNetCeiling.doubleValue()),
-                        replacementVehicleClassName);
+                        customerVehicleClassName);
             }
 
         } else {

@@ -51,15 +51,15 @@ public class RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling implemen
 
             if (!success) {
 
-                String replacementVehicleClassName = "";
-                if (VehicleClassHelper.isVehicleClassValid(claim.getVehicleHire().getVehicleClass())) {
-                    replacementVehicleClassName = claim.getVehicleHire().getVehicleClass().getName();
+                String customerVehicleClassName = "";
+                if (VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
+                    customerVehicleClassName = claim.getCustomer().getVehicleClass().getName();
                 }
 
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(repairNet.doubleValue()),
                         moneyFormat.format(protocolRepairNetCeiling.doubleValue()),
-                        replacementVehicleClassName);
+                        customerVehicleClassName);
             }
 
         } else {
