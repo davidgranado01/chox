@@ -1648,16 +1648,16 @@ public class Invoice extends Entity implements Serializable {
         REPAIR_ADMIN_FEE                    ("repairAdminFee", "Repair Admin Fee"),
         REPAIR_ACQUISITION_FEE              ("repairAcquisitionFee", "Repair Acquisition Fee");
         
-        private final String ParameterName;
+        private final String parameterName;
         private final String displayName;
 
         DisplayName(String name, String displayName) {
-            this.ParameterName = name;
+            this.parameterName = name;
             this.displayName = displayName;
         }
 
         public String getParameterName() {
-            return ParameterName;
+            return parameterName;
         }
 
         @Override
