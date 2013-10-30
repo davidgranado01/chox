@@ -150,24 +150,6 @@ insert into vehicle_class(version, created_by, last_modified_by, created_date, l
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'SP13A');
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'SP13EST');
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'SP13ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV1A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV1EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV1ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV2A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV2EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV2ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV3A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV3EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV3ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV4A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV4EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV4ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV5A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV5EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV5ESTA');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV6A');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV6EST');
-insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'PV6ESTA');
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'T1A');
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'T1EST');
 insert into vehicle_class(version, created_by, last_modified_by, created_date, last_modified_date, name) values(0, 999, 999, now(), now(), 'T1ESTA');
@@ -856,17 +838,6 @@ insert into vehicle_class_price_special_rate(version, created_by, last_modified_
 select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 99.99
 from vehicle_class where name = 'P8EST';
 
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 19.99
-from vehicle_class where name = 'PV1A';
-
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 24.99
-from vehicle_class where name = 'PV2A';
-
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 34.99
-from vehicle_class where name = 'PV4A';
 
 insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
 select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 14.00
@@ -1197,18 +1168,6 @@ from vehicle_class where name = 'P8ESTA';
 insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
 select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 99.99
 from vehicle_class where name = 'P8EST';
-
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 19.99
-from vehicle_class where name = 'PV1A';
-
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 24.99
-from vehicle_class where name = 'PV2A';
-
-insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
-select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 34.99
-from vehicle_class where name = 'PV4A';
 
 insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
 select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 14.00
