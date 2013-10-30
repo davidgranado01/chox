@@ -83,7 +83,7 @@ public class CompareUtil {
                                 continue;
                             }
                             
-                            if (field.getName().equalsIgnoreCase("coverNoteRequired") && oldObj instanceof Boolean && newObj instanceof Boolean) {
+                            if (oldObj instanceof Boolean && newObj instanceof Boolean) {
                                 ret.put((String) fieldNames.get(field.getName()), new Object[]{((Boolean) oldObj) ? "Yes" : "No",
                                     ((Boolean) newObj) ? "Yes" : "No"});
                                 continue;
@@ -98,12 +98,12 @@ public class CompareUtil {
                              */
                         } else if ((newObj != null && oldObj == null && !compareObjValueEqulentToDefaultValue(newObj))
                                 || (newObj == null && oldObj != null && !compareObjValueEqulentToDefaultValue(oldObj))) {
-                            // if Boolean then replace null with false.
+                            // if Boolean then replace null with No. 
                             if (newObj != null && newObj instanceof Boolean) {
-                                ret.put((String) fieldNames.get(field.getName()), new Object[]{Boolean.FALSE, newObj});
+                                ret.put((String) fieldNames.get(field.getName()), new Object[]{"No", ((Boolean) newObj) ? "Yes" : "No"});
                                 continue;
                             } else if (oldObj != null && oldObj instanceof Boolean) {
-                                ret.put((String) fieldNames.get(field.getName()), new Object[]{oldObj, Boolean.FALSE});
+                                ret.put((String) fieldNames.get(field.getName()), new Object[]{((Boolean) oldObj) ? "Yes" : "No", "No"});
                                 continue;
                             }
                             // if Number then replace null with Zero.
