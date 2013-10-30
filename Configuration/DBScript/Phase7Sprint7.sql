@@ -999,6 +999,143 @@ insert into vehicle_class_price_special_rate(version, created_by, last_modified_
 select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 92.13
 from vehicle_class where name = 'T14ESTA';
 
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 45.99
+from vehicle_class where name = 'F1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'F3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 27.99
+from vehicle_class where name = 'MA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 39.99
+from vehicle_class where name = 'M3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 19.99
+from vehicle_class where name = 'PV1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 24.99
+from vehicle_class where name = 'PV2A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 34.99
+from vehicle_class where name = 'PV4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 3, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4EST';
+
+
 -- Add values for new vehicle classes for Motability
 insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
 select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 58.98
@@ -1372,6 +1509,141 @@ insert into vehicle_class_price_special_rate(version, created_by, last_modified_
 select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 92.13
 from vehicle_class where name = 'T14ESTA';
 
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 45.99
+from vehicle_class where name = 'F1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'F3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 27.99
+from vehicle_class where name = 'MA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 39.99
+from vehicle_class where name = 'M3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 22.50
+from vehicle_class where name = 'S5EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 25.99
+from vehicle_class where name = 'S6EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 59.99
+from vehicle_class where name = 'P3EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 69.99
+from vehicle_class where name = 'SP4EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 99.99
+from vehicle_class where name = 'P8EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 19.99
+from vehicle_class where name = 'PV1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 24.99
+from vehicle_class where name = 'PV2A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 34.99
+from vehicle_class where name = 'PV4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 14.00
+from vehicle_class where name = 'S1EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 15.00
+from vehicle_class where name = 'S2EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 18.25
+from vehicle_class where name = 'S3EST';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4A';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4ESTA';
+
+insert into vehicle_class_price_special_rate(version, created_by, last_modified_by, created_date, last_modified_date, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, price)
+select 0, 999, 999, now(), now(), 19, 1007, 99.99, '2007-01-01', id, 19.50
+from vehicle_class where name = 'S4EST';
 
 --
 -- End Of ToDo 7.7.2
