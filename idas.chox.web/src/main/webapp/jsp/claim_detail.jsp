@@ -15,8 +15,10 @@
     var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
     var tasksTabAccessibility = <s:property value="tabAccessibility.tasksTabAccessibility" />;
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
+//    var invoiceTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
+//    var invoiceTabAccessibilityDisabled = invoiceTabAccessibility === 0;
     var claimDetailsDisabled = claimDetailTabAccessibility === 0;
     var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  === 0;
     var invoiceDetailsDisabled = invoiceDetailTabAccessibility === 0;
@@ -235,7 +237,7 @@
     }
 
     function pageRefresh(){
-        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce="+nonce;
     }
 
 
@@ -316,7 +318,7 @@
         </s:if>
         <s:else >
             Ext.get('claimDetailScreenDiv').mask();
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";});
         </s:else>
         
     }
@@ -492,7 +494,7 @@
                     <tr>
                         <td width="80%" align="left">
                             <div>
-                                <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
+                                <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param><s:param name="nonce"><%= session.getAttribute("SessionNonce")%></s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
                                 &nbsp;&nbsp;
                                 <s:if test="extraActionList.size()>0">
                                     <s:select

@@ -51,6 +51,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return session;
     }
 
+    public String getNonce() {
+        if (session == null) {
+            session = getSession();
+        }
+        return (String)session.get("SessionNonce");
+    }
+    
+
     public Object getSessionLock() {
         Object result = getSession().get("SESSION_LOCK");
         if (result == null) {

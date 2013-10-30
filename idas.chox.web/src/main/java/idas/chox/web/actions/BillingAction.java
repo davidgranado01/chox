@@ -42,8 +42,7 @@ public class BillingAction extends BaseAction {
     private BillingService billingService;
     private boolean excludeSupplmntInv;
     private String omitSupplementaryInvoice;
-    private boolean manualClaims;
-    private String manualClaimsOnly;
+    private String triggerPoint;
 
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -109,7 +108,7 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
-            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), excludeSupplmntInv, manualClaims);
+            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), excludeSupplmntInv, triggerPoint);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Returning json string: '{}'", jsonObject.toString());
@@ -352,16 +351,11 @@ public class BillingAction extends BaseAction {
     }
     
 
-    public String getManualClaimsOnly() {
-        return manualClaimsOnly;
+    public String getTriggerPoint() {
+        return triggerPoint;
     }
 
-    public void setManualClaimsOnly(String manualClaimsOnly) {
-        if (manualClaimsOnly != null && manualClaimsOnly.equalsIgnoreCase("on")){
-            this.manualClaims = true;
-            this.manualClaimsOnly = "true";
-        } else {
-            this.manualClaimsOnly = "false";
-        }
+    public void setTriggerPoint(String triggerPoint) {
+        this.triggerPoint = triggerPoint;
     }
 }

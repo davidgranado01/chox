@@ -12,7 +12,8 @@
     }
 
 </script>
-
+<!--<div class="x-panel-bwrap chox-form-container">
+<label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>-->
   <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr valign="top">
         <td class="chox-form-left-col">
@@ -1191,4 +1192,4 @@
         </td>
     </tr>
 </table>
-
+<!--</div>-->

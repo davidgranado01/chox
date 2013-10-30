@@ -164,6 +164,10 @@ public class ClaimResult {
     }
 
     public String getUploadedStatus() {
+        if (claimParseStatus == null) {
+            return "";
+        }
+        
         return this.claimParseStatus.getDescription();
     }
 }

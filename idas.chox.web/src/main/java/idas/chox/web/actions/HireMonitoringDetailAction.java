@@ -27,6 +27,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private String labourRate;
     private String labourHour;
     private String labourCost;
+    private boolean managingRepair;
     
     public String getLabourCost() {
         return labourCost;
@@ -54,6 +55,26 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     
     public void setLookupService(LookupService service) {
         this.lookupService = service;
+    }
+
+    public boolean isManagingRepair() {
+        return claim.isManagingRepair();
+    }
+
+    public String getManagingRepairOriginalDesc() {
+        if (claim.getManagingRepairOriginal() == null) {
+            return "";
+        }
+        else {
+            return claim.getManagingRepairOriginal() ? "(Yes)" : "(No)";
+        }
+    }
+    
+    public void setManagingRepair(boolean managingRepair) {
+        this.managingRepair = managingRepair;
+    }
+    public Date getManagingRepairLastModified() {
+        return claim.getManagingRepairLastModified();
     }
     
     @Override
@@ -83,6 +104,14 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 customer.setIsTotalLoss(model.isIsTotalLostCheck());
                 claim.setCustomer(customer);
             }
+            if (claim.getManagingRepair() != managingRepair) {
+                if (claim.getManagingRepairOriginal() == null) {
+                    claim.setManagingRepairOriginal(claim.getManagingRepair());
+                }
+                claim.setManagingRepair(managingRepair);
+                claim.setManagingRepairLastModified(new Date());
+            }
+            
             /*
              * labourCost , labourHour, labourRate is defined here as String to
              * accept null value. Struts is not setting null value for those

@@ -83,7 +83,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                             statusString.append("Failed: ECD Update Already Exists");
                         } else {
                             statusString.append("Failed: An Internal Error Occurred");
-                            LOG.warn("Exception occured when adding new ECD via email scheduler ecd update job", ex);
+                            LOG.warn("Exception occurred when adding new ECD via email scheduler ecd update job", ex);
                         }
                     }
                 } else {

@@ -81,7 +81,7 @@ public class AlertAction extends BaseAction {
     public String isClaimNumberDuplicated() {
 
         try {
-            if (!claimNumber.isEmpty()) {
+            if (!claimNumber.isEmpty() && claimId != 0) {
                 if (claimService == null) {
                     LOG.error("No Claim Service in AlertAction.isClaimNumberDuplicated: claimId={}, claimNumber='{}'",
                             new Object[]{claimId, claimNumber});
@@ -91,7 +91,7 @@ public class AlertAction extends BaseAction {
                 }
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown: claimId={}, claimNumber='{}', claimService={}",
+            LOG.warn("Exception thrown: claimId={}, claimNumber='{}', claimService={}",
                     new Object[]{claimId, claimNumber, claimService, ex});
             this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether claim number is already associated with another claim(s). Do you wish to continue?");
         }

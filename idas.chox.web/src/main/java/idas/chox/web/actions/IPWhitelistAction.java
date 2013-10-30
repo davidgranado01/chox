@@ -146,7 +146,7 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
         } catch (Exception ex) {
             LOG.error("Exception thrown when getting whitelist", ex);
             result.put("success", Boolean.FALSE);
-            result.put("error", "Unexpected error occured, Please contact Chox support.");
+            result.put("error", "Unexpected error occurred, Please contact Chox support.");
             JSONObject jsonObject = JSONObject.fromObject(result);
             setJsonData(jsonObject.toString());
         }
@@ -169,7 +169,7 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
         } catch (Exception ex) {
             LOG.error("Exception thrown when adding whitelist", ex);
             result.put("success", Boolean.FALSE);
-            result.put("error", "Unexpected error occured, Please contact Chox support.");
+            result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());
@@ -192,7 +192,7 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
         } catch (Exception ex) {
             LOG.error("Exception thrown when updating whitelist", ex);
             result.put("success", Boolean.FALSE);
-            result.put("error", "Unexpected error occured, Please contact Chox support.");
+            result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());
@@ -211,7 +211,7 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
         } catch (Exception ex) {
             LOG.error("Exception thrown when deleting whitelist", ex);
             result.put("success", Boolean.FALSE);
-            result.put("error", "Unexpected error occured, Please contact Chox support.");
+            result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());

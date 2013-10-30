@@ -83,14 +83,14 @@
         if(columnIndex == 2){
             var title="Notes";
             var msg = "<b>Created Date</b>: " + comment.get("createdDate");
-            msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
+            msg += "<br/><b>Created By</b>: " + comment.get("createdBy");
             msg += "<br/><b>Message";
 
             if(comment.get("visibilityType")>0){
                 msg += " (Private Note)";
             }
             msg += "</b>: <br/>" + comment.get("comment");
-            propmtMsg(title, msg);
+            propmtMsg(title, getFormatedMessage(msg));
         }
         else if(columnIndex == 3 && comment.get("delete")!=""){
             deleteComment(fileId);
@@ -143,6 +143,29 @@
         loadComments();
     }
 
+    function getFormatedMessage(msg){
+        if(msg.length > 0){
+            msg = msg.replace('An invoice amendment has been made to the following fields:', 'An invoice amendment has been made to the following fields:<br/>');
+            msg = msg.replace('Invoice Details:', '<b>Invoice Details: </b><br/>');
+            msg = msg.replace('Hire Vehicle Details:', '<b>Hire Vehicle Details: </b><br/>');
+            msg = msg.replace('Engineer Report:', '<b>Engineer Report: </b><br/>');
+            var messageList=msg.split('). ');
+            var messageHTML="";
+            if(messageList.length>0){
+                for(var i=0;i<messageList.length;i++){
+                    if((i+1) < messageList.length){
+                        messageHTML+=(messageList[i]+')<br/>');
+                    }else{
+                        messageHTML+=(messageList[i]);
+                    }
+                }
+                return messageHTML;
+            }  
+        }else{
+            return "";
+        }
+    }
+    
     function loadComments(){
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
         // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'

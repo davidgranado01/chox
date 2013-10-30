@@ -1,7 +1,6 @@
 package idas.chox.service.xml.readers;
 
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
 import java.util.List;
 

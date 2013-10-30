@@ -120,7 +120,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                     exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
@@ -168,7 +168,7 @@ function doNotShowBrowserWarning(){
 
                         Ext.MessageBox.show({
                             title: 'failure',
-                            msg: 'Unexpected Error occured. Please report to chox admin.',
+                            msg: 'Unexpected Error occurred. Please report to chox admin.',
                             width:300,
                             buttons: Ext.MessageBox.OK,
                             icon : Ext.MessageBox.ERROR
@@ -198,7 +198,7 @@ function loadDirectExportToExcelStatus(){
                     directExportToExcelStatusIntervelId=window.clearInterval(directExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
@@ -307,7 +307,7 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                     taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
@@ -351,7 +351,7 @@ function loadDirectTaskExportToExcelStatus(){
                     directTaskExportToExcelStatusIntervelId=window.clearInterval(directTaskExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR

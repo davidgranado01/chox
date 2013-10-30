@@ -41,9 +41,9 @@
                 totalLossOfferCheckIssuedDate:{dateITA:true},
                 totalLossOfferCheckReceivedDate:{dateITA:true},
                 nextReviewDate:{dateITA:true},
-                labourRate :{number:true}, //,max: 100000
-                labourHour :{number:true}, //,max: 100000
-                labourCost :{number:true}, //,max: 100000
+                labourRate :{number:true, min : 0}, //,max: 100000
+                labourHour :{number:true, min : 0}, //,max: 100000
+                labourCost :{number:true, min : 0}, //,max: 100000
                 nonProvisionReason :{required: isNonProvisionReasonRequired},
                 date_compare_field:{required: isDateCorrect}
             },
@@ -60,9 +60,9 @@
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
                 totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
-                labourRate :{number:"You must supply a numeric value for 'Labour Rate'", max : "Labour Rate can not exceed maximum allowed limit."},
-                labourHour :{number:"You must supply a numeric value for 'Labour Hours'", max : "Labour Hour can not exceed maximum allowed limit."},
-                labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", max : "Labour Cost can not exceed maximum allowed limit."},
+                labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
+                labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
+                labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", min : "Labour Cost must not be negative."},
                 nonProvisionReason :{required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"},
                 date_compare_field:{required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"}
             }
@@ -219,12 +219,20 @@
             closable: true,
             draggable:true
         });
+        new Ext.ToolTip({
+            target: 'dateManagingRepairId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="managingRepairLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
 
 
 
     }
     function hireMonitoringSubmit() {
-        
+        updateCHOManagingRepairInClaimDetailsTab();
         // Update Customer Vehicle Damage Total Loss field
         var customerVehicleTotalLossId = document.getElementById("customerVehicleTotalLossId");
         
@@ -266,6 +274,35 @@
         else {
         	$("#HMmessageBox").empty();
         	$("#HMmessageBox").append("The 'Repair Completion Date' must be after the 'Repair Book In Date'.\n<br/>").show();
+        }
+    }
+    
+    function updateCHOManagingRepairInClaimDetailsTab() {
+         // Update Customer Vehicle Damage Total Loss field
+        var managingRepairCheckboxReadScreenId = document.getElementById("managingRepairCheckboxReadScreenId");
+        
+        if (managingRepairCheckboxReadScreenId) { // In read screen
+            var originalValue = $('#managingRepairCheckboxReadScreenOriginalId').html();
+            if ($('#managingRepairCheckId').is(':checked') === true) {
+                document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'Yes';
+                if (originalValue.length == 0) {
+                    document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(No)';
+                }
+            }
+            else {
+                document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'No';
+                if (originalValue.length == 0) {
+                    document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(Yes)';
+                }
+            }            
+        }
+        else { // in write screen
+            if ($('#managingRepairCheckId').is(':checked') === true) {
+                $("#managingRepairCheckboxWriteScreenId").prop('checked', true);
+            }
+            else {
+                $("#managingRepairCheckboxWriteScreenId").prop('checked', false);
+            }
         }
     }
 
@@ -472,18 +509,28 @@
 
             <s:if test="isRepairOnlyCheckLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Repair Only (No Hire)? </label>
+                    <label class="chox-form-std-label3">Repair Only (No Hire)? </label>
                     <table><tr><td><s:checkbox id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
+                    <label class="chox-form-std-label3">Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
                     <s:checkbox id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
                 </div>
             </s:else>
-
-
+            <s:if test="managingRepairLastModified != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label3">CHO Managing Repair? </label>
+                    <table><tr><td><s:checkbox name="managingRepair" id="managingRepairCheckId" /></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateManagingRepairId" /></td></tr></table>
+                </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label3">CHO Managing Repair? <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateManagingRepairId" /></label>
+                    <s:checkbox name="managingRepair" id="managingRepairCheckId" />
+                </div>
+            </s:else>
             <s:if test="isNFInsurerManagingRepairLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">Non-Fault Insurer Managing Repair?</label>

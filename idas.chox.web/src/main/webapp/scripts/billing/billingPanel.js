@@ -32,6 +32,20 @@ Chox.orgStore = new Ext.data.Store( {
     autoLoad : true
 });
 
+
+var triggerPointData = [
+            ['Payment Received'],
+            ['Invoice Payment Logged'],
+            ['Manual Invoice Paid']
+];
+
+
+Chox.triggerPointStore = new Ext.data.SimpleStore({
+            id: 0,
+            fields: ['triggerPointValue'],
+            data: triggerPointData
+        });
+        
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////ADD SCHEDULE  ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -321,9 +335,20 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
                 triggerAction : 'all'
             };
             this.items[7] = {
-                xtype : 'checkbox',
-                name : 'manualClaimsOnly',
-                fieldLabel : 'Manual Claims Only'
+                xtype : 'combo',
+                name : 'triggerPoint',
+                typeAhead : false,
+                fieldLabel : 'Billing Trigger Point',
+                mode : 'local',
+                store : Chox.triggerPointStore,
+                hiddenName : 'triggerPoint',
+                displayField : 'triggerPointValue',
+                valueField : 'triggerPointValue',
+                allowBlank: false,
+                selectOnFocus: true,
+                forceSelection: true,
+                editable: false,
+                triggerAction : 'all'
             };
         }
         
@@ -640,8 +665,8 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
         type : 'boolean'
     },
     {
-        name : 'manualClaimsOnly',
-        type : 'boolean'
+        name : 'triggerPoint',
+        type : 'string'
     }
     ]
     ),
@@ -865,8 +890,8 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         dataIndex : 'manual',
         width : 80
     },{
-        header : 'Manual Invoices Only',
-        dataIndex : 'manualClaimsOnly',
+        header : 'Trigger Point',
+        dataIndex : 'triggerPoint',
         width : 80
     }],
 

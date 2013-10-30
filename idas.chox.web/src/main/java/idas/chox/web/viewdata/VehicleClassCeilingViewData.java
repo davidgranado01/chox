@@ -1,8 +1,10 @@
 package idas.chox.web.viewdata;
 
+import java.math.BigDecimal;
+
+import idas.chox.core.model.ProtocolVehicleClassCeiling;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.util.DateHelper;
-import java.math.BigDecimal;
 
 public class VehicleClassCeilingViewData {
 
@@ -13,6 +15,7 @@ public class VehicleClassCeilingViewData {
     private BigDecimal repairNetCeiling;
     private String createdBy;
     private String createdDate;
+    private boolean removed;
 
     public VehicleClassCeilingViewData(VehicleClassCeiling object) {
         this.id = object.getId();
@@ -22,6 +25,27 @@ public class VehicleClassCeilingViewData {
         this.repairNetCeiling = object.getRepairNetCeiling();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
+    }
+    
+    public VehicleClassCeilingViewData(ProtocolVehicleClassCeiling object) {
+        this.id = object.getId();
+        this.vehicleClassId = object.getVehicleClass().getId();
+        this.vehicleClassName = object.getVehicleClass().getName();
+        this.hireNetCeiling = object.getHireNetCeiling();
+        this.repairNetCeiling = object.getRepairNetCeiling();
+        this.createdBy = object.getCreatedBy().getDisplayName();
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
+    }
+
+    public VehicleClassCeilingViewData() {
+    }
+    
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     public String getCreatedBy() {

@@ -162,7 +162,7 @@
                 </div>
                 <s:hidden name="id" id="claimId" />
                 <s:hidden name="name" id="name" />
-                <!--s:hidden name="workgroupId" value="-1"/-->
+                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                 <div class="status-control-set">
                     <table class="status-table">
                         <tr>
@@ -236,6 +236,5 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

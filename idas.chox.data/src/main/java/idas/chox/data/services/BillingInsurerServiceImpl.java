@@ -9,6 +9,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingInsurerService;
+import idas.chox.core.util.DateHelper;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -40,7 +41,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
      * @see idas.chox.data.services.BillingInsurerService#checkObject(java.lang.String, java.util.Date, java.util.Date)
      */
     @Override
-    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId, boolean manualClaims) {
+    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId, String triggerPoint) {
         Map checks = new HashMap();
         DetachedCriteria dc1 = DetachedCriteria.forClass(BillingInsurer.class).add(Restrictions.eq("scheduleName", scheduleName));
         List result1 = getHibernateTemplate().findByCriteria(dc1);
@@ -48,7 +49,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             checks.put("scheduleName", "Schedule name already exists.");
         }
 
-        checkScheduleOverlap(checks, dateFrom, dateTo, insurerId, manualClaims);
+        checkScheduleOverlap(checks, dateFrom, dateTo, insurerId, triggerPoint);
         return checks;
     }
 
@@ -57,35 +58,38 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         return overlap_literal_format.format(date);
     }
 
-    public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int insurerId, boolean manualClaims) {
+    public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int insurerId, String triggerPoint) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
-        sb.append(getShDtStr(dateFrom));
-        sb.append("',DATE '");
-        sb.append(getShDtStr(dateTo));
-        sb.append("') ");
+        sb.append("(date(:pDateFrom)");
+        sb.append(",date(:pDateTo)) ");
         sb.append("from billing_insurer ");
-        sb.append("where insurer_id = ");
-        sb.append(insurerId);
-        sb.append(" and manual_claims_only = ");
-        if (manualClaims)
-            sb.append("true");
-        else
-            sb.append("false");
-
+        sb.append("where insurer_id = :pInsurerId ");
+        if (triggerPoint.equals("Manual Invoice Paid")) {
+            sb.append(" and trigger_point = 'Manual Invoice Paid'");
+        } else if (triggerPoint.equals("Payment Received")) {
+            sb.append(" and trigger_point = 'Payment Received'");
+        } else {
+            sb.append(" and trigger_point = 'Invoice Payment Logged'");
+        }
+        
         String query = sb.toString();
         LOG.debug(query);
-
-        List valList = getCurrentSession().createSQLQuery(query).list();
+        
+        Map extParameters = new HashMap();
+        extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
+        extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
+        extParameters.put("pInsurerId", insurerId);
+        
+        List valList = externalQuery(query, extParameters);
         for (Object object : valList) {
-            LOG.debug("Object value: {}", ((Boolean) object).booleanValue());
-            if (((Boolean) object).booleanValue()) {
-                checkmap.put("dateTo", "From or To date overlaps existing schedule.");
-                checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
+            Map data = (Map) object;
+            if ((Boolean) (data.get("overlaps"))) {
+                checkmap.put("dateTo", "From or To date overlaps existing schedule with same trigger status.");
+                checkmap.put("dateFrom", "From or To date overlaps existing schedule with same trigger status.");
                 break;
             }
         }
@@ -194,20 +198,26 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
 
     @Override
     public List<Claim> findClaimsforSchedule(Date from, Date to, Insurer insurer,
-                        boolean excludeSupplmntInv, boolean manualInvoicesOnly) {
+                        boolean excludeSupplmntInv, String triggerPoint) {
         DetachedCriteria criteria;
         DetachedCriteria auditCriteria;
         
-        if (manualInvoicesOnly) {
+        if (triggerPoint.equals("Manual Invoice Paid")) {
             auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.MANUAL_INVOICE_PAID))
                 .add(Restrictions.eq("reverted", Boolean.FALSE))
                 .setProjection(Property.forName("claim.id"));
-        } else {
+        } else if (triggerPoint.equals("Payment Received")) {
             auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .add(Restrictions.eq("reverted", Boolean.FALSE))
+                .setProjection(Property.forName("claim.id"));
+        } else { // trigger_point = 'Invoice Payment Logged'
+            auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                .add(Restrictions.between("updateDate", from, to))
+                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED))
                 .add(Restrictions.eq("reverted", Boolean.FALSE))
                 .setProjection(Property.forName("claim.id"));
         }

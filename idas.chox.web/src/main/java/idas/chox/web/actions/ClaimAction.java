@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
@@ -277,9 +277,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getPolicyNumber() {
-        return StringEscapeUtils.escapeJavaScript(claim.getThirdParty().getPolicyNumber());
+        return StringEscapeUtils.escapeEcmaScript(claim.getThirdParty().getPolicyNumber());
     }
 
+    @Override
     public String getNonce() {
         return nonce;
     }
@@ -1147,27 +1148,35 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
              * manualInvoiceClaimOwnershipDisabled).
              *
              */
-            if (accessRight > 0 && actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                    && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
-                    || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
-                accessRight = 0;
-            }
+            if (accessRight > 0) {
+                if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                        && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                        || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
+                    accessRight = 0;
+                }
             
-            // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
-                    && claim.getInsurer().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
+                // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
+                else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
+                        && claim.getInsurer().isClaimOwnershipEnable()) {
+                    accessRight = 0;
+                }
             
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
-                    && claim.getInsurer().isWorkgroupEnable()) {
-                accessRight = 0;
-            }
+                else if (actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
+                        && claim.getInsurer().isWorkgroupEnable()) {
+                    accessRight = 0;
+                }
             
-            // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
-            if (accessRight > 0 && actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
-                    && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
-                accessRight = 0;
+                // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+                else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
+                        && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+                    accessRight = 0;
+                }
+                
+                // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
+                else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
+                        && (claim.getWorkgroup() == null || claim.getClaimOwner() == null)) {
+                    accessRight = 0;
+                }
             }
             
             if (accessRight >= 2) {
@@ -1305,33 +1314,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 @Override
                 public boolean apply(Notification object) {
-                    LOG.debug("Notification " + object.getType()
-                            + " " + object.getMessage()
-                            + " " + object.getClaim().getChoReference()
-                            + " " + object.getType());
                     if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return true;
                     }
                     return false;
                 }
             });
-            LOG.debug("Notification Return List Size Insurer " + returnList.size());
+            LOG.debug("Notification Return List Size Insurer: {}", returnList.size());
             return returnList;
         } else {
             returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    LOG.debug("Notification " + object.getType()
-                            + " " + object.getMessage()
-                            + " " + object.getClaim().getChoReference());
                     if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return false;
                     }
                     return true;
                 }
             });
-            LOG.debug("Notification Return List Size Cho " + returnList.size());
+            LOG.debug("Notification Return List Size Cho: {} ", returnList.size());
             return returnList;
 
         }
@@ -1362,7 +1364,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
             notificationService.removeNotificationById(notificationId);
-        } else { // No id given so remove all notifications
+        } else if (notificationService != null && claim != null) { // No id given so remove all notifications
             if (getIsInsurer()) {
                 notificationService.removeAllInsurerNotifications(claim.getId());
             } else {
@@ -1377,7 +1379,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
                 notificationService.acknowledgeNotificationById(notificationId);
-        } else {
+        } else if (notificationService != null && claim != null) {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
@@ -1396,7 +1398,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getHasNotifications() {
-        LOG.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
+        LOG.debug("getHasNotifications called: {} ", (getFilteredNotifications().size() > 0));
         return getFilteredNotifications().size() > 0;
     }
     // </editor-fold>
@@ -2414,7 +2416,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (Insurer insurer : mappedInsurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getRepairPenaltyPercentageJsonString() {

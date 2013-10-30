@@ -1,18 +1,14 @@
 package idas.chox.web.security;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Date;
 import java.net.URLEncoder;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -23,6 +19,7 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+
 
 /**
  *
@@ -159,7 +156,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
-        
+/******        
         // Add nonce
         HttpSession session = request.getSession();
         byte[] nonce = new byte[16];
@@ -169,17 +166,23 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         } catch (NoSuchAlgorithmException ex) {
             LOG.error("Could not get algorithm SHA1PRNG");
         }
-        String nonceStr = Base64.encodeBytes(nonce);
+        String nonceStr = Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
 
         session.setAttribute("SessionNonce", nonceStr);
         LOG.debug("Nonce added to session for user '{}' (id={}): {}", new Object[]{user.getDisplayName(), user.getId(), nonceStr});
 
+        // Add nonce to request parameters
+        Map additionalParameters = new HashMap();
+        additionalParameters.put("nonce", nonceStr);
+        WrappedRequest wrequest = new WrappedRequest(request, additionalParameters);
+*******/
+        
         // Update users last login time
         try {
             userService.updateLastLogin(user.getId());
         } catch (Exception ex) {
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
-            LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
+            LOG.warn("UserID: {}, lastlogin='{}' version={}", new Object[]{user.getVersion(), user.getId(), user.getLastLoginDate()});
         }
         LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
         checkBrowserWarning(request, response, getDefaultTargetUrl());

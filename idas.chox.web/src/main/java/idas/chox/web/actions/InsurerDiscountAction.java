@@ -18,6 +18,7 @@ import idas.chox.core.model.*;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.InsurerDiscountViewData;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class InsurerDiscountAction extends BaseAction implements ModelDriven<InsurerDiscount>, Preparable {
 
@@ -94,7 +95,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurerDiscountTypeJsonString() {
@@ -132,7 +133,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
                 Map error = new HashMap();
                 LOG.error("Exception in addDiscount(): ", ex);
                 result.put("success", Boolean.FALSE);
-                error.put("error", "Unexpected error occured, Please contact Chox support.");
+                error.put("error", "Unexpected error occurred, Please contact Chox support.");
                 result.put("errors",error);
             }
         }

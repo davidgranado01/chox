@@ -337,7 +337,7 @@ public class XmlUploadAction extends BaseAction {
                         this.getActionResponse().AssignMessageResult("File removed successfully.");
                         return SUCCESS;
                     } else {
-                        this.getActionResponse().AddError("An unexpected error occured while deleting this file. Please report to CHOX support.");
+                        this.getActionResponse().AddError("An unexpected error occurred while deleting this file. Please report to CHOX support.");
                         return ERROR;
                     }
                 }
@@ -370,7 +370,7 @@ public class XmlUploadAction extends BaseAction {
                     return SUCCESS;
                 } else {
                     LOG.warn("Error response received from the getUploadedClaimsDetails method.");
-                    setErrorMessage("An unexpected error occured while generating the report. Please report to chox support.");
+                    setErrorMessage("An unexpected error occurred while generating the report. Please report to chox support.");
                     return ERROR;
                 }
             } else {

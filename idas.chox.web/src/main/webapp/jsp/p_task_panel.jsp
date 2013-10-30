@@ -182,7 +182,7 @@
                 checkBoxSelMod,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
                     renderer:function(value,p,r){
-                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>';}},
+                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>';}},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},

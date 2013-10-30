@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.BreBand;
@@ -39,6 +36,9 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AdminInsurerService extends SecureDataService {
 
     static final Logger LOG = LoggerFactory.getLogger(AdminInsurerService.class);
@@ -52,6 +52,7 @@ public class AdminInsurerService extends SecureDataService {
     private BreBandOrganisationService breBandOrganisationService;
     private InsurerChorganisationService insurerChorganisationService;
     private VehicleClassCeilingService vehicleClassCeilingService;
+//    private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
     private VehicleClassService vehicleClassService;
     private UserService userService;
     private ClaimService claimService;
@@ -66,6 +67,10 @@ public class AdminInsurerService extends SecureDataService {
     public void setActionResponse(ActionResponse actionResponse) {
         this.actionResponse = actionResponse;
     }
+
+//    public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
+//        this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
+//    }
 
     public void triggerInsurerStatus(int insurerId) {
 
@@ -341,6 +346,15 @@ public class AdminInsurerService extends SecureDataService {
         getActionResponse().AssignNewIdResult(vehicleClassCeling.getId());
         return this.actionResponse;
     }
+    
+//    public ActionResponse addNewProtocolVehicleClassCeiling(ProtocolVehicleClassCeiling protocolVehicleClassCeling, int vehicleClassId, int breBandId) {
+//        this.actionResponse = new ActionResponse();
+//        protocolVehicleClassCeling.setVehicleClass(vehicleClassService.getVehicleClass(vehicleClassId));
+//        protocolVehicleClassCeling.setBreBand(breBandService.getBreBand(breBandId));
+//        protocolVehicleClassCeilingService.saveProtocolVehicleClassCeiling(protocolVehicleClassCeling);
+//        getActionResponse().AssignNewIdResult(protocolVehicleClassCeling.getId());
+//        return this.actionResponse;
+//    }
 
     public ActionResponse removeVehicleClassCeiling(int vehicleClassCeilingId) {
         this.actionResponse = new ActionResponse();
@@ -357,6 +371,15 @@ public class AdminInsurerService extends SecureDataService {
         vehicleClassCeilingService.saveVehicleClassCeiling(vehicleClassCeiling);
         return this.actionResponse;
     }
+    
+//    public ActionResponse updateProtocolVehicleClassCeiling(int protocolVehicleClassCeilingId, double hireNetCeiling, double repairNetCeiling) {
+//        this.actionResponse = new ActionResponse();
+//        ProtocolVehicleClassCeiling protocolVehicleClassCeiling = protocolVehicleClassCeilingService.getProtocolVehicleClassCeiling(protocolVehicleClassCeilingId);
+//        protocolVehicleClassCeiling.setHireNetCeiling(new BigDecimal(hireNetCeiling));
+//        protocolVehicleClassCeiling.setRepairNetCeiling(new BigDecimal(repairNetCeiling));
+//        protocolVehicleClassCeilingService.saveProtocolVehicleClassCeiling(protocolVehicleClassCeiling);
+//        return this.actionResponse;
+//    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="INSURER CH ORGANISATION">

@@ -99,7 +99,7 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                     reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
@@ -163,7 +163,7 @@ function loadLiveDirectReportGenerationStatus(){
                     directReportGenerationStatusIntervelId=window.clearInterval(directReportGenerationStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        msg: 'Unexpected error occurred. Please contact Chox Support.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR

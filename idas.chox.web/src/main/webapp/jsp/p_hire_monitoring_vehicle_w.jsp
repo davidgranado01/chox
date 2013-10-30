@@ -3,6 +3,8 @@
 
 <script type="text/javascript">
 
+    var vcHMCombo;
+    
     $(function(){
 
             ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
@@ -18,8 +20,44 @@
             value: '<s:property value="rentalStartTime" />',
             renderTo:'rentalMonitoringStartTimePH'
         });
+        
+        var vcHMJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
 
+        var vcHMStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+                reader : vcHMJsonReader
+                ,listeners: {load: function() {
+                    vcHMCombo.setValue('<s:property value="vehicleClass.id"/>');    
+                }}
+        });
 
+        vcHMCombo = new Ext.form.ComboBox({
+                store: vcHMStore,
+                renderTo: 'vcHMSelectionHolder',
+                valueField: 'text',
+                id: 'vcHMComboId',
+                hiddenName: 'vehicleClassMonitoringId',
+                displayField:'value',
+                typeAhead: true,
+                autoWidth: true,
+                listWidth: 100,
+                width: 100,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection : true,
+                emptyText: '--- SELECT ---'
+        });
+        vcHMStore.load();    
+        
         $.validator.addMethod('time', function (value) {
             if (value === '') return true;
             else return (/^(\d{2}:\d{2})$/).test(value);
@@ -60,7 +98,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Replacement Vehicle Class</label>
-                <s:select name="vehicleClassMonitoringId" id="hireMonitoringVehiclevehicleClassMonitoringId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
+                <div id="vcHMSelectionHolder"></div>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

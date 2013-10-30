@@ -14,7 +14,7 @@ import idas.chox.core.model.Insurer;
 public interface BillingInsurerService {
 
 	Map checkObject(String scheduleName, Date dateFrom,
-			Date dateTo, int insurerId, boolean manualClaims);
+			Date dateTo, int insurerId, String triggerPoint);
 
 	BillingInsurer getObject(int id);
 
@@ -25,7 +25,7 @@ public interface BillingInsurerService {
         void deleteObject(BillingInsurer object);
 
         List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer,
-                                          boolean excludeSupplmntInv, boolean manualInvoicesOnly);
+                                          boolean excludeSupplmntInv, String triggerPoint);
 
 	Set<BillingInsurerDetail> getScheduleDetailList(final int id);
 

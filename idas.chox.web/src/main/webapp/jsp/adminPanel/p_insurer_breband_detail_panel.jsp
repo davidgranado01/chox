@@ -3,6 +3,10 @@
 
 <script type="text/javascript">
 
+    var protocolVehicleClassCeiling_gridviewStore;
+    var protocolVehicleClassCeiling_gridviewGrid;
+    var protocolVehicleCeilingEditSelectionDlg;
+    
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -65,9 +69,131 @@
         ui.ajaxForm(form, doNewBreBandSaveResult);
 
         doRefreshCalculation();
+        
+        createProtocolVehicleCeilingEditWindow();
+
+        var protocolVehicleClassCeiling_JsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'vehicleClassId'},
+                {name:'vehicleClassName'},
+                {name:'hireNetCeiling'},
+                {name:'repairNetCeiling'},
+                {name:'createdBy'},
+                {name:'createdDate'},
+                {name:'removed'}
+            ]
+        });
+
+        protocolVehicleClassCeiling_gridviewStore = new Ext.data.Store({
+            removedList: [],
+            listeners: {
+                remove: function(store, record, index) {
+                    if(record.get("id")) { 
+                        // add removed record to an array if this is existing record.
+                        store.removedList.push(record);
+                    }
+                }, 
+                load : function(store, records, index){
+                            // if it is new bre band then mark all the PVCC recods as dirty(red flag).
+                            <s:if test="id == null">
+                                // Dirty flag can not be set to all fields to an existing record, so need to 
+                                // create and add new array of records and remove all the old records. 
+                                var addList = [];
+                                Ext.each(records,function(item){
+                                    item.set('id',null); 
+                                    item.markDirty(); 
+                                    addList.push(item);
+//                                    store.remove(item);
+//                                    console.dir(this);
+                                 });
+                                store.removeAll(true); 
+                                store.add(addList);
+                            </s:if>
+                }
+            },
+            pruneModifiedRecords : true, // to avoid sending newly added and removed record.
+            proxy: new Ext.data.HttpProxy
+            ({url: '<%= request.getContextPath()%>/prv/p/getSelectedBreBandProtocolVehicleClassCeiling.action', method:'POST'}),
+            reader:protocolVehicleClassCeiling_JsonReader
+        });
+
+        protocolVehicleClassCeiling_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:protocolVehicleClass_recordOnclickRemoveVehicleClassCeiling},
+            store: protocolVehicleClassCeiling_gridviewStore,
+            renderTo:'protocolVehicleClassCeilingGridviewGrid',
+            enableHdMenu:false,
+            enableColumnMove: false,
+            layout:'fit',
+            loadMask : true,
+            viewConfig:{forceFit:true},
+            columns: [
+                {header: "Vehicle Class", width: 200, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>"+value+"</a>"; }},
+                {header: "Hire Net Ceiling", width: 160, dataIndex: 'hireNetCeiling', sortable: true, resizable: true, renderer: function(value,p,r) { 
+                    return '£' + (parseFloat(value).toFixed(2));
+                }},
+                {header: "Repair Net Ceiling", width: 160, dataIndex: 'repairNetCeiling', sortable: true, resizable: true, renderer: function(value,p,r) {
+                    return '£' + (parseFloat(value).toFixed(2));
+                }},
+                {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
+            ],
+            height:200,
+            width: 670
+        });
+
+        onProtocolVehicleClassPageRefresh();
 
 
     });
+    
+    function createProtocolVehicleCeilingEditWindow() {
+        if(!protocolVehicleCeilingEditSelectionDlg || protocolVehicleCeilingEditSelectionDlg===null){
+            protocolVehicleCeilingEditSelectionDlg =  new Ext.Window({
+                applyTo:'pvccSelectionDlgHolder',
+                id:'protocolVehicleCeilingEditSelectionDlgId',
+                width:400,
+                height:200,
+                layout:'fit',
+                modal:true,
+                closeAction:'hide',
+                plain: false,
+                title: 'Edit Vehicle Class Ceiling',
+                resizable : false,
+                items: new Ext.Panel({
+                    applyTo: 'pvccSelectionPanel'
+                }),
+                buttons: [{
+                        text:'Ok', handler: function(){
+                            if (validateEditProtocolVehicleClassCeilingForm()) {
+                
+                                var protocolVehicleClassCeilingName = $("#editProtocolVehicleClassName").html();
+                                var editProtocolHireNetCeiling = parseFloat($("#editProtocolHireNetCeiling").val()).toFixed(2);
+                                var editProtocolRepairNetCeiling = parseFloat($("#editProtocolRepairNetCeiling").val()).toFixed(2);
+
+                                var editedRec = protocolVehicleClassCeiling_gridviewStore.getAt(protocolVehicleClassCeiling_gridviewStore.find('vehicleClassName', protocolVehicleClassCeilingName));
+                                if (parseFloat(editedRec.get('hireNetCeiling')).toFixed(2) !== editProtocolHireNetCeiling) {
+                                    editedRec.set('hireNetCeiling', editProtocolHireNetCeiling);
+                                } 
+                                if (parseFloat(editedRec.get('repairNetCeiling')).toFixed(2) !== editProtocolRepairNetCeiling) {
+                                    editedRec.set('repairNetCeiling', editProtocolRepairNetCeiling);
+                                } 
+                                protocolVehicleCeilingEditSelectionDlg.hide();
+                            }
+                        }
+                    },{
+                        text: 'Close', handler: function(){
+                            protocolVehicleCeilingEditSelectionDlg.hide();
+                        }
+                    }]
+            });
+
+        }
+    }
 
     function doRefreshCalculation(){
 
@@ -89,7 +215,7 @@
 
         // C12 - Collection of Vehicle from garage Variable (Days)
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
-        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays)
+        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays);
 
         doTtlLossAllowableTtlDuration();
         doRepairDurationRuleforMobileVehicleWithoutECD();
@@ -112,7 +238,7 @@
 
         var iLabourCostTotalDay = 0;
         var ttl = 0;
-        var iWeekendBufferDays = 0
+        var iWeekendBufferDays = 0;
 
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
         var iCCDEngineerInspectionDelayDaysMobile = $("#CCDEngineerInspectionDelayDaysMobile").val();
@@ -135,7 +261,7 @@
 
         var iLabourCostTotalDay = 0;
         var ttl = 0;
-        var iWeekendBufferDays = 0
+        var iWeekendBufferDays = 0;
 
         var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
         var iCCDEngineerInspectionDelayDaysNonMobile = $("#CCDEngineerInspectionDelayDaysNonMobile").val();
@@ -196,7 +322,7 @@
     }
 
     function doInsurerBreBandBack(){
-
+        protocolVehicleCeilingEditSelectionDlg = null;
         var tabIndex = 1;
 
     <s:if test="isChoxAdmin">
@@ -220,7 +346,7 @@
 
         function doDeleteBreBand(){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this BRE Band?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
                 var param = {"objectId":<s:property value="objectId" />};
                 ajax.loadHtml2(url, param, doDeleteBreBandResponse);
@@ -254,7 +380,7 @@
             {
                 if(response.isValid){
 
-                    if(response.resultType && response.resultType == 'New')
+                    if(response.resultType && response.resultType === 'New')
                     {
                         //                    alert("Your changes have been saved");
                         var newObjectId =  parseInt(response.result);
@@ -266,6 +392,8 @@
                         //                        $(target).html(data);
                         //                    });
 
+                    } else { // if this is existing bre band detail then
+                        onProtocolVehicleClassPageRefresh();
                     }
 
                 } else {
@@ -292,11 +420,240 @@
         }
 
     
-        function fadeOutMessage(){
-        	  $("#formUpdateInsurerBreBandDetail").submit();
-        	  $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);
-        	  $("#submitMesResult").show().fadeOut(10000);
-        };
+        function submitBreBandDetailFrom(){
+                var protocolVehicleClassCeilingRecords = [];
+                var i = 0;
+                
+                // now add the removed records to the protocolVehicleClassCeilingRecords
+                Ext.each(this.protocolVehicleClassCeiling_gridviewStore.removedList,function(item){
+                    protocolVehicleClassCeilingRecords[i] = item.data;
+                    i++;
+                });
+                
+                // add the updated/new records to the protocolVehicleClassCeilingRecords
+                Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(),function(item){
+                    protocolVehicleClassCeilingRecords[i] = item.data;
+                    i++;
+                });
+                
+                //Empty the removed records list.
+                this.protocolVehicleClassCeiling_gridviewStore.removedList = [];
+                // add the protocol vehicle class grid records to the form dynamically. 
+                if ($('input[name=protocolVehicleClassCeilingRecords]').length > 0 ) { // If the input tag already exists then just add the value. 
+                   $('input[name=protocolVehicleClassCeilingRecords]').val(Ext.util.JSON.encode(protocolVehicleClassCeilingRecords));
+                } else { // If the input tag does not exists then create, set the value and append the element to the form.
+                    var input = $("<input>").attr("name", "protocolVehicleClassCeilingRecords").attr('type', "hidden").val(Ext.util.JSON.encode(protocolVehicleClassCeilingRecords));
+                    $("form#formUpdateInsurerBreBandDetail").append($(input));
+                }
+                
+                $("#formUpdateInsurerBreBandDetail").submit(); // submit the form.
+                $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);
+                $("#submitMesResult").show().fadeOut(10000);
+        }
+        
+        function onProtocolVehicleClassPageRefresh(){
+            // hide the edit form
+            protocolVehicleCeilingEditSelectionDlg.hide();
+            // populate the vehicle class dropdown.
+            showProtocolVehicleClassDropDown();
+            // load the grid.
+            protocolVehicleClassCeiling_loadGridViewList();
+            // reset the form.
+            resetPVCCForm();
+        }
+
+        function resetPVCCForm(){
+            $("#vehicleClassId").val("");
+            $("#protocolHireNetCeiling").val('0.00');
+            $("#protocolRepairNetCeiling").val('0.00');
+        }
+
+        function protocolVehicleClassCeiling_loadGridViewList() {
+            <s:if test="id != null">  // if it is existing bre band then use breband id to get the grid records.
+                protocolVehicleClassCeiling_gridviewStore.load({params: {breBandId:'<s:property value="id" />'}});
+            </s:if>
+            <s:else > // if it is new bre band then use insurer id to get the grid records from the insurer vehicle class ceiling.
+                protocolVehicleClassCeiling_gridviewStore.load({params: {"breBandId":-1, "insurerId":'<s:property value="insurerId" />'}});
+            </s:else>
+            
+        }
+
+        function protocolVehicleClass_recordOnclickRemoveVehicleClassCeiling(grid, rowIndex, columnIndex, e) {
+
+            var gridRecord = protocolVehicleClassCeiling_gridviewGrid.getStore().getAt(rowIndex);
+
+            if (columnIndex === 3) {
+                
+                var protocolVehicleClassCeilingId = gridRecord.get("id");
+                var vehicleClassId = gridRecord.get("vehicleClassId");
+                var vehicleClassName = gridRecord.get("vehicleClassName");
+                
+                if (protocolVehicleClassCeilingId) {
+                    gridRecord.set('removed', 'true');
+                    gridRecord.markDirty();
+                } 
+                protocolVehicleClassCeiling_gridviewGrid.getStore().remove(gridRecord);
+                // add the removed(from grid) vehicle class name to the struts dropdown(available vehicle class) list.
+                $("#vehicleClassId").append('<option value="'+vehicleClassId+'">'+vehicleClassName+'</option>');
+
+            } else if (columnIndex === 0) {
+                showEditProtocolVehicleClassCeiling(gridRecord);
+            }
+
+        }
+
+        function showEditProtocolVehicleClassCeiling(gridRecord) {
+            $("#pvccMessageBox").html('');
+            protocolVehicleCeilingEditSelectionDlg.show();
+            $("#editProtocolVehicleClassCeilingId").val(gridRecord.get("id"));
+            $("#editProtocolVehicleClassName").html(gridRecord.get("vehicleClassName"));
+            $("#editProtocolHireNetCeiling").val(parseFloat(gridRecord.get("hireNetCeiling")).toFixed(2));
+            $("#editProtocolRepairNetCeiling").val(parseFloat(gridRecord.get("repairNetCeiling")).toFixed(2));
+        }
+
+        function showProtocolVehicleClassDropDown() {
+            var target = "#protocolVehicleClassDropDownDiv";
+            var url = "<%= request.getContextPath()%>/prv/p/protocolVehicleClassDropDownAction.action";
+            <s:if test="id != null"> // if it is existing breband then use breband id to get the available list for this breband. 
+                var param = {"breBandId":'<s:property value="id" />'};
+            </s:if>
+            <s:else > // if it is new breband then use insurer id to get the available list for this insurer vehicle class ceiling. 
+                var param = {"breBandId":-1, "insurerId":'<s:property value="insurerId" />'};
+            </s:else>
+            
+            ajax.loadHtml2(url, param, function(data) {
+                $(target).html(data);
+            });
+        }
+        
+        function addProtocolVehicleClassCeiling() {
+            if (validateProtocolVehicleClassCeilingForm()) {
+                // get the values from the form.
+                var vehicleClassName = $("#vehicleClassId :selected").text();
+                var vehicleClassId = $("#vehicleClassId").val();
+                var protocolHireNetCeiling = parseFloat($("#protocolHireNetCeiling").val()).toFixed(2);
+                var protocolRepairNetCeiling = parseFloat($("#protocolRepairNetCeiling").val()).toFixed(2);
+                // create new record type, mark dirty and add it to the grid store.
+                var recordType = protocolVehicleClassCeiling_gridviewGrid.getStore().recordType;
+                var newRecord = new recordType({'vehicleClassId':vehicleClassId, 'vehicleClassName':vehicleClassName, 'hireNetCeiling':protocolHireNetCeiling, 'repairNetCeiling':protocolRepairNetCeiling});
+                newRecord.markDirty();
+                newRecord.set('removed', 'false');
+                protocolVehicleClassCeiling_gridviewGrid.getStore().insert(0,newRecord);
+                // reset the form details.
+                $("#vehicleClassId option[value='"+vehicleClassId+"']").remove();
+                $("#protocolHireNetCeiling").val('0.00');
+                $("#protocolRepairNetCeiling").val('0.00');
+            }
+        }
+        
+        function validateProtocolVehicleClassCeilingForm(){
+            var mesBox = $("#CDProtocolVehicleClassCeilingMessageBox");
+            mesBox.empty();
+            var validForm = true;
+            
+            if ($("#vehicleClassId :selected").text() === "-- Please Select --") {
+                mesBox.append("You must select a 'Vehicle Class'\n<br/>").show();
+                validForm = false;
+            } 
+            if ($.isNumeric($("#protocolHireNetCeiling").val())) {
+                if (parseFloat($("#protocolHireNetCeiling").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Hire Net Ceiling'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Hire Net Ceiling'\n<br/>").show();
+                validForm = false;
+            }
+            
+            if ($.isNumeric($("#protocolRepairNetCeiling").val())) {
+                if (parseFloat($("#protocolRepairNetCeiling").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Repair Net Ceiling'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Repair Net Ceiling'\n<br/>").show();
+                validForm = false;
+            }
+            
+            if (validForm){
+//                mesBox.text("").show();
+                return true;
+            } else {
+                return false;
+            }
+
+         }
+        
+        function validateEditProtocolVehicleClassCeilingForm(){
+            var mesBox = $("#pvccMessageBox");
+            mesBox.empty();
+            var validForm = true;
+            if ($.isNumeric($("#editProtocolHireNetCeiling").val())) {
+                if ($("#editProtocolHireNetCeiling").val() < 0) {
+                    mesBox.append("You must supply a value for 'Hire Net Ceiling'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Hire Net Ceiling'\n<br/>").show();
+                validForm = false;
+            }
+            if ($.isNumeric($("#editProtocolRepairNetCeiling").val())) {
+                if ($("#editProtocolRepairNetCeiling").val() < 0) {
+                    mesBox.append("You must supply a value for 'Repair Net Ceiling'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Repair Net Ceiling'\n<br/>").show();
+                validForm = false;
+            }
+            if (validForm){
+//                mesBox.text("").show();
+                return true;
+            } else {
+                return false;
+            }
+
+         }
+         
+        function handleAfterSubmitProtocolVehicleClassCeilingForm(responseText, statusText){
+            var response = eval('(' + responseText.trim() + ')');
+
+            if(response){
+                if(response.isValid){
+
+                    if(response.resultType && response.resultType === 'New'){
+                        onProtocolVehicleClassPageRefresh();
+                    }
+                }else{
+                    Ext.Msg.show({
+                        title: 'Error',
+                        msg:response.errors,
+                        icon:Ext.Msg.ERROR,
+                        buttons:Ext.Msg.OK,
+                        width : 400
+                    });
+                    onProtocolVehicleClassPageRefresh();
+                }
+            }
+        }
+        
+        function handleAfterSubmitEditProtocolVehicleClassCeilingForm(responseText, statusText){
+           var response = eval('(' + responseText.trim() + ')');
+
+           if(response){
+               if(response.isValid){
+                   onProtocolVehicleClassPageRefresh();
+               }else{
+                   Ext.Msg.show({
+                       title: 'Error',
+                       msg:response.errors,
+                       icon:Ext.Msg.ERROR,
+                       buttons:Ext.Msg.OK,
+                       width : 400
+                   });
+               }
+           }
+       }
 
 </script>
 
@@ -314,7 +671,7 @@
                             <div class="label-block">
                                 <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                                <input type="button" value="Save" onclick="javascript: fadeOutMessage();"/>
+                                <input type="button" value="Save" onclick="javascript: submitBreBandDetailFrom();"/>
                                 <s:if test="!isNew">
                                     <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                                 </s:if>
@@ -747,20 +1104,72 @@
                             <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumCeilingToleranceId" name="nonStandardInsurancePremiumCeilingTolerance" value="<s:property value="nonStandardInsurancePremiumCeilingTolerance" />" />
                         </div>
                     </div>
-
-
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Additional Invoice Validations</div>
-
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
-                            <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
+                        <div class="section-name">Protocol Vehicle Class Ceilings</div>
+                        <div class="status-info">
+                            The maximum protocol ceiling limits for both the Hire Net and Repair Net for the specific vehicle classes is managed here. If a CHO submits an invoice where the Hire Net or Repair Net value(s) exceed the values held in the below table for the specific vehicle class in question, (non-fault vehicle's vehicle class) then the rule will fail.
                         </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div>
-                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
-                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
+                        <div id="protocolVehicleClassCeilingorganisationGird">
+                            <div class="grid-view-header">
+                                <div class="admin-bre-band-detail-section">
+                                    <table width="672px">
+                                        <tr>
+                                            <td  align="center">
+                                                <label id="protocolVehicleClassDropDownDiv"></label> </td>
+                                            <td  align="center">
+                                                <label class="chox-form-std-label">Hire Net Ceiling<span class="mandatory">*</span></label>
+                                                <input id="protocolHireNetCeiling" style="width:60px"/>
+                                            </td>
+                                            <td  align="center">
+                                                <label class="chox-form-std-label">Repair Net Ceiling<span class="mandatory">*</span></label>
+                                                <input id="protocolRepairNetCeiling" style="width:60px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan ="3" align="center">
+                                                <input type="button" value="Add New Vehicle Class" onclick="addProtocolVehicleClassCeiling();"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div id="CDProtocolVehicleClassCeilingMessageBox" class="action-error-msg"></div>
+                                    <div id="protocolVehicleClassCeilingGridviewGrid"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pvccSelectionDlgHolder" class="x-hidden">
+                            <div id="pvccSelectionPanel">
+                                <div class="form-container" style="height:300px; padding-bottom:30px">
+                                    <input id="editProtocolVehicleClassCeilingId" type="hidden"/>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-pop">Vehicle Class</label>
+                                        <div id="editProtocolVehicleClassName"></div>
+                                    </div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-pop">Hire Net Ceiling</label>
+                                        <input type="text" id="editProtocolHireNetCeiling"/>
+                                    </div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-pop">Repair Net Ceiling</label>
+                                        <input type="text" id="editProtocolRepairNetCeiling"/>
+                                    </div>
+                                    <div id="pvccMessageBox" class="action-error-msg"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                  <div class="admin-bre-band-detail-section">
+                      <div class="section-name">Additional Invoice Validations</div>
+
+                      <div class="chox-form-checkboxitem">
+                          <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
+                          <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
+                          <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
+                      </div>
+                      <div class="chox-form-checkboxitem">
+                          <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div>
+                          <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
+                          <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div>
@@ -1167,6 +1576,31 @@
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not billing more than the Maximum Labour Rate Per Hour.
                             </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" value="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" /></div>
+                            <label class="chox-form-check-label">Protocol Vehicle Class Hire Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" /></div>
+                            <label class="chox-form-check-label">Protocol Vehicle Class Repair Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the Repair Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticChargeCheckHpiLookup" value="compoundAutomaticChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Automatic Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundEstateChargeCheckHpiLookup" value="compoundEstateChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an estate.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticEstateChargeCheckHpiLookup" value="compoundAutomaticEstateChargeCheckHpiLookup" /></div>
+                            <label class="chox-form-check-label">Compound Vehicle Class Automatic/Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for these extras and the HPI lookup did not identify the Hire Vehicle to be an automatic and/or an estate</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

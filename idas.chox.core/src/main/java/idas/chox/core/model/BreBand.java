@@ -2,6 +2,8 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BreBand extends Entity implements Serializable, FullAudit {
     private Insurer insurer;
@@ -43,6 +45,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean hasAllowedVehicleClass;
     private boolean hasCalculatedCorrectDailyRate;
     private boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
+    private boolean hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling;
     private boolean hireDayCountDoesNotExceedBandHireDayCeiling;
     private boolean actualHireDaysDoesNotExceedAllowableHireDays;
     private boolean actualHireDaysDoesNotExceedTotalLossInspection;
@@ -65,6 +68,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean validateUniqueVehicleRegistrationNumber;
     private boolean labourCostBusinessRule;
     private boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
+    private boolean repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling;
     private boolean numberOfHireDaysReconcile;
     private boolean correntAdminFee;
     private boolean repairBookedInDateOnThursday;
@@ -134,7 +138,11 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean fixedFeeAdminFeeCheck;
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
-
+    private List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings;
+    private boolean compoundAutomaticChargeCheckHpiLookup;
+    private boolean compoundEstateChargeCheckHpiLookup;
+    private boolean compoundAutomaticEstateChargeCheckHpiLookup;
+    
     public BreBand() {
     }
 
@@ -1323,5 +1331,66 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setMaximumLabourRateCheck(boolean maximumLabourRateCheck) {
         this.maximumLabourRateCheck = maximumLabourRateCheck;
+    }
+
+    public List<ProtocolVehicleClassCeiling> getProtocolVehicleClassCeilings() {
+        return protocolVehicleClassCeilings;
+    }
+
+    public void setProtocolVehicleClassCeilings(List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings) {
+        this.protocolVehicleClassCeilings = protocolVehicleClassCeilings;
+    }
+    
+    public void addProtocolVehicleClassCeiling(ProtocolVehicleClassCeiling protocolVehicleClassCeiling) {
+        if (protocolVehicleClassCeiling == null) {
+            return;
+        }
+        
+        if (protocolVehicleClassCeilings == null) {
+            setProtocolVehicleClassCeilings(new ArrayList<ProtocolVehicleClassCeiling>());
+        } 
+        
+        protocolVehicleClassCeiling.setBreBand(this);
+        protocolVehicleClassCeilings.add(protocolVehicleClassCeiling);
+    }
+
+    public boolean isHireNetDoesNotExceedProtocolVehicleClassHireNetCeiling() {
+        return hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling;
+    }
+
+    public void setHireNetDoesNotExceedProtocolVehicleClassHireNetCeiling(boolean hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling) {
+        this.hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling = hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling;
+    }
+
+    public boolean isRepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling() {
+        return repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling;
+    }
+
+    public void setRepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling(boolean repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling) {
+        this.repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling = repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling;
+    }
+
+    public boolean isCompoundAutomaticChargeCheckHpiLookup() {
+        return compoundAutomaticChargeCheckHpiLookup;
+    }
+
+    public void setCompoundAutomaticChargeCheckHpiLookup(boolean compoundAutomaticChargeCheckHpiLookup) {
+        this.compoundAutomaticChargeCheckHpiLookup = compoundAutomaticChargeCheckHpiLookup;
+    }
+
+    public boolean isCompoundEstateChargeCheckHpiLookup() {
+        return compoundEstateChargeCheckHpiLookup;
+    }
+
+    public void setCompoundEstateChargeCheckHpiLookup(boolean compoundEstateChargeCheckHpiLookup) {
+        this.compoundEstateChargeCheckHpiLookup = compoundEstateChargeCheckHpiLookup;
+    }
+
+    public boolean isCompoundAutomaticEstateChargeCheckHpiLookup() {
+        return compoundAutomaticEstateChargeCheckHpiLookup;
+    }
+
+    public void setCompoundAutomaticEstateChargeCheckHpiLookup(boolean compoundAutomaticEstateChargeCheckHpiLookup) {
+        this.compoundAutomaticEstateChargeCheckHpiLookup = compoundAutomaticEstateChargeCheckHpiLookup;
     }
 }

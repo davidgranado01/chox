@@ -2,8 +2,11 @@ package idas.chox.data.services;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -13,12 +16,12 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -56,8 +59,13 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
-            q.setParameter(parameterName, parameters.get(parameterName));
-
+            if (parameters.get(parameterName) instanceof Collection) {
+                q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
+            } else if (parameters.get(parameterName) instanceof String) {
+                q.setString(parameterName, (String) parameters.get(parameterName));
+            } else {
+                q.setParameter(parameterName, parameters.get(parameterName));
+            }
         }
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }

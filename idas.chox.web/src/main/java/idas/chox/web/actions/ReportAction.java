@@ -29,6 +29,7 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -174,9 +175,25 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public String getReportGenerationStatus() {
         synchronized (getSessionLock()) {
-            setExportFinished((Boolean) getSession().get("isExportFinished"));
-            setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-            setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+            if (getSession() != null) { // Add extra null checks as session sometimes empty!
+                if (getSession().get("isExportFinished") != null) {
+                    setExportFinished((Boolean) getSession().get("isExportFinished"));
+                } else {
+                    setExportFinished(Boolean.FALSE);
+                }
+                if (getSession().get("cancelExportOperation") != null) {
+                    setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
+                } else {
+                    setExportCanceled(Boolean.FALSE);
+                }
+                if (getSession().get("exceptionThrown") != null) {
+                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                } else {
+                    setExceptionOccured(Boolean.FALSE);
+                }
+            } else {
+                LOG.warn("Session is null.");
+            }
         }
         return SUCCESS;
     }
@@ -213,7 +230,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             File emptyFile = File.createTempFile("emptyReport_", ".xls");
             emptyFile.deleteOnExit();
             PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occured generating this report. Please contact CHOX support.");
+            printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support.");
             printWriter.close();
             reportStream = new DeleteOnCloseFileInputStream(emptyFile);
         } catch (FileNotFoundException ex) {
@@ -246,7 +263,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurersJsonString() {
@@ -254,7 +271,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public void setReportName(String report) {

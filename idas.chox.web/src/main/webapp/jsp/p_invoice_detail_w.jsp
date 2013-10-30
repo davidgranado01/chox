@@ -19,6 +19,7 @@
     var hireInsurerDiscountApplied = '<s:property value="hireInsurerDiscountCalculated"/>';
     var repairInsurerDiscountApplied = '<s:property value="repairInsurerDiscountCalculated"/>';
     var totalInsurerDiscountApplied = '<s:property value="totalInsurerDiscountCalculated"/>';
+    var vcInvDetailCombo;
     
     var noteMessageDiv=null;
     var tpiClaimChk;
@@ -224,9 +225,82 @@
             return /^(\d{2}:\d{2})$/.test(value);
         });
 
+        var vcInvDetailJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        var vcInvDetailStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+                reader : vcInvDetailJsonReader
+                ,listeners: {load: function() {
+                    vcInvDetailCombo.setValue('<s:property value="vehicleClass.id"/>'); 
+                    if (randomNumber === 10) {
+                        var vehicleClassText = vcInvDetailCombo.getRawValue();
+                        var time = document.formUpdateInvoiceRecalculationForm.rentalStart.value + ' ' + rentalStartTimePicker.getValue();
+                        if (document.getElementById("hireMonitorVehicleClassId") !== null && document.getElementById("hireMonitorHireStartId") !== null) {
+                            document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassText;
+                            document.getElementById("hireMonitorHireStartId").innerHTML = time;
+                        } else if (vcHMCombo !== 'undefined' && document.getElementById("rentalStart") !== null && document.getElementById("rentalStartTimePickerHMVId") !== null) {
+                            vcHMCombo.setValue('<s:property value="vehicleClass.id"/>');
+                            Ext.getCmp("rentalStart").setValue(document.formUpdateInvoiceRecalculationForm.rentalStart.value);
+                            Ext.getCmp("rentalStartTimePickerHMVId").setValue(rentalStartTimePicker.getValue());
+                        }
+                    }
+                }}
+        });
+
+        vcInvDetailCombo = new Ext.form.ComboBox({
+                store: vcInvDetailStore,
+                renderTo: 'vcInvDetailSelectionHolder',
+                valueField: 'text',
+                id: 'vcInvDetailComboId',
+                hiddenName: 'vehicleClassId',
+                displayField:'value',
+                typeAhead: true,
+                autoWidth: true,
+                listWidth: 100,
+                width: 100,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection : true,
+                emptyText: '--- SELECT ---',
+                listeners: {
+                    select:function (field, newValue, oldValue ) {
+                                
+                                var vehicleClassId = field.getRawValue();
+                                createVehicleClassPriceHelpNote();
+
+                                <s:iterator value="allVehicleClassPriceMapper">
+                                        if(vehicleClassId==='<s:property value="name"/>'){
+                                            var price = parseFloat('<s:property value="price"/>');
+                                            document.getElementById("HireRate").value = price.toFixed(2);
+                                        }
+                                </s:iterator>
+                    }
+                }
+        });
+        vcInvDetailStore.load();    
+        
+        $.validator.addMethod("vcInvDetailSelectionRule",
+            function(value) {
+                if(value === "" || value < 1) {
+                    return false;
+                }
+                return true;
+            }
+        );
+           
 
         form0.validate(
         {
+            ignore: [],
             errorLabelContainer: "#EngRptmessageBox",
             rules: {
                 vehicleManufacturer:{required:true},
@@ -236,7 +310,7 @@
                 rentalStartTime:{time:true,required:true},
                 rentalEnd:{dateITA:true,required:true},
                 rentalEndTime:{time:true,required:true},
-                vehicleClassId : { min:1 },
+                vehicleClassId : { vcInvDetailSelectionRule : true },
                 days : { required:true,min:0, digits:true },
                 hireRateChargedPerDay :{required:true, number:true, min:0},
                 hireNet :{required:true, number:true, min:0},
@@ -357,7 +431,7 @@
                 rentalEnd: {dateITA:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
                 rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
                 rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
-                vehicleClassId:{min: "You must select a Vehicle Class"},
+                vehicleClassId:{vcInvDetailSelectionRule : "You must select a Vehicle Class"},
                 days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
             }
         });
@@ -373,18 +447,6 @@
 
     });
 
-    function changeHireRate(){
-        var vehicleClassId = $('#vehicleClassComboId :selected').text();
-        createVehicleClassPriceHelpNote();
-
-    <s:iterator value="allVehicleClassPriceMapper">
-            if(vehicleClassId==='<s:property value="name"/>'){
-                var price = parseFloat('<s:property value="price"/>');
-                document.getElementById("HireRate").value = price.toFixed(2);
-            }
-    </s:iterator>
-
-        }
     function updateHireMonitoringPanel() {
             ashow=true;
             bshow=true;
@@ -395,18 +457,7 @@
             c=2;
             d=2;
             document.getElementById('hideAndShow').value=2;
-            var vehicleClassText = $('#vehicleClassComboId :selected').text();
-            var vehicleClassId = $('#vehicleClassComboId :selected').val();
-            var time = document.formUpdateInvoiceRecalculationForm.rentalStart.value + ' ' + rentalStartTimePicker.getValue();
-            if (document.getElementById("hireMonitorVehicleClassId") !== null && document.getElementById("hireMonitorHireStartId") !== null) {
-                document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassText;
-                document.getElementById("hireMonitorHireStartId").innerHTML = time;
-            } else if (document.getElementById("hireMonitoringVehiclevehicleClassMonitoringId") !== null && document.getElementById("rentalStart") !== null 
-                                                                                                        && document.getElementById("rentalStartTimePickerHMVId") !== null) {
-                $("#hireMonitoringVehiclevehicleClassMonitoringId").val(vehicleClassId);
-                Ext.getCmp("rentalStart").setValue(document.formUpdateInvoiceRecalculationForm.rentalStart.value);
-                Ext.getCmp("rentalStartTimePickerHMVId").setValue(rentalStartTimePicker.getValue());
-            }
+            
             if(randomNumber===20){
                 $("#resultMessage").hide();
                 var vatCalculationText = '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
@@ -567,8 +618,9 @@
         }
 </script>
 
-
-<form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
+<!--<div class="x-panel-bwrap chox-form-container">
+<label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>-->
+<form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" method="post" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'/>
     <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
@@ -1236,7 +1288,7 @@
                                                 <div class="chox-form-item" id="VehicleClass">
                                                     <label class="chox-form-std-label">
                                                         Replacement Vehicle Class<span class="mandatory">*</span></label>
-                                                        <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
+                                                        <div id="vcInvDetailSelectionHolder"></div>
                                                 </div>
                                             </td>
 
@@ -1391,7 +1443,7 @@
                                                 <div class="chox-form-item" id="VehicleClass">
                                                     <label class="chox-form-std-label">
                                                         Replacement Vehicle Class</label>
-                                                        <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
+                                                        <div id="vcInvDetailSelectionHolder"></div>
                                                 </div>
                                             </td>
 
@@ -2133,4 +2185,5 @@
     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
 </form>
+<!--</div>-->
 

@@ -1,20 +1,19 @@
 package idas.chox.service.dashboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import idas.chox.core.model.Insurer;
 import idas.chox.data.services.BaseDataService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerDashboardBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
-    private static final Logger logger = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
-    // INPUT DATA
     private BaseDataService baseDataService;
     private Insurer insurer;
     private Map extParameters;
@@ -59,7 +58,7 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_closed_w) as v_manual_InvoicesClosed, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_w) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_w) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = :pInsId and complete=true");
+        sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
         return build(queryParameters, sb.toString());
     }
 
@@ -97,7 +96,7 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_closed_m) as v_manual_InvoicesClosed, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_m) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_m) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = :pInsId and complete=true");
+        sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
         return build(queryParameters, sb.toString());
     }
 
@@ -140,7 +139,7 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_closed_c) as v_manual_InvoicesClosed, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_c) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_c) as v_InvoicesAwaitingLitigationOutcome ");
-        sb.append("from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = :pInsId and complete=true");
+        sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
         return build(queryParameters, sb.toString());
     }
 
@@ -157,30 +156,42 @@ public class InsurerDashboardBuilder {
     private Map getQueryParameters() {
         Map queryParameters = new HashMap();
 
-        Integer choOrgId = -1;
-        Integer workgroupId = -1;
-        Integer claimOwnerId = -1;
+        List<Integer> choIds = new ArrayList<Integer>();
+        List<Integer> workgroupIds = new ArrayList<Integer>();
+        List<Integer> claimOwnerIds = new ArrayList<Integer>();
 
         String choOrgIdRaw = ((String[]) this.extParameters.get("supplierId"))[0].toString();
         if (!choOrgIdRaw.isEmpty()) {
-            choOrgId = Integer.parseInt(choOrgIdRaw);
+            for (String choId : choOrgIdRaw.split(",")) {
+                choIds.add(Integer.parseInt(choId));
+            }
+        } else {
+            choIds.add(-1);
         }
 
         String workgroupIdRaw = ((String[]) this.extParameters.get("workgroupId"))[0].toString();
         if (!workgroupIdRaw.isEmpty()) {
-            workgroupId = Integer.parseInt(workgroupIdRaw);
+            for (String wgId : workgroupIdRaw.split(",")) {
+                workgroupIds.add(Integer.parseInt(wgId));
+            }
+        } else {
+            workgroupIds.add(-1);
         }
 
         String claimOwnerIdRaw = ((String[]) this.extParameters.get("claimOwnerId"))[0].toString();
         if (!claimOwnerIdRaw.isEmpty()) {
-            claimOwnerId = Integer.parseInt(claimOwnerIdRaw);
+            for (String ownerId : claimOwnerIdRaw.split(",")) {
+                claimOwnerIds.add(Integer.parseInt(ownerId));
+            }
+        } else {
+            claimOwnerIds.add(-1);
         }
 
         queryParameters.put("pInsId", insurer.getId());
-        queryParameters.put("pChorganisationId", choOrgId);
-        queryParameters.put("pWorkgroupId", workgroupId);
-        queryParameters.put("pClaimOwnerId", claimOwnerId);
-        logger.debug("workgroupId :" + workgroupId + "claimOwnerId :" + claimOwnerId + "pInsId :" + insurer.getId() + "choOrgId :" + choOrgId);
+        queryParameters.put("pChorganisationIds", choIds);
+        queryParameters.put("pWorkgroupIds", workgroupIds);
+        queryParameters.put("pClaimOwnerIds", claimOwnerIds);
+        LOG.debug("workgroupIds :" + workgroupIds.toString() + "claimOwnerIds :" + claimOwnerIds.toString() + "pInsId :" + insurer.getId() + "choOrgIds :" + choIds.toString());
         return queryParameters;
     }
 

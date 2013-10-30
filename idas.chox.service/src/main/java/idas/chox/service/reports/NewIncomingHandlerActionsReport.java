@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
@@ -24,6 +24,9 @@ import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.HandlerActionsReportObject;
 import idas.chox.service.reports.viewdata.HandlerActionsStatusLineItem;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class NewIncomingHandlerActionsReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewIncomingHandlerActionsReport.class);
@@ -31,7 +34,8 @@ public class NewIncomingHandlerActionsReport implements Report {
     private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private ReportDataService reportDataService;
-
+    private boolean isInsurerInvoiceUploadEnabled;
+    
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
@@ -61,7 +65,12 @@ public class NewIncomingHandlerActionsReport implements Report {
             Integer selectedOwnerId = -1;
             boolean isWorkgroupEnabled = false;
             boolean isClaimOwnershipEnabled = false;
-
+            
+            
+            if (currentUser.getInsurer().isInvoiceUploadEnabled() || currentUser.getInsurer().isClaimUploadEnabled()) {
+                isInsurerInvoiceUploadEnabled = true;
+            }
+            
             if (currentUser.getInsurer() != null) {
                 insurerId = currentUser.getInsurer().getId();
                 isWorkgroupEnabled = currentUser.getInsurer().isWorkgroupEnable();
@@ -115,7 +124,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                 StringBuilder sb = new StringBuilder();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
@@ -140,7 +149,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                 StringBuilder sb = new StringBuilder();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
@@ -172,7 +181,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
                             obj.getId());
-                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
+                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' ");
                 } else if (isWorkgroupEnabled && isClaimOwnershipEnabled) {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
@@ -397,7 +406,71 @@ public class NewIncomingHandlerActionsReport implements Report {
                         .append("or (a.original_status='AwaitingInvoicePayment' ") 
                         .append("and a.last_modified_date between :pStartDate and :pEndDate ")
                         .append("and a.reverted = true))) as countAwaitingInvoicePayment " );
+                    
+                    if (isInsurerInvoiceUploadEnabled) {
 
+                        /*
+                         * No of new handler actions ManualInvoiceBREApproved
+                         */
+                        sb.append(", (select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
+                        if (isWorkgroupEnabled) {
+                            sb.append("and c.workgroup_id = :pWorkgroupId ");
+                        }
+                        if (selectedCHOId > 0) {
+                            sb.append("and c.chorganisation_id = :pChoId ");
+                        }
+                        if (isClaimOwnershipEnabled) {
+                            sb.append("and c.claim_owner_id = :pOwnerId ");
+                        }
+                        sb.append("and c.insurer_id = :pInsurerId ")
+                                .append("and ((a.new_status='ManualInvoiceBREApproved' ")
+                                .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                                .append("or (a.original_status='ManualInvoiceBREApproved' ")
+                                .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                                .append("and a.reverted = true))) as countManualInvoiceBREApproved, ");
+
+                        /*
+                         * No of new handler actions ManualInvoiceBRERejected
+                         */
+                        sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
+                        if (isWorkgroupEnabled) {
+                            sb.append("and c.workgroup_id = :pWorkgroupId ");
+                        }
+                        if (selectedCHOId > 0) {
+                            sb.append("and c.chorganisation_id = :pChoId ");
+                        }
+                        if (isClaimOwnershipEnabled) {
+                            sb.append("and c.claim_owner_id = :pOwnerId ");
+                        }
+                        sb.append("and c.insurer_id = :pInsurerId ")
+                                .append("and ((a.new_status='ManualInvoiceBRERejected' ")
+                                .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                                .append("or (a.original_status='ManualInvoiceBRERejected' ")
+                                .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                                .append("and a.reverted = true))) as countManualInvoiceBRERejected, ");
+
+                        /*
+                         * No of new handler actions ManualInvoiceContested
+                         */
+                        sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
+                        if (isWorkgroupEnabled) {
+                            sb.append("and c.workgroup_id = :pWorkgroupId ");
+                        }
+                        if (selectedCHOId > 0) {
+                            sb.append("and c.chorganisation_id = :pChoId ");
+                        }
+                        if (isClaimOwnershipEnabled) {
+                            sb.append("and c.claim_owner_id = :pOwnerId ");
+                        }
+                        sb.append("and c.insurer_id = :pInsurerId ")
+                                .append("and ((a.new_status='ManualInvoiceContested' ")
+                                .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                                .append("or (a.original_status='ManualInvoiceContested' ")
+                                .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                                .append("and a.reverted = true))) as countManualInvoiceContested ");
+
+                    }
+                    
                     queryParameters = new HashMap();
                     if (isWorkgroupEnabled) {
                         queryParameters.put("pWorkgroupId", obj.getId());
@@ -416,7 +489,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
-                        handlerActionItem.updateObject((Map) detailData.get(0));
+                        handlerActionItem.updateObject((Map) detailData.get(0), isInsurerInvoiceUploadEnabled);
                         obj.getOwner().add(handlerActionItem);
                     }
                 }
@@ -542,22 +615,40 @@ public class NewIncomingHandlerActionsReport implements Report {
          * 2 different template. Further investigation needed to work around. 
          */
         short[] columnsToHide = null;
+        ArrayList<Short> columnsToHideList = new ArrayList<Short>();
         WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
         if (user.getInsurer().isWorkgroupEnable() && user.getInsurer().isClaimOwnershipEnable()) { // if both claimownership and workgroup enabled
             if (!user.getInsurer().isEngineersEnable()) {
-                columnsToHide = new short[]{(short) 6};
+                columnsToHideList.add((short) 6);
             }
         } else if (user.getInsurer().isWorkgroupEnable()) { // if claimownership not enabled
             if (user.getInsurer().isEngineersEnable()) {
-                columnsToHide = new short[]{(short) 2};
+                columnsToHideList.add((short) 2);
             } else {
-                columnsToHide = new short[]{(short) 2, (short) 6};
+                columnsToHideList.add((short) 2);
+                columnsToHideList.add((short) 6);
             }
         } else if (user.getInsurer().isClaimOwnershipEnable()) { // if workgroup not enabled 
             if (!user.getInsurer().isEngineersEnable()) {
-                columnsToHide = new short[]{(short) 5};
+                columnsToHideList.add((short) 5);
             }
         }
+        
+        if (!isInsurerInvoiceUploadEnabled) {
+            if (user.getInsurer().isWorkgroupEnable()) {
+                columnsToHideList.add((short) 12);
+                columnsToHideList.add((short) 13);
+                columnsToHideList.add((short) 14);
+            } else {
+                columnsToHideList.add((short) 11);
+                columnsToHideList.add((short) 12);
+                columnsToHideList.add((short) 13);
+            }
+        }
+        if (columnsToHideList.size() > 0) {
+            columnsToHide = ArrayUtils.toPrimitive(columnsToHideList.toArray(new Short[columnsToHideList.size()]));
+        }
+        
         return columnsToHide;
     }
 

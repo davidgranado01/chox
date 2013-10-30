@@ -29,6 +29,7 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -145,30 +146,34 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append(" (date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(TIMESTAMP '");
-        sb.append(getShDtStr(dateFrom));
-        sb.append("',TIMESTAMP '");
-        sb.append(getShDtStr(dateTo));
-        sb.append("') ");
+        sb.append("(date(:pDateFrom)");
+        sb.append(",date(:pDateTo)) ");
         sb.append("from insurer_discount ");
-        sb.append("where chorganisation_id = ");
-        sb.append(choId);
-        sb.append(" and insurer_id = ");
-        sb.append(insId);
-        sb.append(" and discount_type = ");
-        sb.append(insurerDiscountTypeValue);
+        sb.append("where chorganisation_id = :pChoId");
+        sb.append(" and insurer_id = :pInsurerId");
+        sb.append(" and discount_type = :pInsurerDiscountTypeValue");
         
         if (discountId > 0) {
-            sb.append(" and id != ");
-            sb.append(discountId);
+            sb.append(" and id != :pDiscountId");
         }
 
         String query = sb.toString();
         LOG.debug("checkScheduleOverlap query is: {}", query);
 
-        List valList = getCurrentSession().createSQLQuery(query).list();
+        Map extParameters = new HashMap();
+        extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
+        extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
+        extParameters.put("pChoId", choId);
+        extParameters.put("pInsurerId", insId);
+        extParameters.put("pInsurerDiscountTypeValue", insurerDiscountTypeValue);
+        if (discountId > 0) {
+            extParameters.put("pDiscountId", discountId);
+        }
+        
+        List valList = externalQuery(query, extParameters);
         for (Object object : valList) {
-            if (((Boolean) object).booleanValue()) {
+            Map data = (Map) object;
+            if ((Boolean) (data.get("overlaps"))) {
                 checks.put("dateTo", "Selected period overlaps with an existing discount for this CHO.");
 //                checks.put("dateFrom", "Selected period overlaps with an existing discount for this CHO.");
                 break;
@@ -186,23 +191,25 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(TIMESTAMP '");
-        sb.append(getShDtStr(invoiceCreatedDate));
-        sb.append("',TIMESTAMP '");
-        sb.append(getShDtStr(invoiceCreatedDate));
-        sb.append("') as overlap, discount_percentage ");
+        sb.append("(date(:pInvoiceCreatedDate)");
+        sb.append(",date(:pInvoiceCreatedDate)) ");
+        sb.append("as overlap, discount_percentage ");
         sb.append("from insurer_discount ");
-        sb.append("where chorganisation_id = ");
-        sb.append(choId);
-        sb.append(" and insurer_id = ");
-        sb.append(insId);
-        sb.append(" and discount_type = ");
-        sb.append(insurerDiscountTypeValue);
+        sb.append("where chorganisation_id = :pChoId");
+        sb.append(" and insurer_id = :pInsurerId");
+        sb.append(" and discount_type = :pInsurerDiscountTypeValue");
         sb.append(") as discountPercentage where overlap = ");
         sb.append(true);
 
         String query = sb.toString();
         LOG.debug("getting discount percentage query is: {}", query);
+        
+        Map extParameters = new HashMap();
+        extParameters.put("pInvoiceCreatedDate", DateHelper.getDBDateFormat().format(invoiceCreatedDate));
+        extParameters.put("pChoId", choId);
+        extParameters.put("pInsurerId", insId);
+        extParameters.put("pInsurerDiscountTypeValue", insurerDiscountTypeValue);
+        
         List valList;
         /*
          *  The below Try catch method implemented because the abouve query is throwing sql syntax error in H2 database and making unit test failure.
@@ -211,7 +218,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                         select distinct discount_percentage from (select distinct(date_from,date_to) overlaps (DATE '2011-09-29',DATE '2011-09-29') as overlap, discount_percentage from insurer_discount where chorganisation_id = 1006 and insurer_id = 3) as discountPercentage where overlap = true [42001-121])
          */
         try {
-            valList = getCurrentSession().createSQLQuery(query).list();
+            valList = externalQuery(query, extParameters);
         } catch (Exception th) {
             LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: ", th);
             LOG.error("ins id {}, cho id {}", insId, choId);
@@ -220,8 +227,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         for (Object object : valList) {
-            LOG.debug("returning discount percentage is: {}", (BigDecimal) object);
-            return ((BigDecimal) object);
+            Map data = (Map) object;
+            return (BigDecimal) (data.get("discount_percentage"));
         }
         LOG.debug("No discount percentage found for this invoice created date: {}", invoiceCreatedDate);
         return BigDecimal.ZERO;

@@ -114,7 +114,7 @@
 
                                                     Ext.MessageBox.show({
                                                         title: 'File Process failure',
-                                                        msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                        msg: 'Unexpected Error occurred. Please report to chox admin.',
                                                         width:300,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon : Ext.MessageBox.ERROR
@@ -247,7 +247,7 @@
 
                                                     Ext.MessageBox.show({
                                                         title: 'File deletion failure',
-                                                        msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                        msg: 'Unexpected Error occurred. Please report to chox admin.',
                                                         width:300,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon : Ext.MessageBox.ERROR
@@ -485,7 +485,7 @@
                 {header: "Supplier Reference", width:100, dataIndex: 'supplierReferenceNumber', sortable: true, resizable: true,
                     // if( (r.data['claimStatus']!=null && r.data['claimStatus']!='' && r.data['claimStatus']!='N/A' ) || r.data['valid'] )
                     renderer:function(value,p,r){ if( r.data['claimId']>0 ){
-                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId']+ '&tab=' + currentTabIndex + '">' + value + '</a>'}
+                            return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>';}
                         else{return r.data.supplierReferenceNumber}}},
                 {header: "Claim Status", width:150, dataIndex: 'claimStatus', sortable: true, resizable: true},
                 {header: "Process Status", width:150, dataIndex: 'processStatus', sortable: true, resizable: true},
@@ -633,7 +633,7 @@
                 return 'green-row';
             }else if(status=='Partially Uploaded' || status=='PARTIALUPLOAD'){
                 return 'orange-row';
-            }else if(status=='All Rejected' || status=='ALLREJECTED' || status=='ERROR'){
+            } else if(status=='All Rejected' || status=='ALLREJECTED' || status=='ERROR' || status=='Failed') {
                 return 'red-row';
             }else if(record.data.valid==false || status=='Error'){
                 return 'gray-row'
@@ -756,10 +756,7 @@
             var record = grid.getStore().getAt(rowIndex);
             if(record.get('claimId')>0){
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
-                /*
-                 *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
-                 */
-                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
+                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
             }
         }
     }

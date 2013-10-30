@@ -1587,4 +1587,82 @@ public class Invoice extends Entity implements Serializable {
         }
         return false;
     }
+    
+    public enum DisplayName {
+        // Insert in the order as they are displayed in the UI. 
+        HANDLING_INVOICE_NO                 ("handlingInvoiceNo", "Supplier Claims Handling #"),
+        CLAIM_INVOICE_NO                    ("claimInvoiceNo", "Supplier Claim Invoice #"),
+        HIRE_RATE_CHARGED_PER_DAY           ("hireRateChargedPerDay", "Hire Rate Charged Per Day"),
+        HIRE_NET                            ("hireNet", "Hire Net"),
+        HIRE_VAT                            ("hireVat", "Hire VAT"),
+        HIRE_GROSS                          ("hireGross", "Hire Gross"),
+        REPAIR_NET                          ("repairNet", "Repair Net"),
+        REPAIR_VAT                          ("repairVat", "Repair VAT"),
+        REPAIR_GROSS                        ("repairGross", "Repair Gross"),
+        ENGINEER_FEE_NET                    ("engineerFeeNet", "Engineer Fee Net"),
+        ENGINEER_FEE_VAT                    ("engineerFeeVat", "Engineer Fee VAT"),
+        ENGINEER_FEE_GROSS                  ("engineerFeeGross", "Engineer Fee Gross"),
+        TOTAL_LOSS_FEE_NET                  ("totalLossFeeNet", "Total Loss Fee Net"),
+        TOTAL_LOSS_FEE_VAT                  ("totalLossFeeVat", "Total Loss Fee VAT"),
+        TOTAL_LOSS_FEE_GROSS                ("totalLossFeeGross", "Total Loss Fee Gross"),
+        STORAGE_RECOVERY_NET                ("storageRecoveryNet", "Storage Recovery Net"),
+        STORAGE_RECOVERY_VAT                ("storageRecoveryVat", "Storage Recovery VAT"),
+        STORAGE_RECOVERY_GROSS              ("storageRecoveryGross", "Storage Recovery Gross"),
+        TOTAL_NET                           ("totalNet", "Total Net"),
+        TOTAL_VAT                           ("totalVat", "Total Vat"),
+        TOTAL_GROSS                         ("totalGross", "Total Gross"),
+        CLAIMS_HANDLING_INVOICE_AMOUNT      ("claimsHandlingInvoiceAmount", "Claims Handling Invoice Amount"),
+        DEDUCTION_CLAIMS_HANDLING_FEE       ("deductionForClaimsHandlingFee", "Deduction For Claims Handling Fee"),
+        CHO_DISCOUNT                        ("discount", "CHO Discount"),
+        FULL_TOTAL_REQUESTED                ("fullTotalToPay", "Full Total Requested"),
+        TOTAL_TO_PAY                        ("totalToPay", "Total To Pay"),
+        EXCESS_AMOUNT_COLLECTED             ("excessAmountCollected", "Excess Collected From Policyholder"),
+        VAT_AMOUNT_COLLECTED                ("vatAmountCollected", "VAT Collected From Policyholder"),
+        DATE_INVOICED                       ("dateInvoiced", "Date Invoiced"),
+        ACQUISITION_FEE                     ("acquisitionFee", "Acquisition Fee"),
+        MISCELLANEOUS_FEE                   ("miscellaneousFee", "Miscellaneous Costs"),
+        AUTOMATIC_FEE                       ("automaticFee", "Automatic Fee"),
+        AUTOMATIC_QTY                       ("automaticQty", "Automatic Quantity"),
+        ADDITIONAL_DRIVER_FEE               ("additionalDriverFee", "Additional Driver Fee"),
+        ADDITIONAL_DRIVER_QTY               ("additionalDriverQty", "Additional Driver Quantity"),
+        SAT_NAV_FEE                         ("satNavFee", "Sat Nav Fee"),
+        SAT_NAV_QTY                         ("satNavQty", "Sat Nav Quantity"),
+        ESTATE_FEE                          ("estateFee", "Estate Fee"),
+        ESTATE_QTY                          ("estateQty", "Estate Quantity"),
+        BABY_SEAT_FEE                       ("babySeatFee", "Baby Seat Fee"),
+        BABY_SEAT_QTY                       ("babySeatQty", "Baby Seat Quantity"),
+        TOW_BARS_FEE                        ("towBarsFee", "Tow Bars Fee"),
+        TOW_BARS_QTY                        ("towBarsQty", "Tow Bars Quantity"),
+        NON_STANDARD_INS_PREMIUM_FEE        ("nonStandardInsurancePremiumFee", "Non-standard Risk Ins. Premium Fee"),
+        NON_STANDARD_INS_PREMIUM_QTY        ("nonStandardInsurancePremiumQty", "Non-standard Risk Ins. Premium Qty"),
+        COVER_NOTE_REQUIRED                 ("coverNoteRequired", "Cover Note Required For Customers Own Insurance Policy?"),
+        ADMIN_FEE                           ("adminFee", "Admin Fee"),
+        ADMIN_QTY                           ("adminQty", "Admin Quantity"),
+        ROOF_RACK_FEE                       ("roofRackFee", "Roof Rack Fee"),
+        ROOF_RACK_QTY                       ("roofRackQty", "Roof Rack Quantity"),
+        DUAL_CONTROL_FEE                    ("dualControlFee", "Dual Control Fee"),
+        DUAL_CONTROL_QTY                    ("dualControlQty", "Dual Control Quantity"),
+        DELIVERY_COLLECTION_FEE             ("deliveryCollectionFee", "Delivery Collection Fee"),
+        DELIVERY_COLLECTION_QTY             ("deliveryCollectionQty", "Delivery Collection Fee Quantity"),
+        OVERHEAD_FEE                        ("overheadFee", "Overhead and Margin Fee"),
+        REPAIR_ADMIN_FEE                    ("repairAdminFee", "Repair Admin Fee"),
+        REPAIR_ACQUISITION_FEE              ("repairAcquisitionFee", "Repair Acquisition Fee");
+        
+        private final String parameterName;
+        private final String displayName;
+
+        DisplayName(String name, String displayName) {
+            this.parameterName = name;
+            this.displayName = displayName;
+        }
+
+        public String getParameterName() {
+            return parameterName;
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
 }

@@ -1,17 +1,20 @@
 package idas.chox.web.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import net.sf.json.JSONArray;
+
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.UserService;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHandlerRoleUserDropDownAction.class);
@@ -89,11 +92,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
             for (Integer insId : insurerId) {
                 Insurer insurer = insurerService.getInsurer(insId);
                 if (insurer != null) {
-                    if (workgroupId != null) {
-                        for (Integer id : this.workgroupId) {
-                            users.addAll(userService.getActiveClaimHandlersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
-                        }
-                    }
+                    users.addAll(userService.getActiveClaimHandlersByInsurerWorkgroup(insId, workgroupId, insurer.isWorkgroupEnable()));
                 }
             }
             for (WebUser user : users) {
@@ -119,11 +118,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
             for (Integer insId : insurerId) {
                 Insurer insurer = insurerService.getInsurer(insId);
                 if (insurer != null) {
-                    if (workgroupId != null) {
-                        for (Integer id : this.workgroupId) {
-                            users.addAll(userService.getAllClaimHandlersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
-                        }
-                    }
+                    users.addAll(userService.getAllClaimHandlersByInsurerWorkgroup(insId, workgroupId, insurer.isWorkgroupEnable()));
                 }
             }
             for (WebUser user : users) {

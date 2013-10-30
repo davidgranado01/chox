@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
 
 import idas.chox.core.model.BreBand;
+import idas.chox.core.model.ProtocolVehicleClassCeiling;
+import idas.chox.core.services.ProtocolVehicleClassCeilingService;
+import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
+import idas.chox.web.viewdata.VehicleClassCeilingViewData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
 
@@ -27,11 +34,22 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private BreBand model;
     private List<InsurerBreBandViewData> insurerBreBands;
     private AdminInsurerService adminInsurerService;
+    private String protocolVehicleClassCeilingRecords;
+    private VehicleClassService vehicleClassService;
+    private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
         updateModelInSession(Arrays.asList(model));
         return SUCCESS;
+    }
+
+    public String getProtocolVehicleClassCeilingRecords() {
+        return protocolVehicleClassCeilingRecords;
+    }
+
+    public void setProtocolVehicleClassCeilingRecords(String protocolVehicleClassCeilingRecords) {
+        this.protocolVehicleClassCeilingRecords = protocolVehicleClassCeilingRecords;
     }
 
     public String getJsonData() {
@@ -122,6 +140,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             checkVersion(Arrays.asList(model));
+            if (!protocolVehicleClassCeilingRecords.isEmpty()) {
+                updateProtocolVehicleClassCeiling();
+            }
             ActionResponse response;
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(Arrays.asList(model));
@@ -132,6 +153,35 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         }
 
         return SUCCESS;
+    }
+
+    private void updateProtocolVehicleClassCeiling() {
+        List<VehicleClassCeilingViewData> vehicleClassCeilingViewDatas =
+                ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {
+        }.getType()));
+        if (vehicleClassCeilingViewDatas != null) {
+            for (VehicleClassCeilingViewData vehicleClassCeilingViewData : vehicleClassCeilingViewDatas) {
+                ProtocolVehicleClassCeiling pvcc;
+                if (vehicleClassCeilingViewData.getId() > 0) {
+                    pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeiling(vehicleClassCeilingViewData.getId());
+                } else if (model.getId() == null || (pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeilingByVehicleClass(vehicleClassCeilingViewData.getVehicleClassId(), model.getId())) == null) {
+                    pvcc = new ProtocolVehicleClassCeiling();
+                    pvcc.setVehicleClass(vehicleClassService.getVehicleClass(vehicleClassCeilingViewData.getVehicleClassId()));
+                    pvcc.setBreBand(model);
+                }
+                if (pvcc != null) {
+                    if (vehicleClassCeilingViewData.isRemoved()) {
+                        if (model.getProtocolVehicleClassCeilings() != null) {
+                            model.getProtocolVehicleClassCeilings().remove(pvcc);
+                        }
+                    } else {
+                        pvcc.setHireNetCeiling(vehicleClassCeilingViewData.getHireNetCeiling());
+                        pvcc.setRepairNetCeiling(vehicleClassCeilingViewData.getRepairNetCeiling());
+                        model.addProtocolVehicleClassCeiling(pvcc);
+                    }
+                }
+            }
+        }
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
@@ -176,9 +226,18 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return adminInsurerService.getInsurer(insurerId).isThirdPartyInterventionActivated();
     }
     
+    @Override
     public boolean isInsurerUploadEnabled() {
         return adminInsurerService.getInsurer(insurerId).isClaimUploadEnabled()
                 || adminInsurerService.getInsurer(insurerId).isInvoiceUploadEnabled();
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
+        this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
     }
 }
 

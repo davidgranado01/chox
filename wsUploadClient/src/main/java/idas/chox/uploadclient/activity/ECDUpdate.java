@@ -104,7 +104,7 @@ public class ECDUpdate {
                                 updateECD(uploadService, eCDParam);
                             } catch (Exception ex) {
                                 statusString.append(" An Internal Error Occurred.");
-                                LOG.error("Exception occured when adding new ECD via email scheduler ecd update job", ex);
+                                LOG.error("Exception occurred when adding new ECD via email scheduler ecd update job", ex);
                             }
                         } else {
                             statusString.insert(0, "Failed:");

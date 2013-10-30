@@ -36,7 +36,7 @@ import idas.chox.core.util.CalcHelper;
 public class BillingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
-    private static final Object INSURER = "insurer";
+    private static final String INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
     private BillingInsurerService billingInsurerService;
     private BillingInsurerDetailService billingInsurerDetailService;
@@ -162,23 +162,23 @@ public class BillingService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo,
-                        boolean excludeSupplmntInv, boolean manualInvoicesOnly) throws Exception {
+                        boolean excludeSupplmntInv, String triggerPoint) throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
         if (type.equals(INSURER)) {
-            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv, manualInvoicesOnly);
+            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv, triggerPoint);
         } else {
             return addChoBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv);
         }
     }
 
-    Map validateInsurerBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo, boolean manualClaimsOnly) {
+    Map validateInsurerBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo, String triggerPoint) {
         Map hm = new HashMap();
 
-        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo, insurerId, manualClaimsOnly);
+        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo, insurerId, triggerPoint);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -189,14 +189,14 @@ public class BillingService {
     }
 
     public Map addInsurerBill(String scheduleName, int orgId, Date dateFrom, Date dateTo,
-            boolean excludeSupplmntInv, boolean manualInvoicesOnly) throws Exception {
-        Map hm = validateInsurerBill(scheduleName, orgId, dateFrom, dateTo, manualInvoicesOnly);
+            boolean excludeSupplmntInv, String triggerPoint) throws Exception {
+        Map hm = validateInsurerBill(scheduleName, orgId, dateFrom, dateTo, triggerPoint);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
         LOG.debug(scheduleName + orgId + dateFrom + dateTo);
         Insurer insurer = insurerService.getInsurer(orgId);
-        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer, excludeSupplmntInv, manualInvoicesOnly);
+        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer, excludeSupplmntInv, triggerPoint);
         LOG.debug("no of claims: {}", claimsInDate.size());
         if (claimsInDate.isEmpty()) {
             hm.remove("success");
@@ -207,11 +207,11 @@ public class BillingService {
             return hm;
         }
         BillingInsurer bi = new BillingInsurer();
-        bi.setManualClaimsOnly(manualInvoicesOnly);
+        bi.setTriggerPoint(triggerPoint);
         BigDecimal billAmountNet;
         if (insurer.isFixedTransactionalFee()) {
             bi.setFixedTransaction(true);
-            if (manualInvoicesOnly) {
+            if (triggerPoint.equals("Manual Invoice Paid")) {
                 bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeManualValue());
             } else {
                 bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
@@ -445,8 +445,7 @@ public class BillingService {
             BillingInsurer schedule = billingInsurerService.getObject(billingId);
             Set<BillingDetail> dtls = schedule.getBillingDetails();
             BigDecimal rcv = BigDecimal.ZERO;
-            for (Iterator iterator = dtls.iterator(); iterator.hasNext();) {
-                BillingDetail billingDetail = (BillingDetail) iterator.next();
+            for (BillingDetail billingDetail : dtls) {
                 if (billingDetail.getAmountReceived().doubleValue() == 0) {
                     billingDetail.setReceivedDate(dt);
                     billingDetail.setAmountReceived(billingDetail.getGrossBillAmount());
@@ -506,8 +505,7 @@ public class BillingService {
             BillingCho schedule = billingChoService.getObject(billingId);
             BigDecimal rcv = BigDecimal.ZERO;
             Set<BillingDetail> dtls = schedule.getBillingDetails();
-            for (Iterator iterator = dtls.iterator(); iterator.hasNext();) {
-                BillingDetail billingDetail = (BillingDetail) iterator.next();
+            for (BillingDetail billingDetail : dtls) {
                 if (billingDetail.getAmountReceived().doubleValue() == 0) {
                     billingDetail.setReceivedDate(dt);
                     billingDetail.setAmountReceived(billingDetail.getGrossBillAmount());

@@ -99,7 +99,7 @@
         <default-interceptor-ref name="authenticated" />
         <global-results>
             <!--result name="invalid.token">/j_spring_security_logout</result-->
-            <result name="invalid.token">/jsp/AccessDenied.jsp</result>
+            <result name="invalid.token">/jsp/InvalidToken.jsp</result>
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
@@ -107,11 +107,13 @@
                 <param name="actionName">addContactDetails</param>
                 <param name="namespace">/prv</param>
                 <param name="redirect">true</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="password.expired" type="redirectAction">
                 <param name="actionName">openUserAccountRedirect</param>
                 <param name="namespace">/prv</param>
                 <param name="redirect">true</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </global-results>
 
@@ -123,6 +125,7 @@
             <result name="success">/jsp/login.jsp?login_error=${login_error}</result>
             <result name="validSession" type="redirectAction">
                 <param name="actionName">prv/inbox</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
         <action name="requestForgetPassword" class="idas.chox.web.actions.ForgetPasswordAction">
@@ -131,6 +134,7 @@
         <action name="requestToResetPassword" class="idas.chox.web.actions.ForgetPasswordAction" method="requestToResetPassword">
             <result name="success" type="redirectAction">
                 <param name="actionName">login</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
     </package>
@@ -147,6 +151,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="statusMsg">${message}</param>
                 <param name="id">${id}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirectAction">
@@ -154,6 +159,7 @@
                 <param name="parse">true</param>
                 <param name="id">${id}</param>
                 <param name="actionError">${actionError}</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
 
@@ -163,6 +169,7 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="inbox" class="idas.chox.web.actions.InboxAction">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/inbox.jsp</result>
         </action>
         <action name="doExportExcel" method="execute" class="idas.chox.web.actions.ExcelGeneratorAction">
@@ -202,10 +209,12 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="openClaimDetail" class="idas.chox.web.actions.ClaimAction">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/claim_detail.jsp</result>
             <result name="ClaimNotFound">/jsp/claim_not_found.jsp</result>
         </action>
@@ -214,6 +223,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -222,6 +232,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -232,6 +243,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -241,6 +253,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -250,6 +263,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -259,6 +273,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -268,6 +283,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -277,6 +293,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -293,6 +310,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
+                <param name="nonce">${nonce}</param>
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
@@ -436,6 +454,9 @@
             <result>/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getUniqueWorkgroupId" class="idas.chox.web.actions.InboxAction"  method="getUniqueWorkgroupId">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="getAvailableVehicleClasses" class="idas.chox.web.actions.VehicleClassDropDownAction"  method="getAvailableVehicleClasses">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
         <action name="SiteDropDownActionByInsurer" class="idas.chox.web.actions.SiteDropDownAction">
@@ -626,6 +647,7 @@
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
 
@@ -644,6 +666,7 @@
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
 
@@ -662,6 +685,7 @@
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>
+                <param name="nonce">${nonce}</param>
             </result>
         </action>
        <!-- CLAIM - MITIGATION STATEMENT -->
@@ -678,6 +702,7 @@
                 <param name="actionName">getCustomerMitigation</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -697,6 +722,7 @@
                 <param name="actionName">getIncident</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -715,6 +741,7 @@
                 <param name="actionName">getSolicitor</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -733,6 +760,7 @@
                 <param name="actionName">getThirdParty</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -751,6 +779,7 @@
                 <param name="actionName">getWitness</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -773,6 +802,7 @@
                 <param name="actionName">getCustomerVehicleDamage</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -794,6 +824,7 @@
                 <param name="actionName">getHireMonitoringDetail</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -839,6 +870,7 @@
                 <param name="actionName">getInvoiceRecalculation</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -853,6 +885,7 @@
                 <param name="actionName">getVehicleMonitoringHire</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
+                <param name="nonce">${nonce}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -944,6 +977,7 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="getUserChangePassword" class="idas.chox.web.actions.UserAccountAction">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_user_change_password.jsp</result>
         </action>
         <action name="getUserChangeContact" class="idas.chox.web.actions.UserAccountAction">
@@ -1250,15 +1284,23 @@
             <result name="success">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
         </action>
         <action name="VehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="protocolVehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction" method="getAvailableVehicleClassByBreBand">
             <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
         </action>
         <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="removeVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getSelectedInsurerVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="getSelectedInsurerVehicleClassCeiling">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getSelectedBreBandProtocolVehicleClassCeiling" class="idas.chox.web.actions.BreBandProtocolVehicleClassCeilingAction" method="getSelectedBreBandProtocolVehicleClassCeiling">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="addNewVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
@@ -1266,7 +1308,8 @@
         </action>
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="updateVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
 
         <!-- START INSURER AUTOMATIC ROUTING -->

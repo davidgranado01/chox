@@ -12,8 +12,55 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
+        var vcCustomerJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        var vcCustomerStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+                reader : vcCustomerJsonReader
+                ,listeners: {load: function() {
+                    vcCustomerCombo.setValue('<s:property value="vehicleClass.id"/>');    
+                }}
+        });
+
+        var vcCustomerCombo = new Ext.form.ComboBox({
+                store: vcCustomerStore,
+                renderTo: 'vcCustomerSelectionHolder',
+                valueField: 'text',
+                id: 'vcCustomerComboId',
+                hiddenName: 'vehicleClassId',
+                displayField:'value',
+                typeAhead: true,
+                autoWidth: true,
+                listWidth: 100,
+                width: 100,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection : true,
+                emptyText: '--- SELECT ---'
+        });
+        vcCustomerStore.load();    
+        
+        $.validator.addMethod("vcCustomerSelectionRule",
+            function(value) {
+                if(value === "" || value < 1) {
+                    return false;
+                }
+                return true;
+            }
+        );
+            
         form.validate(
         {
+            ignore: [],
             errorLabelContainer: "#CDmessageBox",
             rules: {
 <s:if test="!isInsurer">
@@ -40,7 +87,7 @@
                 },
 </s:if>
                 vehicleClassId:{
-                    min:1
+                    vcCustomerSelectionRule : true
                 },
                 vehicleManufacturer:{
                     required:true
@@ -83,7 +130,7 @@
                 },
 </s:if>
                 vehicleClassId:{
-                    min: "You must select a Vehicle Class"
+                    vcCustomerSelectionRule: "You must select a Vehicle Class"
                 },
                 vehicleManufacturer: {
                     required:"You must supply a value for 'Vehicle Manufacturer'"
@@ -211,13 +258,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Vehicle Class<span class="mandatory">*</span></label>
-                    <s:select name="vehicleClassId"
-                              list="vehicleClasses"
-                              listKey="id"
-                              listValue="name"
-                              headerKey="-1"
-                              headerValue="--SELECT--"
-                              emptyOption="false"></s:select>
+                    <div id="vcCustomerSelectionHolder"></div>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Vehicle Registration Number<span class="mandatory">*</span></label>

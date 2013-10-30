@@ -41,6 +41,7 @@
     </bean>
     <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="breBandService" ref="breBandService"/>
     </bean>
     <bean id="adminFeeService" class="idas.chox.data.services.AdminFeeServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -306,6 +307,18 @@
     </bean>
     
     <bean id="thirdPartyService" class="idas.chox.data.services.ThirdPartyServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>
