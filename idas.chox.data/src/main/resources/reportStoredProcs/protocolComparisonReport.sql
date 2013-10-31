@@ -466,22 +466,22 @@ select 15 as index, 'Invoices Paid 90+ days'::varchar as header,
 UNION
 
 select 16 as index, 'Liability < 100%'::varchar as header,
-    (select (100*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)) as subscriber,
-    (select (100*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select (100*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select (100*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN percentage_liability_accepted < 100.0 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
@@ -491,25 +491,25 @@ select 16 as index, 'Liability < 100%'::varchar as header,
 UNION
 
 select 17 as index, 'Credit Repair Ratio'::varchar as header,
-    (select (100*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
        and c.invoice_id = i.id) as subscriber,
-    (select (100*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)
        and c.invoice_id = i.id) as fixed_fee,
-    (select (100*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)
        and c.invoice_id = i.id) as collaboration_protocol,
-    (select (100*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN repair_net > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
@@ -520,25 +520,25 @@ select 17 as index, 'Credit Repair Ratio'::varchar as header,
 UNION
 
 select 18 as index, 'Total Loss Ratio'::varchar as header,
-    (select (100*SUM(CASE WHEN is_total_loss  then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN is_total_loss  then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, customer cu
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
        and c.customer_id = cu.id) as subscriber,
-    (select (100*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, customer cu
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)
        and c.customer_id = cu.id) as fixed_fee,
-    (select (100*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, customer cu
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)
        and c.customer_id = cu.id) as collaboration_protocol,
-    (select (100*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::varchar || '%'
+    (select (100.0*SUM(CASE WHEN is_total_loss then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, customer cu
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
@@ -554,7 +554,7 @@ select 19 as index, 'Acquisition Fee Total Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.invoice_id = i.id) as subscriber,
     ''::varchar as fixed_fee,
     ''::varchar as collaboration_protocol,
@@ -569,7 +569,7 @@ select 20 as index, 'Acquisition Fee Average Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.invoice_id = i.id) as subscriber,
     ''::varchar as fixed_fee,
     ''::varchar as collaboration_protocol,
@@ -584,28 +584,28 @@ select 21 as index, 'Admin Fee Total Paid (excluding repair)'::varchar as header
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as subscriber,
     (select sum(i.admin_fee)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as fixed_fee,
     (select sum(i.admin_fee)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as collaboration_protocol,
     (select sum(i.admin_fee)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (0,1,2)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as GTA,
     ''::varchar as outside_protocol
 
@@ -617,28 +617,28 @@ select 22 as index, 'Admin Fee Average Paid (excluding repair)'::varchar as head
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as subscriber,
     (select avg(i.admin_fee)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as fixed_fee,
     (select avg(i.admin_fee)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as collaboration_protocol,
     (select avg(i.admin_fee)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (0,1,2)
-       and c.invoice_id = i.id and c.status='PaymentReceived'
+       and c.invoice_id = i.id and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and i.repair_net = 0.0) as GTA,
     ''::varchar as outside_protocol
 
@@ -895,24 +895,28 @@ select 31 as index, 'Average Hire Days Invoiced'::varchar as header,
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
@@ -924,29 +928,33 @@ select 32 as index, 'Average Hire Days Paid'::varchar as header,
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -957,6 +965,7 @@ select 33 as index, 'Average Non Total Loss Hire Days Invoiced'::varchar as head
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
        and c.claim_type in (7,8,9)) as subscriber,
@@ -964,6 +973,7 @@ select 33 as index, 'Average Non Total Loss Hire Days Invoiced'::varchar as head
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
        and c.claim_type in (11,12,13)) as fixed_fee,
@@ -971,6 +981,7 @@ select 33 as index, 'Average Non Total Loss Hire Days Invoiced'::varchar as head
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
        and c.claim_type in (18,19,20)) as collaboration_protocol,
@@ -978,6 +989,7 @@ select 33 as index, 'Average Non Total Loss Hire Days Invoiced'::varchar as head
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
        and c.claim_type in (0,1,2)) as GTA,
@@ -990,33 +1002,37 @@ select 34 as index, 'Average Non Total Loss Hire Days Paid'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = false
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1027,6 +1043,7 @@ select 35 as index, 'Average Total Loss Hire Days Invoiced'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
        and c.claim_type in (7,8,9)) as subscriber,
@@ -1034,6 +1051,7 @@ select 35 as index, 'Average Total Loss Hire Days Invoiced'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
        and c.claim_type in (11,12,13)) as fixed_fee,
@@ -1041,6 +1059,7 @@ select 35 as index, 'Average Total Loss Hire Days Invoiced'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
        and c.claim_type in (18,19,20)) as collaboration_protocol,
@@ -1048,6 +1067,7 @@ select 35 as index, 'Average Total Loss Hire Days Invoiced'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
        and c.claim_type in (0,1,2)) as GTA,
@@ -1060,33 +1080,37 @@ select 36 as index, 'Average Total Loss Hire Days Paid'::varchar as header,
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(vh.days)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(vh.days)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(vh.days)::numeric(8,2)::varchar
      from claim c, invoice i, vehicle_hire vh, customer cu
      where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and c.created_date between DATE_FROM and DATE_TO
+       and vh.days > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.customer_id = cu.id and cu.is_total_loss = true
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1100,24 +1124,28 @@ select 38 as index, 'Average Hire Rate Invoiced'::varchar as header,
     (select avg(io.hire_rate_charged_per_day)::numeric(10,2)::varchar 
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
+       and io.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (7,8,9)
        and c.invoice_id = i.id and i.invoice_original_id = io.id) as subscriber,
     (select avg(io.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
+       and io.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (11,12,13)
        and c.invoice_id = i.id and i.invoice_original_id = io.id) as fixed_fee,
     (select avg(io.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
+       and io.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (18,19,20)
        and c.invoice_id = i.id and i.invoice_original_id = io.id) as collaboration_protocol,
     (select avg(io.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
+       and io.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.claim_type in (0,1,2)
        and c.invoice_id = i.id and i.invoice_original_id = io.id) as GTA,
@@ -1129,29 +1157,33 @@ select 39 as index, 'Average Hire Rate Paid'::varchar as header,
     (select avg(i.hire_rate_charged_per_day)::numeric(10,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
+       and i.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)
        and c.invoice_id = i.id) as subscriber,
     (select avg(i.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
+       and i.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)
        and c.invoice_id = i.id) as fixed_fee,
     (select avg(i.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
+       and i.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)
        and c.invoice_id = i.id) as collaboration_protocol,
     (select avg(i.hire_rate_charged_per_day)::numeric(10,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
+       and i.hire_rate_charged_per_day > 0
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)
        and c.invoice_id = i.id) as GTA,
     ''::varchar as outside_protocol
@@ -1168,24 +1200,28 @@ select 41 as index, 'Total No. Invoices Uploaded'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
+       and i.hire_net > 37.0
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
+       and i.hire_net > 37.0
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
+       and i.hire_net > 37.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
+       and i.hire_net > 37.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1197,61 +1233,69 @@ select 42 as index, 'Total No. Invoices Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
-       and c.status='PaymentReceived'
+       and i.hire_net > 37.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
-       and c.status='PaymentReceived'
+       and i.hire_net > 37.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
-       and c.status='PaymentReceived'
+       and i.hire_net > 37.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.hire_gross > 0.0
-       and c.status='PaymentReceived'
+       and i.hire_net > 37.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 43 as index, 'Total Hire Paid'::varchar as header,
-    (select sum(hire_gross)::varchar 
+    (select sum(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and i.hire_net > 37.0
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
-    (select sum(hire_gross)::varchar
+    (select sum(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and i.hire_net > 37.0
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select sum(hire_gross)::varchar
+    (select sum(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and i.hire_net > 37.0
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select sum(hire_gross)::varchar
+    (select sum(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and i.hire_net > 37.0
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1263,94 +1307,94 @@ select 44 as index, 'Average Hire Value Invoiced'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.invoice_original_id = io.id
-       and io.hire_gross > 0.0
+       and io.hire_gross > 0.0 and io.hire_net > 37.0
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(io.hire_gross)::numeric(8,2)::varchar
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.invoice_original_id = io.id
-       and io.hire_gross > 0.0
+       and io.hire_gross > 0.0 and io.hire_net > 37.0
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(io.hire_gross)::numeric(8,2)::varchar
      from claim c, invoice i, invoice_original io
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.invoice_original_id = io.id
-       and io.hire_gross > 0.0
+       and io.hire_gross > 0.0 and io.hire_net > 37.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(io.hire_gross)::numeric(8,2)::varchar
      from claim c, invoice i, invoice_original io 
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.invoice_original_id = io.id
-       and io.hire_gross > 0.0
+       and io.hire_gross > 0.0 and io.hire_net > 37.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 45 as index, 'Average Hire Value Paid (exc. Pens)'::varchar as header,
-    (select avg(i.hire_gross)::numeric(8,2)::varchar 
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.hire_gross)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.hire_gross)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.hire_gross)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 46 as index, 'Average Hire Value Paid'::varchar as header,
-    (select avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)::varchar 
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end + case when hire_penalty_charge_paid is null then hire_penalty_charge else hire_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end + case when hire_penalty_charge_paid is null then hire_penalty_charge else hire_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end + case when hire_penalty_charge_paid is null then hire_penalty_charge else hire_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when hire_gross_paid is null then hire_gross else hire_gross_paid end + case when hire_penalty_charge_paid is null then hire_penalty_charge else hire_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.hire_gross > 0.0
+       and c.status in ('PaymentReceived', 'InvoicePaymentLogged') and i.hire_gross > 0.0 and i.hire_net > 37.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1411,7 +1455,7 @@ select 48 as index, 'Total No. Invoices Paid with an Extra'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
@@ -1422,7 +1466,7 @@ select 48 as index, 'Total No. Invoices Paid with an Extra'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
@@ -1433,7 +1477,7 @@ select 48 as index, 'Total No. Invoices Paid with an Extra'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
@@ -1444,7 +1488,7 @@ select 48 as index, 'Total No. Invoices Paid with an Extra'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1520,7 +1564,7 @@ select 50 as index, 'Average Extra Value Paid'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select avg(i.automatic_fee + i.estate_fee + i.additional_driver_fee
                     + i.sat_nav_fee + i.baby_seat_fee + i.tow_bars_fee
@@ -1534,7 +1578,7 @@ select 50 as index, 'Average Extra Value Paid'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select avg(i.automatic_fee + i.estate_fee + i.additional_driver_fee
                     + i.sat_nav_fee + i.baby_seat_fee + i.tow_bars_fee
@@ -1548,7 +1592,7 @@ select 50 as index, 'Average Extra Value Paid'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select avg(i.automatic_fee + i.estate_fee + i.additional_driver_fee
                     + i.sat_nav_fee + i.baby_seat_fee + i.tow_bars_fee
@@ -1562,7 +1606,7 @@ select 50 as index, 'Average Extra Value Paid'::varchar as header,
             or i.sat_nav_fee > 0 or i.baby_seat_fee > 0 or i.tow_bars_fee > 0
             or i.non_standard_insurance_premium_fee > 0 or i.roof_rack_fee > 0
             or i.dual_control_fee > 0 or i.delivery_collection_fee > 0)
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1607,61 +1651,61 @@ select 53 as index, 'Total No. Invoices Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.repair_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.repair_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.repair_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.repair_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 54 as index, 'Total Repair Paid'::varchar as header,
-    (select sum(repair_gross)::varchar 
+    (select sum(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
-    (select sum(repair_gross)::varchar
+    (select sum(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select sum(repair_gross)::varchar
+    (select sum(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select sum(repair_gross)::varchar
+    (select sum(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1701,66 +1745,66 @@ select 55 as index, 'Average Repair Value Invoiced'::varchar as header,
 UNION
 
 select 56 as index, 'Average Repair Value Paid (exc. Pens)'::varchar as header,
-    (select avg(i.repair_gross)::numeric(8,2)::varchar 
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.repair_gross)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.repair_gross)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.repair_gross)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 57 as index, 'Average Repair Value Paid'::varchar as header,
-    (select avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)::varchar 
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end + case when repair_penalty_charge_paid is null then repair_penalty_charge else repair_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end + case when repair_penalty_charge_paid is null then repair_penalty_charge else repair_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end + case when repair_penalty_charge_paid is null then repair_penalty_charge else repair_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)::varchar
+    (select avg(case when repair_gross_paid is null then repair_gross else repair_gross_paid end + case when repair_penalty_charge_paid is null then repair_penalty_charge else repair_penalty_charge_paid end)::numeric(8,2)::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived' and i.repair_gross > 0.0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged') and i.repair_gross > 0.0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1776,28 +1820,28 @@ select 59 as index, 'Total No. Invoices Where Engineers Fee Paid'::varchar as he
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1809,61 +1853,61 @@ select 60 as index, '% Invoices With Engineers Fee Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select (100.0*SUM(CASE WHEN i.engineer_fee_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select (100.0*SUM(CASE WHEN i.engineer_fee_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select (100.0*SUM(CASE WHEN i.engineer_fee_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 61 as index, 'Average Engineers Fee Paid'::varchar as header,
-    (select avg(i.engineer_fee_gross)::numeric(6,2)::varchar
+    (select avg(case when i.engineer_fee_gross_paid is null then i.engineer_fee_gross else i.engineer_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.engineer_fee_gross)::numeric(6,2)::varchar
+    (select avg(case when i.engineer_fee_gross_paid is null then i.engineer_fee_gross else i.engineer_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.engineer_fee_gross)::numeric(6,2)::varchar
+    (select avg(case when i.engineer_fee_gross_paid is null then i.engineer_fee_gross else i.engineer_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.engineer_fee_gross)::numeric(6,2)::varchar
+    (select avg(case when i.engineer_fee_gross_paid is null then i.engineer_fee_gross else i.engineer_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.engineer_fee_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1875,28 +1919,28 @@ select 62 as index, 'Total No. Invoices Where Storage & Recovery Fee Paid'::varc
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1908,61 +1952,61 @@ select 63 as index, '% Invoices With Storage & Recovery Fee Paid'::varchar as he
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select (100.0*SUM(CASE WHEN i.storage_recovery_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select (100.0*SUM(CASE WHEN i.storage_recovery_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select (100.0*SUM(CASE WHEN i.storage_recovery_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 64 as index, 'Average Storage & Recovery Fee Paid'::varchar as header,
-    (select avg(i.storage_recovery_gross)::numeric(6,2)::varchar
+    (select avg(case when i.storage_recovery_gross_paid is null then i.storage_recovery_gross else i.storage_recovery_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.storage_recovery_gross)::numeric(6,2)::varchar
+    (select avg(case when i.storage_recovery_gross_paid is null then i.storage_recovery_gross else i.storage_recovery_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.storage_recovery_gross)::numeric(6,2)::varchar
+    (select avg(case when i.storage_recovery_gross_paid is null then i.storage_recovery_gross else i.storage_recovery_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.storage_recovery_gross)::numeric(6,2)::varchar
+    (select avg(case when i.storage_recovery_gross_paid is null then i.storage_recovery_gross else i.storage_recovery_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.storage_recovery_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -1974,28 +2018,28 @@ select 65 as index, 'Total No. Invoices Where Total Loss Fee Paid'::varchar as h
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -2007,61 +2051,61 @@ select 66 as index, '% Invoices With A Total Loss Fee Paid'::varchar as header,
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
     (select (100.0*SUM(CASE WHEN i.total_loss_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select (100.0*SUM(CASE WHEN i.total_loss_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select (100.0*SUM(CASE WHEN i.total_loss_gross > 0.00 then 1 else 0 END) / count(*))::numeric(5,1)::varchar || '%'
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
 UNION
 
 select 67 as index, 'Average Total Loss Fee Paid'::varchar as header,
-    (select avg(i.total_loss_gross)::numeric(6,2)::varchar
+    (select avg(case when i.total_loss_fee_gross_paid is null then i.total_loss_gross else i.total_loss_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.total_loss_gross)::numeric(6,2)::varchar
+    (select avg(case when i.total_loss_fee_gross_paid is null then i.total_loss_gross else i.total_loss_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.total_loss_gross)::numeric(6,2)::varchar
+    (select avg(case when i.total_loss_fee_gross_paid is null then i.total_loss_gross else i.total_loss_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.total_loss_gross)::numeric(6,2)::varchar
+    (select avg(case when i.total_loss_fee_gross_paid is null then i.total_loss_gross else i.total_loss_fee_gross_paid end)::numeric(6,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
        and c.invoice_id = i.id and i.total_loss_gross > 0.0
-       and c.status='PaymentReceived'
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -2072,28 +2116,36 @@ select 68 as index, 'Penalty Leakage'::varchar as header, ''::varchar,''::varcha
 UNION
 
 select 69 as index, 'Total Value Of Penalties Paid'::varchar as header,
-    (select sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::varchar
+    (select sum(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id
        and c.claim_type in (7,8,9)) as subscriber,
-    (select sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::varchar
+    (select sum(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::varchar
+    (select sum(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::varchar
+    (select sum(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id 
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
@@ -2130,28 +2182,36 @@ select 70 as index, 'Average Penalty Payment Charged'::varchar as header,
 UNION
 
 select 71 as index, 'Average Penalty Payment Paid'::varchar as header,
-    (select avg(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id and i.hire_penalty_charge_paid + i.repair_penalty_charge_paid > 0
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id and i.hire_penalty_charge_paid + i.repair_penalty_charge_paid > 0
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id and i.hire_penalty_charge_paid + i.repair_penalty_charge_paid > 0
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end
+                    + case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
        and c.invoice_id = i.id and i.hire_penalty_charge_paid + i.repair_penalty_charge_paid > 0
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
@@ -2196,25 +2256,37 @@ select 74 as index, 'Total No. Hire Claims With Penalty Payments Paid'::varchar 
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -2250,29 +2322,41 @@ select 75 as index, 'Average Hire Penalty Payment Charged'::varchar as header,
 UNION
 
 select 76 as index, 'Average Hire Penalty Payment Paid'::varchar as header,
-    (select avg(i.hire_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.hire_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.hire_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.hire_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.hire_penalty_charge_paid is null then i.hire_penalty_charge else i.hire_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.hire_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.hire_penalty_charge > 0)
+            or (penalty_charges_paid = true and hire_penalty_charge_paid > 0)) 
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -2316,25 +2400,37 @@ select 79 as index, 'Total No. Repair Claims With Penalty Payments Paid'::varcha
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (7,8,9)) as subscriber,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (11,12,13)) as fixed_fee,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (18,19,20)) as collaboration_protocol,
     (select count(*)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
@@ -2370,29 +2466,41 @@ select 80 as index, 'Average Repair Penalty Payment Charged'::varchar as header,
 UNION
 
 select 81 as index, 'Average Repair Penalty Payment Paid'::varchar as header,
-    (select avg(i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (7,8,9)) as subscriber,
-    (select avg(i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (11,12,13)) as fixed_fee,
-    (select avg(i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (18,19,20)) as collaboration_protocol,
-    (select avg(i.repair_penalty_charge_paid)::numeric(8,2)::varchar
+    (select avg(case when i.repair_penalty_charge_paid is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)::numeric(8,2)::varchar
      from claim c, invoice i
      where c.created_date between DATE_FROM and DATE_TO
        and c.insurer_id = insid and c.chorganisation_id = ANY(choIds)
-       and c.invoice_id = i.id and i.repair_penalty_charge_paid > 0
+       and c.status in ('PaymentReceived','InvoicePaymentLogged')
+       and c.invoice_id = i.id
+       and ((i.final_payment is null and i.repair_penalty_charge > 0)
+            or (penalty_charges_paid = true and repair_penalty_charge_paid > 0)) 
        and c.claim_type in (0,1,2)) as GTA,
     ''::varchar as outside_protocol
 
