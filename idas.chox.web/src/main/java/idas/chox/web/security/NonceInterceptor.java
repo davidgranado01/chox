@@ -84,7 +84,7 @@ public class NonceInterceptor extends AbstractInterceptor {
                 requestNonce = requestNonce.replace(' ', '+');
                 // verify nonce
                 if (!sessionNonce.equals(requestNonce)) {
-                    LOG.error("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
+                    LOG.warn("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
                     // Remove session nonce
                     session.removeAttribute("SessionNonce");
                     return "invalid.token";
