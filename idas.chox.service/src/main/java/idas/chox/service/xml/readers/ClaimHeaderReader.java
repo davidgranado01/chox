@@ -882,8 +882,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
                                 oldClaim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
                             } else if (oldClaim.getClaimType() == ClaimType.FIXED_FEE) {
                                 oldClaim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
+                            } else if (oldClaim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL) {
+                                oldClaim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE);
                             } else if (!ClaimType.isOriginalSupplementaryInvoice(oldClaim.getClaimType())) { // Not already marked as a supplimentary invoice
-                                LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber, Insurer Claim): {}", claim.getChoReference(), claim.getClaimType());
+                                LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber, Insurer Claim, Collaboration Protocol): {}", claim.getChoReference(), claim.getClaimType());
                                 claimResult.setValid(false);
                                 claimResult.getMessage().add("Unexpected type of claim found for original claim. Please contact CHOX support.");
                                 claim.setChoReference(choReferenceNumber);
