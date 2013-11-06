@@ -20,6 +20,8 @@ $BODY$
          resultString = 'INSURER';
     ELSIF $1 IN (11,12,13) THEN       
          resultString = 'FIXED_FEE';
+    ELSIF $1 IN (18,19,20) THEN       
+         resultString = 'COLLABORATION_PROTOCOL';
     ELSE
          resultString = '';
     END IF;

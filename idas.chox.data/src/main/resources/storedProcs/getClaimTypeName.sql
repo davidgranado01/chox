@@ -44,6 +44,12 @@ $BODY$
          resultString = 'Insurer Claim (Supp. Invoice)';
     ELSIF $1 = 17 THEN       
          resultString = 'Insurer Upload';
+    ELSIF $1 = 18 THEN       
+         resultString = 'Collaboration Protocol';
+    ELSIF $1 = 19 THEN       
+         resultString = 'Collaboration Protocol (Orig. Invoice)';
+    ELSIF $1 = 20 THEN       
+         resultString = 'Collaboration Protocol (Supp. Invoice)';
     ELSE
          resultString = '';
     END IF;

@@ -90,7 +90,7 @@ ALTER TABLe billing_insurer DROP COLUMN manual_claims_only;
 
 -----------------------------------------------------------------------------------
 -- bug#2709 - Production - The Workgroup and Claim Owner Of Insurer Invoices     --
-              Cannot Be Updated Through ‘Batch Update’                           --
+--            Cannot Be Updated Through ‘Batch Update’                           --
 -----------------------------------------------------------------------------------
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
