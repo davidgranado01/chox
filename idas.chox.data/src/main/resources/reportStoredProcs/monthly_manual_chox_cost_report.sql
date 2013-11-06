@@ -1884,7 +1884,7 @@ FROM
 UNION
 
 
-SELECT 12 as id, 'Average Penalty Payment Charged' AS title,
+SELECT 12 as id, 'Average Penalty Payment' AS title,
 
   (SELECT avg(i.total_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
@@ -2034,157 +2034,7 @@ FROM
           insid AS insurerId) params
 UNION
 
-SELECT 13 as id, 'Average Penalty Payment Paid' AS title,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
-
-  (SELECT avg(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND c.status = 'ManualInvoicePaid'
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate - interval '10 months' , 'MM') || '-01-' || to_char(params.startDate - interval '10 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_11_month
-FROM
-  (SELECT dat1 AS startDate,
-          choid AS chorgId,
-          insid AS insurerId) params
-UNION
-
-SELECT 14 as id, 'Average Hire Penalty Payment' AS title,
+SELECT 13 as id, 'Average Hire Penalty Payment' AS title,
 
   (SELECT avg(i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
@@ -2334,7 +2184,7 @@ FROM
           insid AS insurerId) params
 UNION
 
-SELECT 15 as id, 'Average Repair Penalty Payment' AS title,
+SELECT 14 as id, 'Average Repair Penalty Payment' AS title,
 
   (SELECT avg(i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
@@ -2485,7 +2335,7 @@ FROM
 UNION
 
 
-SELECT 16 as id, 'Average Repair Value Invoiced' AS title,
+SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
    FROM chorganisation cho, claim c, invoice i
@@ -2635,7 +2485,7 @@ FROM
           insid AS insurerId) params
 UNION
 
-SELECT 17 as id, 'Average Repair Value Paid (exc pens)' AS title,
+SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
@@ -2773,7 +2623,7 @@ FROM
           
           UNION
 
-SELECT 18 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' AS title,
+SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' AS title,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c , invoice i, chorganisation cho
@@ -2912,7 +2762,7 @@ FROM
 UNION
 
 
-SELECT 19 as id, 'Total No. Claims Penalty Payments Charged' AS title,
+SELECT 18 as id, 'Total No. Claims Penalty Payments' AS title,
 
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho
@@ -3062,157 +2912,7 @@ FROM
           insid AS insurerId) params
 UNION
 
-SELECT 20 as id, 'Total No. Claims Penalty Payments Paid' AS title,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
-
-  (SELECT count(*)
-   FROM claim c, invoice i, chorganisation cho
-   WHERE c.invoice_id=i.id
-     AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.chorganisation_id = cho.id
-     AND cho.insurer_upload_only = TRUE
-     AND (params.chorgId = -1 OR c.chorganisation_id = params.chorgId)
-     AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
-     AND c.status = 'ManualInvoicePaid'
-     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate - interval '10 months' , 'MM') || '-01-' || to_char(params.startDate - interval '10 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_11_month
-FROM
-  (SELECT dat1 AS startDate,
-          choid AS chorgId,
-          insid AS insurerId) params
-UNION
-
-SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
+SELECT 19 as id, 'Total No. Claims Uploaded' AS title,
 
   (SELECT count(*)
    FROM claim c, chorganisation cho
@@ -3342,7 +3042,7 @@ FROM
           
 UNION
 
-SELECT 22 as id, 'Total No. Invoices Paid' AS title,
+SELECT 20 as id, 'Total No. Invoices Paid' AS title,
 
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho
@@ -3505,7 +3205,7 @@ FROM
           insid AS insurerId) params
 UNION
           
-SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
+SELECT 21 as id, 'Total No. Invoices Uploaded' AS title,
 
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho
@@ -3643,7 +3343,7 @@ FROM
 
 UNION
 
-select 24 as id, 'Total Hire Paid' as title,
+select 22 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
@@ -3743,7 +3443,7 @@ FROM
 
 UNION
 
-select 25 as id, 'Total Hire Value Invoiced' as title,
+select 23 as id, 'Total Hire Value Invoiced' as title,
 (select sum(io.hire_gross) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.claim_type IN (10,14,15,16,17)
@@ -3853,7 +3553,7 @@ from (select dat1 as startDate, choid as chorgId, insid as insurerId) params
 
 UNION
 
-select 26 as id, 'Total Hire Value Paid (exc pens)' as title,
+select 24 as id, 'Total Hire Value Paid (exc pens)' as title,
 (select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
       and c.claim_type IN (10,14,15,16,17)
@@ -3962,7 +3662,7 @@ from (select dat1 as startDate, choid as chorgId, insid as insurerId) params
 
 UNION
           
-SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
+SELECT 25 as id, 'Total Hire Value Paid (inc pens)' AS title,
 
   (SELECT sum(i.hire_gross + i.hire_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho
@@ -4100,7 +3800,7 @@ FROM
 
 UNION
 
-SELECT 28 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
+SELECT 26 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
 
   (SELECT sum(i.hire_penalty_charge + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
