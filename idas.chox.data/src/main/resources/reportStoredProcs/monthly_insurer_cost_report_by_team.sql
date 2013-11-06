@@ -1,4 +1,4 @@
-drop function monthly_chox_cost_report_by_team(integer, text, int, int, text);
+drop function monthly_chox_cost_report_by_team(text, int, int, text);
 create or replace function monthly_chox_cost_report_by_team
 (
    dat text, choid int ,insid int, teamName text
@@ -3479,7 +3479,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3489,7 +3488,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3499,7 +3497,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3509,7 +3506,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3519,7 +3515,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3529,7 +3524,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3539,7 +3533,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3549,7 +3542,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3559,7 +3551,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3569,7 +3560,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.workgroup_id = w.id and w.team like params.team
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3579,7 +3569,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3589,7 +3578,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team
@@ -3599,7 +3587,6 @@ select 26 as id, 'Total Hire Paid' as title,
 (select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
-      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.workgroup_id = w.id and w.team like params.team

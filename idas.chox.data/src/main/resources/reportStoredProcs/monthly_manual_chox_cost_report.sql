@@ -1,4 +1,4 @@
-drop function manual_chox_cost_report(integer, text, int, int);
+drop function manual_chox_cost_report(text, int, int);
 create or replace function manual_chox_cost_report
 (
    dat text, choid int ,insid int
@@ -847,7 +847,7 @@ FROM
           choid AS chorgId,
           insid AS insurerId) params
 UNION
-SELECT 6 as id, 'Average Hire Valuee Paid (exc pens)' AS title,
+SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
@@ -2773,7 +2773,7 @@ FROM
           
           UNION
 
-SELECT 18 as id, 'Average Repairr Value Paid plus Average Repair Penalties Paid' AS title,
+SELECT 18 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' AS title,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c , invoice i, chorganisation cho

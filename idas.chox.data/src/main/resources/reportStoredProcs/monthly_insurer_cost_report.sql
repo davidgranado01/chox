@@ -1,4 +1,4 @@
-drop function monthly_insurer_cost_report(integer, text, int, int, INTEGER[]);
+drop function monthly_insurer_cost_report(text, int, int, INTEGER[]);
 create or replace function monthly_insurer_cost_report
 (
    dat text, chorganid int,insid int, claimType INTEGER[]
