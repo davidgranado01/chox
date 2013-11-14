@@ -143,7 +143,7 @@ public class ApplicationAccessibility {
                 String.format("batch.%1$s", actionName));
 
         if (accessibilities == null) {
-            LOG.error("Error retrieving allowed statuses for batch-update action '{}'", actionName);
+            LOG.warn("Error retrieving allowed statuses for batch-update action '{}'", actionName);
         } else {
             for (Accessibility accessibility : accessibilities) {
                 if (accessibility != null) { // Added to track null pointer exception thrown in line below
