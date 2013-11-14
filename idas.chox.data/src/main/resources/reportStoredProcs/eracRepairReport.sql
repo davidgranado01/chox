@@ -13,14 +13,16 @@ returns table
    "Insurer Claim Owner" text,
    "CHO Claim Owner" text,
    "Current Claim Status" character varying(40),
-   "Date Claim Uploaded" date,
+   "Date Claim Uploaded" text,
    "Has Invoice?" text,
    "Claim Closed?" text,
    "Invoice Paid?" text,
    "Invoice Payment Time" integer,
    "Original Repair Gross Amount" numeric(8,2),
    "Current Repair Gross Amount" numeric(8,2),
-   "Repair Penalty Charge Amount" numeric(8,2)
+   "Repair Penalty Charge Amount" numeric(8,2),
+   "Repair Gross Amount Paid" numeric(8,2),
+   "Repair Penalty Charge Paid" numeric(8,2)
    
 )
 as $$ DECLARE 
@@ -40,14 +42,16 @@ select c.cho_reference as "Supplier Reference",
        wu.first_name || ' ' || wu.last_name as "Insurer Claim Owner",
        wu2.first_name || ' ' || wu2.last_name as "CHO Claim Owner",
        c.status as "Current Claim Status",
-       c.created_date::date as "Date Claim Uploaded",
+       to_char(c.created_date, 'dd/mm/yyyy') as "Date Claim Uploaded",
        case when c.invoice_id is null then 'No' else 'Yes' end as "Has Invoice?",
        case when c.status in ('ClaimRejectionAccepted','ClaimClosed','InvoiceRejectionAccepted') then 'Yes' else 'No' end as "Claim Closed?",
        case when c.status in ('InvoicePaymentLogged','PaymentReceived') then 'Yes' else 'No' end as "Invoice Paid?",
        floor((extract(epoch from (at.created_date - i.created_date)) / 86400))::integer as "Invoice Payment Time",
        io.repair_gross as "Original Repair Gross Amount",
        i.repair_gross as "Current Repair Gross Amount",
-       i.repair_penalty_charge as "Repair Penalty Charge Amount"
+       i.repair_penalty_charge as "Repair Penalty Charge Amount",
+       null as "Repair Gross Amount Paid",
+       null as "Repair Penalty Charge Paid"
 from claim c left outer join customer cu on c.customer_id = cu.id
              left outer join third_party tp on c.third_party_id = tp.id
              left outer join workgroup w on c.workgroup_id = w.id
@@ -73,14 +77,16 @@ select c.cho_reference as "Supplier Reference",
        wu.first_name || ' ' || wu.last_name as "Insurer Claim Owner",
        wu2.first_name || ' ' || wu2.last_name as "CHO Claim Owner",
        c.status as "Current Claim Status",
-       c.created_date::date as "Date Claim Uploaded",
+       to_char(c.created_date, 'dd/mm/yyyy') as "Date Claim Uploaded",
        case when c.invoice_id is null then 'No' else 'Yes' end as "Has Invoice?",
        case when c.status in ('ClaimRejectionAccepted','ClaimClosed','InvoiceRejectionAccepted') then 'Yes' else 'No' end as "Claim Closed?",
        case when c.status in ('InvoicePaymentLogged','PaymentReceived') then 'Yes' else 'No' end as "Invoice Paid?",
        floor((extract(epoch from (at.created_date - i.created_date)) / 86400))::integer as "Invoice Payment Time",
        io.repair_gross as "Original Repair Gross Amount",
        i.repair_gross as "Current Repair Gross Amount",
-       i.repair_penalty_charge as "Repair Penalty Charge Amount"
+       i.repair_penalty_charge as "Repair Penalty Charge Amount",
+       case when i.final_payment is not null then i.repair_gross_paid else case when c.status in ('InvoicePaymentLogged','PaymentReceived') then i.repair_gross else null end end as "Repair Gross Amount Paid",
+       case when i.final_payment is not null then i.repair_penalty_charge_paid else case when c.status in ('InvoicePaymentLogged','PaymentReceived') then i.repair_penalty_charge  else null end end as "Repair Penalty Charge Paid"
 from claim c left outer join customer cu on c.customer_id = cu.id
              left outer join third_party tp on c.third_party_id = tp.id
              left outer join workgroup w on c.workgroup_id = w.id
