@@ -595,8 +595,7 @@ public enum ActivityEvent {
             generator.addParameter("invoiceInterimPaymentReceived", invoice.getInterimPaymentReceived());
             generator.addParameter("invoiceRepairAdminFee", invoice.getRepairAdminFee());
             generator.addParameter("invoiceRepairAcquisitionFee", invoice.getRepairAcquisitionFee());
-            generator.addParameter("invoiceAcquisitionFee", invoice.getAcquisitionFee());
-            generator.addParameter("invoiceOverheadFee", invoice.getOverheadFee());
+            generator.addParameter("invoiceCollaborationFee", invoice.getCollaborationFee());
         }
     }
     public void addInvoicePaidParameters(ActivityEventGenerator generator, Claim claim) {
