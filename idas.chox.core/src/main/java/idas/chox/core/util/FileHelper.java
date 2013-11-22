@@ -14,9 +14,9 @@ public class FileHelper {
         Integer size = 0;
 
         if(unit.equalsIgnoreCase("MB")){
-            size = MAX_FILE_SIZE_ALLOW / 1000 / 1024;
+            size = MAX_FILE_SIZE_ALLOW / 1024 / 1024;
         }else if(unit.equalsIgnoreCase("KB")){
-            size = MAX_FILE_SIZE_ALLOW / 1000;
+            size = MAX_FILE_SIZE_ALLOW / 1024;
         }
 
         return size;

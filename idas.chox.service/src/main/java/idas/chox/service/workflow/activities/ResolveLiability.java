@@ -93,7 +93,7 @@ public class ResolveLiability extends BaseActivity {
                         || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
                         || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-        }else{
+        } else {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
     }

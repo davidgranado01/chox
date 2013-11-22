@@ -19,7 +19,23 @@ var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandIn
 var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
 var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
 var nonce = '<%= session.getAttribute("SessionNonce")%>';
+
+    function doUpdateManualInvoice(action){
     
+        $('form#logInvoicePayment input[id="name"]').val(action)
+
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        $("form#logInvoicePayment").submit();
+    
+    }
+
+    function confirmPaymentLog(action){
+    
+        $('form#logInvoicePayment input[id="name"]').val(action)
+        return confirmPaymentLogAction();
+    
+    }
+
     function callInterimPayment(){
     	 var target = "#moreActionPanel";
          var url = "<%= request.getContextPath()%>/prv/p/makeInterimPayment.action";
@@ -30,14 +46,22 @@ var nonce = '<%= session.getAttribute("SessionNonce")%>';
     }
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form id="logInvoicePayment" action="post" >
-        <fieldset class="x-fieldset"><legend>Invoice ready for payment - Action Required</legend>
+    <form id="logInvoicePayment" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+        <fieldset class="x-fieldset"><legend>Invoice Ready For Payment - Action Required</legend>
             <s:hidden id="claimId" name="id" />
+            <s:if test="isInsurerManual">
+                <s:hidden id="name" name="name" />
+            </s:if>
             <div>
                 <div class="status-info">
+                  <s:if test="isInsurerManual">
+                    Once the payment has been made please click on the ‘Insurer Invoice Paid’ button.
+                  </s:if>
+                  <s:else>
                     If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
                     this button should only be used if this is intended to be a final payment.  However if an interim payment 
                     is being made please click on the ‘Make Interim Payment’ button.’
+                  </s:else>
                 </div>
                 <div class="status-info-submit">
                     <table>
@@ -49,8 +73,15 @@ var nonce = '<%= session.getAttribute("SessionNonce")%>';
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLogAction();"/>
-                            <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/></td>
+                            <td>
+                                <s:if test="isInsurerManual">
+                                    <input type="button" id="UMIPFormId" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
+                                </s:if>
+                                <s:else>
+                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLogAction();"/>
+                                    <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/>
+                                </s:else>
+                                </td>
                         </tr>
                     </table>
                 </div>

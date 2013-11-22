@@ -1464,6 +1464,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getClaimType() == ClaimType.INSURER_INVOICE;
     }
 
+    public boolean getIsInsurerManual() {
+        return claim.getClaimType() == ClaimType.INSURER_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_CLAIM
+                || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_SUPPLEMENTARY_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_UPLOAD;
+    }
+
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
         this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
     }

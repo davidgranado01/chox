@@ -1,0 +1,38 @@
+-----------------------------------------------------------------------
+-- ToDo 7.8.1  - Ability to agree quantum on 'Insurer Upload' Claims --
+--               and approve claim for payment                       --
+-----------------------------------------------------------------------
+
+-- First, change current accessibility of UpdateManualInvoicePaid activity to new UpdateManualInvoiceAgreeQuantum activity
+UPDATE accessibility set name = 'activity.UpdateManualInvoiceAgreeQuantum.ManualInvoiceBREApproved'
+WHERE name = 'activity.UpdateManualInvoicePaid.ManualInvoiceBREApproved';
+
+UPDATE accessibility set name = 'activity.UpdateManualInvoiceAgreeQuantum.ManualInvoiceBRERejected'
+WHERE name = 'activity.UpdateManualInvoicePaid.ManualInvoiceBRERejected';
+
+UPDATE accessibility set name = 'activity.UpdateManualInvoiceAgreeQuantum.ManualInvoiceContested'
+WHERE name = 'activity.UpdateManualInvoicePaid.ManualInvoiceContested';
+
+-- Finally, add new accessibility entries for UpdateManualInvoicePaid activity
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+SELECT 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment', false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+SELECT id, 'ROLE_INS_CH', 2
+FROM accessibility where name = 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+SELECT id, 'ROLE_INS_MNG', 2
+FROM accessibility where name = 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+SELECT id, 'ROLE_INS_PC', 2
+FROM accessibility where name = 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+SELECT id, 'ROLE_CHOX_ADMIN', 2
+FROM accessibility where name = 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment';
+
+-----------------------------------------------------------------------
+-- End of ToDo item 7.8.1                                            --
+-----------------------------------------------------------------------

@@ -557,7 +557,7 @@
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="ResolveLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="AssignManualInvoiceOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
-            <result name="UpdateManualInvoicePaid">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
+            <result name="UpdateManualInvoiceAgreeQuantum">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
