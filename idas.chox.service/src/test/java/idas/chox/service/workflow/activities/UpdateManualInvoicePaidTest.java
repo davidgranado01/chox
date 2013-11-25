@@ -32,7 +32,7 @@ public class UpdateManualInvoicePaidTest extends BaseTest {
         Claim claim = new Claim();
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setClaimType(ClaimType.INSURER_UPLOAD);
-        claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         claim.setInvoice(invoiceService.getInvoice(999));
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setThirdParty(thirdPartyService.getThirdParty(999));
