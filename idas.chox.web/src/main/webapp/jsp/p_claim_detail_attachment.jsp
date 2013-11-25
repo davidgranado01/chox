@@ -316,7 +316,7 @@
                         <td></td>
                         <td>
                             <div class="column-remark" style="padding:10px 0 10px 0;">
-                                Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
+                                Maximum attachment size is <s:property value="maxFileSize/1024/1024"/> MB. <br/>
                                 Currently, CHOX supports attachments in the following formats: <br/>
                                 <s:property value="AllowFileTypeHelpNote"/>&nbsp;&nbsp;<img src="../images/help.png" id="claimDetailAttachmentTypeSpan" alt=""/>
                             </div>

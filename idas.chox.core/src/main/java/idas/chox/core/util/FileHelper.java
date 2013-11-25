@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 
 public class FileHelper {
 
-    public static int MAX_FILE_SIZE_ALLOW = 10485760; // 10MB
+    public static int MAX_FILE_SIZE_ALLOW = 20971520; // 20MB
 
     public static int maxFileSize(String unit){
 
