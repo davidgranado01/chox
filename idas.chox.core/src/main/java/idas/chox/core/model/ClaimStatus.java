@@ -228,7 +228,6 @@ public class ClaimStatus {
                 + CLAIM_UPDATE_BY_ENG + "','" + INVOICE_REF_TO_CH + "','"
                 + INVOICE_ESCALATED_TO_CH + "','" + CONTESTED_INVOICE_REF_TO_INS + "','"
                 + INVOICE_APPROVED_BY_BRE + "','" + AWAITING_INVOICE_PAYMENT + "','" 
-                + CLAIM_PENDING + "','" + AWAITING_LIABILITY_RESOLUTION + "','" 
                 + MANUAL_INVOICE_APPROVED + "','" + MANUAL_INVOICE_CONTESTED + "','"
                 + MANUAL_INVOICE_REJECTED + "'";
     }
