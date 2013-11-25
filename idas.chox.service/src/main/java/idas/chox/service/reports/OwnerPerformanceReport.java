@@ -228,7 +228,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id and c.invoice_id = i.id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
@@ -251,7 +251,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived','ClaimClosed') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
@@ -264,7 +264,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived','ClaimClosed') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
