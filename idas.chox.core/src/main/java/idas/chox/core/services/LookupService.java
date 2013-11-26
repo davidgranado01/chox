@@ -16,7 +16,7 @@ public interface LookupService {
     
     List<LookupItem> getLiabilityStatuses(boolean withNull);
     
-    List<LookupItem> getClaimTypes();
+    List<LookupItem> getClaimTypes(WebUser user);
 
     List getVehicleClasses();
 

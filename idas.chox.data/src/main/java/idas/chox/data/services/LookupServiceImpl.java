@@ -57,17 +57,34 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
-    public List<LookupItem> getClaimTypes() {
+    public List<LookupItem> getClaimTypes(WebUser user) {
         List<LookupItem> items = new ArrayList<LookupItem>();
+        Insurer insurer = null;
         
+
+        if (RoleHelper.isChoxAdmin(user) || (RoleHelper.isInsurerUser(user) && user.getInsurer().isAllowCollaborationProtocolClaims())
+                || (!RoleHelper.isInsurerUser(user) && user.getChorganisation().isEnableCollaborationProtocolClaims())) {
+            items.add(new LookupItem(ClaimType.COLLABORATION_PROTOCOL.toString(), Integer.toString(ClaimType.COLLABORATION_PROTOCOL.getClaimTypeValue())));
+        }
+        if (RoleHelper.isChoxAdmin(user) || (RoleHelper.isInsurerUser(user) && user.getInsurer().isAllowFixedFeeClaims())
+                || (!RoleHelper.isInsurerUser(user) && user.getChorganisation().isEnableFixedFeeClaims())) {
+            items.add(new LookupItem(ClaimType.FIXED_FEE.toString(), Integer.toString(ClaimType.FIXED_FEE.getClaimTypeValue())));
+        }
         items.add(new LookupItem(ClaimType.GTA.toString(), Integer.toString(ClaimType.GTA.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.FIXED_FEE.toString(), Integer.toString(ClaimType.FIXED_FEE.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.COLLABORATION_PROTOCOL.toString(), Integer.toString(ClaimType.COLLABORATION_PROTOCOL.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
+        if (RoleHelper.isChoxAdmin(user)
+                || (RoleHelper.isInsurerUser(user) && (user.getInsurer().isClaimUploadEnabled() || user.getInsurer().isInvoiceUploadEnabled()))) {
+            items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
+        }
         items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
-        
+        if (RoleHelper.isChoxAdmin(user) || (RoleHelper.isInsurerUser(user) && user.getInsurer().isAllowSubscriberClaims())
+                || (!RoleHelper.isInsurerUser(user) && user.getChorganisation().isEnableSubscriberClaims())) {
+            items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.getClaimTypeValue())));
+        }
+        if (RoleHelper.isChoxAdmin(user) || (RoleHelper.isInsurerUser(user) && user.getInsurer().isThirdPartyInterventionActivated())
+                || (!RoleHelper.isInsurerUser(user) && user.getChorganisation().isThirdPartyInterventionActivated())) {
+            items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
+        }
+
         return items;
     }
 

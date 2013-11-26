@@ -302,7 +302,7 @@ public class InboxAction extends BaseAction {
     }
     
     public String getClaimTypesJsonString() {
-        List<LookupItem> claimTypesList = lookupService.getClaimTypes();
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
         String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
         return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
     }
