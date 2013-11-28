@@ -14,8 +14,6 @@
         var isShowHistory = <s:property value="showHistory"/>;
         var isInboxShowHistory;
         var isSearchShowHistory;
-        var currentOrg;
-        var currentClaimType;
         var grid;
         var ds;
         var exportIntervelId;
