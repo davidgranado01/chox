@@ -210,8 +210,6 @@
         });
         if (filterName)
             executeFilterByOrgAndClaimType(filterName, title, orgId, claimTypeId);
-        currentOrg = orgId;
-        currentClaimType = claimTypeId;
     }
     
     function executeFilterByOrgAndClaimType(filterName,gridTitle, orgId, claimTypeId) {

@@ -14,8 +14,6 @@
         var isShowHistory = <s:property value="showHistory"/>;
         var isInboxShowHistory;
         var isSearchShowHistory;
-        var currentOrg;
-        var currentClaimType;
         var grid;
         var ds;
         var exportIntervelId;
@@ -194,7 +192,7 @@
             
             function refreshFilterPanel() {
                 var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-                var param = {"filterOrgId":currentOrg, "filterClaimTypeId":currentClaimType};
+                var param = {"filterOrgId":Ext.state.Manager.get("filter_org_id"), "filterClaimTypeId":Ext.state.Manager.get("filter_claim_type_id")};
                 ajax.loadHtml2(url, param, function(data){
                     $("div#filterPanel2").html(data);
                 });
