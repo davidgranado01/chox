@@ -12,7 +12,6 @@ public class WeekSummary {
     private Integer claimsNotification = 0;
     private Integer claimsPaid = 0;
     private Integer claimsNotificationContestedByInsurer = 0;
-    private BigDecimal claimsContestedAsPercentageOfChox = new BigDecimal(0.00);
     private BigDecimal invoicePaidAsPercentageOfInvoicing = new BigDecimal(0.00);
     private Integer claimsPendingByInsurer = 0;
     private Integer claimsNotificationAcceptedByInsurer = 0;
@@ -78,9 +77,6 @@ public class WeekSummary {
         this.claimsCFwd = claimsCFwd;
     }
     
-    public void setClaimsContestedAsPercentageOfChox(BigDecimal claimsContestedAsPercentageOfChox) {
-        this.claimsContestedAsPercentageOfChox = claimsContestedAsPercentageOfChox;
-    }
     
     public BigDecimal getClaimsContestedAsPercentageOfChox() {
         

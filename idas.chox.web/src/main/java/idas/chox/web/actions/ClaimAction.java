@@ -1362,9 +1362,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String removeNotification() {
 
-        if (notificationId > 0) {
+        if (notificationId != null && notificationId > 0) {
             notificationService.removeNotificationById(notificationId);
-        } else if (notificationService != null && claim != null) { // No id given so remove all notifications
+        } else if (notificationId != null && notificationService != null && claim != null) { // No id given so remove all notifications
             if (getIsInsurer()) {
                 notificationService.removeAllInsurerNotifications(claim.getId());
             } else {
@@ -1377,9 +1377,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String acknowledgeNotification() {
 
-        if (notificationId > 0) {
+        if (notificationId != null && notificationId > 0) {
                 notificationService.acknowledgeNotificationById(notificationId);
-        } else if (notificationService != null && claim != null) {
+        } else if (notificationId != null && notificationService != null && claim != null) {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
