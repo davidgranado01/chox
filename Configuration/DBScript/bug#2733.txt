@@ -1,0 +1,715 @@
+update vehicle_class_price_special_rate
+   set price = 15.17
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S1';
+
+update vehicle_class_price_special_rate
+   set price = 15.75
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S2';
+
+update vehicle_class_price_special_rate
+   set price = 17.48
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S3';
+
+update vehicle_class_price_special_rate
+   set price = 18.41
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S4';
+
+update vehicle_class_price_special_rate
+   set price = 21.38
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S5';
+
+update vehicle_class_price_special_rate
+   set price = 22.25
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S6';
+
+update vehicle_class_price_special_rate
+   set price = 20.30
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'S7';
+
+update vehicle_class_price_special_rate
+   set price = 23.49
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M1';
+
+update vehicle_class_price_special_rate
+   set price = 20.87
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M2';
+
+update vehicle_class_price_special_rate
+   set price = 41.84
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M3';
+
+update vehicle_class_price_special_rate
+   set price = 49.55
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M4';
+
+update vehicle_class_price_special_rate
+   set price = 94.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M5';
+
+update vehicle_class_price_special_rate
+   set price = 116.30
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'M6';
+
+update vehicle_class_price_special_rate
+   set price = 44.25
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F1';
+
+update vehicle_class_price_special_rate
+   set price = 45.01
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F2';
+
+update vehicle_class_price_special_rate
+   set price = 61.85
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F3';
+
+update vehicle_class_price_special_rate
+   set price = 74.41
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F4';
+
+update vehicle_class_price_special_rate
+   set price = 94.13
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F5';
+
+update vehicle_class_price_special_rate
+   set price = 94.63
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F6';
+
+update vehicle_class_price_special_rate
+   set price = 119.43
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F7';
+
+update vehicle_class_price_special_rate
+   set price = 114.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F8';
+
+update vehicle_class_price_special_rate
+   set price = 124.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'F9';
+
+update vehicle_class_price_special_rate
+   set price = 21.79
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P1';
+
+update vehicle_class_price_special_rate
+   set price = 24.57
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P2';
+
+update vehicle_class_price_special_rate
+   set price = 31.58
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P3';
+
+update vehicle_class_price_special_rate
+   set price = 36.56
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P4';
+
+update vehicle_class_price_special_rate
+   set price = 36.56
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P5';
+
+update vehicle_class_price_special_rate
+   set price = 74.66
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P6';
+
+update vehicle_class_price_special_rate
+   set price = 74.66
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P7';
+
+update vehicle_class_price_special_rate
+   set price = 119.06
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P8';
+
+update vehicle_class_price_special_rate
+   set price = 119.06
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P9';
+
+update vehicle_class_price_special_rate
+   set price = 104.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P10';
+
+update vehicle_class_price_special_rate
+   set price = 412.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P11';
+
+update vehicle_class_price_special_rate
+   set price = 463.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P12';
+
+update vehicle_class_price_special_rate
+   set price = 604.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'P13';
+
+update vehicle_class_price_special_rate
+   set price = 54.51
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP1';
+
+update vehicle_class_price_special_rate
+   set price = 60.00
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP2';
+
+update vehicle_class_price_special_rate
+   set price = 88.58
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP3';
+
+update vehicle_class_price_special_rate
+   set price = 44.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP4';
+
+update vehicle_class_price_special_rate
+   set price = 59.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP5';
+
+update vehicle_class_price_special_rate
+   set price = 91.28
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP6';
+
+update vehicle_class_price_special_rate
+   set price = 92.05
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP7';
+
+update vehicle_class_price_special_rate
+   set price = 92.82
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP8';
+
+update vehicle_class_price_special_rate
+   set price = 99.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP9';
+
+update vehicle_class_price_special_rate
+   set price = 104.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP10';
+
+update vehicle_class_price_special_rate
+   set price = 109.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP11';
+
+update vehicle_class_price_special_rate
+   set price = 119.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP12';
+
+update vehicle_class_price_special_rate
+   set price = 412.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'SP13';
+
+update vehicle_class_price_special_rate
+   set price = 19.07
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV1';
+
+update vehicle_class_price_special_rate
+   set price = 20.35
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV2';
+
+update vehicle_class_price_special_rate
+   set price = 20.35
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV3';
+
+update vehicle_class_price_special_rate
+   set price = 24.87
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV4';
+
+update vehicle_class_price_special_rate
+   set price = 37.43
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV5';
+
+update vehicle_class_price_special_rate
+   set price = 40.46
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'PV6';
+
+update vehicle_class_price_special_rate
+   set price = 38.95
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CV1';
+
+update vehicle_class_price_special_rate
+   set price = 40.46
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CV2';
+
+update vehicle_class_price_special_rate
+   set price = 47.60
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CV3';
+
+update vehicle_class_price_special_rate
+   set price = 69.00
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CV4';
+
+update vehicle_class_price_special_rate
+   set price = 72.73
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'RV1';
+
+update vehicle_class_price_special_rate
+   set price = 101.36
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'RV2';
+
+update vehicle_class_price_special_rate
+   set price = 46.64
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CP1';
+
+update vehicle_class_price_special_rate
+   set price = 48.79
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CP2';
+
+update vehicle_class_price_special_rate
+   set price = 56.77
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CP3';
+
+update vehicle_class_price_special_rate
+   set price = 49.05
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CS1';
+
+update vehicle_class_price_special_rate
+   set price = 52.33
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CS2';
+
+update vehicle_class_price_special_rate
+   set price = 53.59
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CS3';
+
+update vehicle_class_price_special_rate
+   set price = 59.40
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CS4';
+
+update vehicle_class_price_special_rate
+   set price = 63.44
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CS5';
+
+update vehicle_class_price_special_rate
+   set price = 39.95
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CM1';
+
+update vehicle_class_price_special_rate
+   set price = 39.95
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CM2';
+
+update vehicle_class_price_special_rate
+   set price = 39.95
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'CM3';
+
+update vehicle_class_price_special_rate
+   set price = 20.94
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B1';
+
+update vehicle_class_price_special_rate
+   set price = 22.40
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B2';
+
+update vehicle_class_price_special_rate
+   set price = 27.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B3';
+
+update vehicle_class_price_special_rate
+   set price = 30.60
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B4';
+
+update vehicle_class_price_special_rate
+   set price = 39.00
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B5';
+
+update vehicle_class_price_special_rate
+   set price = 40.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'B6';
+
+update vehicle_class_price_special_rate
+   set price = 65.76
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T1';
+
+update vehicle_class_price_special_rate
+   set price = 76.32
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T2';
+
+update vehicle_class_price_special_rate
+   set price = 65.76
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T3';
+
+update vehicle_class_price_special_rate
+   set price = 59.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T4';
+
+update vehicle_class_price_special_rate
+   set price = 71.01
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T5';
+
+update vehicle_class_price_special_rate
+   set price = 95.00
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T6';
+
+update vehicle_class_price_special_rate
+   set price = 96.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T7';
+
+update vehicle_class_price_special_rate
+   set price = 74.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T8';
+
+update vehicle_class_price_special_rate
+   set price = 119.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T9';
+
+update vehicle_class_price_special_rate
+   set price = 79.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T10';
+
+update vehicle_class_price_special_rate
+   set price = 94.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T12';
+
+update vehicle_class_price_special_rate
+   set price = 179.10
+from vehicle_class vc
+where insurer_id = 20
+   and chorganisation_id = 1016
+   and vehicle_class_price_special_rate.vehicle_class_id = vc.id
+   and vc.name = 'T13';
+
+
+update vehicle_class_price_special_rate set chorganisation_id=1341, version=version+1 where chorganisation_id=1016 and insurer_id=20;
+
