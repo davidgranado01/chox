@@ -37,9 +37,12 @@ public class DashBoardViewData {
     private BigDecimal totalValueOfPenaltyChargesApplied;
     private BigDecimal totalValueOfPenaltyChargesPaid;
     private BigDecimal avgInvoicePaymentTime;
+    private BigDecimal avgManualInvoicePaymentTime;
     private Integer noOfInsurerClaimsSubmitted;
     private Integer noOfManualInvoicesSubmitted;
     private BigDecimal valueOfManualInvoicesSubmitted;
+    private Integer noOfManualInvoicesAccepted;
+    private BigDecimal valueOfManualInvoicesAccepted;
     private Integer noOfManualInvoicesPaid;
     private BigDecimal valueOfManualInvoicesPaid;
     private Integer noOfManualInvoicesClosed;
@@ -84,9 +87,12 @@ public class DashBoardViewData {
         viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
         viewData.setTotalValueOfPenaltyChargesPaid(getDecimalValue(data.get("v_PenaltyChargesPaid".toLowerCase())));
         viewData.setAvgInvoicePaymentTime(getDecimalValue(data.get("Avg_InvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
+        viewData.setAvgManualInvoicePaymentTime(getDecimalValue(data.get("Avg_ManualInvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
         viewData.setNoOfInsurerClaimsSubmitted(getIntegerValue(data.get("n_insurer_ClaimsSubmitted".toLowerCase())));
         viewData.setNoOfManualInvoicesSubmitted(getIntegerValue(data.get("n_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
+        viewData.setNoOfManualInvoicesAccepted(getIntegerValue(data.get("n_manual_InvoicesAccepted".toLowerCase())));
+        viewData.setValueOfManualInvoicesAccepted(getDecimalValue(data.get("v_manual_InvoicesAccepted".toLowerCase())));
         viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesPaid".toLowerCase())));
         viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
         viewData.setNoOfManualInvoicesClosed(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
@@ -129,6 +135,14 @@ public class DashBoardViewData {
 
     public void setAvgInvoicePaymentTime(BigDecimal avgInvoicePaymentTime) {
         this.avgInvoicePaymentTime = avgInvoicePaymentTime;
+    }
+
+    public BigDecimal getAvgManualInvoicePaymentTime() {
+        return avgManualInvoicePaymentTime;
+    }
+
+    public void setAvgManualInvoicePaymentTime(BigDecimal avgManualInvoicePaymentTime) {
+        this.avgManualInvoicePaymentTime = avgManualInvoicePaymentTime;
     }
 
     /**
@@ -462,6 +476,14 @@ public class DashBoardViewData {
         this.noOfManualInvoicesPaid = noOfManualInvoicesPaid;
     }
 
+    public Integer getNoOfManualInvoicesAccepted() {
+        return noOfManualInvoicesAccepted;
+    }
+
+    public void setNoOfManualInvoicesAccepted(Integer noOfManualInvoicesAccepted) {
+        this.noOfManualInvoicesAccepted = noOfManualInvoicesAccepted;
+    }
+
     public Integer getNoOfManualInvoicesSubmitted() {
         return noOfManualInvoicesSubmitted;
     }
@@ -476,6 +498,14 @@ public class DashBoardViewData {
 
     public void setNoOfInsurerClaimsSubmitted(Integer noOfInsurerClaimsSubmitted) {
         this.noOfInsurerClaimsSubmitted = noOfInsurerClaimsSubmitted;
+    }
+
+    public BigDecimal getValueOfManualInvoicesAccepted() {
+        return valueOfManualInvoicesAccepted;
+    }
+
+    public void setValueOfManualInvoicesAccepted(BigDecimal valueOfManualInvoicesAccepted) {
+        this.valueOfManualInvoicesAccepted = valueOfManualInvoicesAccepted;
     }
 
     public BigDecimal getValueOfManualInvoicesPaid() {
