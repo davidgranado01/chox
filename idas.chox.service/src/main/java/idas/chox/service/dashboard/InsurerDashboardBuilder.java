@@ -49,9 +49,12 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_penalty_charges_w) as v_PenaltyChargesApplied, ");
         sb.append("sum(val_penalty_charges_paid_w) as v_PenaltyChargesPaid, ");
         sb.append("avg(avg_inv_payment_time_w) as Avg_InvPaymentTime, ");
+        sb.append("avg(avg_manual_inv_payment_time_w) as Avg_ManualInvPaymentTime, ");
         sb.append("sum(num_insurer_claims_submitted_w) as n_insurer_ClaimsSubmitted, ");
         sb.append("sum(num_manual_invoices_submitted_w) as n_manual_InvoicesSubmitted, ");
         sb.append("sum(val_manual_invoices_submitted_w) as v_manual_InvoicesSubmitted, ");
+        sb.append("sum(num_manual_invoices_accepted_w) as n_manual_InvoicesAccepted, ");
+        sb.append("sum(val_manual_invoices_accepted_w) as v_manual_InvoicesAccepted, ");
         sb.append("sum(num_manual_invoices_paid_w) as n_manual_InvoicesPaid, ");
         sb.append("sum(val_manual_invoices_paid_w) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_w) as n_manual_InvoicesClosed, ");
@@ -87,9 +90,12 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_penalty_charges_m) as v_PenaltyChargesApplied, ");
         sb.append("sum(val_penalty_charges_paid_m) as v_PenaltyChargesPaid, ");
         sb.append("avg(avg_inv_payment_time_m) as Avg_InvPaymentTime, ");
+        sb.append("avg(avg_manual_inv_payment_time_m) as Avg_ManualInvPaymentTime, ");
         sb.append("sum(num_insurer_claims_submitted_m) as n_insurer_ClaimsSubmitted, ");
         sb.append("sum(num_manual_invoices_submitted_m) as n_manual_InvoicesSubmitted, ");
         sb.append("sum(val_manual_invoices_submitted_m) as v_manual_InvoicesSubmitted, ");
+        sb.append("sum(num_manual_invoices_accepted_m) as n_manual_InvoicesAccepted, ");
+        sb.append("sum(val_manual_invoices_accepted_m) as v_manual_InvoicesAccepted, ");
         sb.append("sum(num_manual_invoices_paid_m) as n_manual_InvoicesPaid, ");
         sb.append("sum(val_manual_invoices_paid_m) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_m) as n_manual_InvoicesClosed, ");
@@ -130,9 +136,12 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_penalty_charges_c) as v_PenaltyChargesApplied, ");
         sb.append("sum(val_penalty_charges_paid_c) as v_PenaltyChargesPaid, ");
         sb.append("avg(avg_inv_payment_time_c) as Avg_InvPaymentTime, ");
+        sb.append("avg(avg_manual_inv_payment_time_c) as Avg_ManualInvPaymentTime, ");
         sb.append("sum(num_insurer_claims_submitted_c) as n_insurer_ClaimsSubmitted, ");
         sb.append("sum(num_manual_invoices_submitted_c) as n_manual_InvoicesSubmitted, ");
         sb.append("sum(val_manual_invoices_submitted_c) as v_manual_InvoicesSubmitted, ");
+        sb.append("sum(num_manual_invoices_accepted_c) as n_manual_InvoicesAccepted, ");
+        sb.append("sum(val_manual_invoices_accepted_c) as v_manual_InvoicesAccepted, ");
         sb.append("sum(num_manual_invoices_paid_c) as n_manual_InvoicesPaid, ");
         sb.append("sum(val_manual_invoices_paid_c) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_c) as n_manual_InvoicesClosed, ");

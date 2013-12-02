@@ -1607,6 +1607,117 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 -- RAISE NOTICE 'Weekly Start: %1', timeofday();
 
 update tmp_dashboard
+   set num_manual_invoices_accepted_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type IN (10,14,15,16,17)
+and c.status = 'AwaitingInvoicePayment'
+and c.status_modified_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update tmp_dashboard
+   set num_manual_invoices_accepted_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type IN (10,14,15,16,17)
+and c.status = 'AwaitingInvoicePayment'
+and c.status_modified_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update tmp_dashboard
+   set num_manual_invoices_accepted_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type IN (10,14,15,16,17)
+and c.status = 'AwaitingInvoicePayment'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update tmp_dashboard
+   set val_manual_invoices_accepted_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
+where c.invoice_id=i.id
+and i.invoice_original_id = io.id
+and c.claim_type IN (10,14,15,16,17)
+and c.status = 'AwaitingInvoicePayment'
+and c.status_modified_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update tmp_dashboard
+   set val_manual_invoices_accepted_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
+where c.invoice_id=i.id
+and i.invoice_original_id = io.id
+and c.claim_type IN (10,14,15,16,17)
+and c.status = 'AwaitingInvoicePayment'
+and c.status_modified_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update tmp_dashboard
+   set val_manual_invoices_accepted_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
+where c.invoice_id=i.id
+and i.invoice_original_id = io.id
+and c.status = 'AwaitingInvoicePayment'
+and c.claim_type IN (10,14,15,16,17)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update tmp_dashboard
    set num_manual_invoices_closed_w = t1.num
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
@@ -1837,6 +1948,71 @@ where t1.insurer_id = tmp_dashboard.insurer_id
   and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
 
 
+--   Weekly
+-- RAISE NOTICE 'Weekly Avg Manual Inv Payment Time Start: %1', timeofday();
+
+update tmp_dashboard
+set avg_manual_inv_payment_time_w = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+         from claim c, audit_trail a1, invoice i
+         where c.id = a1.claim_id 
+           and c.invoice_id = i.id
+           and a1.reverted=false and a1.new_status ='ManualInvoicePaid'
+           and a1.update_date >= SqlGetDayOfWeek()
+         group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Avg Inv Payment Time Start: %1', timeofday();
+
+
+update tmp_dashboard
+set avg_manual_inv_payment_time_m = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+           from claim c, audit_trail a1, invoice i
+           where c.id = a1.claim_id 
+             and c.invoice_id = i.id
+             and a1.reverted=false and a1.new_status ='ManualInvoicePaid'
+             and a1.update_date >= SqlGetDayOfMonth()
+           group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Avg Inv Payment Time Start: %1', timeofday();
+
+
+update tmp_dashboard
+set avg_manual_inv_payment_time_c = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+          from claim c, audit_trail a1, invoice i
+          where c.id = a1.claim_id 
+            and c.invoice_id = i.id
+            and a1.reverted=false and a1.new_status ='ManualInvoicePaid'
+          group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+
+
 -- RAISE NOTICE 'Truncating dashboard tabel: %1', timeofday();
 truncate table dashboard;
 
@@ -1874,6 +2050,9 @@ insert into dashboard( process_date, insurer_id, chorganisation_id, workgroup_id
                        val_invoices_awaiting_litigation_outcome_w, val_invoices_awaiting_litigation_outcome_m, val_invoices_awaiting_litigation_outcome_c,
                        val_penalty_charges_paid_w, val_penalty_charges_paid_m, val_penalty_charges_paid_c,
                        num_insurer_claims_submitted_w, num_insurer_claims_submitted_m, num_insurer_claims_submitted_c,
+                       avg_manual_inv_payment_time_w, avg_manual_inv_payment_time_m, avg_manual_inv_payment_time_c,
+                       num_manual_invoices_accepted_w, num_manual_invoices_accepted_m, num_manual_invoices_accepted_c,
+                       val_manual_invoices_accepted_w, val_manual_invoices_accepted_m, val_manual_invoices_accepted_c,
                        complete)
 select process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
        num_claims_submitted_w, num_claims_submitted_m, num_claims_submitted_c,
@@ -1907,6 +2086,9 @@ select process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id
        coalesce(val_invoices_awaiting_litigation_outcome_w, 0.00), coalesce(val_invoices_awaiting_litigation_outcome_m, 0.00), coalesce(val_invoices_awaiting_litigation_outcome_c, 0.00),
        coalesce(val_penalty_charges_paid_w, 0.00), coalesce(val_penalty_charges_paid_m, 0.00), coalesce(val_penalty_charges_paid_c, 0.00),
        num_insurer_claims_submitted_w, num_insurer_claims_submitted_m, num_insurer_claims_submitted_c,
+       avg_manual_inv_payment_time_w, avg_manual_inv_payment_time_m, avg_manual_inv_payment_time_c,
+       num_manual_invoices_accepted_w, num_manual_invoices_accepted_m, num_manual_invoices_accepted_c,
+       coalesce(val_manual_invoices_accepted_w, 0.00), coalesce(val_manual_invoices_accepted_m, 0.00), coalesce(val_manual_invoices_accepted_c, 0.00),
        true
 from tmp_dashboard;
 
