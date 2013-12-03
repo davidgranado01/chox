@@ -1522,7 +1522,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1535,7 +1535,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1548,7 +1548,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1561,7 +1561,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1574,7 +1574,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1587,7 +1587,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1600,7 +1600,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1613,7 +1613,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1626,7 +1626,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1639,7 +1639,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1652,7 +1652,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1665,7 +1665,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -1678,7 +1678,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
    WHERE c.invoice_id=i.id
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
-     AND cu.is_total_loss = TRUE
+     AND cu.is_total_loss = FALSE
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
