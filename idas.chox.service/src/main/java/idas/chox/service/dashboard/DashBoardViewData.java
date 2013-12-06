@@ -43,12 +43,15 @@ public class DashBoardViewData {
     private BigDecimal valueOfManualInvoicesSubmitted;
     private Integer noOfManualInvoicesAccepted;
     private BigDecimal valueOfManualInvoicesAccepted;
+    private Integer noOfManualInvoicesAwaitingLiabilityResolution;
+    private BigDecimal valueOfManualInvoicesAwaitingLiabilityResolution;
     private Integer noOfManualInvoicesPaid;
     private BigDecimal valueOfManualInvoicesPaid;
     private Integer noOfManualInvoicesClosed;
     private BigDecimal valueOfManualInvoicesClosed;
     private Integer noOfInvoicesAwaitingLitigationOutcome;
     private BigDecimal valueOfInvoicesAwaitingLitigationOutcome;
+    private BigDecimal valueOfManualInvoicesPenaltyChargesPaid;
 
     public static DashBoardViewData getObject(Map data) {
 
@@ -97,8 +100,11 @@ public class DashBoardViewData {
         viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
         viewData.setNoOfManualInvoicesClosed(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
         viewData.setValueOfManualInvoicesClosed(getDecimalValue(data.get("v_manual_InvoicesClosed".toLowerCase())));
+        viewData.setNoOfManualInvoicesAwaitingLiabilityResolution(getIntegerValue(data.get("n_manual_InvoicesAwaitingLiabilityResolution".toLowerCase())));
+        viewData.setValueOfManualInvoicesAwaitingLiabilityResolution(getDecimalValue(data.get("v_manual_InvoicesAwaitingLiabilityResolution".toLowerCase())));
         viewData.setNoOfInvoicesAwaitingLitigationOutcome(getIntegerValue(data.get("n_InvoicesAwaitingLitigationOutcome".toLowerCase())));
         viewData.setValueOfInvoicesAwaitingLitigationOutcome(getDecimalValue(data.get("v_InvoicesAwaitingLitigationOutcome".toLowerCase())));
+        viewData.setValueOfManualInvoicesPenaltyChargesPaid(getDecimalValue(data.get("v_manual_InvoicesPenaltyChargesPaid".toLowerCase())));
         return viewData;
     }
 
@@ -133,7 +139,7 @@ public class DashBoardViewData {
         return avgInvoicePaymentTime;
     }
 
-    public void setAvgInvoicePaymentTime(BigDecimal avgInvoicePaymentTime) {
+    private void setAvgInvoicePaymentTime(BigDecimal avgInvoicePaymentTime) {
         this.avgInvoicePaymentTime = avgInvoicePaymentTime;
     }
 
@@ -141,7 +147,7 @@ public class DashBoardViewData {
         return avgManualInvoicePaymentTime;
     }
 
-    public void setAvgManualInvoicePaymentTime(BigDecimal avgManualInvoicePaymentTime) {
+    private void setAvgManualInvoicePaymentTime(BigDecimal avgManualInvoicePaymentTime) {
         this.avgManualInvoicePaymentTime = avgManualInvoicePaymentTime;
     }
 
@@ -155,7 +161,7 @@ public class DashBoardViewData {
     /**
      * @param noOfClaimNotificationsSubmitted the noOfClaimNotificationsSubmitted to set
      */
-    public void setNoOfClaimNotificationsSubmitted(Integer noOfClaimNotificationsSubmitted) {
+    private void setNoOfClaimNotificationsSubmitted(Integer noOfClaimNotificationsSubmitted) {
         this.noOfClaimNotificationsSubmitted = noOfClaimNotificationsSubmitted;
     }
 
@@ -169,7 +175,7 @@ public class DashBoardViewData {
     /**
      * @param noOfClaimNotificationsAccepted the noOfClaimNotificationsAccepted to set
      */
-    public void setNoOfClaimNotificationsAccepted(Integer noOfClaimNotificationsAccepted) {
+    private void setNoOfClaimNotificationsAccepted(Integer noOfClaimNotificationsAccepted) {
         this.noOfClaimNotificationsAccepted = noOfClaimNotificationsAccepted;
     }
 
@@ -183,7 +189,7 @@ public class DashBoardViewData {
     /**
      * @param noOfClaimNotificationsRejectionsAccepted the noOfClaimNotificationsRejectionsAccepted to set
      */
-    public void setNoOfClaimNotificationsRejectionsAccepted(Integer noOfClaimNotificationsRejectionsAccepted) {
+    private void setNoOfClaimNotificationsRejectionsAccepted(Integer noOfClaimNotificationsRejectionsAccepted) {
         this.noOfClaimNotificationsRejectionsAccepted = noOfClaimNotificationsRejectionsAccepted;
     }
 
@@ -197,7 +203,7 @@ public class DashBoardViewData {
     /**
      * @param noOfClaimsAwaitingToBeProcessed the noOfClaimsAwaitingToBeProcessed to set
      */
-    public void setNoOfClaimsAwaitingToBeProcessed(Integer noOfClaimsAwaitingToBeProcessed) {
+    private void setNoOfClaimsAwaitingToBeProcessed(Integer noOfClaimsAwaitingToBeProcessed) {
         this.noOfClaimsAwaitingToBeProcessed = noOfClaimsAwaitingToBeProcessed;
     }
 
@@ -211,7 +217,7 @@ public class DashBoardViewData {
     /**
      * @param noOfClaimNotificationsClosed the noOfClaimNotificationsClosed to set
      */
-    public void setNoOfClaimNotificationsClosed(Integer noOfClaimNotificationsClosed) {
+    private void setNoOfClaimNotificationsClosed(Integer noOfClaimNotificationsClosed) {
         this.noOfClaimNotificationsClosed = noOfClaimNotificationsClosed;
     }
 
@@ -225,7 +231,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesSubmitted the noOfInvoicesSubmitted to set
      */
-    public void setNoOfInvoicesSubmitted(Integer noOfInvoicesSubmitted) {
+    private void setNoOfInvoicesSubmitted(Integer noOfInvoicesSubmitted) {
         this.noOfInvoicesSubmitted = noOfInvoicesSubmitted;
     }
 
@@ -239,7 +245,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesAccepted the noOfInvoicesAccepted to set
      */
-    public void setNoOfInvoicesAccepted(Integer noOfInvoicesAccepted) {
+    private void setNoOfInvoicesAccepted(Integer noOfInvoicesAccepted) {
         this.noOfInvoicesAccepted = noOfInvoicesAccepted;
     }
 
@@ -253,7 +259,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesAccepted the valueOfInvoicesAccepted to set
      */
-    public void setValueOfInvoicesAccepted(BigDecimal valueOfInvoicesAccepted) {
+    private void setValueOfInvoicesAccepted(BigDecimal valueOfInvoicesAccepted) {
         this.valueOfInvoicesAccepted = valueOfInvoicesAccepted;
     }
 
@@ -267,7 +273,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesRejected the noOfInvoicesRejected to set
      */
-    public void setNoOfInvoicesRejected(Integer noOfInvoicesRejected) {
+    private void setNoOfInvoicesRejected(Integer noOfInvoicesRejected) {
         this.noOfInvoicesRejected = noOfInvoicesRejected;
     }
 
@@ -281,7 +287,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesRejected the valueOfInvoicesRejected to set
      */
-    public void setValueOfInvoicesRejected(BigDecimal valueOfInvoicesRejected) {
+    private void setValueOfInvoicesRejected(BigDecimal valueOfInvoicesRejected) {
         this.valueOfInvoicesRejected = valueOfInvoicesRejected;
     }
 
@@ -295,7 +301,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesPending the noOfInvoicesPending to set
      */
-    public void setNoOfInvoicesPending(Integer noOfInvoicesPending) {
+    private void setNoOfInvoicesPending(Integer noOfInvoicesPending) {
         this.noOfInvoicesPending = noOfInvoicesPending;
     }
 
@@ -309,7 +315,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesPending the valueOfInvoicesPending to set
      */
-    public void setValueOfInvoicesPending(BigDecimal valueOfInvoicesPending) {
+    private void setValueOfInvoicesPending(BigDecimal valueOfInvoicesPending) {
         this.valueOfInvoicesPending = valueOfInvoicesPending;
     }
 
@@ -323,7 +329,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesAwaitingLiabilityResolution the noOfInvoicesAwaitingLiabilityResolution to set
      */
-    public void setNoOfInvoicesAwaitingLiabilityResolution(Integer noOfInvoicesAwaitingLiabilityResolution) {
+    private void setNoOfInvoicesAwaitingLiabilityResolution(Integer noOfInvoicesAwaitingLiabilityResolution) {
         this.noOfInvoicesAwaitingLiabilityResolution = noOfInvoicesAwaitingLiabilityResolution;
     }
 
@@ -337,7 +343,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesAwaitingLiabilityResolution the valueOfInvoicesAwaitingLiabilityResolution to set
      */
-    public void setValueOfInvoicesAwaitingLiabilityResolution(BigDecimal valueOfInvoicesAwaitingLiabilityResolution) {
+    private void setValueOfInvoicesAwaitingLiabilityResolution(BigDecimal valueOfInvoicesAwaitingLiabilityResolution) {
         this.valueOfInvoicesAwaitingLiabilityResolution = valueOfInvoicesAwaitingLiabilityResolution;
     }
 
@@ -351,7 +357,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesClosed the noOfInvoicesClosed to set
      */
-    public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
+    private void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
         this.noOfInvoicesClosed = noOfInvoicesClosed;
     }
 
@@ -365,7 +371,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesClosed the valueOfInvoicesClosed to set
      */
-    public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
+    private void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
         this.valueOfInvoicesClosed = valueOfInvoicesClosed;
     }
 
@@ -379,7 +385,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesPaymentLogged the noOfInvoicesPaymentLogged to set
      */
-    public void setNoOfInvoicesPaymentLogged(Integer noOfInvoicesPaymentLogged) {
+    private void setNoOfInvoicesPaymentLogged(Integer noOfInvoicesPaymentLogged) {
         this.noOfInvoicesPaymentLogged = noOfInvoicesPaymentLogged;
     }
 
@@ -393,7 +399,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesPaymentLogged the valueOfInvoicesPaymentLogged to set
      */
-    public void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
+    private void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
         this.valueOfInvoicesPaymentLogged = valueOfInvoicesPaymentLogged;
     }
 
@@ -407,7 +413,7 @@ public class DashBoardViewData {
     /**
      * @param noOfInvoicesPaymentReceived the noOfInvoicesPaymentReceived to set
      */
-    public void setNoOfInvoicesPaymentReceived(Integer noOfInvoicesPaymentReceived) {
+    private void setNoOfInvoicesPaymentReceived(Integer noOfInvoicesPaymentReceived) {
         this.noOfInvoicesPaymentReceived = noOfInvoicesPaymentReceived;
     }
 
@@ -421,7 +427,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesPaymentReceived the valueOfInvoicesPaymentReceived to set
      */
-    public void setValueOfInvoicesPaymentReceived(BigDecimal valueOfInvoicesPaymentReceived) {
+    private void setValueOfInvoicesPaymentReceived(BigDecimal valueOfInvoicesPaymentReceived) {
         this.valueOfInvoicesPaymentReceived = valueOfInvoicesPaymentReceived;
     }
 
@@ -435,7 +441,7 @@ public class DashBoardViewData {
     /**
      * @param totalValueOfPenaltyChargesApplied the totalValueOfPenaltyChargesApplied to set
      */
-    public void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
+    private void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
         this.totalValueOfPenaltyChargesApplied = totalValueOfPenaltyChargesApplied;
     }
 
@@ -449,7 +455,7 @@ public class DashBoardViewData {
     /**
      * @param totalValueOfPenaltyChargesPaid the totalValueOfPenaltyChargesPaid to set
      */
-    public void setTotalValueOfPenaltyChargesPaid(BigDecimal totalValueOfPenaltyChargesPaid) {
+    private void setTotalValueOfPenaltyChargesPaid(BigDecimal totalValueOfPenaltyChargesPaid) {
         this.totalValueOfPenaltyChargesPaid = totalValueOfPenaltyChargesPaid;
     }
 
@@ -464,7 +470,7 @@ public class DashBoardViewData {
     /**
      * @param valueOfInvoicesSubmitted the valueOfInvoicesSubmitted to set
      */
-    public void setValueOfInvoicesSubmitted(BigDecimal valueOfInvoicesSubmitted) {
+    private void setValueOfInvoicesSubmitted(BigDecimal valueOfInvoicesSubmitted) {
         this.valueOfInvoicesSubmitted = valueOfInvoicesSubmitted;
     }
 
@@ -472,7 +478,7 @@ public class DashBoardViewData {
         return noOfManualInvoicesPaid;
     }
 
-    public void setNoOfManualInvoicesPaid(Integer noOfManualInvoicesPaid) {
+    private void setNoOfManualInvoicesPaid(Integer noOfManualInvoicesPaid) {
         this.noOfManualInvoicesPaid = noOfManualInvoicesPaid;
     }
 
@@ -480,7 +486,7 @@ public class DashBoardViewData {
         return noOfManualInvoicesAccepted;
     }
 
-    public void setNoOfManualInvoicesAccepted(Integer noOfManualInvoicesAccepted) {
+    private void setNoOfManualInvoicesAccepted(Integer noOfManualInvoicesAccepted) {
         this.noOfManualInvoicesAccepted = noOfManualInvoicesAccepted;
     }
 
@@ -488,7 +494,7 @@ public class DashBoardViewData {
         return noOfManualInvoicesSubmitted;
     }
 
-    public void setNoOfManualInvoicesSubmitted(Integer noOfManualInvoicesSubmitted) {
+    private void setNoOfManualInvoicesSubmitted(Integer noOfManualInvoicesSubmitted) {
         this.noOfManualInvoicesSubmitted = noOfManualInvoicesSubmitted;
     }
 
@@ -496,7 +502,7 @@ public class DashBoardViewData {
         return noOfInsurerClaimsSubmitted;
     }
 
-    public void setNoOfInsurerClaimsSubmitted(Integer noOfInsurerClaimsSubmitted) {
+    private void setNoOfInsurerClaimsSubmitted(Integer noOfInsurerClaimsSubmitted) {
         this.noOfInsurerClaimsSubmitted = noOfInsurerClaimsSubmitted;
     }
 
@@ -504,7 +510,7 @@ public class DashBoardViewData {
         return valueOfManualInvoicesAccepted;
     }
 
-    public void setValueOfManualInvoicesAccepted(BigDecimal valueOfManualInvoicesAccepted) {
+    private void setValueOfManualInvoicesAccepted(BigDecimal valueOfManualInvoicesAccepted) {
         this.valueOfManualInvoicesAccepted = valueOfManualInvoicesAccepted;
     }
 
@@ -512,7 +518,7 @@ public class DashBoardViewData {
         return valueOfManualInvoicesPaid;
     }
 
-    public void setValueOfManualInvoicesPaid(BigDecimal valueOfManualInvoicesPaid) {
+    private void setValueOfManualInvoicesPaid(BigDecimal valueOfManualInvoicesPaid) {
         this.valueOfManualInvoicesPaid = valueOfManualInvoicesPaid;
     }
 
@@ -520,7 +526,7 @@ public class DashBoardViewData {
         return valueOfManualInvoicesSubmitted;
     }
 
-    public void setValueOfManualInvoicesSubmitted(BigDecimal valueOfManualInvoicesSubmitted) {
+    private void setValueOfManualInvoicesSubmitted(BigDecimal valueOfManualInvoicesSubmitted) {
         this.valueOfManualInvoicesSubmitted = valueOfManualInvoicesSubmitted;
     }
 
@@ -528,7 +534,7 @@ public class DashBoardViewData {
         return noOfManualInvoicesClosed;
     }
 
-    public void setNoOfManualInvoicesClosed(Integer noOfManualInvoicesClosed) {
+    private void setNoOfManualInvoicesClosed(Integer noOfManualInvoicesClosed) {
         this.noOfManualInvoicesClosed = noOfManualInvoicesClosed;
     }
 
@@ -536,15 +542,31 @@ public class DashBoardViewData {
         return valueOfManualInvoicesClosed;
     }
 
-    public void setValueOfManualInvoicesClosed(BigDecimal valueOfManualInvoicesClosed) {
+    private void setValueOfManualInvoicesClosed(BigDecimal valueOfManualInvoicesClosed) {
         this.valueOfManualInvoicesClosed = valueOfManualInvoicesClosed;
+    }
+
+    public Integer getNoOfManualInvoicesAwaitingLiabilityResolution() {
+        return noOfManualInvoicesAwaitingLiabilityResolution;
+    }
+
+    private void setNoOfManualInvoicesAwaitingLiabilityResolution(Integer noOfManualInvoicesAwaitingLiabilityResolution) {
+        this.noOfManualInvoicesAwaitingLiabilityResolution = noOfManualInvoicesAwaitingLiabilityResolution;
+    }
+
+    public BigDecimal getValueOfManualInvoicesAwaitingLiabilityResolution() {
+        return valueOfManualInvoicesAwaitingLiabilityResolution;
+    }
+
+    private void setValueOfManualInvoicesAwaitingLiabilityResolution(BigDecimal valueOfManualInvoicesAwaitingLiabilityResolution) {
+        this.valueOfManualInvoicesAwaitingLiabilityResolution = valueOfManualInvoicesAwaitingLiabilityResolution;
     }
 
     public Integer getNoOfInvoicesAwaitingLitigationOutcome() {
         return noOfInvoicesAwaitingLitigationOutcome;
     }
 
-    public void setNoOfInvoicesAwaitingLitigationOutcome(Integer noOfInvoicesAwaitingLitigationOutcome) {
+    private void setNoOfInvoicesAwaitingLitigationOutcome(Integer noOfInvoicesAwaitingLitigationOutcome) {
         this.noOfInvoicesAwaitingLitigationOutcome = noOfInvoicesAwaitingLitigationOutcome;
     }
 
@@ -552,7 +574,15 @@ public class DashBoardViewData {
         return valueOfInvoicesAwaitingLitigationOutcome;
     }
 
-    public void setValueOfInvoicesAwaitingLitigationOutcome(BigDecimal valueOfInvoicesAwaitingLitigationOutcome) {
+    private void setValueOfInvoicesAwaitingLitigationOutcome(BigDecimal valueOfInvoicesAwaitingLitigationOutcome) {
         this.valueOfInvoicesAwaitingLitigationOutcome = valueOfInvoicesAwaitingLitigationOutcome;
+    }
+
+    private void setValueOfManualInvoicesPenaltyChargesPaid(BigDecimal valueOfManualInvoicesPenaltyChargesPaid) {
+        this.valueOfManualInvoicesPenaltyChargesPaid = valueOfManualInvoicesPenaltyChargesPaid;
+    }
+
+    public BigDecimal getValueOfManualInvoicesPenaltyChargesPaid() {
+        return valueOfManualInvoicesPenaltyChargesPaid;
     }
 }
