@@ -40,6 +40,8 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_invoices_accepted_w) as v_InvoicesAccepted, ");
         sb.append("sum(num_invoices_rejected_w) as n_InvoicesRejected, ");
         sb.append("sum(val_invoices_rejected_w) as v_InvoicesRejected, ");
+        sb.append("sum(num_invoices_awaiting_liability_w) as n_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_invoices_awaiting_liability_w) as v_InvoicesAwaitingLiabilityResolution, ");
         sb.append("sum(num_invoices_closed_w) as n_InvoicesClosed, ");
         sb.append("sum(val_invoices_closed_w) as v_InvoicesClosed, ");
         sb.append("sum(num_invoices_logged_w) as n_InvoicesPaymentLogged, ");
@@ -59,6 +61,9 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_paid_w) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_w) as n_manual_InvoicesClosed, ");
         sb.append("sum(val_manual_invoices_closed_w) as v_manual_InvoicesClosed, ");
+        sb.append("sum(num_manual_invoices_awaiting_liability_w) as n_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_awaiting_liability_w) as v_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_penalty_charges_paid_w) as v_manual_InvoicesPenaltyChargesPaid, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_w) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_w) as v_InvoicesAwaitingLitigationOutcome ");
         sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
@@ -81,6 +86,8 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_invoices_accepted_m) as v_InvoicesAccepted, ");
         sb.append("sum(num_invoices_rejected_m) as n_InvoicesRejected, ");
         sb.append("sum(val_invoices_rejected_m) as v_InvoicesRejected, ");
+        sb.append("sum(num_invoices_awaiting_liability_m) as n_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_invoices_awaiting_liability_m) as v_InvoicesAwaitingLiabilityResolution, ");
         sb.append("sum(num_invoices_closed_m) as n_InvoicesClosed, ");
         sb.append("sum(val_invoices_closed_m) as v_InvoicesClosed, ");
         sb.append("sum(num_invoices_logged_m) as n_InvoicesPaymentLogged, ");
@@ -100,6 +107,9 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_paid_m) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_m) as n_manual_InvoicesClosed, ");
         sb.append("sum(val_manual_invoices_closed_m) as v_manual_InvoicesClosed, ");
+        sb.append("sum(num_manual_invoices_awaiting_liability_m) as n_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_awaiting_liability_m) as v_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_penalty_charges_paid_m) as v_manual_InvoicesPenaltyChargesPaid, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_m) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_m) as v_InvoicesAwaitingLitigationOutcome ");
         sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
@@ -146,6 +156,9 @@ public class InsurerDashboardBuilder {
         sb.append("sum(val_manual_invoices_paid_c) as v_manual_InvoicesPaid, ");
         sb.append("sum(num_manual_invoices_closed_c) as n_manual_InvoicesClosed, ");
         sb.append("sum(val_manual_invoices_closed_c) as v_manual_InvoicesClosed, ");
+        sb.append("sum(num_manual_invoices_awaiting_liability_c) as n_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_awaiting_liability_c) as v_manual_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("sum(val_manual_invoices_penalty_charges_paid_c) as v_manual_InvoicesPenaltyChargesPaid, ");
         sb.append("sum(num_invoices_awaiting_litigation_outcome_c) as n_InvoicesAwaitingLitigationOutcome, ");
         sb.append("sum(val_invoices_awaiting_litigation_outcome_c) as v_InvoicesAwaitingLitigationOutcome ");
         sb.append("from dashboard where (chorganisation_id in (:pChorganisationIds) or -1 in (:pChorganisationIds)) and (workgroup_id in (:pWorkgroupIds) or -1 in (:pWorkgroupIds)) and (claim_owner_id in (:pClaimOwnerIds) or -1 in (:pClaimOwnerIds)) and insurer_id = :pInsId and complete=true");
