@@ -916,10 +916,10 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_invoices_closed_w = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, audit_trail a, invoice i
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, audit_trail a, invoice i, invoice_original io
 where c.id = a.claim_id and claim_type NOT IN (10,14,15,16,17)
-and c.invoice_id = i.id and a.reverted = false
+and c.invoice_id = i.id and a.reverted = false and i.invoice_original_id = io.id
 and c.status='ClaimClosed' and a.new_status='ClaimClosed'
 and a.update_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -937,12 +937,12 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_invoices_closed_m = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, audit_trail a, invoice i
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, audit_trail a, invoice i, invoice_original io
 where c.id = a.claim_id
 and c.invoice_id = i.id
   and c.status = 'ClaimClosed' and claim_type NOT IN (10,14,15,16,17)
-  and a.new_status = 'ClaimClosed' and a.reverted = false
+  and a.new_status = 'ClaimClosed' and a.reverted = false and i.invoice_original_id = io.id
 and a.update_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -958,9 +958,9 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_invoices_closed_c = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, invoice i
-where c.invoice_id = i.id
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
+where c.invoice_id = i.id and i.invoice_original_id = io.id
   and c.status='ClaimClosed' and claim_type NOT IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -1905,9 +1905,10 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_closed_w = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, invoice i
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
+and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and c.status_modified_date >= SqlGetDayOfWeek()
@@ -1918,15 +1919,15 @@ where t1.insurer_id = tmp_dashboard.insurer_id
   and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
   and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
 
-
 -- RAISE NOTICE 'Monthly Start: %1', timeofday();
 
 update tmp_dashboard
    set val_manual_invoices_closed_m = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, invoice i
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
+and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and c.status_modified_date >= SqlGetDayOfMonth()
@@ -1942,9 +1943,10 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_closed_c = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
-from claim c, invoice i
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
+and i.invoice_original_id = io.id
 and c.status = 'ClaimClosed'
 and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -2207,7 +2209,7 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_penalty_charges_paid_w = coalesce(t1.val, 0.00)
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge + i.repair_penalty_charge) as val
 from claim c, invoice i, audit_trail a
 where c.invoice_id = i.id and c.id = a.claim_id
 and a.new_status = 'ManualInvoicePaid' and a.reverted=false
@@ -2226,7 +2228,7 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_penalty_charges_paid_m = coalesce(t1.val, 0.00)
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge + i.repair_penalty_charge) as val
 from claim c, invoice i, audit_trail a
 where c.invoice_id = i.id and c.id = a.claim_id and claim_type IN (10,14,15,16,17)
 and a.new_status = 'ManualInvoicePaid' and a.reverted=false
@@ -2245,7 +2247,7 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_penalty_charges_paid_c = coalesce(t1.val, 0.00)
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid + i.hire_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge + i.hire_penalty_charge) as val
 from claim c, invoice i
 where c.invoice_id = i.id
 and c.status = 'ManualInvoicePaid' and claim_type IN (10,14,15,16,17)
@@ -2294,7 +2296,7 @@ insert into dashboard( process_date, insurer_id, chorganisation_id, workgroup_id
                        val_manual_invoices_closed_w, val_manual_invoices_closed_m, val_manual_invoices_closed_c,
                        num_invoices_awaiting_litigation_outcome_w, num_invoices_awaiting_litigation_outcome_m, num_invoices_awaiting_litigation_outcome_c,
                        val_invoices_awaiting_litigation_outcome_w, val_invoices_awaiting_litigation_outcome_m, val_invoices_awaiting_litigation_outcome_c,
-                       val_penalty_charges_paid_w, val_penalty_charges_paid_m, val_penalty_charges_paid_c,
+                       val_manual_invoices_penalty_charges_paid_w, val_manual_invoices_penalty_charges_paid_m, val_manual_invoices_penalty_charges_paid_c,
                        num_insurer_claims_submitted_w, num_insurer_claims_submitted_m, num_insurer_claims_submitted_c,
                        avg_manual_inv_payment_time_w, avg_manual_inv_payment_time_m, avg_manual_inv_payment_time_c,
                        num_manual_invoices_accepted_w, num_manual_invoices_accepted_m, num_manual_invoices_accepted_c,
@@ -2333,7 +2335,7 @@ select process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id
        coalesce(val_manual_invoices_closed_w, 0.00), coalesce(val_manual_invoices_closed_m, 0.00), coalesce(val_manual_invoices_closed_c, 0.00),
        num_invoices_awaiting_litigation_outcome_w, num_invoices_awaiting_litigation_outcome_m, num_invoices_awaiting_litigation_outcome_c,
        coalesce(val_invoices_awaiting_litigation_outcome_w, 0.00), coalesce(val_invoices_awaiting_litigation_outcome_m, 0.00), coalesce(val_invoices_awaiting_litigation_outcome_c, 0.00),
-       coalesce(val_penalty_charges_paid_w, 0.00), coalesce(val_penalty_charges_paid_m, 0.00), coalesce(val_penalty_charges_paid_c, 0.00),
+       coalesce(val_manual_invoices_penalty_charges_paid_w, 0.00), coalesce(val_manual_invoices_penalty_charges_paid_m, 0.00), coalesce(val_manual_invoices_penalty_charges_paid_c, 0.00),
        num_insurer_claims_submitted_w, num_insurer_claims_submitted_m, num_insurer_claims_submitted_c,
        avg_manual_inv_payment_time_w, avg_manual_inv_payment_time_m, avg_manual_inv_payment_time_c,
        num_manual_invoices_accepted_w, num_manual_invoices_accepted_m, num_manual_invoices_accepted_c,
