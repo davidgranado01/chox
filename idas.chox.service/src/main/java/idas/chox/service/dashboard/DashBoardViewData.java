@@ -105,7 +105,7 @@ public class DashBoardViewData {
         viewData.setNoOfInvoicesAwaitingLitigationOutcome(getIntegerValue(data.get("n_InvoicesAwaitingLitigationOutcome".toLowerCase())));
         viewData.setValueOfInvoicesAwaitingLitigationOutcome(getDecimalValue(data.get("v_InvoicesAwaitingLitigationOutcome".toLowerCase())));
         viewData.setValueOfManualInvoicesPenaltyChargesPaid(getDecimalValue(data.get("v_manual_InvoicesPenaltyChargesPaid".toLowerCase())));
-        return viewData;
+        return viewData; 
     }
 
     private static Integer getIntegerValue(Object v) {
