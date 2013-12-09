@@ -1167,11 +1167,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             
                 // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+                 // The following should really be done by updating the accessibility tables....
                 else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
                         && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
                     accessRight = 0;
                 }
-                
+                 // The following should really be done by updating the accessibility tables....
+                 else if ((actionName.equals(ExtraAction.MAKE_INTERIM_PAYMENT) || actionName.equals(ExtraAction.FINAL_REVIEW))
+                         && ClaimType.isInsurerUpload(claim.getClaimType())) {
+                     accessRight = 0;
+                 }
+
                 // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
                 else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
                         && (claim.getWorkgroup() == null || claim.getClaimOwner() == null)) {
