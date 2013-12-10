@@ -19,9 +19,9 @@ import idas.chox.service.bre.util.VehicleClassHelper;
  *
  * @author John
  */
-public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule {
+public class VehicleClassHireProvisionLikeForLikeOver9SP implements IBusinessRule {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VehicleClassHireProvisionLikeForLikeOver9.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleClassHireProvisionLikeForLikeOver9SP.class);
     private String narrative = "The CHO's customer's vehicle is [x] years old and vehicle class [y], the replacement vehicle class of [z] is not acceptable as the replacement vehicle class should be one class less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place.";
 
     @Override
@@ -32,7 +32,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
         res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'VehicleClassHireProvisionLikeForLikeOver9' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLikeOver9()) {
+        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLikeOver9SP()) {
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
                 Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
                 if (firstRegistration == null) {
@@ -52,16 +52,15 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
                         } else {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
-                            if (customerVehicleClass.getName().charAt(0) == 'P' &&  customerVehicleClass.getName().charAt(1) >= '1' 
-                                    && customerVehicleClass.getName().charAt(1) <= '9') {
+                            if (customerVehicleClass.getName().substring(0,2).equals("SP") ) {
                                narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
                                         + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
                                         + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
                                 LOG.debug("Rule failed: {}", narrative);
                                 res.setResult(RuleEvaluationResult.RULE_FAILED);
                             } else {
-                                LOG.debug("Rule skipped: cusomers vehicle class is not Prestige.");
-                                narrative = "Cannot compare non-prestige vehicle.";
+                                LOG.debug("Rule skipped: cusomers vehicle class is not Sports Performance.");
+                                narrative = "Cannot compare non-sports performance vehicle.";
                                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                             }
                         }
@@ -81,62 +80,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
             narrative = "";
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
-/****
-            if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
-                Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
-                if (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) {
-                    VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
-                    if (VehicleClass.isPClass(customerVehicleClass.getName())) {
-                        VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
-                        Date hireStart = claim.getVehicleHire().getHireStart();
-                        if (firstRegistration != null) {
-                            double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
-                            LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
-                            if (difference >= 9.0) {
 
-                                boolean success = false;
-                                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
-                                if (success) {
-                                    LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
-                                    narrative = "";
-                                } else {
-                                    narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
-                                            + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
-                                            + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
-                                    LOG.debug("Rule failed: {}", narrative);
-                                }
-                            } else {
-                                LOG.debug("Rule skipped: Registration period was {} years ago");
-                                narrative = "Customer vehicle registration date not available.";
-                                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                            }
-                        } else {
-                            LOG.debug("Rule skipped: no first registration date available.");
-                            narrative = "Customer vehicle registration date not available.";
-                            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                        }
-                    } else {
-                        LOG.debug("Rule skipped: customer vehicle class is not prestige (p-class).");
-                        narrative = "Customer vehicle not prestige.";
-                        res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                    }
-                } else {
-                    LOG.debug("Rule skipped: no hire start date available.");
-                    narrative = "Customer hire start date not available.";
-                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                }
-            } else {
-                LOG.debug("Rule skipped: Customer vehicle class is not specified.");
-                narrative = "Customer vehicle class is not specified.";
-                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-            }
-
-        } else {
-            LOG.debug("Rule not switched on.");
-            narrative = "";
-            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-        }
-**/
         return res;
     }
 
@@ -148,7 +92,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
 
     @Override
     public String getRuleId() {
-        return "046";
+        return "086";
     }
 
     @Override

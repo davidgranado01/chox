@@ -283,7 +283,7 @@ public class DateHelper {
 
     public static double differenceInYears(Date date1, Date date2) {
         double days = differenceInDays(date1, date2);
-        return days / 365.2425;
+        return days / 365.0;
     }
 
     public static double differenceInDays(Date date1, Date date2) {

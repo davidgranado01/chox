@@ -65,6 +65,9 @@
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8SP"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9SP"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9SP"></bean>
                 <bean class="idas.chox.service.bre.rules.HireVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossFeeVatLimitCheck"></bean>

@@ -85,6 +85,9 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean vehicleClassHireProvisionLikeForLike6To8;
     private boolean vehicleClassHireProvisionLikeForLike8To9;
     private boolean vehicleClassHireProvisionLikeForLikeOver9;
+    private boolean vehicleClassHireProvisionLikeForLike6To8SP;
+    private boolean vehicleClassHireProvisionLikeForLike8To9SP;
+    private boolean vehicleClassHireProvisionLikeForLikeOver9SP;
     private boolean hireVatLimitCheck;
     private boolean repairVatLimitCheck;
     private boolean totalLossFeeVatLimitCheck;
@@ -134,7 +137,11 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean allowMissingECDAutomatedTasks;
     private boolean overlappingHireCheck;
     private boolean maximumLabourRateCheck;
+    private boolean maximumLabourRateStandardCheck;
+    private boolean maximumLabourRatePrestigeCheck;
     private BigDecimal maxAllowedLabourRate = BigDecimal.ZERO;
+    private BigDecimal maxAllowedLabourStandardRate = BigDecimal.ZERO;
+    private BigDecimal maxAllowedLabourPrestigeRate = BigDecimal.ZERO;
     private boolean fixedFeeAdminFeeCheck;
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
@@ -142,6 +149,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean compoundAutomaticChargeCheckHpiLookup;
     private boolean compoundEstateChargeCheckHpiLookup;
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
+    private boolean clientVatRegisteredCheck;
     
     public BreBand() {
     }
@@ -853,6 +861,30 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.vehicleClassHireProvisionLikeForLikeOver9 = vehicleClassHireProvisionLikeForLikeOver9;
     }
 
+    public boolean isVehicleClassHireProvisionLikeForLike6To8SP() {
+        return vehicleClassHireProvisionLikeForLike6To8SP;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLike6To8SP(boolean vehicleClassHireProvisionLikeForLike6To8SP) {
+        this.vehicleClassHireProvisionLikeForLike6To8SP = vehicleClassHireProvisionLikeForLike6To8SP;
+    }
+
+    public boolean isVehicleClassHireProvisionLikeForLike8To9SP() {
+        return vehicleClassHireProvisionLikeForLike8To9SP;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLike8To9SP(boolean vehicleClassHireProvisionLikeForLike8To9SP) {
+        this.vehicleClassHireProvisionLikeForLike8To9SP = vehicleClassHireProvisionLikeForLike8To9SP;
+    }
+
+    public boolean isVehicleClassHireProvisionLikeForLikeOver9SP() {
+        return vehicleClassHireProvisionLikeForLikeOver9SP;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLikeOver9SP(boolean vehicleClassHireProvisionLikeForLikeOver9SP) {
+        this.vehicleClassHireProvisionLikeForLikeOver9SP = vehicleClassHireProvisionLikeForLikeOver9SP;
+    }
+
     public boolean isHireVatLimitCheck() {
         return hireVatLimitCheck;
     }
@@ -1325,12 +1357,44 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.maxAllowedLabourRate = maxAllowedLabourRate;
     }
 
+    public BigDecimal getMaxAllowedLabourStandardRate() {
+        return maxAllowedLabourStandardRate;
+    }
+
+    public void setMaxAllowedLabourStandardRate(BigDecimal maxAllowedLabourStandardRate) {
+        this.maxAllowedLabourStandardRate = maxAllowedLabourStandardRate;
+    }
+
+    public BigDecimal getMaxAllowedLabourPrestigeRate() {
+        return maxAllowedLabourPrestigeRate;
+    }
+
+    public void setMaxAllowedLabourPrestigeRate(BigDecimal maxAllowedLabourPrestigeRate) {
+        this.maxAllowedLabourPrestigeRate = maxAllowedLabourPrestigeRate;
+    }
+
     public boolean isMaximumLabourRateCheck() {
         return maximumLabourRateCheck;
     }
 
     public void setMaximumLabourRateCheck(boolean maximumLabourRateCheck) {
         this.maximumLabourRateCheck = maximumLabourRateCheck;
+    }
+
+    public boolean isMaximumLabourRateStandardCheck() {
+        return maximumLabourRateStandardCheck;
+    }
+
+    public void setMaximumLabourRateStandardCheck(boolean maximumLabourRateStandardCheck) {
+        this.maximumLabourRateStandardCheck = maximumLabourRateStandardCheck;
+    }
+
+    public boolean isMaximumLabourRatePrestigeCheck() {
+        return maximumLabourRatePrestigeCheck;
+    }
+
+    public void setMaximumLabourRatePrestigeCheck(boolean maximumLabourRatePrestigeCheck) {
+        this.maximumLabourRatePrestigeCheck = maximumLabourRatePrestigeCheck;
     }
 
     public List<ProtocolVehicleClassCeiling> getProtocolVehicleClassCeilings() {
@@ -1392,5 +1456,12 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setCompoundAutomaticEstateChargeCheckHpiLookup(boolean compoundAutomaticEstateChargeCheckHpiLookup) {
         this.compoundAutomaticEstateChargeCheckHpiLookup = compoundAutomaticEstateChargeCheckHpiLookup;
+    }
+    public boolean isClientVatRegisteredCheck() {
+        return clientVatRegisteredCheck;
+    }
+
+    public void setClientVatRegisteredCheck(boolean clientVatRegisteredCheck) {
+        this.clientVatRegisteredCheck = clientVatRegisteredCheck;
     }
 }

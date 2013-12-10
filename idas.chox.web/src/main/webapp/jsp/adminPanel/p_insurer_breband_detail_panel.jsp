@@ -41,7 +41,9 @@
                 averageLabourRatePrestige:{required:true, number:true, min:0},
                 averageLabourHoursPerHireDay:{required:true, number:true, min:0},
                 takeVehicleOutDays:{required:true, number:true, min:0},
-                maxAllowedLabourRate:{required:true, number:true, min:0}
+                maxAllowedLabourRate:{required:true, number:true, min:0},
+                maxAllowedLabourStandardRate:{required:true, number:true, min:0},
+                maxAllowedLabourPrestigeRate:{required:true, number:true, min:0}
             },
             messages: {
                 name: {required:"You must supply a value for 'Name'" },
@@ -62,7 +64,9 @@
                 averageLabourRatePrestige: {required:"You must supply a value for 'Average Labour Rate For Prestige & Special Vehicles'", number:"'Average Labour Rate For Prestige & Special Vehicles' must be numeric", min:"'Average Labour Rate For Prestige & Special Vehicles' cannot be less than zero"},
                 averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
                 takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"},
-                maxAllowedLabourRate: {required:"You must supply a value for 'Maximum Labour Rate'", number:"'Maximum Labour Rate' must be numeric", min:"'Maximum Labour Rate' cannot be less than zero"}
+                maxAllowedLabourRate: {required:"You must supply a value for 'Maximum Labour Rate'", number:"'Maximum Labour Rate' must be numeric", min:"'Maximum Labour Rate' cannot be less than zero"},
+                maxAllowedLabourStandardRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'", number:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' must be numeric", min:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' cannot be less than zero"},
+                maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"}
             }
         });
 
@@ -1002,6 +1006,14 @@
                             <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourRate" name="maxAllowedLabourRate" value="<s:property value="maxAllowedLabourRate" />"/>
                         </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For Standard Vehicles & Vans (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaxLabourStandardRate" name="maxAllowedLabourStandardRate" value="<s:property value="maxAllowedLabourStandardRate" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For Prestige & Special Vehicles (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaxLabourPrestigeRate" name="maxAllowedLabourPrestigeRate" value="<s:property value="maxAllowedLabourPrestigeRate" />"/>
+                        </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Supplier Admin Fee Tolerances</div>
@@ -1169,17 +1181,32 @@
                       <div class="chox-form-checkboxitem">
                           <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div>
                           <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
-                          <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
+                          <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
+                        </div>
+                      <div class="chox-form-checkboxitem">
+                          <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8SP" value="vehicleClassHireProvisionLikeForLike6To8SP" /></div>
+                          <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision 6-8 Year Check</label>
+                          <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div>
                             <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 8-9 Year Check</label>
-                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
+                            <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9SP" value="vehicleClassHireProvisionLikeForLike8To9SP" /></div>
+                            <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9" value="vehicleClassHireProvisionLikeForLikeOver9" /></div>
                             <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision Over 9 Year Check</label>
-                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
+                            <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9SP" value="vehicleClassHireProvisionLikeForLikeOver9SP" /></div>
+                            <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision Over 9 Year Check</label>
+                            <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
@@ -1578,6 +1605,20 @@
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRateStandardCheck" value="maximumLabourRateStandardCheck" /></div>
+                            <label class="chox-form-check-label">Maximum Labour Rate Standard Vehicles & Vans Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO is not charging more than the maximum labour rate per hour for standard vehicles and vans.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRatePrestigeCheck" value="maximumLabourRatePrestigeCheck" /></div>
+                            <label class="chox-form-check-label">Maximum Labour Rate Prestige & Special Vehicles Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO is not charging more than the maximum labour rate per hour for prestige & special vehicles.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" value="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" /></div>
                             <label class="chox-form-check-label">Protocol Vehicle Class Hire Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
@@ -1600,12 +1641,16 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticEstateChargeCheckHpiLookup" value="compoundAutomaticEstateChargeCheckHpiLookup" /></div>
                             <label class="chox-form-check-label">Compound Vehicle Class Automatic/Estate Charge Check With HPI Lookup</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for these extras and the HPI lookup did not identify the Hire Vehicle to be an automatic and/or an estate</div>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for these extras and the HPI lookup did not identify the Hire Vehicle to be an automatic and/or an estate.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="clientVatRegisteredCheck" value="clientVatRegisteredCheck" /></div>
+                            <label class="chox-form-check-label">CHO's Client VAT Registered Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging for the hire, repair or storage recovery VAT when the CHO's customer is VAT registered.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                     </div>
-                <!--/div -->
             </div>
         </div>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
