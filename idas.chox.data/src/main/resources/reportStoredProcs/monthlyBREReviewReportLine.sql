@@ -1,87 +1,721 @@
-DROP FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choIds  integer[], IN insIds integer[]);
+DROP FUNCTION monthlyBREReviewReportLine(
+    IN start_date text, 
+    IN end_date text, 
+    IN claimTypes integer[], 
+    IN choIds  integer[], 
+    IN insIds integer[]);
 
-CREATE OR REPLACE FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choIds  integer[], IN insIds integer[])
-  RETURNS boolean AS
-  $BODY$
+CREATE OR REPLACE FUNCTION monthlyBREReviewReportLine(
+    IN start_date text, 
+    IN end_date text, 
+    IN claimTypes integer[], 
+    IN choIds  integer[],
+    IN insIds integer[])
+
+RETURNS TABLE(
+    label text, 
+    "No. Inv Submitted" BIGINT,
+    "No. Inv Passed BRE" BIGINT,
+    "Avg. Uplift/Reduction For Inv Passed BRE" NUMERIC,
+    "No. Inv Passed BRE & Disputed" BIGINT,
+    "No. Additional Touch Points For Inv Passed BRE" BIGINT,
+    "No. Inv Passed BRE & Disputed & Resulted No Change" BIGINT,
+    "No. Inv Passed BRE & Disputed & Resulted Uplift/Reduction" BIGINT,
+    "Total. Uplift/Reduction Inv Passed BRE & Disputed" NUMERIC,
+    "Avg. Uplift/Reduction Inv Passed BRE & Disputed" NUMERIC,
+    "No. Inv Passed BRE & Not Disputed" BIGINT,
+    "No. Inv Passed BRE & Not Disputed & Resulted No Change" BIGINT,
+    "No. Inv Passed BRE & Not Disputed & Resulted Uplift/Reduction" BIGINT,
+    "Total. Uplift/Reduction Inv Passed BRE & Not Disputed" NUMERIC,
+    "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed" NUMERIC,
+    "No. Inv Failed BRE" BIGINT,
+    "Avg. Uplift/Reduction Inv Failed BRE" NUMERIC,
+    "No. Inv Failed BRE & Disputed" BIGINT,
+    "No. Additional Touch Points For Inv Failed BRE" BIGINT,
+    "No. Inv Failed BRE & Disputed & Resulted No Change" BIGINT,
+    "No. Inv Failed BRE & Disputed & Resulted Uplift/Reduction" BIGINT,
+    "Total. Uplift/Reduction Inv Failed BRE & Disputed" NUMERIC,
+    "Avg. Uplift/Reduction Inv Failed BRE & Disputed" NUMERIC,
+    "No. Inv Failed BRE & Not Disputed" BIGINT,
+    "No. Inv Failed BRE & Not Disputed & Resulted No Change" BIGINT,
+    "No. Inv Failed BRE & Not Disputed & Resulted Uplift/Reduction" BIGINT,
+    "Total. Uplift/Reduction Inv Failed BRE & Not Disputed" NUMERIC,
+    "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed" NUMERIC)
+
+AS
+
+$BODY$
 DECLARE
-    -- total months between given two dates (this produces 1 count less because this do not include the start month)
-    total_months INTEGER = ((extract( year FROM end_date::date ) - extract( year FROM start_date::date )) *12) + extract(MONTH FROM end_date::date ) - extract(MONTH FROM start_date::date);
-    -- total number of year between given two dates (this produces 1 count less because this do not include the start year)
-    total_year INTEGER = extract( year FROM end_date::date ) - extract( year FROM start_date::date );
-    -- change the date of the given start date to the 1st day of the month
-    exact_start_date timestamp without time zone = (to_date(to_char(start_date::date, 'MM') || '-01-' || to_char(start_date::date, 'yyyy'), 'mm-dd-yyyy'))::timestamp without time zone;
-    -- change the date of the given end date to the last day of the month
-    exact_end_date timestamp without time zone = date_trunc('month', end_date::date) + '1month'::interval - '1sec'::interval;
-    -- Add 2(1 for month and 1 for year).  
-    total_number_of_rows  INTEGER = total_months + total_year + 2;
-
-    -- this is the start date of each month
-    temp_month_start_date timestamp without time zone;
-    -- this is the end date of the each month
-    temp_month_end_date timestamp without time zone;
-    -- this is the start date of the each year
-    temp_year_start_date timestamp without time zone;
---    temp_year_end_date timestamp without time zone;
-    -- this is used for temporay date storage 
-    temp_date timestamp without time zone;
-    -- this array contains single entry of start date and end date which we use to generate report
-    temp_month_array   timestamp without time zone[];
-    -- this array contain all the months(start date and end date) break down by year and cumulative dates
-    temp_cumulative_array timestamp without time zone[];
-    -- this variable is used for the logic
-    updated boolean = false;
-    label text;
+    monthlyBreakDownDatesRecord RECORD;
 BEGIN
-      FOR i IN 1..total_number_of_rows LOOP -- loop through each row
-      	IF i = 1 THEN -- the below assignment executed only once
-              temp_month_start_date = exact_start_date;
-      	    temp_month_end_date = temp_month_start_date + INTERVAL '1 month' - INTERVAL '1sec';
-      	    temp_year_start_date = temp_month_start_date;
-      	ELSE -- the below code is executed for rest of the rows(except first row)
-      	     IF extract( year FROM (temp_month_start_date + INTERVAL '1 month') ) > extract( year FROM temp_month_start_date ) AND updated = FALSE THEN -- the below assingment executed for each next year(to get cumulative dates)
-      	        updated = TRUE;
-      	        temp_date = temp_month_start_date;
-      	        temp_month_end_date = temp_month_start_date + INTERVAL '1 month' - INTERVAL '1sec';
-      	        temp_month_start_date = temp_year_start_date;
-      	        temp_year_start_date = temp_date + INTERVAL '1 month';
-      	     ELSE -- if it is not cumulative then the below code executed
-      	        updated = FALSE;
-      	        IF temp_month_end_date = exact_end_date THEN -- if the given end date is equal to the calculated end date then get final cumulative dates
-      	            temp_month_start_date = temp_year_start_date;
-      	        ELSE -- get the start date and end date for each month
-      	            temp_month_start_date = temp_month_start_date + INTERVAL '1 month';
-      	            temp_month_end_date = temp_month_start_date + INTERVAL '1 month' - INTERVAL '1sec';
-      	        END IF;
-      	     END IF;
-      	END IF;
-        -- insert calculated start date and end date into an temporary array
-        temp_cumulative_array:= array_cat(temp_cumulative_array, array[[temp_month_start_date, temp_month_end_date]]::timestamp without time zone[]);
-      	
-        IF updated = TRUE THEN -- month start date set to the start date of the year to get cumulative dates. Now change back to the previous value this variable had
-      	temp_month_start_date = temp_date; 
-        END IF;
+      FOR monthlyBreakDownDatesRecord IN SELECT * FROM breakDownDatesByMonthly(start_date, end_date) LOOP -- loop through each row
+      
+          RETURN QUERY
+  
+              SELECT monthlyBreakDownDatesRecord.month_label,
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Submitted"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
+      
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Disputed"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Additional Touch Points For Inv Passed BRE"
+               FROM 
+                    audit_trail a,
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND a.claim_id = c.id
+                    AND (a.new_status = 'ManualInvoiceContested' OR a.new_status = 'ContestedInvoiceReferredToCHO')
+                    AND a.reverted = FALSE
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Disputed & Resulted No Change"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay = i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Disputed & Resulted Uplift/Reduction"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay != i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Not Disputed"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Not Disputed & Resulted No Change"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay = i.total_to_pay
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Passed BRE & Not Disputed & Resulted Uplift/Reduction"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay != i.total_to_pay
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Not Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
+
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Disputed"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Additional Touch Points For Inv Failed BRE"
+               FROM 
+                    audit_trail a,
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND a.claim_id = c.id
+                    AND (a.new_status = 'ManualInvoiceContested' OR a.new_status = 'ContestedInvoiceReferredToCHO')
+                    AND a.reverted = FALSE
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Disputed & Resulted No Change"
+               FROM 
+                    invoice i, 
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay = i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Disputed & Resulted Uplift/Reduction"
+               FROM 
+                    invoice i, 
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay != i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Disputed"
+               FROM 
+                    invoice i, 
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Disputed"
+               FROM 
+                    invoice i, 
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Not Disputed"
+               FROM 
+                    invoice i, 
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Not Disputed & Resulted No Change"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay = i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    COUNT(*) AS "No. Inv Failed BRE & Not Disputed & Resulted Uplift/Reduction"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id
+                    AND io.total_to_pay != i.total_to_pay 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Not Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date)),
+
+              (SELECT 
+                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND i.invoice_original_id = io.id 
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND NOT EXISTS (SELECT 
+                                        * 
+                                  FROM 
+                                        audit_trail a1, 
+                                        audit_trail a2 
+                                  WHERE 
+                                        a1.claim_id = c.id 
+                                        AND a1.claim_id = a2.claim_id 
+                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.reverted = FALSE
+                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.reverted = FALSE
+                                        AND a1.created_date < a2.created_date));
+
       END LOOP;
-    FOREACH temp_month_array SLICE 1 IN ARRAY temp_cumulative_array -- Now loop through each month and run the query
-    LOOP
-        IF temp_month_array[1] + INTERVAL '1 month' - INTERVAL '1sec' = temp_month_array[2] THEN 
-            label = to_char(temp_month_array[1], 'TMMonth') || ' - ' || to_char(temp_month_array[1] , 'yyyy');
-        ELSE -- the cumulative lable is not working correctly if the month and year of the given start_date and end_date is same(e.g. '2013-02-01', '2013-02-03'). Need a workaround. I did not do the workaround as no time left.
-            label = to_char(temp_month_array[1], 'yyyy') || ' - ' || 'Cumulative';
-        END IF;
-
-        -- RETURN QUERY
-        -- All 27 query need to be written here. Return all the column as table(change the SP return structure at the moment it returns boolean).  
-       
-        
-        RAISE NOTICE 'Label: % From: %, To: %',label, temp_month_array[1], temp_month_array[2];
-
-        
-    END LOOP;
-    return true;
 END;
 
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choids  integer[], IN insIds integer[])
-  OWNER TO chox;
+LANGUAGE plpgsql VOLATILE COST 100;
+
+ALTER FUNCTION monthlyBREReviewReportLine(
+    IN start_date text, 
+    IN end_date text, 
+    IN claimTypes integer[], 
+    IN choids  integer[], 
+    IN insIds integer[])
+OWNER TO chox;
