@@ -3,7 +3,7 @@
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="false" />
     <constant name="struts.custom.i18n.resources" value="application" /> 
-    <constant name="struts.multipart.maxSize" value="10000000" />
+    <constant name="struts.multipart.maxSize" value="20971520" />
     <constant name="struts.codebehind.classSuffix" value="Controller"/>
     <constant name="struts.codebehind.action.checkImplementsAction" value="false"/>
     <constant name="struts.codebehind.action.checkAnnotation" value="false"/>
