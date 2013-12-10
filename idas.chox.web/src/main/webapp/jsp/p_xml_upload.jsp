@@ -687,7 +687,7 @@
                 }else if(!response.result){
                     Ext.MessageBox.show({
                         title: 'Upload failure',
-                        msg: 'File size exceeded 20 MB limit.',
+                        msg: 'File size exceeded 10 MB limit.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
