@@ -82,7 +82,6 @@ public class FileHelper {
         if(file.length() > MAX_FILE_SIZE_ALLOW){
             result = -1;
         }
-
         return result;
     }
 
