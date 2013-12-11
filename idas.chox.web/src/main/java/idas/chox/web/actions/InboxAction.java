@@ -12,6 +12,7 @@ import net.sf.json.JSONArray;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUserRole;
@@ -145,6 +146,13 @@ public class InboxAction extends BaseAction {
                 return SUCCESS;
             }
             
+            // Remove 'Update Claim(s) To Invoice Payment Logged' option for manual claims
+            //   - his is lazy and should really be achieved by fine tuning the accessibilities entries
+            if (batchUpdateAction.equalsIgnoreCase("logInvoicePayment") && ClaimType.isInsurerUpload(claim.getClaimType())) {
+                getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                return SUCCESS;
+            }
+
             if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {
                 return SUCCESS;
             }
