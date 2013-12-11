@@ -19,48 +19,53 @@ public class MaximumLabourRateStandard implements IBusinessRule {
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
-        LOG.debug("Applying rule 'MaximumLabourRate' to claim {}.", claim.getChoReference());
+        LOG.debug("Applying rule 'MaximumLabourRateStandard' to claim {}.", claim.getChoReference());
 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getBreBand().isMaximumLabourRateStandardCheck()
+        String customerVehicleClass = null;
+        
+        if (claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null) {
+            customerVehicleClass = claim.getCustomer().getVehicleClass().getName();
+        }
+        
+        if (claim.getBreBand().isMaximumLabourRateStandardCheck() && checkCustomersVehicleClass(customerVehicleClass)
                 && claim.getHireMonitoringDetail() != null
                 && claim.getHireMonitoringDetail().getLabourRate() != null) {
 
 
-            LOG.debug("Applying 'MaximumLabourRate' Business Rule to claim {}.", claim.getChoReference());
+            LOG.debug("Applying 'MaximumLabourRateStandard' Business Rule to claim {}.", claim.getChoReference());
 
             boolean success = true;
 
-            BigDecimal maxLabourRate = claim.getBreBand().getMaxAllowedLabourRate();
+            BigDecimal maxLabourRate = claim.getBreBand().getMaxAllowedLabourStandardRate();
             BigDecimal labourRate = claim.getHireMonitoringDetail().getLabourRate();
 
  
             if (labourRate.compareTo(maxLabourRate) > 0) {
                 success = false;
-                narrative = "The CHO are charging £" + labourRate.toString()
-                        + " per hour for labour and the allowed rate per hour is £"
-                        + maxLabourRate + ".";
+                narrative = "The CHO is charging £" + labourRate.toString()
+                        + " per labour hour which is more than the maximum labour rate per hour of £"
+                        + maxLabourRate + "for standard vehicles & vans, please review.";
 
             } else {
                 narrative = "";
-                LOG.debug("'MaximumLabourRate' Business Rule Passed.");
+                LOG.debug("'MaximumLabourRateStandard' Business Rule Passed.");
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
-            LOG.debug("'MaximumLabourRate' Business Rule Skipped.");
+            LOG.debug("'MaximumLabourRateStandard' Business Rule Skipped.");
             narrative = "";
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 
-        LOG.debug("'MaximumLabourRate' Business Rule Finished.");
+        LOG.debug("'MaximumLabourRateStandard' Business Rule Finished.");
         return res;
     }
 
@@ -78,5 +83,38 @@ public class MaximumLabourRateStandard implements IBusinessRule {
     public String getStatusAfterFailure(ClaimType claimType) {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+    }
+
+    private boolean checkCustomersVehicleClass(String customerVehicleClass) {
+        if (customerVehicleClass != null) {
+            if (customerVehicleClass.equals("S1")
+                    || customerVehicleClass.equals("S2")
+                    || customerVehicleClass.equals("S3")
+                    || customerVehicleClass.equals("S4")
+                    || customerVehicleClass.equals("S5")
+                    || customerVehicleClass.equals("S6")
+                    || customerVehicleClass.equals("S7")
+                    || customerVehicleClass.equals("M")
+                    || customerVehicleClass.equals("M1")
+                    || customerVehicleClass.equals("M2")
+                    || customerVehicleClass.equals("M3")
+                    || customerVehicleClass.equals("M4")
+                    || customerVehicleClass.equals("F1")
+                    || customerVehicleClass.equals("F2")
+                    || customerVehicleClass.equals("F3")
+                    || customerVehicleClass.equals("SP1")
+                    || customerVehicleClass.equals("SP2")
+                    || customerVehicleClass.equals("SP3")
+                    || customerVehicleClass.equals("T1")
+                    || customerVehicleClass.equals("T2")
+                    || customerVehicleClass.equals("T3")
+                    || customerVehicleClass.equals("T4")
+                    || customerVehicleClass.equals("B1")
+                    || customerVehicleClass.equals("B2")
+                    || customerVehicleClass.equals("B3")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

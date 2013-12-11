@@ -1003,7 +1003,7 @@
                             <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour All Vehicles (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourRate" name="maxAllowedLabourRate" value="<s:property value="maxAllowedLabourRate" />"/>
                         </div>
                         <div class="chox-form-item">
@@ -1599,9 +1599,9 @@
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRateCheck" value="maximumLabourRateCheck" /></div>
-                            <label class="chox-form-check-label">Maximum Labour Rate</label>
+                            <label class="chox-form-check-label">Maximum Labour Rate All Vehicles Check</label>
                             <div class="chox-form-check-description">
-                                Check to ensure that the CHO is not billing more than the Maximum Labour Rate Per Hour.
+                                Check to ensure that the CHO is not billing more than the maximum labour rate per hour for all vehicle types (standard, vans, prestige and special).
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
