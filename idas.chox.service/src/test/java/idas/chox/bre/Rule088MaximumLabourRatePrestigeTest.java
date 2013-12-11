@@ -69,7 +69,7 @@ public class Rule088MaximumLabourRatePrestigeTest extends BaseTest {
     @Test
     public void testSkipped_1() throws IOException {
         Claim claim = getTestClaim();
-        claim.getBreBand().setMaximumLabourRateCheck(false);
+        claim.getBreBand().setMaximumLabourRatePrestigeCheck(false);
         RuleEvaluation rv = new MaximumLabourRatePrestige().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());

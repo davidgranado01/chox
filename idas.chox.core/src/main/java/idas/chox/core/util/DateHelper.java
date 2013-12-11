@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -283,7 +284,7 @@ public class DateHelper {
 
     public static double differenceInYears(Date date1, Date date2) {
         double days = differenceInDays(date1, date2);
-        return days / 365.0;
+        return days / 365.2425; 
     }
 
     public static double differenceInDays(Date date1, Date date2) {
@@ -312,6 +313,23 @@ public class DateHelper {
         return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());
     }
 
+    public static int differenceInYearsAsInt(Date last, Date first) {
+        Calendar a = getCalendar(first);
+        Calendar b = getCalendar(last);
+        int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+        if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || 
+                (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+            diff--;
+        }
+System.out.println("Difference between " + getSdf().format(first) + " and " + getSdf().format(last) + " is " + diff);
+        return diff;
+    }
+
+    public static Calendar getCalendar(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
     /**
      * @return the sdf
      */

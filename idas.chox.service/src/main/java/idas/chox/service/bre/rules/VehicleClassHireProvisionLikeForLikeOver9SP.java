@@ -43,17 +43,17 @@ public class VehicleClassHireProvisionLikeForLikeOver9SP implements IBusinessRul
 
                     if (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) {
                         Date hireStart = claim.getVehicleHire().getHireStart();
-                        double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
-                        LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
-                        if (difference < 9.0) {
+                        int difference = DateHelper.differenceInYearsAsInt(hireStart, firstRegistration);
+                        LOG.debug("Difference in years between {} and {} is {}", new Object[]{hireStart, firstRegistration, Integer.toString(difference)});
+                        if (difference < 9) {
                             LOG.debug("Rule skipped: Registration period was {} years ago", difference);
-                            narrative = "Customer vehicle registration is " + (new Double(difference)).intValue() + " years before hire start.";
+                            narrative = "Customer vehicle registration is " + Integer.toString(difference) + " years before hire start.";
                             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                         } else {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
                             if (customerVehicleClass.getName().substring(0,2).equals("SP") ) {
-                               narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
+                               narrative = "The CHO's customer's vehicle is " + difference + " years old and vehicle class "
                                         + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
                                         + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
                                 LOG.debug("Rule failed: {}", narrative);

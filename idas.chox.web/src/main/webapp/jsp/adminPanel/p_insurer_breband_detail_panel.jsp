@@ -981,17 +981,17 @@
 
                         <div class="chox-form-item">
 
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced<span class="mandatory">*</span>  <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced<span class="mandatory">*</span>  <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairCommencedId" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairCommenced" />"/>
                         </div>
                         <br>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Mobile Vehicles &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateMobileVehicles" />"/>
                         </div>
                         <br>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateNonMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" />"/>
                         </div>
                     </div>
@@ -1007,11 +1007,12 @@
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourRate" name="maxAllowedLabourRate" value="<s:property value="maxAllowedLabourRate" />"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For Standard Vehicles & Vans (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For<span class="mandatory">*</span>  <br> Standard Vehicles & Vans (£) &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourStandardRate" name="maxAllowedLabourStandardRate" value="<s:property value="maxAllowedLabourStandardRate" />"/>
                         </div>
+                        <br>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For Prestige & Special Vehicles (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For<span class="mandatory">*</span>  <br> Prestige & Special Vehicles (£) &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourPrestigeRate" name="maxAllowedLabourPrestigeRate" value="<s:property value="maxAllowedLabourPrestigeRate" />"/>
                         </div>
                     </div>

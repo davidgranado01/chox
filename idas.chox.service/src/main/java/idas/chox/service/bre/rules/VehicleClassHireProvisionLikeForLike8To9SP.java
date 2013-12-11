@@ -43,11 +43,11 @@ public class VehicleClassHireProvisionLikeForLike8To9SP implements IBusinessRule
 
                     if (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) {
                         Date hireStart = claim.getVehicleHire().getHireStart();
-                        double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
-                        LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
-                        if (difference < 8.0 || difference > 9.0) {
+                        int difference = DateHelper.differenceInYearsAsInt(hireStart, firstRegistration);
+                        LOG.debug("Difference in years between {} and {} is {}", new Object[]{hireStart, firstRegistration, Integer.toString(difference)});
+                        if (difference < 8 || difference >= 9) {
                             LOG.debug("Rule skipped: Registration period was {} years ago", difference);
-                            narrative = "Customer vehicle registration is " + Integer.valueOf((int)difference).toString() + " years before hire start.";
+                            narrative = "Customer vehicle registration is " + Integer.toString(difference) + " years before hire start.";
                             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                         } else {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
@@ -60,7 +60,7 @@ public class VehicleClassHireProvisionLikeForLike8To9SP implements IBusinessRule
                                     narrative = "";
                                 } else {
                                     res.setResult(RuleEvaluationResult.RULE_FAILED);
-                                    narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
+                                    narrative = "The CHO's customer's vehicle is " + difference + " years old and vehicle class "
                                             + customerVehicleClass.getName() + ", the replacement vehicle class of "
                                             + hireVehicleClass.getName() + " is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place.";
                                     LOG.debug("Rule failed: {}", narrative);

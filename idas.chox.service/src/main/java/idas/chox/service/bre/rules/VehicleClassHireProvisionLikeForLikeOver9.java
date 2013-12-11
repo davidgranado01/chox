@@ -43,18 +43,18 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
 
                     if (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) {
                         Date hireStart = claim.getVehicleHire().getHireStart();
-                        double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
-                        LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
-                        if (difference < 9.0) {
+                        int difference = DateHelper.differenceInYearsAsInt(hireStart, firstRegistration);
+                        LOG.debug("Difference in years between {} and {} is {}", new Object[]{hireStart, firstRegistration, Integer.toString(difference)});
+                        if (difference < 9) {
                             LOG.debug("Rule skipped: Registration period was {} years ago", difference);
-                            narrative = "Customer vehicle registration is " + (new Double(difference)).intValue() + " years before hire start.";
+                            narrative = "Customer vehicle registration is " + Integer.toString(difference) + " years before hire start.";
                             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                         } else {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
                             if (customerVehicleClass.getName().charAt(0) == 'P' &&  customerVehicleClass.getName().charAt(1) >= '1' 
                                     && customerVehicleClass.getName().charAt(1) <= '9') {
-                               narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
+                               narrative = "The CHO's customer's vehicle is " + difference + " years old and vehicle class "
                                         + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
                                         + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
                                 LOG.debug("Rule failed: {}", narrative);
@@ -81,62 +81,6 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
             narrative = "";
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
-/****
-            if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
-                Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
-                if (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) {
-                    VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
-                    if (VehicleClass.isPClass(customerVehicleClass.getName())) {
-                        VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
-                        Date hireStart = claim.getVehicleHire().getHireStart();
-                        if (firstRegistration != null) {
-                            double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
-                            LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
-                            if (difference >= 9.0) {
-
-                                boolean success = false;
-                                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
-                                if (success) {
-                                    LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
-                                    narrative = "";
-                                } else {
-                                    narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
-                                            + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
-                                            + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
-                                    LOG.debug("Rule failed: {}", narrative);
-                                }
-                            } else {
-                                LOG.debug("Rule skipped: Registration period was {} years ago");
-                                narrative = "Customer vehicle registration date not available.";
-                                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                            }
-                        } else {
-                            LOG.debug("Rule skipped: no first registration date available.");
-                            narrative = "Customer vehicle registration date not available.";
-                            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                        }
-                    } else {
-                        LOG.debug("Rule skipped: customer vehicle class is not prestige (p-class).");
-                        narrative = "Customer vehicle not prestige.";
-                        res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                    }
-                } else {
-                    LOG.debug("Rule skipped: no hire start date available.");
-                    narrative = "Customer hire start date not available.";
-                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                }
-            } else {
-                LOG.debug("Rule skipped: Customer vehicle class is not specified.");
-                narrative = "Customer vehicle class is not specified.";
-                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-            }
-
-        } else {
-            LOG.debug("Rule not switched on.");
-            narrative = "";
-            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-        }
-**/
         return res;
     }
 
