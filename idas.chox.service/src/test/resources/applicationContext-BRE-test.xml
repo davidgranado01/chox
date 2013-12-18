@@ -65,6 +65,9 @@
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8SP"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9SP"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9SP"></bean>
                 <bean class="idas.chox.service.bre.rules.HireVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossFeeVatLimitCheck"></bean>
@@ -99,6 +102,8 @@
                     <property name="claimService" ref="claimService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.MaximumLabourRate"></bean>
+                <bean class="idas.chox.service.bre.rules.MaximumLabourRateStandard"></bean>
+                <bean class="idas.chox.service.bre.rules.MaximumLabourRatePrestige"></bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling">
                     <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
                 </bean>
@@ -114,6 +119,7 @@
                 <bean class="idas.chox.service.bre.rules.CompoundAutomaticEstateChargeCheckWithHpiLookup" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.ClientVatRegisteredCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>

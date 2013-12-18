@@ -19,9 +19,9 @@ import idas.chox.service.bre.util.VehicleClassHelper;
  *
  * @author John
  */
-public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
+public class VehicleClassHireProvisionLikeForLike8To9SP implements IBusinessRule {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VehicleClassHireProvisionLikeForLike8To9.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleClassHireProvisionLikeForLike8To9SP.class);
     private String narrative = "The CHO's customer's vehicle is [x] years old and vehicle class [y], the replacement vehicle class of [z] is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place.";
 
     @Override
@@ -32,7 +32,7 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'VehicleClassHireProvisionLikeForLike8To9' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLike8To9()) {
+        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLike8To9SP()) {
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
                 Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
                 if (firstRegistration == null) {
@@ -53,10 +53,10 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
                             try {
-                                int classDifference = VehicleClass.classPDifference(customerVehicleClass, hireVehicleClass);
-                                if (classDifference <= -1) {
+                                int classDifference = VehicleClass.classSPDifference(customerVehicleClass, hireVehicleClass);
+                                if (classDifference <= -2) {
                                     res.setResult(RuleEvaluationResult.RULE_PASSED);
-                                    LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
+                                    LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 8 and 9 years old.");
                                     narrative = "";
                                 } else {
                                     res.setResult(RuleEvaluationResult.RULE_FAILED);
@@ -88,6 +88,7 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
+
         return res;
     }
 
@@ -98,7 +99,7 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "049";
+        return "085";
     }
 
     @Override

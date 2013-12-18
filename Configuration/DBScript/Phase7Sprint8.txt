@@ -2443,3 +2443,21 @@ GRANT EXECUTE ON FUNCTION updateDashboard(integer) TO chox_user;
 -----------------------------------------------------------------------
 -- End of ToDo item 7.8.5                                            --
 -----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+-- ToDo 7.8.6 - New Business Rules                                   --
+-----------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_6_to_8_SP boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_8_to_9_SP boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_over_9_SP boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN maximum_labour_rate_standard_check boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN maximum_labour_rate_prestige_check boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN client_vat_registered_check boolean NOT NULL default true;
+
+ALTER TABLE bre_band ADD COLUMN max_allowed_labour_standard_rate numeric(6,2) not null default 0.00;
+ALTER TABLE bre_band ADD COLUMN max_allowed_labour_prestige_rate numeric(6,2) not null default 0.00;
+
+
+-----------------------------------------------------------------------
+-- End of ToDo item 7.8.6                                            --
+-----------------------------------------------------------------------

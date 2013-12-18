@@ -3,7 +3,7 @@ package idas.chox.bre;
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.bre.mock.MockObjects;
-import idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9;
+import idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9SP;
 import java.io.IOException;
 import org.junit.Test;
 import org.junit.AfterClass;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author rajareddydodda
  */
-public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTest {
+public class Rule085VehicleClassHireProvisionLikeForLike8To9SPTest extends BaseTest {
 
     MockObjects testClaim = new MockObjects();
     @BeforeClass
@@ -55,8 +55,8 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(false);
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(false);
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
@@ -74,9 +74,9 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
          claim.getCustomer().setVehicleClass(null);
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
@@ -94,10 +94,10 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
-        claim.getCustomer().getVehicleClass().setName("P10");
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
+        claim.getCustomer().getVehicleClass().setName("SP10");
         claim.getVehicleHire().setHireStart(null);
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle registration date not available."));
@@ -115,19 +115,19 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
         //claim.getCustomer().setVehicleClass(null);
         //claim.getVehicleHire().setHireStart(null);
-        claim.getCustomer().getVehicleClass().setName("SP10");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
+        claim.getCustomer().getVehicleClass().setName("P10");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2004"));
         claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2012"));
 
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Cannot compare non-prestige vehicle."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Cannot compare non-sports performance vehicle."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -141,12 +141,12 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
         //claim.getCustomer().setVehicleClass(null);
         //claim.getVehicleHire().setHireStart(null);
-        claim.getCustomer().getVehicleClass().setName("P2");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        claim.getCustomer().getVehicleClass().setName("SP2");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
@@ -164,15 +164,15 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
         Claim claim = getTestClaim();
 
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
-        claim.getCustomer().getVehicleClass().setName("P2");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
+        claim.getCustomer().getVehicleClass().setName("SP2");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
 
         // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
         claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2005"));
         claim.getVehicleHire().setHireStart(DateHelper.parse("13/05/2013"));
 
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -190,15 +190,15 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
          */
         Claim claim = getTestClaim();
 
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
-        claim.getCustomer().getVehicleClass().setName("P2");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
+        claim.getCustomer().getVehicleClass().setName("SP2");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
 
         // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
         claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2003"));
         claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2012"));
 
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -214,15 +214,15 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
 
         Claim claim = getTestClaim();
 
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
-        claim.getCustomer().getVehicleClass().setName("P4");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
+        claim.getCustomer().getVehicleClass().setName("SP4");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
 
         // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
         claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2002"));
         claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2010"));
 
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -238,20 +238,20 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
 
         Claim claim = getTestClaim();
 
-        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9(true);
-        claim.getCustomer().getVehicleClass().setName("P1");
-        claim.getVehicleHire().getVehicleClass().setName("P1");
+        claim.getBreBand().setVehicleClassHireProvisionLikeForLike8To9SP(true);
+        claim.getCustomer().getVehicleClass().setName("SP1");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
 
         // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
         claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2003"));
         claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2011"));
 
-        VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
+        VehicleClassHireProvisionLikeForLike8To9SP rule = new VehicleClassHireProvisionLikeForLike8To9SP();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO's customer's vehicle is 8 years old and vehicle class P1, the replacement vehicle class of P1 is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO's customer's vehicle is 8 years old and vehicle class SP1, the replacement vehicle class of SP1 is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
     }
