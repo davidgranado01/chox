@@ -2461,3 +2461,15 @@ ALTER TABLE bre_band ADD COLUMN max_allowed_labour_prestige_rate numeric(6,2) no
 -----------------------------------------------------------------------
 -- End of ToDo item 7.8.6                                            --
 -----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+-- bug#2754 - Production - remove liability update in status         -—
+—-            AwaitingInvoicePayment                                 --
+-----------------------------------------------------------------------
+delete from accessibility_item where accessibility_id in
+(select id from accessibility where name = 'extraAction.updateLiability.AwaitingInvoicePayment');
+
+delete from accessibility where name = 'extraAction.updateLiability.AwaitingInvoicePayment';
+-----------------------------------------------------------------------
+-- End of ToDo item 7.8.6                                            --
+-----------------------------------------------------------------------
