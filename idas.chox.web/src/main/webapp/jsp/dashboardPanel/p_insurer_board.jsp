@@ -44,7 +44,8 @@
         new Ext.ToolTip({target: 'tip37',html: 'Value of Penalty Charges Paid'});
         new Ext.ToolTip({target: 'tip38',html: 'Number of Insurer Upload invoices awaiting liability resolution by the insurer'});
         new Ext.ToolTip({target: 'tip39',html: 'Value of Insurer Upload invoices awaiting liability resolution by the insurer (using Total To Pay amount)'});
-           
+        new Ext.ToolTip({target: 'tip40',html: 'Average invoice payment time (In days)'});
+          
         Ext.QuickTips.init();
     });
 
@@ -110,6 +111,6 @@
         <tr><th nowrap><label id="tip28">Number of Insurer Invoices Closed</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesClosed"/></label></td>                           <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesClosed"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesClosed"/></label></td></tr>
         <tr><th nowrap><label id="tip29">Value of Insurer Invoices Closed</label></th>                         <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesClosed"/></label></td>                        <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesClosed"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesClosed"/></label></td></tr>
         <tr><th nowrap><label id="tip37">Value of Insurer Invoices Penalty Charges Paid</label></th>           <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesPenaltyChargesPaid"/></label></td>            <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesPenaltyChargesPaid"/></label></td>           <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesPenaltyChargesPaid"/></label></td></tr>
-        <tr><th nowrap><label id="tip23">Average Insurer Invoice Payment Time (Days)</label></th>              <td nowrap><label><s:property value="w2DData.avgManualInvoicePaymentTime"/></label></td>                                        <td nowrap><label><s:property value="m2DData.avgManualInvoicePaymentTime"/></label></td>                                       <td nowrap><label><s:property value="cData.avgManualInvoicePaymentTime"/></label></td></tr>
+        <tr><th nowrap><label id="tip40">Average Insurer Invoice Payment Time (Days)</label></th>              <td nowrap><label><s:property value="w2DData.avgManualInvoicePaymentTime"/></label></td>                                        <td nowrap><label><s:property value="m2DData.avgManualInvoicePaymentTime"/></label></td>                                       <td nowrap><label><s:property value="cData.avgManualInvoicePaymentTime"/></label></td></tr>
     </s:if>
 </table>

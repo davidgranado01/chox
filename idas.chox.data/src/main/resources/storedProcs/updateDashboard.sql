@@ -736,6 +736,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, audit_trail a
 where c.id = a.claim_id and c.invoice_id is not null and claim_type NOT IN (10,14,15,16,17)
 and c.status='AwaitingLiabilityResolution' and a.new_status = 'AwaitingLiabilityResolution'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -756,6 +757,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, audit_trail a
 where c.id = a.claim_id and c.invoice_id is not null and claim_type NOT IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfMonth() and a.new_status = 'AwaitingLiabilityResolution'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 and c.status='AwaitingLiabilityResolution' and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -797,6 +799,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, audit_trail a, invoice i
 where c.id = a.claim_id and c.invoice_id = i.id and claim_type NOT IN (10,14,15,16,17)
 and c.status='AwaitingLiabilityResolution' and a.new_status = 'AwaitingLiabilityResolution'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -817,6 +820,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, audit_trail a, invoice i
 where c.invoice_id = i.id and c.id = a.claim_id and claim_type NOT IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfMonth() and a.new_status = 'AwaitingLiabilityResolution'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 and c.status='AwaitingLiabilityResolution' and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
@@ -1742,10 +1746,9 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_accepted_w = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c, invoice i, invoice_original io
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
 where c.invoice_id=i.id
-and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'AwaitingInvoicePayment'
 and c.status_modified_date >= SqlGetDayOfWeek()
@@ -1762,10 +1765,9 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_accepted_m = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c, invoice i, invoice_original io
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
 where c.invoice_id=i.id
-and i.invoice_original_id = io.id
 and c.claim_type IN (10,14,15,16,17)
 and c.status = 'AwaitingInvoicePayment'
 and c.status_modified_date >= SqlGetDayOfMonth()
@@ -1781,10 +1783,9 @@ where t1.insurer_id = tmp_dashboard.insurer_id
 update tmp_dashboard
    set val_manual_invoices_accepted_c = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c, invoice i, invoice_original io
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
 where c.invoice_id=i.id
-and i.invoice_original_id = io.id
 and c.status = 'AwaitingInvoicePayment'
 and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -1857,6 +1858,7 @@ from claim c, audit_trail a
 where c.id = a.claim_id and c.invoice_id is not null and claim_type IN (10,14,15,16,17)
 and c.status='AwaitingLiabilityResolution' and a.new_status = 'AwaitingLiabilityResolution'
 and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1875,6 +1877,7 @@ from claim c, audit_trail a
 where c.id = a.claim_id and c.invoice_id is not null and claim_type IN (10,14,15,16,17)
 and c.status='AwaitingLiabilityResolution' and a.new_status = 'AwaitingLiabilityResolution'
 and a.update_date >= SqlGetDayOfMonth() and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1969,6 +1972,7 @@ from claim c, audit_trail a, invoice i
 where c.invoice_id = i.id and c.id = a.claim_id and c.invoice_id is not null and claim_type IN (10,14,15,16,17)
 and c.status='AwaitingLiabilityResolution' and a.new_status = 'AwaitingLiabilityResolution'
 and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -1989,6 +1993,7 @@ from claim c, audit_trail a, invoice i
 where c.invoice_id = i.id and c.id = a.claim_id and c.invoice_id is not null and claim_type IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfMonth() and a.new_status = 'AwaitingLiabilityResolution'
 and c.status='AwaitingLiabilityResolution' and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status ='AwaitingLiabilityResolution' and a2.created_date > a.created_date)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
