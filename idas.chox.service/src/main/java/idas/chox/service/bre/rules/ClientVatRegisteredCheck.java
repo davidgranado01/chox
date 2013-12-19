@@ -62,7 +62,7 @@ public class ClientVatRegisteredCheck implements IBusinessRule {
                 }
                 if (chargingStorageRecoveryVat && vatCharges == null) {
                     vatCharges = "storage recovery";
-                } else if (chargingRepairVat) {
+                } else if (chargingStorageRecoveryVat) {
                     vatCharges = vatCharges + ", storage recovery";
                 }
                 
