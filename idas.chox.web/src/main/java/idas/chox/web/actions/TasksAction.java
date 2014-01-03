@@ -555,6 +555,7 @@ public class TasksAction extends BaseAction {
             public void run() {
                 try {
                     XLSTransformer transformer = new XLSTransformer();
+                    // 'Owner of Claim Task Assigned To' and ‘Role Assigned To’ columns do not apply to the CHO user. Please look at bug#2546.
                     if (isCho) {
                         transformer.setColumnsToHide(new short[]{(short) 7, (short) 8});
                     }

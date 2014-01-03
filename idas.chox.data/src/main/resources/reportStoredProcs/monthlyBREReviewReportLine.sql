@@ -60,7 +60,8 @@ BEGIN
                     invoice i, 
                     claim c 
                WHERE 
-                    c.invoice_id = i.id 
+                    c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -73,11 +74,12 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
       
               (SELECT 
                     AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
@@ -87,12 +89,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
 
               (SELECT 
                     COUNT(*) AS "No. Inv Passed BRE & Disputed"
@@ -100,7 +103,8 @@ BEGIN
                     invoice i, 
                     claim c 
                WHERE 
-                    c.invoice_id = i.id 
+                    c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -113,9 +117,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -127,14 +131,15 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND a.claim_id = c.id
-                    AND (a.new_status = 'ManualInvoiceContested' OR a.new_status = 'ContestedInvoiceReferredToCHO')
+                    AND a.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                     AND a.reverted = FALSE
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
+                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
 
               (SELECT 
                     COUNT(*) AS "No. Inv Passed BRE & Disputed & Resulted No Change"
@@ -144,6 +149,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay = i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
@@ -158,9 +164,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -172,6 +178,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay != i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
@@ -186,9 +193,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -199,7 +206,8 @@ BEGIN
                     invoice_original io,
                     claim c 
                WHERE 
-                    c.invoice_id = i.id 
+                    c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
@@ -213,9 +221,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -227,6 +235,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
@@ -240,9 +249,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -253,11 +262,12 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -266,9 +276,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -280,13 +290,14 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay = i.total_to_pay
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -295,9 +306,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -309,13 +320,14 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay != i.total_to_pay
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -324,9 +336,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -338,12 +350,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -352,9 +365,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -366,12 +379,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBREApproved' OR a.new_status = 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -380,9 +394,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBREApproved' OR a1.new_status = 'InvoiceApprovedByBRE')
+                                        AND a1.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -392,12 +406,13 @@ BEGIN
                     invoice i, 
                     claim c 
                WHERE 
-                    c.invoice_id = i.id 
+                    c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
 
               (SELECT 
                     AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
@@ -407,12 +422,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
 
               (SELECT 
                     COUNT(*) AS "No. Inv Failed BRE & Disputed"
@@ -421,6 +437,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -433,9 +450,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -447,14 +464,15 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND a.claim_id = c.id
-                    AND (a.new_status = 'ManualInvoiceContested' OR a.new_status = 'ContestedInvoiceReferredToCHO')
+                    AND a.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                     AND a.reverted = FALSE
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
+                    AND EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a1.reverted = FALSE AND a1.created_date < a.created_date)),
 
               (SELECT 
                     COUNT(*) AS "No. Inv Failed BRE & Disputed & Resulted No Change"
@@ -464,6 +482,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay = i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
@@ -478,9 +497,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -492,6 +511,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay != i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
@@ -506,9 +526,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -520,6 +540,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
@@ -533,9 +554,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -547,6 +568,7 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
@@ -560,9 +582,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -572,12 +594,13 @@ BEGIN
                     invoice i, 
                     claim c 
                WHERE 
-                    c.invoice_id = i.id 
+                    c.invoice_id = i.id
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -586,9 +609,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -600,13 +623,14 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay = i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -615,9 +639,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -629,13 +653,14 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
                     AND io.total_to_pay != i.total_to_pay 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -644,9 +669,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -658,12 +683,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -672,9 +698,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
@@ -686,12 +712,13 @@ BEGIN
                     claim c 
                WHERE 
                     c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
                     AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
-                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND (a.new_status = 'ManualInvoiceBRERejected' OR a.new_status = 'InvoiceEscalated' OR a.new_status = 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)
                     AND NOT EXISTS (SELECT 
                                         * 
                                   FROM 
@@ -700,9 +727,9 @@ BEGIN
                                   WHERE 
                                         a1.claim_id = c.id 
                                         AND a1.claim_id = a2.claim_id 
-                                        AND (a1.new_status = 'ManualInvoiceBRERejected' OR a1.new_status = 'InvoiceEscalated' OR a1.new_status = 'InvoiceEscalatedToHandler')
+                                        AND a1.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler')
                                         AND a1.reverted = FALSE
-                                        AND (a2.new_status = 'ManualInvoiceContested' OR a2.new_status = 'ContestedInvoiceReferredToCHO')
+                                        AND a2.new_status IN ('ManualInvoiceContested', 'ContestedInvoiceReferredToCHO')
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date));
 
