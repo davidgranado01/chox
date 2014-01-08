@@ -1,10 +1,5 @@
-DROP FUNCTION monthlyBREReviewReportLine(
-    IN start_date text, 
-    IN end_date text, 
-    IN claimTypes integer[], 
-    IN choIds  integer[], 
-    IN insIds integer[]);
-
+-- DROP FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choIds  integer[], IN insIds integer[]);
+-- select * from monthlyBREReviewReportLine('2011-01-01','2014-01-01', array[]::integer[], array[]::integer[], array[6]);
 CREATE OR REPLACE FUNCTION monthlyBREReviewReportLine(
     IN start_date text, 
     IN end_date text, 
@@ -82,7 +77,7 @@ BEGIN
                     AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
       
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -91,6 +86,7 @@ BEGIN
                     c.invoice_id = i.id
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -151,7 +147,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay = i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -180,7 +176,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay != i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -199,8 +195,8 @@ BEGIN
                                         AND a2.reverted = FALSE
                                         AND a1.created_date < a2.created_date)),
 
-              (SELECT 
-                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Disputed"
+              (SELECT
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -209,6 +205,7 @@ BEGIN
                     c.invoice_id = i.id
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -228,7 +225,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -237,6 +234,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -292,7 +290,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay = i.total_to_pay
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -322,7 +320,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay != i.total_to_pay
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -343,7 +341,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Not Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -352,6 +350,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -372,7 +371,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -381,6 +380,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -415,7 +415,7 @@ BEGIN
                     AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
 
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -424,6 +424,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -484,7 +485,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay = i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -513,7 +514,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay != i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -533,7 +534,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Disputed"
                FROM 
                     invoice i, 
                     invoice_original io,
@@ -542,6 +543,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -561,7 +563,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Disputed"
                FROM 
                     invoice i, 
                     invoice_original io,
@@ -570,6 +572,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -625,7 +628,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay = i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -655,7 +658,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND io.total_to_pay != i.total_to_pay 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -676,7 +679,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Not Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -685,6 +688,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -705,7 +709,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(io.total_to_pay - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -713,7 +717,8 @@ BEGIN
                WHERE 
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
-                    AND i.invoice_original_id = io.id 
+                    AND i.invoice_original_id = io.id
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -739,10 +744,5 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100;
 
-ALTER FUNCTION monthlyBREReviewReportLine(
-    IN start_date text, 
-    IN end_date text, 
-    IN claimTypes integer[], 
-    IN choids  integer[], 
-    IN insIds integer[])
-OWNER TO chox;
+GRANT EXECUTE ON FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choIds  integer[], IN insIds integer[]) TO chox_user;
+GRANT EXECUTE ON FUNCTION monthlyBREReviewReportLine(IN start_date text, IN end_date text, IN claimTypes integer[], IN choIds  integer[], IN insIds integer[]) TO chox_mi;

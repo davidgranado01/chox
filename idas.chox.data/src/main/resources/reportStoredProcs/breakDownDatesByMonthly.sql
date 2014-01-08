@@ -1,6 +1,4 @@
-DROP FUNCTION breakDownDatesByMonthly(
-    IN start_date text, 
-    IN end_date text);
+-- DROP FUNCTION breakDownDatesByMonthly(IN start_date text, IN end_date text);
 
 
 CREATE OR REPLACE FUNCTION breakDownDatesByMonthly(
@@ -97,7 +95,5 @@ $BODY$
 
 LANGUAGE plpgsql VOLATILE COST 100;
 
-ALTER FUNCTION breakDownDatesByMonthly(
-    IN start_date text, 
-    IN end_date text)
-OWNER TO chox;
+GRANT EXECUTE ON FUNCTION breakDownDatesByMonthly(IN start_date text, IN end_date text) TO chox_user;
+GRANT EXECUTE ON FUNCTION breakDownDatesByMonthly(IN start_date text, IN end_date text) TO chox_mi;
