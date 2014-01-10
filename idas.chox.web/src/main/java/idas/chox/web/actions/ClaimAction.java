@@ -1167,11 +1167,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             
                 // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+                 // The following should really be done by updating the accessibility tables....
                 else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
                         && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
                     accessRight = 0;
                 }
-                
+                 // The following should really be done by updating the accessibility tables....
+                 else if ((actionName.equals(ExtraAction.MAKE_INTERIM_PAYMENT) || actionName.equals(ExtraAction.FINAL_REVIEW))
+                         && ClaimType.isInsurerUpload(claim.getClaimType())) {
+                     accessRight = 0;
+                 }
+
                 // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
                 else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
                         && (claim.getWorkgroup() == null || claim.getClaimOwner() == null)) {
@@ -1362,9 +1368,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String removeNotification() {
 
-        if (notificationId > 0) {
+        if (notificationId != null && notificationId > 0) {
             notificationService.removeNotificationById(notificationId);
-        } else if (notificationService != null && claim != null) { // No id given so remove all notifications
+        } else if (notificationId != null && notificationService != null && claim != null) { // No id given so remove all notifications
             if (getIsInsurer()) {
                 notificationService.removeAllInsurerNotifications(claim.getId());
             } else {
@@ -1377,9 +1383,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String acknowledgeNotification() {
 
-        if (notificationId > 0) {
+        if (notificationId != null && notificationId > 0) {
                 notificationService.acknowledgeNotificationById(notificationId);
-        } else if (notificationService != null && claim != null) {
+        } else if (notificationId != null && notificationService != null && claim != null) {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
@@ -1462,6 +1468,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsInsurerInvoice() {
         return claim.getClaimType() == ClaimType.INSURER_INVOICE;
+    }
+
+    public boolean getIsInsurerManual() {
+        return claim.getClaimType() == ClaimType.INSURER_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_CLAIM
+                || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_SUPPLEMENTARY_INVOICE
+                || claim.getClaimType() == ClaimType.INSURER_UPLOAD;
     }
 
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {

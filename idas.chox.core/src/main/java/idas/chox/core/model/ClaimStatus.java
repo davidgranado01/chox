@@ -73,6 +73,9 @@ public class ClaimStatus {
         handlerOutstandingStatusList.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         handlerOutstandingStatusList.add(ClaimStatus.CLAIM_PENDING);
         handlerOutstandingStatusList.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        handlerOutstandingStatusList.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
+        handlerOutstandingStatusList.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+        handlerOutstandingStatusList.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
     }
 
     public static List<String> getAwaitingLiabilityStatusList() {

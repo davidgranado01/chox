@@ -3,7 +3,7 @@
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="false" />
     <constant name="struts.custom.i18n.resources" value="application" /> 
-    <constant name="struts.multipart.maxSize" value="10000000" />
+    <constant name="struts.multipart.maxSize" value="30000000" />
     <constant name="struts.codebehind.classSuffix" value="Controller"/>
     <constant name="struts.codebehind.action.checkImplementsAction" value="false"/>
     <constant name="struts.codebehind.action.checkAnnotation" value="false"/>
@@ -557,7 +557,7 @@
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="ResolveLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="AssignManualInvoiceOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
-            <result name="UpdateManualInvoicePaid">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
+            <result name="UpdateManualInvoiceAgreeQuantum">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
@@ -1413,7 +1413,7 @@
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
             <interceptor-ref name="fileUpload">
-                <param name="maximumSize">10000000</param>
+                <param name="maximumSize">30000000</param>
             </interceptor-ref>
             <interceptor-ref name="authenticatedNonce"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
@@ -1481,7 +1481,7 @@
         </action>
         <action name="uploadNewClaimsFile" class="idas.chox.web.actions.XmlUploadAction" method="uploadNewClaimsFile">
             <interceptor-ref name="fileUpload">
-                <param name="maximumSize">10000000</param>
+                <param name="maximumSize">10485810</param>
             </interceptor-ref>
             <interceptor-ref name="authenticatedNonce"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>

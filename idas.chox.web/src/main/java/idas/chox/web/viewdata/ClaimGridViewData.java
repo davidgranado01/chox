@@ -41,7 +41,7 @@ public class ClaimGridViewData {
 
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
+        NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 
         Chorganisation chorg = claim.getChorganisation();
         Insurer ins = claim.getInsurer();
@@ -51,7 +51,7 @@ public class ClaimGridViewData {
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.claimType = claim.getClaimType().toString();
-        this.invoiceAmount = invoice == null ? "" : currentcyFormat.format(invoice.getTotalToPay());
+        this.invoiceAmount = invoice == null ? "" : currencyFormat.format(invoice.getTotalToPay());
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());

@@ -110,6 +110,7 @@
         <property name="chainActivity" ref="invoicePaymentReceived" />
     </bean>
     <bean id="updateManualInvoicePaid" class="idas.chox.service.workflow.activities.UpdateManualInvoicePaid" scope="prototype"/>
+    <bean id="updateManualInvoiceAgreeQuantum" class="idas.chox.service.workflow.activities.UpdateManualInvoiceAgreeQuantum" scope="prototype"/>
     <bean id="updateManualInvoiceContested" class="idas.chox.service.workflow.activities.UpdateManualInvoiceContested" scope="prototype"/>
     <bean id="awaitingLitigationOutcome" class="idas.chox.service.workflow.activities.AwaitingLitigationOutcome" scope="prototype"/>
     <bean id="makeInterimPayment" class="idas.chox.service.workflow.activities.MakeInterimPayment" scope="prototype"/>

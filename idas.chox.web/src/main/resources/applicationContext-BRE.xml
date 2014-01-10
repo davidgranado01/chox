@@ -65,6 +65,9 @@
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8SP" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9SP" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9SP" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.HireVatLimitCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairVatLimitCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossFeeVatLimitCheck" scope="prototype"></bean>
@@ -99,6 +102,8 @@
                     <property name="claimService" ref="claimService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.MaximumLabourRate" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.MaximumLabourRateStandard" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.MaximumLabourRatePrestige" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" scope="prototype">
                     <property name="protocolVehicleClassCeilingService" ref="protocolVehicleClassCeilingService"/>
                 </bean>
@@ -114,6 +119,7 @@
                 <bean class="idas.chox.service.bre.rules.CompoundAutomaticEstateChargeCheckWithHpiLookup" scope="prototype">
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.ClientVatRegisteredCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>

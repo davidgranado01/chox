@@ -158,7 +158,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     
     public List<LookupItem> getClaimTypesAsLookupItem() {
         if (claimTypesLookupItem == null) {
-            claimTypesLookupItem = this.lookupService.getClaimTypes();
+            claimTypesLookupItem = this.lookupService.getClaimTypes(getAuthenticatedUser());
         }
         return claimTypesLookupItem;
     }

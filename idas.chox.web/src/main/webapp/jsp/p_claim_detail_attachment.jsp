@@ -24,7 +24,7 @@
                 {name:'fileName'},
                 {name:'category'},
                 {name:'remarks'},
-                {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
+                {name:'createdDate', type: 'date', dateFormat: 'd/m/Y H:i'},
                 {name:'delete'}
             ]
         });
@@ -35,13 +35,14 @@
             reader:attachmentJsonReader
         });
 
-        attachmentData.setDefaultSort('modifiedDate', 'desc');
+        attachmentData.setDefaultSort('createdDate', 'desc');
 
         attachmentGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:attachmentOnClick },
             store: attachmentData,
             renderTo:'attachmentGrid',
             enableColumnMove: false,
+            remoteSort: false,
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
@@ -49,7 +50,7 @@
                 {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
                 {header: "Attachment Type", width: 150, dataIndex: 'category', sortable: true, resizable: true},
                 {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
-                {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
+                {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true,renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')},
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>";}}
             ],
@@ -157,7 +158,7 @@
 
                     Ext.MessageBox.show({
                         title: 'Upload failure',
-                        msg: 'File size exceeded 10 MB limit.',
+                        msg: 'File size exceeded 20 MB limit.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
@@ -316,7 +317,7 @@
                         <td></td>
                         <td>
                             <div class="column-remark" style="padding:10px 0 10px 0;">
-                                Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
+                                Maximum attachment size is <s:property value="maxFileSize/1024/1024"/> MB. <br/>
                                 Currently, CHOX supports attachments in the following formats: <br/>
                                 <s:property value="AllowFileTypeHelpNote"/>&nbsp;&nbsp;<img src="../images/help.png" id="claimDetailAttachmentTypeSpan" alt=""/>
                             </div>

@@ -9,7 +9,7 @@ public class AttachmentViewData {
     private String fileName;
     private String category;
     private String remarks;
-    private String modifiedDate;
+    private String createdDate;
     private String delete = "Delete";
 
     public AttachmentViewData(Attachment attachment) {
@@ -17,7 +17,8 @@ public class AttachmentViewData {
         this.fileName = attachment.getFileName();
         this.category = attachment.getCategory();
         this.remarks = attachment.getRemarks();
-        this.modifiedDate = DateHelper.getLocalDateTimeFormat().format(attachment.getLastModifiedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(attachment.getCreatedDate());
+//        this.createdDate = attachment.getCreatedDate();
     }
 
     public String getCategory() {
@@ -36,8 +37,8 @@ public class AttachmentViewData {
         return id;
     }
 
-    public String getModifiedDate() {
-        return modifiedDate;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
     public String getRemarks() {

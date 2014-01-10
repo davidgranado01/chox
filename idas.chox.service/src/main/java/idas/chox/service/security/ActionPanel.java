@@ -18,7 +18,8 @@ public class ActionPanel {
     public static final String UPDATE_PAYMENT_RECEIVED = "InvoicePaymentReceived";
     public static final String ASSIGN_CLAIM_OWNERSHIP = "AssignOwner";
     public static final String UPDATE_LIABILITY = "ResolveLiability";
-    public static final String UPDATE_MANUAL_INVOICE = "UpdateManualInvoicePaid";
+    public static final String UPDATE_MANUAL_INVOICE_AGREE = "UpdateManualInvoiceAgreeQuantum";
+    public static final String UPDATE_MANUAL_INVOICE_PAID = "UpdateManualInvoicePaid";
     public static final String UPDATE_MANUAL_INVOICE_WG_AND_OWNER = "AssignManualInvoiceOwner";
     public static final String APPROVE_CONTESTED_INVOICE_TO_ENG = "InvoiceReferToCH";
     public static final String REVIEW_BY_ENGINEER = "ClaimReviewByEng";
@@ -59,7 +60,8 @@ public class ActionPanel {
         actionPanelList.add(UPLOAD_INVOICE_DATA);
         actionPanelList.add(UPDATE_LIABILITY);
         actionPanelList.add(UPDATE_MANUAL_INVOICE_WG_AND_OWNER);
-        actionPanelList.add(UPDATE_MANUAL_INVOICE);
+        actionPanelList.add(UPDATE_MANUAL_INVOICE_AGREE);
+        actionPanelList.add(UPDATE_MANUAL_INVOICE_PAID);
         actionPanelList.add(UPDATE_PAYMENT_RECEIVED);
     }
 

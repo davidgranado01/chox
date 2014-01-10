@@ -349,8 +349,23 @@
               </s:if>
             </table>
                 <s:if test="uploadEnabled">
-                    <div style="height:960px; width:960px" id="resultHolder" name="resultHolder"></div>
-                </s:if>
+<%
+String ua = request.getHeader( "User-Agent" );
+boolean isFirefox = ( ua != null && ua.indexOf( "Firefox" ) != -1 );
+boolean isIE = ( ua != null && ua.indexOf( "MSIE" ) != -1 );
+int versionIE = -1;
+if (isIE) {
+    versionIE = Integer.parseInt(ua.substring (ua.indexOf( "MSIE" )+5, ua.indexOf (".", ua.indexOf( "MSIE" ) )));
+}
+%>
+ <% if (isFirefox){ %>
+                    <div style="height:1178px; width:960px" id="resultHolder" name="resultHolder"></div>
+<% } else if(isIE && versionIE > 9){ %>
+                    <div style="height:1115px; width:960px" id="resultHolder" name="resultHolder"></div>
+<% } else { %>
+                    <div style="height:1095px; width:960px" id="resultHolder" name="resultHolder"></div>
+<% }%>
+</s:if>
                 <s:else>
                     <div style="height:790px; width:960px" id="resultHolder" name="resultHolder"></div>
                 </s:else>

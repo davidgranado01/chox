@@ -112,35 +112,41 @@ public class VehicleClass extends Entity implements Serializable {
         if (className.charAt(0) == 'T' && className.charAt(1) >= '1' && className.charAt(1) <= '9') {
             return true;
         }
-        else if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+        else if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1'
+                && className.charAt(2) <= '9') {
             return true;
         }
-        else if(className.charAt(0) == 'N' && className.charAt(1) == 'T'  && className.charAt(2) >= '3' && className.charAt(2) <= '4') {
+        else if(className.charAt(0) == 'N' && className.charAt(1) == 'T'  && className.charAt(2) >= '3'
+                && className.charAt(2) <= '4') {
             return true;
         }
 
         return false;
     }
     static public boolean isPTClass(String className) {
-        if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+        if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1'
+                && className.charAt(2) <= '9') {
             return true;
         }
 
         return false;
     }
+    
+/*****
     static public int classPDifference(VehicleClass class1, VehicleClass class2) {
-        // if class1 < (i.e. is cheaper thsn) class2 then return a positive number
+        // if class1 <  class2 then return a positive number
         // indicating the difference between the two class types,
         // e.g. classDifference(P3, P5) = 2
         //      classDifference(P5, P3) = -2
         //      classDifference(P1, P1) = 0
-        int unknown = -999;
 
-        if (class1.getName().charAt(0) != 'P' || !(class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9')) {
+        if (class1.getName().charAt(0) != 'P' || !(class1.getName().charAt(1) >= '1'
+                && class1.getName().charAt(1) <= '9')) {
             throw new IllegalArgumentException("Cannot compare non-prestige vehicle.");
         }
 
-        if ((class2.getName().charAt(0) != 'P' && class2.getName().charAt(0) != 'S') || !(class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9')) {
+        if ((class2.getName().charAt(0) != 'P' && class2.getName().charAt(0) != 'S')
+                || !(class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9')) {
             throw new IllegalArgumentException("Cannot compare prestige vehicle to class " + class2.getName() + ".");
         }
 
@@ -155,20 +161,139 @@ public class VehicleClass extends Entity implements Serializable {
             return Integer.parseInt(class2.getName().substring(1)) - Integer.parseInt(class1.getName().substring(1));
         }
 
-/* Not needed as we are only interested in P-class
-        if (class1.getName().charAt(0) == class2.getName().charAt(0)
-                && class1.getName().charAt(1) == class2.getName().charAt(1)
-                && class1.getName().charAt(2) >= '1' && class1.getName().charAt(2) <= '9'
-                && class2.getName().charAt(2) >= '1' && class2.getName().charAt(2) <= '9') {
-            // Both of same class with different numbers
-            return Integer.parseInt(class2.getName().substring(2)) - Integer.parseInt(class1.getName().substring(2));
-        }
-*/
-
         // Different classes - we are only considering P and S classes
         int class1Number = Integer.parseInt(class1.getName().substring(1));
         int class2Number = Integer.parseInt(class2.getName().substring(1));
         return -class1Number - (7-class2Number); // assunimg best S-class is S7
 
     }
+*****/
+
+    static public int classPDifference(VehicleClass class1, VehicleClass class2) {
+        // if class1 <  class2 then return a positive number
+        // indicating the difference between the two class types,
+        // e.g. classDifference(P3, P5) = 2
+        //      classDifference(P5, P3) = -2
+        //      classDifference(P1, P1) = 0
+
+        int class1No = getPClassNumber(class1.getName());
+        
+        if (class1No < 0) {
+            throw new IllegalArgumentException("Cannot compare non-prestige vehicle.");
+        }
+
+        int class2No = getPClassNumber(class2.getName());
+        if (class2No > 0) {
+            // Both Ps
+            return class2No - class1No;
+        }
+        
+        class2No = getSClassNumber(class2.getName());
+        // If class 2 not S class, we can't compare
+        if (class2No < 0) {
+            throw new IllegalArgumentException("Cannot compare prestige vehicle to class " + class2.getName() + ".");
+        }
+
+        // Different classes - we are only considering P and S classes
+        return -class1No - (7-class2No); // assunimg best S-class is S7
+    }
+/*****/
+    
+    static public int classSPDifference(VehicleClass class1, VehicleClass class2) {
+        // if class1 <  class2 then return a positive number
+        // indicating the difference between the two class types,
+        // e.g. classDifference(SP3, SP5) = 2
+        //      classDifference(SP5, SP3) = -2
+        //      classDifference(SP1, S7) = -1
+
+        int class1No = getSPClassNumber(class1.getName());
+        
+        if (class1No < 0) {
+            throw new IllegalArgumentException("Cannot compare non-sports performance vehicle.");
+        }
+
+        int class2No = getSPClassNumber(class2.getName());
+        if (class2No > 0) {
+            // Both SPs
+            return class2No - class1No;
+        }
+        
+        class2No = getSClassNumber(class2.getName());
+        // If class 2 not S class, we can't compare
+        if (class2No < 0) {
+            throw new IllegalArgumentException("Cannot compare sports performance vehicle to class " + class2.getName() + ".");
+        }
+
+        // Different classes - we are only considering SP and S classes
+        return -class1No - (7-class2No); // assunimg best S-class is S7
+    }
+    
+    static private int getSPClassNumber(String className) {
+        if (className == null || className.length() < 3 || !className.substring(0, 2).equals("SP")) {
+            return -1;
+        }
+    
+        if (className.length() == 3) {
+            return Integer.parseInt(className.substring(2));
+        }
+        else if (className.length() == 4 && className.charAt(3) >= '1' && className.charAt(3) <= '9') {
+            return Integer.parseInt(className.substring(2));
+        }
+        else if (className.length() == 4) {
+            return Integer.parseInt(className.substring(2, 1));
+        }
+        else if (className.charAt(3) >= '1' && className.charAt(3) <= '9') {
+            return Integer.parseInt(className.substring(2, 2));
+        }
+        else {
+            return Integer.parseInt(className.substring(2, 1));
+        }
+    }
+    
+    static private int getPClassNumber(String className) {
+        if (className == null || className.length() < 2 || className.charAt(0) != 'P'
+                || !(className.charAt(1) >= '1' && className.charAt(1) <= '9')) {
+            return -1;
+        }
+    
+        if (className.length() == 2) {
+            return Integer.parseInt(className.substring(1));
+        }
+        else if (className.length() == 3 && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+            return Integer.parseInt(className.substring(1));
+        }
+        else if (className.length() == 3) {
+            return Integer.parseInt(className.substring(1, 1));
+        }
+        else if (className.charAt(2) >= '1' && className.charAt(3) <= '9') {
+            return Integer.parseInt(className.substring(1, 2));
+        }
+        else {
+            return Integer.parseInt(className.substring(1, 1));
+        }
+    }
+    
+    static private int getSClassNumber(String className) {
+        if (className == null || className.length() < 2 || className.charAt(0) != 'S'
+                || !(className.charAt(1) >= '1' && className.charAt(1) <= '9')) {
+            return -1;
+        }
+    
+        if (className.length() == 2) {
+            return Integer.parseInt(className.substring(1));
+        }
+        else if (className.length() == 3 && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+            return Integer.parseInt(className.substring(1));
+        }
+        else if (className.length() == 3) {
+            return Integer.parseInt(className.substring(1, 1));
+        }
+        else if (className.charAt(2) >= '1' && className.charAt(3) <= '9') {
+            return Integer.parseInt(className.substring(1, 2));
+        }
+        else {
+            return Integer.parseInt(className.substring(1, 1));
+        }
+    }
+    
 }

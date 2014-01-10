@@ -63,10 +63,13 @@ public class BillingService {
     }
 
     public List getBillingDetailList(String type, int billingId) {
-        if (type.equals(INSURER)) {
+        if (type != null && type.equals(INSURER)) {
             return getBillingInsurerDetailService().getBillingInsurerDetails(billingId);
-        } else {
+        } else if (type != null) {
             return getBillingChoDetailService().getBillingChoDetails(billingId);
+        } else {
+            LOG.warn("No type specified to get billing details list - billingId={}", billingId);
+            return new ArrayList(0);
         }
     }
 
