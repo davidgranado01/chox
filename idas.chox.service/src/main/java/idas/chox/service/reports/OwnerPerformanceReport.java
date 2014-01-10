@@ -48,6 +48,7 @@ public class OwnerPerformanceReport implements Report {
         Map<String, Object> reportParameters = new HashMap<String, Object>();
         try {
             boolean isWorkgroupEnabled = true;
+            Integer hasStarred = 0;
             Integer insurerId = -1;
             Integer selectedWorkgroupId = -1;
             Integer selectedOwnerId = -1;
@@ -99,14 +100,24 @@ public class OwnerPerformanceReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
                 StringBuilder sb = new StringBuilder();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
                 }
                 if (selectedOwnerId != -1) {
-                    sb.append("and exists (select * from web_user_workgroup where workgroup_id = workgroup.id and user_id = :pOwnerId)");
+                    sb.append("and exists (select * from web_user_workgroup where workgroup_id = workgroup.id and user_id = :pOwnerId) ");
                     queryParameters.put("pOwnerId", selectedOwnerId);
+                }
+                if (selectedWorkgroupId == -1 && selectedOwnerId != -1) {
+                    // Add workgroups user no longer a member of but worked in during period
+                    sb.append("union select distinct w.id, name || ' (*)' as name from workgroup w, claim c ")
+                      .append("where c.workgroup_id = w.id ")
+                      .append("and c.created_date between :pStartDate and :pEndDate ")
+                      .append("and c.claim_owner_id = :pOwnerId and not exists ")
+                      .append("(select * from web_user_workgroup where workgroup_id = w.id and user_id = :pOwnerId) ");
+                    queryParameters.put("pStartDate", startDate);
+                    queryParameters.put("pEndDate", endDate);
                 }
                 sb.append("order by name");
                 List result = reportDataService.getReportData(sb.toString(), queryParameters);
@@ -129,24 +140,54 @@ public class OwnerPerformanceReport implements Report {
                 HashMap queryParameters = new HashMap();
                 StringBuffer sb = new StringBuffer();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
+                    // Workgroup enabled, no Claim Owner selected
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId", obj.getId());
-                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
+                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, ")
+                      .append("u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, ")
+                      .append("web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id ")
+                      .append("and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id ")
+                      .append("and wur.name='ROLE_INS_CH' and u.status = true ");
+                        // Add any ex-members of workgroup that had claims assigned to them during the period
+                    sb.append("union ")
+                      .append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name || ' (*)' as name, ")
+                      .append("u.last_name from web_user u, workgroup w, claim c ")
+                      .append("where w.id = :pWorkgroupId and c.workgroup_id = :pWorkgroupId ")
+                      .append("and c.created_date between :pStartDate and :pEndDate ")
+                      .append("and c.claim_owner_id = u.id and not exists ")
+                      .append("(select * from web_user_workgroup where workgroup_id = :pWorkgroupId and user_id = c.claim_owner_id) ");
+                    queryParameters.put("pStartDate", startDate);
+                    queryParameters.put("pEndDate", endDate);
                 } else if (isWorkgroupEnabled) {
+                    // Workgroup and Claim Owner selected
                     queryParameters.put("pWorkgroupId", obj.getId());
+                    queryParameters.put("pOwnerId", selectedOwnerId);
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId", obj.getId());
                     sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id ");
+                    sb.append("and u.id = :pOwnerId ");
+                    if (selectedWorkgroupId == -1) {
+                        // Add workgroups no longer a member of but worked on during period
+                        sb.append("union ")
+                          .append("select w.name || ' (*)' as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, ")
+                          .append("u.last_name from web_user u, workgroup w, claim c ")
+                          .append("where w.id = :pWorkgroupId and c.workgroup_id = :pWorkgroupId ")
+                          .append("and c.created_date between :pStartDate and :pEndDate ")
+                          .append("and c.claim_owner_id = u.id and u.id = :pOwnerId and not exists ")
+                          .append("(select * from web_user_workgroup where workgroup_id = :pWorkgroupId and user_id = c.claim_owner_id) ");
+                        queryParameters.put("pStartDate", startDate);
+                        queryParameters.put("pEndDate", endDate);
+                    }
                 } else {
                     queryParameters.put("pInsurerId", insurerId);
                     LOG.debug("Added to parameter map: {}={}", "pInsurerId", insurerId);
-                    sb.append("select u.id as id, u.first_name || ' ' || u.last_name as name from web_user u, web_user_role wur, web_user_user_role wuur where u.insurer_id = :pInsurerId and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH'");
+                    sb.append("select u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_role wur, web_user_user_role wuur where u.insurer_id = :pInsurerId and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH'");
+                    if (selectedOwnerId != -1) {
+                        queryParameters.put("pOwnerId", selectedOwnerId);
+                        LOG.debug("Added to parameter map: {}={}", "pOwnerId", selectedOwnerId);
+                        sb.append("and u.id = :pOwnerId ");
+                    }
                 }
-                if (selectedOwnerId != -1) {
-                    queryParameters.put("pOwnerId", selectedOwnerId);
-                    LOG.debug("Added to parameter map: {}={}", "pOwnerId", selectedOwnerId);
-                    sb.append("and u.id = :pOwnerId ");
-                }
-                sb.append("order by u.last_name");
+                sb.append("order by last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
                 List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
@@ -159,6 +200,9 @@ public class OwnerPerformanceReport implements Report {
                         first = false;
                     }
                     OwnerPerformanceLineItem performanceLineItem = OwnerPerformanceLineItem.getObject(data);
+                    if (performanceLineItem.getWorkgroup().endsWith("(*)") || performanceLineItem.getName().endsWith("(*)")) {
+                            hasStarred++;
+                    }
                     LOG.debug("Getting stats for user: {}", performanceLineItem.getName());
                     // Now construct query to get claim owner stats
                     sb = new StringBuffer();
@@ -228,7 +272,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id and c.invoice_id = i.id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
@@ -251,7 +295,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived','ClaimClosed') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
@@ -264,7 +308,7 @@ public class OwnerPerformanceReport implements Report {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id ");
-                    sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and a1.reverted=false and a1.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
                     sb.append("and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived','ClaimClosed') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
@@ -283,15 +327,9 @@ public class OwnerPerformanceReport implements Report {
                     List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     LOG.debug("Query 1: {}", sb.toString());
                     if (detailData.size() > 0) {
-                        LOG.debug("inside creating bean with data");
-                        for (int i = 0; i < detailData.size(); i++) {
-                            LOG.debug("result {}", detailData.get(i));
-                        }
                         performanceLineItem.updateObject((Map) detailData.get(0));
-                        LOG.debug("after setting bean");
 
                         obj.getOwner().add(performanceLineItem);
-                        LOG.debug("after geting teams");
 
                     }
                 }
@@ -301,6 +339,7 @@ public class OwnerPerformanceReport implements Report {
             reportParameters.put("insurerName", rptInsurerName);
             reportParameters.put("createdDate", DateHelper.getCurrentDate());
             reportParameters.put("startDate", startDate);
+            reportParameters.put("hasStarred", hasStarred);
             reportParameters.put("endDate", endDate);
             reportParameters.put("performanceLineItems", performanceReportObjects);
         } catch (Exception ex) {
