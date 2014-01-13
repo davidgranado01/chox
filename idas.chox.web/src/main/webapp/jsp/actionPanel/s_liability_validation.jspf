@@ -302,7 +302,7 @@
                         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                         form.submit();
                     }
-                }else { 
+            }else { 
                     return false;
                 }})) {
                 return false;
@@ -370,6 +370,10 @@
             }
             
         }else if(action=='acknowledgeClaim'){
+            $("form#formAcknowledgeAction #claimNumber").rules("add", {
+                required: true,
+                messages: {required: "You must supply a value for 'Claim Number'"}
+            });
             if(subscriberLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityAcepted: true,
@@ -399,6 +403,10 @@
                 }
             }
         }else if(action=='referEng'){
+            $("form#formAcknowledgeAction #claimNumber").rules("add", {
+                required: true,
+                messages: {required: "You must supply a value for 'Claim Number'"}
+            });
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 range:[1,6],
                 messages: {range: "You must select a liability status"}
@@ -416,6 +424,10 @@
                 addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }
         }else if(action=='pending'){
+            $("form#formAcknowledgeAction #claimNumber").rules("add", {
+                required: true,
+                messages: {required: "You must supply a value for 'Claim Number'"}
+            });
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 range:[1,6],
                 messages: {range: "You must select a liability status"}
