@@ -49,7 +49,7 @@ public class MaximumLabourRateStandard implements IBusinessRule {
                 success = false;
                 narrative = "The CHO is charging £" + labourRate.toString()
                         + " per labour hour which is more than the maximum labour rate per hour of £"
-                        + maxLabourRate + "for standard vehicles & vans, please review.";
+                        + maxLabourRate + " for standard vehicles & vans, please review.";
 
             } else {
                 narrative = "";
