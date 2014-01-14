@@ -53,7 +53,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             String[] propertyNames,
             Type[] types) {
         if (entity instanceof Auditable) {
-            LOG.debug("In onSave for Auditable entity...");
+            LOG.debug("In onSave for Auditable entity class '{}': {}", entity.getClass(), entity);
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("createdDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentDateTime();
@@ -373,7 +373,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                     }
 
                     String oldStatus;
-                    if (previousState[i] != null) {
+                    if (previousState != null && previousState[i] != null) {
                         oldStatus = previousState[i].toString();
                     } else {
                         oldStatus = "";
