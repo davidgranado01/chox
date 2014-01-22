@@ -123,6 +123,7 @@ public class VehicleClass extends Entity implements Serializable {
 
         return false;
     }
+
     static public boolean isPTClass(String className) {
         if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1'
                 && className.charAt(2) <= '9') {
@@ -132,42 +133,6 @@ public class VehicleClass extends Entity implements Serializable {
         return false;
     }
     
-/*****
-    static public int classPDifference(VehicleClass class1, VehicleClass class2) {
-        // if class1 <  class2 then return a positive number
-        // indicating the difference between the two class types,
-        // e.g. classDifference(P3, P5) = 2
-        //      classDifference(P5, P3) = -2
-        //      classDifference(P1, P1) = 0
-
-        if (class1.getName().charAt(0) != 'P' || !(class1.getName().charAt(1) >= '1'
-                && class1.getName().charAt(1) <= '9')) {
-            throw new IllegalArgumentException("Cannot compare non-prestige vehicle.");
-        }
-
-        if ((class2.getName().charAt(0) != 'P' && class2.getName().charAt(0) != 'S')
-                || !(class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9')) {
-            throw new IllegalArgumentException("Cannot compare prestige vehicle to class " + class2.getName() + ".");
-        }
-
-        if (class1.getName().equals(class2.getName())) {
-            return 0;
-        }
-
-        if (class1.getName().charAt(0) == class2.getName().charAt(0)
-                && class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9'
-                && class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9') {
-            // Both of same class with different numbers
-            return Integer.parseInt(class2.getName().substring(1)) - Integer.parseInt(class1.getName().substring(1));
-        }
-
-        // Different classes - we are only considering P and S classes
-        int class1Number = Integer.parseInt(class1.getName().substring(1));
-        int class2Number = Integer.parseInt(class2.getName().substring(1));
-        return -class1Number - (7-class2Number); // assunimg best S-class is S7
-
-    }
-*****/
 
     static public int classPDifference(VehicleClass class1, VehicleClass class2) {
         // if class1 <  class2 then return a positive number
@@ -197,7 +162,7 @@ public class VehicleClass extends Entity implements Serializable {
         // Different classes - we are only considering P and S classes
         return -class1No - (7-class2No); // assunimg best S-class is S7
     }
-/*****/
+
     
     static public int classSPDifference(VehicleClass class1, VehicleClass class2) {
         // if class1 <  class2 then return a positive number
@@ -228,11 +193,23 @@ public class VehicleClass extends Entity implements Serializable {
         return -class1No - (7-class2No); // assunimg best S-class is S7
     }
     
-    static private int getSPClassNumber(String className) {
-        if (className == null || className.length() < 3 || !className.substring(0, 2).equals("SP")) {
+    static private int getSPClassNumber(String vclassName) {
+        if (vclassName == null || vclassName.length() < 3 || !vclassName.substring(0, 2).equals("SP")) {
             return -1;
         }
     
+        String className;
+        
+        if (vclassName.endsWith("ESTA")) {
+            className = vclassName.substring(0, vclassName.length()-4);
+        } else if (vclassName.endsWith("EST")) {
+            className = vclassName.substring(0, vclassName.length()-3);
+        } else if (vclassName.endsWith("A")) {
+            className = vclassName.substring(0, vclassName.length()-1);
+        } else {
+            className = vclassName;
+        }
+
         if (className.length() == 3) {
             return Integer.parseInt(className.substring(2));
         }
@@ -250,12 +227,24 @@ public class VehicleClass extends Entity implements Serializable {
         }
     }
     
-    static private int getPClassNumber(String className) {
-        if (className == null || className.length() < 2 || className.charAt(0) != 'P'
-                || !(className.charAt(1) >= '1' && className.charAt(1) <= '9')) {
+    static private int getPClassNumber(String vclassName) {
+        if (vclassName == null || vclassName.length() < 2 || vclassName.charAt(0) != 'P'
+                || !(vclassName.charAt(1) >= '1' && vclassName.charAt(1) <= '9')) {
             return -1;
         }
     
+        String className;
+        
+        if (vclassName.endsWith("ESTA")) {
+            className = vclassName.substring(0, vclassName.length()-4);
+        } else if (vclassName.endsWith("EST")) {
+            className = vclassName.substring(0, vclassName.length()-3);
+        } else if (vclassName.endsWith("A")) {
+            className = vclassName.substring(0, vclassName.length()-1);
+        } else {
+            className = vclassName;
+        }
+
         if (className.length() == 2) {
             return Integer.parseInt(className.substring(1));
         }
@@ -273,12 +262,24 @@ public class VehicleClass extends Entity implements Serializable {
         }
     }
     
-    static private int getSClassNumber(String className) {
-        if (className == null || className.length() < 2 || className.charAt(0) != 'S'
-                || !(className.charAt(1) >= '1' && className.charAt(1) <= '9')) {
+    static private int getSClassNumber(String vclassName) {
+        if (vclassName == null || vclassName.length() < 2 || vclassName.charAt(0) != 'S'
+                || !(vclassName.charAt(1) >= '1' && vclassName.charAt(1) <= '9')) {
             return -1;
         }
-    
+
+        String className;
+        
+        if (vclassName.endsWith("ESTA")) {
+            className = vclassName.substring(0, vclassName.length()-4);
+        } else if (vclassName.endsWith("EST")) {
+            className = vclassName.substring(0, vclassName.length()-3);
+        } else if (vclassName.endsWith("A")) {
+            className = vclassName.substring(0, vclassName.length()-1);
+        } else {
+            className = vclassName;
+        }
+
         if (className.length() == 2) {
             return Integer.parseInt(className.substring(1));
         }

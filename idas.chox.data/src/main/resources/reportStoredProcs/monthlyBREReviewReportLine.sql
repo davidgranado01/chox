@@ -24,6 +24,7 @@ RETURNS TABLE(
     "Total. Uplift/Reduction Inv Passed BRE & Not Disputed" NUMERIC,
     "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed" NUMERIC,
     "No. Inv Failed BRE" BIGINT,
+    "Total. Uplift/Reduction Inv Failed BRE" NUMERIC,
     "Avg. Uplift/Reduction Inv Failed BRE" NUMERIC,
     "No. Inv Failed BRE & Disputed" BIGINT,
     "No. Additional Touch Points For Inv Failed BRE" BIGINT,
@@ -77,7 +78,7 @@ BEGIN
                     AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBREApproved', 'InvoiceApprovedByBRE') AND a.reverted = FALSE)),
       
               (SELECT 
-                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction For Inv Passed BRE"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -86,7 +87,6 @@ BEGIN
                     c.invoice_id = i.id
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -147,7 +147,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -176,7 +176,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -196,7 +196,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT
-                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -205,7 +205,6 @@ BEGIN
                     c.invoice_id = i.id
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -225,7 +224,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -234,7 +233,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -290,7 +288,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -320,7 +318,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -341,7 +339,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Not Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Passed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -350,7 +348,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -371,7 +368,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Passed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -380,7 +377,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -415,7 +411,7 @@ BEGIN
                     AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
 
               (SELECT 
-                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Total Uplift/Reduction Inv Failed BRE"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -424,7 +420,22 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
+                    AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
+                    AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
+                    AND i.created_date BETWEEN monthlyBreakDownDatesRecord.month_start_date AND monthlyBreakDownDatesRecord.month_end_date
+                    AND EXISTS (SELECT * FROM audit_trail a WHERE a.claim_id = c.id AND a.new_status IN ('ManualInvoiceBRERejected', 'InvoiceEscalated', 'InvoiceEscalatedToHandler') AND a.reverted = FALSE)),
+
+              (SELECT 
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE"
+               FROM 
+                    invoice i,
+                    invoice_original io,
+                    claim c 
+               WHERE 
+                    c.invoice_id = i.id 
+                    AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
+                    AND i.invoice_original_id = io.id
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -485,7 +496,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -514,7 +525,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -534,7 +545,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Disputed"
                FROM 
                     invoice i, 
                     invoice_original io,
@@ -543,7 +554,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -563,7 +573,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Disputed"
                FROM 
                     invoice i, 
                     invoice_original io,
@@ -572,7 +582,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -628,7 +637,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) <= 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) <= 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -658,7 +667,7 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
+                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -679,7 +688,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Not Disputed"
+                    SUM(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Total. Uplift/Reduction Inv Failed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -688,7 +697,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id 
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
@@ -709,7 +717,7 @@ BEGIN
                                         AND a1.created_date < a2.created_date)),
 
               (SELECT 
-                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay ELSE io.total_to_pay END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed"
+                    AVG(CASE WHEN io.total_to_pay=0.0 THEN io.full_total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 ELSE io.total_to_pay*(CASE WHEN c.claim_type in (10,14,15,16,17) and c.liability_status in (3,2) THEN 100.0 ELSE c.percentage_liability_accepted END)/100.0 END - i.total_to_pay)::numeric(15,2) AS "Avg. Uplift/Reduction Inv Failed BRE & Not Disputed"
                FROM 
                     invoice i,
                     invoice_original io,
@@ -718,7 +726,6 @@ BEGIN
                     c.invoice_id = i.id 
                     AND c.status IN ('PaymentReceived', 'ManualInvoicePaid')
                     AND i.invoice_original_id = io.id
-                    AND ((io.total_to_pay != 0.0 and abs(io.total_to_pay - i.total_to_pay) > 1.00) or (io.total_to_pay = 0.0 and abs(io.full_total_to_pay - i.total_to_pay) > 1.00))
                     AND (CASE WHEN array_length(choIds, 1) > 0 THEN c.chorganisation_id = ANY(choIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(insIds, 1) > 0  THEN c.insurer_id = ANY(insIds) ELSE TRUE END)
                     AND (CASE WHEN array_length(claimTypes, 1) > 0 THEN c.claim_type = ANY(claimTypes) ELSE TRUE END)
