@@ -54,7 +54,7 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
                             try {
                                 int classDifference = VehicleClass.classPDifference(customerVehicleClass, hireVehicleClass);
-                                if (classDifference <= -1) {
+                                if (classDifference <= -2) {
                                     res.setResult(RuleEvaluationResult.RULE_PASSED);
                                     LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
                                     narrative = "";
