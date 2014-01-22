@@ -10,7 +10,8 @@ public class ClaimRegisterByFnol extends BaseActivity {
 
     private String claimNumber;
     private String reasonForRejection;
-
+    protected boolean  claimNumberUpdated = false;
+    
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
@@ -20,7 +21,10 @@ public class ClaimRegisterByFnol extends BaseActivity {
         }
 
         claim.setStatus(nextStatus);
-        claim.setClaimNumber(claimNumber);
+        if (!claim.getClaimNumber().equals(claimNumber)) {
+            claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
+        }
         claim.setIsFnolReviewed(true);
 
         if (StringHelper.isNotEmpty(reasonForRejection)) {

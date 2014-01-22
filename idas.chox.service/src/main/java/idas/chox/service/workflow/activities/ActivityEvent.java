@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.History;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Invoice;
@@ -19,6 +21,7 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
 
 /**
  *
@@ -26,7 +29,8 @@ import idas.chox.core.util.DateHelper;
  */
 public enum ActivityEvent {
 
-    CLAIM_ACKNOWLEDGED_EVENT            (0, "ClaimAcknowledgedEvent") {
+    CLAIM_ACKNOWLEDGED_EVENT                (1, "ClaimAcknowledgedEvent") {
+        @Override
         public void build(ActivityEventGenerator generator, AcknowledgeClaim activity, Claim claim) throws Exception {
             LOG.debug("Building from ClaimAcknowledgedEvent");
             generator.startEvent(claim, this.getName(), this.getEventId());
@@ -37,172 +41,723 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_SWITCHED_TO_GTA_EVENT        (1, "ClaimSwitchedToGTAEvent"),
-    CLAIM_REGISTERED_BY_FNOL_EVENT        (2, "ClaimRegisteredByFnolEvent"),
-    INVOICE_UPLOADED_EVENT        (3, "InvoiceUploadedEvent") {
+    CLAIM_SWITCHED_TO_GTA_EVENT             (2, "ClaimSwitchedToGTAEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, SubscriberClaimToGta activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimSwitchedToGTAEvent from SubscriberClaimToGta activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_UPLOADED_EVENT                  (3, "InvoiceUploadedEvent") {
+        @Override
         public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InvoiceUploadedEvent");
+            LOG.debug("Building InvoiceUploadedEvent from InsurerUpload activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            addInvoiceParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceUploadedEvent from NewInvoice activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             addInvoiceParameters(generator, claim);
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REJECTED_EVENT        (4, "InvoiceRejectedEvent"),
-    INSURER_OWNER_ASSIGNED_EVENT        (5, "InsurerOwnerAssignedEvent") {
+    INVOICE_REJECTED_EVENT                  (4, "InvoiceRejectedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejection activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceRejectedEvent from InvoiceRejection activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("rejectionReason", activity.getReasonOfRejection().getRorName());
+            generator.addParameter("supportingNote", activity.getRejectionDescription());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateManualInvoiceContested activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceRejectedEvent from UpdateManualInvoiceContested activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+// No additional parameters available here!
+//            generator.addParameter("rejectionReason", activity.);
+//            generator.addParameter("supportingNote", activity.);
+            generator.completeEvent(claim);
+        }
+    },
+    INSURER_OWNER_ASSIGNED_EVENT            (5, "InsurerOwnerAssignedEvent") {
+        @Override
         public void build(ActivityEventGenerator generator, AssignOwner activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from AssignOwner activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", activity.getClaimOwner().getFullName());
+            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, AssignManualInvoiceOwner activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from AssignManualInvoiceOwner activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", activity.getClaimOwner().getFullName());
+            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from ClaimReferToFnol activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", activity.getClaimOwner().getFullName());
+            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from InsurerUpload activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from InvoiceResubmit activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from NewInvoice activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InsurerOwnerAssignedEvent");
+            LOG.debug("Building InsurerOwnerAssignedEvent from NewTpiClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REFERRED_TO_ENG_EVENT        (6, "InvoiceReferToEng"),
-    FULL_PAYMENT_RECEIVED_EVENT        (7, "FullPaymentReceivedEvent"),
-    INVOICE_SUBMITTED_EVENT        (8, "InvoiceSubmittedEvent"),
-    CLAIM_CLOSED_EVENT        (9, "ClaimClosedEvent"),
-    INTERIM_PAYMENT_RECEIVED_EVENT        (10, "InterimPaymentReceivedEvent"),
-    CLAIM_ROUTED_EVENT        (11, "ClaimRoutedEvent") {
-        public void build(ActivityEventGenerator generator, AssignWorkgroup activity, Claim claim)  throws Exception {
-            LOG.debug("Building from ClaimRoutedEvent");
+    FULL_PAYMENT_RECEIVED_EVENT             (6, "FullPaymentReceivedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, FullInvoicePaymentReceived activity, Claim claim)  throws Exception {
+            LOG.debug("Building FullPaymentReceivedEvent from FullInvoicePaymentReceived activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", activity.getWorkgroup().getName());
-            generator.addParameter("insurerWorkgroupId", activity.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
     },
-    PAYMENT_NOT_RECEIVED_EVENT        (12, "PaymentNotReceivedEvent"),
-    CLAIM_AWAITING_LITIGATION_OUTCOME_EVENT        (13, "ClaimAwaitingLitigationOutcomeEvent"),
-    INTERIM_PAYMENT_UPDATED_EVENT        (14, "InterimPaymentUpdatedEvent"),
-    BRE_RESULT_EVENT        (15, "BreResultEvent"),
-    ECD_UPDATED_EVENT        (16, "EcdUpdatedEvent"),
-    CLAIM_REVIEW_BY_ENG_EVENT        (17, "ClaimReviewByEngEvent"),
-    INVOICE_RESUBMITTED_EVENT        (18, "InvoiceResubmittedEvent"),
-    CLAIM_REVERTED_EVENT        (19, "ClaimRevertedEvent"),
-    INVOICE_REFERRED_TO_CH_EVENT        (20, "InvoiceReferToCHEvent"),
-    LIABILITY_UPDATED_EVENT        (21, "LiabilityUpdatedEvent") {
-        public void build(ActivityEventGenerator generator, AcknowledgeClaim activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+    INVOICE_SUBMITTED_EVENT                 (7, "InvoiceSubmittedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceSubmittedEvent from NewInvoice activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
-            this.addClaimLiabilityParameters(generator, claim);
+            addInvoiceParameters(generator, claim);
             generator.completeEvent(claim);
         }
-        public void build(ActivityEventGenerator generator, ClaimPending activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+    },
+    CLAIM_CLOSED_EVENT                      (8, "ClaimClosedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, CloseClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimClosedEvent from CloseClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
-            this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
-        public void build(ActivityEventGenerator generator, ClaimReferToEng activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+        @Override
+        public void build(ActivityEventGenerator generator, SwitchClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimClosedEvent from SwitchClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
-            this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
+        @Override
+        public void build(ActivityEventGenerator generator, SwitchClaimToMultipleInsurer activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimClosedEvent from SwitchClaimToMultipleInsurer activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INTERIM_PAYMENT_RECEIVED_EVENT          (9, "InterimPaymentReceivedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateInterimPaymentReceived activity, Claim claim)  throws Exception {
+            LOG.debug("Building InterimPaymentReceivedEvent from UpdateInterimPaymentReceived activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("amountReceived", activity.getPartialInterimPayment());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_ROUTED_EVENT                      (10, "ClaimRoutedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, AssignWorkgroup activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
         public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, WorkgroupRouting activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+//            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
+            generator.completeEvent(claim);
+        }
+    },
+    INTERIM_PAYMENT_UPDATED_EVENT           (11, "InterimPaymentUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, MakeInterimPayment activity, Claim claim) throws Exception {
+            LOG.debug("Building InterimPaymentUpdatedEvent from MakeInterimPayment activity");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            generator.addParameter("additionalInterimPaymentMade", activity.getAdditionalInterimPayment());
+            generator.addParameter("totalInterimPaymentMade", activity.getNewTotalInterimPayment());
+            generator.completeEvent(claim);
+        }       
+    },
+    BRE_RESULT_EVENT                        (12, "BreResultEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim) throws Exception {
+            LOG.debug("Building BreResultEvent from InsurerUpload activity");
+            List breResult = new ArrayList<String>();
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            for (History history : History.New(activity.breResponse)) { 
+                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
+                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                breResult.add(result);
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }       
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim) throws Exception {
+            LOG.debug("Building BreResultEvent from InvoiceRejectionContest activity");
+            List breResult = new ArrayList<String>();
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            for (History history : History.New(activity.breResponse)) { 
+                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
+                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                breResult.add(result);
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }       
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim) throws Exception {
+            LOG.debug("Building BreResultEvent from InvoiceResubmit activity");
+            List breResult = new ArrayList<String>();
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            for (History history : History.New(activity.breResponse)) { 
+                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
+                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                breResult.add(result);
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }       
+        @Override
+        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim) throws Exception {
+            LOG.debug("Building BreResultEvent from NewInvoice activity");
+            List breResult = new ArrayList<String>();
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            for (History history : History.New(activity.breResponse)) { 
+                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
+                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                breResult.add(result);
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }       
+    },
+    ECD_UPDATED_EVENT                       (13, "EcdUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, EcdUpdate activity, Claim claim) throws Exception {
+            LOG.debug("Building EcdUpdatedEvent from EcdUpdate activity");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            generator.addParameter("hireMonitoringEcdDate", activity.getEcdDate());
+            generator.addParameter("hireMonitoringEcdSupportingNote", activity.getSupportingNote());
+            generator.addParameter("hireMonitoringEcdReason", activity.getReason());
+//            addClaimHireMonitoringEcdParameters(generator, claim);
+            generator.completeEvent(claim);
+        }       
+    },
+    INVOICE_RESUBMITTED_EVENT               (14, "InvoiceResubmittedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
+            LOG.debug("Building from InvoiceResubmittedEvent from InvoiceResubmit activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoiceParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
+            LOG.debug("Building from InvoiceResubmittedEvent from InvoiceRejectionContest activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoiceParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REVERTED_EVENT                    (15, "ClaimRevertedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, RevertClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building from ClaimRevertedEvent from RevertClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, ReopenClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building from ClaimRevertedEvent from ReopenClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
+            LOG.debug("Building from ClaimRevertedEvent from UpdateInterimPaymentFullAndFinal activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    LIABILITY_UPDATED_EVENT                 (16, "LiabilityUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, AcknowledgeClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building from LiabilityUpdatedEvent from AcknowledgeClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
             this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimPending activity, Claim claim)  throws Exception {
+            LOG.debug("Building from LiabilityUpdatedEvent from ClaimPending activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
+            this.addClaimLiabilityParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimReferToEng activity, Claim claim)  throws Exception {
+            LOG.debug("Building from LiabilityUpdatedEvent from ClaimReferToEng activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
+            this.addClaimLiabilityParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
+            LOG.debug("Building from LiabilityUpdatedEvent from ClaimReferToFnol activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
+            this.addClaimLiabilityParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
         public void build(ActivityEventGenerator generator, ClaimRejection activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+            LOG.debug("Building from LiabilityUpdatedEvent from ClaimRejection activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
             this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, ResolveLiability activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+            LOG.debug("Building from LiabilityUpdatedEvent from ResolveLiability activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("supportingNote", activity.getEngineerClaimReviewNotes());
             this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
+        @Override
         public void build(ActivityEventGenerator generator, UpdateLiability activity, Claim claim)  throws Exception {
-            LOG.debug("Building from LiabilityUpdatedEvent");
+            LOG.debug("Building from LiabilityUpdatedEvent from UpdateLiability activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("supportingNote", activity.getClaimReviewNotes());
             this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
-    },
-    CHO_REFERENCE_NO_UPDATED_EVENT        (22, "ChoReferenceNumberUpdatedEvent"),
-    INVOICE_REJECTION_CONTESTED_EVENT        (23, "InvoiceRejectionContestedEvent"),
-    SLA_EXTENSION_GRANTED_EVENT        (24, "SlaExtensionGrantedEvent"),
-    TASK_CREATED_EVENT        (25, "TaskCreatedEvent"),
-    INVOICE_REJECTION_ACCEPTED_EVENT        (26, "InvoiceRejectionAcceptedEvent"),
-    CLAIM_REJECTION_ACCEPTED_EVENT        (27, "ClaimRejectionAcceptedEvent"),
-    ATTACHMENT_DELETED_EVENT        (28, "AttachmentDeletedEvent"),
-    CLAIM_PENDING_EVENT        (29, "ClaimPendingEvent"),
-    // Non-activity based events
-    CLAIM_UPDATED_EVENT        (30, "ClaimUpdatedEvent"),
-    CLAIM_NUMBER_ASSIGNED_EVENT        (31, "ClaimNumberAssignedEvent"),
-    INTERIM_PAYMENT_ACCEPTED_AS_FINAL_EVENT        (32, "InterimPaymentAcceptedAsFinalEvent"),
-    INVOICE_PAYMENT_RECEIVED_EVENT        (33, "InvoicePaymentReceivedEvent"),
-    NEW_CLAIM_EVENT        (34, "NewClaimEvent"),
-    HIRE_CAR_INFO_PROVIDED_EVENT        (35, "HireCarInfoProvidedEvent"),
-    ATTACHMENT_UPLOADED_EVENT        (36, "AttachmentUploadedEvent"),
-    NEW_SUPPLEMENTARY_INVOICE_EVENT        (37, "NewSupplementaryInvoice"),
-    TASK_COMPLETED_EVENT        (38, "TaskCompletedEvent"),
-    CLAIM_REJECTED_EVENT        (39, "ClaimRejectedEvent"),
-    PAYMENT_RECEIVED_EVENT        (40, "PaymentReceivedEvent"),
-    CLAIM_REJECTION_CONTESTED_EVENT        (41, "ClaimRejectionContestedEvent"),
-    HIRE_MONITORING_UPDATED_EVENT        (42, "HireMonitoringUpdatedEvent"),
-    CLAIM_REFERRED_TO_FNOL_EVENT        (43, "ClaimReferToFnolEvent"),
-    CLAIM_NUMBER_UPDATED_EVENT        (44, "ClaimNumberUpdatedEvent"),
-    INVOICE_PAID_EVENT        (45, "InvoicePaidEvent"),
-    CHO_OWNER_ASSIGNED_EVENT        (46, "ChoOwnerAssignedEvent") {
-        public void build(ActivityEventGenerator generator, AssignSupplierOwner activity, Claim claim)  throws Exception {
-            LOG.debug("Building from AssignSupplierOwner");
+        @Override
+        public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building from LiabilityUpdatedEvent from NewTpiClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", activity.getSupplierClaimOwner().getFullName());
+//            generator.addParameter("supportingNote", "");
+            this.addClaimLiabilityParameters(generator, claim);
             generator.completeEvent(claim);
         }
     },
-    FULL_PAYMENT_NOT_RECEIVED_EVENT        (47, "FullPaymentNotReceivedEvent"),
-    CLAIM_REFERRED_TO_ENG_EVENT        (48, "ClaimReferToEngEvent"),
-    INVOICE_ACCEPTED_EVENT        (49, "InvoiceAcceptedEvent");
-    
+    INVOICE_REJECTION_CONTESTED_EVENT       (17, "InvoiceRejectionContestedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceRejectionContestEvent from InvoiceRejectionContest activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
+            generator.completeEvent(claim);
+        }
+    },
+    SLA_EXTENSION_GRANTED_EVENT             (18, "SlaExtensionGrantedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, SlaExtension activity, Claim claim)  throws Exception {
+            LOG.debug("Building SlaExtensionGrantedEvent from SlaExtension activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("extensionDays", activity.getSlaExtDays());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_REJECTION_ACCEPTED_EVENT        (19, "InvoiceRejectionAcceptedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejectionAccept activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceRejectionAcceptedEvent from InvoiceRejectionAccept activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("supportingNote", activity.getSupportingLiabilityNotes());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_NUMBER_ASSIGNED_EVENT             (20, "ClaimNumberAssignedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimRegisterByFnol activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimNumberAssignedEvent from ClaimRegisterByFnol activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("claimNumber", claim.getClaimNumber());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
+            LOG.warn("Building ClaimNumberAssignedEvent event (not fromactrivity!)...");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+            generator.addParameter("claimNumber", claim.getClaimNumber());
+            generator.completeEvent(claim);
+        }
+    },
+    INTERIM_PAYMENT_ACCEPTED_AS_FINAL_EVENT (21, "InterimPaymentAcceptedAsFinalEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
+            LOG.debug("Building InterimPaymentAcceptedAsFinalEvent from UpdateInterimPaymentFullAndFinal activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("amountReceived", claim.getInvoice().getInterimPaymentReceived());
+            generator.completeEvent(claim);
+        }
+    },
+    NEW_CLAIM_EVENT                         (22, "NewClaimEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, NewClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from NewClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from InsurerUpload activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from NewTpiClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, SwitchClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from SwitchClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, SwitchClaimToMultipleInsurer activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from SwitchClaimToMultipleInsurer activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewSupplementaryInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building NewClaimEvent from NewSupplementaryInvoice activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    HIRE_CAR_INFO_PROVIDED_EVENT            (23, "HireCarInfoProvidedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimAwaitingCarHireInfo activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireCarInfoProvidedEvent from ClaimAwaitingCarHireInfo activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REJECTED_EVENT                    (24, "ClaimRejectedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimRejection activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRejectedEvent from ClaimRejection activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("rejectionReason", claim.getReasonOfRejection().getRorName());
+            generator.addParameter("supportingNote", activity.getRejectionDescription());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_PAID_EVENT                      (25, "InvoicePaidEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoicePaymentLogged activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoicePaidEvent from InvoicePaymentLogged activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoicePaidParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateManualInvoicePaid activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoicePaidEvent from InvoicePaymentLogged activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoicePaidParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, MoveToInvoicePaymentLogged activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoicePaidEvent from MoveToInvoicePaymentLogged activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoicePaidParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoicePaidEvent from UpdateInterimPaymentFullAndFinal activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoicePaidParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    CHO_OWNER_ASSIGNED_EVENT                (26, "ChoOwnerAssignedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, AssignSupplierOwner activity, Claim claim)  throws Exception {
+            LOG.debug("Building ChoOwnerAssignedEvent from AssignSupplierOwner activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getFullName());
+            generator.completeEvent(claim);
+        }
+    },
+    FULL_PAYMENT_NOT_RECEIVED_EVENT         (27, "FullPaymentNotReceivedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, FullPaymentNotReceived activity, Claim claim)  throws Exception {
+            LOG.debug("Building FullPaymentNotReceivedEvent from FullPaymentNotReceived activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("amountReceived", activity.getInterimPaymentReceived());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, PaymentNotReceived activity, Claim claim)  throws Exception {
+            LOG.debug("Building FullPaymentNotReceivedEvent from PaymentNotReceived activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("amountReceived", activity.getAmountReceived());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REJECTION_ACCEPTED_EVENT          (28, "ClaimRejectionAcceptedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimRejectionAccept activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRejectionAcceptedEvent from ClaimRejectionAccept activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, SubscriberClaimRejectionAccept activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRejectionAcceptedEvent from SubscriberClaimRejectionAccept activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_PENDING_EVENT                     (29, "ClaimPendingEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimPending activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimPendingEvent from ClaimPending activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_PAYMENT_RECEIVED_EVENT          (30, "InvoicePaymentReceivedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoicePaymentReceived activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoicePaymentReceivedEvent from InvoicePaymentReceived activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REJECTION_CONTESTED_EVENT         (31, "ClaimRejectionContestedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimRejectionContest activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRejectionContestedEvent from ClaimRejectionContest activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REFERRED_TO_FNOL_EVENT            (32, "ClaimReferToFnolEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimReferToFnolEvent from ClaimReferToFnol activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REFERRED_TO_ENG_EVENT             (33, "ClaimReferToEngEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimReferToEng activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimReferToEngEvent from InvoiceAccepted activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_ACCEPTED_EVENT                  (34, "InvoiceAcceptedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceAccepted activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from InvoiceAccepted activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from InvoiceResubmit activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from NewInvoice activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from NewTpiClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from UpdateInterimPaymentFullAndFinal activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_REFERRED_TO_ENG_EVENT           (35, "InvoiceReferToEngEbent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceReferToEng activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceReferToEng from InvoiceReferToEng activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_REGISTERED_BY_FNOL_EVENT          (36, "ClaimRegisterByFnolEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimRegisterByFnol activity, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimRegisterByFnolEvent from ClaimRegisterByFnol activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    CLAIM_AWAITING_LITIGATION_OUTCOME_EVENT (37, "ClaimAwaitingLitigationOutcomeEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, AwaitingLitigationOutcome activity, Claim claim) throws Exception {
+            LOG.debug("Building ClaimAwaitingLitigationOutcomeEvent from AwaitingLitigationOutcome activity");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+            generator.completeEvent(claim);
+        }       
+    },
+    CLAIM_REVIEW_BY_ENG_EVENT               (38, "ClaimReviewByEngEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, ClaimReviewByEng activity, Claim claim)  throws Exception {
+            LOG.debug("Building from ClaimReviewByEngEvent from ClaimReviewByEng activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_REFERRED_TO_CH_EVENT            (39, "InvoiceReferToCHEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceReferToCH activity, Claim claim)  throws Exception {
+            LOG.debug("Building from InvoiceReferToCHEvent from InvoiceReferToCH activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+    NEW_SUPPLEMENTARY_INVOICE_EVENT         (40, "NewSupplementaryInvoice"), //TODO
+    // Non-activity based events
+    ATTACHMENT_UPLOADED_EVENT               (100, "AttachmentUploadedEvent"),//TODO
+    ATTACHMENT_DELETED_EVENT                (101, "AttachmentDeletedEvent"),//TODO
+    TASK_CREATED_EVENT                      (102, "TaskCreatedEvent"),//TODO
+    TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent"),//TODO
+    NOTE_ADDED_EVENT                        (104, "NoteAddedEvent"),//TODO
+    NOTE_COMPLETED_EVENT                    (105, "NoteCompletedEvent"),//TODO
+    CLAIM_UPDATED_EVENT                     (106, "ClaimUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addAllClaimParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    INVOICE_UPDATED_EVENT                   (107, "InvoiceUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addInvoiceParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    HIRE_MONITORING_UPDATED_EVENT           (108, "HireMonitoringUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building HireMonitoringUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
+    CHO_REFERENCE_NO_UPDATED_EVENT          (109, "ChoReferenceNumberUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building ChoReferenceNumberUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    };
+
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);
     private final int eventId;
     private final String name;
@@ -225,12 +780,291 @@ public enum ActivityEvent {
         return name;
     }
 
-    public void build(ActivityEventGenerator generator, BaseActivity activity, Claim claim) throws Exception {
-        LOG.error("No Events to build for activity {}", AopUtils.getTargetClass(activity).getSimpleName());
-        generator.startEvent(claim, new StringBuilder().append(this.getName()).append(" [Not Mapped]").toString(), this.getEventId());
+    public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
+        LOG.warn("Building generic non-activity based event...");
+        generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
         generator.completeEvent(claim);
     }
 
+    public void build(ActivityEventGenerator generator, Activity activity, Claim claim) throws Exception {
+        LOG.error("No activity-specific Events to build for activity {}", AopUtils.getTargetClass(activity).getSimpleName());
+        generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+//        generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+        generator.completeEvent(claim);
+    }
+
+    public void build(ActivityEventGenerator generator, AcknowledgeClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AcknowledgeClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+    public void build(ActivityEventGenerator generator, AssignManualInvoiceOwner activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AssignManualInvoiceOwner activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, AssignOwner activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AssignOwner activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, AssignSupplierOwner activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AssignSupplierOwner activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, AssignWorkgroup activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AssignWorkgroup activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, AwaitingLitigationOutcome activity, Claim claim)  throws Exception {
+        LOG.warn("Build with AwaitingLitigationOutcome activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimAwaitingCarHireInfo activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimAwaitingCarHireInfo activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimPending activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimPending activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimReferToEng activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimReferToEng activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimReferToFnol activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimRegisterByFnol activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimRegisterByFnol activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimRejection activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimRejection activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimRejectionAccept activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimRejectionAccept activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimRejectionContest activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimRejectionContest activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ClaimReviewByEng activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ClaimReviewByEng activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, CloseClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with CloseClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, EcdUpdate activity, Claim claim)  throws Exception {
+        LOG.warn("Build with EcdUpdate activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, FullInvoicePaymentReceived activity, Claim claim)  throws Exception {
+        LOG.warn("Build with FullInvoicePaymentReceived activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, FullPaymentNotReceived activity, Claim claim)  throws Exception {
+        LOG.warn("Build with FullPaymentNotReceived activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InsurerUpload activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceAccepted activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceAccepted activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoicePaymentLogged activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoicePaymentLogged activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoicePaymentReceived activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoicePaymentReceived activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceReferToCH activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceReferToCH activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceReferToEng activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceReferToEng activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceRejection activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceRejection activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceRejectionAccept activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceRejectionAccept activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceRejectionContest activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
+        LOG.warn("Build with InvoiceResubmit activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, MakeInterimPayment activity, Claim claim)  throws Exception {
+        LOG.warn("Build with MakeInterimPayment activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, MoveToInvoicePaymentLogged activity, Claim claim)  throws Exception {
+        LOG.warn("Build with MoveToInvoicePaymentLogged activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, NewClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with NewClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
+        LOG.warn("Build with NewInvoice activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, NewSupplementaryInvoice activity, Claim claim)  throws Exception {
+        LOG.warn("Build with NewSupplementaryInvoice activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with NewTpiClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, PaymentNotReceived activity, Claim claim)  throws Exception {
+        LOG.warn("Build with PaymentNotReceived activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ReopenClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ReopenClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, ResolveLiability activity, Claim claim)  throws Exception {
+        LOG.warn("Build with ResolveLiability activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, RevertClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with RevertClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SlaExtension activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SlaExtension activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SubscriberClaimRejectionAccept activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SubscriberClaimRejectionAccept activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SubscriberClaimToGta activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SubscriberClaimToGta activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SwitchClaim activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SwitchClaim activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SwitchClaimToMultipleInsurer activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SwitchClaimToMultipleInsurer activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateInterimPaymentFullAndFinal activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateInterimPaymentReceived activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateInterimPaymentReceived activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateLiability activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateLiability activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateManualInvoiceAgreeQuantum activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateManualInvoiceAgreeQuantum activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateManualInvoiceContested activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateManualInvoiceContested activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateManualInvoicePaid activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateManualInvoicePaid activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, WorkgroupRouting activity, Claim claim)  throws Exception {
+        LOG.warn("Build with WorkgroupRouting activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void addAllClaimParameters(ActivityEventGenerator generator, Claim claim) {
+        addClaimParameters(generator, claim);
+        addClaimCustomerParameters(generator, claim);
+        addClaimCustomerVehicleParameters(generator, claim);
+        addClaimCustomerMitigationParameters(generator, claim);
+        addClaimCustomerIncidentParameters(generator, claim);
+        addClaimCustomerIncidentWitnessParameters(generator, claim);
+        addClaimCustomerIncidentInjuryParameters(generator, claim);
+        addClaimCustomerIncidentInjurySolicitorParameters(generator, claim);
+        addClaimThirdPartyParameters(generator, claim);
+        addClaimThirdPartyVehicleParameters(generator, claim);
+        addClaimEngineerReportParameters(generator, claim);
+        addClaimHireVehicleParameters(generator, claim);
+        addClaimHireMonitoringParameters(generator, claim);
+//        addClaimHireMonitoringEcdParameters(generator, claim);
+    }
+    
+    
     public void addClaimParameters(ActivityEventGenerator generator, Claim claim) {
         generator.addParameter("managingRepair", claim.isManagingRepair());
         generator.addParameter("choReference", claim.getChoReference());
@@ -370,7 +1204,7 @@ public enum ActivityEvent {
             generator.addParameter("injuryAddress3", injury.getAddress3());
             generator.addParameter("injuryAddress4", injury.getAddress4());
             generator.addParameter("injuryAddress5", injury.getAddress5());
-            generator.addParameter("injuryPostcode", injury);
+            generator.addParameter("injuryPostcode", injury.getPostcode());
             generator.addParameter("injuryTelephoneDay", injury.getTelephoneDay());
             generator.addParameter("injuryTelephoneEvening", injury.getTelephoneEvening());
             generator.addParameter("injuryEmail", injury.getEmail());

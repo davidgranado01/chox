@@ -53,6 +53,7 @@ public class ChoxEventRegister implements EventRegister {
         if (events != null) {
             for (Event ev : events) {
                 try {
+                    LOG.debug("Sending event {}", ev);
                     choxJmsEventSender.send(ev);
                 } catch (Exception ex) {
                     LOG.error("Error sending CHOX event: {}\n", ex.getMessage(), ex);

@@ -37,6 +37,10 @@ public class ClaimReferToFnol extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimRouted = false;
+    protected boolean ownerAssigned = false;
+    protected boolean claimNumberUpdated = false;
 
     public WebUser getClaimOwner() {
         return claimOwner;
@@ -194,6 +198,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
             if (workgroup != null && claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
                 claim.setWorkgroup(workgroup);
+                claimRouted = true;
             }
             if (claimOwner != null) {
                 claim.setClaimOwner(claimOwner);
@@ -201,7 +206,8 @@ public class ClaimReferToFnol extends BaseActivity {
                 getDataService().save(claim);
                 getDataService().flush();
                 logTransaction(claim);
-                setCurrentStatus(claim.getStatus());                
+                setCurrentStatus(claim.getStatus());
+                ownerAssigned = true;
             }
 
         } else {
@@ -217,8 +223,12 @@ public class ClaimReferToFnol extends BaseActivity {
                 Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
+                liabilityUpdated = true;
             }
-            claim.setClaimNumber(claimNumber);
+            if (!claim.getClaimNumber().equals(claimNumber)) {
+                claim.setClaimNumber(claimNumber);
+                claimNumberUpdated = true;
+            }
             claim.setIndemnityAmount(indemnityAmount);
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
             claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);

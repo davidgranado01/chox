@@ -21,7 +21,6 @@ public class ClaimReferToEng extends BaseActivity {
     private String claimNumber;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
-//    private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private String supportingLiabilityNotes;
@@ -29,6 +28,8 @@ public class ClaimReferToEng extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
@@ -104,12 +105,16 @@ public class ClaimReferToEng extends BaseActivity {
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
+            liabilityUpdated = true;
+
         }
-        claim.setClaimNumber(claimNumber);
+        if (!claim.getClaimNumber().equals(claimNumber)) {
+            claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
+        }
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
-//        claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);

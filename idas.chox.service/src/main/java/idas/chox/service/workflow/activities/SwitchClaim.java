@@ -23,6 +23,7 @@ public class SwitchClaim extends BaseActivity {
     private AuditTrailService auditTrailService;
     private NotificationService notificationService;
     private InsurerChorganisationService insurerChorganisationService;
+    private Insurer oldInsurer;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -73,7 +74,7 @@ public class SwitchClaim extends BaseActivity {
     protected void doProcess(Claim claim) {
         LOG.debug("Switching claim status for claim: {} (id={})", claim.getChoReference(), claim.getId());
 
-        Insurer oldInsurer = claim.getInsurer();
+        oldInsurer = claim.getInsurer();
         Insurer newInsurer = oldInsurer.getRelatedInsurer();
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
         
@@ -136,5 +137,9 @@ public class SwitchClaim extends BaseActivity {
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
+    }
+
+    public Insurer getOldInsurer() {
+        return oldInsurer;
     }
 }

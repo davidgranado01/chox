@@ -13,7 +13,11 @@ import idas.chox.service.xml.util.NodeHelper;
 public class InvoiceResubmit extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceResubmit.class);
     private boolean autoRoutedInvoice = false;
-
+    protected boolean claimOwnerAssigned = false;
+    protected boolean claimRouted = false;
+    protected boolean invoiceAccepted = false;
+    protected RulesEngineResponse breResponse = null;
+    
     public boolean isAutoRoutedInvoice() {
         return autoRoutedInvoice;
     }
@@ -59,21 +63,21 @@ public class InvoiceResubmit extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        RulesEngineResponse response = null;
 
         try {
-            response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+            breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown in rules engine: {}", ex.getMessage());
+            throw ex;
         }
 
-        for (History history : History.New(response)) {
+        for (History history : History.New(breResponse)) {
             claim.addHistory(history);
         }
 
         LOG.debug("Response history added");
 
-        if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+        if ((breResponse.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             LOG.debug("Throwing Exception:  Invoice data calculation incorrect");
             throw new Exception("ERROR : Invoice data calculation incorrect");
         }
@@ -83,12 +87,14 @@ public class InvoiceResubmit extends BaseActivity {
             if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());
                 claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                claimRouted = true;
             }
 
             //re-assign claim
             if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
                 claim.setClaimOwnerOriginal(claim.getClaimOwner());
                 claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                claimOwnerAssigned = true;
             }
             getDataService().save(claim);
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
@@ -96,13 +102,14 @@ public class InvoiceResubmit extends BaseActivity {
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-
+            invoiceAccepted = true;
         }
 
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        eventGenerator.generate(claim, this);
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Processing next chain activity.");
@@ -113,7 +120,6 @@ public class InvoiceResubmit extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
-        eventGenerator.generate(claim, this);
     }
 
 }

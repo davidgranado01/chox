@@ -31,6 +31,10 @@ public class AcknowledgeClaim extends BaseActivity {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ClaimService claimService;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
+    
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -133,8 +137,12 @@ public class AcknowledgeClaim extends BaseActivity {
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
+            liabilityUpdated = true;
         }
-        claim.setClaimNumber(claimNumber);
+        if (!claim.getClaimNumber().equals(claimNumber)) {
+            claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
+        }
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);

@@ -14,6 +14,7 @@ public class InvoiceRejectionContest extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejectionContest.class);
     private String supportingLiabilityNotes;
+    protected RulesEngineResponse breResponse = null;
 
     public String getSupportingLiabilityNotes() {
         return supportingLiabilityNotes;
@@ -30,9 +31,8 @@ public class InvoiceRejectionContest extends BaseActivity {
 
 
         /* RESUBMIT INVOICE FEOM CHO SHOULD PERFORM BRE VALIDATION AGAIN */
-        RulesEngineResponse response = null;
         try {
-            response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+            breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         } catch (Exception ex) {
             LOG.error("Exception processing re-submitted invoice: {}", ex.getMessage());
             if (ex.getCause() != null) {
@@ -41,12 +41,12 @@ public class InvoiceRejectionContest extends BaseActivity {
             throw ex;
         }
         LOG.debug("Response received - adding to history.");
-        for (History history : History.New(response)) {
+        for (History history : History.New(breResponse)) {
             claim.addHistory(history);
         }
         LOG.debug("Setting status (current status is '{}'", claim.getStatus());
-        LOG.debug("Setting status (response status is '{}'", response.getStatus(claim.getInsurer().isEngineersEnable()));
-        if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+        LOG.debug("Setting status (response status is '{}'", breResponse.getStatus(claim.getInsurer().isEngineersEnable()));
+        if ((breResponse.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
             throw new Exception("ERROR : Invoice data calculation incorrect");
         } else {

@@ -15,21 +15,26 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
+import org.springframework.aop.support.AopUtils;
 
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
     protected int claimId = 0;
     protected ClaimService claimService;
     protected BaseDataService baseDataService;
     protected Claim claim;
     protected T model;
     private ApplicationAccessibility applicationAccessibility;
+    protected ActivityEventGenerator eventGenerator;
+    
     // </editor-fold>
 
     abstract String getTabName();
@@ -49,6 +54,11 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public void setClaimId(int claimId) {
         this.claimId = claimId;
     }
+
+    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
+        this.eventGenerator = eventGenerator;
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc="Utility functions">
     public boolean isInsurerUploadedClaim() {
@@ -98,6 +108,17 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             this.claimService.updateClaim(claim);
             this.setActionResult("Your changes have been saved.");
             updateModelInSession(Arrays.asList(claim,model));
+            String modelName = AopUtils.getTargetClass(model).getSimpleName();
+            LOG.debug("Model class updated is: {}", modelName);
+            // Generate an event if the claim has been updated
+            if (modelName.startsWith("Claim")
+                    || modelName.startsWith("Customer")
+                    || modelName.startsWith("Incident")
+                    || modelName.startsWith("ThirdParty")
+                    || modelName.startsWith("Injury")
+                    || modelName.startsWith("Witness")) {
+                eventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
+            }
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;

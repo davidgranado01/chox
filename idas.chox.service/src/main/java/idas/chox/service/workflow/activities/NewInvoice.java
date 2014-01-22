@@ -23,7 +23,11 @@ public class NewInvoice extends BaseActivity {
     private TaskService taskService;
     private UserService userService;
     private boolean autoRoutedInvoice = false;
-
+    protected boolean claimRouted = false;
+    protected boolean claimOwnerAssigned = false;
+    protected boolean invoiceAccepted = false;
+    protected RulesEngineResponse breResponse = null;
+    
     public boolean isAutoRoutedInvoice() {
         return autoRoutedInvoice;
     }
@@ -118,9 +122,9 @@ public class NewInvoice extends BaseActivity {
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
-        RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+        breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
-        for (History history : History.New(response)) {
+        for (History history : History.New(breResponse)) {
             LOG.debug("Adding BRE history to claim '{}': {} - {}", new Object[]{claim.getChoReference(), history.getRuleId(), history.getNarrative()});
             claim.addHistory(history);
         }
@@ -149,12 +153,14 @@ public class NewInvoice extends BaseActivity {
             if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());
                 claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                claimRouted = true;
             }
 
             //re-assign claim
             if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
                 claim.setClaimOwnerOriginal(claim.getClaimOwner());
                 claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                claimOwnerAssigned = true;
             }
             getDataService().save(claim);
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
@@ -162,12 +168,13 @@ public class NewInvoice extends BaseActivity {
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-
+            invoiceAccepted = true;
         }
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        eventGenerator.generate(claim, this);
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Processing next chain activity.");
@@ -178,7 +185,6 @@ public class NewInvoice extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
-        eventGenerator.generate(claim, this);
     }
 
 

@@ -95,44 +95,39 @@
             <artifactId>data</artifactId>
             <version>2.0</version>
         </dependency>
+        <!-- Apache ActiveMQ -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>${activeMQ.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>${activeMQ.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>${activeMQ.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-jdbc-store</artifactId>
+            <version>${activeMQ.version}</version>
+        </dependency>
+        <!-- Add spring-jmss for JmsTemplate use -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
             <version>${spring-jms.version}</version>
         </dependency>
-        <!-- Apache ActiveMQ -->
-        <!--        <dependency>
-            <groupId>org.apache.xbean</groupId>
-            <artifactId>xbean-spring</artifactId>
-            <version>3.14</version>
-        </dependency>-->
-        <!-- Uncomment to use 5.8.0, and comment out 5.7.0 dependencies below
-     Note that there is an unresolved problem with this in a cyclic dependency on bouncy castle
+        <!--
         <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.8.0</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-broker</artifactId>
-            <version>5.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-client</artifactId>
-            <version>5.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-spring</artifactId>
-            <version>5.8.0</version>
-        </dependency>
-        <!--        <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-camel</artifactId>
             <version>5.8.0</version>
-        </dependency>-->
+        </dependency> -->
         <!--        <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-jaas</artifactId>
@@ -141,55 +136,8 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-kahadb-store</artifactId>
-            <version>5.8.0</version>
+            <version>${activeMQ.version}</version>
         </dependency>
-        <!--        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.6</version>
-        </dependency>-->
-        <!-- Comment to use 5.8.0 : maybe can remove camel from client (to test) -->
-        <!--        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>5.7.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-camel</artifactId>
-            <version>5.7.0</version>
-            <scope>runtime</scope>
-        </dependency>  -->
-        <!-- Not needed
-       <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-console</artifactId>
-            <version>5.7.0</version>
-            <scope>runtime</scope>
-        </dependency-->
-        <!-- Comment to use 5.8.0 : still need to check if ALL these are needed or not -->
-        <!--       <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-jaas</artifactId>
-            <version>5.7.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.6</version>
-        </dependency> -->
-        <!--        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jms_1.1_spec</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-            <version>1.1.1</version>
-        </dependency>-->
 
         <dependency>
             <groupId>uk.com.robust-it</groupId>

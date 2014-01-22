@@ -11,6 +11,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import com.google.gson.Gson;
+import javax.jms.DeliveryMode;
 
 /**
  *
@@ -46,6 +47,7 @@ public class ChoxJmsEventSender {
                         message.setIntProperty("eventId", event.getId());
                         message.setIntProperty("claimType", event.getClaimType());
                         message.setIntProperty("claimId", event.getClaimId());
+                        message.setJMSDeliveryMode(DeliveryMode.PERSISTENT);
                     } catch (JMSException ex) {
                         LOG.error("Error creating message: {}", ex.getMessage());
                         throw ex;

@@ -14,7 +14,10 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
     private ClaimService claimService;
-
+    protected boolean invoiceAccepted = false;
+    protected boolean paymentLogged = false;
+    protected boolean claimReverted = false;
+    
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -37,6 +40,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         if (claim.getStatus().equals(ClaimStatus.CLAIM_CLOSED)) {
             try {
                 claimService.revertClaim(claim.getId());
+                claimReverted = true;
             } catch (Exception ex) {
                 LOG.debug(" Exception thrown while reverting claim in InterimPaymentFullAndFinal activity: ", ex);
             }
@@ -46,9 +50,11 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
                 && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
             if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                 logTransaction(claim, claim.getStatus(), ClaimStatus.AWAITING_INVOICE_PAYMENT, 0);
+                invoiceAccepted = true;
             }
             setCurrentStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+            paymentLogged = true;
         } else if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
             // if the claim status is payment received then do not change
             // the claim status via paymentreceived chain activity.

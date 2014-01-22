@@ -22,7 +22,8 @@ public class App implements MessageListener {
 
     private static Logger LOG = LoggerFactory.getLogger(App.class);
     private static String queueName;
-    public static String brokerURL = "tcp://localhost:61616";
+//    public static String brokerURL = "failover:(tcp://localhost:61616)";
+    public static String brokerURL = "failover:(tcp://localhost:61616)?startupMaxReconnectAttempts=10&maxReconnectAttempts=-1&initialReconnectDelay=500";
     private ConnectionFactory factory;
     private Connection connection;
     private Session session;

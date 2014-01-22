@@ -23,6 +23,8 @@ import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
@@ -85,6 +87,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private Invoice originalInvoice;
     private EngineerReport originalEngineerReport;
     private VehicleHire originalVehicleHire;
+    private ActivityEventGenerator eventGenerator;
     
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -399,7 +402,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-    
+
+    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
+        this.eventGenerator = eventGenerator;
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
 
@@ -2283,6 +2290,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 modelSaved = true;
                 this.setActionResult("Your Changes Have Been Saved");
+                eventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
                 return SUCCESS;
             } catch (Exception ex) {
                 LOG.warn("Exception is thrown and passing to baseAction ", ex);

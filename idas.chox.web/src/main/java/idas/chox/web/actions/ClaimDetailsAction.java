@@ -5,15 +5,18 @@ import java.util.Date;
 import idas.chox.core.model.Claim;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.TabAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Emmanuel
  */
 public class ClaimDetailsAction extends ClaimModelAction<Claim> {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimDetailsAction.class);
 
     private boolean managingRepair;
-    
+
     @Override
     public Claim loadModel() {
         managingRepair = claim.isManagingRepair();
@@ -33,6 +36,7 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
         if (managingRepair != model.getManagingRepair()) {
             model.setManagingRepairLastModified(new Date());
         }
+
         return super.updateModel();
     }
     

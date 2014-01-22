@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.workflow.Activity;
 import idas.chox.events.EventRegister;
 
 /**
@@ -44,7 +45,21 @@ public class ActivityEventGenerator {
     }
     
 
-    public void generate(final Claim claim, final BaseActivity activity) {
+    public void generate(final Claim claim,   ActivityEvent event) {
+        try {
+            event.build(this, claim);
+        } catch (Exception ex) {
+            LOG.error("Error generating events for activity '{}' : {}", event, ex.getMessage());
+        }
+
+        try {
+            choxEventRegister.sendEvents();
+        } catch (Exception ex) {
+            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
+        }
+    }
+
+    public void generate(final Claim claim, Activity activity) {
 //        activity.generateEvents(claim);
         
         String activityName = AopUtils.getTargetClass(activity).getSimpleName();
@@ -53,8 +68,13 @@ public class ActivityEventGenerator {
         try {
             if (activityName.equalsIgnoreCase("AcknowledgeClaim")) {
                 LOG.debug("AcknowledgeClaim activity found");
+                if (((AcknowledgeClaim) activity).liabilityUpdated) {
+                    ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (AcknowledgeClaim) activity, claim);
+                }
+                if (((AcknowledgeClaim) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
+                }
                 ActivityEvent.CLAIM_ACKNOWLEDGED_EVENT.build(this, (AcknowledgeClaim) activity, claim);
-                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (AcknowledgeClaim) activity, claim);
             } else if (activityName.equalsIgnoreCase("AssignManualInvoiceOwner")) {
                 LOG.debug("AssignManualInvoiceOwner activity found");
                 ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (AssignManualInvoiceOwner) activity, claim);
@@ -75,31 +95,55 @@ public class ActivityEventGenerator {
                 ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (ClaimAwaitingCarHireInfo) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimPending")) {
                 LOG.debug("ClaimPending activity found");
+                if (((ClaimPending) activity).liabilityUpdated) {
+                    ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimPending) activity, claim);
+                }
+                if (((ClaimPending) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
+                }
                 ActivityEvent.CLAIM_PENDING_EVENT.build(this, (ClaimPending) activity, claim);
-                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimPending) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimReferToEng")) {
-                LOG.debug("ClaimReferrToEng activity found");
+                LOG.debug("ClaimReferToEng activity found");
+                if (((ClaimReferToEng) activity).liabilityUpdated) {
+                    ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimReferToEng) activity, claim);
+                }
+                if (((ClaimReferToEng) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
+                }
                 ActivityEvent.CLAIM_REFERRED_TO_ENG_EVENT.build(this, (ClaimReferToEng) activity, claim);
-                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimReferToEng) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (ClaimReferToEng) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimReferToFnol")) {
                 LOG.debug("ClaimReferToFnol activity found");
+                if (((ClaimReferToFnol) activity).claimRouted) {
+                    ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
+                }
+                if (((ClaimReferToFnol) activity).ownerAssigned) {
+                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
+                }
+                if (((ClaimReferToFnol) activity).liabilityUpdated) {
+                    ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
+                }
+                if (((ClaimReferToFnol) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
+                }
                 ActivityEvent.CLAIM_REFERRED_TO_FNOL_EVENT.build(this, (ClaimReferToFnol) activity, claim);
-                ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
-                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimReferToFnol) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimRegisterByFnol")) {
                 LOG.debug(" activity found");
+                if (((ClaimRegisterByFnol) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, (ClaimRegisterByFnol) activity, claim);
+                }
                 ActivityEvent.CLAIM_REGISTERED_BY_FNOL_EVENT.build(this, (ClaimRegisterByFnol) activity, claim);
-                ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, (ClaimRegisterByFnol) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimRejection")) {
                 LOG.debug("ClaimRejection activity found");
+                if (((ClaimRejection) activity).liabilityUpdated) {
+                    ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimRejection) activity, claim);
+                }
+                if (((ClaimRejection) activity).claimNumberUpdated) {
+                    ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
+                }
                 ActivityEvent.CLAIM_REJECTED_EVENT.build(this, (ClaimRejection) activity, claim);
-                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (ClaimRejection) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimRejectionAccept")) {
                 LOG.debug("ClaimRejectionAccept activity found");
                 ActivityEvent.CLAIM_REJECTION_ACCEPTED_EVENT.build(this, (ClaimRejectionAccept) activity, claim);
-                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (ClaimRejectionAccept) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimRejectionContest")) {
                 LOG.debug("ClaimRejectionContest activity found");
                 ActivityEvent.CLAIM_REJECTION_CONTESTED_EVENT.build(this, (ClaimRejectionContest) activity, claim);
@@ -120,9 +164,13 @@ public class ActivityEventGenerator {
                 ActivityEvent.FULL_PAYMENT_NOT_RECEIVED_EVENT.build(this, (FullPaymentNotReceived) activity, claim);
             } else if (activityName.equalsIgnoreCase("InsurerUpload")) {
                 LOG.debug("InsurerUpload activity found");
-                ActivityEvent.NEW_CLAIM_EVENT.build(this, (InsurerUpload) activity, claim);
-                ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (InsurerUpload) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InsurerUpload) activity, claim);
+//                ActivityEvent.NEW_CLAIM_EVENT.build(this, (InsurerUpload) activity, claim);
+                if (((InsurerUpload) activity).claimRouted) {
+                    ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (InsurerUpload) activity, claim);
+                }
+                if (((InsurerUpload) activity).claimOwnerAssigned) {
+                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InsurerUpload) activity, claim);
+                }
                 ActivityEvent.INVOICE_UPLOADED_EVENT.build(this, (InsurerUpload) activity, claim);
                 ActivityEvent.BRE_RESULT_EVENT.build(this, (InsurerUpload) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceAccepted")) {
@@ -153,11 +201,17 @@ public class ActivityEventGenerator {
                 ActivityEvent.BRE_RESULT_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceResubmit")) {
                 LOG.debug("InvoiceResubmit activity found");
+                if (((InvoiceResubmit) activity).claimOwnerAssigned) {
+                    ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
+                }
+                if (((InvoiceResubmit) activity).claimRouted) {
+                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InvoiceResubmit) activity, claim);
+                }
                 ActivityEvent.INVOICE_RESUBMITTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
-                ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InvoiceResubmit) activity, claim);
-                ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
                 ActivityEvent.BRE_RESULT_EVENT.build(this, (InvoiceResubmit) activity, claim);
+                if (((InvoiceResubmit) activity).invoiceAccepted) {
+                    ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
+                }
             } else if (activityName.equalsIgnoreCase("MakeInterimPayment")) {
                 LOG.debug("MakeInterimPayment activity found");
                 ActivityEvent.INTERIM_PAYMENT_UPDATED_EVENT.build(this, (MakeInterimPayment) activity, claim);
@@ -166,33 +220,54 @@ public class ActivityEventGenerator {
                 ActivityEvent.INTERIM_PAYMENT_RECEIVED_EVENT.build(this, (UpdateInterimPaymentReceived) activity, claim);
             } else if (activityName.equalsIgnoreCase("UpdateInterimPaymentFullAndFinal")) {
                 LOG.debug("UpdateInterimPaymentFullAndFinal activity found");
+                if (((UpdateInterimPaymentFullAndFinal) activity).claimReverted) {
+                    ActivityEvent.CLAIM_REVERTED_EVENT.build(this, (UpdateInterimPaymentFullAndFinal) activity, claim);
+                }
+                if (((UpdateInterimPaymentFullAndFinal) activity).invoiceAccepted) {
+                    ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (UpdateInterimPaymentFullAndFinal) activity, claim);
+                }
+                if (((UpdateInterimPaymentFullAndFinal) activity).paymentLogged) {
+                    ActivityEvent.INVOICE_PAID_EVENT.build(this, (UpdateInterimPaymentFullAndFinal) activity, claim);
+                }
                 ActivityEvent.INTERIM_PAYMENT_ACCEPTED_AS_FINAL_EVENT.build(this, (UpdateInterimPaymentFullAndFinal) activity, claim);
             } else if (activityName.equalsIgnoreCase("MoveToInvoicePaymentLogged")) {
                 LOG.debug("MoveToInvoicePaymentLogged activity found");
                 ActivityEvent.INVOICE_PAID_EVENT.build(this, (MoveToInvoicePaymentLogged) activity, claim);
-                ActivityEvent.PAYMENT_RECEIVED_EVENT.build(this, (MoveToInvoicePaymentLogged) activity, claim);
             } else if (activityName.equalsIgnoreCase("NewClaim")) {
                 LOG.debug("NewClaim activity found");
                 ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewClaim) activity, claim);
             } else if (activityName.equalsIgnoreCase("NewInvoice")) {
                 LOG.debug("NewInvoice activity found");
-                ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewInvoice) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewInvoice) activity, claim);
+                ActivityEvent.INVOICE_UPLOADED_EVENT.build(this, (NewInvoice) activity, claim);
+                if (((NewInvoice) activity).claimRouted) {
+                    ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewInvoice) activity, claim);
+                }
+                if (((NewInvoice) activity).claimOwnerAssigned) {
+                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewInvoice) activity, claim);
+                }
                 ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (NewInvoice) activity, claim);
                 ActivityEvent.BRE_RESULT_EVENT.build(this, (NewInvoice) activity, claim);
-                ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewInvoice) activity, claim);
-            } else if (activityName.equalsIgnoreCase("NewSupplementaryInvoice")) {
-                LOG.debug("NewSupplementaryInvoice activity found");
-                // TODO
+                if (((NewInvoice) activity).invoiceAccepted) {
+                    ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewInvoice) activity, claim);
+                }
             } else if (activityName.equalsIgnoreCase("NewTpiClaim")) {
                 LOG.debug("NewTpiClaim activity found");
-                ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.BRE_RESULT_EVENT.build(this, (NewTpiClaim) activity, claim);
-                ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewTpiClaim) activity, claim);
+                ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (NewTpiClaim) activity, claim);
+                if (((NewTpiClaim) activity).newClaim) {
+                    ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewTpiClaim) activity, claim);
+                }
+                if (((NewTpiClaim) activity).claimRouted) {
+                    ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewTpiClaim) activity, claim);
+                }
+                if (((NewTpiClaim) activity).claimOwnerAssigned) {
+                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewTpiClaim) activity, claim);
+                }
+//                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewTpiClaim) activity, claim);
+//                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (NewTpiClaim) activity, claim);
+//                ActivityEvent.BRE_RESULT_EVENT.build(this, (NewTpiClaim) activity, claim);
+                if (((NewTpiClaim) activity).invoiceAccepted) {
+                    ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewTpiClaim) activity, claim);
+                }
             } else if (activityName.equalsIgnoreCase("PaymentNotReceived")) {
                 LOG.debug("PaymentNotReceived activity found");
                 ActivityEvent.FULL_PAYMENT_NOT_RECEIVED_EVENT.build(this, (PaymentNotReceived) activity, claim);
@@ -213,8 +288,11 @@ public class ActivityEventGenerator {
                 ActivityEvent.SLA_EXTENSION_GRANTED_EVENT.build(this, (SlaExtension) activity, claim);
             } else if (activityName.equalsIgnoreCase("SubscriberClaimRejectionAccept")) {
                 LOG.debug("SubscriberClaimRejectionAccept activity found");
+                // Do we still raise the following if claim moves to AwaitingInvoicedata?
+                //     Maybe change to SubscroberClaimRejected event?
                 ActivityEvent.CLAIM_REJECTION_ACCEPTED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
-                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
+// Not sure what events to raise when subscriber claim is rejected and moves to AwaitingInvoiceData
+//                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
             } else if (activityName.equalsIgnoreCase("SubscriberClaimToGta")) {
                 LOG.debug("SubscriberClaimToGta activity found");
                 ActivityEvent.CLAIM_SWITCHED_TO_GTA_EVENT.build(this, (SubscriberClaimToGta) activity, claim);
@@ -235,6 +313,10 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("WorkgroupRouting")) {
                 LOG.debug("WorkgroupRouting activity found");
                 ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (WorkgroupRouting) activity, claim);
+            } else if (activityName.equalsIgnoreCase("NewSupplementaryInvoice")) {
+                if (((NewSupplementaryInvoice) activity).isNewClaim) {
+                    ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);
+                }
             } else {
                 LOG.error("Activity not found");
             }

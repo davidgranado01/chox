@@ -71,6 +71,8 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
@@ -157,6 +159,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
+    private ActivityEventGenerator eventGenerator;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -206,6 +209,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
+        this.eventGenerator = eventGenerator;
     }
     // </editor-fold>
 
@@ -549,6 +556,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim.setClaimNumber(claim.getClaimNumber().trim());
             this.service.updateClaim(claim);
+            eventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
             setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");

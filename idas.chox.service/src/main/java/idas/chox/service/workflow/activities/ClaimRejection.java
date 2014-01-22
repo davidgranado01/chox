@@ -35,6 +35,8 @@ public class ClaimRejection extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     private ClaimService claimService;
     private ReasonOfRejection reasonOfRejection;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -212,7 +214,8 @@ public class ClaimRejection extends BaseActivity {
                 claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
-                claim.addComment(comment);                
+                claim.addComment(comment);
+                liabilityUpdated = true;
         }
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
@@ -230,8 +233,9 @@ public class ClaimRejection extends BaseActivity {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
         }
 
-        if (claimNumber != null) {
+        if (!claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
         }
         LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
 
