@@ -2,7 +2,11 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class VehicleClass extends Entity implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleClass.class);
 
     /**
      * This attribute maps to the column name in the vehicle_class table.
@@ -142,12 +146,14 @@ public class VehicleClass extends Entity implements Serializable {
         //      classDifference(P1, P1) = 0
 
         int class1No = getPClassNumber(class1.getName());
+        LOG.debug("Class no for '{}' is {}", class1.getName(), class1No);
         
         if (class1No < 0) {
             throw new IllegalArgumentException("Cannot compare non-prestige vehicle.");
         }
 
         int class2No = getPClassNumber(class2.getName());
+        LOG.debug("Class no for '{}' is {}", class2.getName(), class2No);
         if (class2No > 0) {
             // Both Ps
             return class2No - class1No;
@@ -172,12 +178,14 @@ public class VehicleClass extends Entity implements Serializable {
         //      classDifference(SP1, S7) = -1
 
         int class1No = getSPClassNumber(class1.getName());
+        LOG.debug("Class no for '{}' is {}", class1.getName(), class1No);
         
         if (class1No < 0) {
             throw new IllegalArgumentException("Cannot compare non-sports performance vehicle.");
         }
 
         int class2No = getSPClassNumber(class2.getName());
+        LOG.debug("Class no for '{}' is {}", class2.getName(), class2No);
         if (class2No > 0) {
             // Both SPs
             return class2No - class1No;
@@ -210,16 +218,18 @@ public class VehicleClass extends Entity implements Serializable {
             className = vclassName;
         }
 
+        LOG.debug ("Getting SP class number for {}", className);
+        
         if (className.length() == 3) {
             return Integer.parseInt(className.substring(2));
         }
-        else if (className.length() == 4 && className.charAt(3) >= '1' && className.charAt(3) <= '9') {
+        else if (className.length() == 4 && className.charAt(3) >= '0' && className.charAt(3) <= '9') {
             return Integer.parseInt(className.substring(2));
         }
         else if (className.length() == 4) {
             return Integer.parseInt(className.substring(2, 1));
         }
-        else if (className.charAt(3) >= '1' && className.charAt(3) <= '9') {
+        else if (className.charAt(3) >= '0' && className.charAt(3) <= '9') {
             return Integer.parseInt(className.substring(2, 2));
         }
         else {
@@ -245,16 +255,18 @@ public class VehicleClass extends Entity implements Serializable {
             className = vclassName;
         }
 
+        LOG.debug ("Getting P class number for {}", className);
+
         if (className.length() == 2) {
             return Integer.parseInt(className.substring(1));
         }
-        else if (className.length() == 3 && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+        else if (className.length() == 3 && className.charAt(2) >= '0' && className.charAt(2) <= '9') {
             return Integer.parseInt(className.substring(1));
         }
         else if (className.length() == 3) {
             return Integer.parseInt(className.substring(1, 1));
         }
-        else if (className.charAt(2) >= '1' && className.charAt(3) <= '9') {
+        else if (className.charAt(2) >= '0' && className.charAt(3) <= '9') {
             return Integer.parseInt(className.substring(1, 2));
         }
         else {
@@ -283,13 +295,13 @@ public class VehicleClass extends Entity implements Serializable {
         if (className.length() == 2) {
             return Integer.parseInt(className.substring(1));
         }
-        else if (className.length() == 3 && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+        else if (className.length() == 3 && className.charAt(2) >= '0' && className.charAt(2) <= '9') {
             return Integer.parseInt(className.substring(1));
         }
         else if (className.length() == 3) {
             return Integer.parseInt(className.substring(1, 1));
         }
-        else if (className.charAt(2) >= '1' && className.charAt(3) <= '9') {
+        else if (className.charAt(2) >= '0' && className.charAt(3) <= '9') {
             return Integer.parseInt(className.substring(1, 2));
         }
         else {
