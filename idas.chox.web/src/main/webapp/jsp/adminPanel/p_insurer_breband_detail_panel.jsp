@@ -43,7 +43,8 @@
                 takeVehicleOutDays:{required:true, number:true, min:0},
                 maxAllowedLabourRate:{required:true, number:true, min:0},
                 maxAllowedLabourStandardRate:{required:true, number:true, min:0},
-                maxAllowedLabourPrestigeRate:{required:true, number:true, min:0}
+                maxAllowedLabourPrestigeRate:{required:true, number:true, min:0},
+                maxAllowedEngineerNetFee:{required:true, number:true, min:0}
             },
             messages: {
                 name: {required:"You must supply a value for 'Name'" },
@@ -66,7 +67,8 @@
                 takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"},
                 maxAllowedLabourRate: {required:"You must supply a value for 'Maximum Labour Rate'", number:"'Maximum Labour Rate' must be numeric", min:"'Maximum Labour Rate' cannot be less than zero"},
                 maxAllowedLabourStandardRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'", number:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' must be numeric", min:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' cannot be less than zero"},
-                maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"}
+                maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"},
+                maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"}
             }
         });
 
@@ -1014,6 +1016,10 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For<span class="mandatory">*</span>  <br> Prestige & Special Vehicles (£) &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourPrestigeRate" name="maxAllowedLabourPrestigeRate" value="<s:property value="maxAllowedLabourPrestigeRate" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Engineer Fee Net Ceiling(£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaxAllowedEngineerNetFee" name="maxAllowedEngineerNetFee" value="<s:property value="maxAllowedEngineerNetFee" />" />
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">

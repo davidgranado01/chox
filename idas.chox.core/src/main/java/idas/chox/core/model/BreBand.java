@@ -142,6 +142,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal maxAllowedLabourRate = BigDecimal.ZERO;
     private BigDecimal maxAllowedLabourStandardRate = BigDecimal.ZERO;
     private BigDecimal maxAllowedLabourPrestigeRate = BigDecimal.ZERO;
+    private BigDecimal maxAllowedEngineerNetFee = new BigDecimal("50.00");
     private boolean fixedFeeAdminFeeCheck;
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
@@ -150,6 +151,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean compoundEstateChargeCheckHpiLookup;
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
     private boolean clientVatRegisteredCheck;
+    private boolean engineerNetFeeCheck;
     
     public BreBand() {
     }
@@ -1373,6 +1375,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.maxAllowedLabourPrestigeRate = maxAllowedLabourPrestigeRate;
     }
 
+    public BigDecimal getMaxAllowedEngineerNetFee() {
+        return maxAllowedEngineerNetFee;
+    }
+
+    public void setMaxAllowedEngineerNetFee(BigDecimal maxAllowedEngineerNetFee) {
+        this.maxAllowedEngineerNetFee = maxAllowedEngineerNetFee;
+    }
+
     public boolean isMaximumLabourRateCheck() {
         return maximumLabourRateCheck;
     }
@@ -1457,11 +1467,20 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     public void setCompoundAutomaticEstateChargeCheckHpiLookup(boolean compoundAutomaticEstateChargeCheckHpiLookup) {
         this.compoundAutomaticEstateChargeCheckHpiLookup = compoundAutomaticEstateChargeCheckHpiLookup;
     }
+
     public boolean isClientVatRegisteredCheck() {
         return clientVatRegisteredCheck;
     }
 
     public void setClientVatRegisteredCheck(boolean clientVatRegisteredCheck) {
         this.clientVatRegisteredCheck = clientVatRegisteredCheck;
+    }
+
+    public boolean isEngineerNetFeeCheck() {
+        return engineerNetFeeCheck;
+    }
+
+    public void setEngineerNetFeeCheck(boolean engineerNetFeeCheck) {
+        this.engineerNetFeeCheck = engineerNetFeeCheck;
     }
 }

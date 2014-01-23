@@ -2457,6 +2457,8 @@ ALTER TABLE bre_band ADD COLUMN client_vat_registered_check boolean NOT NULL def
 ALTER TABLE bre_band ADD COLUMN max_allowed_labour_standard_rate numeric(6,2) not null default 0.00;
 ALTER TABLE bre_band ADD COLUMN max_allowed_labour_prestige_rate numeric(6,2) not null default 0.00;
 
+ALTER TABLE bre_band ADD COLUMN engineer_net_fee_check boolean NOT NULL default false;
+ALTER TABLE bre_band ADD COLUMN max_allowed_engineer_net_fee numeric(6,2) not null default 50.00;
 
 -----------------------------------------------------------------------
 -- End of ToDo item 7.8.6                                            --
