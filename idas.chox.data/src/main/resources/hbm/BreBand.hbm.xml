@@ -148,10 +148,12 @@
         <property column="max_allowed_labour_rate" name="maxAllowedLabourRate" not-null="true"/>
         <property column="max_allowed_labour_standard_rate" name="maxAllowedLabourStandardRate" not-null="true"/>
         <property column="max_allowed_labour_prestige_rate" name="maxAllowedLabourPrestigeRate" not-null="true"/>
+        <property column="max_allowed_engineer_net_fee" name="maxAllowedEngineerNetFee" not-null="true"/>
         <property column="comp_automatic_check_hpi" name="compoundAutomaticChargeCheckHpiLookup"/>
         <property column="comp_estate_check_hpi" name="compoundEstateChargeCheckHpiLookup"/>
         <property column="comp_automatic_estate_check_hpi" name="compoundAutomaticEstateChargeCheckHpiLookup"/>
         <property column="client_vat_registered_check" name="clientVatRegisteredCheck" not-null="true"/>
+        <property column="engineer_net_fee_check" name="engineerNetFeeCheck" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
