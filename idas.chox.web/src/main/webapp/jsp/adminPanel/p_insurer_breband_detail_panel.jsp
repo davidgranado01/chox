@@ -1017,6 +1017,7 @@
                             <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour For<span class="mandatory">*</span>  <br> Prestige & Special Vehicles (£) &nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="CCDMaxLabourPrestigeRate" name="maxAllowedLabourPrestigeRate" value="<s:property value="maxAllowedLabourPrestigeRate" />"/>
                         </div>
+                        <br>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Engineer Fee Net Ceiling(£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDMaxAllowedEngineerNetFee" name="maxAllowedEngineerNetFee" value="<s:property value="maxAllowedEngineerNetFee" />" />
@@ -1654,6 +1655,11 @@
                             <div class="chox-form-checkbox"><s:checkbox name="clientVatRegisteredCheck" value="clientVatRegisteredCheck" /></div>
                             <label class="chox-form-check-label">CHO's Client VAT Registered Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging for the hire, repair or storage recovery VAT when the CHO's customer is VAT registered.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="engineerNetFeeCheck" value="engineerNetFeeCheck" /></div>
+                            <label class="chox-form-check-label">Engineers Fee Net Check</label>
+                            <div class="chox-form-check-description">Check to ensurer that the CHO is not charging more than the specified maximum Engineers Fee charge as detailed above.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
