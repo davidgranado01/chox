@@ -120,7 +120,7 @@
                     <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.ClientVatRegisteredCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.EngineerFeeVatLimitCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.EngineerNetFeeCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
