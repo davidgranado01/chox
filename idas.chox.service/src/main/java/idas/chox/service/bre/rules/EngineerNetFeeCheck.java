@@ -21,7 +21,7 @@ public class EngineerNetFeeCheck implements IBusinessRule {
         LOG.debug("In rule 'EngineerNetFeeCheck' to claim {}.", claim.getChoReference());
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(true);
+        res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 

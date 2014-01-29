@@ -2473,7 +2473,7 @@ delete from accessibility_item where accessibility_id in
 
 delete from accessibility where name = 'extraAction.updateLiability.AwaitingInvoicePayment';
 
-—- 1. from 'AwaitingInvoicePayment', the only possible next status should be: ClaimClosed, InvoicePaymentLogged
+-- 1. from 'AwaitingInvoicePayment', the only possible next status should be: ClaimClosed, InvoicePaymentLogged
 update audit_trail set reverted=true
 from audit_trail at2
 where audit_trail.claim_id = at2.claim_id
@@ -2583,7 +2583,7 @@ delete from audit_trail
      and not exists (select * from audit_trail at3 where at3.claim_id=at2.claim_id and at3.reverted=false
                         and at3.created_date < audit_trail.created_date and at3.created_date > at2.created_date));
 
-—- 2. claims should only ever be at 'AwaitingInvoicePayment' once (if possible)
+-- 2. claims should only ever be at 'AwaitingInvoicePayment' once (if possible)
 update audit_trail set reverted=true, last_modified_date=a.last_modified_date - interval '100 milliseconds'
 from audit_trail a
 where audit_trail.claim_id in (24573,43642,56857,36942,55037,22563,55683,52574,73909,13572,62004) and a.claim_id=audit_trail.claim_id and a.reverted = false
@@ -2600,7 +2600,7 @@ update audit_trail set last_modified_date='2013-12-19 15:30:10' where id=1682734
 delete from audit_trail where id in (1685858, 1686072, 1686075);
 
 
-—- 3. claims should only ever be at 'AwaitingLiabilityResolution' once (if possible)
+-- 3. claims should only ever be at 'AwaitingLiabilityResolution' once (if possible)
 update audit_trail set reverted=true where id in (253213, 195319, 150989, 277465, 291898);
 update audit_trail set last_modified_date='2011-06-15 10:44:19.059' where id=253213;
 update audit_trail set last_modified_date='2011-03-17 17:11:59.688' where id=195319;
