@@ -5738,7 +5738,7 @@ select 0, 19, 1007, 99, '2007-01-01'::timestamp without time zone, id, 999, 999,
 from vehicle_class where name='T5A';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 682.57
+select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 82.57
 from vehicle_class where name='T5A';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
@@ -6429,11 +6429,11 @@ where vehicle_class_price_special_rate.vehicle_class_id = vc.id
 
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 3, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 82.13
+select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 82.13
 from vehicle_class where name='T14';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 19, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 82.13
+select 0, 19, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 82.13
 from vehicle_class where name='T14';
 
 
@@ -6446,11 +6446,11 @@ select 0, 19, 1007, 99, '2007-01-01'::timestamp without time zone, id, 999, 999,
 from vehicle_class where name='T14A';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 3, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
+select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
 from vehicle_class where name='T14A';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 19, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
+select 0, 19, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
 from vehicle_class where name='T14A';
 
 
@@ -6463,11 +6463,11 @@ select 0, 19, 1007, 99, '2007-01-01'::timestamp without time zone, id, 999, 999,
 from vehicle_class where name='T14EST';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 3, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
+select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
 from vehicle_class where name='T14EST';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 19, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
+select 0, 19, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 87.13
 from vehicle_class where name='T14EST';
 
 
@@ -6480,11 +6480,11 @@ select 0, 19, 1007, 99, '2007-01-01'::timestamp without time zone, id, 999, 999,
 from vehicle_class where name='T14ESTA';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 3, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 92.13
+select 0, 3, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 92.13
 from vehicle_class where name='T14ESTA';
 
 insert into vehicle_class_price_special_rate(version, insurer_id, chorganisation_id, age, start_date, vehicle_class_id, created_by, last_modified_by, created_date, last_modified_date, price)
-select 0, 19, 1007, 99, '2014-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 92.13
+select 0, 19, 1007, 99, '2013-12-01'::timestamp without time zone, id, 999, 999, now(), now(), 92.13
 from vehicle_class where name='T14ESTA';
 
 
