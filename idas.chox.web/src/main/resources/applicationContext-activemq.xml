@@ -85,7 +85,7 @@
     
     <!--  ActiveMQ Local Destination  -->
     <topic xmlns="http://activemq.apache.org/schema/core" id="choxEventsTopic" physicalName="CHOX.Events" />
-    <queue xmlns="http://activemq.apache.org/schema/core" id="choxEventQueue" physicalName="CHOX.EventQueue" />
+    <!--queue xmlns="http://activemq.apache.org/schema/core" id="choxEventQueue" physicalName="CHOX.EventQueue" /-->
 
     <!-- Define a message template to send to CHOX.EventQueue -->
     <bean id="queue1JMSTemplate"

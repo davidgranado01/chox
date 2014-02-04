@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
@@ -719,8 +720,33 @@ public enum ActivityEvent {
     ATTACHMENT_DELETED_EVENT                (101, "AttachmentDeletedEvent"),//TODO
     TASK_CREATED_EVENT                      (102, "TaskCreatedEvent"),//TODO
     TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent"),//TODO
-    NOTE_ADDED_EVENT                        (104, "NoteAddedEvent"),//TODO
-    NOTE_COMPLETED_EVENT                    (105, "NoteCompletedEvent"),//TODO
+    NOTE_ADDED_EVENT                        (104, "NoteAddedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
+            LOG.debug("Building NoteAddedEvent");
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            if (comment.getVisibilityType() == 0) { // All
+                generator.startEvent(claim, this.getName(), this.getEventId());
+            } else if (comment.getVisibilityType() == 1) { // Insurer Only
+                generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
+            } else if (comment.getVisibilityType() == 2) { // CHO Only
+                generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
+            }
+            generator.addParameter("note", comment.getComment());
+            generator.addParameter("raisedBy", comment.getRaisedBy().getFullName());
+            generator.completeEvent(claim);
+        }
+    },
+// Event removed - not needed
+//    NOTE_DELETED_EVENT                      (105, "NoteDeletedEvent") {
+//        @Override
+//        public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
+//            LOG.debug("Building NoteDeletedEvent");
+//            generator.startEvent(claim, this.getName(), this.getEventId());
+//            // TODO
+//            generator.completeEvent(claim);
+//        }
+//    },
     CLAIM_UPDATED_EVENT                     (106, "ClaimUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
@@ -784,6 +810,10 @@ public enum ActivityEvent {
         LOG.warn("Building generic non-activity based event...");
         generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
         generator.completeEvent(claim);
+    }
+
+    public void build(ActivityEventGenerator generator, Claim claim, Comment comment) throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void build(ActivityEventGenerator generator, Activity activity, Claim claim) throws Exception {

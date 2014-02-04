@@ -68,7 +68,7 @@
     </build>
 
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>idas.chox</groupId>
             <artifactId>core</artifactId>
             <version>${chox.core.version}</version>
@@ -77,7 +77,7 @@
             <groupId>idas.chox</groupId>
             <artifactId>data</artifactId>
             <version>2.0</version>
-        </dependency>
+        </dependency-->
 
         <!-- Apache ActiveMQ -->
         <dependency>

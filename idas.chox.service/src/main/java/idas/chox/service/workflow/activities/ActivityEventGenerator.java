@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Comment;
 import idas.chox.core.workflow.Activity;
 import idas.chox.events.EventRegister;
 
@@ -22,18 +23,28 @@ public class ActivityEventGenerator {
     }
 
     // Utility function
-    public void startEvent(Claim claim, String name, int id) throws Exception {
+    public void startEvent(Claim claim, String name, int id, boolean insurerOnly, boolean choOnly) throws Exception {
         int claimId = -1;
         if (claim.getId() != null) {
             claimId = claim.getId().intValue();
         }
-        choxEventRegister.startEvent(name, id, claim.getInsurer().getId().intValue(), claim.getChorganisation().getId().intValue(), claimId, claim.getClaimType().ordinal());
+        int insurerId = 0;
+        if (!choOnly) {
+            insurerId = claim.getInsurer().getId().intValue();
+        }
+        int choId = 0;
+        if (!insurerOnly) {
+            choId = claim.getChorganisation().getId().intValue();
+        }
+        choxEventRegister.startEvent(name, id, insurerId, choId, claimId, claim.getClaimType().ordinal());
         choxEventRegister.addParameter("insurerName", claim.getInsurer().getName());
         choxEventRegister.addParameter("choName", claim.getChorganisation().getName());
         choxEventRegister.addParameter("choReference", claim.getChoReference());
         choxEventRegister.addParameter("claimNumber", claim.getClaimNumber());
     }
-
+    public void startEvent(Claim claim, String name, int id) throws Exception {
+        startEvent(claim, name, id, false, false);
+    }
     public void addParameter(String name, Object value) {
         choxEventRegister.addParameter(name, value);
     }
@@ -49,7 +60,21 @@ public class ActivityEventGenerator {
         try {
             event.build(this, claim);
         } catch (Exception ex) {
-            LOG.error("Error generating events for activity '{}' : {}", event, ex.getMessage());
+            LOG.error("Error generating events for event '{}' : {}", event, ex.getMessage());
+        }
+
+        try {
+            choxEventRegister.sendEvents();
+        } catch (Exception ex) {
+            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
+        }
+    }
+
+    public void generate(final Claim claim, final Comment comment, ActivityEvent event) {
+        try {
+            event.build(this, claim, comment);
+        } catch (Exception ex) {
+            LOG.error("Error generating events for event '{}' : {}", event, ex.getMessage());
         }
 
         try {

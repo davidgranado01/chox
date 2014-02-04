@@ -23,7 +23,7 @@ import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.data.events.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;

@@ -12,7 +12,7 @@ import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.data.events.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 
 /**

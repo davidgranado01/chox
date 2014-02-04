@@ -16,6 +16,7 @@ import idas.chox.core.services.CommentService;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.workflow.activities.ActivityEvent;
 
 public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
@@ -23,10 +24,15 @@ public class CommentAction extends ClaimModelAction<Comment> {
     private JSONArray jObject;
     private int commentId;
     private CommentService commentService;
+//    private ActivityEventGenerator eventGenerator;
 
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
+    
+//    public void setCommentEventGenerator(ActivityEventGenerator eventGenerator) {
+//        this.eventGenerator = eventGenerator;
+//    }
 
     public int getCommentId() {
         return commentId;
@@ -51,7 +57,13 @@ public class CommentAction extends ClaimModelAction<Comment> {
             }
             model.setComment(getComment());
             claim.addComment(model);
-            return super.updateModel();
+            
+            String result = super.updateModel();
+            
+            // Generate NoteAdded Event
+            eventGenerator.generate(claim, model, ActivityEvent.NOTE_ADDED_EVENT);
+            
+            return result;
         } catch (Exception ex) {
             LOG.warn("Error creating attachment for claim {}", claim.getChoReference(), ex);
             handleException(ex);
@@ -128,6 +140,8 @@ public class CommentAction extends ClaimModelAction<Comment> {
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
                     this.getActionResponse().AssignMessageResult("Note has been deleted.");
+                    // Generate NoteDeleted Event - removed as not needed
+//                    eventGenerator.generate(claim, model, ActivityEvent.NOTE_DELETED_EVENT);
                     
                 } else {
                     
