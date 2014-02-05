@@ -174,7 +174,7 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        eventGenerator.generate(claim, this);
+        activityEventGenerator.generate(claim, this);
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Processing next chain activity.");

@@ -49,6 +49,7 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
+import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.NotificationType;
 
 import org.slf4j.Logger;
@@ -69,6 +70,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
     private static final Set anomaliesStatus = new HashSet(9);
+    private EventService eventService;
 
     static {
             anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
@@ -89,6 +91,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setActivityMonitorRequestInterval(int activityMonitorRequestInterval) {
         this.activityMonitorRequestInterval = activityMonitorRequestInterval;
+    }
+    
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Override
@@ -1400,6 +1406,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
                     updateClaim(claim);
                     LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
+                    // Generate Event
+                    eventService.generate(claim, oldReference, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT);
                     return 0;
                 } catch (Exception ex) {
                     LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);

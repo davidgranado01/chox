@@ -166,7 +166,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        eventGenerator.generate(claim, this);
+        activityEventGenerator.generate(claim, this);
         /*
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged

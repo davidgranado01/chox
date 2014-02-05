@@ -33,7 +33,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     protected Claim claim;
     protected T model;
     private ApplicationAccessibility applicationAccessibility;
-    protected ActivityEventGenerator eventGenerator;
+    protected ActivityEventGenerator activityEventGenerator;
     
     // </editor-fold>
 
@@ -55,8 +55,8 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         this.claimId = claimId;
     }
 
-    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
-        this.eventGenerator = eventGenerator;
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
     }
 
 
@@ -117,7 +117,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
                     || modelName.startsWith("ThirdParty")
                     || modelName.startsWith("Injury")
                     || modelName.startsWith("Witness")) {
-                eventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
+                activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
+            } else {
+                LOG.warn("Claim update but event not generated for model: {}", modelName);
             }
         } catch (Exception ex) {
             handleException(ex);
