@@ -11,6 +11,7 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
 
 /**
  *
@@ -39,19 +40,28 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
     @Override
     public String updateModel() {
-        VehicleClass vehicleClass = this.model.getVehicleClass();
-        if (vehicleClassMonitoringId > 0 && (vehicleClass == null || vehicleClass.getId() != vehicleClassMonitoringId)) {
-            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses) {
-                if (vClass.getId() == vehicleClassMonitoringId) {
-                    vehicleClass = vClass;
-                    break;
+        try {
+            VehicleClass vehicleClass = this.model.getVehicleClass();
+            if (vehicleClassMonitoringId > 0 && (vehicleClass == null || vehicleClass.getId() != vehicleClassMonitoringId)) {
+                List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+                for (VehicleClass vClass : vehicleClasses) {
+                    if (vClass.getId() == vehicleClassMonitoringId) {
+                        vehicleClass = vClass;
+                        break;
+                    }
                 }
+                model.setVehicleClass(vehicleClass);
             }
-            model.setVehicleClass(vehicleClass);
+            claim.setVehicleHire(model);
+            String result = super.updateModel();
+
+            activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
+
+            return result;
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
         }
-        claim.setVehicleHire(model);
-        return super.updateModel();
     }
 
     public void setVehicleClassMonitoringId(int vehicleClassMonitoringId) {

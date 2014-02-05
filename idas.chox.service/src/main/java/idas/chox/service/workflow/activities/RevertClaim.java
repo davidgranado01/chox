@@ -147,7 +147,7 @@ public class RevertClaim extends BaseActivity {
      */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        eventGenerator.generate(claim, this);
+        activityEventGenerator.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

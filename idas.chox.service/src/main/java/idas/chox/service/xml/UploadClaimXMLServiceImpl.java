@@ -38,6 +38,8 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
 
@@ -56,6 +58,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
     private ClaimService claimService;
     private BordereauSchemaValidation bordereauSchemaValidation;
+    protected ActivityEventGenerator activityEventGenerator;
 
         
     @Override
@@ -78,6 +81,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setBordereauService(BordereauService bordereauService) {
         this.bordereauService = bordereauService;
+    }
+    
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
     }
 
     public BreBandService getBreBandService() {
@@ -232,6 +239,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     LOG.debug("Insurer upload activity completed.");
 
+                } else {
+                    // If Claim has been updated but no activity has been called, we need to generate  a Claimupdate Event
+                    if (claimResult.getProcessStatus().equals("Updated")) {
+                        LOG.debug("Processed bordereau and no activity ran but claim updated: generatung ClaimUpdatedEvent");
+                        activityEventGenerator.generate(claimResult.getClaim(), ActivityEvent.CLAIM_UPDATED_EVENT);
+                    }
                 }
                 
                 if (claimResult.isCheckForRepairAnomalies()) {

@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.Attachment;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -716,10 +717,25 @@ public enum ActivityEvent {
     },
     NEW_SUPPLEMENTARY_INVOICE_EVENT         (40, "NewSupplementaryInvoice"), //TODO
     // Non-activity based events
-    ATTACHMENT_UPLOADED_EVENT               (100, "AttachmentUploadedEvent"),//TODO
-    ATTACHMENT_DELETED_EVENT                (101, "AttachmentDeletedEvent"),//TODO
-    TASK_CREATED_EVENT                      (102, "TaskCreatedEvent"),//TODO
-    TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent"),//TODO
+    ATTACHMENT_UPLOADED_EVENT               (100, "AttachmentUploadedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment)  throws Exception {
+            LOG.debug("Building NoteAddedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("attachmentCategory", attachment.getCategory());
+            generator.addParameter("attachmentFileName", attachment.getFileName());
+            generator.addParameter("attachmentFileType", attachment.getFileType());
+            generator.addParameter("attachmentRemarks", attachment.getRemarks());
+//            generator.addParameter("attachmentContent", attachment.getAttachment().getFileBuffer());
+            generator.addParameter("createdBy", attachment.getCreatedBy().getFullName());
+            generator.completeEvent(claim);
+        }
+    },
+// Removed - not needed
+//    ATTACHMENT_DELETED_EVENT                (101, "AttachmentDeletedEvent"),//TODO
+// Moved to data.events.ChoxEvent class: none-activity related
+//    TASK_CREATED_EVENT                      (102, "TaskCreatedEvent"),//TODO
+//    TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent"),//TODO
     NOTE_ADDED_EVENT                        (104, "NoteAddedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
@@ -733,7 +749,7 @@ public enum ActivityEvent {
                 generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             }
             generator.addParameter("note", comment.getComment());
-            generator.addParameter("raisedBy", comment.getRaisedBy().getFullName());
+            generator.addParameter("createdBy", comment.getCreatedBy().getFullName());
             generator.completeEvent(claim);
         }
     },
@@ -773,15 +789,6 @@ public enum ActivityEvent {
             this.addClaimHireMonitoringParameters(generator, claim);
             generator.completeEvent(claim);
         }
-    },
-    CHO_REFERENCE_NO_UPDATED_EVENT          (109, "ChoReferenceNumberUpdatedEvent") {
-        @Override
-        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
-            LOG.debug("Building ChoReferenceNumberUpdatedEvent");
-            generator.startEvent(claim, this.getName(), this.getEventId());
-            this.addClaimHireMonitoringParameters(generator, claim);
-            generator.completeEvent(claim);
-        }
     };
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);
@@ -813,6 +820,10 @@ public enum ActivityEvent {
     }
 
     public void build(ActivityEventGenerator generator, Claim claim, Comment comment) throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment) throws Exception {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -1377,6 +1388,7 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringIsTotalLoss", hireMonitoringDetail.getIsTotalLossDesc());
             generator.addParameter("hireMonitoringIsRepairOnly", hireMonitoringDetail.isIsRepairOnlyCheck());
             generator.addParameter("hireMonitoringIsClientVatRegistered", hireMonitoringDetail.getClientVatRegisteredDesc());
+            addClaimHireVehicleParameters(generator, claim);
         }
     }
 

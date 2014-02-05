@@ -24,7 +24,7 @@ public class ClaimRejectionAccept extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
-        eventGenerator.generate(claim, this);
+        activityEventGenerator.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

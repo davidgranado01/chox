@@ -73,6 +73,11 @@
             <version>${chox.core.version}</version>
         </dependency>
         <dependency>
+            <groupId>idas.chox</groupId>
+            <artifactId>events</artifactId>
+            <version>${chox.events.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate-core.version}</version>

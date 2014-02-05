@@ -29,6 +29,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.web.viewdata.AttachmentViewData;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
@@ -309,7 +310,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             if (!processFile(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown Error occurred, please try again.");
             } else {
-                if (notifyTask) {
+               activityEventGenerator.generate(claim, model, ActivityEvent.ATTACHMENT_UPLOADED_EVENT);
+               if (notifyTask) {
                     Task task = new Task();
                     task.setComplete(Boolean.FALSE);
                     task.setDescription("The " + getWhoCreated() + " has uploaded the following attachment '" + this.category + "' which requires review.");

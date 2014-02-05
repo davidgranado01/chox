@@ -45,7 +45,7 @@ public class FullPaymentNotReceived extends BaseActivity {
         LOG.debug("Claim saved - logging transaction...");
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
-        eventGenerator.generate(claim, this);
+        activityEventGenerator.generate(claim, this);
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

@@ -23,7 +23,7 @@ import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.data.events.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
@@ -87,7 +87,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private Invoice originalInvoice;
     private EngineerReport originalEngineerReport;
     private VehicleHire originalVehicleHire;
-    private ActivityEventGenerator eventGenerator;
+    private ActivityEventGenerator activityEventGenerator;
     
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -403,8 +403,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         this.applicationAccessibility = applicationAccessibility;
     }
 
-    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
-        this.eventGenerator = eventGenerator;
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
     }
 
     // </editor-fold>
@@ -2290,7 +2290,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 modelSaved = true;
                 this.setActionResult("Your Changes Have Been Saved");
-                eventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
+                activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
                 return SUCCESS;
             } catch (Exception ex) {
                 LOG.warn("Exception is thrown and passing to baseAction ", ex);
@@ -2317,7 +2317,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             StringBuilder sb = new StringBuilder();
             boolean isSubscriberClaim = false;
             boolean isCollaborationProtocolClaim = false;
-            int stringLength = 0;
+            int stringLength;
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 isSubscriberClaim = true;
             } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {

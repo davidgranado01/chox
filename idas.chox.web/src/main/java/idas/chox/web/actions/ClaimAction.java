@@ -159,7 +159,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
-    private ActivityEventGenerator eventGenerator;
+    private ActivityEventGenerator activityEventGenerator;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -211,8 +211,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.userService = userService;
     }
 
-    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
-        this.eventGenerator = eventGenerator;
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
     }
     // </editor-fold>
 
@@ -556,7 +556,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim.setClaimNumber(claim.getClaimNumber().trim());
             this.service.updateClaim(claim);
-            eventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
+            activityEventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
             setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");

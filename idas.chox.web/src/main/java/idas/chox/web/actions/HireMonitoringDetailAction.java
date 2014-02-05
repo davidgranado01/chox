@@ -12,8 +12,7 @@ import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.data.events.ActivityEvent;
-import idas.chox.service.workflow.activities.ActivityEventGenerator;
+import idas.chox.service.workflow.activities.ActivityEvent;
 
 /**
  *
@@ -30,7 +29,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private String labourHour;
     private String labourCost;
     private boolean managingRepair;
-//    private ActivityEventGenerator eventGenerator;
     
     public String getLabourCost() {
         return labourCost;
@@ -80,10 +78,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     public Date getManagingRepairLastModified() {
         return claim.getManagingRepairLastModified();
     }
-
-//    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
-//        this.eventGenerator = eventGenerator;
-//    }
 
     @Override
     public HireMonitoringDetail loadModel() {
@@ -160,9 +154,12 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             }
 
             LOG.debug("HireMonitoringDetail to be updated: claim version={}, hmd version={}", claim.getVersion(), model.getVersion());
-            eventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
 
-            return super.updateModel();
+            String result = super.updateModel();
+            
+            activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
+
+            return result;
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
