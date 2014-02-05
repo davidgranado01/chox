@@ -55,14 +55,14 @@ public class EventService {
         try {
             event.build(this, claim, oldReference);
         } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+            LOG.error("Error generating refupdate events for event '{}' : {}", new Object[]{event, ex.getMessage(), ex});
             return;
         }
 
         try {
             eventGenerator.sendEvents();
         } catch (Exception ex) {
-            LOG.error("Error sending generated events for activity '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+            LOG.error("Error sending generated refupdate events for '{}' : {}", new Object[]{event, ex.getMessage(), ex});
         }
     }
 
