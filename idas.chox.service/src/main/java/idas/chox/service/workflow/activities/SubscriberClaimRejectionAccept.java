@@ -13,9 +13,14 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriberClaimRejectionAccept.class);
     private ReasonOfRejectionService reasonOfRejectionService;
     private TaskService taskService;
+    private boolean hireCarInfoProvided = false;
 
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
+    }
+
+    public boolean isHireCarInfoProvided() {
+        return hireCarInfoProvided;
     }
 
     @Override
@@ -33,6 +38,7 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
             setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);
+            hireCarInfoProvided = true;
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
         }
     }

@@ -12,7 +12,7 @@ import idas.chox.data.services.EventService;
  * @author John
  */
 public enum ChoxEvent {
-    TASK_CREATED_EVENT                      (102, "TaskCreatedEvent") {
+    TASK_CREATED_EVENT                      (100, "TaskCreatedEvent") {
         @Override
         public void build(EventService generator, Claim claim, Task task) throws Exception {
             LOG.debug("Building TaskCreatedEvent");
@@ -32,7 +32,7 @@ public enum ChoxEvent {
         }
    },
 
-    TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent") {
+    TASK_COMPLETED_EVENT                    (101, "TaskCompletedEvent") {
         @Override
         public void build(EventService generator, Claim claim, Task task) throws Exception {
             LOG.debug("Building TaskCompletedEvent");
@@ -53,7 +53,7 @@ public enum ChoxEvent {
             generator.completeEvent(claim);
         }
     },
-    CHO_REFERENCE_NO_UPDATED_EVENT          (109, "ChoReferenceNumberUpdatedEvent") {
+    CHO_REFERENCE_NO_UPDATED_EVENT          (102, "ChoReferenceNumberUpdatedEvent") {
         @Override
         public void build(EventService generator, Claim claim, String oldReference)  throws Exception {
             LOG.debug("Building ChoReferenceNumberUpdatedEvent");

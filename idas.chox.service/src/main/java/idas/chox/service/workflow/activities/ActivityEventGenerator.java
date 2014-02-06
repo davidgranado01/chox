@@ -197,7 +197,7 @@ public class ActivityEventGenerator {
                     ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InsurerUpload) activity, claim);
                 }
                 ActivityEvent.INVOICE_UPLOADED_EVENT.build(this, (InsurerUpload) activity, claim);
-                ActivityEvent.BRE_RESULT_EVENT.build(this, (InsurerUpload) activity, claim);
+                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (InsurerUpload) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceAccepted")) {
                 LOG.debug("InvoiceAccepted activity found");
                 ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceAccepted) activity, claim);
@@ -222,8 +222,7 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("InvoiceRejectionContest")) {
                 LOG.debug("InvoiceRejectionContest activity found");
                 ActivityEvent.INVOICE_REJECTION_CONTESTED_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
-                ActivityEvent.INVOICE_RESUBMITTED_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
-                ActivityEvent.BRE_RESULT_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
+                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceResubmit")) {
                 LOG.debug("InvoiceResubmit activity found");
                 if (((InvoiceResubmit) activity).claimOwnerAssigned) {
@@ -232,8 +231,7 @@ public class ActivityEventGenerator {
                 if (((InvoiceResubmit) activity).claimRouted) {
                     ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InvoiceResubmit) activity, claim);
                 }
-                ActivityEvent.INVOICE_RESUBMITTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
-                ActivityEvent.BRE_RESULT_EVENT.build(this, (InvoiceResubmit) activity, claim);
+                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
                 if (((InvoiceResubmit) activity).invoiceAccepted) {
                     ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceResubmit) activity, claim);
                 }
@@ -271,7 +269,6 @@ public class ActivityEventGenerator {
                     ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewInvoice) activity, claim);
                 }
                 ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (NewInvoice) activity, claim);
-                ActivityEvent.BRE_RESULT_EVENT.build(this, (NewInvoice) activity, claim);
                 if (((NewInvoice) activity).invoiceAccepted) {
                     ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewInvoice) activity, claim);
                 }
@@ -280,6 +277,7 @@ public class ActivityEventGenerator {
                 ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (NewTpiClaim) activity, claim);
                 if (((NewTpiClaim) activity).newClaim) {
                     ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewTpiClaim) activity, claim);
+                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewTpiClaim) activity, claim);            
                 }
                 if (((NewTpiClaim) activity).claimRouted) {
                     ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewTpiClaim) activity, claim);
@@ -315,9 +313,14 @@ public class ActivityEventGenerator {
                 LOG.debug("SubscriberClaimRejectionAccept activity found");
                 // Do we still raise the following if claim moves to AwaitingInvoicedata?
                 //     Maybe change to SubscroberClaimRejected event?
-                ActivityEvent.CLAIM_REJECTION_ACCEPTED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
 // Not sure what events to raise when subscriber claim is rejected and moves to AwaitingInvoiceData
 //                ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
+                if (((SubscriberClaimRejectionAccept) activity).isHireCarInfoProvided()) {
+                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
+                    ActivityEvent.SUBSCRIBER_CLAIM_REJECTED_GTA.build(this, (SubscriberClaimRejectionAccept) activity, claim);
+                } else {
+                    ActivityEvent.CLAIM_REJECTION_ACCEPTED_EVENT.build(this, (SubscriberClaimRejectionAccept) activity, claim);
+                }
             } else if (activityName.equalsIgnoreCase("SubscriberClaimToGta")) {
                 LOG.debug("SubscriberClaimToGta activity found");
                 ActivityEvent.CLAIM_SWITCHED_TO_GTA_EVENT.build(this, (SubscriberClaimToGta) activity, claim);
@@ -341,6 +344,7 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("NewSupplementaryInvoice")) {
                 if (((NewSupplementaryInvoice) activity).isNewClaim) {
                     ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);
+                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);            
                 }
             } else {
                 LOG.error("Activity not found");

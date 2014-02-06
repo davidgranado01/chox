@@ -149,10 +149,115 @@ public enum ActivityEvent {
         @Override
         public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceSubmittedEvent from NewInvoice activity");
-            generator.startEvent(claim, this.getName(), this.getEventId());
+            // First generate CHO event for public BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
+            List breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+            // Now generate an Insurer event for all BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
+            addInvoiceParameters(generator, claim);
+            breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
             generator.completeEvent(claim);
         }
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
+            LOG.debug("Building from InvoiceSubmittedEvent from InvoiceResubmit activity");
+            // First generate CHO event for public BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
+            addInvoiceParameters(generator, claim);
+            List breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+            // Now generate an Insurer event for all BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
+            addInvoiceParameters(generator, claim);
+            breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
+            LOG.debug("Building from InvoiceSubmittedEvent from InvoiceRejectionContest activity");
+            // First generate CHO event for public BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
+            addInvoiceParameters(generator, claim);
+            List breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+            // Now generate an Insurer event for all BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
+            addInvoiceParameters(generator, claim);
+            breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim) throws Exception {
+            LOG.debug("Building BreResultEvent from InsurerUpload activity");
+            // First generate CHO event for public BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
+            addInvoiceParameters(generator, claim);
+            List breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+            // Now generate an Insurer event for all BRE messages
+            generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
+            addInvoiceParameters(generator, claim);
+            breResult = new ArrayList<String>();
+            for (History history : History.New(activity.breResponse)) {
+                if (history.getType().equals("ERROR") && !history.getIsOld()) {
+                    String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
+                    breResult.add(result);
+                }
+            }
+            generator.addParameter("breResult", breResult);
+            generator.completeEvent(claim);
+        }       
     },
     CLAIM_CLOSED_EVENT                      (8, "ClaimClosedEvent") {
         @Override
@@ -251,89 +356,19 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }       
     },
-    BRE_RESULT_EVENT                        (12, "BreResultEvent") {
-        @Override
-        public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim) throws Exception {
-            LOG.debug("Building BreResultEvent from InsurerUpload activity");
-            List breResult = new ArrayList<String>();
-            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
-            for (History history : History.New(activity.breResponse)) { 
-                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
-                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
-                breResult.add(result);
-            }
-            generator.addParameter("breResult", breResult);
-            generator.completeEvent(claim);
-        }       
-        @Override
-        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim) throws Exception {
-            LOG.debug("Building BreResultEvent from InvoiceRejectionContest activity");
-            List breResult = new ArrayList<String>();
-            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
-            for (History history : History.New(activity.breResponse)) { 
-                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
-                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
-                breResult.add(result);
-            }
-            generator.addParameter("breResult", breResult);
-            generator.completeEvent(claim);
-        }       
-        @Override
-        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim) throws Exception {
-            LOG.debug("Building BreResultEvent from InvoiceResubmit activity");
-            List breResult = new ArrayList<String>();
-            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
-            for (History history : History.New(activity.breResponse)) { 
-                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
-                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
-                breResult.add(result);
-            }
-            generator.addParameter("breResult", breResult);
-            generator.completeEvent(claim);
-        }       
-        @Override
-        public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim) throws Exception {
-            LOG.debug("Building BreResultEvent from NewInvoice activity");
-            List breResult = new ArrayList<String>();
-            generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
-            for (History history : History.New(activity.breResponse)) { 
-                // TODOMay also Need to add isPublic flag so that private history can be filtered out for CHO?
-                String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
-                breResult.add(result);
-            }
-            generator.addParameter("breResult", breResult);
-            generator.completeEvent(claim);
-        }       
-    },
-    ECD_UPDATED_EVENT                       (13, "EcdUpdatedEvent") {
+    ECD_UPDATED_EVENT                       (12, "EcdUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, EcdUpdate activity, Claim claim) throws Exception {
             LOG.debug("Building EcdUpdatedEvent from EcdUpdate activity");
             generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
-            generator.addParameter("hireMonitoringEcdDate", activity.getEcdDate());
+            generator.addParameter("hireMonitoringEcdDate", DateHelper.getLocalDateFormat().format(activity.getEcdDate()));
             generator.addParameter("hireMonitoringEcdSupportingNote", activity.getSupportingNote());
             generator.addParameter("hireMonitoringEcdReason", activity.getReason());
 //            addClaimHireMonitoringEcdParameters(generator, claim);
             generator.completeEvent(claim);
         }       
     },
-    INVOICE_RESUBMITTED_EVENT               (14, "InvoiceResubmittedEvent") {
-        @Override
-        public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InvoiceResubmittedEvent from InvoiceResubmit activity");
-            generator.startEvent(claim, this.getName(), this.getEventId());
-            this.addInvoiceParameters(generator, claim);
-            generator.completeEvent(claim);
-        }
-        @Override
-        public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
-            LOG.debug("Building from InvoiceResubmittedEvent from InvoiceRejectionContest activity");
-            generator.startEvent(claim, this.getName(), this.getEventId());
-            this.addInvoiceParameters(generator, claim);
-            generator.completeEvent(claim);
-        }
-    },
-    CLAIM_REVERTED_EVENT                    (15, "ClaimRevertedEvent") {
+    CLAIM_REVERTED_EVENT                    (13, "ClaimRevertedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, RevertClaim activity, Claim claim)  throws Exception {
             LOG.debug("Building from ClaimRevertedEvent from RevertClaim activity");
@@ -353,7 +388,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    LIABILITY_UPDATED_EVENT                 (16, "LiabilityUpdatedEvent") {
+    LIABILITY_UPDATED_EVENT                 (14, "LiabilityUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, AcknowledgeClaim activity, Claim claim)  throws Exception {
             LOG.debug("Building from LiabilityUpdatedEvent from AcknowledgeClaim activity");
@@ -419,7 +454,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REJECTION_CONTESTED_EVENT       (17, "InvoiceRejectionContestedEvent") {
+    INVOICE_REJECTION_CONTESTED_EVENT       (15, "InvoiceRejectionContestedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoiceRejectionContest activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceRejectionContestEvent from InvoiceRejectionContest activity");
@@ -428,7 +463,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    SLA_EXTENSION_GRANTED_EVENT             (18, "SlaExtensionGrantedEvent") {
+    SLA_EXTENSION_GRANTED_EVENT             (16, "SlaExtensionGrantedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, SlaExtension activity, Claim claim)  throws Exception {
             LOG.debug("Building SlaExtensionGrantedEvent from SlaExtension activity");
@@ -437,7 +472,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REJECTION_ACCEPTED_EVENT        (19, "InvoiceRejectionAcceptedEvent") {
+    INVOICE_REJECTION_ACCEPTED_EVENT        (17, "InvoiceRejectionAcceptedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoiceRejectionAccept activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceRejectionAcceptedEvent from InvoiceRejectionAccept activity");
@@ -446,7 +481,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_NUMBER_ASSIGNED_EVENT             (20, "ClaimNumberAssignedEvent") {
+    CLAIM_NUMBER_ASSIGNED_EVENT             (18, "ClaimNumberAssignedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimRegisterByFnol activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimNumberAssignedEvent from ClaimRegisterByFnol activity");
@@ -462,7 +497,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INTERIM_PAYMENT_ACCEPTED_AS_FINAL_EVENT (21, "InterimPaymentAcceptedAsFinalEvent") {
+    INTERIM_PAYMENT_ACCEPTED_AS_FINAL_EVENT (19, "InterimPaymentAcceptedAsFinalEvent") {
         @Override
         public void build(ActivityEventGenerator generator, UpdateInterimPaymentFullAndFinal activity, Claim claim)  throws Exception {
             LOG.debug("Building InterimPaymentAcceptedAsFinalEvent from UpdateInterimPaymentFullAndFinal activity");
@@ -471,7 +506,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    NEW_CLAIM_EVENT                         (22, "NewClaimEvent") {
+    NEW_CLAIM_EVENT                         (20, "NewClaimEvent") {
         @Override
         public void build(ActivityEventGenerator generator, NewClaim activity, Claim claim)  throws Exception {
             LOG.debug("Building NewClaimEvent from NewClaim activity");
@@ -515,7 +550,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    HIRE_CAR_INFO_PROVIDED_EVENT            (23, "HireCarInfoProvidedEvent") {
+    HIRE_CAR_INFO_PROVIDED_EVENT            (21, "HireCarInfoProvidedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimAwaitingCarHireInfo activity, Claim claim)  throws Exception {
             LOG.debug("Building HireCarInfoProvidedEvent from ClaimAwaitingCarHireInfo activity");
@@ -523,8 +558,29 @@ public enum ActivityEvent {
             this.addClaimHireMonitoringParameters(generator, claim);
             generator.completeEvent(claim);
         }
+        @Override
+        public void build(ActivityEventGenerator generator, SubscriberClaimRejectionAccept activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireCarInfoProvidedEvent from SubscriberClaimRejectionAccept activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewSupplementaryInvoice activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireCarInfoProvidedEvent from NewSupplementaryInvoice activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireCarInfoProvidedEvent from NewTpiClaim activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
     },
-    CLAIM_REJECTED_EVENT                    (24, "ClaimRejectedEvent") {
+    CLAIM_REJECTED_EVENT                    (22, "ClaimRejectedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimRejection activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimRejectedEvent from ClaimRejection activity");
@@ -534,7 +590,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_PAID_EVENT                      (25, "InvoicePaidEvent") {
+    INVOICE_PAID_EVENT                      (23, "InvoicePaidEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoicePaymentLogged activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoicePaidEvent from InvoicePaymentLogged activity");
@@ -564,7 +620,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CHO_OWNER_ASSIGNED_EVENT                (26, "ChoOwnerAssignedEvent") {
+    CHO_OWNER_ASSIGNED_EVENT                (24, "ChoOwnerAssignedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, AssignSupplierOwner activity, Claim claim)  throws Exception {
             LOG.debug("Building ChoOwnerAssignedEvent from AssignSupplierOwner activity");
@@ -573,7 +629,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    FULL_PAYMENT_NOT_RECEIVED_EVENT         (27, "FullPaymentNotReceivedEvent") {
+    FULL_PAYMENT_NOT_RECEIVED_EVENT         (25, "FullPaymentNotReceivedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, FullPaymentNotReceived activity, Claim claim)  throws Exception {
             LOG.debug("Building FullPaymentNotReceivedEvent from FullPaymentNotReceived activity");
@@ -589,7 +645,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_REJECTION_ACCEPTED_EVENT          (28, "ClaimRejectionAcceptedEvent") {
+    CLAIM_REJECTION_ACCEPTED_EVENT          (26, "ClaimRejectionAcceptedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimRejectionAccept activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimRejectionAcceptedEvent from ClaimRejectionAccept activity");
@@ -603,7 +659,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_PENDING_EVENT                     (29, "ClaimPendingEvent") {
+    CLAIM_PENDING_EVENT                     (27, "ClaimPendingEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimPending activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimPendingEvent from ClaimPending activity");
@@ -611,7 +667,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_PAYMENT_RECEIVED_EVENT          (30, "InvoicePaymentReceivedEvent") {
+    INVOICE_PAYMENT_RECEIVED_EVENT          (28, "InvoicePaymentReceivedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoicePaymentReceived activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoicePaymentReceivedEvent from InvoicePaymentReceived activity");
@@ -619,7 +675,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_REJECTION_CONTESTED_EVENT         (31, "ClaimRejectionContestedEvent") {
+    CLAIM_REJECTION_CONTESTED_EVENT         (29, "ClaimRejectionContestedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimRejectionContest activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimRejectionContestedEvent from ClaimRejectionContest activity");
@@ -627,7 +683,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_REFERRED_TO_FNOL_EVENT            (32, "ClaimReferToFnolEvent") {
+    CLAIM_REFERRED_TO_FNOL_EVENT            (30, "ClaimReferToFnolEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimReferToFnolEvent from ClaimReferToFnol activity");
@@ -635,7 +691,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_REFERRED_TO_ENG_EVENT             (33, "ClaimReferToEngEvent") {
+    CLAIM_REFERRED_TO_ENG_EVENT             (31, "ClaimReferToEngEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimReferToEng activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimReferToEngEvent from InvoiceAccepted activity");
@@ -643,7 +699,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_ACCEPTED_EVENT                  (34, "InvoiceAcceptedEvent") {
+    INVOICE_ACCEPTED_EVENT                  (32, "InvoiceAcceptedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoiceAccepted activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceAcceptedEvent from InvoiceAccepted activity");
@@ -675,7 +731,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REFERRED_TO_ENG_EVENT           (35, "InvoiceReferToEngEbent") {
+    INVOICE_REFERRED_TO_ENG_EVENT           (33, "InvoiceReferToEngEbent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoiceReferToEng activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceReferToEng from InvoiceReferToEng activity");
@@ -683,7 +739,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_REGISTERED_BY_FNOL_EVENT          (36, "ClaimRegisterByFnolEvent") {
+    CLAIM_REGISTERED_BY_FNOL_EVENT          (34, "ClaimRegisterByFnolEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimRegisterByFnol activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimRegisterByFnolEvent from ClaimRegisterByFnol activity");
@@ -691,7 +747,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_AWAITING_LITIGATION_OUTCOME_EVENT (37, "ClaimAwaitingLitigationOutcomeEvent") {
+    CLAIM_AWAITING_LITIGATION_OUTCOME_EVENT (35, "ClaimAwaitingLitigationOutcomeEvent") {
         @Override
         public void build(ActivityEventGenerator generator, AwaitingLitigationOutcome activity, Claim claim) throws Exception {
             LOG.debug("Building ClaimAwaitingLitigationOutcomeEvent from AwaitingLitigationOutcome activity");
@@ -699,7 +755,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }       
     },
-    CLAIM_REVIEW_BY_ENG_EVENT               (38, "ClaimReviewByEngEvent") {
+    CLAIM_REVIEW_BY_ENG_EVENT               (36, "ClaimReviewByEngEvent") {
         @Override
         public void build(ActivityEventGenerator generator, ClaimReviewByEng activity, Claim claim)  throws Exception {
             LOG.debug("Building from ClaimReviewByEngEvent from ClaimReviewByEng activity");
@@ -707,7 +763,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_REFERRED_TO_CH_EVENT            (39, "InvoiceReferToCHEvent") {
+    INVOICE_REFERRED_TO_CH_EVENT            (37, "InvoiceReferToCHEvent") {
         @Override
         public void build(ActivityEventGenerator generator, InvoiceReferToCH activity, Claim claim)  throws Exception {
             LOG.debug("Building from InvoiceReferToCHEvent from InvoiceReferToCH activity");
@@ -715,9 +771,17 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    NEW_SUPPLEMENTARY_INVOICE_EVENT         (40, "NewSupplementaryInvoice"), //TODO
-    // Non-activity based events
-    ATTACHMENT_UPLOADED_EVENT               (100, "AttachmentUploadedEvent") {
+    SUBSCRIBER_CLAIM_REJECTED_GTA             (38, "SubscriberClaimRejectedToGTA") {
+        @Override
+        public void build(ActivityEventGenerator generator, SubscriberClaimToGta activity, Claim claim)  throws Exception {
+            LOG.debug("Building SubscriberClaimRejectedToGTA from SubscriberClaimToGta activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
+//    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
+    // Non-activity based events - should be moved to ChoxEvents in data package TODO
+    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment)  throws Exception {
             LOG.debug("Building NoteAddedEvent");
@@ -731,12 +795,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-// Removed - not needed
-//    ATTACHMENT_DELETED_EVENT                (101, "AttachmentDeletedEvent"),//TODO
-// Moved to data.events.ChoxEvent class: none-activity related
-//    TASK_CREATED_EVENT                      (102, "TaskCreatedEvent"),//TODO
-//    TASK_COMPLETED_EVENT                    (103, "TaskCompletedEvent"),//TODO
-    NOTE_ADDED_EVENT                        (104, "NoteAddedEvent") {
+    NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
             LOG.debug("Building NoteAddedEvent");
@@ -753,17 +812,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-// Event removed - not needed
-//    NOTE_DELETED_EVENT                      (105, "NoteDeletedEvent") {
-//        @Override
-//        public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
-//            LOG.debug("Building NoteDeletedEvent");
-//            generator.startEvent(claim, this.getName(), this.getEventId());
-//            // TODO
-//            generator.completeEvent(claim);
-//        }
-//    },
-    CLAIM_UPDATED_EVENT                     (106, "ClaimUpdatedEvent") {
+    CLAIM_UPDATED_EVENT                     (52, "ClaimUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
             LOG.debug("Building ClaimUpdatedEvent");
@@ -772,7 +821,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    INVOICE_UPDATED_EVENT                   (107, "InvoiceUpdatedEvent") {
+    INVOICE_UPDATED_EVENT                   (53, "InvoiceUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceUpdatedEvent");
@@ -781,7 +830,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    HIRE_MONITORING_UPDATED_EVENT           (108, "HireMonitoringUpdatedEvent") {
+    HIRE_MONITORING_UPDATED_EVENT           (54, "HireMonitoringUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
             LOG.debug("Building HireMonitoringUpdatedEvent");
@@ -1118,34 +1167,43 @@ public enum ActivityEvent {
         generator.addParameter("claimType", claim.getClaimType().toString());
         if (claim.getPolicyHolderContactDate() != null) {
             generator.addParameter("policyHolderContactDate", DateHelper.getLocalDateFormat().format(claim.getPolicyHolderContactDate()));
+        } else {
+            generator.addParameter("policyHolderContactDate", null);
         }
         if (claim.getCreditAgreementDate() != null) {
             generator.addParameter("creditAgreementDate", DateHelper.getLocalDateFormat().format(claim.getCreditAgreementDate()));
+        } else {
+            generator.addParameter("creditAgreementDate", null);
         }
         if (claim.getGtaNoticeDate() != null) {
             generator.addParameter("gtaNoticeDate", DateHelper.getLocalDateFormat().format(claim.getGtaNoticeDate()));
+        } else {
+            generator.addParameter("gtaNoticeDate", null);
         }
         if (claim.getFinalReviewByCho() != null) {
             generator.addParameter("finalReviewCho", claim.getFinalReviewByCho().getDisplayName());
+        } else {
+            generator.addParameter("finalReviewCho", null);
         }
         if (claim.getFinalReviewByIns() != null) {
             generator.addParameter("finalReviewInsurer", claim.getFinalReviewByIns().getDisplayName());
+        } else {
+            generator.addParameter("finalReviewInsurer", null);
         }
         if (claim.getFinalReviewDateIns() != null) {
             generator.addParameter("finalReviewDateCho", DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateCho()));
+        } else {
+            generator.addParameter("finalReviewDateCho", null);
         }
         if (claim.getFinalReviewDateIns() != null) {
             generator.addParameter("finalReviewDateInsurer", DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns()));
+        } else {
+            generator.addParameter("finalReviewDateInsurer", null);
         }
-        if (claim.getSupplierClaimOwner() != null) {
-            generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getDisplayName());
-        }
-        if (claim.getClaimOwner() != null) {
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getDisplayName());
-        }
-        if (claim.getWorkgroup() != null) {
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
-        }
+        generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getDisplayName());
+        generator.addParameter("insurerOwnerName", claim.getClaimOwner().getDisplayName());
+        generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+
     }
 
     public void addClaimCustomerParameters(ActivityEventGenerator generator, Claim claim) {
@@ -1170,6 +1228,26 @@ public enum ActivityEvent {
             generator.addParameter("customerAge", customer.getAge());
             generator.addParameter("customerOccupation", customer.getOccupation());
             generator.addParameter("customerPolicyUsage", customer.getPolicyUsage());
+        } else {
+            generator.addParameter("customerTitle", null);
+            generator.addParameter("customerFirstName", null);
+            generator.addParameter("customerLastName", null);
+            generator.addParameter("customerAddress1", null);
+            generator.addParameter("cuatomerAddress2", null);
+            generator.addParameter("cuatomerAddress3", null);
+            generator.addParameter("cuatomerAddress4", null);
+            generator.addParameter("cuatomerAddress5", null);
+            generator.addParameter("customerPostcode", null);
+            generator.addParameter("customerTelephoneDay", null);
+            generator.addParameter("customerTelephoneEvening", null);
+            generator.addParameter("customerEmail", null);
+            generator.addParameter("customerPolicyNumber", null);
+            generator.addParameter("customerClaimNumber", null);
+            generator.addParameter("customerHasComprehensiveCover", null);
+            generator.addParameter("customerInsurerName", null);
+            generator.addParameter("customerAge", null);
+            generator.addParameter("customerOccupation", null);
+            generator.addParameter("customerPolicyUsage", null);
         }
     }
     
@@ -1181,15 +1259,30 @@ public enum ActivityEvent {
             generator.addParameter("customerVehicleModel", customer.getVehicleModel());
             if (customer.getVehicleClass() != null) {
                 generator.addParameter("customerVehicleClass", customer.getVehicleClass().getName());
+            } else {
+                generator.addParameter("customerVehicleClass", null);
             }
             generator.addParameter("customerVehicleLocation", customer.getLocation());
             generator.addParameter("customerVehicleDamage", customer.getDamage());
             if (customer.getInitialECD() != null) {
                 generator.addParameter("customerVehicalInitialEcd", DateHelper.getLocalDateFormat().format(customer.getInitialECD()));
+            } else {
+                generator.addParameter("customerVehicalInitialEcd", null);
             }
             generator.addParameter("customerVehicleIsUsable", customer.getIsUsable());
             generator.addParameter("customerVehicleIsTotalLoss", customer.getIsTotalLossDesc());
             generator.addParameter("customerVehicleYear", customer.getVehicleYear());
+        } else {
+            generator.addParameter("customerVehicleRegistration", null);
+            generator.addParameter("customerVehicleManufacturer", null);
+            generator.addParameter("customerVehicleModel", null);
+            generator.addParameter("customerVehicleClass", null);
+            generator.addParameter("customerVehicleLocation", null);
+            generator.addParameter("customerVehicleDamage", null);
+            generator.addParameter("customerVehicalInitialEcd", null);
+            generator.addParameter("customerVehicleIsUsable", null);
+            generator.addParameter("customerVehicleIsTotalLoss", null);
+            generator.addParameter("customerVehicleYear", null);
         }
     }
     
@@ -1205,6 +1298,16 @@ public enum ActivityEvent {
             generator.addParameter("customerSpecificVehicleType", customer.getTypeVehicleRequired());
             generator.addParameter("customerSpecialRequirements", customer.getSpecialRequirements());
             generator.addParameter("customerAverageDailyMilage", customer.getAverageDailyMileage());
+        } else {
+            generator.addParameter("customerCanAccessOtherVehicle", null);
+            generator.addParameter("customerOtherVehicleUsed", null);
+            generator.addParameter("customerOtherVehicle", null);
+            generator.addParameter("customerEntitledToCourtesyCar", null);
+            generator.addParameter("customerSpecificVehicleRequired", null);
+            generator.addParameter("customerSpecificVehicleReason", null);
+            generator.addParameter("customerSpecificVehicleType", null);
+            generator.addParameter("customerSpecialRequirements", null);
+            generator.addParameter("customerAverageDailyMilage", null);
         }
     }
     
@@ -1213,10 +1316,17 @@ public enum ActivityEvent {
         if (incident != null) {
             if (incident.getDate() != null) {
                 generator.addParameter("incidentDate", DateHelper.getLocalDateFormat().format(incident.getDate()));
+            } else {
+                generator.addParameter("incidentDate", null);
             }
             generator.addParameter("incidentLocation", incident.getLocation());
             generator.addParameter("incidentDescription", incident.getIncidentDescription());
             generator.addParameter("incidentIsPoliceInvolved", incident.getIsPoliceInvolvedDesc());
+        } else {
+            generator.addParameter("incidentDate", null);
+            generator.addParameter("incidentLocation", null);
+            generator.addParameter("incidentDescription", null);
+            generator.addParameter("incidentIsPoliceInvolved", null);
         }
     }
     
@@ -1233,6 +1343,17 @@ public enum ActivityEvent {
             generator.addParameter("witnessTelephoneDay", witness.getTelephoneDay());
             generator.addParameter("witnessTelephoneEvening", witness.getTelephoneEvening());
             generator.addParameter("witnessEmail", witness.getEmail());
+        } else {
+            generator.addParameter("witnessName", null);
+            generator.addParameter("witnessAddress1", null);
+            generator.addParameter("witnessAddress2", null);
+            generator.addParameter("witnessAddress3", null);
+            generator.addParameter("witnessAddress4", null);
+            generator.addParameter("witnessAddress5", null);
+            generator.addParameter("witnessPostcode", null);
+            generator.addParameter("witnessTelephoneDay", null);
+            generator.addParameter("witnessTelephoneEvening", null);
+            generator.addParameter("witnessEmail", null);
         }
     }
     
@@ -1249,6 +1370,17 @@ public enum ActivityEvent {
             generator.addParameter("injuryTelephoneDay", injury.getTelephoneDay());
             generator.addParameter("injuryTelephoneEvening", injury.getTelephoneEvening());
             generator.addParameter("injuryEmail", injury.getEmail());
+        } else {
+            generator.addParameter("injuryName", null);
+            generator.addParameter("injuryAddress1", null);
+            generator.addParameter("injuryAddress2", null);
+            generator.addParameter("injuryAddress3", null);
+            generator.addParameter("injuryAddress4", null);
+            generator.addParameter("injuryAddress5", null);
+            generator.addParameter("injuryPostcode", null);
+            generator.addParameter("injuryTelephoneDay", null);
+            generator.addParameter("injuryTelephoneEvening", null);
+            generator.addParameter("injuryEmail", null);
         }
     }
     
@@ -1265,6 +1397,16 @@ public enum ActivityEvent {
             generator.addParameter("injurySolicitorPostcode", solicitor.getPostcode());
             generator.addParameter("injurySolicitorTelephone", solicitor.getTelephone());
             generator.addParameter("injurySolicitorEmail", solicitor.getEmail());
+        } else {
+            generator.addParameter("injurySolicitorName", null);
+            generator.addParameter("injurySolicitorAddress1", null);
+            generator.addParameter("injurySolicitorAddress2", null);
+            generator.addParameter("injurySolicitorAddress3", null);
+            generator.addParameter("injurySolicitorAddress4", null);
+            generator.addParameter("injurySolicitorAddress5", null);
+            generator.addParameter("injurySolicitorPostcode", null);
+            generator.addParameter("injurySolicitorTelephone", null);
+            generator.addParameter("injurySolicitorEmail", null);
         }
     }
     
@@ -1273,6 +1415,8 @@ public enum ActivityEvent {
         if (thirdParty != null) {
             if (thirdParty.getInsurer() != null) {
                 generator.addParameter("thirdPartyInsurerName", thirdParty.getInsurer().getName());
+            } else {
+                generator.addParameter("thirdPartyInsurerName", null);
             }
             generator.addParameter("thirdPartyPolicyNumber", thirdParty.getPolicyNumber());
             generator.addParameter("thirdPartyClaimReference", thirdParty.getClaimReference());
@@ -1289,6 +1433,23 @@ public enum ActivityEvent {
             generator.addParameter("thirdPartyLastName", thirdParty.getLastName());
             generator.addParameter("thirdPartyTitle", thirdParty.getTitle());
             generator.addParameter("thirdPartyInsurerBrand", thirdParty.getInsurerBrand());
+        } else {
+            generator.addParameter("thirdPartyInsurerName", null);
+            generator.addParameter("thirdPartyPolicyNumber", null);
+            generator.addParameter("thirdPartyClaimReference", null);
+            generator.addParameter("thirdPartyFirstName", null);
+            generator.addParameter("thirdPartyAddress1", null);
+            generator.addParameter("thirdPartyAddress2", null);
+            generator.addParameter("thirdPartyAddress3", null);
+            generator.addParameter("thirdPartyAddress4", null);
+            generator.addParameter("thirdPartyAddress5", null);
+            generator.addParameter("thirdPartyPostcode", null);
+            generator.addParameter("thirdPartyTelephoneDay", null);
+            generator.addParameter("thirdPartyTelephoneEvening", null);
+            generator.addParameter("thirdPartyEmail", null);
+            generator.addParameter("thirdPartyLastName", null);
+            generator.addParameter("thirdPartyTitle", null);
+            generator.addParameter("thirdPartyInsurerBrand", null);
         }
     }
     
@@ -1300,7 +1461,14 @@ public enum ActivityEvent {
             generator.addParameter("thirdPartyVehicleModel", thirdParty.getVehicleModel());
             if (thirdParty.getVehicleClass() != null) {
                 generator.addParameter("thirdPartyVehicleClass", thirdParty.getVehicleClass().getName());
+            } else {
+                generator.addParameter("thirdPartyVehicleClass", null);
             }
+        } else {
+            generator.addParameter("thirdPartyVehicleRegistration", null);
+            generator.addParameter("thirdPartyVehicleManufacturer", null);
+            generator.addParameter("thirdPartyVehicleModel", null);
+            generator.addParameter("thirdPartyVehicleClass", null);
         }
     }
     
@@ -1312,6 +1480,8 @@ public enum ActivityEvent {
             generator.addParameter("hireVehicleModel", vehicleHire.getVehicleModel());
             if (vehicleHire.getVehicleClass() != null) {
                 generator.addParameter("hireVehicleClass", vehicleHire.getVehicleClass().getName());
+            } else {
+                generator.addParameter("hireVehicleClass", null);
             }
             generator.addParameter("hireVehicleRentalStart", vehicleHire.getRentalStart());
             generator.addParameter("hireVehicleRentalEnd", vehicleHire.getRentalEnd());
@@ -1325,27 +1495,60 @@ public enum ActivityEvent {
             generator.addParameter("hireVehicleHpiVehicleTransmission", vehicleHire.getHpiVehicleTransmission());
             if (vehicleHire.getHpiFirstRegistration() != null) {
                 generator.addParameter("hireVehicleHpiVehicleFirstRegistration", DateHelper.getLocalDateFormat().format(vehicleHire.getHpiFirstRegistration()));
+            } else {
+                generator.addParameter("hireVehicleHpiVehicleFirstRegistration", null);
             }
+        } else {
+            generator.addParameter("hireVehicleRegistration", null);
+            generator.addParameter("hireVehicleManufacturer", null);
+            generator.addParameter("hireVehicleModel", null);
+            generator.addParameter("hireVehicleClass", null);
+            generator.addParameter("hireVehicleRentalStart", null);
+            generator.addParameter("hireVehicleRentalEnd", null);
+            generator.addParameter("hireVehicleCollectionReason", null);
+            generator.addParameter("hireVehicleDays", null);
+            generator.addParameter("hireVehicleHpiVehicleManufacturer", null);
+            generator.addParameter("hireVehicleHpiVehicleModel", null);
+            generator.addParameter("hireVehicleHpiVehicleYear", null);
+            generator.addParameter("hireVehicleHpiVehicleCapacity", null);
+            generator.addParameter("hireVehicleHpiVehicleDoorplan", null);
+            generator.addParameter("hireVehicleHpiVehicleTransmission", null);
+            generator.addParameter("hireVehicleHpiVehicleFirstRegistration", null);
         }
     }
     
     public void addClaimEngineerReportParameters(ActivityEventGenerator generator, Claim claim) {
         EngineerReport engineerReport = claim.getEngineerReport();
         if (engineerReport != null) {
-        generator.addParameter("engineerReportName", engineerReport.getName());
-        generator.addParameter("engineerReportCompany", engineerReport.getCompany());
-        generator.addParameter("engineerReportAddress1", engineerReport.getAddress1());
-        generator.addParameter("engineerReportAddress2", engineerReport.getAddress2());
-        generator.addParameter("engineerReportAddress3", engineerReport.getAddress3());
-        generator.addParameter("engineerReportAddress4", engineerReport.getAddress4());
-        generator.addParameter("engineerReportAddress5", engineerReport.getAddress5());
-        generator.addParameter("engineerReportPostcode", engineerReport.getPostcode());
-        generator.addParameter("engineerReportTelephone", engineerReport.getTelephone());
-        generator.addParameter("engineerReportEmail", engineerReport.getEmail());
-        generator.addParameter("engineerReportIsUsable", engineerReport.isIsUsable());
-        generator.addParameter("engineerReportDays", engineerReport.getDays());
-        generator.addParameter("engineerReportLabourAmount", engineerReport.getLabourAmount());
-        generator.addParameter("engineerReportTotalAmount", engineerReport.getTotalAmount());
+            generator.addParameter("engineerReportName", engineerReport.getName());
+            generator.addParameter("engineerReportCompany", engineerReport.getCompany());
+            generator.addParameter("engineerReportAddress1", engineerReport.getAddress1());
+            generator.addParameter("engineerReportAddress2", engineerReport.getAddress2());
+            generator.addParameter("engineerReportAddress3", engineerReport.getAddress3());
+            generator.addParameter("engineerReportAddress4", engineerReport.getAddress4());
+            generator.addParameter("engineerReportAddress5", engineerReport.getAddress5());
+            generator.addParameter("engineerReportPostcode", engineerReport.getPostcode());
+            generator.addParameter("engineerReportTelephone", engineerReport.getTelephone());
+            generator.addParameter("engineerReportEmail", engineerReport.getEmail());
+            generator.addParameter("engineerReportIsUsable", engineerReport.isIsUsable());
+            generator.addParameter("engineerReportDays", engineerReport.getDays());
+            generator.addParameter("engineerReportLabourAmount", engineerReport.getLabourAmount());
+            generator.addParameter("engineerReportTotalAmount", engineerReport.getTotalAmount());
+        } else {
+            generator.addParameter("engineerReportName", null);
+            generator.addParameter("engineerReportCompany", null);
+            generator.addParameter("engineerReportAddress1", null);
+            generator.addParameter("engineerReportAddress2", null);
+            generator.addParameter("engineerReportAddress3", null);
+            generator.addParameter("engineerReportAddress4", null);
+            generator.addParameter("engineerReportAddress5", null);
+            generator.addParameter("engineerReportPostcode", null);
+            generator.addParameter("engineerReportTelephone", null);
+            generator.addParameter("engineerReportEmail", null);
+            generator.addParameter("engineerReportIsUsable", null);
+            generator.addParameter("engineerReportDays", null);
+            generator.addParameter("engineerReportLabourAmount", null);
+            generator.addParameter("engineerReportTotalAmount", null);
         }
     }
 
@@ -1355,13 +1558,19 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringRepairerName", hireMonitoringDetail.getNameOfRepairer());
             if (hireMonitoringDetail.getRepairBookInDate() != null) {
                 generator.addParameter("hireMonitoringRepairBookedInDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairBookInDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairBookedInDate", null);
             }
             if (hireMonitoringDetail.getInspectionDate() != null) {
                 generator.addParameter("hireMonitoringInspectionDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getInspectionDate()));
+            } else {
+                generator.addParameter("hireMonitoringInspectionDate", null);
             }
             generator.addParameter("hireMonitoringImeName", hireMonitoringDetail.getNameOfIme());
             if (hireMonitoringDetail.getRepairCompletionDate() != null) {
                 generator.addParameter("hireMonitoringRepairCompletionDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCompletionDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairCompletionDate", null);
             }
             generator.addParameter("hireMonitoringLabourRate", hireMonitoringDetail.getLabourRate());
             generator.addParameter("hireMonitoringLabourHours", hireMonitoringDetail.getLabourHour());
@@ -1369,27 +1578,58 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringNonProvisionReason", hireMonitoringDetail.getNonProvisionReason());
             if (hireMonitoringDetail.getRepairAuthorisedDate() != null) {
                 generator.addParameter("hireMonitoringRepairAuthorisedDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairAuthorisedDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairAuthorisedDate", null);
             }
             if (hireMonitoringDetail.getRepairCommencedDate() != null) {
                 generator.addParameter("hireMonitoringRepairCommencedDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCommencedDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairCommencedDate", null);
             }
             if (hireMonitoringDetail.getTotalLossOfferMadeDate() != null) {
                 generator.addParameter("hireMonitoringTotalLossOfferMadeDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferMadeDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossOfferMadeDate", null);
             }
             if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() != null) {
                 generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferAcceptedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", null);
             }
             if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() != null) {
                 generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", null);
             }
             if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() != null) {
                 generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", null);
             }
             generator.addParameter("hireMonitoringIsTotalLoss", hireMonitoringDetail.getIsTotalLossDesc());
             generator.addParameter("hireMonitoringIsRepairOnly", hireMonitoringDetail.isIsRepairOnlyCheck());
             generator.addParameter("hireMonitoringIsClientVatRegistered", hireMonitoringDetail.getClientVatRegisteredDesc());
-            addClaimHireVehicleParameters(generator, claim);
+        } else {
+            generator.addParameter("hireMonitoringRepairerName", null);
+            generator.addParameter("hireMonitoringRepairBookedInDate", null);
+            generator.addParameter("hireMonitoringInspectionDate", null);
+            generator.addParameter("hireMonitoringImeName", null);
+            generator.addParameter("hireMonitoringRepairCompletionDate", null);
+            generator.addParameter("hireMonitoringLabourRate", null);
+            generator.addParameter("hireMonitoringLabourHours", null);
+            generator.addParameter("hireMonitoringLabourCost", null);
+            generator.addParameter("hireMonitoringNonProvisionReason", null);
+            generator.addParameter("hireMonitoringRepairAuthorisedDate", null);
+            generator.addParameter("hireMonitoringRepairCommencedDate", null);
+            generator.addParameter("hireMonitoringTotalLossOfferMadeDate", null);
+            generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", null);
+            generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", null);
+            generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", null);
+            generator.addParameter("hireMonitoringIsTotalLoss", null);
+            generator.addParameter("hireMonitoringIsRepairOnly", null);
+            generator.addParameter("hireMonitoringIsClientVatRegistered", null);
         }
+        addClaimHireVehicleParameters(generator, claim);
     }
 
     public void addClaimHireMonitoringEcdParameters(ActivityEventGenerator generator, Claim claim) {
@@ -1399,6 +1639,10 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringEcdDate", hireMonitoringEcds.get(hireMonitoringEcds.size()-1));
             generator.addParameter("hireMonitoringEcdSupportingNote", hireMonitoringEcds.get(hireMonitoringEcds.size()-1));
             generator.addParameter("hireMonitoringEcdReason", hireMonitoringEcds.get(hireMonitoringEcds.size()-1));
+        } else {
+            generator.addParameter("hireMonitoringEcdDate", null);
+            generator.addParameter("hireMonitoringEcdSupportingNote", null);
+            generator.addParameter("hireMonitoringEcdReason", null);
         }
     }
 
@@ -1407,8 +1651,14 @@ public enum ActivityEvent {
         generator.addParameter("liabilityAcceptedCHO", claim.getPercentageLiabilityCho());
         if (claim.getLiabilityAgreedDate() != null) {
             generator.addParameter("liabilityAgreedDate", DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate()));
+        } else {
+            generator.addParameter("liabilityAgreedDate", null);
         }
-        generator.addParameter("liabilityStatus", claim.getLiabilityStatus().toString());
+        if (claim.getLiabilityStatus() != null) {
+            generator.addParameter("liabilityStatus", claim.getLiabilityStatus().toString());
+        } else {
+            generator.addParameter("liabilityStatus", null);
+        }
     }
 
 
@@ -1418,6 +1668,8 @@ public enum ActivityEvent {
         if (invoice != null) {
             if (invoice.getDateInvoiced() != null) {
                 generator.addParameter("invoiceDate", DateHelper.getLocalDateFormat().format(invoice.getDateInvoiced()));
+            } else {
+                generator.addParameter("invoiceDate", null);
             }
             generator.addParameter("invoiceInvoiceNo", invoice.getClaimInvoiceNo());
             generator.addParameter("invoiceHireNet", invoice.getHireNet());
@@ -1454,6 +1706,8 @@ public enum ActivityEvent {
             generator.addParameter("invoiceHirePenaltyCharge", invoice.getHirePenaltyCharge());
             if (invoice.getHirePenaltyChargeAppliedDate() != null) {
                 generator.addParameter("invoiceHirePenaltyChargeAppliedDate", DateHelper.getLocalDateFormat().format(invoice.getHirePenaltyChargeAppliedDate()));
+            } else {
+                generator.addParameter("invoiceHirePenaltyChargeAppliedDate", null);
             }
             generator.addParameter("invoiceTotalToPay", invoice.getTotalToPay());
             generator.addParameter("invoiceAdditionalDriverFee", invoice.getAdditionalDriverFee());
@@ -1466,12 +1720,65 @@ public enum ActivityEvent {
             generator.addParameter("invoiceRepairPenaltyPercentage", invoice.getRepairPenaltyPercentage());
             if (invoice.getRepairPenaltyChargeAppliedDate() != null) {
                 generator.addParameter("invoiceRepairPenaltyChargeAppliedDate", DateHelper.getLocalDateFormat().format(invoice.getRepairPenaltyChargeAppliedDate()));
+            } else {
+                generator.addParameter("invoiceRepairPenaltyChargeAppliedDate", null);
             }
             generator.addParameter("invoiceTotalPenaltyCharge", invoice.getTotalPenaltyCharge());
             generator.addParameter("invoiceInterimPaymentReceived", invoice.getInterimPaymentReceived());
             generator.addParameter("invoiceRepairAdminFee", invoice.getRepairAdminFee());
             generator.addParameter("invoiceRepairAcquisitionFee", invoice.getRepairAcquisitionFee());
             generator.addParameter("invoiceCollaborationFee", invoice.getCollaborationFee());
+        } else {
+            generator.addParameter("invoiceDate", null);
+            generator.addParameter("invoiceInvoiceNo", null);
+            generator.addParameter("invoiceHireNet", null);
+            generator.addParameter("invoiceHireVat", null);
+            generator.addParameter("invoiceHireGross", null);
+            generator.addParameter("invoiceRepairNet", null);
+            generator.addParameter("invoiceRepairVat", null);
+            generator.addParameter("invoiceRepairGross", null);
+            generator.addParameter("invoiceEngineerFeeNet", null);
+            generator.addParameter("invoiceEngineerFeeVat", null);
+            generator.addParameter("invoiceEngineerFeeGross", null);
+            generator.addParameter("invoiceStorageRecoveryNet", null);
+            generator.addParameter("invoiceStorageRecoveryVat", null);
+            generator.addParameter("invoiceStorageRecoveryGross", null);
+            generator.addParameter("invoiceTotalNet", null);
+            generator.addParameter("invoiceTotalVat", null);
+            generator.addParameter("invoiceTotalGross", null);
+            generator.addParameter("invoiceFullTotaRequested", null);
+            generator.addParameter("invoiceMiscellaneousFee", null);
+            generator.addParameter("invoiceAutomaticFee", null);
+            generator.addParameter("invoiceSatNavFee", null);
+            generator.addParameter("invoiceEstateFee", null);
+            generator.addParameter("invoiceBabySeatFee", null);
+            generator.addParameter("invoiceTowBarsFee", null);
+            generator.addParameter("invoiceNonStandardPremiumFee", null);
+            generator.addParameter("invoiceAdminFee", null);
+            generator.addParameter("invoiceRoofRackFee", null);
+            generator.addParameter("invoiceDualControlFee", null);
+            generator.addParameter("invoiceDeliveryCollectionFee", null);
+            generator.addParameter("invoiceEngineerReviewNotes", null);
+            generator.addParameter("invoiceDayHireRate", null);
+            generator.addParameter("invoiceExcessCollected", null);
+            generator.addParameter("invoiceVatCollected", null);
+            generator.addParameter("invoiceHirePenaltyCharge", null);
+            generator.addParameter("invoiceHirePenaltyChargeAppliedDate", null);
+            generator.addParameter("invoiceTotalToPay", null);
+            generator.addParameter("invoiceAdditionalDriverFee", null);
+            generator.addParameter("invoiceIsCoverNoteRequired", null);
+            generator.addParameter("invoiceTotalLossNet", null);
+            generator.addParameter("invoiceTotalLossVat", null);
+            generator.addParameter("invoiceTotalLossGross", null);
+            generator.addParameter("invoiceHirePenaltyPercentage", null);
+            generator.addParameter("invoiceInterimPaymentMade", null);
+            generator.addParameter("invoiceRepairPenaltyPercentage", null);
+            generator.addParameter("invoiceRepairPenaltyChargeAppliedDate", null);
+            generator.addParameter("invoiceTotalPenaltyCharge", null);
+            generator.addParameter("invoiceInterimPaymentReceived", null);
+            generator.addParameter("invoiceRepairAdminFee", null);
+            generator.addParameter("invoiceRepairAcquisitionFee", null);
+            generator.addParameter("invoiceCollaborationFee", null);
         }
     }
     public void addInvoicePaidParameters(ActivityEventGenerator generator, Claim claim) {
@@ -1485,6 +1792,15 @@ public enum ActivityEvent {
             generator.addParameter("invoiceHirePenaltyChargePaid", invoice.getHirePenaltyChargePaid());
             generator.addParameter("invoiceRepairPenaltyChargePaid", invoice.getRepairPenaltyChargePaid());
             generator.addParameter("invoiceFinalPayment", invoice.getFinalPayment());
+        } else {
+            generator.addParameter("invoiceHireGrossPaid", null);
+            generator.addParameter("invoiceRepairGrossPaid", null);
+            generator.addParameter("invoiceEngineerFeeGrossPaid", null);
+            generator.addParameter("invoiceTotalLossFeeGrossPaid", null);
+            generator.addParameter("invoiceStorageRecoveryGrossPaid", null);
+            generator.addParameter("invoiceHirePenaltyChargePaid", null);
+            generator.addParameter("invoiceRepairPenaltyChargePaid", null);
+            generator.addParameter("invoiceFinalPayment", null);
         }
     }
 }
