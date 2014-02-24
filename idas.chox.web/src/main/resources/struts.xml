@@ -27,8 +27,8 @@
                 <interceptor-ref name="timeoutInterceptor"/>
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
-                <interceptor-ref name="contactDetailsInterceptor"/>
                 <interceptor-ref name="passwordExpiredInterceptor"/>
+                <interceptor-ref name="contactDetailsInterceptor"/>
                 <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
                 <interceptor-ref name="alias"/>
                 <interceptor-ref name="i18n"/>
@@ -64,8 +64,8 @@
                 <interceptor-ref name="timeoutInterceptor"/>
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
-                <interceptor-ref name="contactDetailsInterceptor"/>
                 <interceptor-ref name="passwordExpiredInterceptor"/>
+                <interceptor-ref name="contactDetailsInterceptor"/>
                 <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
                 <interceptor-ref name="alias"/>
                 <interceptor-ref name="i18n"/>
