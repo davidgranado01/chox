@@ -977,7 +977,7 @@
                             <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tollerance (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tolerance (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
 
@@ -1659,7 +1659,7 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="engineerNetFeeCheck" value="engineerNetFeeCheck" /></div>
                             <label class="chox-form-check-label">Engineers Fee Net Check</label>
-                            <div class="chox-form-check-description">Check to ensurer that the CHO is not charging more than the specified maximum Engineers Fee charge as detailed above.</div>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified maximum Engineers Fee charge as detailed above.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
