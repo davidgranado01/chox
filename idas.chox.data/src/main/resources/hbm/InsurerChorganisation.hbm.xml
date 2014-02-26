@@ -15,5 +15,16 @@
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    
+    <filter condition="chorganisation_id IN (:choIds)" name="cho_filter"/>
+    <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
   </class>
+  
+  <filter-def name="cho_filter">
+      <filter-param name="choIds" type="integer"/>
+  </filter-def>
+  <filter-def name="insurer_filter">
+      <filter-param name="insurerIds" type="integer"/>
+  </filter-def>
+  
 </hibernate-mapping>
