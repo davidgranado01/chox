@@ -1,7 +1,10 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Attachment;
+import java.io.InputStream;
 import java.util.List;
+
+import idas.chox.core.model.Attachment;
+import idas.chox.core.model.Claim;
 
 public interface AttachmentService {
 
@@ -10,4 +13,7 @@ public interface AttachmentService {
     Attachment getAttachment(int attachmentId);
 
     boolean deleteAtatchment(int webUserId, int AttachmentId);
+
+    boolean addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category,
+                          String remark, boolean notify, boolean isInsurer, String whoCreated);
 }

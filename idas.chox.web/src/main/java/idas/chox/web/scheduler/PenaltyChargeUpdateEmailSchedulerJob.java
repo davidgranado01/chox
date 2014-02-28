@@ -9,13 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 
-public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
+public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
     public static final String JOB_NAME = "PENALTY_UPDATE";
-    
+    private PenaltyChargeService penaltyChargeService;
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
+
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -38,7 +44,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 String choReference = cells.get(0).trim();
 
                 if (choReference != null && !choReference.isEmpty()) {
-                    boolean isUpdateSuccessful = getPenaltyChargeService().setPenaltyStartToDateInvoiced(choReference);
+                    boolean isUpdateSuccessful = penaltyChargeService.setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
                         if (xlsDataMap.get(row).size() == 1) {
@@ -97,7 +103,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    protected List<SchedulerJob> getEmailSchedulerJobs() {
+    protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

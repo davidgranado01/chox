@@ -12,13 +12,19 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateDbSchedulerJob.class);
-//    private static final String emailSubject = "Queued Tokens Update Results";
     public static final String JOB_NAME = "DB_REFERENCE_UPDATE";
+    private ClaimService claimService;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
 
     @Secured({"ROLE_CHO"})
     @Override
@@ -26,7 +32,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
         Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
 
-        List<QueuedTicket> queuedTickets = getClaimService().getQueuedTicket();
+        List<QueuedTicket> queuedTickets = claimService.getQueuedTicket();
 
         try {
             if (queuedTickets.size() > 0) {
@@ -35,7 +41,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
                 int i = 1;
                 for (QueuedTicket queuedTicket : queuedTickets) {
 
-                    int status = getClaimService().updateQueuedTicket(queuedTicket,
+                    int status = claimService.updateQueuedTicket(queuedTicket,
                             getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
                     String statusString;
                     if (status == 0) {
@@ -111,7 +117,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
     }
 
     @Override
-    protected List<SchedulerJob> getDBSchedulerJobs() {
+    protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

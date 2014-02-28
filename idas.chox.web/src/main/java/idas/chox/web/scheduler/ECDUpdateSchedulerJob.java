@@ -16,20 +16,26 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.EcdUpdate;
 
 
-public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
+public class ECDUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
     
     private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     public static final String JOB_NAME = "ECD_UPDATE";
-        
+    private ClaimService claimService;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -141,7 +147,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
         if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
             statusString.append(" No Claim Reference Provided.");
         } else {
-            claim = getClaimService().getClaimByCHOReferenceNumber(referenceNumber);
+            claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
 
             if (claim == null) {
                 LOG.debug("No Such Claim Reference {}", referenceNumber);
@@ -204,7 +210,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    protected List<SchedulerJob> getEmailSchedulerJobs() {
+    protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }
