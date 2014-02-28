@@ -12,6 +12,7 @@
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
         <property name="userService" ref="userService"/>
+        <property name="taskService" ref="taskService"/>
         <property name="notificationService" ref="notificationService"/>
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>

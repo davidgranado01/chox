@@ -52,7 +52,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
 
     @Override
     public void execute() throws JobExecutionException {
-        LOG.info("Calling Email Scheduler Job : '{}'.", getClass().getSimpleName());
+        LOG.info("Calling Scheduler Job : '{}'.", getClass().getSimpleName());
         String loginUsername = null;
         String loginPassword = null;
         String emailSubject;

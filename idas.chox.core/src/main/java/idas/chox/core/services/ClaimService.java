@@ -113,4 +113,9 @@ public interface ClaimService extends DataService {
     int getActivityMonitorRequestInterval();
     
     boolean isEnableActivityMonitor();
+
+    public int createChaseTask(Claim claim);
+
+    public List<Claim> getTotalLossChaseClaims();
+
 }
