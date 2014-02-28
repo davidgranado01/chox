@@ -155,7 +155,6 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         }
 
         return bFlag;
-
     }
 
     private static int safeLongToInt(long l) {

@@ -21,9 +21,9 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 
 
-public class TotalLossNotificationSchedulerJob extends PdfEmailSchedulerJob {
+public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TotalLossNotificationSchedulerJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TotalLossNotificationEmailSchedulerJob.class);
     private ClaimService claimService;
     private AttachmentService attachmentService;
     private AttachmentTypeService attachmentTypeService;

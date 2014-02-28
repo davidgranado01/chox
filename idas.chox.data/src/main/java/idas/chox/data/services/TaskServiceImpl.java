@@ -89,6 +89,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 LOG.warn("No such user found with id={}", webUserId);
                 throw new IllegalArgumentException("No such user.");
             }
+        } else {
+                throw new IllegalArgumentException("No such user.");
         }
         
         // Check that if the task is on a claim, then the webuser belongs to the same org as that of the claim
@@ -175,6 +177,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 taskCH.setVisibilityRole(WebUserRole.ROLE_CH);
                 taskCH.setRelatedTask(task);
                 taskCH.setClaim(task.getClaim());
+                taskCH.setRaisedBy(task.getRaisedBy());
                 task.setRelatedTask(taskCH);
                 this.save(taskCH);
             } else if (claimStatus.equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)) {
@@ -214,6 +217,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 taskCH.setVisibilityRole(WebUserRole.ROLE_CH);
                 taskCH.setRelatedTask(task);
                 taskCH.setClaim(task.getClaim());
+                taskCH.setRaisedBy(task.getRaisedBy());
                 task.setRelatedTask(taskCH);
                 this.save(taskCH);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {

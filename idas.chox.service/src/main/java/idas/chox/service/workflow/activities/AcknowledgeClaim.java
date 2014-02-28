@@ -96,17 +96,17 @@ public class AcknowledgeClaim extends BaseActivity {
             } else {
                 note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
             }
-            claim.setLiabilityStatus(liabilityStatus);
+            claim.setLiability(liabilityStatus);
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setPercentageLiabilityForCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
     }

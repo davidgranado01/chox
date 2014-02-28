@@ -24,12 +24,15 @@
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
+    <property column="is_total_loss_chase" name="totalLossChase"/>
     <property column="tpi_claim_status" name="tpiClaimStatus"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
     <property column="status_modified_date" name="statusModifiedDate"/>
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
+    <property column="liability_status_modified_date" name="liabilityStatusModifiedDate"/>
+    <property column="liability_modified_date" name="liabilityModifiedDate"/>
     <property column="sla_ext_days" name="slaExtDays" not-null="true"/>
     <property column="no_attachments" name="noAttachments" not-null="true"/>
     <property column="liability_status" name="liabilityStatus"

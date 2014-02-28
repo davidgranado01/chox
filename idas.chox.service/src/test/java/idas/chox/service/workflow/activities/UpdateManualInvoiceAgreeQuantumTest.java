@@ -35,7 +35,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_ACCEPTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -51,7 +51,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_ACCEPTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -67,7 +67,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_ACCEPTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -83,7 +83,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_SPLIT);
+        claim.setLiability(LiabilityStatus.LIABILITY_SPLIT);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -99,7 +99,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_SPLIT);
+        claim.setLiability(LiabilityStatus.LIABILITY_SPLIT);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -115,7 +115,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_SPLIT);
+        claim.setLiability(LiabilityStatus.LIABILITY_SPLIT);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -131,7 +131,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
+        claim.setLiability(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -147,7 +147,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
+        claim.setLiability(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -163,7 +163,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
+        claim.setLiability(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -179,7 +179,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_DISPUTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -195,7 +195,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_DISPUTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -211,7 +211,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_DISPUTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -227,7 +227,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_REPUDIATED);
+        claim.setLiability(LiabilityStatus.LIABILITY_REPUDIATED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -243,7 +243,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_REPUDIATED);
+        claim.setLiability(LiabilityStatus.LIABILITY_REPUDIATED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -259,7 +259,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_REPUDIATED);
+        claim.setLiability(LiabilityStatus.LIABILITY_REPUDIATED);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -275,7 +275,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiability(LiabilityStatus.LIABILITY_NULL);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -291,7 +291,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiability(LiabilityStatus.LIABILITY_NULL);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -307,7 +307,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiability(LiabilityStatus.LIABILITY_NULL);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -323,7 +323,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         claim.setClaimType(ClaimType.INSURER_INVOICE);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_UNKNOWN);
+        claim.setLiability(LiabilityStatus.LIABILITY_UNKNOWN);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -339,7 +339,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         claim.setClaimType(ClaimType.INSURER_INVOICE);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_UNKNOWN);
+        claim.setLiability(LiabilityStatus.LIABILITY_UNKNOWN);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         
@@ -355,7 +355,7 @@ public class UpdateManualInvoiceAgreeQuantumTest  extends BaseTest {
         claim.setClaimType(ClaimType.INSURER_INVOICE);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_UNKNOWN);
+        claim.setLiability(LiabilityStatus.LIABILITY_UNKNOWN);
      
         Activity activity = activityFactory.getActivity("updateManualInvoiceAgreeQuantum");
         

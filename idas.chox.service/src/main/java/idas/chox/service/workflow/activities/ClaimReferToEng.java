@@ -68,18 +68,18 @@ public class ClaimReferToEng extends BaseActivity {
                 note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
             }
 
-            claim.setLiabilityStatus(liabilityStatus);
+            claim.setLiability(liabilityStatus);
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setPercentageLiabilityForCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
 
