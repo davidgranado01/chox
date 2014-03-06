@@ -44,7 +44,8 @@
                 maxAllowedLabourRate:{required:true, number:true, min:0},
                 maxAllowedLabourStandardRate:{required:true, number:true, min:0},
                 maxAllowedLabourPrestigeRate:{required:true, number:true, min:0},
-                maxAllowedEngineerNetFee:{required:true, number:true, min:0}
+                maxAllowedEngineerNetFee:{required:true, number:true, min:0},
+                maxAllowedTotalLossNetFee:{required:true, number:true, min:0}
             },
             messages: {
                 name: {required:"You must supply a value for 'Name'" },
@@ -68,7 +69,8 @@
                 maxAllowedLabourRate: {required:"You must supply a value for 'Maximum Labour Rate'", number:"'Maximum Labour Rate' must be numeric", min:"'Maximum Labour Rate' cannot be less than zero"},
                 maxAllowedLabourStandardRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'", number:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' must be numeric", min:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' cannot be less than zero"},
                 maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"},
-                maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"}
+                maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"},
+                maxAllowedTotalLossNetFee: {required:"You must supply a value for 'Maximum Total Loss Fee Net Ceiling'", number:"'Maximum Total Loss Fee Net Ceiling' must be numeric", min:"'Maximum Total Loss Fee Net Ceiling' cannot be less than zero"}
             }
         });
 
@@ -1022,6 +1024,10 @@
                             <label class="chox-form-std-label-longer">Maximum Engineer Fee Net Ceiling(£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDMaxAllowedEngineerNetFee" name="maxAllowedEngineerNetFee" value="<s:property value="maxAllowedEngineerNetFee" />" />
                         </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Total Loss Fee Net Ceiling(£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaxAllowedTotalLossNetFee" name="maxAllowedTotalLossNetFee" value="<s:property value="maxAllowedTotalLossNetFee" />" />
+                        </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Supplier Admin Fee Tolerances</div>
@@ -1660,6 +1666,16 @@
                             <div class="chox-form-checkbox"><s:checkbox name="engineerNetFeeCheck" value="engineerNetFeeCheck" /></div>
                             <label class="chox-form-check-label">Engineers Fee Net Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified maximum Engineers Fee charge as detailed above.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossFeeNetCeilingCheck" value="totalLossFeeNetCeilingCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Fee Net Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified maximum Total Loss Fee charge as detailed above.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossAndStorageFeeCheck" value="totalLossAndStorageFeeCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss / Storage & Recovery Fee Net Check</label>
+                            <div class="chox-form-check-description">Flag a claim when the CHO is charging a Total Loss Fee and a Storage & Recovery Fee on the same invoice.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

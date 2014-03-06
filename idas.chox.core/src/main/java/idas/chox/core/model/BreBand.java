@@ -143,6 +143,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal maxAllowedLabourStandardRate = BigDecimal.ZERO;
     private BigDecimal maxAllowedLabourPrestigeRate = BigDecimal.ZERO;
     private BigDecimal maxAllowedEngineerNetFee = new BigDecimal("50.00");
+    private BigDecimal maxAllowedTotalLossNetFee = BigDecimal.ZERO;
     private boolean fixedFeeAdminFeeCheck;
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
@@ -152,6 +153,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
     private boolean clientVatRegisteredCheck;
     private boolean engineerNetFeeCheck;
+    private boolean totalLossFeeNetCeilingCheck;
+    private boolean totalLossAndStorageFeeCheck;
     
     public BreBand() {
     }
@@ -1482,5 +1485,29 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setEngineerNetFeeCheck(boolean engineerNetFeeCheck) {
         this.engineerNetFeeCheck = engineerNetFeeCheck;
+    }
+
+    public BigDecimal getMaxAllowedTotalLossNetFee() {
+        return maxAllowedTotalLossNetFee;
+    }
+
+    public void setMaxAllowedTotalLossNetFee(BigDecimal maxAllowedTotalLossNetFee) {
+        this.maxAllowedTotalLossNetFee = maxAllowedTotalLossNetFee;
+    }
+
+    public boolean isTotalLossFeeNetCeilingCheck() {
+        return totalLossFeeNetCeilingCheck;
+    }
+
+    public void setTotalLossFeeNetCeilingCheck(boolean totalLossFeeNetCeilingCheck) {
+        this.totalLossFeeNetCeilingCheck = totalLossFeeNetCeilingCheck;
+    }
+
+    public boolean isTotalLossAndStorageFeeCheck() {
+        return totalLossAndStorageFeeCheck;
+    }
+
+    public void setTotalLossAndStorageFeeCheck(boolean totalLossAndStorageFeeCheck) {
+        this.totalLossAndStorageFeeCheck = totalLossAndStorageFeeCheck;
     }
 }
