@@ -40,12 +40,14 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.QueuedTicket;
+import idas.chox.core.model.Task;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.NotificationService;
+import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
@@ -64,6 +66,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
     private AuditTrailService auditTrailService;
     private CommentService commentService;
+    private TaskService taskService;
     private UserService userService;
     private NotificationService notificationService;
     private boolean enableActivityMonitor;
@@ -114,6 +117,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     public ClaimServiceImpl() {
@@ -1264,7 +1271,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
 
-        if (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm())) {
+        if (claim != null && (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm()))) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1301,7 +1308,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getFixedFeeClaimDays(id);
         }
 
-        if (claimAge > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm())) {
+        if (claim != null && (claimAge > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm()))) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1523,7 +1530,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
         Claim claim = (Claim) this.getClaim(claimId);
         
-        if(isClaimInClosedStatus(claim)){
+        if(isClaimInInsurerClosedStatus(claim)){
             return 0;
         }
 
@@ -1536,7 +1543,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
         Claim claim = this.getClaim(claimId);
 
-        if(isClaimInClosedStatus(claim)){
+        if(isClaimInInsurerClosedStatus(claim)){
             return 0;
         }
         
@@ -1547,22 +1554,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return totalCount(criteria).intValue();
     }
     
-    private boolean isClaimInClosedStatus(Claim claim) {
-        for (String status : ClaimStatus.getCompletedStatus(true)) {
+    private boolean isClaimInInsurerClosedStatus(Claim claim) {
+        for (String status : ClaimStatus.getInsurerClosedStatus(true)) {
             if (claim.getStatus().equalsIgnoreCase(status)) {
                 return true;
             }
         }
-        DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-        auditTrail.add(Restrictions.eq("aut.newStatus",ClaimStatus.INVOICE_PAYMENT_LOGGED));
-        auditTrail.add(Restrictions.eq("aut.reverted", false));
-        auditTrail.add(Restrictions.eq("aut.claim.id", claim.getId()));
-        List result = getHibernateTemplate().findByCriteria(auditTrail);
-        // in case the claim was in status 'invoice payment logged' we return 0
-        // and don't display it in information panel
-        if (result.size() > 0) {
-            return true;
-        }
+
         return false;
     }
     
@@ -1607,6 +1605,46 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.debug("NO overlapping hire query ran");
         }
         return insurerClaimNumber;
+    }
+
+    @Override
+    public int createChaseTask(Claim claim) {
+        int returnStatus = 0;
+        
+        Task task = new Task();
+        task.setClaim(claim);
+        task.setComplete(Boolean.FALSE);
+        task.setDescription("Description of chase task to be provided by ER");
+        task.setDueDate(DateHelper.addDay(new Date(), 1));
+        task.setInsurer(false);
+        task.setRaisedBy(userService.findByUserName("system"));
+        task.setType("IMS TL Chase Task");
+        task.setVisibility(3);
+        taskService.createNewTask(task);
+        
+        return returnStatus;
+    }
+
+    @Override
+    public List<Claim> getTotalLossChaseClaims() {
+        // Return claims where totalLossChase is true and there has been no total loss task created in the past 7 days
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("totalLossChase", Boolean.TRUE));
+        criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
+        criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
+        criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
+        criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+        criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+
+        DetachedCriteria subquery = DetachedCriteria.forClass(Task.class);
+        Date lastWeek = DateHelper.addDay(new Date(), -7);
+        subquery.add(Restrictions.eq("type", "IMS TL Chase Task"))
+                .add(Restrictions.gt("createdDate", lastWeek))
+                .setProjection(Projections.property("claim"));
+
+        criteria.add(Subqueries.notExists(subquery));
+        
+        return (List<Claim>)findByCriteria(criteria);
     }
 
 }

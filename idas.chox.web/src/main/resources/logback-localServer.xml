@@ -185,10 +185,6 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="idas.chox.web.actions.ClaimActivityAction" level="DEBUG" additivity="false">
-        <appender-ref ref="R"/>
-        <appender-ref ref="CYCLIC" />
-    </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="R"/>
         <appender-ref ref="CYCLIC" />

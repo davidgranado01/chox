@@ -316,8 +316,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(new BigDecimal("100.00"));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
             claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
             claim.setClaimType(ClaimType.INSURER_INVOICE);
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
@@ -392,8 +392,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(new BigDecimal("100.00"));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             claim.setClaimType(ClaimType.TPI);
         }
@@ -596,8 +596,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
         }
 
         claimResult.setClaim(claim);
@@ -664,8 +664,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
@@ -733,8 +733,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
@@ -788,8 +788,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
+            claim.setPercentageLiabilityForInsurer(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityForCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             claim.setClaimType(ClaimType.INSURER_VS_INSURER);
         }
