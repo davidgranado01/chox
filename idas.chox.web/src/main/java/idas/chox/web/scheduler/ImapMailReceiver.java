@@ -134,9 +134,6 @@ public class ImapMailReceiver {
                             new Object[]{fileName, mp.getContentType(), fileFormat});
                     if (fileName != null && fileName.endsWith(fileFormat)) {
                         listOfAttachements.add(new EmailAttachment(fileName, (InputStream) part.getInputStream(), part.getSize()));
-                    } else { // it is not an xls attachment
-                        // read the content just to mark the mail as read. Please see Bug#2800 for verification.
-                        part.getContent();
                     }
                 }
             }
