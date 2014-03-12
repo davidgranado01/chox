@@ -550,6 +550,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     } else {
                         claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_CLAIM);
                     }
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
                 }
             }
           }
@@ -645,6 +648,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
                 }
             }
         } else {
@@ -711,6 +717,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
                 }
             }
         } else {
@@ -762,6 +771,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_CLAIM);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
                 }
             }
         } else {
