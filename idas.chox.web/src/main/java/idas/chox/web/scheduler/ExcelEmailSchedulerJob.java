@@ -27,7 +27,7 @@ public abstract class ExcelEmailSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    public void processEmail(Message message, String emailSubject, String sender, String bccReceivers) throws MessagingException {
+    public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
         List<EmailAttachment> attachmentStreams = imapMailReceiver.fetchAttachments(message, "xls");
         Map<Integer, List<String>> xlsDataMap;
         if (attachmentStreams.size() > 0) {
@@ -36,7 +36,11 @@ public abstract class ExcelEmailSchedulerJob extends EmailSchedulerJob {
                 Map<Integer, List<String>> resultMap = doJob(xlsDataMap, sender);
                 String emailMessage = buildMessage(sender, emailSubject, resultMap);
                 LOG.debug("Bcc receiver size is {}", Arrays.asList(bccReceivers.split(",")).size());
-                sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
+                if (replyToSender) {
+                    sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
+                } else {
+                    sendMail(bccReceivers, null, "RE: " + emailSubject, emailMessage);
+                }
             }
         } else {
             String emailMessage = buildMessage(sender, emailSubject, null);

@@ -19,7 +19,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
     private static final Logger LOG = LoggerFactory.getLogger(EmailSchedulerJob.class);
     protected ImapMailReceiver imapMailReceiver;
 
-    protected abstract void processEmail(Message message, String emailSubject, String sender, String bccReceivers) throws MessagingException;
+    protected abstract void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException;
 
     public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
         this.imapMailReceiver = imapMailReceiver;
@@ -37,7 +37,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
                     if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
                         LOG.debug("Sender '{}' is in privileged user list.", sender);
                         try {
-                            processEmail(message, emailSubject, sender, schedulerJob.getBccReceivers());
+                            processEmail(message, emailSubject, sender, schedulerJob.getBccReceivers(), schedulerJob.isReplyToSender());
                         } catch (Exception ex) {
                             LOG.error("Exception thrown while processing {} from sender {} with subject '{}'\n",
                                     new Object[]{getClass().getSimpleName(), sender, emailSubject, ex});

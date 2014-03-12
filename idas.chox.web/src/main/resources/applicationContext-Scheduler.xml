@@ -56,6 +56,24 @@
         <property name="claimService" ref="claimService" />
     </bean>
 	
+    <!--  IMS Claim Chase Task for Total Loss -->
+    <bean id="imsStopChaseEmailJob" class="idas.chox.web.scheduler.StopChaseEmailSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="attachmentTypeService" ref="attachmentTypeService" />
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+    </bean>
+	
 
     <!--  CHO Reference Update from email-->
     <bean id="referenceUpdateEmailJob" class="idas.chox.web.scheduler.ReferenceUpdateEmailSchedulerJob">
@@ -224,6 +242,12 @@
         <property name="concurrent" value="false" />
     </bean>
 
+    <bean id="imsStopChaseEmailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="imsStopChaseEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
     <bean id="addMissingEcdTaskJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="addMissingEcdTaskJob" />
         <property name="targetMethod" value="execute" />
@@ -262,6 +286,10 @@
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="imsChaseDbJobDetail" /> 
         <property name="cronExpression" value="0 15 23 ? * 1-7" /> 
+    </bean> 
+    <bean id="cronImsStopChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="imsStopChaseEmailJobDetail" /> 
+        <property name="cronExpression" value="0 55 22 ? * 1-7" /> 
     </bean> 
     <bean id="cronRefMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 
@@ -337,6 +365,7 @@
                 <ref bean="referenceUpdateMailJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
                 <ref bean="imsChaseDbJobDetail" />
+                <ref bean="imsStopChaseEmailJobDetail" />
                 <ref bean="penaltyStartDateUpdateEmailJobDetail" />
                 <ref bean="addMissingEcdTaskJobDetail" />
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
@@ -355,6 +384,7 @@
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
                 <ref bean="cronImsChaseTriggerDaily" />
+                <ref bean="cronImsStopChaseTriggerDaily" />
                 <ref bean="addMissingEcdTaskTriggerDaily" />
                 <ref bean="addInvoicePenaltyTaskTriggerDaily" />
                 <ref bean="applyAutoPenaltyChargeTriggerDaily" />
