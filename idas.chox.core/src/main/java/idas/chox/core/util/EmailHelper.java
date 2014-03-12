@@ -51,6 +51,13 @@ public class EmailHelper {
     
     public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
 
+        if (recipients == null) {
+            LOG.debug("No recipients - not sending email.");
+            if (bccRecipients != null) {
+                LOG.warn("Email recipients empty but bcc recipients not: {}", bccRecipients);
+            }
+            return;
+        }
         try {
 
             Properties props = new Properties();
