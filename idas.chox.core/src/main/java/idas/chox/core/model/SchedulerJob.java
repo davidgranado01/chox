@@ -12,6 +12,7 @@ public class SchedulerJob extends Entity implements Serializable {
     private String privilegedUsers;
     private String errorMessageReceivers;
     private boolean active;
+    private boolean replyToSender;
 
     public String getJobName() {
         return jobName;
@@ -43,6 +44,14 @@ public class SchedulerJob extends Entity implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isReplyToSender() {
+        return replyToSender;
+    }
+
+    public void setReplyToSender(boolean replyToSender) {
+        this.replyToSender = replyToSender;
     }
 
     public String getPrivilegedUsers() {

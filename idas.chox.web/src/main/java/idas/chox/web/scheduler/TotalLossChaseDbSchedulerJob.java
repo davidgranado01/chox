@@ -14,7 +14,7 @@ import idas.chox.core.services.ClaimService;
 public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(TotalLossChaseDbSchedulerJob.class);
-    public static final String JOB_NAME = "TOTALLOSS_CHASE_TASK";
+    private static final String JOB_NAME = "TOTALLOSS_CHASE_TASK";
     private ClaimService claimService;
 
     public void setClaimService(ClaimService claimService) {

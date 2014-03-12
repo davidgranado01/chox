@@ -73,8 +73,8 @@ public class ImapMailReceiver {
                 public boolean match(Message message) {
                     if (message != null) {
                         try {
-                            //we search for all unseen mails with given subject
-                            boolean retrieveBySubject = emailSubject == null ? true : message.getSubject() != null ? message.getSubject().trim().replace(" ", "").equalsIgnoreCase(emailSubject.trim().replace(" ", "")) : false;
+                            //we search for all unseen mails starting with given subject
+                            boolean retrieveBySubject = emailSubject == null ? true : message.getSubject() != null ? message.getSubject().trim().replace(" ", "").toLowerCase().startsWith(emailSubject.trim().replace(" ", "").toLowerCase()) : false;
                             if (!message.isSet(Flags.Flag.SEEN)
                                     && retrieveBySubject) {
                                 LOG.debug("Found message with subject='{}', contentType='{}', seen={}", new Object[]{message.getSubject(), message.getContentType(), message.isSet(Flags.Flag.SEEN)});

@@ -21,7 +21,7 @@ public abstract class PdfEmailSchedulerJob extends EmailSchedulerJob {
     protected abstract String doJob(EmailAttachment attachment, String sender);
 
     @Override
-    public void processEmail(Message message, String emailSubject, String sender, String bccReceivers) throws MessagingException {
+    public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
         List<EmailAttachment> attachmentStreams = imapMailReceiver.fetchAttachments(message, "pdf");
         if (attachmentStreams.size() > 0) {
             String[] statusMessages = new String[attachmentStreams.size()];
@@ -31,7 +31,11 @@ public abstract class PdfEmailSchedulerJob extends EmailSchedulerJob {
             }
             String emailMessage = buildMessage(sender, emailSubject, statusMessages);
             LOG.debug("Bcc receiver size is {}", Arrays.asList(bccReceivers.split(",")).size());
-            sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
+            if (replyToSender) {
+                sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
+            } else {
+                sendMail(bccReceivers, null, "RE: " + emailSubject, emailMessage);
+            }
         } else {
             String emailMessage = buildMessage(sender, emailSubject, null);
             LOG.info("Mail ({}) with sender ({}) has no attachments", emailSubject, sender);
