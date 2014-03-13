@@ -3,11 +3,13 @@ package idas.chox.data.services;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPriceSpecialRate;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
@@ -49,7 +51,7 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
             }
         }
         if (vehicleClassPricesSpecialRate == null || vehicleClassPricesSpecialRate.isEmpty()) {
-            LOG.warn("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returning 0.0",
+            LOG.debug("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returning 0.0",
                     new Object[] {vehicleClass.getName(), startDate, insId, choId});
             throw new Exception("No supplier rate found for vehicle class '"
                     + vehicleClass.getName() + "' at age " + age.setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -83,7 +85,7 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
             }
         }
         if (vehicleClassPricesSpecialRate == null || vehicleClassPricesSpecialRate.isEmpty()) {
-            LOG.warn("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returnin 0.0",
+            LOG.debug("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returnin 0.0",
                     new Object[] {vehicleClass.getName(), startDate, insId, choId});
             throw new Exception("No vehicle class price found for class '" + vehicleClass.getName() + "'");
         }

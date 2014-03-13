@@ -1,6 +1,7 @@
 package idas.chox.data.services;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,11 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPrice;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
-import idas.chox.core.model.ClaimType;
-import java.text.MessageFormat;
 
 /**
  *
@@ -59,7 +59,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
                 }
             }
             if (vehicleClassPrices == null || vehicleClassPrices.isEmpty()) {
-                LOG.warn("No vehicle prices found for class '{}' with start date '{}' and insurerId={}, choId={}",
+                LOG.debug("No vehicle prices found for class '{}' with start date '{}' and insurerId={}, choId={}",
                         new Object[] {vehicleClass.getName(), startDate, insId, choId});
                 throw new Exception("No rate found for vehicle class '" + vehicleClass.getName() + "'");
             }
@@ -92,7 +92,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
                 }
             }
             if (vehicleClassPrices == null || vehicleClassPrices.isEmpty()) {
-                LOG.warn("No rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}",
+                LOG.debug("No rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}",
                         new Object[] {vehicleClass.getName(), startDate, insId, choId});
                 throw new Exception(MessageFormat.format("No rate found for vehicle class ''{0}'' at age {1}", vehicleClass.getName(), age.setScale(2, BigDecimal.ROUND_HALF_UP)));
             }
