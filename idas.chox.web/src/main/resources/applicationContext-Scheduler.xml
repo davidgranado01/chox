@@ -59,17 +59,16 @@
     <!--  IMS Claim Chase Task for Total Loss -->
     <bean id="imsStopChaseEmailJob" class="idas.chox.web.scheduler.StopChaseEmailSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
-        <property name="attachmentTypeService" ref="attachmentTypeService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="schedulerJobService" ref="schedulerJobService" />
-        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
         <property name="claimService" ref="claimService" />
     </bean>
