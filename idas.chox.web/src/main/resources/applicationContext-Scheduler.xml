@@ -61,6 +61,7 @@
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
@@ -68,7 +69,6 @@
         <property name="schedulerJobService" ref="schedulerJobService" />
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
         <property name="claimService" ref="claimService" />
     </bean>
@@ -284,11 +284,11 @@
     </bean> 
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="imsChaseDbJobDetail" /> 
-        <property name="cronExpression" value="0 15 23 ? * 1-7" /> 
+        <property name="cronExpression" value="0 25 7 ? * 1-7" /> 
     </bean> 
     <bean id="cronImsStopChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="imsStopChaseEmailJobDetail" /> 
-        <property name="cronExpression" value="0 55 22 ? * 1-7" /> 
+        <property name="cronExpression" value="0 20 7 ? * 1-7" /> 
     </bean> 
     <bean id="cronRefMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 

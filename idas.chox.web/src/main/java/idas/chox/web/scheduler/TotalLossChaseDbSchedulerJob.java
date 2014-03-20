@@ -28,7 +28,7 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
 
         try {
             List<Claim> claims = claimService.getTotalLossChaseClaims();
-            if (claims.size() > 0) {
+            if (claims != null && claims.size() > 0) {
                 LOG.debug("total no. claims to chase is {}", claims.size());
 
                 int i = 1;
@@ -39,10 +39,10 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
                 }
 
             } else {
-                LOG.debug("No clains to chase.");
+                LOG.debug("No claims to chase.");
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown creating chase task: {}", ex.getMessage());
+            LOG.error("Exception thrown creating chase task: {}", ex.getMessage(), ex);
         }
         return null;
     }

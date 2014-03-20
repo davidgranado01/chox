@@ -12,9 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -26,7 +23,14 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.common.OrganisationType;
+import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
@@ -52,9 +56,6 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.notifications.NotificationType;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -171,7 +172,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
     }
 
-    public void save(Claim object) {
+    protected void save(Claim object) {
         updateLiabilityPayment(object);
         super.save(object);
     }
@@ -1299,6 +1300,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public String stopClaimChase(String choRef) {
+        StringBuilder result = new StringBuilder();
+        
+        Claim claim = this.getClaimByCHOReferenceNumber(choRef);
+        
+        if (claim == null) {
+            result.append("Claim with CHO ref ").append(choRef).append(" does not exist");
+        } else if (claim.isTotalLossChase()) {
+            claim.setTotalLossChase(false);
+            save(claim);
+            result.append("Chase tasked stopped for claim with CHO ref ").append(choRef);
+        } else {
+            result.append("Chase tasked already stopped for claim with CHO ref ").append(choRef);
+        }
+        return result.toString();
+    }
+
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int getFixedFeeClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of fixed-fee claim with id={}", id);
@@ -1497,10 +1518,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public void updateLiabilityPayment(Claim claim) {
 
-        LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
         Invoice invoice = claim.getInvoice();
-        ClaimType claimType = claim.getClaimType();
         if (invoice != null) { 
+            LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
+            ClaimType claimType = claim.getClaimType();
             // When excluding some 'Claim Type' Please exclude it from applyAutoPenaltyCharge Stored Procedure as well.
             if (!ClaimType.isInsurerVsInsurer(claimType) 
                     && !ClaimType.isSubscriber(claimType)
@@ -1628,7 +1649,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public List<Claim> getTotalLossChaseClaims() {
         // Return claims where totalLossChase is true and there has been no total loss task created in the past 7 days
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class, "cl");
         criteria.add(Restrictions.eq("totalLossChase", Boolean.TRUE));
         criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
         criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
@@ -1636,15 +1657,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
 
-        DetachedCriteria subquery = DetachedCriteria.forClass(Task.class);
         Date lastWeek = DateHelper.addDay(new Date(), -7);
-        subquery.add(Restrictions.eq("type", "IMS TL Chase Task"))
-                .add(Restrictions.gt("createdDate", lastWeek))
-                .setProjection(Projections.property("claim"));
+        lastWeek = DateHelper.removeTime(lastWeek);
 
-        criteria.add(Subqueries.notExists(subquery));
+        // Check no total loss upload task in past 7 days
+        DetachedCriteria subQuery = DetachedCriteria.forClass(Attachment.class, "a");
+        subQuery.add(Restrictions.eq("category", "Total Loss Pack"))
+                .add(Restrictions.gt("createdDate", lastWeek))
+                .add(Restrictions.ilike("remarks", "Attachment Remark: text to be provided%"))
+                .add(Restrictions.eqProperty("cl.id", "a.claim.id"));
+        subQuery.setProjection(Projections.id());
+
+        criteria.add(Subqueries.notExists(subQuery));
         
-        return (List<Claim>)findByCriteria(criteria);
+        // Check task hasn't been added in previous 7 days
+        DetachedCriteria subQuery2 = DetachedCriteria.forClass(Task.class, "t");
+        subQuery2.add(Restrictions.eq("type", "IMS TL Chase Task"))
+                .add(Restrictions.gt("createdDate", lastWeek))
+                .add(Restrictions.eqProperty("cl.id", "t.claim.id"));
+        subQuery2.setProjection(Projections.id());
+
+        criteria.add(Subqueries.notExists(subQuery2));
+        
+        
+        
+        return (List<Claim>) findByCriteria(criteria);
     }
 
 }

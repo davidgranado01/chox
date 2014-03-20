@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.services.ClaimService;
 
@@ -32,19 +31,23 @@ public class StopChaseEmailSchedulerJob extends EmailSchedulerJob {
     private String doJob(Message message, String sender)  throws MessagingException {        
         // Subject is:  IMS TL Stop Chase Request: <ERAC FNOL reference number>
         //   - extract the cho ref number
-        String choRef = message.getSubject().substring(26).trim();
+        int i = message.getSubject().indexOf("Request:");
+        if (i<1) { // lets try without the 
+            i = message.getSubject().indexOf("Request")-1;
+        }
+        String choRef = message.getSubject().substring(i+8).trim();
         
-        Claim claim = claimService.getClaimByCHOReferenceNumber(choRef);
-        claim.setTotalLossChase(false);
-        claimService.save(claim);
+        String result = claimService.stopClaimChase(choRef);
         
-        return choRef;
+        return result;
     }
 
     @Override
     public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
-            String choRef = doJob(message, sender);
-            LOG.info("Chase task stopped for claim '{}'.", choRef);
+            String result = doJob(message, sender);
+            if (result != null) {
+                LOG.info("Stop Chase email processed: {}", result);
+            }
             // No email for now - lets wait until we get the requirements
     }
     

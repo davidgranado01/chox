@@ -118,4 +118,6 @@ public interface ClaimService extends DataService {
 
     public List<Claim> getTotalLossChaseClaims();
 
+    public String stopClaimChase(String choRef);
+
 }
