@@ -85,7 +85,7 @@ public class TotalLossPackEmailSchedulerJob extends PdfEmailSchedulerJob {
                     
                     try {
                         boolean result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
-                                attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Attachment Remark: text to be provided by ER", true, false, "CHO");
+                                attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Total Loss pack has been uploaded for review.", true, false, "CHO");
                         if (result) {
                             statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachemnt file has been uploaded against claim "+claim.getChoReference());
                         } else {

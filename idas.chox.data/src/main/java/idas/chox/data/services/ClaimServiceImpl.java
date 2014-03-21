@@ -1635,7 +1635,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Task task = new Task();
         task.setClaim(claim);
         task.setComplete(Boolean.FALSE);
-        task.setDescription("Description of chase task to be provided by ER");
+        task.setDescription("Total Loss pack has been uploaded and requires review.");
         task.setDueDate(DateHelper.addDay(new Date(), 1));
         task.setInsurer(false);
         task.setRaisedBy(userService.findByUserName("system"));
@@ -1664,7 +1664,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria subQuery = DetachedCriteria.forClass(Attachment.class, "a");
         subQuery.add(Restrictions.eq("category", "Total Loss Pack"))
                 .add(Restrictions.gt("createdDate", lastWeek))
-                .add(Restrictions.ilike("remarks", "Attachment Remark: text to be provided%"))
+                .add(Restrictions.ilike("remarks", "Total Loss pack has been uploaded for review%"))
                 .add(Restrictions.eqProperty("cl.id", "a.claim.id"));
         subQuery.setProjection(Projections.id());
 
