@@ -37,7 +37,7 @@ public abstract class PdfEmailSchedulerJob extends EmailSchedulerJob {
                 sendMail(bccReceivers, null, "RE: " + emailSubject, emailMessage);
             }
         } else {
-            String emailMessage = buildMessage(sender, emailSubject, null);
+            String emailMessage = buildMessage(sender, emailSubject, new String[]{"No attachments found."});
             LOG.info("Mail ({}) with sender ({}) has no attachments", emailSubject, sender);
             sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
         }
