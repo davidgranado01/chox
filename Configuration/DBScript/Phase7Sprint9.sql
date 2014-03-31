@@ -70,7 +70,7 @@ ALTER TABLE vehicle_hire ALTER COLUMN hpi_error TYPE varchar(256);
 ALTER TABLE customer ALTER COLUMN hpi_error TYPE varchar(256);
 ALTER TABLE history ALTER COLUMN narrative TYPE varchar(320);
 ALTER TABLE history ALTER COLUMN rule_id TYPE varchar(3);
-ALTER TABLE hire_monitoring_ecd ALTER COLUMN supporting_note TYPE varchar(576);
+ALTER TABLE hire_monitoring_ecd ALTER COLUMN supporting_note TYPE varchar(1152);
 ALTER TABLE hire_monitoring_detail ALTER COLUMN non_provision_reason TYPE varchar(64);
 ALTER TABLE engineer_report ALTER COLUMN days TYPE numeric(5,0);
 DROP VIEW rpt_claim_invoice;
