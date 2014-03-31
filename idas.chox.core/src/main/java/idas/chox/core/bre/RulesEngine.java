@@ -22,7 +22,7 @@ public class RulesEngine {
             try {
                 ev = businessRule.applyToClaim(claim);
             } catch (Exception ex) {
-                LOG.error("Error applying BRE rule with id={} : {}", businessRule.getRuleId(), ex.getMessage());
+                LOG.error("Error applying BRE rule with id={} : {}\n", new Object[]{businessRule.getRuleId(), ex.getMessage(), ex});
                 continue;
             }
             response.addRuleEvaulation(ev);
