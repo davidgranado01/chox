@@ -33,7 +33,6 @@ public class TotalLossFeeNetCeilingCheck implements IBusinessRule {
             BigDecimal totalLossFeeNetCeiling = claim.getBreBand().getMaxAllowedTotalLossNetFee();
             boolean success = totalLossFeeNetCeiling.compareTo(invoice.getTotalLossFeeNet()) >= 0;
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
-LOG.info("\nceiling={}, value={} - success={}\n", new Object[]{totalLossFeeNetCeiling.toString(), invoice.getTotalLossFeeNet(), success});
             if (success) {
                 narrative = "";
             } else {
