@@ -1657,7 +1657,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
 
-        Date lastWeek = DateHelper.addDay(new Date(), -7);
+        Date lastWeek = DateHelper.addDay(new Date(), -6);
         lastWeek = DateHelper.removeTime(lastWeek);
 
         // Check no total loss upload task in past 7 days
