@@ -31,12 +31,12 @@ select c.cho_reference as "Supplier Reference", i.name as "Insurer Name",
     c.percentage_liability_accepted as "Liability %age For Insurer",
     c.percentage_liability_cho as "Liability %age For CHO",
     c.status as "Claim Status"
-from claim c, insurer i
-where c.insurer_id = i.id
+from claim c, insurer i, hire_monitoring_detail hmd
+where c.insurer_id = i.id and c.hire_monitoring_detail_id = hmd.id
   and (case when array_length(insurerIds, 1) > 0 then c.insurer_id = ANY(insurerIds) else true end)
   and (case when array_length(choIds, 1) > 0 then c.chorganisation_id = ANY(choIds) else true end)
   and (c.liability_modified_date between startDate and endDate or c.liability_status_modified_date  between startDate and endDate)
-;
+  and hmd.is_total_lost_check = true;
 END
 ;
 $$ LANGUAGE plpgsql
