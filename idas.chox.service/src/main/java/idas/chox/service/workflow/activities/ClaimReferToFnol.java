@@ -172,11 +172,10 @@ public class ClaimReferToFnol extends BaseActivity {
             }
             claim.setClaimNumber(claimNumber);
             claim.setIndemnityAmount(indemnityAmount);
-            claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
+            claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
             claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
             claim.setIsQuantumDispute(isQuantumDispute);
             claim.setReasonOfRejection(getReasonOfRejection());
-            claim.setPercentageLiabilityForCho(percentageLiabilityCho);
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
 

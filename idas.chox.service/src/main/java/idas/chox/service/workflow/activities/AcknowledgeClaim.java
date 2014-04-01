@@ -103,10 +103,9 @@ public class AcknowledgeClaim extends BaseActivity {
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setPercentageLiabilityForCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
     }

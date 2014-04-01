@@ -75,11 +75,10 @@ public class ClaimReferToEng extends BaseActivity {
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setPercentageLiabilityForCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
 

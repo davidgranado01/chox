@@ -315,15 +315,7 @@ public class Claim extends Entity implements Serializable {
         return percentageLiabilityAccepted;
     }
 
-    public void setPercentageLiabilityForInsurer(BigDecimal percentageLiabilityAccepted) {
-        if ((percentageLiabilityAccepted != null && (this.percentageLiabilityAccepted == null || this.percentageLiabilityAccepted.compareTo(percentageLiabilityAccepted) != 0))
-                || (percentageLiabilityAccepted == null && this.percentageLiabilityAccepted != null) ) {
-            this.percentageLiabilityAccepted = percentageLiabilityAccepted;
-            this.liabilityModifiedDate = new Date();
-        }
-    }
-
-    protected void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
+    public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
@@ -549,18 +541,19 @@ public class Claim extends Entity implements Serializable {
         return percentageLiabilityCho;
     }
 
-    /**
-     * @param percentageLiabilityCho the percentageLiabilityCho to set
-     */
-    public void setPercentageLiabilityForCho(BigDecimal percentageLiabilityCho) {
-        if ((percentageLiabilityCho != null && (this.percentageLiabilityCho == null || this.percentageLiabilityCho.compareTo(percentageLiabilityCho) != 0))
-                || (percentageLiabilityCho == null && this.percentageLiabilityCho != null) ) {
-            this.percentageLiabilityCho = percentageLiabilityCho;
+    public void setLiabilityPercentages(BigDecimal insurerLiability, BigDecimal choLiability) {
+        if (((choLiability != null && (this.percentageLiabilityCho == null || this.percentageLiabilityCho.compareTo(choLiability) != 0))
+                || (choLiability == null && this.percentageLiabilityCho != null))
+                || ((insurerLiability != null && (this.percentageLiabilityAccepted == null || this.percentageLiabilityAccepted.compareTo(insurerLiability) != 0))
+                || (insurerLiability == null && this.percentageLiabilityAccepted != null))) {
+            this.percentageLiabilityCho = choLiability;
+            this.percentageLiabilityAccepted = insurerLiability;
             this.liabilityModifiedDate = new Date();
         }
     }
+    
 
-    protected void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
 

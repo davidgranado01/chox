@@ -173,15 +173,12 @@ public class ClaimRejection extends BaseActivity {
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
         }
-        if (percentageLiabilityAccepted != null) {
-            claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
+        if (percentageLiabilityAccepted != null || percentageLiabilityCho != null) {
+            claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(reasonOfRejection);
-        if (percentageLiabilityCho != null) {
-            claim.setPercentageLiabilityForCho(percentageLiabilityCho);
-        }
         if (liabilityAgreedDate != null) {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
         }

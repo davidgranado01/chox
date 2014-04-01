@@ -72,8 +72,7 @@ public class ResolveLiability extends BaseActivity {
                 comment.setClaim(claim);
                 claim.addComment(comment);
         }
-        claim.setPercentageLiabilityForInsurer(percentageLiabilityAccepted);
-        claim.setPercentageLiabilityForCho(percentageLiabilityCho);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);        
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
     }
