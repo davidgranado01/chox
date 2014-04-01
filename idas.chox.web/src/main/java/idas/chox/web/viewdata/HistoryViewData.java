@@ -10,6 +10,8 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.util.Date;
  */
 public class HistoryViewData implements Comparable<HistoryViewData> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HistoryViewData.class);
     private int id;
     private String createdBy;
     private String createdDate;
@@ -64,23 +67,17 @@ public class HistoryViewData implements Comparable<HistoryViewData> {
         return isOld;
     }
 
+    // Order by latest histories first.(descending date order). 
     @Override
     public int compareTo(HistoryViewData t) {
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date1;
-        Date date2;
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            date1 = (Date)dateFormat.parseObject(t.createdDate);
-            date2 = (Date)dateFormat.parseObject(this.createdDate);
-        } catch (ParseException e) {
-            return 0; // cannot happen!!
-        }
-        
-        if (date1.equals(date2))
+            Date date1 = (Date) dateFormat.parseObject(t.getCreatedDate());
+            Date date2 = (Date) dateFormat.parseObject(this.createdDate);
+            return date1.compareTo(date2);
+        } catch (Exception ex) {
+            LOG.error("Exception while ordering histories: ", ex);
             return 0;
-        else if (date1.before(date2))
-            return -1;
-        else
-            return 1;
+        }
     }
 }
