@@ -11,8 +11,10 @@ import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import net.sf.json.JSONArray;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.WorkgroupService;
 
@@ -27,6 +29,7 @@ public class WorkgroupDropDownAction extends BaseAction {
     private LookupService service;
     private int claimId;
     private WorkgroupService workgroupService;
+    private ClaimService claimService;
     private int insurerId = -1;
 
     public int getClaimId() {
@@ -93,24 +96,28 @@ public class WorkgroupDropDownAction extends BaseAction {
         return "{totalCount:" + workgroups.size() + ",results:" + jsonArray.toString() + "}";
     }
 
-    public String getInsurerWorkgroup() throws Exception {
+    // Get the active workgroups + the current claims in-active workgroup.
+    public String getInsurerWorkgroupIncludsClaimsInactiveWG() throws Exception {
         LOG.debug("ClaimSearchCombo action called.");
         if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) {
-            workgroups = service.getWorkgroupsByClaimId(claimId, true);            
-        } else if (getOrgId() != null) { 
+            workgroups = service.getWorkgroupsByClaimId(claimId, true);
+            addCurrentClaimInactiveWorkgroup();
+        } else if (getOrgId() != null) {
             for (Integer insId : getOrgId()) {
-               if (insId > 0) {
-                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true));
-               }
+                if (insId > 0) {
+                    workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true));
+                    addCurrentClaimInactiveWorkgroup();
+                }
             }
         }
         return SUCCESS;
     }
-
+    
+    // Get all the workgroups(including in-active workgroup)
     public String getAllInsurerWorkgroups() throws Exception {
         LOG.debug("ClaimSearchCombo action called.");
         if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) { 
-            workgroups = service.getWorkgroupsByClaimId(claimId, true);            
+            workgroups = service.getWorkgroupsByClaimId(claimId, false);            
         } else if (getOrgId() != null) {
             workgroups.clear();
             for (Integer insId : getOrgId()) {
@@ -134,6 +141,8 @@ public class WorkgroupDropDownAction extends BaseAction {
         return SUCCESS;
     }
 
+    /* Get the active workgroups + the current claims in-active workgroup.
+       Only return assigned workgroup to the current user if the user role is workgroup related. */
     @Override
     public String execute() throws Exception {
         LOG.debug("execute called in WorkgroupDropDownAction.");
@@ -141,9 +150,10 @@ public class WorkgroupDropDownAction extends BaseAction {
             // Select workgroups from the insurer of the claim we are viewing
             LOG.debug("Need to get workgroups for current claim id={}.", claimId);
             workgroups = service.getWorkgroupsByClaimId(claimId, true);
-        }
-        else {
+            addCurrentClaimInactiveWorkgroup();
+        } else {
             workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
+            addCurrentClaimInactiveWorkgroup();
         }
         return SUCCESS;
     }
@@ -158,5 +168,27 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+    
+    private void addCurrentClaimInactiveWorkgroup() {
+        Workgroup inActiveWorkgroup = getClaimsInactiveWorkgroup();
+        if (inActiveWorkgroup != null) {
+            workgroups.add(inActiveWorkgroup);
+        }
+    }
+
+    // If the claim is blongs to in-active workgroup then return that workgroup.
+    private Workgroup getClaimsInactiveWorkgroup() {
+        if (claimId > 0) {
+            Claim claim = claimService.getClaim(claimId);
+            if (claim != null && claim.getWorkgroup() != null && !claim.getWorkgroup().isStatus()) {
+                return claim.getWorkgroup();
+            }
+        }
+        return null;
     }
 }
