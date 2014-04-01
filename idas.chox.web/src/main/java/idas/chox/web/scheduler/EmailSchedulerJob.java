@@ -46,6 +46,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
                              message.setFlag(Flags.Flag.SEEN, true);
                         }
                     } else {
+                        message.setFlag(Flags.Flag.SEEN, true);
                         LOG.info("{} request received from unauthorised user {}.", getClass().getSimpleName(), sender);
                         sendMail(schedulerJob.getErrorMessageReceivers(), schedulerJob.getBccReceivers(),
                                 "Email with subject '" + emailSubject + "' request received from unauthorised user",
