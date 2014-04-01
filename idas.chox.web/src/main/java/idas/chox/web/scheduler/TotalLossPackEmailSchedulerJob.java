@@ -87,7 +87,7 @@ public class TotalLossPackEmailSchedulerJob extends PdfEmailSchedulerJob {
                         boolean result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
                                 attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Total Loss pack has been uploaded for review.", true, false, "CHO");
                         if (result) {
-                            statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachemnt file has been uploaded against claim "+claim.getChoReference());
+                            statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim "+claim.getChoReference());
                         } else {
                             statusString.insert(0, claim.getChoReference() + "\tFailed: An Internal Error Occurred");
                         }

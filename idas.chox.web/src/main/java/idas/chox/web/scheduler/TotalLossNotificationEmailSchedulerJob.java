@@ -87,7 +87,7 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
                         boolean result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
                                 attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_NOTIFICATION, "Notification from ERAC that the claim is a Total Loss.", false, false, "system");
                         if (result) {
-                            statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachemnt file has been uploaded against claim "+claim.getChoReference());
+                            statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim "+claim.getChoReference());
                         } else {
                             statusString.insert(0, claim.getChoReference() + "\tFailed: An Internal Error Occurred");
                         }
@@ -104,7 +104,10 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
 
     @Override
     protected String buildMessage(String email, String subject, String[] statusMessages) {
-        
+        if (statusMessages == null) {
+            return "CHOX Automation response: no response given";
+        }
+
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
         emailMsg.append("          CHOX Automation response: Total Loss Notification           \n");
@@ -114,7 +117,7 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
         emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         for (String statusMessage : statusMessages) {
-            emailMsg.append(statusMessage).append("\n");
+                emailMsg.append(statusMessage).append("\n");
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();

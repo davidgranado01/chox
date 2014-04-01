@@ -141,7 +141,7 @@ public class ImapMailReceiver {
             LOG.warn("Error fetching attachment - cannot make connection to the given host: {} ",
                     e.getMessage(), e);
         } catch (IOException e) {
-            LOG.warn("Error fetching attachment - cannot retrive attachemnt: {} ", e.getMessage(), e);
+            LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", e.getMessage(), e);
         }
         return listOfAttachements;
     }

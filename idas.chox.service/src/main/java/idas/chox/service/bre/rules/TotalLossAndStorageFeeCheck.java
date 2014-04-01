@@ -27,13 +27,13 @@ public class TotalLossAndStorageFeeCheck implements IBusinessRule {
 
         if (claim.getBreBand().isTotalLossAndStorageFeeCheck()) {
             Invoice invoice = claim.getInvoice();
-            boolean success = invoice.getTotalLossFeeNet().compareTo(BigDecimal.ZERO) > 0 && invoice.getStorageRecoveryNet().compareTo(BigDecimal.ZERO) > 0;
-            res.setResult(!success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
+            boolean failed = invoice.getTotalLossFeeNet().compareTo(BigDecimal.ZERO) > 0 && invoice.getStorageRecoveryNet().compareTo(BigDecimal.ZERO) > 0;
+            res.setResult(failed ? RuleEvaluationResult.RULE_FAILED : RuleEvaluationResult.RULE_PASSED);
 
-            if (success) {
-                narrative = "";
+            if (failed) {
+                narrative = "The CHO are charging a Total Loss Fee and the CHO are also charging for Storage & Recovery. Please review.";
             } else {
-                narrative = "The CHO is charging a Total Loss Fee and the CHO are also charging for Storage & Recovery. Please review.";
+                narrative = "";
             }
         } else {
             narrative = "";
