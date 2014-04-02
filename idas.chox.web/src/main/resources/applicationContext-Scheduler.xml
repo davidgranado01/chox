@@ -10,6 +10,8 @@
         <property name="mailStoreProtocol" value="${mailStoreProtocol}"/>
         <property name="mailPort" value="${mailPort}"/>
         <property name="mailFolder" value="${mailFolder}"/>
+        <property name="emailAccount" value="${emailAccount}"/>
+        <property name="emailAccountPassword" value="${emailAccountPassword}"/>
     </bean>
 	
     <bean id ="serverConfig" class="idas.chox.web.scheduler.ServerConfig" scope="singleton"/>
@@ -25,7 +27,6 @@
     <!--  Reference update from queued token -->
     <bean id="referenceUpdateDbJob" class="idas.chox.web.scheduler.ReferenceUpdateDbSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
-        <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="smtpHostName" value="${smtpHostName}"/>
@@ -36,6 +37,40 @@
         <property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="claimService" ref="claimService" />
+    </bean>
+	
+    <!--  IMS Claim Chase Task for Total Loss -->
+    <bean id="imsChaseDbJob" class="idas.chox.web.scheduler.TotalLossChaseDbSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="claimService" ref="claimService" />
+    </bean>
+	
+    <!--  IMS Claim Chase Task for Total Loss -->
+    <bean id="imsStopChaseEmailJob" class="idas.chox.web.scheduler.StopChaseEmailSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
     </bean>
 	
 
@@ -43,19 +78,18 @@
     <bean id="referenceUpdateEmailJob" class="idas.chox.web.scheduler.ReferenceUpdateEmailSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="xlsFileParser" ref="xlsFileParser"/>
-        <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="emailAccount" value="${emailAccount}"/>
-        <property name="emailAccountPassword" value="${emailAccountPassword}"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
         <property name="hostName" value="${HOSTNAME}"/>
         <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
     </bean>
         
 
@@ -63,38 +97,71 @@
     <bean id="penaltyStartDateUpdateEmailJob" class="idas.chox.web.scheduler.PenaltyChargeUpdateEmailSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="xlsFileParser" ref="xlsFileParser"/>
-        <property name="claimService" ref="claimService" />
-        <property name="invoiceService" ref="invoiceService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="emailAccount" value="${emailAccount}"/>
-        <property name="emailAccountPassword" value="${emailAccountPassword}"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="penaltyChargeService" ref="penaltyChargeService" />
     </bean>
     
     <bean id="ecdUpdateEmailJob" class="idas.chox.web.scheduler.ECDUpdateSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="xlsFileParser" ref="xlsFileParser"/>
-        <property name="claimService" ref="claimService" />
-        <property name="activityFactory" ref="activityFactory" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="emailAccount" value="${emailAccount}"/>
-        <property name="emailAccountPassword" value="${emailAccountPassword}"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+        <property name="activityFactory" ref="activityFactory" />
+    </bean>
+    
+    <bean id="totalLossNotificationEmailJob" class="idas.chox.web.scheduler.TotalLossNotificationEmailSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="attachmentTypeService" ref="attachmentTypeService" />
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+        <property name="attachmentService" ref="attachmentService" />
+    </bean>
+    
+    <bean id="totalLossPackEmailJob" class="idas.chox.web.scheduler.TotalLossPackEmailSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="attachmentTypeService" ref="attachmentTypeService" />
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+        <property name="attachmentService" ref="attachmentService" />
     </bean>
     
     <!--  Stored Procedure call: addMissingEcdTask -->
@@ -138,6 +205,12 @@
         <property name="concurrent" value="false" />
     </bean>
         
+    <bean id="imsChaseDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="imsChaseDbJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+        
     <bean id="referenceUpdateMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="referenceUpdateEmailJob" />
         <property name="targetMethod" value="execute" />
@@ -152,6 +225,24 @@
     
     <bean id="ecdUpdateMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="ecdUpdateEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="totalLossNotificationMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="totalLossNotificationEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="totalLossPackMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="totalLossPackEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="imsStopChaseEmailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="imsStopChaseEmailJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
@@ -191,32 +282,40 @@
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
     </bean> 
+    <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="imsChaseDbJobDetail" /> 
+        <property name="cronExpression" value="0 25 7 ? * 1-7" /> 
+    </bean> 
+    <bean id="cronImsStopChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="imsStopChaseEmailJobDetail" /> 
+        <property name="cronExpression" value="0 20 7 ? * 1-7" /> 
+    </bean> 
     <bean id="cronRefMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 0,30 7-19 ? * 2-6" /> 
     </bean> 
     <bean id="cronRefMailUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 
-        <property name="cronExpression" value="0 0,30 8-14 ? * 1,7" /> 
+        <property name="cronExpression" value="0 0/30 8-19 ? * 1,7" /> 
     </bean> 
         
     <bean id="cronPenaltyMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="penaltyStartDateUpdateEmailJobDetail" /> 
         <property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
     </bean> 
-    <bean id="addMissingEcdTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="addMissingEcdTaskTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="addMissingEcdTaskJobDetail" /> 
         <property name="cronExpression" value="0 15 5 ? * 1-7" /> 
     </bean> 
-    <bean id="addInvoicePenaltyTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="addInvoicePenaltyTaskTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="addInvoicePenaltyTaskJobDetail" /> 
         <property name="cronExpression" value="0 17 5 ? * 1-7" /> 
     </bean> 
-    <bean id="applyAutoPenaltyChargeTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="applyAutoPenaltyChargeTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="applyAutoPenaltyChargeJobDetail" /> 
         <property name="cronExpression" value="0 1 0 ? * 1-7" /> 
     </bean> 
-    <bean id="updateDashboardTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="updateDashboardTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateDashboardJobDetail" /> 
         <property name="cronExpression" value="0 15,45 7,9,11,13,15,17 ? * 1-7" /> 
     </bean>
@@ -228,7 +327,23 @@
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 6/30 8-14 ? * 1,7" /> 
     </bean> 
-    <bean id="updateWorkflowTablesTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="cronTotalLossNotificationTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="totalLossNotificationMailJobDetail" /> 
+        <property name="cronExpression" value="0 8/30 7-19 ? * 2-6" /> 
+    </bean> 
+    <bean id="cronTotalLossNotificationTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="totalLossNotificationMailJobDetail" /> 
+        <property name="cronExpression" value="0 8/30 8-14 ? * 1,7" /> 
+    </bean> 
+    <bean id="cronTotalLossPackTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="totalLossPackMailJobDetail" /> 
+        <property name="cronExpression" value="0 0/30 7-19 ? * 2-6" /> 
+    </bean> 
+    <bean id="cronTotalLossPackTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="totalLossPackMailJobDetail" /> 
+        <property name="cronExpression" value="0 4/30 8-14 ? * 1,7" /> 
+    </bean> 
+    <bean id="updateWorkflowTablesTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateWorkflowTablesJobDetail" /> 
         <property name="cronExpression" value="0 30 23 ? * 1-7" /> 
     </bean> 
@@ -248,12 +363,16 @@
             <list>
                 <ref bean="referenceUpdateMailJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
+                <ref bean="imsChaseDbJobDetail" />
+                <ref bean="imsStopChaseEmailJobDetail" />
                 <ref bean="penaltyStartDateUpdateEmailJobDetail" />
                 <ref bean="addMissingEcdTaskJobDetail" />
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
                 <ref bean="updateDashboardJobDetail" />
                 <ref bean="ecdUpdateMailJobDetail" />
+                <ref bean="totalLossNotificationMailJobDetail" />
+                <ref bean="totalLossPackMailJobDetail" />
                 <ref bean="updateWorkflowTablesJobDetail" />
             </list>
         </property>
@@ -263,13 +382,19 @@
                 <ref bean="cronRefMailUpdateTriggerWeekend" />
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
-                <ref bean="addMissingEcdTaskTriggerWeek" />
-                <ref bean="addInvoicePenaltyTaskTriggerWeek" />
-                <ref bean="applyAutoPenaltyChargeTriggerWeek" />
-                <ref bean="updateDashboardTriggerWeek" />
+                <ref bean="cronImsChaseTriggerDaily" />
+                <ref bean="cronImsStopChaseTriggerDaily" />
+                <ref bean="addMissingEcdTaskTriggerDaily" />
+                <ref bean="addInvoicePenaltyTaskTriggerDaily" />
+                <ref bean="applyAutoPenaltyChargeTriggerDaily" />
+                <ref bean="updateDashboardTriggerDaily" />
                 <ref bean="cronECDMailUpdateTriggerWeek" />
                 <ref bean="cronECDMailUpdateTriggerWeekend" />
-                <ref bean="updateWorkflowTablesTriggerWeek" />
+                <ref bean="cronTotalLossNotificationTriggerWeek" />
+                <ref bean="cronTotalLossNotificationTriggerWeekend" />
+                <ref bean="cronTotalLossPackTriggerWeek" />
+                <ref bean="cronTotalLossPackTriggerWeekend" />
+                <ref bean="updateWorkflowTablesTriggerDaily" />
             </list>
         </property>
     </bean>

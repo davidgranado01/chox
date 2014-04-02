@@ -1,5 +1,6 @@
 package idas.chox.data.events;
 
+import idas.chox.core.model.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +62,20 @@ public enum ChoxEvent {
             generator.addParameter("oldReference", oldReference);
             generator.completeEvent(claim);
         }
+    },
+    ATTACHMENT_UPLOADED_EVENT               (103, "AttachmentUploadedEvent") {
+        @Override
+        public void build(EventService generator, Claim claim, Attachment attachment)  throws Exception {
+            LOG.debug("Building NoteAddedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("attachmentCategory", attachment.getCategory());
+            generator.addParameter("attachmentFileName", attachment.getFileName());
+            generator.addParameter("attachmentFileType", attachment.getFileType());
+            generator.addParameter("attachmentRemarks", attachment.getRemarks());
+//            generator.addParameter("attachmentContent", attachment.getAttachment().getFileBuffer());
+            generator.addParameter("createdBy", attachment.getCreatedBy().getFullName());
+            generator.completeEvent(claim);
+        }
     };
 ;
     
@@ -93,6 +108,10 @@ public enum ChoxEvent {
     }
 
     public void build(EventService generator, Claim claim, Task task) throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public void build(EventService generator, Claim claim, Attachment attachment) throws Exception {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

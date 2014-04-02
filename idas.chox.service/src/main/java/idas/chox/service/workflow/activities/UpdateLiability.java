@@ -65,13 +65,12 @@ public class UpdateLiability extends BaseActivity {
                 Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
-                claim.setLiabilityStatus(liabilityStatus);
+                claim.setLiability(liabilityStatus);
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes));
         }
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
 

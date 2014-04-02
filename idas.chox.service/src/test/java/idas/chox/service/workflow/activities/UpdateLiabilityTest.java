@@ -30,7 +30,7 @@ public class UpdateLiabilityTest extends BaseTest{
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_DISPUTED);
+        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
      
         UpdateLiability activity = (UpdateLiability) activityFactory.getActivity("updateLiability");
         

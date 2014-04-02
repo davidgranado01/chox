@@ -17,6 +17,7 @@
         <property column="autherised_user" name="privilegedUsers" not-null="true"/>
         <property column="error_message_receiver" name="errorMessageReceivers" not-null="true"/>
         <property column="active" name="active" />
+        <property column="reply_to_sender" name="replyToSender"  not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <property column="created_date" name="createdDate"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

@@ -154,6 +154,9 @@
         <property column="comp_automatic_estate_check_hpi" name="compoundAutomaticEstateChargeCheckHpiLookup"/>
         <property column="client_vat_registered_check" name="clientVatRegisteredCheck" not-null="true"/>
         <property column="engineer_net_fee_check" name="engineerNetFeeCheck" not-null="true"/>
+        <property column="total_loss_net_ceiling_check" name="totalLossFeeNetCeilingCheck" not-null="true"/>
+        <property column="total_loss_storage_fee_check" name="totalLossAndStorageFeeCheck" not-null="true"/>
+        <property column="max_allowed_total_loss_net" name="maxAllowedTotalLossNetFee" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

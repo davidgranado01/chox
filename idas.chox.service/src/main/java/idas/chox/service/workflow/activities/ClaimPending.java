@@ -137,7 +137,7 @@ public class ClaimPending extends BaseActivity {
             } else {
                 note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
             }
-            claim.setLiabilityStatus(liabilityStatus);
+            claim.setLiability(liabilityStatus);
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
@@ -149,11 +149,10 @@ public class ClaimPending extends BaseActivity {
             claimNumberUpdated = true;
         }
         claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
     }

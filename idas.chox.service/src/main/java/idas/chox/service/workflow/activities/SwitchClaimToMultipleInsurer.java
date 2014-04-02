@@ -123,10 +123,12 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);
         claim.setPreviousStatus(null);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiability(LiabilityStatus.LIABILITY_NULL);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setLiabilityAgreedDate(null);
+        claim.setLiabilityModifiedDate(null);
+        claim.setLiabilityStatusModifiedDate(null);
         claim.setCreatedDate(new Date());
         
         if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {

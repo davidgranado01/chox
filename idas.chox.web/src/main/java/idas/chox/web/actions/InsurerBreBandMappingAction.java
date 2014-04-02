@@ -102,7 +102,16 @@ public class InsurerBreBandMappingAction extends BaseAction {
             List<Chorganisation> chorganisations = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(this.insurerId);
 
             for (Chorganisation object : chorganisations) {
-                credithireorganisation.add(new ChorganisationViewData(object));
+                // If Insurer admin logged in then show only the active cho in the 'Available CHO' list of 'BRE Band Mapping'.
+                // But Chox admin can see all the active and inactive cho in the 'Available CHO' list of 'BRE Band Mapping'. 
+                // Please check bug#2785.
+                if (getUserOrganisationType() == 2) {
+                    if (object.isStatus()) {
+                        credithireorganisation.add(new ChorganisationViewData(object));
+                    }
+                } else {
+                    credithireorganisation.add(new ChorganisationViewData(object));
+                }
             }
 
             setJsonData(credithireorganisation, credithireorganisation.size());

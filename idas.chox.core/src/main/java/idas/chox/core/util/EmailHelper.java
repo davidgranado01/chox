@@ -2,6 +2,7 @@ package idas.chox.core.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,6 +11,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,18 +51,25 @@ public class EmailHelper {
     
     public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
 
+        if (recipients == null) {
+            LOG.debug("No recipients - not sending email.");
+            if (bccRecipients != null) {
+                LOG.warn("Email recipients empty but bcc recipients not: {}", bccRecipients);
+            }
+            return;
+        }
         try {
 
             Properties props = new Properties();
             props.put("mail.smtp.host", SmtpHostName);
             props.put("mail.smtp.auth", "true");
-            props.put("mail.debug", "true");
+            props.put("mail.debug", "false");
             props.put("mail.smtp.port", SmtpPort);
             props.put("mail.smtp.socketFactory.port", SmtpPort);
             props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
             props.put("mail.smtp.socketFactory.fallback", "false");
 
-            Session session = null;
+            Session session;
 
             if (SMTP_authetication) {
                 Authenticator authenticator = getAuthenticator(SmtpEmailUser, SmtpEmailUserPassword);
@@ -69,7 +78,7 @@ public class EmailHelper {
                 session = Session.getInstance(props);
             }
 
-            session.setDebug(true);
+//            session.setDebug(true);
 
             Message msg = new MimeMessage(session);
             InternetAddress addressFrom = new InternetAddress(SmtpEmailUser);

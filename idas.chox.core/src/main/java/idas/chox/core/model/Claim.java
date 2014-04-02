@@ -22,6 +22,7 @@ public class Claim extends Entity implements Serializable {
     private boolean isInvoiceReviewRequired;
     private boolean isFnolReviewed;
     private boolean autoPenaltyChargeEnabled;
+    private boolean totalLossChase;
     private Date policyHolderContactDate;
     private Date creditAgreementDate;
     private Date gtaNoticeDate;
@@ -29,6 +30,8 @@ public class Claim extends Entity implements Serializable {
     private Date finalReviewDateCho;
     private Date finalReviewDateIns;
     private Date liabilityAgreedDate;
+    private Date liabilityStatusModifiedDate;
+    private Date liabilityModifiedDate;
     private String choReference;
     private String status;
     private String claimNumber;
@@ -73,6 +76,22 @@ public class Claim extends Entity implements Serializable {
         this.noAttachments = 0;
     }
 
+    public Date getLiabilityStatusModifiedDate() {
+        return liabilityStatusModifiedDate;
+    }
+
+    public Date getLiabilityModifiedDate() {
+        return liabilityModifiedDate;
+    }
+
+    public void setLiabilityStatusModifiedDate(Date liabilityStatusModifiedDate) {
+        this.liabilityStatusModifiedDate = liabilityStatusModifiedDate;
+    }
+
+    public void setLiabilityModifiedDate(Date liabilityModifiedDate) {
+        this.liabilityModifiedDate = liabilityModifiedDate;
+    }
+
     public int getNoAttachments() {
         return noAttachments;
     }
@@ -95,6 +114,14 @@ public class Claim extends Entity implements Serializable {
 
     public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
         this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
+    }
+
+    public boolean isTotalLossChase() {
+        return totalLossChase;
+    }
+
+    public void setTotalLossChase(boolean totalLossChase) {
+        this.totalLossChase = totalLossChase;
     }
 
     @Deprecated
@@ -289,10 +316,6 @@ public class Claim extends Entity implements Serializable {
     }
 
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
-        // This null check added to fix Bug#957 & Bug934.
-        if (percentageLiabilityAccepted == null) {
-            this.percentageLiabilityAccepted = BigDecimal.ZERO;
-        }
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
@@ -518,9 +541,18 @@ public class Claim extends Entity implements Serializable {
         return percentageLiabilityCho;
     }
 
-    /**
-     * @param percentageLiabilityCho the percentageLiabilityCho to set
-     */
+    public void setLiabilityPercentages(BigDecimal insurerLiability, BigDecimal choLiability) {
+        if (((choLiability != null && (this.percentageLiabilityCho == null || this.percentageLiabilityCho.compareTo(choLiability) != 0))
+                || (choLiability == null && this.percentageLiabilityCho != null))
+                || ((insurerLiability != null && (this.percentageLiabilityAccepted == null || this.percentageLiabilityAccepted.compareTo(insurerLiability) != 0))
+                || (insurerLiability == null && this.percentageLiabilityAccepted != null))) {
+            this.percentageLiabilityCho = choLiability;
+            this.percentageLiabilityAccepted = insurerLiability;
+            this.liabilityModifiedDate = new Date();
+        }
+    }
+    
+
     public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
@@ -549,7 +581,13 @@ public class Claim extends Entity implements Serializable {
     /**
      * @param liabilityStatus the liabilityStatus to set
      */
-    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+    public void setLiability(LiabilityStatus liabilityStatus) {
+        if (this.liabilityStatus != liabilityStatus) {
+            this.liabilityStatusModifiedDate = new Date();
+            this.liabilityStatus = liabilityStatus;
+        }
+    }
+    protected void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
     // </editor-fold>

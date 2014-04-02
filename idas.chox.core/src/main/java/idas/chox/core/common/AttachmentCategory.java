@@ -14,6 +14,7 @@ public class AttachmentCategory {
     public static final String ATTCAT_REPAIR_DOCS = "Repair Documents";
     public static final String ATTCAT_REPAIR_STATEMENT = "Repairer Statement";
     public static final String ATTCAT_TOTALLOSS_PACK = "Total Loss Pack";
+    public static final String ATTCAT_TOTALLOSS_NOTIFICATION = "Total Loss Notification";
     public static final String ATTCAT_WITNESS_STATEMENT = "Witness Statement";
     public static final String ATTCAT_OTHER = "Other";
     public static final String ATTCAT_MITIGATION_STATEMENT = "Mitigation Statement";
@@ -33,6 +34,7 @@ public class AttachmentCategory {
         status.add(ATTCAT_REPAIR_STATEMENT);
         status.add(ATTCAT_TOTALLOSS);
         status.add(ATTCAT_TOTALLOSS_PACK);
+        status.add(ATTCAT_TOTALLOSS_NOTIFICATION);
         status.add(ATTCAT_VIDEO_FOOTAGE);
         status.add(ATTCAT_WITNESS_STATEMENT);
         status.add(ATTCAT_OTHER);

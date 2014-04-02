@@ -939,9 +939,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
-                claim.setPercentageLiabilityAccepted(fPercentageLiabilityAccepted);
-                claim.setPercentageLiabilityCho(fPercentageLiabilityCho);
-                claim.setLiabilityStatus(fLiabilityStatus);
+                claim.setLiabilityPercentages(fPercentageLiabilityAccepted, fPercentageLiabilityCho);
+                claim.setLiability(fLiabilityStatus);
                 claim.setLiabilityAgreedDate(fLiabilityAgreedDate);
                 this.service.updateSaveLiabilityStatus(claim);
 
@@ -2026,13 +2025,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (insurerWorkgroups == null) {
             if (this.getAuthenticatedUser().getInsurer() != null) {
                 insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getInsurer().getId(), true);
+                addCurrentClaimInactiveWorkgroup();
             } else {
                 insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(-1, true);
+                addCurrentClaimInactiveWorkgroup();
             }
         }
 
         return insurerWorkgroups;
 
+    }
+    
+    // If the claim is blongs to in-active workgroup then add the in-active workgroup.
+    private void addCurrentClaimInactiveWorkgroup() {
+        if (claim != null && claim.getWorkgroup() != null && !claim.getWorkgroup().isStatus()) {
+            insurerWorkgroups.add(claim.getWorkgroup());
+        }
     }
 
     public List getVehicleClasses() {

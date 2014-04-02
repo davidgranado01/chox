@@ -440,13 +440,21 @@
         <action name="BreBandDropDownAction" class="idas.chox.web.actions.BreBandDropDownAction">
             <result>/jsp/dropdown/p_dropdown_bre.jsp</result>
         </action>
-        <action name="UpdateWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroup">
+        <!-- The below request gets the active workgroups + the current claims in-active workgroup(only if the claimId provided with the request otherwise just returns the active workgroup) -->
+        <action name="getWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroupIncludsClaimsInactiveWG">
             <result>/jsp/dropdown/p_dropdown_update_claim_workgroup.jsp</result>
         </action>
+        <!-- The below request gets the active workgroups + the current claims in-active workgroup(only if the claimId provided with the request otherwise just returns the active workgroup) -->
+        <!-- Only return the assigned workgroup to the current user if the user role is workgroup related. -->
         <action name="WorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
         </action>
+        <!-- The below request gets the active workgroups + the current claims in-active workgroup(only if the claimId provided with the request otherwise just returns the active workgroup) -->
+        <action name="WorkgroupDropDownActionByInsurer3" class="idas.chox.web.actions.WorkgroupDropDownAction"  method="getInsurerWorkgroupIncludsClaimsInactiveWG">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
+        <!-- The below request gets all the workgroups(including in-active workgroup) -->
         <action name="WorkgroupDropDownActionByInsurer2" class="idas.chox.web.actions.WorkgroupDropDownAction"  method="getAllInsurerWorkgroups">
             <result>/jsp/p_jsonData.jsp</result>
         </action>

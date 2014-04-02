@@ -82,8 +82,10 @@ public class SwitchClaim extends BaseActivity {
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);
         claim.setPreviousStatus(null);
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiability(LiabilityStatus.LIABILITY_NULL);
         claim.setLiabilityAgreedDate(null);
+        claim.setLiabilityModifiedDate(null);
+        claim.setLiabilityStatusModifiedDate(null);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setCreatedDate(new Date());

@@ -55,18 +55,26 @@
 
 
     <!-- Filters Mappings -->
+    <!-- The below spring security filter should be listed first.-->
     <filter-mapping>
-  		<filter-name>CachingResponseFilter</filter-name>
- 		 <url-pattern>/images/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-  		<filter-name>CachingResponseFilter</filter-name>
- 		 <url-pattern>/css/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-  		<filter-name>CachingResponseFilter</filter-name>
- 		 <url-pattern>/scripts/*</url-pattern>
-	</filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingResponseFilter</filter-name>
+        <url-pattern>/images/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingResponseFilter</filter-name>
+        <url-pattern>/css/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingResponseFilter</filter-name>
+        <url-pattern>/scripts/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.action</url-pattern>
@@ -79,14 +87,6 @@
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>/j_spring_security_check</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
-
     <filter-mapping>
         <filter-name>struts-prepare</filter-name>
         <url-pattern>/*</url-pattern>

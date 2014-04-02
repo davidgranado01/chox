@@ -10,12 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
-public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
+public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
     public static final String JOB_NAME = "REFERENCE_UPDATE";
+    private ClaimService claimService;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
     @Secured({"ROLE_CHO"})
     @Override
@@ -40,7 +46,7 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 String newReference = cells.get(1).trim();
 
                 if (oldReference != null && !oldReference.isEmpty() && newReference != null && !newReference.isEmpty()) {
-                    int status = getClaimService().updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
+                    int status = claimService.updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
                     String statusString;
                     if (status == 0) {
                         statusString = "Updated";
@@ -112,7 +118,7 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    protected List<SchedulerJob> getEmailSchedulerJobs() {
+    protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

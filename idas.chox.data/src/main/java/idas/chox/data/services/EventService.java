@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,21 @@ public class EventService {
     public void generate(final Claim claim, final Task task, ChoxEvent event) {
         try {
             event.build(this, claim, task);
+        } catch (Exception ex) {
+            LOG.error("Error generating events for event '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+            return;
+        }
+
+        try {
+            eventGenerator.sendEvents();
+        } catch (Exception ex) {
+            LOG.error("Error sending generated events for activity '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+        }
+    }
+
+    public void generate(final Claim claim, final Attachment attachment, ChoxEvent event) {
+        try {
+            event.build(this, claim, attachment);
         } catch (Exception ex) {
             LOG.error("Error generating events for event '{}' : {}", new Object[]{event, ex.getMessage(), ex});
             return;

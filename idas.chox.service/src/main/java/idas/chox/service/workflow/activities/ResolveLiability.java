@@ -71,13 +71,12 @@ public class ResolveLiability extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
-                claim.setLiabilityStatus(liabilityStatus);
+                claim.setLiability(liabilityStatus);
                 Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
         }
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);        
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
     }

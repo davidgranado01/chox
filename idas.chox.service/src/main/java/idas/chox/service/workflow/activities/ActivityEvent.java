@@ -781,20 +781,7 @@ public enum ActivityEvent {
     },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     // Non-activity based events - should be moved to ChoxEvents in data package TODO
-    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent") {
-        @Override
-        public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment)  throws Exception {
-            LOG.debug("Building NoteAddedEvent");
-            generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("attachmentCategory", attachment.getCategory());
-            generator.addParameter("attachmentFileName", attachment.getFileName());
-            generator.addParameter("attachmentFileType", attachment.getFileType());
-            generator.addParameter("attachmentRemarks", attachment.getRemarks());
-//            generator.addParameter("attachmentContent", attachment.getAttachment().getFileBuffer());
-            generator.addParameter("createdBy", attachment.getCreatedBy().getFullName());
-            generator.completeEvent(claim);
-        }
-    },
+//    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {

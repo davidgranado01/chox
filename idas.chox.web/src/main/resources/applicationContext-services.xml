@@ -12,6 +12,7 @@
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
         <property name="userService" ref="userService"/>
+        <property name="taskService" ref="taskService"/>
         <property name="notificationService" ref="notificationService"/>
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
@@ -31,6 +32,10 @@
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
+        <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
+        <property name="taskService" ref="taskService" />
+        <property name="eventService" ref="eventService" />
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
