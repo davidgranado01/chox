@@ -80,6 +80,7 @@ public class TotalLossPackEmailSchedulerJob extends PdfEmailSchedulerJob {
                         claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
                         claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
                         claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
+                        claimService.checkTotalLossAnomaly(claim);
                         statusString.append("; Claim has been marked as a total loss");
                     }
                     

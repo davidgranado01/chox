@@ -81,6 +81,7 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
                         claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
                         claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
                         claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
+                        claimService.checkTotalLossAnomaly(claim);
                     }
                     
                     try {

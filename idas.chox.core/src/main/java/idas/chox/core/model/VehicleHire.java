@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class VehicleHire extends Entity implements Serializable {
 
-    private boolean IsTotalLoss;
     private String vehicleRegistration;
     private String vehicleManufacturer;
     private String vehicleModel;
@@ -49,10 +48,6 @@ public class VehicleHire extends Entity implements Serializable {
 
     public void setDaysOriginal(Integer daysOriginal) {
         this.daysOriginal = daysOriginal;
-    }
-
-    public void setIsTotalLoss(boolean IsTotalLoss) {
-        this.IsTotalLoss = IsTotalLoss;
     }
 
     /**
@@ -228,11 +223,6 @@ public class VehicleHire extends Entity implements Serializable {
 
     public void setHireEndOriginal(Date hireEnd) {
         this.rentalEndOriginal = hireEnd;
-    }
-
-    // ##### NOT FROM HERE #############
-    public boolean getIsTotalLoss() {
-        return this.IsTotalLoss;
     }
 
     public String getHpiError() {

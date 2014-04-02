@@ -5,7 +5,6 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.ActualHireDaysDoesNotExceedAllowableHireDays;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -66,7 +65,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         Claim claim = getTestClaim();
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getEngineerReport().setDays(1);
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
@@ -84,7 +83,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         Claim claim = getTestClaim();
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getEngineerReport().setDays(2);
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
@@ -102,7 +101,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         Claim claim = getTestClaim();
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getEngineerReport().setDays(2);
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
@@ -139,7 +138,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getCustomer().setIsUsable(false);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(19);
                 
         // SET ENGINERTING REPORT
@@ -192,7 +191,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getCustomer().setIsUsable(false);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(18);
 
         // SET ENGINERTING REPORT
@@ -245,7 +244,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getCustomer().setIsUsable(false);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(20);
 
         // SET ENGINERTING REPORT

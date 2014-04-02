@@ -14,8 +14,7 @@ public class TotalLossAnomalousNotificationChecker implements AnomalousCheck {
     public boolean check(Claim claim) {
         boolean isAnomalous = false;
         
-        if (claim.getCustomer()!= null && claim.getCustomer().getIsTotalLoss()
-                || (claim.getVehicleHire() != null && claim.getVehicleHire().getIsTotalLoss())) {
+        if (claim.getCustomer()!= null && claim.getCustomer().getIsTotalLoss()) {
             isAnomalous = true;
         }
         return isAnomalous;

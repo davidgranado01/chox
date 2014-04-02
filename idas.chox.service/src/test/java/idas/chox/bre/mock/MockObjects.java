@@ -173,7 +173,6 @@ public class MockObjects {
 
         hire.setCollectionReason("REASON");
         hire.setDays(3);
-        hire.setIsTotalLoss(true);
         hire.setRentalEnd(DateHelper.getCurrentDate());
         hire.setRentalStart(DateHelper.getCurrentDate());
         hire.setHireEnd(DateHelper.getCurrentDate());
