@@ -70,7 +70,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
@@ -93,7 +93,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(8);
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
@@ -115,7 +115,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(9);
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
@@ -140,7 +140,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(10);
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);

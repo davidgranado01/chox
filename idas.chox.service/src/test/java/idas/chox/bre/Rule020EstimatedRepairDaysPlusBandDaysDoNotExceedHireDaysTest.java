@@ -55,7 +55,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
         claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
 
         // SET ENGINNERING REPORT
         claim.getEngineerReport().setDays(10);
@@ -83,7 +83,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
         Claim claim = getTestClaim();
         claim.getBreBand().setEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays(true);
 
-        claim.getVehicleHire().setIsTotalLoss(true);
+        claim.getCustomer().setIsTotalLoss(true);
         claim.getEngineerReport().setDays(0);
 
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
@@ -120,7 +120,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
         claim.getCustomer().setIsUsable(false);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(20);
 
         // SET ENGINERTING REPORT
@@ -191,7 +191,7 @@ int hireDays = claim.getVehicleHire().getDays();
         claim.getCustomer().setIsUsable(true);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(18);
 
         // SET ENGINERTING REPORT
@@ -233,7 +233,7 @@ int hireDays = claim.getVehicleHire().getDays();
         claim.getCustomer().setIsUsable(true);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(17);
 
         // SET ENGINERTING REPORT
@@ -275,7 +275,7 @@ int hireDays = claim.getVehicleHire().getDays();
         claim.getCustomer().setIsUsable(true);
 
         // SET HIRE DETAIL
-        claim.getVehicleHire().setIsTotalLoss(false);
+        claim.getCustomer().setIsTotalLoss(false);
         claim.getVehicleHire().setDays(21);
 
         // SET ENGINERTING REPORT

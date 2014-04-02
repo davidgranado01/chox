@@ -56,14 +56,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private void constructBreValidateObject(Claim claim) {
 
-        Boolean isIsTotalLostCheck = false;
-        if (claim.getHireMonitoringDetail() != null) {
-            isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
-        }
-        if (claim.getVehicleHire() != null) {
-            claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
-        }
-
         if (claim.getEngineerReport() == null) {
             EngineerReport engineerreport = new EngineerReport();
             engineerreport.setDays(0);

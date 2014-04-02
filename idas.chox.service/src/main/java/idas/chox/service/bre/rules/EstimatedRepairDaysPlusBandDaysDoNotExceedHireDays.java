@@ -28,16 +28,18 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType())
+                && claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()
+                && claim.getCustomer() != null) {
 
             Customer cvdamage = claim.getCustomer();
             BreBand choBand = claim.getBreBand();
             EngineerReport eReport = claim.getEngineerReport();
 
-            if ((claim.getVehicleHire().getIsTotalLoss()) || eReport == null || (eReport.getEstimatedDaysUnderRepair() < 1)) {
+            if ((claim.getCustomer().getIsTotalLoss()) || eReport == null || (eReport.getEstimatedDaysUnderRepair() < 1)) {
 
                 narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present";
-                LOG.debug("Rule skipped: isTotalLoss: {}, EngineerReport: {}", claim.getVehicleHire().getIsTotalLoss(), eReport);
+                LOG.debug("Rule skipped: isTotalLoss: {}, EngineerReport: {}", claim.getCustomer().getIsTotalLoss(), eReport);
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             } else {

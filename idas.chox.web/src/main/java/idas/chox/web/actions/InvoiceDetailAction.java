@@ -1842,11 +1842,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public void setIsTotalLoss(boolean IsTotalLoss) {
-        if (actionSelected != reset && vehicleHire != null) {
-            vehicleHire.setIsTotalLoss(IsTotalLoss);
-        }
-    }
 
     public java.lang.String getVehicleRegistration() {
         return vehicleHire.getVehicleRegistration();
@@ -1988,11 +1983,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (actionSelected != reset && vehicleHire != null) {
             vehicleHire.setHireEnd(hireEnd);
         }
-    }
-
-    // ##### NOT FROM HERE #############
-    public boolean getIsTotalLoss() {
-        return vehicleHire.getIsTotalLoss();
     }
 
     public String getHpiError() {

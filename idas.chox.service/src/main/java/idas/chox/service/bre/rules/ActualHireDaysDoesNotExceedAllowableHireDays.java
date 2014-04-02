@@ -27,8 +27,8 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
         if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
             LOG.debug("Engineer Report: {}", claim.getEngineerReport());
-            LOG.debug("Total loss: {}", claim.getVehicleHire().getIsTotalLoss());
-            if (!claim.getVehicleHire().getIsTotalLoss() && (claim.getEngineerReport() == null || claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1)) {
+            LOG.debug("Total loss: {}", claim.getCustomer().getIsTotalLoss());
+            if (!claim.getCustomer().getIsTotalLoss() && (claim.getEngineerReport() == null || claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1)) {
                 LOG.debug("Applying rule with Engineer report={}", claim.getEngineerReport());
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 boolean success = claim.getVehicleHire().getDays() <= cCalc.getAllowedDays();
@@ -45,7 +45,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
             } else {
                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-               LOG.debug("Rule skipped: isTotalLoss: {}, EstimatedDaysUnderRepair: {}", claim.getVehicleHire().getIsTotalLoss(), claim.getEngineerReport().getEstimatedDaysUnderRepair());
+               LOG.debug("Rule skipped: isTotalLoss: {}, EstimatedDaysUnderRepair: {}", claim.getCustomer().getIsTotalLoss(), claim.getEngineerReport().getEstimatedDaysUnderRepair());
                narrative = "Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair";
             }
 
