@@ -1663,7 +1663,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // Check no total loss upload task in past 7 days
         DetachedCriteria subQuery = DetachedCriteria.forClass(Attachment.class, "a");
         subQuery.add(Restrictions.eq("category", "Total Loss Pack"))
-                .add(Restrictions.gt("createdDate", lastWeek))
+                .add(Restrictions.ge("createdDate", lastWeek))
                 .add(Restrictions.ilike("remarks", "Total Loss pack has been uploaded for review%"))
                 .add(Restrictions.eqProperty("cl.id", "a.claim.id"));
         subQuery.setProjection(Projections.id());
