@@ -225,7 +225,7 @@ public class AdminInsurerServiceTest extends BaseTest {
     @Transactional
     public void testInsurerAutoRouting_GetAvailableWorkgroupsForAutoRouting() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        Assert.assertEquals(5, (adminInsurerService.getAvailableWorkgroups(insurer.getId())).size());
+        Assert.assertEquals(5, (adminInsurerService.getAvailableWorkgroups(insurer.getId(), true)).size());
     }
 
     @Test
@@ -233,8 +233,8 @@ public class AdminInsurerServiceTest extends BaseTest {
     public void testInsurerAutoRouting_AddNewAutoRouting() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        List items = new ArrayList<IdLookupItem>();
-        items = adminInsurerService.getAvailableWorkgroups(insurer.getId());
+        List items;
+        items = adminInsurerService.getAvailableWorkgroups(insurer.getId(), true);
         int workgroupId = ((IdLookupItem) items.get(0)).getId();
 
         ActionResponse response = adminInsurerService.addNewAutomaticRouting(insurer.getId(), workgroupId, "ABCDEFG");

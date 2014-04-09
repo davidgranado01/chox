@@ -134,7 +134,7 @@ public class WorkgroupDropDownAction extends BaseAction {
             throw new AccessDeniedException("Illegal access detected.");
         }
         try {
-            workgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId);
+            workgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId, true);
         } catch (Exception ex) {
             LOG.error("Exception occurred while getting availableWorkgroups: ", ex);
         }

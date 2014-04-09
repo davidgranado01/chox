@@ -35,20 +35,24 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         this.claimService = claimService;
     }
 
+    @Override
     public Workgroup getWorkgroup(int workgroupId) {
         return (Workgroup) get(Workgroup.class, workgroupId);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteWorkgroup(Workgroup workgroup) {
         delete(workgroup);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveWorkgroup(Workgroup workgroup) {
         save(workgroup);
     }
 
+    @Override
     public List<Workgroup> getActiveWorkgroupsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -57,6 +61,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return findByCriteria(criteria);
     }
 
+    @Override
     public List<Workgroup> getWorkgroupsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -64,6 +69,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return findByCriteria(criteria);
     }
 
+    @Override
     public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName) {
 
         boolean isExist = false;
@@ -81,6 +87,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void createDefaultWorkgroup(Insurer insurer) {
         Workgroup object = new Workgroup();
         object.setInsurer(insurer);
@@ -111,11 +118,16 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
     }
 
-    public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId) {
+    @Override
+    public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId, boolean isActiveOnly) {
 
         // GET ALL WORKGROUPS BY INSURER
         DetachedCriteria workgroupCirteria = DetachedCriteria.forClass(Workgroup.class);
         workgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        
+        if (isActiveOnly) {
+            workgroupCirteria.add(Restrictions.eq("status", true));
+        }
 
         // GET ALL WORKGROUPS ASSIGNED TO WEB USER
         DetachedCriteria autoroutingworkgroupCirteria = DetachedCriteria.forClass(AutomaticRouting.class);
@@ -130,6 +142,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
     }
 
+    @Override
     public boolean isWorkgroupDeletable(int workgroupId) {
 
         boolean isExist = false;
@@ -141,6 +154,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return isExist;
     }
 
+    @Override
     public boolean isWorkgroupAllowToInactive(int insurerId, int workgroupId) {
         
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
@@ -155,8 +169,9 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return false;
     }
 
+    @Override
     public boolean isInsurerWithWorkgroup(int insurerId) {
-        List<Workgroup> objects = new ArrayList<Workgroup>();
+        List<Workgroup> objects;
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));

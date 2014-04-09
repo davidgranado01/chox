@@ -83,7 +83,7 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
 
         List items = new ArrayList<IdLookupItem>();
         try {
-            items = adminInsurerService.getAvailableWorkgroups(this.insurerId);
+            items = adminInsurerService.getAvailableWorkgroups(this.insurerId, true);
         } catch (Exception ex) {
             handleException(ex);
         }
