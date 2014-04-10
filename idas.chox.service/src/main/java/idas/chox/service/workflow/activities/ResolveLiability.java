@@ -64,18 +64,7 @@ public class ResolveLiability extends BaseActivity {
     protected void beforeProcess(Claim claim) throws Exception {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
-        if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
-                String note;
-                if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                claim.setLiability(liabilityStatus);
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
-        }
+        claimService.setLiability(claim, liabilityStatus);
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);        
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);

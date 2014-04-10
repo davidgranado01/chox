@@ -33,7 +33,6 @@ public class ClaimRejection extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    private ClaimService claimService;
     private ReasonOfRejection reasonOfRejection;
     protected boolean liabilityUpdated = false;
     protected boolean claimNumberUpdated = false;
@@ -94,11 +93,7 @@ public class ClaimRejection extends BaseActivity {
         this.liabilityStatus = liabilityStatus;
     }
 
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-
-    // </editor-fold>
+   // </editor-fold>
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -202,21 +197,8 @@ public class ClaimRejection extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
-        if (liabilityStatus != null && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL
-                || !claim.getLiabilityStatus().equals(liabilityStatus)) ){
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-                String note;
-                if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                claim.setLiability(liabilityStatus);
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
-                liabilityUpdated = true;
-        }
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
         }

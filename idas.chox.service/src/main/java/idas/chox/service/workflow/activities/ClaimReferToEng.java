@@ -93,21 +93,8 @@ public class ClaimReferToEng extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
-            String note;
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                note = "Liability status changed to '" + liabilityStatus + "'";
-            } else {
-                note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
-            }
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-            claim.setLiability(liabilityStatus);
-            Comment comment = Comment.newComment(0, note);
-            comment.setClaim(claim);
-            claim.addComment(comment);
-            liabilityUpdated = true;
-
-        }
         if (!claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
             claimNumberUpdated = true;
@@ -117,8 +104,6 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-
-
     }
 
     @Override

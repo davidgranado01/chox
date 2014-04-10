@@ -15,30 +15,18 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.model.Auditable;
 import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.FullAudit;
-import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Customer;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.FullAuditService;
 import idas.chox.core.services.InvoiceService;
-import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.data.events.ChoxEvent;
-import idas.chox.data.notifications.EcdUpdatedNotification;
-import idas.chox.data.notifications.HireUpdatedNotification;
-import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
-import idas.chox.data.services.EventService;
 
 public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBInterceptor.class);
     private SecurityInfoProvider securityInfoProvider;
     private FullAuditService fullAuditService;
-    private NotificationService notificationService;
     private BeanFactory bf;
-    private EventService eventService;
 
     @Override
     public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
@@ -320,15 +308,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                     }
                 }
             }
-        } else if (entity instanceof HireMonitoringEcd) {
-            HireMonitoringEcd ecd = (HireMonitoringEcd) entity;
-            if (ecd.isUpdateInsurer()) {
-                LOG.debug("Adding ECD Updated notification to claim '{}' with id={}", ecd.getClaim().getChoReference(), ecd.getClaim().getId());
-                getNotificationService().addNotification(ecd.getClaim(), new EcdUpdatedNotification());
-
-            } else {
-                LOG.debug("No ECD Updated notification to be added as UpdateInsurer was false: {}", ecd.getClaim());
-            }
         }
 
         return true;
@@ -438,11 +417,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
         if (entity instanceof HireMonitoringDetail) {
             HireMonitoringDetail hmd = (HireMonitoringDetail) entity;
             LOG.debug("    HireMonitoringDetail instance with id={}...", hmd.getId());
-            // Hire Monitoring Detail must have changed so we need to add a notification
-            if (hmd.isUpdateInsurer()) {
-                LOG.debug("    Adding Hire Monitoring Updated notification to claim '{}' with id={}", hmd.getClaim().getChoReference(), hmd.getClaim().getId());
-                getNotificationService().addNotification(hmd.getClaim(), new HireUpdatedNotification());
-            }
 
             Integer indexOfInspectionBookedDate = null;
             Integer indexOfInspectionBookedDateLastModified = null;
@@ -730,36 +704,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 }
             }
 
-        } else if (entity instanceof Claim) {
-            // Check for Liability Status update and add notification if changed
-            Claim claim = (Claim) entity;
-            for (int i = 0; i < propertyNames.length; i++) {
-                if ("liabilityStatus".equals(propertyNames[i]) && ((previousState[i] == null && currentState[i] != null)
-                        || (previousState[i] != null && currentState[i] == null)
-                        || (!currentState[i].toString().equals(previousState[i].toString())))) {
-                    LOG.debug("    Liability status changed from '{}' to '{}': adding notification", previousState[i], currentState[i]);
-                    getNotificationService().addNotification(claim, new LiabilityStatusUpdatedNotification((LiabilityStatus)currentState[i]));
-                }
-            }
-        } else if (entity instanceof Customer) {
-            // Check for Total Loss Status update and add event if changed
-            Customer customer = (Customer) entity;
-            for (int i = 0; i < propertyNames.length; i++) {
-                if ("isTotalLoss".equals(propertyNames[i]) && ((previousState[i] == null && currentState[i] != null)
-                        || (previousState[i] != null && currentState[i] == null)
-                        || (!currentState[i].toString().equals(previousState[i].toString())))) {
-                    LOG.debug("    Total Loss status changed from '{}' to '{}' [] : generating event", previousState[i], currentState[i]);
-                    getEventService().generate(customer.getClaim(), ChoxEvent.TOTAL_LOSS_UPDATE_EVENT);
-                }
-            }
-        }
-
-
-
-        try {
-            throw new Exception();
-        } catch (Exception ex) {
-            LOG.debug("Stacktrace: ", ex);
         }
 
         LOG.debug("**** Finished onFlushDirty() for entity class '{}' ****", entity.getClass());
@@ -771,29 +715,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
     }
 
-    public synchronized NotificationService getNotificationService() {
-        if (notificationService == null) {
-            /*
-             * This is a bit of a hack....
-             * Letting spring inject this bean causes a circular dependency error,
-             * so we'll make this class BeanFactoryAware and get the bean ourselves
-             */
-            notificationService = (NotificationService) bf.getBean("notificationService");
-        }
-        return notificationService;
-    }
-
-    public synchronized EventService getEventService() {
-        if (eventService == null) {
-            /*
-             * This is a bit of a hack....
-             * Letting spring inject this bean causes a circular dependency error,
-             * so we'll make this class BeanFactoryAware and get the bean ourselves
-             */
-            eventService = (EventService) bf.getBean("eventService");
-        }
-        return eventService;
-    }
 
     public synchronized FullAuditService getFullAuditService() {
         if (fullAuditService == null) {

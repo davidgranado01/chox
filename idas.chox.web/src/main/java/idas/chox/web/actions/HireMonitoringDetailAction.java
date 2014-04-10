@@ -11,10 +11,10 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.NotificationService;
+import idas.chox.data.notifications.HireUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.service.workflow.activities.ActivityEvent;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -25,6 +25,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
+    private NotificationService notificationService;
     private Boolean isTotalLossOriginal;
     private Date repairBookedInDateOriginal;
     private String labourRate;
@@ -58,6 +59,10 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     
     public void setLookupService(LookupService service) {
         this.lookupService = service;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     public boolean isManagingRepair() {
@@ -95,7 +100,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String updateModel() {
         try {
             boolean updated = false;
@@ -131,6 +135,9 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
             claim.setHireMonitoringDetail(model);
 
+            if (model.isUpdateInsurer()) {
+                notificationService.addNotification(claim, new HireUpdatedNotification());
+            }
             if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
                     || (model.getRepairBookInDate() == null && repairBookedInDateOriginal != null)
                     || (repairBookedInDateOriginal != null && model.getRepairBookInDate() != null 

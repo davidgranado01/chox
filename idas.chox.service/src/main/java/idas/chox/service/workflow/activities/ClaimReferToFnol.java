@@ -211,20 +211,8 @@ public class ClaimReferToFnol extends BaseActivity {
             }
 
         } else {
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
+            liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-                String note;
-                if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                    note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
-                } else {
-                    note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
-                }
-                claim.setLiability(liabilityStatus);
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
-                liabilityUpdated = true;
-            }
             if (!claim.getClaimNumber().equals(claimNumber)) {
                 claim.setClaimNumber(claimNumber);
                 claimNumberUpdated = true;

@@ -17,6 +17,7 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.DataService;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
@@ -38,6 +39,8 @@ public abstract class BaseActivity implements Activity {
     private ApplicationAccessibility applicationAccessibility;
     @Autowired
     protected ActivityEventGenerator activityEventGenerator;
+    @Autowired
+    protected ClaimService claimService;
 
     public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
         this.activityEventGenerator = activityEventGenerator;
@@ -77,6 +80,10 @@ public abstract class BaseActivity implements Activity {
 
     public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
         this.userWorkgroupService = userWorkgroupService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     @Override

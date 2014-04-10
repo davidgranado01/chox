@@ -55,18 +55,7 @@ public class UpdateLiability extends BaseActivity {
     protected void beforeProcess(Claim claim) throws Exception {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
-        if ( liabilityStatus != null && ! claim.getLiabilityStatus().equals(liabilityStatus)){
-                String note;
-                if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
-                claim.setLiability(liabilityStatus);
-        }
+        claimService.setLiability(claim, liabilityStatus);
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes));
         }

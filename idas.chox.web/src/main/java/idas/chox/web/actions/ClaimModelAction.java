@@ -19,7 +19,6 @@ import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import org.springframework.aop.support.AopUtils;
 
-
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">

@@ -13,7 +13,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.services.ClaimService;
 
 
 public class AcknowledgeClaim extends BaseActivity {
@@ -30,7 +29,6 @@ public class AcknowledgeClaim extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    private ClaimService claimService;
     protected boolean liabilityUpdated = false;
     protected boolean claimNumberUpdated = false;
     
@@ -125,20 +123,8 @@ public class AcknowledgeClaim extends BaseActivity {
     protected void beforeProcess(Claim claim) {
         LOG.debug("percentageLiabilityAccepted: {}", percentageLiabilityAccepted);
         LOG.debug("percentageLiabilityCho: {}", percentageLiabilityCho);
-        if (!claim.getLiabilityStatus().equals(liabilityStatus)) {
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-            String note;
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
-            } else {
-                note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
-            }
-            claim.setLiability(liabilityStatus);
-            Comment comment = Comment.newComment(0, note);
-            comment.setClaim(claim);
-            claim.addComment(comment);
-            liabilityUpdated = true;
-        }
         if (!claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
             claimNumberUpdated = true;
@@ -217,11 +203,4 @@ public class AcknowledgeClaim extends BaseActivity {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 
-    public ClaimService getClaimService() {
-        return claimService;
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 }

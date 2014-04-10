@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.services.ClaimService;
 
 public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
-    private ClaimService claimService;
     protected boolean invoiceAccepted = false;
     protected boolean paymentLogged = false;
     protected boolean claimReverted = false;
@@ -61,9 +59,5 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
             super.setChainActivity(null);
         }
 
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
     }
 }

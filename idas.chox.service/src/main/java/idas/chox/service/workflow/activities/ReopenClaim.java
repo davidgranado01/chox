@@ -7,14 +7,12 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 
 public class ReopenClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ReopenClaim.class);
     private TaskService taskService;
-    private ClaimService claimService;
     private PenaltyChargeService penaltyChargeService;
     private BreBandService breBandService;
 
@@ -29,11 +27,6 @@ public class ReopenClaim extends BaseActivity {
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-
 
     @Override
     protected void doProcess(Claim claim) {

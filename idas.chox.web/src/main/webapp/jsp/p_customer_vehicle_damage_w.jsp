@@ -51,7 +51,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Total Loss</label>
-                <s:checkbox id="customerVehicleDamageisTotalLossId" name="isTotalLoss" />
+                <s:checkbox id="customerVehicleDamageisTotalLossId" name="isTotalLossNew" />
                 <label class="std-data-ro" id="customerVehicleTotalLossOriginalDescId"><s:property value="isTotalLossOriginalDesc" /></label>
             </div>
             <div class="chox-form-item">

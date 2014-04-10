@@ -57,6 +57,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
@@ -174,11 +175,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    @Override
-    public void updateSaveLiabilityStatus(Claim claim) {
-        save(claim);
-    }
-
     protected void save(Claim object) {
         updateLiabilityPayment(object);
         super.save(object);
@@ -1712,6 +1708,30 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         claim.getCustomer().setIsTotalLoss(isTotalLoss);
         checkTotalLossAnomaly(claim);
+        eventService.generate(claim, ChoxEvent.TOTAL_LOSS_UPDATE_EVENT);
+    }
+
+    @Override
+    public boolean setLiability(Claim claim, LiabilityStatus liabilityStatus) {
+        boolean updated = false;
+        
+        if (liabilityStatus != null && !claim.getLiabilityStatus().equals(liabilityStatus)) {
+
+            String note;
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
+                note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
+            } else {
+                note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
+            }
+            claim.setLiability(liabilityStatus);
+            Comment comment = Comment.newComment(0, note);
+            comment.setClaim(claim);
+            claim.addComment(comment);
+            notificationService.addNotification(claim, new LiabilityStatusUpdatedNotification(liabilityStatus));
+            updated = true;
+        }
+        
+        return updated;
     }
 
 }

@@ -53,7 +53,7 @@ public class NewTpiClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         //First Set Liability status
-        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
+        claimService.setLiability(claim, LiabilityStatus.LIABILITY_ACCEPTED);
         claim.setLiabilityAgreedDate(new Date());
         claim.setLiabilityPercentages(new BigDecimal("100.00"), BigDecimal.ZERO);
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);

@@ -11,7 +11,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.util.DateHelper;
@@ -19,7 +18,6 @@ import idas.chox.core.util.DateHelper;
 public class RevertClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(RevertClaim.class);
     private BigDecimal amountReceived = null;
-    private ClaimService claimService;
     private TaskService taskService;
     private BreBandService breBandService;
     private PenaltyChargeService penaltyChargeService;
@@ -38,10 +36,6 @@ public class RevertClaim extends BaseActivity {
     
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
     }
 
     public void setAmountReceived(BigDecimal amountReceived) {
