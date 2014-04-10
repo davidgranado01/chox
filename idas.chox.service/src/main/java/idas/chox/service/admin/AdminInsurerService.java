@@ -190,10 +190,10 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRoutingsByPrice(insurerId, -1);
     }
 
-    public List getAvailableWorkgroups(int insurerId) {
+    public List getAvailableWorkgroups(int insurerId, boolean isActiveOnly) {
 
         List items = new ArrayList<IdLookupItem>();
-        List<Workgroup> availableWorkgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId);
+        List<Workgroup> availableWorkgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId, isActiveOnly);
 
         for (Workgroup s : availableWorkgroups) {
             items.add(new IdLookupItem(s.getId(), s.getName()));

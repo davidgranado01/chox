@@ -178,7 +178,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         List items = new ArrayList<IdLookupItem>();
         try {
-            items = adminInsurerService.getAvailableWorkgroups(this.insurerId);
+            items = adminInsurerService.getAvailableWorkgroups(this.insurerId, true);
         } catch (Exception ex) {
             handleException(ex);
         }

@@ -23,7 +23,7 @@ public interface WorkgroupService {
 
     List<Workgroup> getAvailableUserWorkgroupsByInsurer(int InsurerId, int webUserId);
 
-    List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId);
+    List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId, boolean isActiveOnly);
 
     // TO BE REVIEWED
     boolean isWorkgroupDeletable(int workgroupId);
