@@ -37,7 +37,22 @@ public class EventService {
     }
     
 
-    public void generate(final Claim claim, final Task task, ChoxEvent event) {
+    public void generate(final Claim claim, ChoxEvent event) {
+        try {
+            event.build(this, claim);
+        } catch (Exception ex) {
+            LOG.error("Error generating events for event '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+            return;
+        }
+
+        try {
+            eventGenerator.sendEvents();
+        } catch (Exception ex) {
+            LOG.error("Error sending generated events for activity '{}' : {}", new Object[]{event, ex.getMessage(), ex});
+        }
+    }
+
+    public void generate(final Claim claim, ChoxEvent event, final Task task) {
         try {
             event.build(this, claim, task);
         } catch (Exception ex) {
@@ -52,7 +67,7 @@ public class EventService {
         }
     }
 
-    public void generate(final Claim claim, final Attachment attachment, ChoxEvent event) {
+    public void generate(final Claim claim, ChoxEvent event, final Attachment attachment) {
         try {
             event.build(this, claim, attachment);
         } catch (Exception ex) {
@@ -67,7 +82,7 @@ public class EventService {
         }
     }
 
-    public void generate(final Claim claim, String oldReference, ChoxEvent event) {
+    public void generate(final Claim claim, ChoxEvent event, String oldReference) {
         try {
             event.build(this, claim, oldReference);
         } catch (Exception ex) {

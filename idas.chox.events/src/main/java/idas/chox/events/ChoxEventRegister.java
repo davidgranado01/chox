@@ -17,6 +17,12 @@ public class ChoxEventRegister implements EventRegister {
     private List<Event> events;
     private Event openEvent;
     private ChoxJmsEventSender choxJmsEventSender;
+    private boolean active;
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
 
     public void setChoxJmsEventSender(ChoxJmsEventSender choxJmsEventSender) {
         this.choxJmsEventSender = choxJmsEventSender;
@@ -28,30 +34,36 @@ public class ChoxEventRegister implements EventRegister {
             throw new Exception("Event already started.");
         }
 
-        openEvent = new Event(name, id, insurerId, choId, claimId, claimType);
+        if (active) {
+            openEvent = new Event(name, id, insurerId, choId, claimId, claimType);
+        }
     }
 
     @Override
     public void addParameter(String paramName, Object paramValue) {
-        openEvent.addParameter(paramName, paramValue);
+        if (active) {
+            openEvent.addParameter(paramName, paramValue);
+        }
     }
 
     @Override
     public void completeEvent() throws Exception {
-        if (openEvent == null) {
-            throw new Exception("No event has been started.");
-        }
-        if (events == null) {
-            events = new ArrayList(3);
-        }
+        if (active) {
+            if (openEvent == null) {
+                throw new Exception("No event has been started.");
+            }
+            if (events == null) {
+                events = new ArrayList(3);
+            }
 
-        events.add(openEvent);
-        openEvent = null;
+            events.add(openEvent);
+            openEvent = null;
+        }
     }
 
     @Override
     public void sendEvents() throws Exception {
-        if (events != null) {
+        if (active && events != null) {
             for (Event ev : events) {
                 try {
                     LOG.debug("Sending event {}", ev);

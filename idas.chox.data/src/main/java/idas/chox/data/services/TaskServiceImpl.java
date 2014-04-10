@@ -132,7 +132,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
         markTaskAsComplete(task);
         if (task.getClaim() != null) {
-            eventService.generate(task.getClaim(), task, ChoxEvent.TASK_COMPLETED_EVENT);
+            eventService.generate(task.getClaim(), ChoxEvent.TASK_COMPLETED_EVENT, task);
         }
         if (task.getRelatedTask() != null) {
             LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
@@ -274,7 +274,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
         this.save(task);
         if (task.getClaim() != null) {
-            eventService.generate(task.getClaim(), task, ChoxEvent.TASK_CREATED_EVENT);
+            eventService.generate(task.getClaim(), ChoxEvent.TASK_CREATED_EVENT, task);
         }
     }
 

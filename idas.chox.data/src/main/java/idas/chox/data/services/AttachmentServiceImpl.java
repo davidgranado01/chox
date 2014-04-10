@@ -193,7 +193,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         attachment.setAttachment(aFile);
         LOG.debug("Saving claim for the 2nd time...");
         claimService.updateClaim(claim);
-        eventService.generate(claim, attachment, ChoxEvent.ATTACHMENT_UPLOADED_EVENT);
+        eventService.generate(claim, ChoxEvent.ATTACHMENT_UPLOADED_EVENT, attachment);
     }
 
     private boolean userInRole(WebUser user, String roleName) {

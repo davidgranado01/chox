@@ -333,6 +333,7 @@
     <bean id="choxJmsEventSender" class="idas.chox.events.ChoxJmsEventSender" scope="singleton"/>
     <bean id="eventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
         <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
+        <property name="active" value="${events.active}"/>
     </bean>
     <bean id="eventGenerator" class="idas.chox.data.events.EventGenerator" scope="prototype">
         <property name="eventRegister" ref="eventRegister"/>

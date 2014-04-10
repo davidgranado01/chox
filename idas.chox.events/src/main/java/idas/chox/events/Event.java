@@ -74,8 +74,9 @@ public final class Event implements Serializable {
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            sb.append("    ").append(key).append(" = ").append(value);
+            sb.append("    ").append(key).append(" = ").append(value).append("\n");
         }
+        sb.append("--\n");
         return sb.toString();
     }
     

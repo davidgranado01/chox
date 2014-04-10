@@ -91,49 +91,77 @@ public enum ActivityEvent {
         public void build(ActivityEventGenerator generator, AssignOwner activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from AssignOwner activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, AssignManualInvoiceOwner activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from AssignManualInvoiceOwner activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from ClaimReferToFnol activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from InsurerUpload activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from InvoiceResubmit activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from NewInvoice activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
             LOG.debug("Building InsurerOwnerAssignedEvent from NewTpiClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            if (claim.getClaimOwner() != null) {
+                generator.addParameter("insurerOwnerName", claim.getClaimOwner().getFullName());
+            } else {
+                generator.addParameter("insurerOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
     },
@@ -293,55 +321,83 @@ public enum ActivityEvent {
         public void build(ActivityEventGenerator generator, AssignWorkgroup activity, Claim claim)  throws Exception {
             LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, ClaimReferToFnol activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from ClaimReferToFnol activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from InsurerUpload activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from InvoiceResubmit activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, NewInvoice activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from NewInvoice activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, NewTpiClaim activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from NewTpiClaim activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
         @Override
         public void build(ActivityEventGenerator generator, WorkgroupRouting activity, Claim claim)  throws Exception {
-            LOG.debug("Building ClaimRoutedEvent from AssignWorkgroup activity");
+            LOG.debug("Building ClaimRoutedEvent from WorkgroupRouting activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            if (claim.getWorkgroup() != null) {
+                generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+            } else {
+                generator.addParameter("insurerWorkgroupName", null);
+            }
 //            generator.addParameter("insurerWorkgroupId", claim.getWorkgroup().getId().intValue());
             generator.completeEvent(claim);
         }
@@ -625,7 +681,11 @@ public enum ActivityEvent {
         public void build(ActivityEventGenerator generator, AssignSupplierOwner activity, Claim claim)  throws Exception {
             LOG.debug("Building ChoOwnerAssignedEvent from AssignSupplierOwner activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getFullName());
+            if (claim.getSupplierClaimOwner() != null) {
+                generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getFullName());
+            } else {
+                generator.addParameter("choOwnerName", null);
+            }
             generator.completeEvent(claim);
         }
     },
@@ -1187,9 +1247,21 @@ public enum ActivityEvent {
         } else {
             generator.addParameter("finalReviewDateInsurer", null);
         }
-        generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getDisplayName());
-        generator.addParameter("insurerOwnerName", claim.getClaimOwner().getDisplayName());
-        generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+        if (claim.getSupplierClaimOwner() != null) {
+            generator.addParameter("choOwnerName", claim.getSupplierClaimOwner().getDisplayName());
+        } else {
+            generator.addParameter("choOwnerName", null);
+        }
+        if (claim.getClaimOwner() != null) {
+            generator.addParameter("insurerOwnerName", claim.getClaimOwner().getDisplayName());
+        } else {
+            generator.addParameter("insurerOwnerName", null);
+        }
+        if (claim.getWorkgroup() != null) {
+            generator.addParameter("insurerWorkgroupName", claim.getWorkgroup().getName());
+        } else {
+            generator.addParameter("insurerWorkgroupName", null);
+        }
 
     }
 

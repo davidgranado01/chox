@@ -76,8 +76,17 @@ public enum ChoxEvent {
             generator.addParameter("createdBy", attachment.getCreatedBy().getFullName());
             generator.completeEvent(claim);
         }
+    },
+    TOTAL_LOSS_UPDATE_EVENT               (104, "TotalLossUpdateEvent") {
+        @Override
+        public void build(EventService generator, Claim claim)  throws Exception {
+            LOG.debug("Building TotalLossUpdateEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("totalLossStatus", claim.getCustomer().getIsTotalLoss());
+            generator.completeEvent(claim);
+        }
     };
-;
+
     
     private static final Logger LOG = LoggerFactory.getLogger(ChoxEvent.class);
     private final int eventId;

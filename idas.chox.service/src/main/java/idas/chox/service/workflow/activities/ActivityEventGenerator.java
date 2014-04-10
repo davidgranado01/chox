@@ -43,7 +43,7 @@ public class ActivityEventGenerator {
         try {
             event.build(this, claim);
         } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}", event, ex.getMessage());
+            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
             return;
         }
 
@@ -58,7 +58,7 @@ public class ActivityEventGenerator {
         try {
             event.build(this, claim, comment);
         } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}", event, ex.getMessage());
+            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
             return;
         }
 
@@ -73,7 +73,7 @@ public class ActivityEventGenerator {
         try {
             event.build(this, claim, attachment);
         } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}", event, ex.getMessage());
+            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
             return;
         }
 
@@ -152,7 +152,7 @@ public class ActivityEventGenerator {
                 }
                 ActivityEvent.CLAIM_REFERRED_TO_FNOL_EVENT.build(this, (ClaimReferToFnol) activity, claim);
             } else if (activityName.equalsIgnoreCase("ClaimRegisterByFnol")) {
-                LOG.debug(" activity found");
+                LOG.debug("ClaimRegisterByFnol activity found");
                 if (((ClaimRegisterByFnol) activity).claimNumberUpdated) {
                     ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, (ClaimRegisterByFnol) activity, claim);
                 }
@@ -350,14 +350,14 @@ public class ActivityEventGenerator {
                 LOG.error("Activity not found");
             }
         } catch (Exception ex) {
-            LOG.error("Error generating events for activity '{}' : {}", activityName, ex.getMessage());
+            LOG.error("Error generating events for activity '{}' : {}\n", new Object[]{activityName, ex.getMessage(), ex});
             return;
         }
 
         try {
             eventGenerator.sendEvents();
         } catch (Exception ex) {
-            LOG.error("Error sending generated events for activity '{}' : {}", activityName, ex.getMessage());
+            LOG.error("Error sending generated events for activity '{}' : {}\n", new Object[]{activityName, ex.getMessage(), ex});
         }
     }
 

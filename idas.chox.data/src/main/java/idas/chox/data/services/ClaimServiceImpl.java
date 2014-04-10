@@ -1435,7 +1435,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     updateClaim(claim);
                     LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
                     // Generate Event
-                    eventService.generate(claim, oldReference, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT);
+                    eventService.generate(claim, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT, oldReference);
                     return 0;
                 } catch (Exception ex) {
                     LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);

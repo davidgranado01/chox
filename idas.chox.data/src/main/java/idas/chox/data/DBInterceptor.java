@@ -19,14 +19,17 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.FullAudit;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Customer;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.FullAuditService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.EcdUpdatedNotification;
 import idas.chox.data.notifications.HireUpdatedNotification;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
+import idas.chox.data.services.EventService;
 
 public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware {
 
@@ -35,6 +38,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
     private FullAuditService fullAuditService;
     private NotificationService notificationService;
     private BeanFactory bf;
+    private EventService eventService;
 
     @Override
     public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
@@ -333,20 +337,20 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
     @Override
     public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState,
             Object[] previousState, String[] propertyNames, Type[] types) {
-       LOG.debug("In onFlushDirty() for entity class '{}': {}", entity.getClass(), entity);
+       LOG.debug("**** In onFlushDirty() for entity class '{}' (id={}) ****", entity.getClass(), id);
         if (getSecurityInfoProvider().getCurrentUser() == null) {
             LOG.warn("No 'current' user found in DB Interceptor for entity class '{}'", entity.getClass());
         }
 
         if (entity instanceof Auditable && getSecurityInfoProvider().getCurrentUser() != null) {
-            LOG.debug("   onFlushDirty(): we have an Auditable entity");
+            LOG.debug("    onFlushDirty(): we have an Auditable entity");
             Integer indexOfStatusModifiedDate = null;
             Integer indexForPrevStatus = null;
             Date statusModifiedDate = null;
             String prevStatus = null;
 
             for (int i = 0; i < propertyNames.length; i++) {
-                LOG.debug("Checking auditable property [{}]:{}", i, propertyNames[i]);
+                LOG.trace("Checking auditable property [{}]:{}", i, propertyNames[i]);
                 if ("lastModifiedDate".equals(propertyNames[i])) {
                     currentState[i] = DateHelper.getCurrentDateTime();
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
@@ -379,11 +383,11 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         oldStatus = "";
                     }
 
-                    LOG.debug("newStatus={}, oldStatus={}", newStatus, oldStatus);
+                    LOG.debug("    newStatus={}, oldStatus={}", newStatus, oldStatus);
 
 
                     if (!newStatus.equals(oldStatus)) {
-                        LOG.debug("Status change from '{}' to '{}': updating statusModifiedDate", oldStatus, newStatus);
+                        LOG.debug("    Status change from '{}' to '{}': updating statusModifiedDate", oldStatus, newStatus);
                         if (indexOfStatusModifiedDate != null) {
                             currentState[indexOfStatusModifiedDate] = new Date();
                         } else {
@@ -401,7 +405,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
         }
 
         if (entity instanceof FullAudit && getSecurityInfoProvider().getCurrentUser() != null) {
-            LOG.debug("   onFlushDirty(): we have a FullAudit entity");
+            LOG.debug("    we have a FullAudit entity");
             for (int i = 0; i < propertyNames.length; i++) {
                 // ignore auditable entries
                 if (!"lastModifiedDate".equals(propertyNames[i])
@@ -422,7 +426,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         getFullAuditService().logAuditEntry(entity.getClass().toString(), id,
                                 propertyNames[i], oldValue, newValue,
                                 getSecurityInfoProvider().getCurrentUser());
-                        LOG.debug("Audit entry: table='{}', id={}, parameter='{}', old_value='{}', new_value='{}', by='{}'",
+                        LOG.debug("    Audit entry: table='{}', id={}, parameter='{}', old_value='{}', new_value='{}', by='{}'",
                                 new Object[]{entity.getClass().toString(), id,
                                     propertyNames[i], previousState[i], currentState[i],
                                     getSecurityInfoProvider().getCurrentUser().getId()});
@@ -433,10 +437,10 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
         if (entity instanceof HireMonitoringDetail) {
             HireMonitoringDetail hmd = (HireMonitoringDetail) entity;
-            LOG.debug("In onFlushDirty() for HireMonitoringDetail with id={}...", hmd.getId());
+            LOG.debug("    HireMonitoringDetail instance with id={}...", hmd.getId());
             // Hire Monitoring Detail must have changed so we need to add a notification
             if (hmd.isUpdateInsurer()) {
-                LOG.debug("Adding Hire Monitoring Updated notification to claim '{}' with id={}", hmd.getClaim().getChoReference(), hmd.getClaim().getId());
+                LOG.debug("    Adding Hire Monitoring Updated notification to claim '{}' with id={}", hmd.getClaim().getChoReference(), hmd.getClaim().getId());
                 getNotificationService().addNotification(hmd.getClaim(), new HireUpdatedNotification());
             }
 
@@ -733,12 +737,32 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 if ("liabilityStatus".equals(propertyNames[i]) && ((previousState[i] == null && currentState[i] != null)
                         || (previousState[i] != null && currentState[i] == null)
                         || (!currentState[i].toString().equals(previousState[i].toString())))) {
-                    LOG.debug("Liability status changed from '{}' to '{}': adding notification", previousState[i], currentState[i]);
+                    LOG.debug("    Liability status changed from '{}' to '{}': adding notification", previousState[i], currentState[i]);
                     getNotificationService().addNotification(claim, new LiabilityStatusUpdatedNotification((LiabilityStatus)currentState[i]));
+                }
+            }
+        } else if (entity instanceof Customer) {
+            // Check for Total Loss Status update and add event if changed
+            Customer customer = (Customer) entity;
+            for (int i = 0; i < propertyNames.length; i++) {
+                if ("isTotalLoss".equals(propertyNames[i]) && ((previousState[i] == null && currentState[i] != null)
+                        || (previousState[i] != null && currentState[i] == null)
+                        || (!currentState[i].toString().equals(previousState[i].toString())))) {
+                    LOG.debug("    Total Loss status changed from '{}' to '{}' [] : generating event", previousState[i], currentState[i]);
+                    getEventService().generate(customer.getClaim(), ChoxEvent.TOTAL_LOSS_UPDATE_EVENT);
                 }
             }
         }
 
+
+
+        try {
+            throw new Exception();
+        } catch (Exception ex) {
+            LOG.debug("Stacktrace: ", ex);
+        }
+
+        LOG.debug("**** Finished onFlushDirty() for entity class '{}' ****", entity.getClass());
         return true;
     }
 
@@ -757,6 +781,18 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             notificationService = (NotificationService) bf.getBean("notificationService");
         }
         return notificationService;
+    }
+
+    public synchronized EventService getEventService() {
+        if (eventService == null) {
+            /*
+             * This is a bit of a hack....
+             * Letting spring inject this bean causes a circular dependency error,
+             * so we'll make this class BeanFactoryAware and get the bean ourselves
+             */
+            eventService = (EventService) bf.getBean("eventService");
+        }
+        return eventService;
     }
 
     public synchronized FullAuditService getFullAuditService() {

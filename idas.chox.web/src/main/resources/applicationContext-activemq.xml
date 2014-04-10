@@ -32,18 +32,13 @@
                 </databaseLocker>
             </jdbcPersistenceAdapter>
         </persistenceAdapter>
-<!--
-        <persistenceAdapter>
-            <kahaPersistenceAdapter directory="${activemq.base}/data/kahadb"/>
-        </persistenceAdapter>
--->
      
         <transportConnectors>
             <transportConnector uri="vm://localhost:7001"/>
         </transportConnectors>
 
         <plugins>
-            <loggingBrokerPlugin logAll="true" logConnectionEvents="true" logInternalEvents="true"/>
+            <loggingBrokerPlugin logAll="false" logConnectionEvents="true" logInternalEvents="false"/>
         </plugins>
 
     </broker>
@@ -51,12 +46,12 @@
     <!-- JMS Data Source -->
     <bean id="amq_dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"/>
-        <property name="jdbcUrl" value="${db.url}"/>
+        <property name="jdbcUrl" value="${db.activeMQUrl}"/>
         <property name="username" value="chox_amq"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="partitionCount" value="2"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="3"/>
+        <property name="partitionCount" value="${db.activeMQPartitionCount}"/>
+        <property name="minConnectionsPerPartition" value="${db.activeMQMinConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${db.activeMQMaxConnectionsPerPartition}"/>
         <property name="idleMaxAgeInMinutes" value="2"/>
         <property name="acquireIncrement" value="1"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
@@ -85,7 +80,6 @@
     
     <!--  ActiveMQ Local Destination  -->
     <topic xmlns="http://activemq.apache.org/schema/core" id="choxEventsTopic" physicalName="CHOX.Events" />
-    <!--queue xmlns="http://activemq.apache.org/schema/core" id="choxEventQueue" physicalName="CHOX.EventQueue" /-->
 
     <!-- Define a message template to send to CHOX.EventQueue -->
     <bean id="queue1JMSTemplate"
