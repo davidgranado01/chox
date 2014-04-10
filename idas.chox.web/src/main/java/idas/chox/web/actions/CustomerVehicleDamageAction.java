@@ -34,11 +34,8 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
     @Override
     public String updateModel() {
         LOG.debug("Updating Vehicle Damage - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.getIsTotalLoss());
-        if (isTotalLossOriginal == null && model.getIsTotalLossOriginal() == null) {
-            // isTotalLoss has changed and so we have to store the original value
-            model.setIsTotalLossOriginal(model.getIsTotalLoss());
-        }
-        // If total loss has changed, we also need to update the hire monitoring total loss field
+        // If total loss has changed, we also need to update the original field
+        // and the hire monitoring total loss fields
         if (isTotalLossOriginal != model.getIsTotalLoss()) {
             HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
             if (hireMonDetail == null) {
@@ -47,6 +44,9 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
             hireMonDetail.setIsTotalLostCheck(model.getIsTotalLoss());
             hireMonDetail.setIsTotalLostCheckLastModified(new Date());
             claim.setHireMonitoringDetail(hireMonDetail);
+            if (model.getIsTotalLossOriginal() == null) {
+                model.setIsTotalLossOriginal(isTotalLossOriginal);
+            }
         }
         claim.setCustomer(model);
 
