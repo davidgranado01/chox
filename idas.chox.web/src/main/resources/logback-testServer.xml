@@ -126,12 +126,30 @@
         </rollingPolicy>
     </appender>
     
+    <appender name="MQ" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-activeMQ.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ.log.%i</fileNamePattern>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                     <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
     </appender>
-      
+
     <appender name="CYCLIC"
 		class="ch.qos.logback.core.read.CyclicBufferAppender">
         <MaxSize>2048</MaxSize>
@@ -154,6 +172,10 @@
     <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
         <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
+    <logger name="org.apache.activemq" level="INFO" additivity="false">
+        <appender-ref ref="MQ"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache" level="WARN" additivity="false">
