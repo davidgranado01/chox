@@ -10,6 +10,8 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.service.security.TabAccessibility;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -31,8 +33,9 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
         return new Customer();
     }
 
-    @Override
-    public String updateModel() {
+   @Override
+   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+   public String updateModel() {
         LOG.debug("Updating Vehicle Damage - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.getIsTotalLoss());
         if (isTotalLossOriginal == null && model.getIsTotalLossOriginal() == null) {
             // isTotalLoss has changed and so we have to store the original value

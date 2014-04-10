@@ -1692,4 +1692,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return (List<Claim>) findByCriteria(criteria);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void setTotalLoss(Claim claim, boolean isTotalLoss) {
+	if (claim.getCustomer().getIsTotalLoss() != null
+                && claim.getCustomer().getIsTotalLoss().booleanValue() == isTotalLoss) {
+            return;
+	}
+        claim.getHireMonitoringDetail().setIsTotalLostCheck(isTotalLoss);
+        claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
+        if (claim.getCustomer().getIsTotalLossOriginal() == null) {
+            claim.getCustomer().setIsTotalLossOriginal(claim.getCustomer().getIsTotalLoss());
+        }
+        claim.getCustomer().setIsTotalLoss(isTotalLoss);
+        checkTotalLossAnomaly(claim);
+    }
+
 }

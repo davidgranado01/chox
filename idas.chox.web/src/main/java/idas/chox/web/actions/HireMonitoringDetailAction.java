@@ -13,6 +13,8 @@ import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.service.workflow.activities.ActivityEvent;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -93,6 +95,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     }
     
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String updateModel() {
         try {
             checkVersion(Arrays.asList(claim,model));

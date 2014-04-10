@@ -120,4 +120,6 @@ public interface ClaimService extends DataService {
 
     public String stopClaimChase(String choRef);
 
+    public void setTotalLoss(Claim claim, boolean isTotalLoss);
+
 }
