@@ -78,13 +78,7 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
                     if (claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
                         statusString.append("; Claim is already marked as a total loss");
                     } else {
-                        claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
-                        claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
-                        if (claim.getCustomer().getIsTotalLossOriginal() == null) {
-                            claim.getCustomer().setIsTotalLossOriginal(claim.getCustomer().getIsTotalLoss());
-                        }
-                        claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
-                        claimService.checkTotalLossAnomaly(claim);
+                        claimService.setTotalLoss(claim, true);
                     }
                     
                     try {

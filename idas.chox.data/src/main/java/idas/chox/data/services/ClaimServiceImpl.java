@@ -38,6 +38,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Invoice;
@@ -1699,8 +1700,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && claim.getCustomer().getIsTotalLoss().booleanValue() == isTotalLoss) {
             return;
 	}
-        claim.getHireMonitoringDetail().setIsTotalLostCheck(isTotalLoss);
-        claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
+        HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
+        if (hireMonDetail == null) {
+            hireMonDetail = new HireMonitoringDetail();
+            claim.setHireMonitoringDetail(hireMonDetail);
+        }
+        hireMonDetail.setIsTotalLostCheck(isTotalLoss);
+        hireMonDetail.setIsTotalLostCheckLastModified(new Date());
         if (claim.getCustomer().getIsTotalLossOriginal() == null) {
             claim.getCustomer().setIsTotalLossOriginal(claim.getCustomer().getIsTotalLoss());
         }

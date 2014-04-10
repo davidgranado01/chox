@@ -98,16 +98,13 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String updateModel() {
         try {
+            boolean updated = false;
             checkVersion(Arrays.asList(claim,model));
             LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
             // If total loss has changed, we also need to update the hire monitoring total loss field
             if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
-                Customer customer = claim.getCustomer();
-                if (customer.getIsTotalLossOriginal() == null) {
-                    customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
-                }
-                customer.setIsTotalLoss(model.isIsTotalLostCheck());
-                claim.setCustomer(customer);
+                claimService.setTotalLoss(claim, model.isIsTotalLostCheck());
+                updated = true;
             }
             if (claim.getManagingRepair() != managingRepair) {
                 if (claim.getManagingRepairOriginal() == null) {
@@ -132,7 +129,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 model.setLabourRate(null);
             }
 
-            boolean updated = false;
             claim.setHireMonitoringDetail(model);
 
             if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
@@ -143,11 +139,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 // update model in session before calling super.updateModel as model version
                 // may have been increased when anomalous added or removed from claim.
                 updated = true;
-            }
-
-            if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
-                claimService.checkTotalLossAnomaly(claim);
-                updated=true;
             }
         
             if (updated) {

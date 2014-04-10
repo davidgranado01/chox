@@ -36,33 +36,21 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
    @Override
    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
    public String updateModel() {
+        boolean updated = false;
         LOG.debug("Updating Vehicle Damage - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.getIsTotalLoss());
         // If total loss has changed, we also need to update the original field
         // and the hire monitoring total loss fields
         if (isTotalLossOriginal != model.getIsTotalLoss()) {
-            HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
-            if (hireMonDetail == null) {
-                hireMonDetail = new HireMonitoringDetail();
-            }
-            hireMonDetail.setIsTotalLostCheck(model.getIsTotalLoss());
-            hireMonDetail.setIsTotalLostCheckLastModified(new Date());
-            claim.setHireMonitoringDetail(hireMonDetail);
-            if (model.getIsTotalLossOriginal() == null) {
-                model.setIsTotalLossOriginal(isTotalLossOriginal);
-            }
+            claimService.setTotalLoss(claim, model.getIsTotalLoss());
+            updated=true;
         }
         claim.setCustomer(model);
 
         // If the 'is usable' status has changed then we need to check for anomalies
-        boolean updated = false;
         if (isUsableOriginal != model.getIsUsable()) {
             claimService.checkRepairBookedInDateAnomaly(claim);
             updated=true;
             
-        }
-        if (isTotalLossOriginal != model.getIsTotalLoss()) {
-            claimService.checkTotalLossAnomaly(claim);
-            updated=true;
         }
         
         if (updated) {
