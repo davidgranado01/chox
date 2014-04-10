@@ -82,7 +82,7 @@ public enum ChoxEvent {
         public void build(EventService generator, Claim claim)  throws Exception {
             LOG.debug("Building TotalLossUpdateEvent");
             generator.startEvent(claim, this.getName(), this.getEventId());
-            generator.addParameter("totalLossStatus", claim.getCustomer().getIsTotalLoss());
+            generator.addParameter("customerVehicleIsTotalLoss", claim.getCustomer().getIsTotalLoss());
             generator.completeEvent(claim);
         }
     };
