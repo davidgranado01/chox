@@ -34,15 +34,17 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
                 int i = 1;
                 for (Claim claim : claims) {
                     int status = claimService.createChaseTask(claim);
-                    LOG.debug("Chase task created for claim {} [{}]: {}",
+                    if (status == 1 && LOG.isDebugEnabled()) {
+                        LOG.debug("Chase task created for claim {} [{}]: {}",
                             new Object[]{claim.getChoReference(), claim.getId(), status});
+                    }
                 }
 
             } else {
                 LOG.debug("No claims to chase.");
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown creating chase task: {}", ex.getMessage(), ex);
+            LOG.warn("Exception thrown creating chase task: {}", ex.getMessage(), ex);
         }
         return null;
     }

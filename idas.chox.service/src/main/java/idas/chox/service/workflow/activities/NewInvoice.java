@@ -193,7 +193,7 @@ public class NewInvoice extends BaseActivity {
                 LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
                 return true;
             } catch (Exception ex) {
-                LOG.error("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex);
+                LOG.error("Exception creating invoice upload notification task for insurer on claim '{}': {}", claim.getChoReference(), ex);
                 return false;
             }
         } else {

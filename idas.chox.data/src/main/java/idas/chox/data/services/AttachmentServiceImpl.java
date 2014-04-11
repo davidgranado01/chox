@@ -148,7 +148,11 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
                 task.setRaisedBy(userService.findByUserName("system"));
                 task.setInsurer(isInsurer);
                 task.setClaim(claim);
-                taskService.createNewTask(task);
+                try {
+                    taskService.createNewTask(task);
+                } catch (Exception ex) {
+                    LOG.warn("Failed to create an attachment notify task on claim '{}", claim.getChoReference());
+                }
             }
         } catch (Exception ex) {
             LOG.error("Error processing file with length={}: ", length, ex);

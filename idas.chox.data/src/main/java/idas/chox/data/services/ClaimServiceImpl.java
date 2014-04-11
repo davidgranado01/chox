@@ -1630,7 +1630,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int createChaseTask(Claim claim) {
-        int returnStatus = 0;
+        int returnStatus = 1;
         
         Task task = new Task();
         task.setClaim(claim);
@@ -1641,7 +1641,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         task.setRaisedBy(userService.findByUserName("system"));
         task.setType("IMS TL Chase Task");
         task.setVisibility(3);
-        taskService.createNewTask(task);
+        try {
+            taskService.createNewTask(task);
+        } catch (Exception ex) {
+            LOG.debug("Exception thrown creating chase task on claim with choref '{}'", claim.getChoReference());
+            returnStatus=0;
+        }
         
         return returnStatus;
     }
