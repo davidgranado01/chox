@@ -25,6 +25,9 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
+import org.hibernate.HibernateException;
+import org.springframework.core.NestedRuntimeException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -434,6 +437,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return "Record was updated by another transaction/user, please try again.";
         }
 
+        if (ex instanceof DataIntegrityViolationException) {
+            return "An entered value exceeds predefined limits - please corrct and try again. If this problem persists, please contact CHOX Support.";
+        }
+        if (ex instanceof NestedRuntimeException || ex instanceof HibernateException) {
+            return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
+        }
+        
         if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error: ", ex);
             return "";
