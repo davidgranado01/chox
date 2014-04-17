@@ -132,7 +132,7 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             LOG.debug("Adding Comment for the new insurer Claim owner");
             Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
-        } else {
+        } else if (ownershipEnabled) {
             LOG.debug("Adding Comment for the new insurer Claim owner");
             Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
             claim.addComment(comment);

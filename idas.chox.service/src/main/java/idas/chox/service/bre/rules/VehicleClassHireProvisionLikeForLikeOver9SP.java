@@ -52,7 +52,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9SP implements IBusinessRul
                         } else {
                             VehicleClass customerVehicleClass = claim.getCustomer().getVehicleClass();
                             VehicleClass hireVehicleClass = claim.getVehicleHire().getVehicleClass();
-                            if (customerVehicleClass.getName().substring(0,2).equals("SP") ) {
+                            if (customerVehicleClass.getName().length() > 2 && customerVehicleClass.getName().substring(0,2).equals("SP") ) {
                                narrative = "The CHO's customer's vehicle is " + difference + " years old and vehicle class "
                                         + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
                                         + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
