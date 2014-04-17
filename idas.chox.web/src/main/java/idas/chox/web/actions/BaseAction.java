@@ -438,7 +438,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
 
         if (ex instanceof DataIntegrityViolationException) {
-            return "An entered value exceeds predefined limits - please corrct and try again. If this problem persists, please contact CHOX Support.";
+            return "An entered value exceeds predefined limits - please correct and try again. If this problem persists, please contact CHOX Support.";
         }
         if (ex instanceof NestedRuntimeException || ex instanceof HibernateException) {
             return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
