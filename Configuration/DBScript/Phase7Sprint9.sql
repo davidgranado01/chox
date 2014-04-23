@@ -6,8 +6,8 @@ ALTER TABLE scheduler_job ADD COLUMN reply_to_sender boolean not null DEFAULT tr
 INSERT INTO scheduler_job (login_username, login_password, job_name, email_subject,
                            autherised_user, bcc_receiver, error_message_receiver, reply_to_sender,
                            created_by, created_date, last_modified_by, last_modified_date, version)
-    SELECT 'admin@erac.com', 'C0mpliance', 'TOTALLOSS_NOTIFICATION', 'IMS TL Notification',
-           'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk,elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk,paul.simpson@sherwoodts.co.uk,robert.hon@sherwoodts.co.uk',
+    SELECT 'admin@erac.com', 'Ch0xAdm1n1', 'TOTALLOSS_NOTIFICATION', 'IMS TL Notification',
+           'elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk',
            'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', 'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', false,
            999, now(), 999, now(), 0;
 
@@ -15,8 +15,8 @@ INSERT INTO scheduler_job (login_username, login_password, job_name, email_subje
 INSERT INTO scheduler_job (login_username, login_password, job_name, email_subject,
                            autherised_user, bcc_receiver, error_message_receiver, reply_to_sender,
                            created_by, created_date, last_modified_by, last_modified_date, version)
-    SELECT 'admin@erac.com', 'C0mpliance', 'TOTALLOSS_PACK', 'IMS TL Pack',
-           'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk,elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk,paul.simpson@sherwoodts.co.uk,robert.hon@sherwoodts.co.uk',
+    SELECT 'admin@erac.com', 'Ch0xAdm1n1', 'TOTALLOSS_PACK', 'IMS TL Pack',
+           'elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk',
            'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', 'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', false,
            999, now(), 999, now(), 0;
 
@@ -24,7 +24,7 @@ INSERT INTO scheduler_job (login_username, login_password, job_name, email_subje
 INSERT INTO scheduler_job (login_username, login_password, job_name, email_subject,
                            autherised_user, bcc_receiver, error_message_receiver, reply_to_sender,
                            created_by, created_date, last_modified_by, last_modified_date, version)
-    SELECT 'admin@erac.com', 'C0mpliance', 'TOTALLOSS_CHASE_TASK', 'not used',
+    SELECT 'admin@erac.com', 'Ch0xAdm1n1', 'TOTALLOSS_CHASE_TASK', 'not used',
            'john.dowson@sherwoodts.co.uk',
            'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', 'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', false,
            999, now(), 999, now(), 0;
@@ -33,8 +33,8 @@ INSERT INTO scheduler_job (login_username, login_password, job_name, email_subje
 INSERT INTO scheduler_job (login_username, login_password, job_name, email_subject,
                            autherised_user, bcc_receiver, error_message_receiver, reply_to_sender,
                            created_by, created_date, last_modified_by, last_modified_date, version)
-    SELECT 'admin@erac.com', 'C0mpliance', 'TOTALLOSS_STOP_CHASE_TASK', 'IMS TL Stop Chase Request',
-           'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk,elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk,paul.simpson@sherwoodts.co.uk,robert.hon@sherwoodts.co.uk',
+    SELECT 'admin@erac.com', 'Ch0xAdm1n1', 'TOTALLOSS_STOP_CHASE_TASK', 'IMS TL Stop Chase Request',
+           'elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk',
            'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', 'john.dowson@sherwoodts.co.uk,seeni.shanmugam@sherwoodts.co.uk', false,
            999, now(), 999, now(), 0;
 
