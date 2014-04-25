@@ -272,7 +272,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
             }
-            LOG.info("File '{}' is valid.", attachmentFile.getName());
+            LOG.info("File '{}' [{}] is valid.", uploadFileName, attachmentFile.getName());
             List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
             if (!FileHelper.isFileTypeAllow(this.uploadFileName, attTypes)) {
                 this.getActionResponse().AddError("Invalid File Type");
@@ -291,12 +291,13 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
             LOG.debug("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!attachmentFile.canRead()) {
-                LOG.warn("Cannot read attachment file: {}", attachmentFile.getName());
+                LOG.warn("Cannot read attachment file: {}", uploadFileName);
                 this.getActionResponse().AddError("Unknown Error occurred, please try again.");
             } else {
                 InputStream streamIn = new FileInputStream(attachmentFile);
 
-                if (!attachmentService.addAttachment(claim, streamIn, attachmentFile.getName(), attachmentFile.length(),
+                
+                if (!attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
                         category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated())) {
                     this.getActionResponse().AddError("Unknown Error occurred, please try again.");
                 } else {
