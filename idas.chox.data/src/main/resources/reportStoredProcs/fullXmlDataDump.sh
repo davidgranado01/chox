@@ -114,12 +114,12 @@ fi
 echo 'Generating a full XML data dump from '${START_DATE}' for insurer with id='${INS_ID}
 
 XML_DUMPFILE_PREFIX=${DATA_DIR}/${START_DATE}
-
+END_DATE=`date +%F`
 
 CLAIM_DATE_RESTRICTION=' and (c.created_date > '"\'"${START_DATE}"\'::Date or c.last_modified_date > \'"${START_DATE}"\'::Date)"
 #ADDITIONAL_RESTRICTION=' and c.id between 192000 and 192700'
 ADDITIONAL_RESTRICTION=''
-DATE_RESTRICTION=' and (t.created_date > '"\'"${START_DATE}"\'::Date or t.last_modified_date > \'"${START_DATE}"\'::Date)"
+DATE_RESTRICTION=" and ((t.created_date > \'"${START_DATE}"\'::Date and t.created_date < \'"${END_DATE}"\'::Date) or (t.last_modified_date > \'"${START_DATE}"\'::Date and t.last_modified_date < \'"${END_DATE}"\'::Date))"
 QUERY_RESTRICTION=''
 
 #
