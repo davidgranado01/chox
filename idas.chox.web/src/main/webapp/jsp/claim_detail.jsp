@@ -327,22 +327,23 @@
     /***********************************************************************************
      * CLAIM DETAIL MORE ACTION PANEL
      ***********************************************************************************/
-    function doMarkSupplementaryInvoiced(btn){
-        if(btn==='yes') {
-            var url = "<%= request.getContextPath()%>/prv/"+selectedAction+".action";
-            var param = {"id":<s:property value="id" />};
-            ajax.loadHtml2(url, param, pageRefresh);
-        }else{
-            $("div#claim-detail-extra #extraAction").val('-- More Actions --');
-            return false;
-        }
-    }
 
     function moreActionOnchange(){
 
         var target = "#moreActionPanel";
         var selectedAction = $("div#claim-detail-extra #extraAction").val();
         $(target).html("");
+
+        function doMarkSupplementaryInvoiced(btn){
+            if(btn==='yes') {
+                var url = "<%= request.getContextPath()%>/prv/"+selectedAction+".action";
+                var param = {"id":<s:property value="id" />};
+                ajax.loadHtml2(url, param, pageRefresh);
+            }else{
+                $("div#claim-detail-extra #extraAction").val('-- More Actions --');
+                return false;
+            }
+        }
 
         if(selectedAction!=="" && selectedAction!==null){
             
