@@ -166,7 +166,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for customer...."
 OUTPUT_FILE=${DATA_DIR}/customer
-QUERY='select t.* from customer t left join claim c on c.customer_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from customer t left join claim c on c.customer_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
@@ -176,7 +176,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for incident...."
 OUTPUT_FILE=${DATA_DIR}/incident
-QUERY='select t.* from incident t left join claim c on c.incident_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from incident t left join claim c on c.incident_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
@@ -186,7 +186,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for witness...."
 OUTPUT_FILE=${DATA_DIR}/witness
-QUERY='select t.* from witness t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from witness t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
@@ -196,7 +196,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for injury...."
 OUTPUT_FILE=${DATA_DIR}/injury
-QUERY='select t.* from injury t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from injury t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
@@ -206,7 +206,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for third_party...."
 OUTPUT_FILE=${DATA_DIR}/third_party
-QUERY='select t.* from third_party t left join claim c on c.third_party_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from third_party t left join claim c on c.third_party_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
@@ -226,7 +226,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 #
 echo "Generating dumpfile for engineer_report...."
 OUTPUT_FILE=${DATA_DIR}/engineer_report
-QUERY='select t.* from engineer_report t left join claim c on c.engineer_report_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
+QUERY='select distinct t.* from engineer_report t left join claim c on c.engineer_report_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
 
