@@ -15,6 +15,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.HireMonitoringEcdService;
+import idas.chox.data.notifications.EcdUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
 
 /**
@@ -86,6 +87,9 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         try {
             LOG.debug("Checking for ECD anomalies...");
             notificationService.checkForAnomalies(claim, NotificationType.EcdAnomalousNotification.getType());
+            if (ecd.isUpdateInsurer()) {
+                 notificationService.addNotification(claim, new EcdUpdatedNotification());
+           }
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
                         NotificationType.EcdAnomalousNotification.getType(), claim.getId(), ex.getMessage()});

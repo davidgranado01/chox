@@ -13,7 +13,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.services.ClaimService;
 
 
 public class AcknowledgeClaim extends BaseActivity {
@@ -30,7 +29,10 @@ public class AcknowledgeClaim extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    private ClaimService claimService;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
+    
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -45,7 +47,7 @@ public class AcknowledgeClaim extends BaseActivity {
             this.claimNumber = claimNumber;
         }
     }
-
+    // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
@@ -62,6 +64,39 @@ public class AcknowledgeClaim extends BaseActivity {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
     // </editor-fold>
+
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
 
     @Override
     public boolean needsClaimLockedCheck() {
@@ -88,20 +123,12 @@ public class AcknowledgeClaim extends BaseActivity {
     protected void beforeProcess(Claim claim) {
         LOG.debug("percentageLiabilityAccepted: {}", percentageLiabilityAccepted);
         LOG.debug("percentageLiabilityCho: {}", percentageLiabilityCho);
-        if (!claim.getLiabilityStatus().equals(liabilityStatus)) {
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-            String note;
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
-            } else {
-                note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
-            }
-            claim.setLiability(liabilityStatus);
-            Comment comment = Comment.newComment(0, note);
-            comment.setClaim(claim);
-            claim.addComment(comment);
+        if (!claim.getClaimNumber().equals(claimNumber)) {
+            claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
         }
-        claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
@@ -176,11 +203,4 @@ public class AcknowledgeClaim extends BaseActivity {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 
-    public ClaimService getClaimService() {
-        return claimService;
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 }

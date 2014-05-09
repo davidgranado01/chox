@@ -17,6 +17,7 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.DataService;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
@@ -36,6 +37,14 @@ public abstract class BaseActivity implements Activity {
     private UserWorkgroupService userWorkgroupService;
     @Autowired
     private ApplicationAccessibility applicationAccessibility;
+    @Autowired
+    protected ActivityEventGenerator activityEventGenerator;
+    @Autowired
+    protected ClaimService claimService;
+
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
+    }
 
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
@@ -71,6 +80,10 @@ public abstract class BaseActivity implements Activity {
 
     public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
         this.userWorkgroupService = userWorkgroupService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     @Override
@@ -175,6 +188,7 @@ public abstract class BaseActivity implements Activity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
 
+        activityEventGenerator.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());
@@ -290,5 +304,6 @@ public abstract class BaseActivity implements Activity {
             claim.getInvoice().setTotalToPay(BigDecimal.ZERO.setScale(2));
         }
     }
+
 
 }

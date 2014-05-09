@@ -11,7 +11,10 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.NotificationService;
+import idas.chox.data.notifications.HireUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
 
 /**
  *
@@ -22,6 +25,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
+    private NotificationService notificationService;
     private Boolean isTotalLossOriginal;
     private Date repairBookedInDateOriginal;
     private String labourRate;
@@ -57,6 +61,10 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         this.lookupService = service;
     }
 
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     public boolean isManagingRepair() {
         return claim.isManagingRepair();
     }
@@ -73,10 +81,11 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     public void setManagingRepair(boolean managingRepair) {
         this.managingRepair = managingRepair;
     }
+
     public Date getManagingRepairLastModified() {
         return claim.getManagingRepairLastModified();
     }
-    
+
     @Override
     public HireMonitoringDetail loadModel() {
         
@@ -93,16 +102,13 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     @Override
     public String updateModel() {
         try {
+            boolean updated = false;
             checkVersion(Arrays.asList(claim,model));
             LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
             // If total loss has changed, we also need to update the hire monitoring total loss field
             if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
-                Customer customer = claim.getCustomer();
-                if (customer.getIsTotalLossOriginal() == null) {
-                    customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
-                }
-                customer.setIsTotalLoss(model.isIsTotalLostCheck());
-                claim.setCustomer(customer);
+                claimService.setTotalLoss(claim, model.isIsTotalLostCheck());
+                updated = true;
             }
             if (claim.getManagingRepair() != managingRepair) {
                 if (claim.getManagingRepairOriginal() == null) {
@@ -127,9 +133,11 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 model.setLabourRate(null);
             }
 
-            boolean updated = false;
             claim.setHireMonitoringDetail(model);
 
+            if (model.isUpdateInsurer()) {
+                notificationService.addNotification(claim, new HireUpdatedNotification());
+            }
             if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
                     || (model.getRepairBookInDate() == null && repairBookedInDateOriginal != null)
                     || (repairBookedInDateOriginal != null && model.getRepairBookInDate() != null 
@@ -138,11 +146,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 // update model in session before calling super.updateModel as model version
                 // may have been increased when anomalous added or removed from claim.
                 updated = true;
-            }
-
-            if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
-                claimService.checkTotalLossAnomaly(claim);
-                updated=true;
             }
         
             if (updated) {
@@ -153,7 +156,11 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
             LOG.debug("HireMonitoringDetail to be updated: claim version={}, hmd version={}", claim.getVersion(), model.getVersion());
 
-            return super.updateModel();
+            String result = super.updateModel();
+            
+            activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
+
+            return result;
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;

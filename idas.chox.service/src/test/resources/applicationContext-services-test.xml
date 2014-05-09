@@ -11,6 +11,7 @@
         <property name="notificationService" ref="notificationService"/>
         <property name="userService" ref="userService"/>
         <property name="taskService" ref="taskService"/>
+        <property name="eventService" ref="eventService" />
 <!--         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/> -->
 <!--         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/> -->
     </bean>
@@ -31,6 +32,7 @@
         <property name="claimService" ref="claimService" />
         <property name="userService" ref="userService" />
         <property name="taskService" ref="taskService" />
+        <property name="eventService" ref="eventService" />
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>

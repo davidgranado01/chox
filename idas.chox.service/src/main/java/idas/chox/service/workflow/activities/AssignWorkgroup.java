@@ -14,6 +14,10 @@ public class AssignWorkgroup extends BaseActivity {
     private int workgroupId;
     private Workgroup workgroup;
 
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
 
@@ -49,7 +53,6 @@ public class AssignWorkgroup extends BaseActivity {
             LOG.error("Exception thrown: {}", e.getMessage());
             throw e;
         }
-
     }
 
     @Override
@@ -65,7 +68,6 @@ public class AssignWorkgroup extends BaseActivity {
             } catch (Exception e) {
                 LOG.error("Exception thrown: {}", e.getMessage());
                 throw e;
-
             }
         } 
 

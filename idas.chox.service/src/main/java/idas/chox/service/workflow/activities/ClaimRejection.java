@@ -33,8 +33,9 @@ public class ClaimRejection extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    private ClaimService claimService;
     private ReasonOfRejection reasonOfRejection;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -92,10 +93,50 @@ public class ClaimRejection extends BaseActivity {
         this.liabilityStatus = liabilityStatus;
     }
 
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
+   // </editor-fold>
+    public String getClaimNumber() {
+        return claimNumber;
     }
-    // </editor-fold>
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsQuantumDispute() {
+        return isQuantumDispute;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
 
     @Override
     public boolean needsClaimLockedCheck() {
@@ -156,20 +197,8 @@ public class ClaimRejection extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
-        if (liabilityStatus != null && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL
-                || !claim.getLiabilityStatus().equals(liabilityStatus)) ){
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-                String note;
-                if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                claim.setLiability(liabilityStatus);
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);                
-        }
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
         }
@@ -183,8 +212,9 @@ public class ClaimRejection extends BaseActivity {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
         }
 
-        if (claimNumber != null) {
+        if (!claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
         }
         LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
 
@@ -232,6 +262,7 @@ public class ClaimRejection extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
+        activityEventGenerator.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

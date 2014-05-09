@@ -81,6 +81,62 @@ public class InvoicePaymentLogged extends BaseActivity {
         this.paymentDetailsInsurerDiscount = paymentDetailsInsurerDiscount;
     }
 
+    public BigDecimal getHireGrossPaid() {
+        return hireGrossPaid;
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        return repairGrossPaid;
+    }
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        return engineerFeeGrossPaid;
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        return totalLossFeeGrossPaid;
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        return storageRecoveryGrossPaid;
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        return hirePenaltyChargePaid;
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        return repairPenaltyChargePaid;
+    }
+
+    public BigDecimal getPaymentDetailsClaimHandInvAmt() {
+        return paymentDetailsClaimHandInvAmt;
+    }
+
+    public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
+        return paymentDetailsDeductionClaimHandFee;
+    }
+
+    public BigDecimal getPaymentDetailsCHODiscount() {
+        return paymentDetailsCHODiscount;
+    }
+
+    public BigDecimal getPaymentDetailsInsurerDiscount() {
+        return paymentDetailsInsurerDiscount;
+    }
+
+    public BigDecimal getProjectedFinalPayment() {
+        return projectedFinalPayment;
+    }
+
+    public BigDecimal getFinalPayment() {
+        return finalPayment;
+    }
+
+    public boolean isPenaltyChargesPaid() {
+        return penaltyChargesPaid;
+    }
+
     @Override
     public boolean needsClaimLockedCheck() {
         return true;

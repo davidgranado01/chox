@@ -21,9 +21,16 @@ public class InsurerUpload extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerUpload.class);
     private BreBandService breBandService;
     private boolean autoRoutedInvoice = false;
+    protected boolean claimRouted = false;
+    protected boolean claimOwnerAssigned = false;
+    protected RulesEngineResponse breResponse;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
+    }
+
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
     }
 
     @Override
@@ -111,9 +118,9 @@ public class InsurerUpload extends BaseActivity {
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
-        RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+        breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
-        for (History history : History.New(response)) {
+        for (History history : History.New(breResponse)) {
             LOG.debug("Adding BRE history to claim '{}': {} - " + history.getNarrative(), claim.getChoReference(), history.getRuleId());
             claim.addHistory(history);
         }
@@ -129,12 +136,14 @@ public class InsurerUpload extends BaseActivity {
             if (claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());
                 claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                claimRouted = true;
             }
 
             //re-assign claim
             if (claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().getInvoiceOwner() != null) {
                 claim.setClaimOwnerOriginal(claim.getClaimOwner());
                 claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                claimOwnerAssigned = true;
             }
 
             if (isEnableManualInvoiceWorkgroupOwnership && claim.getClaimType() == ClaimType.INSURER_INVOICE) {

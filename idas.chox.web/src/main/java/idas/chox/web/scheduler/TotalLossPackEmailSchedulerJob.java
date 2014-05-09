@@ -77,13 +77,7 @@ public class TotalLossPackEmailSchedulerJob extends PdfEmailSchedulerJob {
                     }
 
                     if (!claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
-                        claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
-                        claim.getHireMonitoringDetail().setIsTotalLostCheckLastModified(new Date());
-                        if (claim.getCustomer().getIsTotalLossOriginal() == null) {
-                            claim.getCustomer().setIsTotalLossOriginal(claim.getCustomer().getIsTotalLoss());
-                        }
-                        claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
-                        claimService.checkTotalLossAnomaly(claim);
+                        claimService.setTotalLoss(claim, true);
                         statusString.append("; Claim has been marked as a total loss");
                     }
                     

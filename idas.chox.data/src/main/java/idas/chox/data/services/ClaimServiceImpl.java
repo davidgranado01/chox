@@ -38,6 +38,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Invoice;
@@ -55,6 +56,8 @@ import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
+import idas.chox.data.events.ChoxEvent;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
@@ -73,6 +76,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
     private static final Set anomaliesStatus = new HashSet(9);
+    private EventService eventService;
 
     static {
             anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
@@ -93,6 +97,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setActivityMonitorRequestInterval(int activityMonitorRequestInterval) {
         this.activityMonitorRequestInterval = activityMonitorRequestInterval;
+    }
+    
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Override
@@ -167,11 +175,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    @Override
-    public void updateSaveLiabilityStatus(Claim claim) {
-        save(claim);
-    }
-
     protected void save(Claim object) {
         updateLiabilityPayment(object);
         super.save(object);
@@ -1428,6 +1431,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
                     updateClaim(claim);
                     LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
+                    // Generate Event
+                    eventService.generate(claim, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT, oldReference);
                     return 0;
                 } catch (Exception ex) {
                     LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
@@ -1687,6 +1692,51 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         
         
         return (List<Claim>) findByCriteria(criteria);
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void setTotalLoss(Claim claim, boolean isTotalLoss) {
+	if (claim.getCustomer().getIsTotalLoss() != null
+                && claim.getCustomer().getIsTotalLoss().booleanValue() == isTotalLoss) {
+            return;
+	}
+        HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
+        if (hireMonDetail == null) {
+            hireMonDetail = new HireMonitoringDetail();
+            claim.setHireMonitoringDetail(hireMonDetail);
+        }
+        hireMonDetail.setIsTotalLostCheck(isTotalLoss);
+        hireMonDetail.setIsTotalLostCheckLastModified(new Date());
+        if (claim.getCustomer().getIsTotalLossOriginal() == null) {
+            claim.getCustomer().setIsTotalLossOriginal(claim.getCustomer().getIsTotalLoss());
+        }
+        claim.getCustomer().setIsTotalLoss(isTotalLoss);
+        checkTotalLossAnomaly(claim);
+        eventService.generate(claim, ChoxEvent.TOTAL_LOSS_UPDATE_EVENT);
+    }
+
+    @Override
+    public boolean setLiability(Claim claim, LiabilityStatus liabilityStatus) {
+        boolean updated = false;
+        
+        if (liabilityStatus != null && !claim.getLiabilityStatus().equals(liabilityStatus)) {
+
+            String note;
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
+                note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
+            } else {
+                note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
+            }
+            claim.setLiability(liabilityStatus);
+            Comment comment = Comment.newComment(0, note);
+            comment.setClaim(claim);
+            claim.addComment(comment);
+            notificationService.addNotification(claim, new LiabilityStatusUpdatedNotification(liabilityStatus));
+            updated = true;
+        }
+        
+        return updated;
     }
 
 }

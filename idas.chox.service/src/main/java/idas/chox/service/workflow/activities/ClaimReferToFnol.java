@@ -37,6 +37,58 @@ public class ClaimReferToFnol extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimRouted = false;
+    protected boolean ownerAssigned = false;
+    protected boolean claimNumberUpdated = false;
+
+    public WebUser getClaimOwner() {
+        return claimOwner;
+    }
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsQuantumDispute() {
+        return isQuantumDispute;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
 
     public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
         this.liabilityAgreedDate = liabilityAgreedDate;
@@ -146,6 +198,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
             if (workgroup != null && claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
                 claim.setWorkgroup(workgroup);
+                claimRouted = true;
             }
             if (claimOwner != null) {
                 claim.setClaimOwner(claimOwner);
@@ -153,24 +206,17 @@ public class ClaimReferToFnol extends BaseActivity {
                 getDataService().save(claim);
                 getDataService().flush();
                 logTransaction(claim);
-                setCurrentStatus(claim.getStatus());                
+                setCurrentStatus(claim.getStatus());
+                ownerAssigned = true;
             }
 
         } else {
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
+            liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-                String note;
-                if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                    note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
-                } else {
-                    note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
-                }
-                claim.setLiability(liabilityStatus);
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
+            if (!claim.getClaimNumber().equals(claimNumber)) {
+                claim.setClaimNumber(claimNumber);
+                claimNumberUpdated = true;
             }
-            claim.setClaimNumber(claimNumber);
             claim.setIndemnityAmount(indemnityAmount);
             claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
             claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);

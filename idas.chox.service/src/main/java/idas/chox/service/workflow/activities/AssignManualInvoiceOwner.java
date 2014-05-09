@@ -1,6 +1,5 @@
 package idas.chox.service.workflow.activities;
 
-
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,24 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     private boolean workgroupsEnabled;
     private boolean ownershipEnabled;
     private int workgroupId;
-    
+
+    // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
+    public WebUser getClaimOwner() {
+        return claimOwner;
+    }
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
+    public boolean isWorkgroupsEnabled() {
+        return workgroupsEnabled;
+    }
+
+    public boolean isOwnershipEnabled() {
+        return ownershipEnabled;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -60,30 +76,30 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         boolean updateOnly = false;
-        
+
         if (!claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)) {
             updateOnly = true;
         }
         LOG.debug("update only {}.", updateOnly);
-        
-        
+
+
         WebUser oldClaimOwner = null;
         String oldClaimOwnerName = "-";
         if (claim.getClaimOwner() != null) {
             oldClaimOwner = claim.getClaimOwner();
             oldClaimOwnerName = oldClaimOwner.getFullName();
-            LOG.debug("Old Claim Owner full name",oldClaimOwnerName);
+            LOG.debug("Old Claim Owner full name", oldClaimOwnerName);
         } else {
             LOG.debug("Old Claim Owner is null");
         }
-        
+
         if (ownershipEnabled) {
             claim.setClaimOwner(claimOwner);
-            LOG.debug("Changed(Current) Claim Owner full name",claim.getClaimOwner().getFullName());
+            LOG.debug("Changed(Current) Claim Owner full name", claim.getClaimOwner().getFullName());
         } else {
             LOG.debug("Claim Ownership is not enabled for this insurer.");
         }
-        
+
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
         } else {
@@ -100,7 +116,7 @@ public class AssignManualInvoiceOwner extends BaseActivity {
                 || claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED))) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-        
+
 
         if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner) && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
             LOG.debug("Adding Comment for the change of insurer Claim owner");
@@ -154,5 +170,4 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     public void setWorkgroupId(int workgroupId) {
         this.oasWorkgroupId = workgroupId;
     }
-    
 }

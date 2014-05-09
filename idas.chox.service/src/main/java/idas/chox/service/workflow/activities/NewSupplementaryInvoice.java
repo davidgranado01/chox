@@ -15,7 +15,8 @@ import idas.chox.core.services.BreBandService;
 public class NewSupplementaryInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);
-
+    protected boolean isNewClaim = false;
+    
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
@@ -39,6 +40,7 @@ public class NewSupplementaryInvoice extends BaseActivity {
                 Comment comment = Comment.newComment(0, "CHO contact number is " + claim.getChorganisation().getPhone());
                 claim.addComment(comment);
             }
+            isNewClaim = true;
         }
         LOG.debug("Finished NewSupplementaryInvoice activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
     }

@@ -16,7 +16,8 @@
         <property name="notificationService" ref="notificationService"/>
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
-    </bean>
+        <property name="eventService" ref="eventService" />
+</bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -34,10 +35,12 @@
         <property name="claimService" ref="claimService" />
         <property name="userService" ref="userService" />
         <property name="taskService" ref="taskService" />
+        <property name="eventService" ref="eventService" />
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
+        <property name="eventService" ref="eventService" />
     </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -172,6 +175,7 @@
         <property name="breBandService" ref="breBandService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
+        <property name="activityEventGenerator" ref="activityEventGenerator" />
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" scope="prototype">
         <property name="insurerService" ref="insurerService" />
@@ -324,5 +328,20 @@
 
     <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="choxJmsEventSender" class="idas.chox.events.ChoxJmsEventSender" scope="singleton"/>
+    <bean id="eventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
+        <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
+        <property name="active" value="${events.active}"/>
+    </bean>
+    <bean id="eventGenerator" class="idas.chox.data.events.EventGenerator" scope="prototype">
+        <property name="eventRegister" ref="eventRegister"/>
+    </bean>
+    <bean id="eventService" class="idas.chox.data.services.EventService" scope="prototype">
+        <property name="eventGenerator" ref="eventGenerator"/>
+    </bean>
+    <bean id="activityEventGenerator" class="idas.chox.service.workflow.activities.ActivityEventGenerator" scope="prototype">
+        <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
 </beans>

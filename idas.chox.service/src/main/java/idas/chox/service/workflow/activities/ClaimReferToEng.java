@@ -21,7 +21,6 @@ public class ClaimReferToEng extends BaseActivity {
     private String claimNumber;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
-    private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private String supportingLiabilityNotes;
@@ -29,12 +28,46 @@ public class ClaimReferToEng extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    protected boolean liabilityUpdated = false;
+    protected boolean claimNumberUpdated = false;
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
             claimNumber = claimNumber.trim();
         }
         this.claimNumber = claimNumber;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
     }
 
     @Override
@@ -60,28 +93,17 @@ public class ClaimReferToEng extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
-            String note;
-            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                note = "Liability status changed to '" + liabilityStatus + "'";
-            } else {
-                note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
-            }
+        liabilityUpdated = claimService.setLiability(claim, liabilityStatus);
 
-            claim.setLiability(liabilityStatus);
-            Comment comment = Comment.newComment(0, note);
-            comment.setClaim(claim);
-            claim.addComment(comment);
+        if (!claim.getClaimNumber().equals(claimNumber)) {
+            claim.setClaimNumber(claimNumber);
+            claimNumberUpdated = true;
         }
-        claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
-        claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-
-
     }
 
     @Override

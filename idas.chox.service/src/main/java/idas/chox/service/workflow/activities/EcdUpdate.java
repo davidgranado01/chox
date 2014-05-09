@@ -56,6 +56,38 @@ public class EcdUpdate extends BaseActivity {
         this.sequence = sequence;
     }
 
+    public HireMonitoringEcdService getHireMonitoringEcdService() {
+        return hireMonitoringEcdService;
+    }
+
+    public ReasonOfDelayService getReasonOfDelayService() {
+        return reasonOfDelayService;
+    }
+
+    public int getReasonOfDelayId() {
+        return reasonOfDelayId;
+    }
+
+    public Date getEcdDate() {
+        return ecdDate;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getSupportingNote() {
+        return supportingNote;
+    }
+
+    public boolean isUpdateInsurer() {
+        return updateInsurer;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);

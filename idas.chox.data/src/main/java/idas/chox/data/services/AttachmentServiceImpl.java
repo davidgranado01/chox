@@ -26,6 +26,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
+import idas.chox.data.events.ChoxEvent;
 
 public class AttachmentServiceImpl extends SecureDataService implements AttachmentService {
 
@@ -34,6 +35,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     protected ClaimService claimService;
     protected TaskService taskService;
     protected UserService userService;
+    private EventService eventService;
 
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
@@ -49,6 +51,10 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Override
@@ -191,6 +197,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         attachment.setAttachment(aFile);
         LOG.debug("Saving claim for the 2nd time...");
         claimService.updateClaim(claim);
+        eventService.generate(claim, ChoxEvent.ATTACHMENT_UPLOADED_EVENT, attachment);
     }
 
     private boolean userInRole(WebUser user, String roleName) {

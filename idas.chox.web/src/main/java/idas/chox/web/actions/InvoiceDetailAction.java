@@ -23,6 +23,8 @@ import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
@@ -85,6 +87,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private Invoice originalInvoice;
     private EngineerReport originalEngineerReport;
     private VehicleHire originalVehicleHire;
+    private ActivityEventGenerator activityEventGenerator;
     
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -399,7 +402,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-    
+
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
 
@@ -2273,6 +2280,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 modelSaved = true;
                 this.setActionResult("Your Changes Have Been Saved");
+                activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
                 return SUCCESS;
             } catch (Exception ex) {
                 LOG.warn("Exception is thrown and passing to baseAction ", ex);
@@ -2299,7 +2307,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             StringBuilder sb = new StringBuilder();
             boolean isSubscriberClaim = false;
             boolean isCollaborationProtocolClaim = false;
-            int stringLength = 0;
+            int stringLength;
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 isSubscriberClaim = true;
             } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {

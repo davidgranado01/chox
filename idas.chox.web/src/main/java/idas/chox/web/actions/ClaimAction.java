@@ -73,6 +73,8 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
@@ -136,7 +138,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Date fLiabilityAgreedDate;
     private String fLiabilityNotes;
     private ClaimObjectService claimObjectService;
-    private ClaimService service;
+    private ClaimService claimService;
     private NotificationService notificationService;
     private LookupService lookupService;
     private WorkgroupService workgroupService;
@@ -161,6 +163,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
+    private ActivityEventGenerator activityEventGenerator;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -196,8 +199,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.breBandService = breBandService;
     }
 
-    public void setClaimService(ClaimService service) {
-        this.service = service;
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     public void setLookupService(LookupService service) {
@@ -210,6 +213,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
+        this.activityEventGenerator = activityEventGenerator;
     }
     // </editor-fold>
 
@@ -285,11 +292,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public int getActivityMonitorRequestInterval() {
-        return service.getActivityMonitorRequestInterval();
+        return claimService.getActivityMonitorRequestInterval();
     }
 
     public boolean isEnableActivityMonitor() {
-        return service.isEnableActivityMonitor();
+        return claimService.isEnableActivityMonitor();
     }
 
     public int getActionSelected() {
@@ -466,11 +473,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void prepare() throws Exception {
         if (id < 0) { // No Claim provided so use session
             if (getModelIdFromSession(Claim.class) != null) {
-                claim = service.getClaim(getModelIdFromSession(Claim.class));
+                claim = claimService.getClaim(getModelIdFromSession(Claim.class));
                 id = claim.getId();
             }
         } else {
-            claim = service.getClaim(id);
+            claim = claimService.getClaim(id);
         }
         if (claim == null) {
             LOG.error("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
@@ -501,7 +508,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
-        this.service.updateClaim(claim);
+        this.claimService.updateClaim(claim);
         setActionResult("Claim Updated!");
         return SUCCESS;
     }
@@ -523,7 +530,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String validateHireMonitoringECDDetail() {
 
         if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
-            if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
+            if (this.claimService.getECDCountByClaimId(this.claim.getId()) == 0) {
                 return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim. ";
             }
         }
@@ -557,7 +564,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String updateClaimNumber() {
         try {
             claim.setClaimNumber(claim.getClaimNumber().trim());
-            this.service.updateClaim(claim);
+            this.claimService.updateClaim(claim);
+            activityEventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
             setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");
@@ -573,10 +581,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String updateInvoiceReviewRequired() {
         try {
             checkVersion(Arrays.asList(claim));
-            this.service.updateClaim(claim);
+            this.claimService.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the Invoice Review Required for claim '{}': ", claim.getChoReference(), ex);
-            claim = service.updateClaimWithInvalidSessionVersion(claim);
+            claim = claimService.updateClaimWithInvalidSessionVersion(claim);
             setActionError(ex.getMessage());
             updateRedirectionParamInSession();
             return ERROR;
@@ -641,7 +649,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean bFlag = false;
 
         if (!claim.getClaimNumber().isEmpty()) {
-            if (service.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
+            if (claimService.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
                 bFlag = true;
             }
         }
@@ -653,7 +661,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean bFlag = false;
 
         if (!claim.getCustomer().getClaimReference().isEmpty() && ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
-            if (service.getDuplicateSupplementaryInvoiceClaims(claim.getCustomer().getClaimReference(), claim.getId()).size() > 0) {
+            if (claimService.getDuplicateSupplementaryInvoiceClaims(claim.getCustomer().getClaimReference(), claim.getId()).size() > 0) {
                 bFlag = true;
             }
         }
@@ -768,7 +776,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
                 claim.addComment(comment);
                 claim.setSupplierClaimOwner(newClaimOwner);
-                this.service.updateClaim(claim);
+                this.claimService.updateClaim(claim);
 
             } catch (Exception ex) {
                 LOG.error("Error updating supplier claim owner for claim {}: ", claim.getChoReference(), ex);
@@ -822,7 +830,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 LOG.error("Non insurer/cho marking claim {} for final review?", claim.getChoReference());
                 return ERROR;
             }
-            service.updateClaim(claim);
+            claimService.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Error marking claim {} for final review:", claim.getChoReference(), ex);
             handleException(ex);
@@ -870,7 +878,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                     claim.setClaimOwner(newClaimOwner);
                     claim.setWorkgroup(workgroup);
-                    this.service.updateClaim(claim);
+                    this.claimService.updateClaim(claim);
 
                 } catch (Exception ex) {
                     LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
@@ -909,7 +917,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     }
 
                     claim.setClaimOwner(newClaimOwner);
-                    this.service.updateClaim(claim);
+                    this.claimService.updateClaim(claim);
 
                 } catch (Exception ex) {
                     LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
@@ -952,9 +960,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 comment.setClaim(claim);
                 claim.addComment(comment);
                 claim.setLiabilityPercentages(fPercentageLiabilityAccepted, fPercentageLiabilityCho);
-                claim.setLiability(fLiabilityStatus);
                 claim.setLiabilityAgreedDate(fLiabilityAgreedDate);
-                this.service.updateSaveLiabilityStatus(claim);
+                claimService.setLiability(claim, fLiabilityStatus);
+                claimService.save(claim);
 
             }
 
@@ -980,7 +988,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
                 claim.setWorkgroup(workgroup);
                 claim.setClaimOwner(null);
-                this.service.updateClaim(claim);
+                this.claimService.updateClaim(claim);
             }
 
         } catch (Exception ex) {
@@ -997,7 +1005,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String markSupplementaryInvoicedClaim() {
         boolean canMark = true;
         if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
-            List<Claim> claims = service.getCHOClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
+            List<Claim> claims = claimService.getCHOClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
             if (claims.size() > 1) {
                 for (Claim claim1 : claims) {
                     if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())
@@ -1022,7 +1030,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
                     }
 
-                    this.service.updateClaim(claim);
+                    this.claimService.updateClaim(claim);
                 }
             } else {
                 return ERROR;
@@ -1295,7 +1303,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     String customerClaimRef = claim.getCustomer().getClaimReference();
 
                     if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
-                        List<Claim> claims = service.getCHOClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
+                        List<Claim> claims = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
                         if (claims.size() > 1) {
                             for (Claim claim1 : claims) {
                                 if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {
@@ -1689,8 +1697,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
         
-        int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? service.getSubscriberClaimRejects(claim.getId())
-                : service.getClaimRejects(claim.getId());
+        int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? claimService.getSubscriberClaimRejects(claim.getId())
+                : claimService.getClaimRejects(claim.getId());
         
         return noTimesRejected > 1;
     }
@@ -1770,7 +1778,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     /* This function not only gets SubscriberClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
     private void getSubscriberClaimDays() {
-        claimDays = service.getSubscriberClaimDays(claim.getId());
+        claimDays = claimService.getSubscriberClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
     }
     // </editor-fold>
@@ -1868,7 +1876,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
     private void getFixedFeeClaimDays() {
-        claimDays = service.getFixedFeeClaimDays(claim.getId());
+        claimDays = claimService.getFixedFeeClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
     }
     // </editor-fold>
@@ -2713,8 +2721,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     private boolean isEscalatedToSupervisor(Integer daysBeforeEscaltedRestriction, Integer timesInStatusContestedRestionction) {
-        if ((daysBeforeEscaltedRestriction != null && service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction)
-                || (timesInStatusContestedRestionction != null && service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction)) {
+        if ((daysBeforeEscaltedRestriction != null && claimService.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction)
+                || (timesInStatusContestedRestionction != null && claimService.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction)) {
             LOG.debug("Claim has been escalated to supervisor");
             return true;
         }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
@@ -64,8 +65,6 @@ public interface ClaimService extends DataService {
 
     boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
 
-    void updateSaveLiabilityStatus(Claim claim);
-
     String getDaysWithCHOForReview(int id);
 
     String getDaysWithInsurerForReview(int id);
@@ -119,5 +118,9 @@ public interface ClaimService extends DataService {
     public List<Claim> getTotalLossChaseClaims();
 
     public String stopClaimChase(String choRef);
+
+    public void setTotalLoss(Claim claim, boolean isTotalLoss);
+    
+    public boolean setLiability(Claim claim, LiabilityStatus liability);
 
 }

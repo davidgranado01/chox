@@ -54,8 +54,8 @@ public class MakeInterimPayment extends BaseActivity {
 
             claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
         } else if (additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal paymentSum = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
-            claim.getInvoice().setInterimPaymentMade(paymentSum);
+            newTotalInterimPayment = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
+            claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
             comment = Comment.newComment(0, "An additional interim payment of £" + additionalInterimPayment.toString() + " has been made."
                     + " The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
         }

@@ -17,6 +17,7 @@ import idas.chox.core.model.*;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.WebUserUserRoleService;
+import idas.chox.data.events.ChoxEvent;
 
 /**
  *
@@ -26,9 +27,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
     private WebUserUserRoleService webUserUserRoleService;
+    private EventService eventService;
 
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Override
@@ -125,7 +131,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             throw new IllegalArgumentException("You are not authorised to mark this task as complete.");
         }
         markTaskAsComplete(task);
-
+        if (task.getClaim() != null) {
+            eventService.generate(task.getClaim(), ChoxEvent.TASK_COMPLETED_EVENT, task);
+        }
         if (task.getRelatedTask() != null) {
             LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
             markTaskAsComplete(task.getRelatedTask());
@@ -265,6 +273,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             task.setVisibilityRole(null);
         }
         this.save(task);
+        if (task.getClaim() != null) {
+            eventService.generate(task.getClaim(), ChoxEvent.TASK_CREATED_EVENT, task);
+        }
     }
 
     private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {

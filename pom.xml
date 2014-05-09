@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <chox.core.version>2.0</chox.core.version>
         <chox.data.version>2.0</chox.data.version>
+        <chox.events.version>1.0</chox.events.version>
         <chox.service.version>2.0</chox.service.version>
         <chox.web.version>2.0</chox.web.version>
         
@@ -42,6 +43,7 @@
         <spring-orm.version>3.2.8.RELEASE</spring-orm.version>
         <spring-test.version>3.2.8.RELEASE</spring-test.version>
         <spring-context.version>3.2.8.RELEASE</spring-context.version>
+        <spring-jms.version>3.2.8.RELEASE</spring-jms.version>
         <spring-security-core.version>3.2.3.RELEASE</spring-security-core.version>
         <spring-aop.version>3.2.8.RELEASE</spring-aop.version>
         <spring-jdbc.version>3.2.8.RELEASE</spring-jdbc.version>
@@ -55,6 +57,8 @@
         <struts.version>2.3.15.2</struts.version>
        
         <quartz-scheduler.version>2.1.7</quartz-scheduler.version>
+        
+        <activeMQ.version>5.8.0</activeMQ.version>
     </properties>
 
     <build>
@@ -92,8 +96,10 @@
     <modules>
         <module>idas.chox.core</module>
         <module>idas.chox.data</module>
+        <module>idas.chox.events</module>
         <module>idas.chox.service</module>
         <module>idas.chox.web</module>
+        <module>idas.chox.jmsClient</module>
     </modules>
 
 </project>

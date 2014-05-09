@@ -18,6 +18,14 @@ public class NewTpiClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
     private boolean autoRoutedInvoice = false;
+    protected boolean newClaim = false;
+    protected boolean claimRouted = false;
+    protected boolean claimOwnerAssigned = false;
+    protected boolean invoiceAccepted = false;
+    
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
+    }
 
     @Override
     public boolean needsOwnershipCheck() {
@@ -45,7 +53,7 @@ public class NewTpiClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         //First Set Liability status
-        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
+        claimService.setLiability(claim, LiabilityStatus.LIABILITY_ACCEPTED);
         claim.setLiabilityAgreedDate(new Date());
         claim.setLiabilityPercentages(new BigDecimal("100.00"), BigDecimal.ZERO);
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
@@ -75,6 +83,7 @@ public class NewTpiClaim extends BaseActivity {
             }
             getDataService().save(claim);
             logTransaction(claim);
+            newClaim = true;
         }
 
         if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
@@ -97,6 +106,7 @@ public class NewTpiClaim extends BaseActivity {
                 LOG.debug("Auto-routing invoice and moving to AwaitingInvoiceData");
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                         claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                        claimRouted = true;
                 }
                 if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
@@ -107,6 +117,7 @@ public class NewTpiClaim extends BaseActivity {
                                                         + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
                         claim.addComment(comment);
                     }
+                    claimOwnerAssigned = true;
                 }
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
@@ -120,7 +131,8 @@ public class NewTpiClaim extends BaseActivity {
                 claim.setPreviousStatus(super.getCurrentStatus());
 
                 //if BRE approves the invoice and TPI is selected it will go into following status
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);     
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);  
+                invoiceAccepted = true;
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)
                     || claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
@@ -134,6 +146,7 @@ public class NewTpiClaim extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        activityEventGenerator.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

@@ -23,6 +23,7 @@ public class SwitchClaim extends BaseActivity {
     private AuditTrailService auditTrailService;
     private NotificationService notificationService;
     private InsurerChorganisationService insurerChorganisationService;
+    private Insurer oldInsurer;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -73,7 +74,7 @@ public class SwitchClaim extends BaseActivity {
     protected void doProcess(Claim claim) {
         LOG.debug("Switching claim status for claim: {} (id={})", claim.getChoReference(), claim.getId());
 
-        Insurer oldInsurer = claim.getInsurer();
+        oldInsurer = claim.getInsurer();
         Insurer newInsurer = oldInsurer.getRelatedInsurer();
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
         
@@ -119,6 +120,7 @@ public class SwitchClaim extends BaseActivity {
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged
          */
+        activityEventGenerator.generate(claim, this);
         claim.setStatus(null);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
@@ -137,5 +139,9 @@ public class SwitchClaim extends BaseActivity {
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
+    }
+
+    public Insurer getOldInsurer() {
+        return oldInsurer;
     }
 }
