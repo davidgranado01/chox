@@ -332,21 +332,22 @@
         var selectedAction = $("div#claim-detail-extra #extraAction").val();
         $(target).html("");
 
+        function doMarkSupplementaryInvoiced(btn){
+            if(btn==='yes') {
+                var url = "/prv/"+selectedAction+".action";
+                var param = {"id":<s:property value="id" />};
+                ajax.loadHtml2(url, param, pageRefresh);
+            }else{
+                $("div#claim-detail-extra #extraAction").val('-- More Actions --');
+                return false;
+            }
+        }
+
         if(selectedAction!=="" && selectedAction!==null){
             
             if(selectedAction==='markSupplementaryInvoicedClaim'){
                 
                 Ext.MessageBox.confirm('Confirm', 'Are you sure you want to mark this as the original claim for Supplementary Invoices as this claim shares the same Customer Claim Number as another claim?',doMarkSupplementaryInvoiced);
-                function doMarkSupplementaryInvoiced(btn){
-                    if(btn==='yes') {
-                        var url = "/prv/"+selectedAction+".action";
-                        var param = {"id":<s:property value="id" />};
-                        ajax.loadHtml2(url, param, pageRefresh);
-                    }else{
-                        $("div#claim-detail-extra #extraAction").val('-- More Actions --');
-                        return false;
-                    }
-                }
                 
             }else{
                 var url = "/prv/p/"+selectedAction+".action";

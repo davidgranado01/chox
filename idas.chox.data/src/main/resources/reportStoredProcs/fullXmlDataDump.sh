@@ -114,18 +114,19 @@ fi
 echo 'Generating a full XML data dump from '${START_DATE}' for insurer with id='${INS_ID}
 
 XML_DUMPFILE_PREFIX=${DATA_DIR}/${START_DATE}
-
+END_DATE=`date +%F`
 
 CLAIM_DATE_RESTRICTION=' and (c.created_date > '"\'"${START_DATE}"\'::Date or c.last_modified_date > \'"${START_DATE}"\'::Date)"
-ADDITIONAL_RESTRICTION=' and c.id between 192000 and 192700'
-DATE_RESTRICTION=' and (t.created_date > '"\'"${START_DATE}"\'::Date or t.last_modified_date > \'"${START_DATE}"\'::Date)"
+#ADDITIONAL_RESTRICTION=' and c.id between 192000 and 192700'
+ADDITIONAL_RESTRICTION=''
+DATE_RESTRICTION=" and ((t.created_date > \'"${START_DATE}"\'::Date and t.created_date < \'"${END_DATE}"\'::Date) or (t.last_modified_date > \'"${START_DATE}"\'::Date and t.last_modified_date < \'"${END_DATE}"\'::Date))"
 QUERY_RESTRICTION=''
 
 #
 # Claim Table
 #
 echo "Generating dumpfile for claim...."
-OUTPUT_FILE=claim
+OUTPUT_FILE=${DATA_DIR}/claim
 QUERY='select id, managing_repair, policy_holder_contact_date, cho_reference, status, insurer_id, chorganisation_id, \
     customer_id, incident_id, invoice_id, third_party_id, vehicle_hire_id, engineer_report_id, created_by, created_date, \
     last_modified_by, last_modified_date, hire_monitoring_detail_id, claim_number, indeminty_amount, percentage_liability_accepted, \
@@ -144,7 +145,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Invoice Table
 #
 echo "Generating dumpfile for invoice...."
-OUTPUT_FILE=invoice
+OUTPUT_FILE=${DATA_DIR}/invoice
 QUERY='select t.* from invoice t left join claim c on c.invoice_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -154,7 +155,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Invoice Original Table
 #
 echo "Generating dumpfile for invoice_original...."
-OUTPUT_FILE=invoice_original
+OUTPUT_FILE=${DATA_DIR}/invoice_original
 QUERY='select t.* from invoice_original t left join invoice i on i.invoice_original_id=t.id left join claim c on c.invoice_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -164,7 +165,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Customer Table
 #
 echo "Generating dumpfile for customer...."
-OUTPUT_FILE=customer
+OUTPUT_FILE=${DATA_DIR}/customer
 QUERY='select t.* from customer t left join claim c on c.customer_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -174,7 +175,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Incident Table
 #
 echo "Generating dumpfile for incident...."
-OUTPUT_FILE=incident
+OUTPUT_FILE=${DATA_DIR}/incident
 QUERY='select t.* from incident t left join claim c on c.incident_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -184,7 +185,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Witness Table
 #
 echo "Generating dumpfile for witness...."
-OUTPUT_FILE=witness
+OUTPUT_FILE=${DATA_DIR}/witness
 QUERY='select t.* from witness t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -194,7 +195,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Injury Table
 #
 echo "Generating dumpfile for injury...."
-OUTPUT_FILE=injury
+OUTPUT_FILE=${DATA_DIR}/injury
 QUERY='select t.* from injury t left join incident i on i.id=t.incident_id left join claim c on c.incident_id=i.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -204,7 +205,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Third Party Table
 #
 echo "Generating dumpfile for third_party...."
-OUTPUT_FILE=third_party
+OUTPUT_FILE=${DATA_DIR}/third_party
 QUERY='select t.* from third_party t left join claim c on c.third_party_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -214,7 +215,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Vehicle Hire Table
 #
 echo "Generating dumpfile for vehicle_hire...."
-OUTPUT_FILE=vehicle_hire
+OUTPUT_FILE=${DATA_DIR}/vehicle_hire
 QUERY='select t.* from vehicle_hire t left join claim c on c.vehicle_hire_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -224,7 +225,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Engineer Report Table
 #
 echo "Generating dumpfile for engineer_report...."
-OUTPUT_FILE=engineer_report
+OUTPUT_FILE=${DATA_DIR}/engineer_report
 QUERY='select t.* from engineer_report t left join claim c on c.engineer_report_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -234,7 +235,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Hire Monitoring Detail Table
 #
 echo "Generating dumpfile for hire_monitoring_detail...."
-OUTPUT_FILE=hire_monitoring_detail
+OUTPUT_FILE=${DATA_DIR}/hire_monitoring_detail
 QUERY='select t.* from hire_monitoring_detail t left join claim c on c.hire_monitoring_detail_id=t.id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -244,7 +245,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # All above tables are 1-1: lets generate a single composite file as well
 #
 #echo "Generating dumpfile for all claim data...."
-#OUTPUT_FILE=allClaim
+#OUTPUT_FILE=${DATA_DIR}/allClaim
 #QUERY='select * from claim c left outer join invoice i on c.invoice_id=i.id \
 #                             left outer join customer cu on c.customer_id=cu.id \
 #                             left outer join incident inc on c.incident_id=inc.id \
@@ -264,7 +265,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Hire Monitoring ECD Table
 #
 echo "Generating dumpfile for hire_monitoring_ecd...."
-OUTPUT_FILE=hire_monitoring_ecd
+OUTPUT_FILE=${DATA_DIR}/hire_monitoring_ecd
 QUERY='select t.* from hire_monitoring_ecd t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -274,7 +275,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Audit Trail Table
 #
 echo "Generating dumpfile for audit_trail...."
-OUTPUT_FILE=audit_trail
+OUTPUT_FILE=${DATA_DIR}/audit_trail
 QUERY='select t.* from audit_trail t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -284,7 +285,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Comment Table
 #
 echo "Generating dumpfile for comment...."
-OUTPUT_FILE=comment
+OUTPUT_FILE=${DATA_DIR}/comment
 QUERY_RESTRICTION=' and t.visibility_type in (0,1)'
 QUERY='select t.* from comment t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -294,8 +295,9 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # BRE History Table
 #
 echo "Generating dumpfile for history...."
-OUTPUT_FILE=history
-QUERY_RESTRICTION=' and t.is_public=true'
+OUTPUT_FILE=${DATA_DIR}/history
+#QUERY_RESTRICTION=' and t.is_public=true' - needed for CHO
+QUERY_RESTRICTION=''
 QUERY='select t.* from history t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
 generateOutput "${QUERY}" ${OUTPUT_FILE}
@@ -305,7 +307,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Task Table
 #
 echo "Generating dumpfile for task...."
-OUTPUT_FILE=task
+OUTPUT_FILE=${DATA_DIR}/task
 QUERY_RESTRICTION=' and (t.insurer=true or (t.insurer=false and visibility=3))'
 QUERY='select t.* from task t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -316,7 +318,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Attachment Table
 #
 echo "Generating dumpfile for attachment...."
-OUTPUT_FILE=attachment
+OUTPUT_FILE=${DATA_DIR}/attachment
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.claim_id, t.file_name, t.remarks, t.category, t.created_by, t.created_date, t.file_type, t.version, t.deleted from attachment t left join claim c on c.id=t.claim_id where c.insurer_id='${INS_ID}''${DATE_RESTRICTION}''${ADDITIONAL_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -327,7 +329,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Web User Table
 #
 echo "Generating dumpfile for web_user...."
-OUTPUT_FILE=web_user
+OUTPUT_FILE=${DATA_DIR}/web_user
 #QUERY_RESTRICTION=''
 QUERY_RESTRICTION=' and (t.chorganisation_id is null or t.chorganisation_id=3)'  # restrict to RSA users? - for now...
 QUERY='select t.id, t.user_name, t.first_name, t.last_name, t.email, t.status, t.is_expired, t.insurer_id, t.chorganisation_id, t.last_login_date, t.blocked, t.blocked_date, t.version from web_user t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
@@ -339,7 +341,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Insurer Table
 #
 echo "Generating dumpfile for insurer...."
-OUTPUT_FILE=insurer
+OUTPUT_FILE=${DATA_DIR}/insurer
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.name, t.status, t.version from insurer t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -350,7 +352,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Workgroup Table
 #
 echo "Generating dumpfile for workgroup...."
-OUTPUT_FILE=workgroup
+OUTPUT_FILE=${DATA_DIR}/workgroup
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.name, t.site, t.team, t.status, t.version from workgroup t, insurer i where t.insurer_id=i.id'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -361,7 +363,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Chorganisation Table
 #
 echo "Generating dumpfile for chorganisation...."
-OUTPUT_FILE=chorganisation
+OUTPUT_FILE=${DATA_DIR}/chorganisation
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.name, t.status, t.version from chorganisation t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -372,7 +374,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Reason Of Rejection Table
 #
 echo "Generating dumpfile for reason_of_rejection...."
-OUTPUT_FILE=reason_of_rejection
+OUTPUT_FILE=${DATA_DIR}/reason_of_rejection
 QUERY_RESTRICTION=' and t.insurer_id='${INS_ID}
 QUERY='select t.id, t.name, t.description, t.type, t.version from reason_of_rejection t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -383,7 +385,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Reason Of Delay Table
 #
 echo "Generating dumpfile for reason_of_delay...."
-OUTPUT_FILE=reason_of_delay
+OUTPUT_FILE=${DATA_DIR}/reason_of_delay
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.name, t.description, t.is_active, t.version from reason_of_delay t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
@@ -394,7 +396,7 @@ generateOutput "${QUERY}" ${OUTPUT_FILE}
 # Vehicle Class Table
 #
 echo "Generating dumpfile for vehicle_class...."
-OUTPUT_FILE=vehicle_class
+OUTPUT_FILE=${DATA_DIR}/vehicle_class
 QUERY_RESTRICTION=''
 QUERY='select t.id, t.name, t.version from vehicle_class t where 1=1'${DATE_RESTRICTION}''${QUERY_RESTRICTION}
 
