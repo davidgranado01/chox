@@ -4,7 +4,7 @@
 <script type="text/javascript">
         
 
-    $(function(){
+    Ext.onReady(function() {
 
         var incidentDateDatePicker = ui.dateField('date','<s:date format="dd/MM/yyyy" name="date" />','incidentDatePH');
 
@@ -111,6 +111,6 @@
             <div id="incidentSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>    

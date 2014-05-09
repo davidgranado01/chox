@@ -34,9 +34,9 @@
                             ]
         });
 
-        var teamWorkflowStore = new Ext.data.Store({
-                            proxy : new Ext.data.HttpProxy
-                            ({url : "<%= request.getContextPath()%>/prv/p/TeamDropDownActionByInsurer.action", method:'GET', params : {"insurerId":insurerId, "site":''}}),
+        var teamWorkflowStore = new choxDataStore({
+                            url : "/prv/p/TeamDropDownActionByInsurer.action", 
+                            params : {"insurerId":insurerId, "site":''},
                             reader : teamWorkflowReader
         });
 
@@ -70,9 +70,8 @@
                                 ]
         });
 
-        var  siteWorkflowStore = new Ext.data.Store({
-                                proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/SiteDropDownActionByInsurer.action", method:'GET'}),
+        var  siteWorkflowStore = new choxDataStore({
+                                url : "/prv/p/SiteDropDownActionByInsurer.action",
                                 reader :  siteJsonReader
         });
 
@@ -154,7 +153,9 @@
     function openReport()
     {
     	if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
+//            var queryString = $('#formReportParam').formSerialize();
+            var queryString = {};
+            $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             generateReport(queryString);
     	}
     }

@@ -1,7 +1,7 @@
 //Javascript lib for CHOX
 
 //Global event handle : handle jquery ajax exception
-$(function(){
+Ext.onReady(function() {
     $(this).ajaxError(ajax.handleAjaxError);
 });
 
@@ -17,9 +17,11 @@ var ajax = function() {
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
+    var INVALID_CSRF_TOKEN_ERROR_MSG = 'Request can not be completed. Please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
     var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 418;
+    var INVALID_CSRF_TOKEN_STATUS = 417;
     var HTTP_ACCESS_DENIED_STATUS = 401;
     var HTTP_NOT_FOUND_STATUS = 404;
     var lastResponse = -1;
@@ -79,6 +81,18 @@ var ajax = function() {
         }
     }
 
+    function handleInvalidCsrfError()
+    {
+        Ext.MessageBox.show({
+            title: 'Authentication Token Not Found',
+            msg: INVALID_CSRF_TOKEN_ERROR_MSG,
+            width: 300,
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR,
+            fn: function(){loadInboxGetRequest();}
+        });
+    }
+
     function handleGeneralError(msg)
     {
         //        console.log("In handleGeneralError: " + msg);
@@ -128,7 +142,8 @@ var ajax = function() {
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR,
             fn: function redirectToAccessDeniedPage(){
-                window.location = REDIRECT_ON_ACCESS_DENIED; 
+//                window.location = REDIRECT_ON_ACCESS_DENIED; 
+                logout();
             }
         });
     }
@@ -138,10 +153,13 @@ var ajax = function() {
         // Add nonce value
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-            param += 'nonce='+$('#uniqueNonceId').val();
+//            param += 'nonce='+$('#uniqueNonceId').val();
+            param += csrfParameterName+'='+csrfTokenValue;
         } else {
-            param['nonce'] = $('#uniqueNonceId').val();
+//            param['nonce'] = $('#uniqueNonceId').val();
+            param[csrfParameterName] = csrfTokenValue;
         }
+        url = contextPath + url;
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
@@ -152,7 +170,8 @@ var ajax = function() {
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
                     fn: function redirectToAccessDeniedPage(){
-                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+//                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                        logout();
                     }
                 });
             }
@@ -176,10 +195,13 @@ var ajax = function() {
         // Add nonce value
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-            param += 'nonce='+$('#uniqueNonceId').val();
+//            param += 'nonce='+$('#uniqueNonceId').val();
+            param += csrfParameterName+'='+csrfTokenValue;
         } else {
-            param['nonce'] = $('#uniqueNonceId').val();
+//            param['nonce'] = $('#uniqueNonceId').val();
+            param[csrfParameterName] = csrfTokenValue;
         }
+        url = contextPath + url;
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
                 Ext.MessageBox.show({
@@ -189,7 +211,8 @@ var ajax = function() {
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
                     fn: function redirectToAccessDeniedPage(){
-                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+//                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                        logout();
                     }
                 });
             }
@@ -231,6 +254,10 @@ var ajax = function() {
         else if(response.status == HTTP_NOT_FOUND_STATUS){ // We'll treat this as an access denied error (for now)'
             lastResponse = response.status;
             handleAccessDeniedError();
+        }
+        else if(response.status == INVALID_CSRF_TOKEN_STATUS){
+            lastResponse = response.status;
+            handleInvalidCsrfError();
         }
         else{
             lastResponse = response.status;

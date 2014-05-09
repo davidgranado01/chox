@@ -46,8 +46,8 @@
                     ]
         });
 
-        var taskTypeStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTaskTypes.action', method: 'POST'}),
+        var taskTypeStore = new choxDataStore({
+            url: '/prv/p/getTaskTypes.action',
             reader: taskTypeReader
         });
 
@@ -161,8 +161,8 @@
                         ]
             });
 
-            var visibilityRoleStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAvailableUserRolesForTask.action', method: 'POST'}),
+            var visibilityRoleStore = new choxDataStore({
+                url: '/prv/p/getAvailableUserRolesForTask.action',
                 reader: visibilityRoleReader
             });
 
@@ -237,16 +237,16 @@
         });
 
     <s:if test="isChoxAdmin" >
-            claimTasksDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimTasks.action', method: 'POST'}),
+            claimTasksDataStore = new choxDataStore({
+                url: '/prv/p/getClaimTasks.action',
                 reader: claimTasksJsonReader
             });
             $('#claimTaskMarkId').attr('disabled', 'disabled');
             $('#claimTaskCreateId').attr('disabled', 'disabled');
     </s:if>
     <s:else >
-            claimTasksDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimVisibleTasks.action', method: 'POST'}),
+            claimTasksDataStore = new choxDataStore({
+                url: '/prv/p/getClaimVisibleTasks.action',
                 reader: claimTasksJsonReader
             });
     </s:else>
@@ -338,7 +338,7 @@
             var selectedRecord = claimTasksGrid.getSelectionModel().getSelected();
             if (selectedRecord) {
                 var selectedRecordId = selectedRecord.get('id');
-                var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
+                var url = "/prv/p/markTaskAsComplete.action";
                 var param = {
                     selectedTaskId: selectedRecordId
                 };
@@ -391,7 +391,7 @@
         function addNewTask() {
 
             if (validTaskCombo() && validPaymentMethodCombo() && $('#claimTaskForm').valid()) {
-                var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+                var url = "/prv/p/createNewTask.action";
                 var description = $('#claimTaskDescriptionId').val();
                 var dDate = dateRenderer(Ext.getCmp('claimDueDateId').getValue());
                 var tType = Ext.getCmp('claimTaskTypeComboId').getValue();

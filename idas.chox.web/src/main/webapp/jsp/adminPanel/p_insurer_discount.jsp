@@ -254,14 +254,13 @@
             ]
         });
 
-        insurerDiscount_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/listDiscountGridData.action',method:'POST'}),
+        insurerDiscount_gridviewData = new choxDataStore({
+            url: '/prv/p/listDiscountGridData.action',
             reader:insurerDiscount_gridviewJsonReader,
             listeners: {update : function(store,record,operation) {
                     clearValidation();
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
-                    var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
+                    var url = "/prv/p/addOrUpdateDiscount.action";
                     var param = {"insurerId":<s:property value="insurerId" />,"choId": record.get('choId'),"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountPercentage": record.get('discount'),"discountId": record.get('discountId'),"insurerDiscountType": record.get('insurerDiscountType'),"appliedToPenalties": record.get('appliedToPenalties')};
                     ajax.loadHtml2(url, param, function(responseText, statusText){
                 
@@ -419,7 +418,7 @@
             fn: function removeInsurerDiscount(btn){
                 if(btn=='ok'){
                     var insurerDiscountId = gridView.get("discountId");
-                    var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerDiscount.action";
+                    var url = "/prv/p/deleteInsurerDiscount.action";
                     var param = {"discountId": insurerDiscountId};
                     ajax.loadHtml2(url, param, insurerDiscount_onSubmitResponseReceived);
                 } 
@@ -468,7 +467,7 @@
 
         if ($("form#insurerDiscountForm").valid()) {
 
-            var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
+            var url = "/prv/p/addOrUpdateDiscount.action";
             var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage, "insurerDiscountType" : discountTypeId, "appliedToPenalties": insurerDiscountapplyPenalties};
             ajax.loadHtml2(url, param, function(responseText, statusText){
                 

@@ -128,8 +128,8 @@
             activeTab: choAdminTabIndex,
             items:[
                 {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: choHandleActivate}},
-                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />, scripts:true}},
-                {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=3"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: choxUpdateEl({url:'p/getChoAliasPage.action', params:{"choId" : '<s:property value="objectId" />'}})},
+                {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: choHandleActivate}, autoLoad: choxUpdateEl({url:'p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 3}})}
                 //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
@@ -184,7 +184,7 @@
         
         function updateCHODetailPanel(objectId) {
             var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+            var url = "/prv/p/updateChorganisationDetailPanel.action";
             var param = {"objectId":objectId};
             ajax.loadHtml2(url,param, function(data){
                 $(target).html(data);
@@ -198,7 +198,7 @@
 
         function doChorganisationCancelBack(){
             var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+            var url = "/prv/p/loadAdminPanel.action";
             var param = {"adminPanelName":"ChoxCreditHireMgmtPanel"};
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
@@ -597,7 +597,7 @@
                         <div class="chox-form-submit-result">&nbsp;</div>
                         <div id="CDmessageBox" class="action-error-msg"></div>
                     </div>
-                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                     <!--s:token/-->
                 </form>
 

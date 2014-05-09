@@ -3,7 +3,7 @@
 <script type="text/javascript">
 
 
-    $(function(){
+    Ext.onReady(function() {
 
 
         createInfoHelpToolTip_r();

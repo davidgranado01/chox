@@ -59,7 +59,9 @@
     function openReport()
     {
         if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
+//            var queryString = $('#formReportParam').formSerialize();
+            var queryString = {};
+            $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             generateReport(queryString);
         }
     }

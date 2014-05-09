@@ -47,8 +47,8 @@ function doExportExcel(){
                 window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
                 directExportToExcelStatusIntervelId = setInterval(loadDirectExportToExcelStatus, 1500);
             }else{
-                Ext.Ajax.request({
-                    url:contextPath+'/prv/p/generateExportFile.action',
+                choxExtAjaxRequest({
+                    url: '/prv/p/generateExportFile.action',
                     callback : function(options,success,response  ){
                     }
                 });
@@ -75,8 +75,8 @@ function cancelExportToExcel(btn){
     if (btn == 'cancel'){
         Ext.MessageBox.hide();
         exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
-        Ext.Ajax.request({
-            url:contextPath+'/prv/p/cancelExport.action',
+        choxExtAjaxRequest({
+            url: '/prv/p/cancelExport.action',
             callback : function(options,success,response  ){
                 if(response.responseText){
                     var resp = Ext.util.JSON.decode(response.responseText);
@@ -106,8 +106,8 @@ function cancelExportToExcel(btn){
         
 var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                 
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/updateExportClaimsCount.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
@@ -150,8 +150,8 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
 }
 function doNotShowBrowserWarning(){
        
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/userBrowserWarning.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/userBrowserWarning.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
@@ -184,8 +184,8 @@ function doNotShowBrowserWarning(){
 }
             
 function loadDirectExportToExcelStatus(){
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/updateExportClaimsCount.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 
@@ -234,8 +234,9 @@ function doTaskExportExcel(){
                 window.location = contextPath+"/prv/doTaskExportExcel.action?directDownload="+ true + "&" +"hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly;
                 directTaskExportToExcelStatusIntervelId = setInterval(loadDirectTaskExportToExcelStatus, 1500);
             }else{
-                Ext.Ajax.request({
-                    url:contextPath+"/prv/p/generateTaskExportFile.action?hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly,
+                choxExtAjaxRequest({
+                    url: "/prv/p/generateTaskExportFile.action",
+                    params : {'hideCompleted' : hideCompleted, 'showAssignedTasksOnly' : showAssignedTasksOnly},
                     callback : function(options,success,response  ){
                     }
                 });
@@ -262,8 +263,8 @@ function cancelTaskExportToExcel(btn){
     if (btn == 'cancel'){
         Ext.MessageBox.hide();
         taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
-        Ext.Ajax.request({
-            url:contextPath+'/prv/p/cancelTaskExport.action',
+        choxExtAjaxRequest({
+            url: '/prv/p/cancelTaskExport.action',
             callback : function(options,success,response  ){
                 if(response.responseText){
                     var resp = Ext.util.JSON.decode(response.responseText);
@@ -293,8 +294,8 @@ function cancelTaskExportToExcel(btn){
 
 var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
 
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/updateExportTasksCount.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/updateExportTasksCount.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
@@ -337,8 +338,8 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
 }
 
 function loadDirectTaskExportToExcelStatus(){
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/updateExportTasksCount.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/updateExportTasksCount.action',
         callback : function(options,success,response  ){
             if(response.responseText){
 

@@ -360,11 +360,6 @@ Ext.onReady(function(){
             blankText: 'Final Payment is required'
         },{
             xtype : 'hidden',
-            id : 'nonceId',
-            name : 'nonce',
-            value : nonce
-        },{
-            xtype : 'hidden',
             id : 'name',
             name : 'name',
             value : 'invoicePaymentLogged'
@@ -372,7 +367,7 @@ Ext.onReady(function(){
         ]
     };
     
-    var paymentDetailsForm = new Ext.FormPanel({
+    var paymentDetailsForm = new choxExtJsFormPanel({
         id: 'paymentDetails-form',
         autoHeight: true,
         labelWidth: 210,

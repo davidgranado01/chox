@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -25,7 +27,6 @@ import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
@@ -45,6 +46,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.PenaltyCharge;
+import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
@@ -52,16 +54,16 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Witness;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.NotificationService;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.WorkgroupService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.UserService;
 import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.PenaltyChargeService;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.NotificationType;
 import idas.chox.service.claim.ClaimObjectService;
@@ -73,6 +75,9 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
     public static final String EMPTY = "empty";
@@ -147,7 +152,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPaymentReceived;
     private BigDecimal finalPayment;
     private int actionSelected;
-    private String nonce;
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private Date autoPenaltyStart;
@@ -278,15 +282,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getPolicyNumber() {
         return StringEscapeUtils.escapeEcmaScript(claim.getThirdParty().getPolicyNumber());
-    }
-
-    @Override
-    public String getNonce() {
-        return nonce;
-    }
-
-    public void setNonce(String nonce) {
-        this.nonce = nonce;
     }
 
     public int getActivityMonitorRequestInterval() {
@@ -487,6 +482,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public String execute() throws Exception {
         updateModelInSession(Arrays.asList(claim));
+        // If this action is called by the redirectAction from another action class then perform the below update. 
+        if (getSession().containsKey("redirect") && getSession().get("redirect") != null) {
+            HashMap<String, String> map = (HashMap) getSession().get("redirect");
+            if (map.containsKey("redirectStatusMsg")) {
+                setStatusMsg(map.get("redirectStatusMsg"));
+            } else if (map.containsKey("redirectErrorMsg")) {
+                setActionError(map.get("redirectErrorMsg"));
+            }
+            removeRedirectionParamInSession();
+        }
+        return SUCCESS;
+    }
+    
+    public String openClaim() {
         return SUCCESS;
     }
 
@@ -552,9 +561,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
             setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");
+            updateRedirectionParamInSession();
             return ERROR;
         }
 
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -567,8 +578,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.error("Exception thrown updating the Invoice Review Required for claim '{}': ", claim.getChoReference(), ex);
             claim = service.updateClaimWithInvalidSessionVersion(claim);
             setActionError(ex.getMessage());
+            updateRedirectionParamInSession();
             return ERROR;
         }
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -760,15 +773,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } catch (Exception ex) {
                 LOG.error("Error updating supplier claim owner for claim {}: ", claim.getChoReference(), ex);
                 handleException(ex);
+                updateRedirectionParamInSession();
                 return ERROR;
             }
         } else {
             LOG.error("Error: no supplierClaimOwnerId supplied to update claim {}: {}", claim.getChoReference(), supplierClaimOwnerId);
             setActionError("No supplier claim owner selected.");
             getActionResponse().AddError("No supplier claim owner selected.");
+            updateRedirectionParamInSession();
             return ERROR;
         }
 
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -810,9 +826,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             LOG.error("Error marking claim {} for final review:", claim.getChoReference(), ex);
             handleException(ex);
+            updateRedirectionParamInSession();
             return ERROR;
         }
         }
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -857,6 +875,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 } catch (Exception ex) {
                     LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
                     handleException(ex);
+                    updateRedirectionParamInSession();
                     return ERROR;
                 }
             } else {
@@ -864,7 +883,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 return ERROR;
             }
 
-
+            updateRedirectionParamInSession();
             return SUCCESS;
         } else if (claim.getInsurer().isClaimOwnershipEnable()) {
             if (this.claimOwnerId > 0) {
@@ -895,10 +914,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 } catch (Exception ex) {
                     LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
                     handleException(ex);
+                    updateRedirectionParamInSession();
                     return ERROR;
                 }
 
-
+                updateRedirectionParamInSession();
                 return SUCCESS;
 
             } else {
@@ -941,9 +961,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             LOG.error("Error updating liability status for claim {}: ", claim.getChoReference(), ex);
             handleException(ex);
+            updateRedirectionParamInSession();
             return ERROR;
         }
 
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -964,9 +986,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             LOG.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
             handleException(ex);
+            updateRedirectionParamInSession();
             return ERROR;
         }
 
+        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -2585,7 +2609,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             LOG.debug("ClaimAction validated");
         } else {
-            LOG.debug(" ClaimAction validation not done as claim is null");
+            LOG.info(" ClaimAction validation not done as claim or cho or insurer is null");
         }
     }
 

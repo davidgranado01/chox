@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
         var form = $("#formUpdateWitness");
 
         var fsets =  $('legend',form);
@@ -18,7 +18,7 @@
 </script>
 
 <form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form">
-    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    <!--<input type="hidden" name="claimId" value='<s:property value="claimId"/>'>-->
     <fieldset class="x-fieldset partial">
         <legend>Witness Details</legend>
         <div class="form-container" id="witnessDetailsWId">
@@ -67,6 +67,6 @@
             <div id="witnessSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>

@@ -22,7 +22,7 @@ var actionPanel = function(){
     
 }();
 
-$(function(){
+Ext.onReady(function() {
     $.validator.addMethod("textDigitOnly",
         function(value, element) {
             return /^[a-zA-Z0-9]*$/.test(value);

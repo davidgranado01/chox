@@ -203,7 +203,7 @@
     }
     
     function refreshFilterPanelByOrgOrClaimType(filterName, title, orgId, claimTypeId) {
-        var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
+        var url = "/prv/p/getFilterRecordCounters.action";
         var param = {"filterOrgId":orgId, "filterClaimTypeId":claimTypeId, "filterName":filterName};
         ajax.loadHtml2(url, param, function(data){
             $("div#filterPanel2").html(data);

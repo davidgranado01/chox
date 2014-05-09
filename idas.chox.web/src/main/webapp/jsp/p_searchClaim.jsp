@@ -563,9 +563,9 @@
                     ]
                 });
 
-                workgroupSearchScreenStore = new Ext.data.Store({
-                    proxy : new Ext.data.HttpProxy
-                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId": insurerSearchScreenId}}),
+                workgroupSearchScreenStore = new choxDataStore({
+                    url : "/prv/p/WorkgroupDropDownActionByInsurer2.action", 
+                    params : {"orgId": insurerSearchScreenId},
                     reader : wgrpJsonReader
                     ,listeners: {load: function() {/*this.insert(0, new Ext.data.Record(defaultDropdownValue));*/
                         if(selectedWorkgroupValues && workgroupSearchScreenCombo) {workgroupSearchScreenCombo.reset();workgroupSearchScreenCombo.setValue(selectedWorkgroupValues);}    
@@ -651,9 +651,9 @@
                     ]
                 });
         
-                claimOwnerSearchScreenStore = new Ext.data.Store({
-                    proxy : new Ext.data.HttpProxy
-                    ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}}),
+                claimOwnerSearchScreenStore = new choxDataStore({
+                    url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", 
+                    params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId},
                     reader : claimOwnerReader,
                     listeners: {load: function() {/*this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));*/
                          if (selectedInsClaimOwnerValues && claimOwnerSearchScreenCombo) {claimOwnerSearchScreenCombo.reset();claimOwnerSearchScreenCombo.setValue(selectedInsClaimOwnerValues);}
@@ -731,9 +731,9 @@
                     ]
                 });
             
-                supplierClaimOwnerSearchScreenStore = new Ext.data.Store({
-                    proxy : new Ext.data.HttpProxy
-                    ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId": supplierSearchScreenId}}),
+                supplierClaimOwnerSearchScreenStore = new choxDataStore({
+                    url : "/prv/p/SearchSupplierClaimOwnerDropDownAction.action", 
+                    params : {"supplierId": supplierSearchScreenId},
                     // Don't know if this is neded (search code for this already exists
                     // - just uncomment this to add and it should work
                     listeners: {load: function() {

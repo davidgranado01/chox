@@ -1,4 +1,4 @@
-package idas.chox.web.security;
+/*package idas.chox.web.security;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -15,10 +15,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-/**
- *
- * @author John
- */
+
 public class TimeoutInterceptor extends AbstractInterceptor implements Serializable {
     private static final long serialVersionUID = -2773375159350225037L;
     private static final Logger LOG = LoggerFactory.getLogger(TimeoutInterceptor.class);
@@ -48,7 +45,7 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
                  *  Custom error status 418 set instead of standard timout error status 408 , to stop struts calling global exception handler.
                  *  Struts global exception handler uses CustomAuthenticationProcessingFilterEntryPoint which change the response status to 401 , to avoid this we use custom http status 418.
                  *  Struts global exception is called for error status 408, by Only request from firefox render engine (firefox, camino) , so to avoid this custom error status used.
-                 */
+                 
                 LOG.info("Login session has been expired.");
                 response.setStatus(418);
                 return "session.expired";
@@ -66,3 +63,4 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
         return invocation.invoke();
     }
 }
+*/

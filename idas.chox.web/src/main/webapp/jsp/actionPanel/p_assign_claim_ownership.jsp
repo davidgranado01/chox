@@ -58,9 +58,9 @@
             ]
         });
 
-        claimOwnerStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+            params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId},
             reader : claimOwnerReader
         });
 
@@ -115,9 +115,9 @@
                 ]
             });
 
-            var workgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer3.action", method:'GET', params : {"claimId":claimId}}),
+            var workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action",
+                params : {"claimId":claimId},
                 reader: wgrpJsonReader
             });
 
@@ -221,7 +221,8 @@
          if ($("#workgroupComboId").val() != "--- Please Select ---") {
              mesBox.text("").show();
              Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-             $("#formOwnershipAssignmentAction").submit();
+//             $("#formOwnershipAssignmentAction").submit();
+             choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } else {
              mesBox.text("You must supply a value for 'Work Group'").show();
          }
@@ -245,7 +246,8 @@
     function rejectClaim(btn) {
         if (btn == 'yes')    {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-            $("form#formOwnershipAssignmentAction").submit();
+//            $("form#formOwnershipAssignmentAction").submit();
+            choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
     }
 
@@ -253,7 +255,8 @@
         actionPanel.registerAction("assignOwner");
         if (validateComboBox()) {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            $("#formOwnershipAssignmentAction").submit();
+//            $("#formOwnershipAssignmentAction").submit();
+            choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
     }
     
@@ -411,6 +414,6 @@
                 </div>
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

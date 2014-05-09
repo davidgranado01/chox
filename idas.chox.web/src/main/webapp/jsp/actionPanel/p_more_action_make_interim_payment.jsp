@@ -8,7 +8,7 @@
 		var interimPayMade = true;
 	</s:if>
 	
-    $(function(){
+    Ext.onReady(function() {
     	
     	$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />')
     	if(interimPayMade){
@@ -107,7 +107,8 @@
         }
     	if($("form#formMakeInterimPayment").valid()) {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-    	    $('#formMakeInterimPayment').submit();
+//    	    $('#formMakeInterimPayment').submit();
+            choxJqueryHttpSubmit($("form#formMakeInterimPayment"));
         }
     }
     
@@ -170,6 +171,6 @@
             </div>
             <div class="action-error-msg" id="ACKmMakeInterimPaymentMessageBox"></div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

@@ -23,6 +23,7 @@ var activityMonitor = function(){
                     param.claimIds =  x.join(',');
                     Ext.Ajax.request({
                         url:this.checkStatusUrl,
+                        method : 'GET',
                         callback : function(options,success,response  ){
                             if(response.status==200 && response.responseText){
                                 var resp = Ext.util.JSON.decode(response.responseText);
@@ -48,6 +49,7 @@ var activityMonitor = function(){
             if(enable){
                 Ext.Ajax.request({
                     url:this.pingServiceUrl,
+                    method : 'GET',
                     callback : function(options,success,response  ){
                         if(response.status==200 && response.responseText){
                             var resp = Ext.util.JSON.decode(response.responseText);

@@ -51,6 +51,9 @@ public class SecureDataService extends BaseDataService {
                 if (getCurrentSession().getEnabledFilter("cho_filter") == null) {
                     getCurrentSession().enableFilter("cho_filter").setParameter("choIds", this.getCurrentUser().getChorganisation().getId());
                 }
+                if (getCurrentSession().getEnabledFilter("cho_user_filter") == null) {
+                    getCurrentSession().enableFilter("cho_user_filter").setParameter("choId", this.getCurrentUser().getChorganisation().getId());
+                }
                 
 
             } else if (this.getSecurityInfoProvider().getIsINS()) {
@@ -61,6 +64,9 @@ public class SecureDataService extends BaseDataService {
                 }
                 if (getCurrentSession().getEnabledFilter("insurer_filter") == null) {
                     getCurrentSession().enableFilter("insurer_filter").setParameter("insurerIds", this.getCurrentUser().getInsurer().getId());
+                }
+                if (getCurrentSession().getEnabledFilter("insurer_user_filter") == null) {
+                    getCurrentSession().enableFilter("insurer_user_filter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                 }
             } 
         }

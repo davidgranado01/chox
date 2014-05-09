@@ -19,6 +19,7 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+import org.slf4j.MDC;
 
 
 /**
@@ -75,6 +76,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         currentAuthentication = authentication;
         WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
+        MDC.put("userid", user.getDisplayName() + " " + user.getId());
 
         /*
          * ToDo item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
@@ -156,27 +158,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
-/******        
-        // Add nonce
-        HttpSession session = request.getSession();
-        byte[] nonce = new byte[16];
-        SecureRandom rand;
-        try {
-            SecureRandom.getInstance("SHA1PRNG").nextBytes(nonce);
-        } catch (NoSuchAlgorithmException ex) {
-            LOG.error("Could not get algorithm SHA1PRNG");
-        }
-        String nonceStr = Jsoup.clean(Base64.encodeBytes(nonce), Whitelist.none());
-
-        session.setAttribute("SessionNonce", nonceStr);
-        LOG.debug("Nonce added to session for user '{}' (id={}): {}", new Object[]{user.getDisplayName(), user.getId(), nonceStr});
-
-        // Add nonce to request parameters
-        Map additionalParameters = new HashMap();
-        additionalParameters.put("nonce", nonceStr);
-        WrappedRequest wrequest = new WrappedRequest(request, additionalParameters);
-*******/
-        
         // Update users last login time
         try {
             userService.updateLastLogin(user.getId());

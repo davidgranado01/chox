@@ -3,7 +3,7 @@
 <%@ include file="s_liability_validation.jspf" %>
 
 <script type="text/javascript">
-$(function(){
+Ext.onReady(function() {
 
     var rejectionDescField = new Ext.form.TextArea({
         name             : 'rejectionDescription',
@@ -242,6 +242,6 @@ function refreshDesc(id){
             </div>
         </fieldset>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

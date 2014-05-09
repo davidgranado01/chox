@@ -7,7 +7,7 @@
     var historyJsonReader;
     var historyGrid;
 
-    $(function(){
+    Ext.onReady(function() {
         
         historyJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -19,9 +19,8 @@
                 {name:'isOld'}]
         });
 
-        historyData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getHistories.action',method:'POST'}),
+        historyData = new choxDataStore({
+            url: '/prv/p/getHistories.action',
             reader:historyJsonReader
         });
 

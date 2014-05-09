@@ -102,9 +102,9 @@
                 ]
             });
 
-            var invSumRepClaimOwnerStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+            var invSumRepClaimOwnerStore = new choxDataStore({
+                url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+                params : {"workgroupId":-1,"insurerId":insurerId},
                 reader : invSumRepClaimOwnerReader,
                 listeners: {load: function() {
                         var  defaultName={'name':'--- ALL ---','id':-1}
@@ -146,9 +146,8 @@
                     ]
                 });
 
-                var  invSumRepWorkgroupStore = new Ext.data.Store({
-                    proxy : new Ext.data.HttpProxy
-                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                var  invSumRepWorkgroupStore = new choxDataStore({
+                    url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                     reader :  invSumRepWorkgroupJsonReader,
                     listeners: {load: function() {
                             var  defaultValue={'value':'--- ALL ---','text':-1}
@@ -248,7 +247,9 @@
         function openReport()
         {
             if($("form#formReportParam").valid()){
-                var queryString = $('#formReportParam').formSerialize();
+//                var queryString = $('#formReportParam').formSerialize();
+                var queryString = {};
+                $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
                 generateReport(queryString);
             }
         }

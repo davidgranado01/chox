@@ -5,7 +5,7 @@
 
     var vcHMCombo;
     
-    $(function(){
+    Ext.onReady(function() {
 
             ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
 
@@ -31,9 +31,8 @@
                 ]
         });
 
-        var vcHMStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+        var vcHMStore = new choxDataStore({
+                url : "/prv/p/getAvailableVehicleClasses.action",
                 reader : vcHMJsonReader
                 ,listeners: {load: function() {
                     vcHMCombo.setValue('<s:property value="vehicleClass.id"/>');    
@@ -115,6 +114,6 @@
             <div id="HVDSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>

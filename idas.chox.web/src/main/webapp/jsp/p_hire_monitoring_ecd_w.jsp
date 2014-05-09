@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
     var ecdDateDateField;
-    $(function(){
+    Ext.onReady(function() {
 
         ecdDateDateField = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
 
@@ -71,13 +71,12 @@
 
         if($("#formAddNewHireMonitoringEcd").valid()){
 
-            Ext.Ajax.request({
-                url:contextPath+'/prv/p/addNewHireMonitoringEcd.action',
+            choxExtAjaxRequest({
+                url:'/prv/p/addNewHireMonitoringEcd.action',
                 params: {
                             ecdDate : ecdDateDateField.getRawValue(),
                             reasonOfDelayId : $('#reasonOfDelayId :selected').val(),
                             supportingNote : $("#ECDSupportingNote").val(),
-                            nonce : $("#EcdNonceId").val(),
                             name : $("#ecdActivityNameId").val(),
                             updateInsurer : $('form #hireMonitoringEcdisUpdateInsurerId').is(':checked') 
                         },
@@ -143,5 +142,5 @@
             <div id="ecdGridHolder"></div>
         </div>
     </fieldset>
-    <input type="hidden" id="EcdNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+    <!--<input type="hidden" id="EcdNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
 </form>

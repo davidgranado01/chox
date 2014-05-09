@@ -27,9 +27,8 @@
             ]
         });
 
-        insChoAvailable_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getAvailableInsurerChorganisation.action',method:'POST'}),
+        insChoAvailable_gridviewData = new choxDataStore({
+            url: '/prv/p/getAvailableInsurerChorganisation.action',
             reader:insChoAvailable_gridviewJsonReader
         });
 
@@ -65,9 +64,8 @@
             ]
         });
 
-        insChoSelected_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getSelectedInsurerChorganisation.action',method:'POST'}),
+        insChoSelected_gridviewData = new choxDataStore({
+            url: '/prv/p/getSelectedInsurerChorganisation.action',
             reader:insChoSelected_gridviewJsonReader
         });
 
@@ -102,7 +100,7 @@
         var gridView = insChoAvailable_gridviewGrid.getStore().getAt(rowIndex);
         if(columnIndex===1){
             var chorganisationId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doAddNewInsurerChorganisation.action";
+            var url = "/prv/p/doAddNewInsurerChorganisation.action";
             var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
             ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);
         }
@@ -117,7 +115,7 @@
 
                 var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/doRemoveInsurerChorganisation.action";
+                var url = "/prv/p/doRemoveInsurerChorganisation.action";
                 var param = {"insurerChorganisationId":insurerChorganisationId};
 
                 ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);

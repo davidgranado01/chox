@@ -28,9 +28,8 @@
             ]
         });     
 
-        gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getChorganisations.action',method:'POST'}),
+        gridviewData = new choxDataStore({
+            url: '/prv/p/getChorganisations.action',
             reader:gridviewJsonReader      
         });
 
@@ -81,7 +80,7 @@
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+        var url = "/prv/p/updateChorganisationDetailPanel.action";
         var param = {"objectId":gridViewId};
 
         ajax.loadHtml2(url,param,function(data){
@@ -93,7 +92,7 @@
     function createNewRecord(){
 
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+        var url = "/prv/p/updateChorganisationDetailPanel.action";
         var param = {"objectId":-1};
 
         ajax.loadHtml2(url,param,function(data){
@@ -111,7 +110,7 @@
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
         if(btn=='yes'){
             var gridViewId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doTriggerCreditHireAccountStatus.action";
+            var url = "/prv/p/doTriggerCreditHireAccountStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url,param,loadGridViewList);
         }

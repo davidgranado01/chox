@@ -27,7 +27,8 @@
                             if (btn=='yes') {
                                 actionPanel.registerAction(action);
                                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                                $("form#contestOrAcceptRejectedClaim").submit();
+//                                $("form#contestOrAcceptRejectedClaim").submit();
+                                choxJqueryHttpSubmit($("form#contestOrAcceptRejectedClaim"));
                             }
                         }
         );
@@ -98,7 +99,7 @@
                 <div class="action-error-msg" id="ActionPanelMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>
     

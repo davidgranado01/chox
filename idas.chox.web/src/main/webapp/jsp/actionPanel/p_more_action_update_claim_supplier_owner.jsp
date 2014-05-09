@@ -50,9 +50,9 @@
                             ]
         });
 
-        var supplierClaimOwnerStore = new Ext.data.Store({
-                            proxy : new Ext.data.HttpProxy
-                            ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId":supplierId}}),
+        var supplierClaimOwnerStore = new choxDataStore({
+                            url : "/prv/p/SearchSupplierClaimOwnerDropDownAction.action", 
+                            params : {"supplierId":supplierId},
                             reader : supplierClaimOwnerReader
         });
 
@@ -117,16 +117,19 @@
                     }
             }
         });
+        
+        choxJqueryHttpSubmit($("form#formSupplierOwnershipAction"), function() {
+            if ($("#supplierClaimOwnerComboId").val() != "--- Please Select ---") {
+              $("#supplierOwnershipAssignmentMessageBox").text("").show();
+              return true;
+            }
+            $("#supplierOwnershipAssignmentMessageBox").text("You must supply a value for 'Claim Owner test'").show();
+            return false;
+        });
+     
     });
     
-    $("#formSupplierOwnershipAction").submit(function() {
-        if ($("#supplierClaimOwnerComboId").val() != "--- Please Select ---") {
-          $("#supplierOwnershipAssignmentMessageBox").text("").show();
-          return true;
-        }
-        $("#supplierOwnershipAssignmentMessageBox").text("You must supply a value for 'Claim Owner'").show();
-        return false;
-     });
+    
     
 
 </script>
@@ -160,6 +163,6 @@
                 </div>
             </div>
         </fieldset>
-       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+       <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

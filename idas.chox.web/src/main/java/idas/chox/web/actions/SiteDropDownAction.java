@@ -1,10 +1,11 @@
 package idas.chox.web.actions;
 
+import java.util.List;
+
+import idas.chox.core.services.LookupService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
-import idas.chox.core.services.LookupService;
-import java.util.List;
 
 public class SiteDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(SiteDropDownAction.class);

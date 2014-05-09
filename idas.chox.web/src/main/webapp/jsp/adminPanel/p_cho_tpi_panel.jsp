@@ -110,9 +110,8 @@
             ]
         });
 
-        insChoTpi_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getTpiActivatedInsurerChorganisation.action',method:'POST'}),
+        insChoTpi_gridviewData = new choxDataStore({
+            url: '/prv/p/getTpiActivatedInsurerChorganisation.action',
             reader:insChoTpi_gridviewJsonReader
         });
 
@@ -158,7 +157,7 @@
 //        if(columnIndex==7){
 //            var chorganisationId = gridView.get("id");
 //            alert(chorganisationId);
-//            var url = "<%= request.getContextPath()%>/prv/p/doRemoveTpiMapping.action";
+//            var url = "/prv/p/doRemoveTpiMapping.action";
 //            var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
 //            ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);
 //        }

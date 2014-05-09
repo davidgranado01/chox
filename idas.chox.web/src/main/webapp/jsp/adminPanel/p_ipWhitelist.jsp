@@ -50,14 +50,14 @@
             ]
         });
 
-        ipWhitelist_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getIPWhitelist.action',method:'POST', params : {"orgId":'<s:property value="orgId"/>', "orgType":'<s:property value="orgType"/>', nonce:'<%= session.getAttribute("SessionNonce")%>'}}),
+        ipWhitelist_gridviewData = new choxDataStore({
+            url: '/prv/p/getIPWhitelist.action',
+            params : {"orgId":'<s:property value="orgId"/>', "orgType":'<s:property value="orgType"/>'},
             reader:ipWhitelist_gridviewJsonReader,
             listeners: {update : function(store,record,operation) {
                     $("div#CDInsureripWhitelistMessageBox").html("");
-                    var url = "<%= request.getContextPath()%>/prv/p/updateIPWhitelist.action";
-                    var param = {"id": record.get('id'),"choId": choId,"insId": insId,"ipAddress": record.get('ipAddress'),"description": record.get('description'), nonce:'<%= session.getAttribute("SessionNonce")%>'};
+                    var url = "/prv/p/updateIPWhitelist.action";
+                    var param = {"id": record.get('id'),"choId": choId,"insId": insId,"ipAddress": record.get('ipAddress'),"description": record.get('description')};
                     ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                         var response = eval('(' + responseText.trim() + ')');
@@ -110,7 +110,7 @@
     });
 
     function ipWhitelist_loadGridViewList(){
-        ipWhitelist_gridviewData.load({params : {"orgId":'<s:property value="orgId"/>', "orgType":'<s:property value="orgType"/>', nonce:'<%= session.getAttribute("SessionNonce")%>'}});
+        ipWhitelist_gridviewData.load({params : {"orgId":'<s:property value="orgId"/>', "orgType":'<s:property value="orgType"/>'}});
     }
 
     function ipWhitelist_recordOnclick(grid, rowIndex, columnIndex, e){
@@ -139,8 +139,8 @@
                 $("div#CDInsureripWhitelistMessageBox").html("Please enter a 'Description'");
             }
         } else{
-            var url = "<%= request.getContextPath()%>/prv/p/addIPWhitelist.action";
-            var param = {"choId":choId,"insId": insId,"ipAddress": ipWhitelistIPAddress,"description": ipWhitelistDescription, nonce:'<%= session.getAttribute("SessionNonce")%>'};
+            var url = "/prv/p/addIPWhitelist.action";
+            var param = {"choId":choId,"insId": insId,"ipAddress": ipWhitelistIPAddress,"description": ipWhitelistDescription};
             ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                 var response = eval('(' + responseText.trim() + ')');
@@ -176,8 +176,8 @@
             fn: function removeipWhitelist(btn){
                 if(btn=='ok'){
                     var ipWhitelistId = gridView.get("id");
-                    var url = "<%= request.getContextPath()%>/prv/p/deleteIPWhitelist.action";
-                    var param = {"id": ipWhitelistId, nonce:'<%= session.getAttribute("SessionNonce")%>'};
+                    var url = "/prv/p/deleteIPWhitelist.action";
+                    var param = {"id": ipWhitelistId};
                     ajax.loadHtml2(url, param, ipWhitelist_onSubmitResponseReceived);
                 } 
             }

@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function(){
+    Ext.onReady(function() {
             var insurerId = '<s:property value="insurer.id"/>';
             var claimId = '<s:property value="id"/>';
             var wgrpJsonReader = new Ext.data.JsonReader({
@@ -16,9 +16,9 @@
                 ]
             });
 
-            var workgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer3.action", method:'GET', params : {"claimId":claimId}}),
+            var workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+                params : {"claimId":claimId},
                 reader: wgrpJsonReader
             });
 
@@ -51,7 +51,7 @@
             });
             workgroupStore.load({ params : {"claimId":claimId}});
             
-            $("#formEscalateClaimAction").submit(function() {
+            choxJqueryHttpSubmit($("form#formEscalateClaimAction"), function() {
                 if ($("#escalateWorkgroupComboId").val() != "--- Please Select ---") {
                   $("#EscalateClaimMessageBox").text("").show();
                   return true;
@@ -90,6 +90,6 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

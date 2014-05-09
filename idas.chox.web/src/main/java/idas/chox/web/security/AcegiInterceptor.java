@@ -2,7 +2,6 @@ package idas.chox.web.security;
 
 import java.lang.reflect.Method;
 
-import org.slf4j.MDC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -23,7 +22,6 @@ public class AcegiInterceptor extends AbstractInterceptor {
         if (currentUser != null && currentUser.getPrincipal() instanceof PermissionedUser) {
             WebUser user = ((PermissionedUser) currentUser.getPrincipal()).getUser();
             // Set logged in user details to SL4J logger. This user details will be printed on every log message.
-            MDC.put("userid", user.getDisplayName()+" "+user.getId());
             for (Method m : action.getClass().getDeclaredMethods()) {
                 if (m.getAnnotation(AcegiPrincipal.class) != null) {
                     m.invoke(action, currentUser.getPrincipal());
@@ -31,7 +29,6 @@ public class AcegiInterceptor extends AbstractInterceptor {
             }
         }
         String result = invocation.invoke();
-        MDC.clear();
         return result;
     }
 }

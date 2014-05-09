@@ -1,24 +1,22 @@
 package idas.chox.web.actions;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.ReasonOfRejectionViewData;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.json.JSONArray;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
-
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import java.text.MessageFormat;
 
 public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<ReasonOfRejection>, Preparable {
     

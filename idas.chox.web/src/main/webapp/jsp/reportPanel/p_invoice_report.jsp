@@ -24,9 +24,8 @@
                         {name:'value'}
                     ]
                 });
-                var invoiceReportWorkgroupStore = new Ext.data.Store({
-                    proxy : new Ext.data.HttpProxy
-                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                var invoiceReportWorkgroupStore = new choxDataStore({
+                    url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                     reader : invoiceReportWorkgroupJsonReader,
                     listeners: {load: function() {
                             var  defaultName={'value':'--- All ---','text':-1}
@@ -167,12 +166,18 @@
         	msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
         }
         if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
-            var queryString = $('form#formInvoiceReportParam').formSerialize();
+//            var queryString = $('form#formInvoiceReportParam').formSerialize();
+            var queryString = {};
+            $.each($('form#formInvoiceReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             msgBox.empty();
             // If no workgroup selected, insert a '-1' into the query string
-            if (queryString.indexOf('workgroupId=&') >= 0)
-                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
-            generateReport(queryString);        }
+            if (queryString.workgroupId === "") {
+                queryString.workgroupId = -1;
+            }
+//            if (queryString.indexOf('workgroupId=&') >= 0)
+//                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+            generateReport(queryString);       
+        }
         msgBox.show();
     }
 

@@ -91,7 +91,8 @@
                     }
                 },
                 submitHandler: function(form) {
-                    $(form).ajaxSubmit(op);
+//                    $(form).ajaxSubmit(op);
+                    choxJqueryAjaxSubmit($(form), op);
                 }
             });
         });

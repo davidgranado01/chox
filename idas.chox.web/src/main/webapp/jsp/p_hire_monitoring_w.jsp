@@ -269,7 +269,8 @@
         }
         
         if(isDateCorrect()){
-        	$("form#formUpdateHireMonitoringDetail").submit();
+//        	$("form#formUpdateHireMonitoringDetail").submit();
+                choxJqueryHttpSubmit($("form#formUpdateHireMonitoringDetail"));
         }
         else {
         	$("#HMmessageBox").empty();
@@ -575,6 +576,6 @@
         </div>
 
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     <!--s:token/-->
 </form>

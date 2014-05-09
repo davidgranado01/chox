@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.access.annotation.Secured;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONArray;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -35,6 +35,9 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -304,6 +307,7 @@ public class TasksAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_INS_USER", "ROLE_CHO_USER"})
     public String createNewTask() {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);

@@ -33,8 +33,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String name;
     private List<Integer> selectedClaimIdList;
     private String jsonData;
-    private boolean showMessage = false;
-    private String message = null;
+    
+    
     private ApplicationAccessibility applicationAccessibility;
     
     @Override
@@ -45,21 +45,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public boolean getInsurerIsWorkgroupEnabled() {
         return claim.getInsurer().isWorkgroupEnable();
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
-        if (message != null && !message.isEmpty()) {
-            showMessage = true;
-        }
-    }
-
-    public boolean isShowMessage() {
-        return showMessage;
     }
 
     @Override
@@ -175,6 +160,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 jsonObject.put("errors", ex.getMessage());
                 setJsonData(jsonObject.toString());
                 handleException(ex);
+                updateRedirectionParamInSession();
                 return ERROR;
             }
             LOG.debug("claim activity returning success");
@@ -183,7 +169,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 jsonObject.put("message", getMessage());
             }
             setJsonData(jsonObject.toString());
-
+            updateRedirectionParamInSession();
             return SUCCESS;
         } else {
             LOG.warn("Cannot process activity: activity is empty (null)");

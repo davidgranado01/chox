@@ -7,7 +7,7 @@ var iinGridViewDataStore;
 var iinGridView;
 var intelligentNotePopUp;
 
-$(function(){
+Ext.onReady(function() {
 	
 	var iNotesJsonReader = new Ext.data.JsonReader({
         totalProperty: 'totalCount',
@@ -21,14 +21,9 @@ $(function(){
              {name:'status'}
              ]
     });
-	
-	var iNotesProxy = new Ext.data.HttpProxy({
-	    url: '<%= request.getContextPath()%>/prv/p/getInteligentNotes.action',
-	    method: 'post'
-	});
 
-	iinGridViewDataStore = new Ext.data.Store({
-	    proxy: iNotesProxy,
+	iinGridViewDataStore = new choxDataStore({
+	    url: '/prv/p/getInteligentNotes.action',
 	    reader: iNotesJsonReader, 
 	    autoLoad: true,
 	    baseParams: {insurerId: <s:property value="insurerId" />}
@@ -99,7 +94,7 @@ function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
     	 var iinId = gridView.get("id");
     	 var inId = gridView.get("intelligentNoteId");
     	 var status = gridView.get("status") == "Yes" ? true : false;
-         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerInteligentNoteStatus.action";
+         var url = "/prv/p/updateInsurerInteligentNoteStatus.action";
          var param = {"intelligentNoteId":inId, "status":status, "insurerInteligentNoteId": iinId, "insurerId":<s:property value="insurerId" />};
          ajax.loadHtml2(url, param, onSubmitHandler);
     }

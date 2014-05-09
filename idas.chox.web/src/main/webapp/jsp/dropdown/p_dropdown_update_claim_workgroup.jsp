@@ -12,7 +12,7 @@
         }
 
         var target = "#couClaimHandlerRoleUserDropDownDiv";
-        var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
+        var url = "/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId":selectedWorkgroupId,"insurerId":insurerId};
 
         ajax.loadHtml2(url,param,function(data){

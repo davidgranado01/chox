@@ -37,8 +37,8 @@
                     this.setValue('<s:property value="calculatedHirePenaltyPercentage"/>');
                 },
                 select : function(){
-                    Ext.Ajax.request({
-                        url: '<%= request.getContextPath()%>/prv/p/getHirePenaltyAmount.action',
+                    choxExtAjaxRequest({
+                        url: '/prv/p/getHirePenaltyAmount.action',
                         success : function(response, opts) {
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
@@ -47,8 +47,7 @@
                             }
                         },
                         params: {
-                            hirePenaltyPercentage : this.getValue(),
-                            nonce:'<%= session.getAttribute("SessionNonce")%>'
+                            hirePenaltyPercentage : this.getValue()
                         }
 
                     });
@@ -90,8 +89,8 @@
                     this.setValue('<s:property value="calculatedRepairPenaltyPercentage"/>');
                 },
                 select : function(){
-                    Ext.Ajax.request({
-                        url: '<%= request.getContextPath()%>/prv/p/getRepairPenaltyAmount.action',
+                    choxExtAjaxRequest({
+                        url: '/prv/p/getRepairPenaltyAmount.action',
                         success : function(response, opts) {
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
@@ -101,8 +100,7 @@
                             }
                         },
                         params: {
-                            repairPenaltyPercentage : this.getValue(),
-                            nonce:'<%= session.getAttribute("SessionNonce")%>'
+                            repairPenaltyPercentage : this.getValue()
                         }
 
                     });
@@ -147,6 +145,8 @@
                 }
             }
         });
+        
+        choxJqueryHttpSubmit(form, function(){});
         
         $("#tHirePenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay();
@@ -330,6 +330,6 @@
             <div class="chox-form-submit-result">&nbsp;</div>
             <div id="PenaltyChargeBox" class="action-error-msg"></div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

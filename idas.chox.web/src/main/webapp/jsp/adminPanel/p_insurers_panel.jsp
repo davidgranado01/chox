@@ -22,11 +22,11 @@
             loadMask:false,
             activeTab: insAdminTabIndex,
             items:[
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', disabled:(!insurerIsWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'InsurerDiscountsTab1', id:"InsurerDiscountsTabId1", title:'Discounts', tabTip:'Insurer Discounts', disabled : !<s:property value="CurrentUser.Insurer.insurerDiscountEnable" />,listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', disabled:(!insurerIsWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerWorkgroupPage.action', params:{"insurerId" : '<s:property value="CurrentUser.Insurer.id" />'}})},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandPage.action', params:{"insurerId" : '<s:property value="CurrentUser.Insurer.id" />'}})},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandChorganisationMapping.action', params:{"insurerId" : '<s:property value="CurrentUser.Insurer.id" />'}})},
+                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerVehicleClassCeilingPage.action', params:{"insurerId" : '<s:property value="CurrentUser.Insurer.id" />'}})},
+                {contentEl:'InsurerDiscountsTab1', id:"InsurerDiscountsTabId1", title:'Discounts', tabTip:'Insurer Discounts', disabled : !<s:property value="CurrentUser.Insurer.insurerDiscountEnable" />,listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerDiscountPage.action', params:{"insurerId" : '<s:property value="CurrentUser.Insurer.id" />'}})}
             ]
         });
     });

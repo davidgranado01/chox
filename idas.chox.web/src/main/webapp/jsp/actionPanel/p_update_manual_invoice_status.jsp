@@ -7,7 +7,8 @@ function doUpdateManualInvoice(action){
     $('form#updateManualInvoicePaymentForm input[id="name"]').val(action)
     
     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-    $("form#updateManualInvoicePaymentForm").submit();
+//    $("form#updateManualInvoicePaymentForm").submit();
+    choxJqueryHttpSubmit($("form#updateManualInvoicePaymentForm"));
     
 }
 
@@ -56,6 +57,6 @@ function doUpdateManualInvoice(action){
                     </div>
                 </div>
             </fieldset>
-            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+            <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

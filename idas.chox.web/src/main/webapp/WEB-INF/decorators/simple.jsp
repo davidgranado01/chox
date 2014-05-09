@@ -20,7 +20,7 @@
     </head>
 
     <body>
-        <input type="hidden" id="uniqueNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="uniqueNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
         <div class="outer" id="outerDiv">
 
             <div class="inner">

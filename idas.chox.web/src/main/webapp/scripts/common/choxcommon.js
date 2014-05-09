@@ -9,7 +9,7 @@ Ext.ux.JSLoader = function(options) {
     onError: options.onError || Ext.ux.JSLoader.stdError
   };
 
-  Ext.Ajax.request({
+  choxExtAjaxRequest({
     url: options.url,
     scriptIndex: Ext.ux.JSLoader.index,
     success: function(response, options) {

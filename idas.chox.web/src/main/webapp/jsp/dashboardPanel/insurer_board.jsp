@@ -17,7 +17,7 @@
 
 
 
-    $(document).ready(function(){
+    Ext.onReady(function() {
 
         
         new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
@@ -107,9 +107,9 @@
                 ]
             });
 
-            dashBoardWorkgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":dashBoardInsurerId}}),
+            dashBoardWorkgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
+                params : {"orgId":dashBoardInsurerId},
                 reader : workGroupJsonReader
             });
 
@@ -160,9 +160,9 @@
                     {name:'name'}
                 ]
             });
-            dashBoardClaimOwnerStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
+            dashBoardClaimOwnerStore = new choxDataStore({
+                url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", 
+                params : {"workgroupId":-1,"insurerId":-1},
                 reader : claimOwnerReader
             });
             
@@ -236,9 +236,10 @@
 
         
         $("#resultHolder").block();
-        $.get("<%= request.getContextPath()%>/prv/p/showInsurerBoard.action",param, function(data){
+        
+        var url = "/prv/p/showInsurerBoard.action";
+        ajax.loadHtml2(url,param,function(data){
             $("#resultHolder").html(data);
-
         });
 
        // doDashBoardInsurerSearchSelectOnChange();

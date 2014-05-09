@@ -28,9 +28,8 @@
             ]
         });
 
-        workgroup_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getInsurerWorkgroups.action',method:'POST'}),
+        workgroup_gridviewData = new choxDataStore({
+            url: '/prv/p/getInsurerWorkgroups.action',
             reader:workgroup_gridviewJsonReader
         });
 
@@ -90,7 +89,7 @@
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Site'");
         }else{
-            var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action";
+            var url = "/prv/p/addNewInsurerWorkgroup.action";
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam};
             ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }
@@ -100,7 +99,7 @@
     function workgroup_triggerStatusUpdateRecord(gridView){
 
         var workgroupId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/triggerInsurerWorkgroupStatus.action";
+        var url = "/prv/p/triggerInsurerWorkgroupStatus.action";
         var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
         ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
 
@@ -112,7 +111,7 @@
 
             var workgroupId = gridView.get("id");
 
-            var url = "<%= request.getContextPath()%>/prv/p/removeInsurerWorkgroup.action";
+            var url = "/prv/p/removeInsurerWorkgroup.action";
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
             ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }

@@ -5,18 +5,17 @@
     function renderBillingPanel(billType)
     {
         var paramStr = "billingType="+billType;
-        Ext.get("admin_param_panel").load({
-            url: "<%= request.getContextPath()%>/prv/p/loadBillingPanel.action",
-            scripts: true,
+        Ext.get("admin_param_panel").load(choxUpdateEl({
+            url: "/prv/p/loadBillingPanel.action",
             params: paramStr,
             text: "Loading billing panel"
-        });
+        }));
     }
 
     function renderAdminParameterPanel(selectedPanel)
     {
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var url = "/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":selectedPanel};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);

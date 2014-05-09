@@ -18,14 +18,15 @@ var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDisc
 var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
 var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
 var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
-var nonce = '<%= session.getAttribute("SessionNonce")%>';
+//var nonce = '<%= session.getAttribute("SessionNonce")%>';
 
     function doUpdateManualInvoice(action){
     
         $('form#logInvoicePayment input[id="name"]').val(action)
 
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        $("form#logInvoicePayment").submit();
+//        $("form#logInvoicePayment").submit();
+        choxJqueryHttpSubmit($("form#logInvoicePayment"));
     
     }
 
@@ -38,7 +39,7 @@ var nonce = '<%= session.getAttribute("SessionNonce")%>';
 
     function callInterimPayment(){
     	 var target = "#moreActionPanel";
-         var url = "<%= request.getContextPath()%>/prv/p/makeInterimPayment.action";
+         var url = "/prv/p/makeInterimPayment.action";
          var param = {"id":<s:property value="id" />};
          ajax.loadHtml2(url,param,function(data){
              $(target).html(data);
@@ -87,6 +88,6 @@ var nonce = '<%= session.getAttribute("SessionNonce")%>';
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

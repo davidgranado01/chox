@@ -65,9 +65,9 @@
                 ]
             });
 
-            workgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer3.action", method:'GET', params : {"orgId":'<s:property value="objectId"/>'}}),
+            workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+                params : {"orgId":'<s:property value="objectId"/>'},
                 reader: wgrpJsonReader
             });
 
@@ -116,9 +116,9 @@
             ]
         });
 
-        claimOwnerStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}}),
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+            params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'},
             reader : claimOwnerReader
         });
 
@@ -153,6 +153,10 @@
         
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
        
+       // The below jquery submit function only used for adding additional callback function which is used to set 
+       // the default value to the claimOwner and Workgroup. The actual form submission 
+       // is performed by ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
+       // The below submit will not submit the form because the above said(ui.ajaxform) call back function returns false. 
         $("#formUpdateInsurerDetail").submit(function(){
             if($("[name='claimOwnerIdField']").val() === ""){
                 $("[name='claimOwnerIdField']").val(-1);
@@ -247,22 +251,22 @@
                 activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerAliasPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerWorkgroupPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerChorganisationMappingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandChorganisationMapping.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerVehicleClassCeilingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
                     {contentEl:'insurerInteligentNoteTab', 
                         id:"insurerInteligentNoteTabId", 
                         title:'Intelligent Notes', tabTip:'Insurer Intelligent Notes', 
                         disabled:isNew, 
                         listeners: {activate: insHandleActivate}, 
-                        autoLoad: {url:"p/getInteligentNotesPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
+                        autoLoad: choxUpdateEl({url:'p/getInteligentNotesPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerAutomaticRoutingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerDiscountPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getReasonsOfRejectionPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 2}})}
                 ]
             });
 
@@ -278,22 +282,22 @@
                 activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerAliasPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerWorkgroupPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerChorganisationMappingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerBreBandChorganisationMapping.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerVehicleClassCeilingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
                     {contentEl:'insurerInteligentNoteTab', 
                         id:"insurerInteligentNoteTabId", 
                         title:'Intelligent Notes', 
                         tabTip:'Insurer Intelligent Notes', 
                         disabled:isNew, 
-                        listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInteligentNotesPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
+                        listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInteligentNotesPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerAutomaticRoutingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getInsurerDiscountPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getReasonsOfRejectionPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 2}})}
                 ]
             });
 
@@ -456,7 +460,7 @@
 
     function doInsurerCancelBack(){
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var url = "/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"ChoxInsurerMgmtPanel"};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
@@ -604,7 +608,7 @@
 
     function updateInsurerDetailPanel(objectId) {
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var url = "/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":objectId};
 
         ajax.loadHtml2(url,param, function(data){
@@ -1085,7 +1089,7 @@
                         </div>
                         <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
                         <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
-                        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                     </div>
                 </form>
             </div>

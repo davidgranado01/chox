@@ -3,15 +3,15 @@
 
 <script type="text/javascript">
 
-    //$(document).ready(function() {
      Ext.onReady(function(){
         openTab(4);
-        
-        });
+        var form = $("form#resubmitInvoiceForm");
+        choxJqueryHttpSubmit(form, doMaskClaimDetailPage);
+    });
         
     function doMaskClaimDetailPage() {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        return true;
+//        return true;
     }
 </script>
 
@@ -34,12 +34,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" id="RIDRe-SubmitClaimInvoiceButtonId"value="Re-Submit Claim/Invoice" onclick="return doMaskClaimDetailPage()"/></td>
+                            <td><input type="submit" id="RIDRe-SubmitClaimInvoiceButtonId"value="Re-Submit Claim/Invoice" /></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

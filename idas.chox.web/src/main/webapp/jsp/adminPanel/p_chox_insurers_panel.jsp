@@ -26,9 +26,8 @@
             ]
         });
 
-        insurer_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getInsurers.action',method:'POST'}),
+        insurer_gridviewData = new choxDataStore({
+            url: '/prv/p/getInsurers.action',
             reader:insurer_gridviewJsonReader
         });
     
@@ -76,7 +75,7 @@
         var gridView = insurer_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var url = "/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":gridViewId};
 
         ajax.loadHtml2(url,param,function(data){
@@ -88,7 +87,7 @@
     function createNewInsurerRecord(){
         
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var url = "/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":-1};
 
         ajax.loadHtml2(url,param,function(data){
@@ -106,7 +105,7 @@
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
         if(btn=='yes'){
             var gridViewId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doTriggerInsurerAccountStatus.action";
+            var url = "/prv/p/doTriggerInsurerAccountStatus.action";
             var param = {"objectId":gridViewId};
             
             ajax.loadHtml2(url, param, insurer_loadGridViewList);

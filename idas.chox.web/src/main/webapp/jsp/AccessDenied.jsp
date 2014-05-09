@@ -11,9 +11,7 @@
             closable : false,
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR,
-            fn: function redirectToAccessDeniedPage(){
-                window.location = "<%= request.getContextPath()%>/j_spring_security_logout"; 
-            }
+            fn: logout
         });
     })
 

@@ -27,9 +27,8 @@
                 ]
             });
 
-            breband_gridviewData = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy
-                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerBreBand.action',method:'POST'}),
+            breband_gridviewData = new choxDataStore({
+                url: '/prv/p/getInsurerBreBand.action',
                 reader:breband_gridviewJsonReader
             });
 
@@ -62,7 +61,7 @@
                 var gridView = breband_gridviewGrid.getStore().getAt(rowIndex);
                 var breBandId = gridView.get("id");
                 var target = "div#insurerBreDetailTab";
-                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                var url = "/prv/p/updateInsurerBreBandDetailPanel.action";
                 var param = {"objectId":breBandId, "insurerId":<s:property value="insurerId" />};
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
@@ -72,7 +71,7 @@
 
         function breband_createNewRecord(){
             var target = "div#insurerBreDetailTab";
-            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+            var url = "/prv/p/updateInsurerBreBandDetailPanel.action";
             var param = {"objectId":"-1","insurerId":<s:property value="insurerId" />};
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);

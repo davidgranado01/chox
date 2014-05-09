@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
 
         $("form#invoiceExcalatedForm").validate(
         {
@@ -56,13 +56,14 @@
         if($("#invoiceExcalatedForm").valid()){
 
             if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");$("form#invoiceExcalatedForm").submit();}else{return false;}})){
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceExcalatedForm"));}else{return false;}})){
                     return;
                 }
             }
             else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                $("form#invoiceExcalatedForm").submit();
+//                $("form#invoiceExcalatedForm").submit();
+                choxJqueryHttpSubmit($("form#invoiceExcalatedForm"));
             }
             
         }
@@ -144,6 +145,6 @@
                 <div class="action-error-msg" id="invoiceExcalatedFormMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

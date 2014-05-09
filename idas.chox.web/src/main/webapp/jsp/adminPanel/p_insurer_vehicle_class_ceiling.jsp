@@ -10,7 +10,7 @@
     var vcCeilingStore;
     var vcCeilingCombo;
 
-    $(function(){
+    Ext.onReady(function() {
         
         var vcCeilingJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -22,9 +22,9 @@
                 ]
         });
 
-        vcCeilingStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/VehicleClassDropDownAction.action", method : 'post', params : {"insurerId":<s:property value="insurerId" />}}),
+        vcCeilingStore = new choxDataStore({
+                url : "/prv/p/VehicleClassDropDownAction.action", 
+                params : {"insurerId":<s:property value="insurerId" />},
                 reader : vcCeilingJsonReader
                 ,listeners: {load: function() {
                     vcCeilingCombo.setValue('<s:property value="vehicleClass.id"/>');    
@@ -140,7 +140,8 @@
                                 error: ui.onSubmitError
                                     };
 
-                              $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
+//                              $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
+                              choxJqueryAjaxSubmit($("form#editVehicleClassCeilingDetail"), op);
                             }
                         }
                     },{
@@ -167,9 +168,8 @@
             ]
         });
 
-        vehicleClassCeiling_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getSelectedInsurerVehicleClassCeiling.action', method:'POST'}),
+        vehicleClassCeiling_gridviewData = new choxDataStore({
+            url: '/prv/p/getSelectedInsurerVehicleClassCeiling.action',
             reader:vehicleClassCeiling_JsonReader
         });
 
@@ -224,7 +224,7 @@
 
         if(columnIndex===3){
             var vehicleClassCeilingId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doRemoveVehicleClassCeilingMapping.action";
+            var url = "/prv/p/doRemoveVehicleClassCeilingMapping.action";
             var param = {"vehicleClassCeilingId":vehicleClassCeilingId};
             ajax.loadHtml2(url, param, onVehicleClassPageRefresh);
 
@@ -286,7 +286,7 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDVehicleClassCeilingMessageBox" class="action-error-msg"></div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
                                 </form>
                             </div>
@@ -316,7 +316,7 @@
                         <input type="text" id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
                     <div id="HMmessageBox" class="action-error-msg"></div>
-                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
                 </form>
             </div>

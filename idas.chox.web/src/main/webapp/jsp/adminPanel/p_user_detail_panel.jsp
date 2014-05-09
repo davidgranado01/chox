@@ -89,7 +89,7 @@
                     Ext.MessageBox.alert('Status', 'New User has been created', function() {
                             var newObjectId = parseInt(response.result);
                             var target = "#admin_param_panel";
-                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var url = "/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":newObjectId,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
@@ -100,7 +100,7 @@
                 else {
                     Ext.MessageBox.alert('Status', 'User "' + '<s:property value="userName" />' + '"has been updated', function() {
                             var target = "#admin_param_panel";
-                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var url = "/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
@@ -111,7 +111,7 @@
             else {
                 Ext.MessageBox.alert('Error', 'Error updating user: '+ response.errors + '\nPlease try again.', function() {
                             var target = "#admin_param_panel";
-                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var url = "/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
@@ -157,8 +157,8 @@
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
                 {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserRoleMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserWorkgroupMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getUserRoleMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})},
+                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getUserWorkgroupMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})}
                 
             ]
         });
@@ -182,7 +182,7 @@
 
     function doUserCancelBack(){
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var url = "/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"UserMgmt"};
         ajax.loadHtml2(url, param, function(data){
             $(target).html(data);
@@ -191,7 +191,7 @@
 
     function orgChanged(orgId) {
         var target = "#userPasswordMsgId";
-        var url = "<%= request.getContextPath()%>/prv/p/getUserPasswordMessage.action";
+        var url = "/prv/p/getUserPasswordMessage.action";
         var param = {"organisationTypeId":"<s:property value="organisationTypeId" />", "organisationId":orgId};
 
         ajax.loadJson2(url, param, function(data){
@@ -354,7 +354,7 @@
                     <div class="chox-form-submit-result"></div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                 </div>
-               <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+               <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             </form>
         </div>
     </div>
@@ -371,7 +371,7 @@
                     <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                         <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
-                       <input type="hidden" id="updatePasswordFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                       <!--<input type="hidden" id="updatePasswordFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                         <div class="form-container">
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label" style="width: 260px;">Password<span class="mandatory">*</span></label>

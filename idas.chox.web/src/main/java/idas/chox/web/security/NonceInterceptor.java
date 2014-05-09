@@ -1,4 +1,4 @@
-package idas.chox.web.security;
+/*package idas.chox.web.security;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -19,10 +19,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-/**
- *
- * @author John
- */
+
 public class NonceInterceptor extends AbstractInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(NonceInterceptor.class);
@@ -138,4 +135,4 @@ public class NonceInterceptor extends AbstractInterceptor {
         }
         return sb.toString();
     }
-}
+} */

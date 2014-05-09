@@ -4,7 +4,7 @@
 <script type="text/javascript">
     var finalReviewRequiredOrig = -1;
 
-    $(function(){
+    Ext.onReady(function() {
 
         finalReviewRequiredOrig = $("#finalReviewRequiredOrigId").val();
 
@@ -30,6 +30,8 @@
                 }
             });
         }
+        
+        choxJqueryHttpSubmit(form, function(){});
 
     });
 </script>
@@ -78,6 +80,6 @@
                 <div class="action-error-msg" id="UpdateFinalReviewMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

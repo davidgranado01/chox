@@ -18,11 +18,9 @@ function formatDate(value){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-Chox.orgStore = new Ext.data.Store( {
-    proxy : new Ext.data.HttpProxy( {
-        url : Chox.appname + '/prv/p/listBillingOrgData.action'
-    }),
-    reader : new Ext.data.JsonReader( {
+Chox.orgStore = new choxDataStore({
+    url : '/prv/p/listBillingOrgData.action',
+    reader : new Ext.data.JsonReader({
         fields : [ 'orgId', 'name' ],
         root : 'results'
     }),
@@ -283,8 +281,8 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             name : 'billingType'
         }, {
             xtype : 'hidden',
-            id : 'billingNonceId',
-            name : 'nonce'
+            id : 'billingCsrfId',
+            name : '_csrf'
         }, {
             xtype : 'combo',
             name : 'choName',
@@ -360,7 +358,8 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
         text : 'Save',
         handler : function() {
             Ext.getCmp('billingTypeId').setValue(Chox.billing.billingmode);
-            Ext.getCmp('billingNonceId').setValue(Chox.nonce);
+//            Ext.getCmp('billingNonceId').setValue(Chox.nonce);
+            Ext.getCmp('billingCsrfId').setValue(csrfTokenValue);
             Ext.getCmp('refbillingform').getForm().submit( {
                 waitTitle :'Please wait',
                 waitMsg :'Creating Bills...',
@@ -460,8 +459,8 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             fieldLabel : 'Payment Received'
         },{
             xtype : 'hidden',
-            id : 'nonceId',
-            name : 'nonce'
+            id : 'billingCsrfId1',
+            name : '_csrf'
         }];
 
         Chox.billing.PaymentForm.superclass.initComponent.call(this);
@@ -472,7 +471,8 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     buttons : [ {
         text : 'Save',
         handler : function() {
-            Ext.getCmp('nonceId').setValue(Chox.nonce);
+//            Ext.getCmp('nonceId').setValue(Chox.nonce);
+            Ext.getCmp('billingCsrfId1').setValue(csrfTokenValue);
             cb.paymentFormObj.getForm().submit( {
                 success : function(f, a) {
                     if ( a.result.success ){
@@ -691,9 +691,7 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
 
 cb.bstore = new Chox.billing.BillingStore({
     id:'refbillingstore',
-    baseParams:{
-        billingType:Chox.billing.billingmode
-    }
+    baseParams:Ext.apply({}, {billingType:Chox.billing.billingmode}, csrfParam)
 });
 
 function deleteSchedule(btn) {
@@ -701,8 +699,8 @@ function deleteSchedule(btn) {
         var selected = cb.schSel.getSelected();
         if( selected ){
             var box = Ext.MessageBox.wait('Deleting Bills','Please wait..');
-            Ext.Ajax.request({
-                url: Chox.appname + '/prv/p/deleteBill.action',
+            choxExtAjaxRequest({
+                url: '/prv/p/deleteBill.action',
                 callback : function(options,success,response  ){
                     var resp = Ext.util.JSON.decode(response.responseText);
                     cb.bstore.reload();
@@ -713,8 +711,7 @@ function deleteSchedule(btn) {
                 },
                 params: {
                     billingId: selected.get('billingId'),
-                    billingType: Chox.billing.billingmode,
-                    nonce:Chox.nonce
+                    billingType: Chox.billing.billingmode
                 }
             });
         }
@@ -764,6 +761,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 text:'Download ',
                 handler : function() {
                     var selected = cb.schSel.getSelected();
+                 
                     if( selected ){
                         var rptName;
                         if ( Chox.billing.billingmode ==='insurer'){
@@ -771,7 +769,8 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         }else{
                             rptName = 'BillingChoReport-Excel';
                         }
-                        generateReport1(Ext.urlEncode(selected.data),rptName); 
+//                        generateReport1(Ext.urlEncode(selected.data),rptName); 
+                        generateReport1(selected.data, rptName);
 //                        var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
                         
 //                        location.href = rpthref;
@@ -983,9 +982,7 @@ function updateBillingDetailStatus(store){
 }
 
 cb.bdetails = new Chox.billing.BillingDetailStore({
-    baseParams:{
-        billingType:Chox.billing.billingmode
-    }
+    baseParams:Ext.apply({}, {billingType:Chox.billing.billingmode}, csrfParam)
 });
 
 Chox.billing.dtl_comment_edit = new Ext.form.TextField();
@@ -1015,8 +1012,8 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     }
                     jstr = Ext.util.JSON.encode(ma);
 
-                    Ext.Ajax.request({
-                        url: Chox.appname + '/prv/p/updateBillingDetail.action',
+                    choxExtAjaxRequest({
+                        url: '/prv/p/updateBillingDetail.action',
                         callback : function(options,success,response  ){
 
                             var resp = Ext.util.JSON.decode(response.responseText);
@@ -1030,8 +1027,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                             billingId:cb.bdetails.billingId,
                             //requestJson: jstr
                             jsonData:jstr,
-                            billingType:Chox.billing.billingmode,
-                            nonce : Chox.nonce
+                            billingType:Chox.billing.billingmode
                         }
                     //jsonData:jstr
                     });

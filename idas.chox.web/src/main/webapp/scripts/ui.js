@@ -38,7 +38,8 @@ var ui = function(){
         // Hack to handle access denied returned in the ajax response
         if (responseText.indexOf('You have been denied access') !=-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                window.location = '/j_spring_security_logout';
+//                window.location = '/j_spring_security_logout';
+                logout();
                 return;
             });
         }
@@ -105,6 +106,7 @@ var ui = function(){
         }
 
         hasFormUnderSubmission = false;
+        ajax.handleAjaxError(null, XMLHttpRequest);
     }
 
     function parseErrors(errors)
@@ -150,6 +152,8 @@ var ui = function(){
         return dateField;
     }
 
+    // refer the below link to know how the jquery ajax form submit callback handler works 
+    // http://api.jquery.com/submit/
     function ajaxForm(form, successCallBack, responseType){
 
         function onAfterSubmit(responseText, statusText){
@@ -159,17 +163,20 @@ var ui = function(){
             }
         }
 
-        form.submit(function(){
-
+        form.submit(function(event){
+            
             if(form.valid()){
                 var options = {
                     beforeSubmit: onBeforeSubmit,  // pre-submit callback
                     success: onAfterSubmit,  // post-submit callback
                     timeout: 3000,
-                    error: onSubmitError
+                    error: onSubmitError,
+                    data: csrfParam,
+                    type : 'POST'
                 };
                 $(this).ajaxSubmit(options);
             }
+//            event.preventDefault(); This can also be used to prevent default form submission.
             return false;
         });
     }

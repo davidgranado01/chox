@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
 
         $("form#invoiceEscalatedToCh").validate(
         {
@@ -69,7 +69,7 @@
                                             function(btn){ 
                                                   if(btn=='yes'){ 
                                                       Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                                                      $("form#invoiceEscalatedToCh").submit();
+                                                      choxJqueryHttpSubmit($("form#invoiceEscalatedToCh"));
                                                   }else{ 
                                                       return false;
                                                   }
@@ -82,7 +82,7 @@
                                                   function(btn){
                                                       if(btn=='yes'){
                                                           Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                                                          $("form#invoiceEscalatedToCh").submit();
+                                                          choxJqueryHttpSubmit($("form#invoiceEscalatedToCh"));
                                                       }else{
                                                           return false;
                                                       }
@@ -93,7 +93,7 @@
             }
            else{
                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-               $("form#invoiceEscalatedToCh").submit(); 
+               choxJqueryHttpSubmit($("form#invoiceEscalatedToCh"));
            }
         }
     }
@@ -181,6 +181,6 @@
                 <div class="action-error-msg" id="invoiceEscalatedToChMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

@@ -12,18 +12,18 @@
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
-    <s:if test="addPenaltyChargeConfigValidation" >
+        <s:if test="addPenaltyChargeConfigValidation" >
             invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
             minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
-    </s:if>
+        </s:if>
                 //            hideMode: 'offsets',
             value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
             showWeekNumber: true
         });
-     
+        var form = $("form#doAdjustAutoPenalty");
+        choxJqueryHttpSubmit(form, function(){});
 
-
-        });
+    });
 
         function updatePenaltyChargeConfig() {
             if (Ext.getCmp("autoPenaltyStartDateId").isValid())
@@ -85,7 +85,7 @@
             <div class="chox-form-submit-result">&nbsp;</div>
             <div id="autoPenaltyChargeBox" class="action-error-msg"></div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>
 

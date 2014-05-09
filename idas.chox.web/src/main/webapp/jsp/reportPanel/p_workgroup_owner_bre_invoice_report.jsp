@@ -21,9 +21,9 @@
             ]
         });
 
-        var claimOwnerWorkflowStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+        var claimOwnerWorkflowStore = new choxDataStore({
+            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", 
+            params : {"workgroupId":-1,"insurerId":insurerId},
             reader : claimOwnerWorkflowReader,
             listeners: {load: function() {
 
@@ -66,9 +66,8 @@
                 ]
             });
 
-            var  ownerWorkflowWorkgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+            var  ownerWorkflowWorkgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                 reader :  ownerWorkflowWorkgroupJsonReader,
                 listeners: {load: function() {
 
@@ -200,10 +199,15 @@
         function openReport()
         {
 	        if($("form#formReportParam").valid()){
-	            var queryString = $('#formReportParam').formSerialize();
+//	            var queryString = $('#formReportParam').formSerialize();
+                    var queryString = {};
+                    $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
 	            // If no workgroup selected, insert a '-1' into the query string
-	            if (queryString.indexOf('workgroupId=&') >= 0)
-	                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+                    if (queryString.workgroupId === "") {
+                        queryString.workgroupId = -1;
+                    }
+//	            if (queryString.indexOf('workgroupId=&') >= 0)
+//	                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
 	            generateReport(queryString);
 	        }
         }

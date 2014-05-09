@@ -2,15 +2,15 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
 
-    //$(document).ready(function() {
     Ext.onReady(function(){
         openTab(1);
         expandHireMonitoringDetails(true);
-        });
+        var form = $("form#awaitingcarHireInfoForm");
+        choxJqueryHttpSubmit(form, doMaskClaimDetailPage);
+    });
         
     function doMaskClaimDetailPage() {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        return true;
     }
 </script>
 
@@ -34,12 +34,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed" onclick="return doMaskClaimDetailPage()" /></td>
+                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed" /></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

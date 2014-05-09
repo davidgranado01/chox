@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
         createHelpNote();
         $("form#formClaimReviewByEngAction").validate(
         {
@@ -40,7 +40,8 @@
 
         if($("#formClaimReviewByEngAction").valid()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            $("form#formClaimReviewByEngAction").submit();
+//            $("form#formClaimReviewByEngAction").submit();
+            choxJqueryHttpSubmit($("form#formClaimReviewByEngAction"));
         }
     }
     
@@ -184,6 +185,6 @@
             </div>
         </fieldset>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

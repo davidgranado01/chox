@@ -11,7 +11,7 @@
     var dashBoardChoClaimOwnerCombo = -1;
 
 
-    $(document).ready(function(){
+    Ext.onReady(function() {
             
         new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
         new Ext.ToolTip({target: 'tipTitle',html: 'Selected Insurer(s) for dashboard data'});
@@ -96,9 +96,9 @@
                 ]
             });
 
-            dashBoardChoClaimOwnerStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId":-1}}),
+            dashBoardChoClaimOwnerStore = new choxDataStore({
+                url : "/prv/p/SearchSupplierClaimOwnerDropDownAction.action",
+                params : {"supplierId":-1},
                    // Don't know if this is neded (search code for this already exists
                    // - just uncomment this to add and it should work
                 listeners: {load: function() {
@@ -174,8 +174,9 @@
       
 
         $("#resultHolder").block();
-
-        $.get("<%= request.getContextPath()%>/prv/p/showChoBoard.action",param, function(data){
+        
+        var url = "/prv/p/showChoBoard.action";
+        ajax.loadHtml2(url,param,function(data){
             $("#resultHolder").html(data);
         });
     }

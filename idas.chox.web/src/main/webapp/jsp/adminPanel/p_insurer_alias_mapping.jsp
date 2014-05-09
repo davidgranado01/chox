@@ -24,9 +24,8 @@
             ]
         });
 
-        alias_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAlias.action',method:'POST'}),
+        alias_gridviewData = new choxDataStore({
+            url: '/prv/p/getInsurerAlias.action',
             reader:alias_gridviewJsonReader
         });
 
@@ -71,7 +70,7 @@
 
         if(insurerAliasName!==null && insurerAliasName!==""){
 
-            var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerAlias.action";
+            var url = "/prv/p/addNewInsurerAlias.action";
             var param = {"insurerId":<s:property value="insurerId" />,"insurerAliasName":insurerAliasName};
             ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
 
@@ -121,7 +120,7 @@
     </s:if>
 
             var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var url = "/prv/p/updateInsurerDetailPanel.action";
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
@@ -137,7 +136,7 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this alias?',function(btn){
             if(btn==='yes'){
                 var insurerAliasId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
+                var url = "/prv/p/removeInsurerAlias.action";
                 var param = {"insurerAliasId":insurerAliasId};
                 ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
             }

@@ -26,9 +26,9 @@
             ]
         });
 
-        userrole_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUserRoles.action?webUserId='+<s:property value="webUserId" />, method:'POST'}),
+        userrole_gridviewData = new choxDataStore({
+            url: '/prv/p/getUserRoles.action',
+            params : {"webUserId":<s:property value="webUserId" />},
             reader:userrole_gridviewJsonReader
         });
 
@@ -66,7 +66,7 @@
 
         if(webUserRoleId != null && webUserRoleId > 0){
 
-            var url = "<%= request.getContextPath()%>/prv/p/addNewWebUserRoleMapping.action";
+            var url = "/prv/p/addNewWebUserRoleMapping.action";
             var param = {"webUserRoleId":webUserRoleId,"webUserId":webUserId};
             ajax.loadHtml2(url, param, onUserroleMappingSubmitResult);
 
@@ -90,7 +90,7 @@
         var webUserrolecode = gridView.get("webUserroleRole");
         var defaultdeleteMsg = "Are you sure you want to remove this role?";
 
-        var url = "<%= request.getContextPath()%>/prv/p/isWebUserRoleAllowToDelete.action";
+        var url = "/prv/p/isWebUserRoleAllowToDelete.action";
         var param = {"webUserRoleCode":webUserrolecode,"webUserId":<s:property value="webUserId" />};
 
         ajax.loadHtml2(url, param, function(responseText, statusText){
@@ -152,7 +152,7 @@
     }
 
     function doRemoveWebUserRoleMapping(webUserUserRoleId){
-        var url = "<%= request.getContextPath()%>/prv/p/removeWebUserRoleMapping.action";
+        var url = "/prv/p/removeWebUserRoleMapping.action";
         var param = {"webUserUserRoleId":webUserUserRoleId,"webUserId":<s:property value="webUserId" />};
         ajax.loadHtml2(url, param, onUserroleMappingSubmitResult);
     }
@@ -215,7 +215,7 @@
         var tabIndex = 2;
 
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var url = "/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":<s:property value="webUserId" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);

@@ -23,9 +23,8 @@
             ]
         });
 
-        cho_alias_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getChoAlias.action',method:'POST'}),
+        cho_alias_gridviewData = new choxDataStore({
+            url: '/prv/p/getChoAlias.action',
             reader:cho_alias_gridviewJsonReader
         });
 
@@ -70,7 +69,7 @@
 
         if(choAliasName!=null && choAliasName!=""){
 
-            var url = "<%= request.getContextPath()%>/prv/p/addNewChoAlias.action";
+            var url = "/prv/p/addNewChoAlias.action";
             var param = {"choId":<s:property value="choId" />,"choAliasName":choAliasName};
             ajax.loadHtml2(url, param, onChoAliasMappingSubmitResult);
 
@@ -130,7 +129,7 @@
     </s:if>
 
             var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+            var url = "/prv/p/updateChorganisationDetailPanel.action";
             var param = {"objectId":<s:property value="choId" />,"tabIndex":tabIndex};
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
@@ -147,7 +146,7 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this alias?',function(btn){
             if(btn=='yes'){
                 var choAliasId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/removeChoAlias.action";
+                var url = "/prv/p/removeChoAlias.action";
                 var param = {"choAliasId" : choAliasId};
                 ajax.loadHtml2(url, param, onChoAliasMappingSubmitResult);
             }

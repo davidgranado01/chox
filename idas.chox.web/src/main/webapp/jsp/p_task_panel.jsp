@@ -38,15 +38,15 @@
         });
 
         <s:if test="isChoxAdmin" >
-            tasksDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTasks.action',method:'POST'}),
+            tasksDataStore = new choxDataStore({
+                url: '/prv/p/getTasks.action',
                 reader:tasksJsonReader,
                 remoteSort: true
             });
         </s:if>
         <s:else >
-            tasksDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getVisibleTasks.action',method:'POST'}),
+            tasksDataStore = new choxDataStore({
+                url: '/prv/p/getVisibleTasks.action',
                 reader:tasksJsonReader,
                 remoteSort: true
             });
@@ -182,7 +182,8 @@
                 checkBoxSelMod,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
                     renderer:function(value,p,r){
-                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>';}},
+//                        var params = {'id':r.data['claimId'], 'tab' : currentTabIndex, 'nonce':'<%= session.getAttribute("SessionNonce")%>'};
+                        return '<a href="javascript:loadClaimDetail('+r.data['claimId']+','+currentTabIndex+');">' + value + '</a>';}},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
@@ -211,8 +212,8 @@
             ]
         });
 
-        taskTypeStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTaskTypes.action',method:'POST'}),
+        taskTypeStore = new choxDataStore({
+            url: '/prv/p/getTaskTypes.action',
             reader: taskTypeReader
         });
 
@@ -339,8 +340,8 @@
                 ]
             });
 
-            var visibilityRoleStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAvailableUserRolesForTask.action',method:'POST'}),
+            var visibilityRoleStore = new choxDataStore({
+                url: '/prv/p/getAvailableUserRolesForTask.action',
                 reader: visibilityRoleReader
             });
 
@@ -483,7 +484,7 @@
                         text: 'Create',
                         formBind: true,
                         handler: function() {
-                            var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+                            var url = "/prv/p/createNewTask.action";
                             var visRole = Ext.getCmp('visibilityRoleComboId').getValue();
                             var description = Ext.getCmp('descriptionId').getValue();
                             var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
@@ -573,7 +574,7 @@
                         text: 'Create',
                         formBind: true,
                         handler: function() {
-                            var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+                            var url = "/prv/p/createNewTask.action";
                             var description = Ext.getCmp('descriptionId').getValue();
                             var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
                             var tType =  Ext.getCmp('taskTypeComboId').getValue();
@@ -658,7 +659,7 @@
         var selectedRecord = tasksGrid.getSelectionModel().getSelected();
         if (selectedRecord) {
             var selectedRecordId = selectedRecord.get('id');
-            var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
+            var url = "/prv/p/markTaskAsComplete.action";
             var param = {
                 selectedTaskId: selectedRecordId
             };

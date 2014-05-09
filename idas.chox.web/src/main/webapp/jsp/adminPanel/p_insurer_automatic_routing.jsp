@@ -34,9 +34,9 @@
                 ]
         });
 
-        autoRoutingWorkgroupStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-                    ({url: "<%= request.getContextPath()%>/prv/p/getAvailableAutoRoutingWorkgroups.action", method: 'GET', params: {insurerId : <s:property value="insurerId" />}}),
+        autoRoutingWorkgroupStore = new choxDataStore({
+            url: "/prv/p/getAvailableAutoRoutingWorkgroups.action", 
+            params: {insurerId : <s:property value="insurerId" />},
             reader: autoRoutingWorkgroupJsonReader
         });
 
@@ -107,9 +107,8 @@
                 ]
             });
 
-            routing_gridviewData = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy
-                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRouting.action',method:'POST'}),
+            routing_gridviewData = new choxDataStore({
+                url: '/prv/p/getInsurerAutomaticRouting.action',
                 reader:routing_gridviewJsonReader
             });
 
@@ -173,7 +172,8 @@
                                         }
                                     });
                                     if ($("form#editAutoRoutingDetail").valid()) {
-                                        $("form#editAutoRoutingDetail").ajaxSubmit(op);
+//                                        $("form#editAutoRoutingDetail").ajaxSubmit(op);
+                                        choxJqueryAjaxSubmit($("form#editAutoRoutingDetail"), op);
                                     }
                             }
                         },{
@@ -230,9 +230,8 @@
                 ]
             });
 
-            routing_gridviewDataPrice = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy
-                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRoutingByPrice.action',method:'POST'}),
+            routing_gridviewDataPrice = new choxDataStore({
+                url: '/prv/p/getInsurerAutomaticRoutingByPrice.action',
                 reader:routing_gridviewJsonReaderPrice
             });
 
@@ -284,7 +283,7 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
             if(btn=='yes'){
                 var automaticRoutingId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetailByPrice.action";
+                var url = "/prv/p/deleteAutomaticRoutingDetailByPrice.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
                 ajax.loadHtml2(url, param, doAutoRoutingPageRefreshPrice);
             }
@@ -338,7 +337,7 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
             if(btn=='yes'){
                 var automaticRoutingId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
+                var url = "/prv/p/deleteAutomaticRoutingDetail.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
                 ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
             }
@@ -421,7 +420,7 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
-                                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                                     <!--s:token/-->
                                 </form>
                             </div>
@@ -462,7 +461,7 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
-                                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                                     <!--s:token/-->
                                 </form>
                             </div>
@@ -489,7 +488,7 @@
                         <label class="chox-form-pop">Regular Expression</label>
                         <input id="expression" name="expression"/>
                     </div>
-                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                     <div id="CDAutomaticRoutingEditScreenMessageBox" class="action-error-msg"></div>
                     <!--s:token/-->
                 </form>

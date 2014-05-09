@@ -36,8 +36,8 @@
                 {name:'delete'}]
         });
 
-        commentsDataStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'POST'}), 
+        commentsDataStore = new choxDataStore({
+            url: '/prv/p/getComments.action',
             reader:commentsJsonReader
         });
 
@@ -106,7 +106,7 @@
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
                 if(btn=='ok') {
-                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteComment.action";
+                    var url = "/prv/p/doDeleteComment.action";
                     var param = {"commentId":a,"claimId":<s:property value="claimId" />};
                     ajax.loadJson2(url, param, function(data){
                         Ext.MessageBox.show({

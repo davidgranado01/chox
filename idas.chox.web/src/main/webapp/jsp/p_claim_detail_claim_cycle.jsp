@@ -9,7 +9,7 @@
     var auditGrid;
     var hideReverted = true;
 
-    $(function(){
+    Ext.onReady(function() {
 
         auditTrailJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -23,9 +23,8 @@
             ]
         });
 
-        auditTrailData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getAuditTrails.action',method:'GET'}),
+        auditTrailData = new choxDataStore({
+            url: '/prv/p/getAuditTrails.action',
             reader:auditTrailJsonReader
         });
 

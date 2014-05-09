@@ -37,9 +37,9 @@ Ext.onReady(function(){
             ]
         });
     
-        claimOwnerStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+            params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId},
             reader : claimOwnerReader
         });
     
@@ -89,9 +89,9 @@ Ext.onReady(function(){
             ]
         });
 
-        var workgroupStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer3.action", method:'GET', params : {"claimId":<s:property value="id"/>}}),
+        var workgroupStore = new choxDataStore({
+            url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+            params : {"claimId":<s:property value="id"/>},
             reader: wgrpJsonReader,
              listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
         });
@@ -136,6 +136,9 @@ Ext.onReady(function(){
         });
         workgroupStore.load({ params : {"claimId":<s:property value="id"/>}});
     }
+    
+    var form = $("form#updateManualInvoicePaymentForm");
+    choxJqueryHttpSubmit(form, assignManualInvoiceSubmit);
 
 });
 
@@ -232,14 +235,14 @@ function assignManualInvoiceSubmit(){
                                   || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="submit" id="miAssignButton" value="Assign Owner" onclick="return assignManualInvoiceSubmit();"/>
+                                        <input type="submit" id="miAssignButton" value="Assign Owner" />
                                     </td>
                                 </tr>
                             </s:if>
                             <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership && insurer.workgroupEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="submit" id="miAssignButton" value="Assign Workgroup" onclick="return assignManualInvoiceSubmit();"/>
+                                        <input type="submit" id="miAssignButton" value="Assign Workgroup" />
                                     </td>
                                 </tr>
                             </s:elseif>
@@ -249,6 +252,6 @@ function assignManualInvoiceSubmit(){
                     </div>
                 </div>
             </fieldset>
-            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+            <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

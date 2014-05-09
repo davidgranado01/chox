@@ -30,6 +30,7 @@
             <div class="login-inner">
                 <div class="content" id="loginPanel">
                     <form autocomplete="off" action="<%=request.getContextPath()%>/j_spring_security_check" method="POST" >
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="login_form">
                             <p class="password_entry">
                                 <label for="name">

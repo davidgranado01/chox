@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-	$(function(){
+    Ext.onReady(function() {
         $("form#formUpdateInterimPayment").validate(
         {
             errorLabelContainer: "#ACKmUpdateInterimPaymentMessageBox",
@@ -30,12 +30,14 @@
     	if(action == 'updateInterimPaymentFullAndFinal'){
     		$("#updateInterimPaymentFormNameId").val(action);
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        	$('#formUpdateInterimPayment').submit();
+//        	$('#formUpdateInterimPayment').submit();
+                choxJqueryHttpSubmit($("form#formUpdateInterimPayment"));
     	}
     	else if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            $('#formUpdateInterimPayment').submit();
+//            $('#formUpdateInterimPayment').submit();
+            choxJqueryHttpSubmit($("form#formUpdateInterimPayment"));
         }
     }
 
@@ -82,6 +84,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInterimPaymentMessageBox"></div>
             </div>
         </fieldset>
-       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+       <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

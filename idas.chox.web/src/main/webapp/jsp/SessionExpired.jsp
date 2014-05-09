@@ -11,6 +11,7 @@
             icon : Ext.MessageBox.ERROR,
             fn: function redirectToLoginPage(){
                window.location = "<%= request.getContextPath()%>/login.action"; 
+//                logout();
             }
         });
     })

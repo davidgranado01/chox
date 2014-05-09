@@ -3,6 +3,11 @@
 
 <script type="text/javascript">
 
+    Ext.onReady(function() {
+        var form = $("form#formRegisterFNOL");
+        choxJqueryHttpSubmit(form, doFnolFormSubmit);
+    });
+    
     function doFnolFormSubmit(){
 
         $("form#formRegisterFNOL #registerByFnolMessageBox").html("");
@@ -15,7 +20,7 @@
             return false;
         }
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        return true;
+//        return true;
     }
 
 
@@ -53,7 +58,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="choice" nowrap>
-                                        <input type="submit" id="RCBFReturnClaimButtonId"value="Return Claim" onclick="return doFnolFormSubmit()"/>
+                                        <input type="submit" id="RCBFReturnClaimButtonId"value="Return Claim" />
                                     </td>
                                 </tr>
                             </table>
@@ -63,6 +68,6 @@
                 </div>
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

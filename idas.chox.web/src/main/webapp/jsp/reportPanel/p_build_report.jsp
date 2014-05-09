@@ -6,7 +6,7 @@
     function renderParameterPanel(report)
     {
         var target = "#param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadParameterPanel.action";
+        var url = "/prv/p/loadParameterPanel.action";
         var param = {"reportName":report};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);

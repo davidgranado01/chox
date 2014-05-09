@@ -38,5 +38,14 @@
       <key column="user_id"/>
       <many-to-many class="idas.chox.core.model.Workgroup" column="workgroup_id"/>
     </set>
+    <filter condition="insurer_id IN (:insurerId)" name="insurer_user_filter"/>
+    <filter condition="chorganisation_id IN (:choId)" name="cho_user_filter"/>
   </class>
+  
+  <filter-def name="insurer_user_filter">
+      <filter-param name="insurerId" type="integer"/>
+  </filter-def>
+  <filter-def name="cho_user_filter">
+      <filter-param name="choId" type="integer"/>
+  </filter-def>
 </hibernate-mapping>

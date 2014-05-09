@@ -36,9 +36,8 @@
             ]
         });
 
-        userManagementgridStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getGridViewUser.action',method:'POST'}),
+        userManagementgridStore = new choxDataStore({
+            url: '/prv/p/getGridViewUser.action',
             reader:gridviewJsonReader,
             remoteSort: true,
             listeners:  {
@@ -151,7 +150,7 @@
         var gridViewId = gridView.get("id");
 
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var url = "/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":gridViewId,"organisationTypeId":selectedOrganisationTypeId};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
@@ -162,7 +161,7 @@
         getParameters();
         var gridViewId = -1;
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var url = "/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":gridViewId, "organisationTypeId":selectedOrganisationTypeId};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
@@ -177,7 +176,7 @@
        
         selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
         var target = "#organisationDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/OrganisationDropDownAction.action";
+        var url = "/prv/p/OrganisationDropDownAction.action";
         var param = {"selectedOrganisationTypeId":selectedOrganisationTypeId};
        
         ajax.loadHtml2(url,param,function(data){
@@ -196,7 +195,7 @@
         selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
 
         var target = "#userroleDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/WebUserRoleDropDownAction.action";
+        var url = "/prv/p/WebUserRoleDropDownAction.action";
         var param = {"selectedOrganisationTypeId":selectedOrganisationTypeId};
 
         ajax.loadHtml2(url,param,function(data){
@@ -218,7 +217,7 @@
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
             if(btn=='yes'){
             var gridViewId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doTriggerUserAccountStatus.action";
+            var url = "/prv/p/doTriggerUserAccountStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }
@@ -237,7 +236,7 @@
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
             if(btn=='yes'){
             var gridViewId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doTriggerPasswordExpiredStatus.action";
+            var url = "/prv/p/doTriggerPasswordExpiredStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }

@@ -25,7 +25,7 @@
         var initpage = function(){
             Ext.namespace('Chox','Chox.billing');
             Chox.appname = '<%= request.getContextPath()%>';
-            Chox.nonce = '<%= session.getAttribute("SessionNonce")%>';
+//            Chox.nonce = '<%= session.getAttribute("SessionNonce")%>';
             Chox.billing.billingmode = '${billingType}';
             if ( Chox.billing.billingmode =='insurer' ){
                 Chox.billing.billingPageTitle = 'Insurer Billing';
@@ -37,7 +37,7 @@
         }();
         
         new Ext.ux.JSLoader({
-            url: '<%= request.getContextPath()%>/scripts/billing/billingPanel.js',
+            url: '/scripts/billing/billingPanel.js',
             onLoad: function(options) { startPage(); },
             onError: function(options, e) { 
                 Ext.MessageBox.show({

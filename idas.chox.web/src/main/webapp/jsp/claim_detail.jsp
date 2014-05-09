@@ -27,7 +27,7 @@
     var commentsDisabled = notesTabAccessibility === 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility === 0);
     var auditTrailDisabled = auditTrailTabAccessibility === 0;
-    var nonce = '<%= session.getAttribute("SessionNonce")%>';
+//    var nonce = '<%= session.getAttribute("SessionNonce")%>';
     var availableSlaExtensionDays = <s:property value="availableSlaExtensionDays" />;
     var appliedSlaExtDays = <s:property value="slaExtDays" />;
  
@@ -44,8 +44,8 @@
         var claimId = <s:property value="id" />;
         
         <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-            var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
-            var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
+            var pingServerUrl = '/prv/p/activityMonitoringAction.action';
+            var checkStatusIUrl = '/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl, <s:property value="activityMonitorRequestInterval"/>);
             activityMonitor.pingServer();
         </s:if>
@@ -56,7 +56,7 @@
             if (mappedInsurersJsonString !== '') {
                 mappedInsurersStore.loadData(Ext.util.JSON.decode(mappedInsurersJsonString));
             }
-            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : nonce}]);
+            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'}]);
         </s:if>
 
         tabPanel1= new Ext.TabPanel({
@@ -70,11 +70,11 @@
                 {contentEl:'claimDetails', title: 'Claim Details', disabled: claimDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'invoiceDetails', title: 'Invoice Details', disabled: invoiceDetailsDisabled},
-                {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: {url:"p/getAuditTrailPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true},listeners: {activate: doLoadComments}},
-                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: {url:"p/getClaimDetailTaskPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true},listeners: {activate: doLoadTasks}}
+                {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: choxUpdateEl({url:'p/getAttachmentPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: choxUpdateEl({url:'p/getAuditTrailPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
+                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
             ]
         });
 
@@ -95,9 +95,8 @@
                     {name:'supportingNote'}]
             });
 
-            ecdDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy
-                ({url: '<%= request.getContextPath()%>/prv/p/getHireMonitoringEcds.action',method:'GET'}),
+            ecdDataStore = new choxDataStore({
+                url: '/prv/p/getHireMonitoringEcds.action',
                 reader:ecdJsonReader
             });
 
@@ -192,7 +191,7 @@
      * GENERATE CLAIM REPORT FILE
      ***********************************************************************************/
     function claimReport(){
-        var queryString = 'claimId=<s:property value="id" />';
+        var queryString = {'claimId' : <s:property value="id" />};
         generateReport(queryString); 
 //        window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
     }
@@ -213,10 +212,10 @@
                 var url = "<%= request.getContextPath()%>/prv/processClaim.action";
                 var form = $('<form action="' + url + '" method="post">' +
                     '<s:hidden name="name" value="revertClaim" />' +
-                    '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
                     '</form>');
                 $('body').append(form);
-                $(form).submit();
+//                $(form).submit();
+                choxJqueryHttpSubmit($(form));
             }
         });
     }
@@ -228,16 +227,17 @@
                 var url = "<%= request.getContextPath()%>/prv/processClaim.action";
                 var form = $('<form action="' + url + '" method="post">' +
                     '<s:hidden name="name" value="reopenClaim" />' +
-                    '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
                     '</form>');
                 $('body').append(form);
-                $(form).submit();
+//                $(form).submit();
+                choxJqueryHttpSubmit($(form));
             }
         });
     }
 
     function pageRefresh(){
-        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce="+nonce;
+        loadClaimDetail(<s:property value="id" />);
+//        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce="+nonce;
     }
 
 
@@ -247,7 +247,7 @@
 
     function removeNotification(notificationId)
     {
-        var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
+        var url = "/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#notificationNotesDiv").html(data);
@@ -262,7 +262,7 @@
 
     function acknowledgeNotification(notificationId)
     {
-        var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
+        var url = "/prv/p/acknowledgeNotification.action";
         var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#notificationNotesDiv").html(data);
@@ -280,12 +280,11 @@
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?', 
             function ChangeOver(btn){ 
                 if(btn==='yes') {
-                     Ext.Ajax.request({
-                     url: '<%= request.getContextPath()%>/prv/p/switchClaim.action',
+                     choxExtAjaxRequest({
+                     url: '/prv/p/switchClaim.action',
                      params: {
                                  name  : 'switchClaim',
-                                 id    : <s:property value="id" />,
-                                 nonce :'<%= session.getAttribute("SessionNonce")%>'
+                                 id    : <s:property value="id" />
                               },
                      callback : function(options,success,response){
                          if(response.responseText){
@@ -318,7 +317,7 @@
         </s:if>
         <s:else >
             Ext.get('claimDetailScreenDiv').mask();
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){loadInbox(true)});
         </s:else>
         
     }
@@ -340,7 +339,7 @@
                 Ext.MessageBox.confirm('Confirm', 'Are you sure you want to mark this as the original claim for Supplementary Invoices as this claim shares the same Customer Claim Number as another claim?',doMarkSupplementaryInvoiced);
                 function doMarkSupplementaryInvoiced(btn){
                     if(btn==='yes') {
-                        var url = "<%= request.getContextPath()%>/prv/"+selectedAction+".action";
+                        var url = "/prv/"+selectedAction+".action";
                         var param = {"id":<s:property value="id" />};
                         ajax.loadHtml2(url, param, pageRefresh);
                     }else{
@@ -350,7 +349,7 @@
                 }
                 
             }else{
-                var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
+                var url = "/prv/p/"+selectedAction+".action";
                 var param = {"id":<s:property value="id" />};
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
@@ -494,7 +493,7 @@
                     <tr>
                         <td width="80%" align="left">
                             <div>
-                                <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param><s:param name="nonce"><%= session.getAttribute("SessionNonce")%></s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
+                                <a href="javascript: loadInbox(true);" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
                                 &nbsp;&nbsp;
                                 <s:if test="extraActionList.size()>0">
                                     <s:select

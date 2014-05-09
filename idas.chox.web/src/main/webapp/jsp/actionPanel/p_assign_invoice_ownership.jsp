@@ -34,9 +34,9 @@
             ]
         });
 
-        claimOwnerStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":workgroupId, "insurerId":insurerId}}),
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+            params : {"workgroupId":workgroupId, "insurerId":insurerId},
             reader : claimOwnerReader
         });
 
@@ -97,9 +97,9 @@
                 ]
             });
 
-            workgroupStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer3.action", method:'GET', params : {"claimId":claimId}}),
+            workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+                params : {"claimId":claimId},
                 reader: wgrpJsonReader
             });
 
@@ -202,7 +202,8 @@
     	
     	 if (validateComboBox()) {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-         	$("#formOwnershipAssignmentAction").submit();
+//         	$("#formOwnershipAssignmentAction").submit();
+                choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } 
         
     }
@@ -262,6 +263,6 @@
                 </div>
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

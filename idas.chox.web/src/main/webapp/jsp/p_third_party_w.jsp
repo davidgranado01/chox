@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
     
-    $(function(){
+    Ext.onReady(function() {
         var form = $("#formUpdateThirdParty");
 
         var fsets =  $('legend',form);
@@ -21,9 +21,8 @@
                 ]
         });
 
-        var vcTPStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+        var vcTPStore = new choxDataStore({
+                url : "/prv/p/getAvailableVehicleClasses.action",
                 reader : vcTPJsonReader
                 ,listeners: {load: function() {
                     vcTPCombo.setValue('<s:property value="vehicleClass.id"/>');    
@@ -164,6 +163,6 @@
             <div id="thirdPartySuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>

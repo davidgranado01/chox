@@ -8,7 +8,7 @@
 
          var elementToBlock;
             
-        $(function(){
+        Ext.onReady(function() {
 
             var form = $("#forgetPasswordRequestForm");
             form.validate(

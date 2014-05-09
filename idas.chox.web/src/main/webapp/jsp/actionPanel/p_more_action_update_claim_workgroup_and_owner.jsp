@@ -7,7 +7,7 @@
     var isWorkgroupEnable = false;
     var selectedWorkgroupId = -1;
 
-    $(function(){
+    Ext.onReady(function() {
 
         // GET CLAIM INFORMATION
         if($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
@@ -42,7 +42,7 @@
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
-
+        choxJqueryHttpSubmit(form, function(){});
         doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
     });
 
@@ -56,7 +56,7 @@
 
     function doUpdateOwnershipShowClaimHandler(selectedWorkgroupId){
         var target = "#claimHandlerRoleUserDropDownDiv";
-        var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
+        var url = "/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId":selectedWorkgroupId,"insurerId":<s:property value="insurer.id"/>};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
@@ -124,6 +124,6 @@
                 </div>
             </div>
         </fieldset>
-       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+       <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

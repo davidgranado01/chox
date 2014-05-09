@@ -1,18 +1,20 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ActionContext;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
-import org.hibernate.StaleObjectStateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
+
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
+
+import org.hibernate.StaleObjectStateException;
+
+import com.opensymphony.xwork2.ActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -25,9 +27,9 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
-import org.hibernate.HibernateException;
-import org.springframework.core.NestedRuntimeException;
-import org.springframework.dao.DataIntegrityViolationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -40,6 +42,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private Map<String, Object> session;
     private String VALID_SESSION = "validSession";
     private BaseDataService baseDataService;
+    private String message = null;
+    private boolean showMessage = false;
 
     public Map<String, Object> getSession() {
         if (session == null) {
@@ -53,14 +57,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         return session;
     }
-
-    public String getNonce() {
-        if (session == null) {
-            session = getSession();
-        }
-        return (String)session.get("SessionNonce");
-    }
-    
 
     public Object getSessionLock() {
         Object result = getSession().get("SESSION_LOCK");
@@ -80,6 +76,21 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return result;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    protected void setMessage(String message) {
+        this.message = message;
+        if (message != null && !message.isEmpty()) {
+            showMessage = true;
+        }
+    }
+    
+    public boolean isShowMessage() {
+        return showMessage;
+    }
+    
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -420,11 +431,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
-                || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException)) {
-            LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
+                || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException) || ex instanceof DataIntegrityViolationException) {
+            LOG.warn("Exception thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
             LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
             throw new AccessDeniedException(ex.getMessage());
+        } else if (ex instanceof RuntimeException) {
+            LOG.error("handleException: exception is: {}", ex.getMessage());
         } else {
             LOG.warn("handleException: exception is: {}", ex.getMessage());
         }
@@ -440,7 +453,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         if (ex instanceof DataIntegrityViolationException) {
             return "An entered value exceeds predefined limits - please correct and try again. If this problem persists, please contact CHOX Support.";
         }
-        if (ex instanceof NestedRuntimeException || ex instanceof HibernateException) {
+        if (ex instanceof RuntimeException) {
             return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
         }
         
@@ -527,5 +540,22 @@ public class BaseAction extends ActionSupport implements SessionAware {
             LOG.info("Claim is not in session and returing null");
             return null;
         }
+    }
+    
+    public void updateRedirectionParamInSession() {
+        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("redirect", true);
+        if (message != null && !message.isEmpty()) {
+            map.put("redirectStatusMsg", message);
+            getSession().put("redirect", map);
+        }
+        else if (actionError != null && !actionError.isEmpty()) {
+            map.put("redirectErrorMsg", actionError);
+            getSession().put("redirect", map);
+        }
+    }
+    
+    public void removeRedirectionParamInSession() {
+        getSession().remove("redirect");
     }
 }

@@ -7,7 +7,7 @@ var rorGridViewDataStore;
 var rorEditPopWindow;
 var rorGridView;
 
-$(function(){
+Ext.onReady(function() {
 
     var rejectionDescField = new Ext.form.TextArea({
         name             : 'description',
@@ -49,13 +49,8 @@ $(function(){
              ]
     });
     
-    var rorProxy = new Ext.data.HttpProxy({
-        url: '<%= request.getContextPath()%>/prv/p/getInsurersReasonsOfRejection.action',
-        method: 'post'
-    });
-    
-    rorGridViewDataStore = new Ext.data.Store({
-        proxy: rorProxy,
+    rorGridViewDataStore = new choxDataStore({
+        url: '/prv/p/getInsurersReasonsOfRejection.action',
         reader: rorJsonReader
     });
     
@@ -128,7 +123,8 @@ $(function(){
                                 error: ui.onSubmitError
                             };
     
-                            $("form#rorEditForm").ajaxSubmit(op);
+//                            $("form#rorEditForm").ajaxSubmit(op);
+                            choxJqueryAjaxSubmit($("form#rorEditForm"), op);
                         }
                     }
                 },{
@@ -215,18 +211,18 @@ function editReasonOfRejection(grid, rowIndex, columnIndex, e){
         showEditReasonOfRejection(gridView);
     }else if(columnIndex >= 3 && columnIndex <= 9){
         var rorId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
+        var url = "/prv/p/updateReasonOfRejectionActive.action";
         var selectedColumn = rorGridView.getColumnModel().getColumnAt(columnIndex).dataIndex;
         var param = {"reasonOfRejectionId":rorId, "activeType": selectedColumn};
         ajax.loadHtml2(url, param, onSubmitHandler);
     }else if(columnIndex===10){
         var rorId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
+        var url = "/prv/p/updateReasonOfRejectionRestricted.action";
         var param = {"reasonOfRejectionId":rorId};
         ajax.loadHtml2(url, param, onSubmitHandler);
     } else if(columnIndex===11){
         var rorId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/deleteReasonOfRejection.action";
+        var url = "/prv/p/deleteReasonOfRejection.action";
         var param = {"reasonOfRejectionId":rorId};
         ajax.loadHtml2(url, param, onSubmitHandler);
     }
@@ -303,7 +299,7 @@ function showEditReasonOfRejection(gridView){
                             <div class="form-container">
                                 <form id="rorForm" name="rorForm" action="<%= request.getContextPath()%>/prv/p/addReasonOfRejection.action" class="XXentity-form" method="post">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
-                                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+                                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Type</label>
@@ -439,7 +435,7 @@ function showEditReasonOfRejection(gridView){
                         <label class="chox-form-std-label">Supporting Rejection Note</label>
                         <div id="rorDescEditId"/>
                     </div>
-                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
                 </form>
             </div>
         </div>

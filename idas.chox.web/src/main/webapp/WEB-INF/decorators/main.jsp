@@ -20,11 +20,17 @@
 
 	<script type="text/javascript">
 		var generalChoxVersion = '<s:property value="getText('version.number')" />';
+                
+                var csrfParameterName = '${_csrf.parameterName}';
+                var csrfTokenValue = '${_csrf.token}';
+                var csrfParam = {
+                    '${_csrf.parameterName}' : '${_csrf.token}'
+                };
 	</script>
     </head>
 
     <body>
-        <input type="hidden" id="uniqueNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="uniqueNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
         
         <div class="outer" id="outerDiv">
 
@@ -40,7 +46,7 @@
                             <td width="100%" align="right">
 
                                 <ul id="top-menu">
-                                    <li><a id="decoratorMainPageHomePageId" href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">10</s:param><s:param name="nonce"><%= session.getAttribute("SessionNonce")%></s:param></s:url>">&nbsp;Home&nbsp;</a></li>
+                                    <li><a id="decoratorMainPageHomePageId" href="javascript:loadHome();">&nbsp;Home&nbsp;</a></li>
                                     <li><a id="decoratorMainPageSettingsId" href="<s:url action="openUserAccountSettings" includeParams="none"/>">|&nbsp;Settings&nbsp;</a></li>
                                     <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />, <s:property value="bespokeHelpFileType" />);">|&nbsp;Help&nbsp;</a></li></s:if>
                                         <li><a id="decoratorMainPageSupportFormId" href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
@@ -61,7 +67,7 @@
                                             </s:else>
                                         </div></li>
                                     <li><a id="decoratorMainPageAboutChoxId"href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
-                                    <li><a id="decoratorMainPageLogoffId" href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
+                                    <li><a id="decoratorMainPageLogoffId" href="javascript:logout();" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
                                 </ul>
 
                                 <div style="clear:both"></div>

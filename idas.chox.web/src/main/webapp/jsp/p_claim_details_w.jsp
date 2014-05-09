@@ -6,7 +6,7 @@
 var noticeDatePicker;
 var signedByDatePicker;
 
-$(document).ready(function(){
+Ext.onReady(function() {
         noticeDatePicker = ui.unvalidatedDateField('gtaNoticeDate','<s:date format="dd/MM/yyyy" name="gtaNoticeDate" />','noticeDatePH');
         signedByDatePicker = ui.unvalidatedDateField('creditAgreementDate','<s:date format="dd/MM/yyyy" name="creditAgreementDate" />','signedByDatePH');
 
@@ -49,7 +49,8 @@ function saveChanges(){
     resultMsgBox.empty();
    		
     if ($("form#formUpdateClaimDetailsForm").valid()) {
-        $("#formUpdateClaimDetailsForm").submit();
+//        $("#formUpdateClaimDetailsForm").submit();
+        choxJqueryHttpSubmit($("form#formUpdateClaimDetailsForm"));
     }
     
     if ($('#managingRepairCheckboxWriteScreenId').is(':checked') === true) {
@@ -86,5 +87,5 @@ function saveChanges(){
         <div id="claimDetailsResultMsgBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
 </form>

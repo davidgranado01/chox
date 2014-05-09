@@ -15,9 +15,8 @@
             ]
         });
 
-        var workgroupStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
+        var workgroupStore = new choxDataStore({
+            url : "/prv/p/WorkgroupDropDownActionByInsurer.action", 
             reader : workgroupJsonReader
         });
 
@@ -100,14 +99,16 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
         }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            $("form#routeUnacknowledgedUnroutedClaim").submit();
+//            $("form#routeUnacknowledgedUnroutedClaim").submit();
+            choxJqueryHttpSubmit($("form#routeUnacknowledgedUnroutedClaim"));
         }
     }
 
     function rejectClaim(btn) {
         if (btn == 'yes')    {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            $("form#routeUnacknowledgedUnroutedClaim").submit();
+//            $("form#routeUnacknowledgedUnroutedClaim").submit();
+            choxJqueryHttpSubmit($("form#routeUnacknowledgedUnroutedClaim"));
         }
         return false;
     }
@@ -162,7 +163,7 @@
                 </div>
                 <s:hidden name="id" id="claimId" />
                 <s:hidden name="name" id="name" />
-                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                 <div class="status-control-set">
                     <table class="status-table">
                         <tr>

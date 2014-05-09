@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
         
-    $(function(){
+    Ext.onReady(function() {
 
         var form = $("#formUpdateCustomerDetails");
 
@@ -22,9 +22,8 @@
                 ]
         });
 
-        var vcCustomerStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+        var vcCustomerStore = new choxDataStore({
+                url : "/prv/p/getAvailableVehicleClasses.action",
                 reader : vcCustomerJsonReader
                 ,listeners: {load: function() {
                     vcCustomerCombo.setValue('<s:property value="vehicleClass.id"/>');    
@@ -326,6 +325,6 @@
         </div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>

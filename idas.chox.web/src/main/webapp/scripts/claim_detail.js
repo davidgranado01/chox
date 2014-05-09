@@ -38,7 +38,7 @@ Ext.onReady(function(){
         data : daysArray
     });
         
-    var slaExtensionForm = new Ext.FormPanel({
+    var slaExtensionForm = new choxExtJsFormPanel({
         id : 'slaExtensionForm-form',
         height : 150,
         frame : true,
@@ -73,13 +73,14 @@ Ext.onReady(function(){
                     slaExtensionForm.getForm().submit({
                         method:'POST',
                         url : contextPath + "/prv/p/updateSlaExtensionDays.action",
-                        params:{slaExtDays : parseInt(appliedSlaExtDays) + parseInt(Ext.get('maxAllowedSlaExtComboId').getValue()), nonce : nonce, name:'slaExtensionDaysUpdate'},
+                        params:{slaExtDays : parseInt(appliedSlaExtDays) + parseInt(Ext.get('maxAllowedSlaExtComboId').getValue()), name:'slaExtensionDaysUpdate'},
                         success : function(f, a) {
                             
                             if ( a.result.success ){
                                 slaExtensionWindow.hide();
                                 Ext.get('claimDetailScreenDiv').mask("Refreshing claim details...");
-                                window.location = contextPath+'/prv/openClaimDetail.action?nonce='+nonce ; 
+                                loadClaimDetail();
+//                                window.location = contextPath+'/prv/openClaimDetail.action?nonce='+nonce ; 
                             }
                         },
                         failure : function(f, a) {
@@ -96,7 +97,8 @@ Ext.onReady(function(){
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     slaExtensionWindow.hide();
-                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;  
+                                    loadClaimDetail();
+//                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;  
                                 }
                             }); 
                         }
@@ -112,7 +114,7 @@ Ext.onReady(function(){
         }]
     });
     
-    switchClaimToMulInsForm = new Ext.FormPanel({
+    switchClaimToMulInsForm = new choxExtJsFormPanel({
         id : 'switchClaimForm-form',
         height : 150,
         frame : true,
@@ -149,10 +151,6 @@ Ext.onReady(function(){
             id : 'nameId',
             name : 'name',
             value : 'switchClaimToMulIns'
-        },{
-            xtype : 'hidden',
-            id : 'nonceId',
-            name : 'nonce'
         }
         ],
         buttons:[{
@@ -175,7 +173,8 @@ Ext.onReady(function(){
                                     buttons : Ext.MessageBox.OK,
                                     fn : function(){
                                         switchClaimWindow.hide();
-                                        window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce; 
+                                        loadClaimDetail();
+//                                        window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce; 
                                     }
                                 });
                             }
@@ -194,7 +193,8 @@ Ext.onReady(function(){
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     switchClaimWindow.hide();
-                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;
+                                    loadClaimDetail();
+//                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;
                                 }
                             }); 
                         }
@@ -286,10 +286,6 @@ Ext.onReady(function(){
             id : 'nameId',
             name : 'name',
             value : 'closeClaim'
-        },{
-            xtype : 'hidden',
-            id : 'closeNonceId',
-            name : 'nonce'
         }
         ],
         buttons:[{
@@ -301,10 +297,10 @@ Ext.onReady(function(){
                     var form = $('<form action="' + url + '" method="post">' +
                         '<input type="hidden" name="name" value="closeClaim"/>' +
                         '<input type="hidden" name="closeReason" value="'+ Ext.getCmp('closeReasonComboId').getValue() +'"/>' +
-                        '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
                         '</form>');
                     $('body').append(form);
-                    $(form).submit();
+//                    $(form).submit();
+                    choxJqueryHttpSubmit($(form));
                 }
             }
         },{

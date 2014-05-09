@@ -19,9 +19,8 @@
                                 ]
             });
 
-            var choPaymentWorkgroupStore = new Ext.data.Store({
-                                proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+            var choPaymentWorkgroupStore = new choxDataStore({
+                                url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                                 reader : choPaymentWorkgroupJsonReader
             });
 
@@ -120,11 +119,16 @@
             msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
         }
         if($("form#formReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
-            var queryString = $('#formReportParam').formSerialize();
+//            var queryString = $('#formReportParam').formSerialize();
+            var queryString = {};
+            $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             msgBox.empty();
             // If no workgroup selected, insert a '-1' into the query string
-            if (queryString.indexOf('workgroupId=&') >= 0)
-                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+            if (queryString.workgroupId === "") {
+                queryString.workgroupId = -1;
+            }
+//            if (queryString.indexOf('workgroupId=&') >= 0)
+//                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
         }
         msgBox.show();

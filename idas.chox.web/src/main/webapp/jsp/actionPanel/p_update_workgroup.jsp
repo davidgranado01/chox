@@ -24,9 +24,9 @@ Ext.onReady(function(){
             ]
         });
 
-        var workgroupStore = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":<s:property value="id"/>}}),
+        var workgroupStore = new choxDataStore({
+            url : "/prv/p/WorkgroupDropDownActionByInsurer.action", 
+            params : {"claimId":<s:property value="id"/>},
             reader: wgrpJsonReader,
              listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
         });
@@ -79,7 +79,8 @@ function assignClaimOwnershipSubmit(){
     actionPanel.registerAction("assignWorkgroup");
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        $("#updateWorkgroupForm").submit();
+//        $("#updateWorkgroupForm").submit();
+        choxJqueryHttpSubmit($("form#updateWorkgroupForm"));
     }
 }
 
@@ -112,6 +113,6 @@ function assignClaimOwnershipSubmit(){
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

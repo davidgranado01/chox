@@ -22,9 +22,9 @@
                             ]
         });
 
-        var claimHandlerPerformanceStore = new Ext.data.Store({
-                            proxy : new Ext.data.HttpProxy
-                            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+        var claimHandlerPerformanceStore = new choxDataStore({
+                            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", 
+                            params : {"workgroupId":-1,"insurerId":insurerId},
                             reader : claimHandlerPerformanceReader,
                             listeners: {load: function() {
 
@@ -92,7 +92,9 @@
     function openReport()
     {
         if($("form#formHandlerPerformanceReportParam").valid()){
-            var queryString = $('#formHandlerPerformanceReportParam').formSerialize();
+//            var queryString = $('#formHandlerPerformanceReportParam').formSerialize();
+            var queryString = {};
+            $.each($('#formHandlerPerformanceReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             generateReport(queryString);
         }
     }

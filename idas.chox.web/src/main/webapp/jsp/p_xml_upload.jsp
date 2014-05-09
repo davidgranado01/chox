@@ -90,12 +90,11 @@
                                 selectedFileId = sm.getSelected().get('id');
                                 selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                                 totalRecordLoaded=0;
-                                Ext.Ajax.request({
-                                    url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
+                                choxExtAjaxRequest({
+                                    url: '/prv/p/processUploadedFile.action',
                                     timeout:1800000,
                                     params: {
-                                        bordereauId: sm.getSelected().get('id'),
-                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
+                                        bordereauId: sm.getSelected().get('id')
                                     },
                                     callback : function(options,success,response){
                                         
@@ -225,8 +224,8 @@
                             }else{
                             
                                 uploadedFileGrid.getGridEl().mask();
-                                Ext.Ajax.request({
-                                    url: '<%= request.getContextPath()%>/prv/p/deleteUploadedFile.action',
+                                choxExtAjaxRequest({
+                                    url: '/prv/p/deleteUploadedFile.action',
                                     timeout:480000,
                                     callback : function(options,success,response){
                                         uploadedFileGrid.getGridEl().unmask();
@@ -274,8 +273,7 @@
                                         }
                                     },
                                     params: {
-                                        bordereauId: sm.getSelected().get('id'),
-                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
+                                        bordereauId: sm.getSelected().get('id')
                                     }
 
                                 });
@@ -363,25 +361,23 @@
             ]
         });
 
-        uploadedFileData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUploadedfiles.action', method:'POST',timeout:60000 }),
+        uploadedFileData = new choxDataStore({
+            url: '/prv/p/getUploadedfiles.action', 
+            timeout:60000,
             reader:uploadedFileJsonReader,
             //baseParams:{"days":defaultDays, start:start, limit:recordPerPage},
             remoteSort: true
-            ,listeners:  {load: function( store, records, options){
-                    if(canSelectRow){
-                        SelectLastSelectedRow();
-                        canSelectRow=false
-                    }
-                }
+            ,listeners:  {
+                            load: function( store, records, options){
+                                if(canSelectRow){
+                                    SelectLastSelectedRow();
+                                    canSelectRow=false
+                                }
+                            },
+                            beforeload : function(scope,options){
+                                uploadedFileData.baseParams = {"days":defaultDays};
+                            }
             }
-        });
-
-        uploadedFileData.addEvents('beforeload');
-
-        uploadedFileData.on('beforeload',function(scope,options){
-            uploadedFileData.baseParams = {"days":defaultDays};
         });
 
         uploadedFileData.setDefaultSort('createdDate', 'desc');
@@ -454,10 +450,10 @@
             ]
         });
 
-        xmlClaimsStatusData = new Ext.data.Store({
+        xmlClaimsStatusData = new choxDataStore({
             id : 'xmlClaimsStatusDataId',
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUploadedClaimsDetails.action', method:'POST',timeout:60000}),
+            url: '/prv/p/getUploadedClaimsDetails.action', 
+            timeout:60000,
             reader:xmlClaimsStatusJsonReader,
             listeners:  {load: function( store, records, options){
                     totalRecordLoaded = store.getCount();
@@ -534,7 +530,8 @@
                     });
                     return;
                 }else{
-                    $(form).ajaxSubmit(op);
+//                    $(form).ajaxSubmit(op);
+                    choxJqueryAjaxSubmit($(form), op);
                 }
             }
         });
@@ -668,7 +665,8 @@
 
         if (responseText.indexOf('You have been denied access') !=-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
+//                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
+                logout();
                 return;
             });
         }
@@ -756,7 +754,13 @@
             var record = grid.getStore().getAt(rowIndex);
             if(record.get('claimId')>0){
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
-                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
+//                params = {
+//                    'id' : record.get('claimId'),
+//                    'tab' : currentTabIndex,
+//                    'nonce' : '<%= session.getAttribute("SessionNonce")%>'
+//                }
+                loadClaimDetail(record.get('claimId'), currentTabIndex);
+//                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
             }
         }
     }
@@ -853,7 +857,7 @@
 
 <div class="claim-detail-tab">
 
-    <form id="uploadClaimForm" name="uploadClaimForm" action="<%= request.getContextPath()%>/prv/p/uploadNewClaimsFile.action" method="POST" enctype="multipart/form-data">
+    <form id="uploadClaimForm" name="uploadClaimForm" action="<%= request.getContextPath()%>/prv/p/uploadNewClaimsFile.action?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data">
         <div class="form-container">
             <fieldset class="x-fieldset">
                 <legend>Upload XML File&nbsp;</legend>
@@ -893,7 +897,7 @@
                 <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
     <div id="uploadedFileGrid"></div>
 </div>

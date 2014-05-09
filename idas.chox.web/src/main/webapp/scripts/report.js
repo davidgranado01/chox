@@ -11,15 +11,15 @@ function generateReport(queryString)
             closable     : false
         });
         
-        window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + queryString;
+        window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
         directReportGenerationStatusIntervelId = setInterval(loadLiveDirectReportGenerationStatus, 1500);
             
     }else{
         
-        Ext.Ajax.request({
-            url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
+        choxExtAjaxRequest({
+            url: '/prv/p/generateReportFile.action',
+            params : Ext.apply({'reportName' : reportName}, queryString),
             callback : function(options,success,response  ){
-                            
             }
         });
         if(reportName==='ClaimFileReport-Excel'){
@@ -53,8 +53,8 @@ function cancelReportGeneration(btn){
     if (btn === 'cancel'){
         Ext.MessageBox.hide();
         reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
-        Ext.Ajax.request({
-            url:contextPath+'/prv/p/cancelReportGenerationExport.action',
+        choxExtAjaxRequest({
+            url: '/prv/p/cancelReportGenerationExport.action',
             callback : function(options,success,response  ){
                 if(response.responseText){
                     var resp = Ext.util.JSON.decode(response.responseText);
@@ -84,8 +84,8 @@ function cancelReportGeneration(btn){
             
 var loadLiveReportGenerationStatus = function updateExportedClaim(){
                 
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/getReportGenerationStatus.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/getReportGenerationStatus.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
@@ -116,10 +116,10 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
 function generateReport1(queryString,reportName)
 {
        
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
+    choxExtAjaxRequest({
+        url: '/prv/p/generateReportFile.action',
+        params : Ext.apply({'reportName' : reportName}, queryString),
         callback : function(options,success,response  ){
-                            
         }
     });
                 
@@ -149,8 +149,8 @@ function find_MSIE_version(){
 }
 
 function loadLiveDirectReportGenerationStatus(){
-    Ext.Ajax.request({
-        url:contextPath+'/prv/p/getReportGenerationStatus.action',
+    choxExtAjaxRequest({
+        url: '/prv/p/getReportGenerationStatus.action',
         callback : function(options,success,response  ){
             if(response.responseText){
                 

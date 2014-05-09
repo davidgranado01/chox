@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
         
         var form = $("#formUpdateCustomerVehicleDamageForm");
 
@@ -28,7 +28,8 @@
     });
     
     function vehicleDamageSubmit() {
-        $("form#formUpdateCustomerVehicleDamageForm").submit();
+//        $("form#formUpdateCustomerVehicleDamageForm").submit();
+        choxJqueryHttpSubmit($("form#formUpdateCustomerVehicleDamageForm"));
         // Update Hire Monitoring Total Loss field
         if ($('#customerVehicleDamageisTotalLossId').is(':checked') == 1) {
             $("#isTotalLostCheckId").prop('checked', true);
@@ -70,6 +71,6 @@
             <div id="CVDSucsessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
 </form>    

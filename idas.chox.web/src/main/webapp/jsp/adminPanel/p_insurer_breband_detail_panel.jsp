@@ -96,7 +96,7 @@
             ]
         });
 
-        protocolVehicleClassCeiling_gridviewStore = new Ext.data.Store({
+        protocolVehicleClassCeiling_gridviewStore = new choxDataStore({
             removedList: [],
             listeners: {
                 remove: function(store, record, index) {
@@ -124,8 +124,7 @@
                 }
             },
             pruneModifiedRecords : true, // to avoid sending newly added and removed record.
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getSelectedBreBandProtocolVehicleClassCeiling.action', method:'POST'}),
+            url: '/prv/p/getSelectedBreBandProtocolVehicleClassCeiling.action', 
             reader:protocolVehicleClassCeiling_JsonReader
         });
 
@@ -338,7 +337,7 @@
     </s:if>
 
             var target = "#insurerBreDetailTab";
-            var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
+            var url = "/prv/p/getInsurerBreBandPage.action";
             var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
 
             ajax.loadHtml2(url,param,function(data){
@@ -355,7 +354,7 @@
         function doDeleteBreBand(){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this BRE Band?',function(btn){
             if(btn==='yes'){
-                var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
+                var url = "/prv/p/deleteInsurerBreBandDetail.action";
                 var param = {"objectId":<s:property value="objectId" />};
                 ajax.loadHtml2(url, param, doDeleteBreBandResponse);
             }
@@ -393,7 +392,7 @@
                         //                    alert("Your changes have been saved");
                         var newObjectId =  parseInt(response.result);
                         //                    var target = "div#insurerBreDetailTab";
-                        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                        var url = "/prv/p/updateInsurerBreBandDetailPanel.action";
                         var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
                         ajax.loadHtml2(url, param, doInsurerBreBandBack);
                         //                    ajax.loadHtml(url,param,function(data){
@@ -420,7 +419,7 @@
         
         function refereshBreBandDetailPanel() {
             var target = "div#insurerBreDetailTab";
-                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                var url = "/prv/p/updateInsurerBreBandDetailPanel.action";
                 var param = {"objectId":<s:property value="objectId" />, "insurerId":<s:property value="insurerId" />};
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
@@ -454,7 +453,8 @@
                     $("form#formUpdateInsurerBreBandDetail").append($(input));
                 }
                 
-                $("#formUpdateInsurerBreBandDetail").submit(); // submit the form.
+//                $("#formUpdateInsurerBreBandDetail").submit(); // submit the form.
+                choxJqueryHttpSubmit($("form#formUpdateInsurerBreBandDetail"));
                 $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);
                 $("#submitMesResult").show().fadeOut(10000);
         }
@@ -521,7 +521,7 @@
 
         function showProtocolVehicleClassDropDown() {
             var target = "#protocolVehicleClassDropDownDiv";
-            var url = "<%= request.getContextPath()%>/prv/p/protocolVehicleClassDropDownAction.action";
+            var url = "/prv/p/protocolVehicleClassDropDownAction.action";
             <s:if test="id != null"> // if it is existing breband then use breband id to get the available list for this breband. 
                 var param = {"breBandId":'<s:property value="id" />'};
             </s:if>
@@ -1682,6 +1682,6 @@
                     </div>
             </div>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

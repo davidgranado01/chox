@@ -235,9 +235,8 @@
                 ]
         });
 
-        var vcInvDetailStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/getAvailableVehicleClasses.action"}),
+        var vcInvDetailStore = new choxDataStore({
+                url : "/prv/p/getAvailableVehicleClasses.action",
                 reader : vcInvDetailJsonReader
                 ,listeners: {load: function() {
                     vcInvDetailCombo.setValue('<s:property value="vehicleClass.id"/>'); 
@@ -525,7 +524,7 @@
  
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
-                $("form#formUpdateInvoiceRecalculationForm").submit();
+//                $("form#formUpdateInvoiceRecalculationForm").submit();
             }
            
         }
@@ -552,7 +551,7 @@
             document.getElementById('invoiceSubmitAction').value=20;
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
-                $("form#formUpdateInvoiceRecalculationForm").submit();
+//                $("form#formUpdateInvoiceRecalculationForm").submit();
             }
 //            return randomNumber;
         }
@@ -562,10 +561,10 @@
 			var form = $("form#applyPenaltyCharge");
 			if (form !== undefined && form.length){
 				var param = {"id":'<s:property value="claimId" />'};
-				var url = "<%= request.getContextPath()%>/prv/p/updatePenaltyCharges.action";
+				var url = "/prv/p/updatePenaltyCharges.action";
 				var alertPanelDiv = $("#penaltyAlertPanelId");
 				if(alertPanelDiv !== undefined && alertPanelDiv.length){
-					url = "<%= request.getContextPath()%>/prv/p/getAlertPanel.action";
+					url = "/prv/p/getAlertPanel.action";
 		            ajax.loadHtml2(url,param,function(data){
 		            	alertPanelDiv.html(data);
 		            });
@@ -2158,10 +2157,10 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="button" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm();"/>
+                        <input type="submit" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm();"/>
                     </td>
                     <td>
-                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm();"/>
+                        <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitForm();"/>
                     </td>
                     <td>
                         <input type="submit" style="width: 88px; margin-left:30px" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm();"/>
@@ -2183,7 +2182,7 @@
 
 
     </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
 </form>
 <!--</div>-->
 

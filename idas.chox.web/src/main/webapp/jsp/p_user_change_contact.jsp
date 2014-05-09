@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    $(function(){
+    Ext.onReady(function() {
         var form = $("form#formChangeContact");
         ui.ajaxForm(form, doChangeTelephoneSucceed, 'html');
         $('#contactTelephoneId').html('<s:property value="authenticatedUser.telephone" />');
@@ -17,7 +17,7 @@
 
                 if(response.resultType && response.resultType == 'Message'){
                     var target = "#updateTelephoneNumberId";
-                    var url = "<%= request.getContextPath()%>/prv/p/getUserChangeContact.action";
+                    var url = "/prv/p/getUserChangeContact.action";
                     var param = {"actionResult":response.result};
                     ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
@@ -33,7 +33,7 @@
             else {
 //            Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
                     var target = "#updateTelephoneNumberId";
-                    var url = "<%= request.getContextPath()%>/prv/p/getUserChangeContact.action";
+                    var url = "/prv/p/getUserChangeContact.action";
                     var param = {"actionError":response.errors[0]};
                     ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
@@ -41,12 +41,12 @@
         }
     }
     function confirmOk(btn){
-                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";
+                 loadInbox(true);
     }
 
 </script>
         <form autocomplete="off" id="formChangeContact" action="<%= request.getContextPath()%>/prv/p/changeTelephone.action" class="XXentity-form" method="post">
-           <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+           <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             <div class="status-info">
                 N.B. When a user is assigned a claim, the contact telephone number specified here will be attached to the claim via a Note.
             </div>

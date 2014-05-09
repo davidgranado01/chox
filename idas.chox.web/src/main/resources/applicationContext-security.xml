@@ -3,9 +3,9 @@
   xmlns:beans="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
            http://www.springframework.org/schema/security
-           http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+           http://www.springframework.org/schema/security/spring-security-3.2.xsd"
   default-autowire="byName">
 
     <global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
@@ -20,7 +20,11 @@
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
+        <custom-filter before="CSRF_FILTER" ref="customFilters" />
+        <custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" />
         <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
+        <access-denied-handler ref="choxAccessDeniedHandler"/>
+        <csrf/>
     </http>
     
     <authentication-manager alias="authenticationManager" erase-credentials="true">
@@ -29,6 +33,16 @@
         </authentication-provider>
     </authentication-manager>
     
+    <beans:bean id="customFilters" class="org.springframework.web.filter.CompositeFilter">
+        <beans:property name="filters">
+            <beans:list>
+                <beans:ref bean="logbackMdcInfoFilter"/>
+                <beans:ref bean="exceptionHandlingFilter"/>
+                <beans:ref bean="timeoutFilter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean> 
+
     <beans:bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
         <beans:property name="errorPage" value="/j_spring_security_logout"/>
     </beans:bean>
@@ -49,7 +63,30 @@
         <beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
         <beans:property name="accessDeniedHandler" ref="accessDeniedHandler"/>
     </beans:bean>
+    
+    <beans:bean id="choxAccessDeniedHandler"  class="idas.chox.web.security.ChoxAccessDeniedHandler"/>
+    
+    <beans:bean id="defaultRedirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy"/>
 
+    <beans:bean id="httpSessionCsrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <beans:property name="headerName" value="X-SECURITY" />
+    </beans:bean>
+    
+    <beans:bean id="logbackMdcInfoFilter" class="idas.chox.web.security.LogbackMdcInfoFilter" />
+    
+    <beans:bean id="exceptionHandlingFilter" class="idas.chox.web.security.ExceptionHandlingFilter">
+        <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
+    </beans:bean>
+
+    <beans:bean id="timeoutFilter" class="idas.chox.web.security.TimeoutFilter">
+        <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
+    </beans:bean>
+
+    <beans:bean id="csrfTokenChangingFilter" class="idas.chox.web.security.CsrfTokenChangingFilter">
+        <beans:constructor-arg>
+            <beans:ref bean="httpSessionCsrfTokenRepository"/>
+        </beans:constructor-arg>
+    </beans:bean>
     
     <beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
         <beans:property name="authenticationFailureHandler" ref="failureHandler" />

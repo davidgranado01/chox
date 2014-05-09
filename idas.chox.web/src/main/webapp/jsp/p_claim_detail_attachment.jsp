@@ -29,9 +29,8 @@
             ]
         });
 
-        attachmentData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getAttachments.action', method:'POST'}),
+        attachmentData = new choxDataStore({
+            url: '/prv/p/getAttachments.action',
             reader:attachmentJsonReader
         });
 
@@ -106,7 +105,8 @@
                     '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml, .zip');
                     return;
                 }else{
-                    $(form).ajaxSubmit(op);
+//                    $(form).ajaxSubmit(op);
+                    choxJqueryAjaxSubmit($(form), op);
                 }
                 
             }
@@ -139,7 +139,8 @@
 
         if (responseText.indexOf('You have been denied access') !==-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
+//                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
+                logout();
                 return;
             });
         }
@@ -232,7 +233,7 @@
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
                 if(btn==='ok') {
-                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
+                    var url = "/prv/p/doDeleteAttachment.action";
                     var param = {"fileId":a,"claimId":<s:property value="claimId" />};
                     ajax.loadJson2(url, param, function(data){
                         Ext.MessageBox.show({
@@ -297,7 +298,7 @@
 
 <div class="claim-detail-tab">
 
-    <form id="attachmentForm" name="attachmentForm" action="<%= request.getContextPath()%>/prv/p/createNewAttachment.action" method="POST" enctype="multipart/form-data">
+    <form id="attachmentForm" name="attachmentForm" action="<%= request.getContextPath()%>/prv/p/createNewAttachment.action?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data">
         <div class="form-container">
             <input type="hidden" name="claimId" id="claimId" value='<s:property value="claimId" />'>
             <input type="hidden" name="uploadFileName" id="uploadFileName">
@@ -370,7 +371,7 @@
                 <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
         <!--s:token/-->
     </form>
     <div id="attachmentGrid"></div>

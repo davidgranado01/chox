@@ -36,11 +36,6 @@ Ext.onReady(function(){
 	            blankText: 'Enter Amount Received'
 	        },{
 	            xtype : 'hidden',
-	            id : 'nonceId',
-	            name : 'nonce',
-	            value : nonce
-	        },{
-	            xtype : 'hidden',
 	            id : 'PaymentDetailsFormNameId',
 	            name : 'name',
 	            value : 'fullPaymentNotReceived'
@@ -48,7 +43,7 @@ Ext.onReady(function(){
 	        ]
     };
 	
-	var paymentDetailsForm = new Ext.FormPanel({
+	var paymentDetailsForm = new choxExtJsFormPanel({
 	    id: 'paymentDetails-form',
 	    autoHeight: true,
 	    labelWidth: 210,
@@ -71,25 +66,28 @@ Ext.onReady(function(){
 	                        if ( a.result.success ){
 	                        	confPayRec.hide();
                                 if (a.result.message && a.result.message.length > 0) {
-                                    Ext.MessageBox.alert('Info', a.result.message,function(){  
-                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
+                                    Ext.MessageBox.alert('Info', a.result.message,function(){   
+                                            loadClaimDetail(<s:property value="id" />);
+//                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                             return false;
                                     });  
                                 } else {
-                                    window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
+                                        loadClaimDetail(<s:property value="id" />);
+//                                        window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                 }
 	                        }
 	                    },
 	                    failure : function(f, a) {
 	                    	 	confPayRec.hide();
                                 Ext.MessageBox.alert('Error', a.result.message, function(){  
-                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
+                                            loadClaimDetail(<s:property value="id" />);
+//                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                             return false;
                                 });
 	                    }
 	                });
 	            }
-                else console.log("Mot valis");
+//                else console.log("Not valid");
 	        }
 	    },{
 	        text:'Cancel',
@@ -127,17 +125,19 @@ function confirmNotFullPayRec(){
                     title:'Please Confirm',
                     msg: 'Please note that there is an interim payment on this claim which has not yet been marked as received. Marking the claim as \u2018Full Payment Received\u2018 will also mark this interim payment as received.',
                     buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
-                    fn: function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");$("form#formUpdatePaymentReceived").submit();}else{return false;}}
+                    fn: function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));}else{return false;}}
                 });
             }else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            	$("form#formUpdatePaymentReceived").submit();
+//            	$("form#formUpdatePaymentReceived").submit();
+                choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
             }
         } else if (action == 'fullPaymentAmountNotReceived') {
         	confirmNotFullPayRec();
         } else {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        	$("form#formUpdatePaymentReceived").submit();
+//        	$("form#formUpdatePaymentReceived").submit();
+                choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
         }
     }
 </script> 
@@ -202,6 +202,6 @@ function confirmNotFullPayRec(){
             </div>
             <div class="action-error-msg" id="updatePaymentReceivedMessageBox"></div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     </form>
 </div>

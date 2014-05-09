@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import net.sf.json.JSONArray;
 
@@ -94,6 +95,10 @@ public class InboxAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String loadInbox() throws Exception {
+        return SUCCESS;
+    }
+    
     public String getInboxTabPanel() {
         return SUCCESS;
     }

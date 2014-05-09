@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function() {
 
         $("form#formUpdateInsurerClaimNumber").validate(
         {
@@ -25,7 +25,7 @@
 
     function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
     {
-        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+        var url = "/prv/p/checkIsClaimNumberDuplicated.action";
         var param = {
             claimNumber: claimNumber,
             claimId: claimId
@@ -37,13 +37,13 @@
                 if(btn=='yes')
                 {
                     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                    form.submit();
+                    choxJqueryHttpSubmit(form);
                 }
                 });
             }
             else {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                form.submit();
+                choxJqueryHttpSubmit(form);
             }
         });
 
@@ -86,6 +86,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
-       <input type="hidden" id="updateClaimNumberFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+       <!--<input type="hidden" id="updateClaimNumberFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

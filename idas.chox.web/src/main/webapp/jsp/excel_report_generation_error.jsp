@@ -32,7 +32,7 @@ text-align:center;
         
    <br/>
 
-   <a href="<s:url action='inbox' includeParams='none'><s:param name='showHistory'>1</s:param></s:url>" onclick="return maskClaimdetailsPage();">« Back to Search Results</a>
+   <a href="javascript: loadInbox(true);" onclick="return maskClaimdetailsPage();">« Back to Search Results</a>
 <br/><br/><br/><br/><br/><br/>
     
     </body>

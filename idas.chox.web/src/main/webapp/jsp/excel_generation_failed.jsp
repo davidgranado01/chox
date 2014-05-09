@@ -9,6 +9,6 @@
     <body>
     <br/><br/><br/>
     <h1>No record found, Please try again</h1>
-    <a href="<%=request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>">Back to Search Result</a>
+    <a href="javascript: loadInbox(true);">Back to Search Result</a>
     </body>
 </html>

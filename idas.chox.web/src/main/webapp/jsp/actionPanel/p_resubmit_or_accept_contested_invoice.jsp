@@ -2,7 +2,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-//     $(document).ready(function() {
     Ext.onReady(function(){
         openTab(6);
         
@@ -21,6 +20,8 @@
                 }
             }
         });
+        
+        choxJqueryHttpSubmit($("form#resubmitOrAcceptContestedInvoice"), function(){});
         
     });
     function resubmitOrAcceptContestedInvoiceSubmit(action){
@@ -84,6 +85,6 @@
                 <div class="action-error-msg" id="ActionPanelMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

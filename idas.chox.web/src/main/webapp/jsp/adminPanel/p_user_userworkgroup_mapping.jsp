@@ -23,9 +23,9 @@
             ]
         });
 
-        userworkgroup_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUserWorkgroups.action?webUserId='+<s:property value="webUserId" />+uniqeToken(), method:'POST'}),
+        userworkgroup_gridviewData = new choxDataStore({
+            url: '/prv/p/getUserWorkgroups.action',
+            params : {'webUserId' : <s:property value="webUserId" />},
             reader:userworkgroup_gridviewJsonReader
         });
 
@@ -62,7 +62,7 @@
 
         if(workgroupId!=null && workgroupId>0){
 
-            var url = "<%= request.getContextPath()%>/prv/p/addUserWorkgroupMapping.action";
+            var url = "/prv/p/addUserWorkgroupMapping.action";
             var param = {"workgroupId":workgroupId,"webUserId":<s:property value="webUserId" />};
             ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
 
@@ -88,7 +88,7 @@
         var userWorkgroupId = gridView.get("id");
         var workgroupId = gridView.get("workgroupId");
         
-        var url = "<%= request.getContextPath()%>/prv/p/isUserWorkgroupAllowToDelete.action";
+        var url = "/prv/p/isUserWorkgroupAllowToDelete.action";
         var param = {"userWorkgroupId":userWorkgroupId,"webUserId":<s:property value="webUserId" />};
 
         ajax.loadHtml2(url, param, function(responseText, statusText){
@@ -138,7 +138,7 @@
     }
     
     function doRemoveWebUserWorkgroup(workgroupId){
-        var url = "<%= request.getContextPath()%>/prv/p/removeUserWorkgroupMapping.action";
+        var url = "/prv/p/removeUserWorkgroupMapping.action";
         var param = {"workgroupId":workgroupId, "webUserId":<s:property value="webUserId" />};
         ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
     }
@@ -200,7 +200,7 @@
         var tabIndex = 3;
         
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var url = "/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":<s:property value="webUserId" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);

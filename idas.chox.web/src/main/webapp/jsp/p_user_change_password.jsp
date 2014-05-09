@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-$(function(){
+Ext.onReady(function() {
 
         var passForm = $("form#formChangePassword");
         
@@ -40,10 +40,11 @@ $(function(){
         $('#responseErrorBox').html('');
         var form = $("form#formChangePassword");
         if(form.valid()){
-            var queryString = form.formSerialize();
-            
-            Ext.Ajax.request({
-                url: contextPath+'/prv/p/changePassword.action?'+queryString,
+            var queryString = {};
+            $.each(form.serializeArray(), function() {queryString[this.name] = this.value;});
+            choxExtAjaxRequest({
+                url: '/prv/p/changePassword.action',
+                params : queryString,
                 callback : doChangePasswordSucceed
             });
     
@@ -56,7 +57,7 @@ $(function(){
         {
             if(response.resultType && response.resultType == 'Message'){
                 var target = "#updatePasswordId";
-                var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
+                var url = "/prv/p/getUserChangePassword.action";
                 var param = {"actionResult":response.result};
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
@@ -71,7 +72,7 @@ $(function(){
                 Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
             } else {
                 var target = "#updatePasswordId";
-                var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
+                var url = "/prv/p/getUserChangePassword.action";
                 var param = {"actionError":response.errors[0]};
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
@@ -82,7 +83,7 @@ $(function(){
 
     function confirmOk(btn){
         Ext.get('userDetailsScreenId').mask("Loading inbox...");
-        window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1&nonce=<%= session.getAttribute("SessionNonce")%>";
+        loadInbox(true);
     }
     function confirmError(btn){
         var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
@@ -123,5 +124,5 @@ $(function(){
         <div class="action-error-msg" id="responseErrorBox"><s:property value="actionError" /></div>
         <div class="chox-form-submit-result" id="responseMessageBox"><s:property value="actionResult" /></div>
     </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
 </form>

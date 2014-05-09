@@ -53,15 +53,13 @@
             ]
         });
 
-        breband_a_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getAvailableInsurerBreBandChorganisation.action',method:'POST'}),
+        breband_a_gridviewData = new choxDataStore({
+            url: '/prv/p/getAvailableInsurerBreBandChorganisation.action',
             reader:breband_choGridviewJsonReader
         });
 
-        breband_s_gridviewData = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getSelectedInsurerBreBandChorganisation.action',method:'POST'}),
+        breband_s_gridviewData = new choxDataStore({
+            url: '/prv/p/getSelectedInsurerBreBandChorganisation.action',
             reader:breband_gridviewJsonReader
         });
 
@@ -124,7 +122,7 @@
         if(columnIndex==1){
             var gridView = breband_a_gridviewGrid.getStore().getAt(rowIndex);
             var gridViewId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doAddNewBandChorganisationMapping.action";
+            var url = "/prv/p/doAddNewBandChorganisationMapping.action";
             var param = {"chorganisationId":gridViewId, "breBandId":$("#breBandId").val()};
             ajax.loadHtml2(url, param, afterBreBandMappingSubmit);
         }
@@ -135,7 +133,7 @@
         if(columnIndex==2){
             var gridView = breband_s_gridviewGrid.getStore().getAt(rowIndex);
             var breBandChorganisationId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/doRemoveBandChorganisationMapping.action";
+            var url = "/prv/p/doRemoveBandChorganisationMapping.action";
             var param = {"breBandChorganisationId":breBandChorganisationId};
             ajax.loadHtml2(url, param, afterBreBandMappingSubmit);
         }
@@ -148,7 +146,7 @@
 
     function showBreDropDown() {
         var target = "div#breBandDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/BreBandDropDownAction.action";
+        var url = "/prv/p/BreBandDropDownAction.action";
         var param = {"insurerId":<s:property value="insurerId" />};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);

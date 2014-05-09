@@ -1,17 +1,15 @@
 package idas.chox.web.actions;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONArray;
 
@@ -24,6 +22,9 @@ import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -351,7 +352,13 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         if (getFileId() > 0) {
             LOG.debug("Loading Attachment model with fileId={}", getFileId());
-            return (Attachment) baseDataService.get(Attachment.class, getFileId());
+            Attachment attachment = (Attachment) baseDataService.get(Attachment.class, getFileId());
+            if (attachment != null && claim != null && attachment.getClaim().getId().equals(claim.getId())) {
+                return attachment;
+            } else {
+                LOG.error("Attachment load failed, Attempt to access a attachment that you do not own.");
+                throw new AccessDeniedException("Attempt to access a attachment that you do not own.");
+            }
         } else {
             LOG.debug("No fileId(={}), returning new Attachment", getFileId());
             return new Attachment();
@@ -368,7 +375,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
             LOG.debug("AttachmentAction validate success");
         } else {
-            LOG.debug(" AttachmentAction validation not done as claim is null");
+            LOG.info(" AttachmentAction validation not done as claim is null");
         }
     }
 }
