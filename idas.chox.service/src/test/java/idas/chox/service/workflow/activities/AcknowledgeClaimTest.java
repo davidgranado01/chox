@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 
+import idas.chox.core.model.Chorganisation;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,6 +19,7 @@ public class AcknowledgeClaimTest  extends BaseTest {
     public void testAcknowledgeClaimWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
@@ -27,10 +29,14 @@ public class AcknowledgeClaimTest  extends BaseTest {
     public void testAcknowledgeClaim() throws Exception {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
 
+        Chorganisation chorg = chorganisationService.getChorganisation(1007);
+        claim.setChorganisation(chorg);
+        
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
@@ -41,6 +47,7 @@ public class AcknowledgeClaimTest  extends BaseTest {
     public void testAcknowledgeSubscriberClaim() throws Exception {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         claim.setId(999);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         claim.setClaimType(ClaimType.SUBSCRIBER);
@@ -48,18 +55,21 @@ public class AcknowledgeClaimTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         
+        Chorganisation chorg = chorganisationService.getChorganisation(1007);
+        claim.setChorganisation(chorg);
+        
         claim.setComments(null);
 
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
-        Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
     }
     
     @Test
     public void testAcknowledgeFixedFeeClaim() throws Exception {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         claim.setId(998);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         claim.setClaimType(ClaimType.FIXED_FEE);
@@ -67,12 +77,14 @@ public class AcknowledgeClaimTest  extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         
+        Chorganisation chorg = chorganisationService.getChorganisation(1007);
+        claim.setChorganisation(chorg);
+        
         claim.setComments(null);
 
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
-        Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
     }
     
 }

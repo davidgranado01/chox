@@ -319,4 +319,22 @@
     <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="choxJmsEventSender" class="idas.chox.events.ChoxJmsEventSender" scope="singleton"/>
+    <bean id="eventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
+        <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
+        <property name="active" value="false"/>
+    </bean>
+    <bean id="eventGenerator" class="idas.chox.data.events.EventGenerator" scope="prototype">
+        <property name="eventRegister" ref="eventRegister"/>
+    </bean>
+    <bean id="eventService" class="idas.chox.data.services.EventService" scope="prototype">
+        <property name="eventGenerator" ref="eventGenerator"/>
+    </bean>
+    <bean id="activityEventGenerator" class="idas.chox.service.workflow.activities.ActivityEventGenerator" scope="prototype">
+        <property name="eventGenerator" ref="eventGenerator"/>
+    </bean>
+    <bean id="queue1JMSTemplate" class="org.easymock.EasyMock" factory-method="createMock">
+        <constructor-arg index="0" value="org.springframework.jms.core.JmsTemplate" />
+    </bean>
+<!--    <bean id="queue1JMSTemplate" class="org.springframework.jms.core.JmsTemplate"/>-->
 </beans>

@@ -547,7 +547,7 @@ public enum ActivityEvent {
         }
         @Override
         public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
-            LOG.warn("Building ClaimNumberAssignedEvent event (not fromactrivity!)...");
+            LOG.warn("Building ClaimNumberAssignedEvent event (not from activity!)...");
             generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
             generator.addParameter("claimNumber", claim.getClaimNumber());
             generator.completeEvent(claim);
