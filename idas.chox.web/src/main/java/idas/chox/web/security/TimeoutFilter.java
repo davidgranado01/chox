@@ -51,7 +51,9 @@ public class TimeoutFilter extends GenericFilterBean {
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
             return;
         }
-        
+        /*
+         * If the user is already authenticated but trying to login or requesting login page then redirect to the inbox page.
+         */
         if (auth != null && auth.isAuthenticated() 
                 && (request.getServletPath().contains(LOGIN_FORM_AUTH_CHECK_STRING) 
                 || request.getServletPath().contains(LOGIN_PAGE_REQUEST_URL))) {
