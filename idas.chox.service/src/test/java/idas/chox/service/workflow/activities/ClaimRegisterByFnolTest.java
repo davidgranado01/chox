@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 
+import idas.chox.core.model.Chorganisation;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,6 +18,7 @@ public class ClaimRegisterByFnolTest extends BaseTest{
     public void testClaimRegisterByFnolWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         Activity activity = activityFactory.getActivity("registerFNOL");
         activity.process(claim);
@@ -26,8 +28,12 @@ public class ClaimRegisterByFnolTest extends BaseTest{
     public void testClaimRegisterByFnol() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setClaimNumber("0001");
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
+        Chorganisation chorg = chorganisationService.getChorganisation(1007);
+        claim.setChorganisation(chorg);
+        
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setPreviousStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         ClaimRegisterByFnol activity = (ClaimRegisterByFnol) activityFactory.getActivity("registerFNOL");
