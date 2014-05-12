@@ -72,11 +72,11 @@
                 {contentEl:'claimDetails', title: 'Claim Details', disabled: claimDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'invoiceDetails', title: 'Invoice Details', disabled: invoiceDetailsDisabled},
-                {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: choxUpdateEl({url:'p/getAttachmentPage.action', params:{"claimId" : '<s:property value="id" />'}})},
-                {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
-                {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: choxUpdateEl({url:'p/getAuditTrailPage.action', params:{"claimId" : '<s:property value="id" />'}})},
-                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
-                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
+                {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAttachmentPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAuditTrailPage.action', params:{"claimId" : '<s:property value="id" />'}})},
+                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
+                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
             ]
         });
 
