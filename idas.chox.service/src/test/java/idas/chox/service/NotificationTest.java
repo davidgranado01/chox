@@ -18,11 +18,11 @@ import org.w3c.dom.Document;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.data.notifications.NotificationType;
+import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.test.BaseTest;
 
 public class NotificationTest extends BaseTest {
@@ -45,84 +45,83 @@ public class NotificationTest extends BaseTest {
     @Transactional
     public void testECDUpdatedNotification() throws Exception {
         
-        Claim c = claimResults.get(0).getClaim();
+        Claim claim = claimResults.get(0).getClaim();
+        claim.setClaimNumber("0001");
         Assert.assertNotNull(claimResults);
         Assert.assertTrue(claimResults.size() > 0);
         
-        claimService.save(c);
+        claimService.save(claim);
+
+        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+        activity.setReasonOfDelayId(1);
+        activity.setEcdDate(new Date());
+        activity.setSupportingNote("No delays, first ECD provided by the garage or if no ECD provided date repairs completed.");
+        activity.setUpdateInsurer(true);
+        activity.setSequence(1);
+        activity.process(claim);
+
         
-        HireMonitoringEcd ecd = new HireMonitoringEcd();
-        ecd.setClaim(c);
-        ecd.setUpdateInsurer(true);        
-        ecd.setCreatedDate(Calendar.getInstance().getTime());
-        ecd.setReason("New Ecd");
-        ecd.setSupportingNote("No delays, first ECD provided by the garage or if no ECD provided date repairs completed.");
-        
-        List<HireMonitoringEcd> ecds = new ArrayList<HireMonitoringEcd>();
-        ecds.add(ecd);
-        c.setHireMonitoringEcds(ecds);
-        claimService.save(c);
-        
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("ECD Update"));
+        Assert.assertEquals(notificationService.getNotifications(claim.getId()).size(), 1); 
+        Assert.assertTrue(notificationService.getNotifications(claim.getId()).get(0).getMessage().equals("ECD Update"));
     }
     
     @Test
     @Transactional
     public void testAnomalousECDNotification() throws Exception {
 
-        Claim c = claimResults.get(0).getClaim();
+        Claim claim = claimResults.get(0).getClaim();
+        claim.setClaimNumber("0001");
         Assert.assertNotNull(claimResults);
         Assert.assertTrue(claimResults.size() > 0);
         
-        claimService.save(c);
+        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+        activity.setReasonOfDelayId(1);
+        activity.setEcdDate(new Date());
+        activity.setSupportingNote("No delays, first ECD provided by the garage or if no ECD provided date repairs completed.");
+        activity.setUpdateInsurer(true);
+        activity.setSequence(1);
+        activity.process(claim);
         
-        HireMonitoringEcd ecd = new HireMonitoringEcd();
-        ecd.setClaim(c);
-        ecd.setUpdateInsurer(true);        
-        ecd.setCreatedDate(Calendar.getInstance().getTime());
-        ecd.setReason("New Ecd");
-        ecd.setSupportingNote("No delays, first ECD provided by the garage or if no ECD provided date repairs completed.");
+        notificationService.checkForAnomalies(claim, NotificationType.EcdAnomalousNotification.getType());
         
-        List<HireMonitoringEcd> ecds = new ArrayList<HireMonitoringEcd>();
-        ecds.add(ecd);
-        c.setHireMonitoringEcds(ecds);
-        claimService.save(c);
-        notificationService.checkForAnomalies(c, NotificationType.EcdAnomalousNotification.getType());
-        
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("ECD Update"));
+        Assert.assertEquals(notificationService.getNotifications(claim.getId()).size(), 1); 
+        Assert.assertTrue(notificationService.getNotifications(claim.getId()).get(0).getMessage().equals("ECD Update"));
     }
-    
+
+/*
+ *   Hire UPdate anomaly now generated in Action class only.....
+ *      Probably better, in the long run, to move hire monitoring updates to an activity - TODO
     @Test
     @Transactional
     public void testHireMonitorigDetailNotification() throws Exception {
 
-        Claim c = claimResults.get(0).getClaim();
+        Claim claim = claimResults.get(0).getClaim();
+        claim.setClaimNumber("0001");
         Assert.assertNotNull(claimResults);
         Assert.assertTrue(claimResults.size() > 0);
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
-        hmd.setClaim(c);
+        hmd.setClaim(claim);
         hmd.setUpdateInsurer(true);        
         hmd.setCreatedDate(Calendar.getInstance().getTime());
         hmd.setIsTotalLostCheck(false);
         
         hireMonitoringDetailService.saveHireMonitoringDetail(hmd);
-        c.setHireMonitoringDetail(hmd);
-        claimService.save(c);
+        claim.setHireMonitoringDetail(hmd);
+        claimService.save(claim);
         
         hmd.setUpdateInsurer(true);        
         hmd.setCreatedDate(Calendar.getInstance().getTime());
         hmd.setIsTotalLostCheck(true);
         
         hireMonitoringDetailService.saveHireMonitoringDetail(hmd);
-        c.setHireMonitoringDetail(hmd);
-        claimService.save(c);
+        claim.setHireMonitoringDetail(hmd);
+        claimService.save(claim);
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("Hire Update"));
+        Assert.assertEquals(notificationService.getNotifications(claim.getId()).size(), 1); 
+        Assert.assertTrue(notificationService.getNotifications(claim.getId()).get(0).getMessage().equals("Hire Update"));
     }
+*/
     
     @Test
     @Transactional
@@ -154,8 +153,8 @@ public class NotificationTest extends BaseTest {
         claimService.save(c);
         notificationService.checkForAnomalies(c, NotificationType.TotalLossAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 2); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(1).getMessage().equals("The CHO has indicated the claim is now a Total Loss"));
+        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
+        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("The CHO has indicated the claim is now a Total Loss"));
     }
     
     
