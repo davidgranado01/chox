@@ -314,20 +314,20 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         } catch (IOException ex) {
             if (attachmentFile != null) {
                 this.getActionResponse().AddError(ex.getMessage());
-                LOG.debug("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                LOG.error("IOException thrown creating attachment from file '{}'", uploadFileName, ex);
             } else {
                 this.getActionResponse().AddError(ex.getMessage());
-                LOG.debug("IOException thrown: {}", ex.getMessage());
+                LOG.error("IOException thrown", ex);
             }
             setActionError(formErrorMessage(ex));
             return SUCCESS;
         } catch (Exception ex) {
             if (attachmentFile != null) {
                 this.getActionResponse().AddError(ex.getMessage());
-                LOG.debug("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                LOG.error("Unknown Exception thrown creating attachment from file '{}'", uploadFileName, ex);
             } else {
                 this.getActionResponse().AddError(ex.getMessage());
-                LOG.debug("Unknown Exception thrown creating attachment: {}", ex.getMessage());
+                LOG.error("Unknown Exception thrown creating attachment", ex);
             }
             setActionError(formErrorMessage(ex));
             return SUCCESS;
