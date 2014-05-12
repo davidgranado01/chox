@@ -89,7 +89,7 @@ var ajax = function() {
             width: 300,
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR,
-            fn: function(){loadInboxGetRequest();}
+            fn: function(){location.reload();}
         });
     }
 
@@ -185,6 +185,7 @@ var ajax = function() {
             }
             else{
                 if(error){
+                    handleAjaxError(error);
                     error(data);
                 }
             }

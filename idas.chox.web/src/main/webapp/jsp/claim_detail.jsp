@@ -30,6 +30,8 @@
 //    var nonce = '<%= session.getAttribute("SessionNonce")%>';
     var availableSlaExtensionDays = <s:property value="availableSlaExtensionDays" />;
     var appliedSlaExtDays = <s:property value="slaExtDays" />;
+    var ecdDataStore;
+    var ecdGrid;
  
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
@@ -83,7 +85,7 @@
          ***********************************************************************************/
         if(!hireMonitoringDetailsDisabled){
 
-            ecdJsonReader = new Ext.data.JsonReader({
+            var ecdJsonReader = new Ext.data.JsonReader({ 
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:

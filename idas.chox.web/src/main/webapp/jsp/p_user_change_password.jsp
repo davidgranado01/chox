@@ -2,7 +2,13 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-Ext.onReady(function() {
+    var csrfParameterName = '${_csrf.parameterName}';
+    var csrfTokenValue = '${_csrf.token}';
+    var csrfParam = {
+        '${_csrf.parameterName}' : '${_csrf.token}'
+    };
+    
+    Ext.onReady(function() {
 
         var passForm = $("form#formChangePassword");
         
