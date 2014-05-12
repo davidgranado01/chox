@@ -2,7 +2,7 @@
 
 //Global event handle : handle jquery ajax exception
 Ext.onReady(function() {
-    $(this).ajaxError(ajax.handleAjaxError);
+    $(document).ajaxError(ajax.handleAjaxError);
 });
 
 //Global event handle : handle ExtJs ajax exception
@@ -185,7 +185,6 @@ var ajax = function() {
             }
             else{
                 if(error){
-                    handleAjaxError(error);
                     error(data);
                 }
             }
