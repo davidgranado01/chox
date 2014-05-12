@@ -1361,7 +1361,7 @@
             <interceptor-ref name="fileUpload">
                 <param name="maximumSize">30000000</param>
             </interceptor-ref>
-            
+            <interceptor-ref name="authenticated"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
@@ -1428,7 +1428,7 @@
             <interceptor-ref name="fileUpload">
                 <param name="maximumSize">10485810</param>
             </interceptor-ref>
-            
+            <interceptor-ref name="authenticated"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
