@@ -1355,7 +1355,7 @@
                 <param name="bufferSize">65536</param>
                 <param name="contentType">${contentType}</param>
             </result>
-            <result name="failed">/jsp/excel_generation_failed.jsp</result>
+            <result name="error">/jsp/excel_generation_failed.jsp</result>
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
             <interceptor-ref name="fileUpload">
