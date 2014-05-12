@@ -157,8 +157,8 @@
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
                 {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getUserRoleMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})},
-                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'p/getUserWorkgroupMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})}
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getUserRoleMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})},
+                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getUserWorkgroupMapping.action', params:{"webUserId" : '<s:property value="id" />', "organisationTypeId" : '<s:property value="organisationTypeId" />'}})}
                 
             ]
         });
