@@ -26,9 +26,9 @@
 #  v1 - March 2014       - JLD - Initial version
 #
 #==============================================================================
-if [ $# -ne 3 -a $# -ne 4 ]
+if [ $# -ne 3 -a $# -ne 4 -a $# -ne 2 ];
 then
-    echo "Usage: $0 <database> <insurerId> <startDate> [xsd]"
+    echo "Usage: $0 <database> <insurerId> [<startDate]> [xsd]"
     echo
     exit 1
 fi
@@ -42,7 +42,21 @@ then
         exit 1
     fi
     GENERATE_XSD=xsd
+    START_DATE=$3
 fi
+
+if [ $# -eq 3 ]
+then
+    if [ $3 = 'xsd' ]
+    then
+        GENERATE_XSD=xsd
+    else
+	START_DATE=$3
+    fi
+    GENERATE_XSD=xsd
+fi
+
+: ${START_DATE:=`/bin/date --date="7 days ago" +%F`}
 
 # Production
 SFTP_USER=chox-rsa-mi
@@ -81,31 +95,31 @@ then
 fi
 
 DUMP_DIR="/tmp/chox-data-dump-$$"
-mkdir ${DUMP_DIR}
+/bin/mkdir ${DUMP_DIR}
 
 # Create XML data dump files
 if [ -z ${GENERATE_XSD} ]
 then
     echo "Creating XML dump files in directory ${DUMP_DIR}"
-    ${DUMP_SCRIPT_LOCATION} $1 $2 $3 ${DUMP_DIR}
+    ${DUMP_SCRIPT_LOCATION} $1 $2 ${START_DATE} ${DUMP_DIR}
 else
     echo "Creating XML and XSD dump files in directory ${DUMP_DIR}"
-    ${DUMP_SCRIPT_LOCATION} $1 $2 $3 ${DUMP_DIR} ${GENERATE_XSD}
+    ${DUMP_SCRIPT_LOCATION} $1 $2 ${START_DATE} ${DUMP_DIR} ${GENERATE_XSD}
 fi
 
 # Create trigger file
 TRIGGER_FILE="${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.trg"
-touch ${TRIGGER_FILE}
+/bin/touch ${TRIGGER_FILE}
 
 # Compress
 echo "Compressing files...."
-zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XML
+/usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XML
 set echo
 if [ "${GENERATE_XSD}" = "true" ]
 then
-    zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XSD
+    /usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XSD
 fi
-rm -f ${DUMP_DIR}/*.XML ${DUMP_DIR}/*.XSD
+/bin/rm -f ${DUMP_DIR}/*.XML ${DUMP_DIR}/*.XSD
 
 # Transfer
 echo "Transfering files using account ${SFTP_USER}"
@@ -113,13 +127,13 @@ for transferFile in ${DUMP_DIR}/*.ZIP ${DUMP_DIR}/*.trg
 do
     ${CURL_LOCATION} -s -S --retry 64 --retry-max-time 3600 --insecure --key /home/chox/.ssh/id_rsa --pubkey /home/chox/.ssh/id_rsa.pub --ftp-create-dirs --user ${SFTP_USER}:/'${SFTP_PASSWD}/' -T ${transferFile} ${SFTP_URL}
     RC=$?
-#    if [ ${RC} -eq 0 ]
-#    then
-        rm -f ${transferFile}
-#    fi
+    if [ ${RC} -eq 0 ]
+    then
+        /bin/rm -f ${transferFile}
+    fi
 done
 
-rmdir ${DUMP_DIR}
+/bin/rmdir ${DUMP_DIR}
 
 echo "Done."
 

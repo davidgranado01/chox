@@ -30,7 +30,7 @@ DATA_DIR=$4
 
 : ${INS_ID:=3}
 
-OS=`uname`
+OS=`/bin/uname`
 #echo "System is '${SYSTEM}'"
 
 
@@ -45,11 +45,11 @@ function cleanOutput {
     then
         if [ "${OS}" = "Darwin" ]
         then
-            cat ${INFILE} | tail -n +3 | sed '$d' |  sed '$d'  | sed '$d' | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+            /bin/cat ${INFILE} | tail -n +3 | sed '$d' |  sed '$d'  | sed '$d' | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
         else
-            cat ${INFILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+            /bin/cat ${INFILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
         fi
-        rm ${INFILE}
+        /bin/rm ${INFILE}
     fi
 }
 
@@ -104,11 +104,11 @@ if [ "${OS}" = "Darwin" ]
 then
     echo "We are running on OS X...."
     PSQL_COMMAND='/Library/PostgreSQL/9.2/bin/psql'
-    : ${START_DATE:=`date -v7d +%F`}
+    : ${START_DATE:=`/bin/date -v7d +%F`}
 else
     echo "We are running on Linux...."
     PSQL_COMMAND='/usr/local/pgsql/bin/psql'
-    : ${START_DATE:=`date --date="7 days ago" +%Y%m%d`}
+    : ${START_DATE:=`/bin/date --date="7 days ago" +%Y%m%d`}
 fi
 
 echo 'Generating a full XML data dump from '${START_DATE}' for insurer with id='${INS_ID}
