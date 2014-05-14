@@ -24,8 +24,10 @@
         <custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" />
         <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
         <access-denied-handler ref="choxAccessDeniedHandler"/>
-        <csrf/>
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
+    
+    <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
     
     <authentication-manager alias="authenticationManager" erase-credentials="true">
         <authentication-provider user-service-ref="userDetailsService">
