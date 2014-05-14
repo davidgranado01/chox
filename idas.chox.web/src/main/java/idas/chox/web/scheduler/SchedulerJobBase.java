@@ -59,9 +59,13 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         
         try {
             handleHibernateTransactionIntricacies();
-                        
-            LOG.info("{} has {} subjects.", getClass().getSimpleName(), getSchedulerJobs().size());
-            for (SchedulerJob schedulerJob : getSchedulerJobs()) {
+            List<SchedulerJob> schedulerJobs = getSchedulerJobs();
+            if (schedulerJobs.isEmpty()) {
+                LOG.info("No active scheduler jobs of type '{}'", getClass().getSimpleName());
+            } else {
+                LOG.info("Scheduler job type '{}' has {} distinct email subjects.", getClass().getSimpleName(), schedulerJobs.size());
+            }
+            for (SchedulerJob schedulerJob : schedulerJobs) {
 
                 // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION DO NOT RUN ON PRODUCTION SERVER.
                 if (!hostName.equalsIgnoreCase("PRODUCTION")) {
