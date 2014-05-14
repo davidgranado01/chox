@@ -31,6 +31,7 @@ public class TimeoutFilter extends GenericFilterBean {
     private final String LOGIN_FORM_AUTH_CHECK_STRING = "j_spring_security_check";
     private final String LOGOUT_STRING = "j_spring_security_logout";
     private final String CHECK_VIEWING_STATUS_STRING = "checkViewingStatus";
+    private final String WEB_SERVICE_URL_STRING = "/services";
     private final String ACTIVITY_MONITOR_CHECK_STRING = "activityMonitoringAction";
 
     @Override
@@ -39,24 +40,31 @@ public class TimeoutFilter extends GenericFilterBean {
         final HttpServletRequest request = (HttpServletRequest) sr;
         final HttpServletResponse response = (HttpServletResponse) sr1;
         HttpSession session = request.getSession();
+        String serveletPath = request.getServletPath();
+
+        // if this is web service request then continue to next filter
+        if (serveletPath.contains(WEB_SERVICE_URL_STRING)) {
+            fc.doFilter(request, response);
+            return;
+        }
 
         boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
         boolean isHiddenViewingStatusRequest = false;
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
+
         // if the user is not authenticated then return the login page unless the request is for login page. 
-        if (!((auth != null && auth.isAuthenticated()) || request.getServletPath().contains(LOGIN_PAGE_REQUEST_URL)
-                || request.getServletPath().contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
+        if (!((auth != null && auth.isAuthenticated()) || serveletPath.contains(LOGIN_PAGE_REQUEST_URL)
+                || serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
             return;
         }
         /*
          * If the user is already authenticated but trying to login or requesting login page then redirect to the inbox page.
          */
-        if (auth != null && auth.isAuthenticated() 
-                && (request.getServletPath().contains(LOGIN_FORM_AUTH_CHECK_STRING) 
-                || request.getServletPath().contains(LOGIN_PAGE_REQUEST_URL))) {
+        if (auth != null && auth.isAuthenticated()
+                && (serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING)
+                || serveletPath.contains(LOGIN_PAGE_REQUEST_URL))) {
             defaultRedirectStrategy.sendRedirect(request, response, INBOX_PAGE_REQUEST_URL);
             return;
         }
@@ -65,7 +73,7 @@ public class TimeoutFilter extends GenericFilterBean {
             long lastTimeAccessed = (Long) session.getAttribute(TIME_ACCESSED_SESSION_ATTRIB);
 
             if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
-                    && (request.getServletPath().contains(CHECK_VIEWING_STATUS_STRING) || request.getServletPath().contains(ACTIVITY_MONITOR_CHECK_STRING))) {
+                    && (serveletPath.contains(CHECK_VIEWING_STATUS_STRING) || serveletPath.contains(ACTIVITY_MONITOR_CHECK_STRING))) {
                 isHiddenViewingStatusRequest = true;
             }
 
@@ -86,10 +94,10 @@ public class TimeoutFilter extends GenericFilterBean {
 
                     response.setStatus(418);
                     return;
-                } else if (request.getServletPath().contains(LOGOUT_STRING)) { // If this is logout request then directly go to login page.
+                } else if (serveletPath.contains(LOGOUT_STRING)) { // If this is logout request then directly go to login page.
                     defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
                     return;
-                } else if (!request.getServletPath().contains(SESSION_EXPIRED_JSP_URL)) { // If this is for any other request(non ajax) then show the error message.
+                } else if (!serveletPath.contains(SESSION_EXPIRED_JSP_URL)) { // If this is for any other request(non ajax) then show the error message.
                     defaultRedirectStrategy.sendRedirect(request, response, SESSION_EXPIRED_JSP_URL);
                     return;
                 }
@@ -97,8 +105,8 @@ public class TimeoutFilter extends GenericFilterBean {
             }
             // If not an Ajax requst and not one of the checked url then should not proceed as TIME_ACCESSED_SESSION_ATTRIB is null.
         } else if (!isAjax
-                && !request.getServletPath().contains(SESSION_EXPIRED_JSP_URL)
-                && !request.getServletPath().contains(LOGIN_STRING)) {
+                && !serveletPath.contains(SESSION_EXPIRED_JSP_URL)
+                && !serveletPath.contains(LOGIN_STRING)) {
             /* 
              * Tomcat delete the previously provided session to the login.action(login form) page if the user did not login before the timeout period.
              * So this casuse problem with spring csrf filter. 
@@ -107,7 +115,7 @@ public class TimeoutFilter extends GenericFilterBean {
              * If this is new session then we need to generate the login form page again to have the valid csrf token in the login form page. 
              * 
              */
-            if (request.getServletPath().contains(LOGIN_FORM_AUTH_CHECK_STRING)) {
+            if (serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING)) {
                 if (session.isNew()) {
                     defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
                     return;
@@ -122,7 +130,7 @@ public class TimeoutFilter extends GenericFilterBean {
             return;
         }
         // Only set the access time if the request is not in one of the following - hidden request, login page request and session expired page request.
-        if (!isHiddenViewingStatusRequest && !request.getServletPath().contains(LOGIN_STRING) && !request.getServletPath().contains(SESSION_EXPIRED_JSP_URL)) {
+        if (!isHiddenViewingStatusRequest && !serveletPath.contains(LOGIN_STRING) && !serveletPath.contains(SESSION_EXPIRED_JSP_URL)) {
             session.setAttribute(TIME_ACCESSED_SESSION_ATTRIB, (Long) System.currentTimeMillis());
         }
         // Continue with next filter chain

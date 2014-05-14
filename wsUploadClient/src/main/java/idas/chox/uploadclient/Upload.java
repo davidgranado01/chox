@@ -134,6 +134,8 @@ public class Upload {
                 }
                 else if(optionsBean.isPaymentReceived()) {
                     PaymentReceived.process(uploadService, fileName);
+                } else {
+                    printUsageAndExit();
                 }
                 
             } else {
