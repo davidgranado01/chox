@@ -9,7 +9,7 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
     // Do not apply csrf token for the following http methods
 
     private Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
-    // Do not apply csrf token for the web service call
+    // Do not check for the csrf token for the web service call.
     private final String WEB_SERVICE_URL_STRING = "/services";
 //    private RegexRequestMatcher unprotectedMatcher = new RegexRequestMatcher("/services", null);
 
