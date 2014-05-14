@@ -32,6 +32,7 @@ public class TimeoutFilter extends GenericFilterBean {
     private final String LOGOUT_STRING = "j_spring_security_logout";
     private final String CHECK_VIEWING_STATUS_STRING = "checkViewingStatus";
     private final String WEB_SERVICE_URL_STRING = "/services";
+    private final String LOGBACK_LOGGING_URL_STRING = "/logBack";
     private final String ACTIVITY_MONITOR_CHECK_STRING = "activityMonitoringAction";
 
     @Override
@@ -44,6 +45,12 @@ public class TimeoutFilter extends GenericFilterBean {
 
         // if this is web service request then continue to next filter
         if (serveletPath.contains(WEB_SERVICE_URL_STRING)) {
+            fc.doFilter(request, response);
+            return;
+        }
+        
+        // if this is for Logback view web logging request then continue to next filter
+        if (serveletPath.contains(LOGBACK_LOGGING_URL_STRING)) {
             fc.doFilter(request, response);
             return;
         }

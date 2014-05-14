@@ -215,7 +215,7 @@
                             }
                 });
 
-        ui.ajaxForm(form, loadClaimTasks);
+//        ui.ajaxForm(form, loadClaimTasks);
 
 
         // LOAD RECORDS
