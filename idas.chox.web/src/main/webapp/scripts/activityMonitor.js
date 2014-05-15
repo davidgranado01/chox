@@ -22,7 +22,7 @@ var activityMonitor = function(){
                     var param = {};
                     param.claimIds =  x.join(',');
                     Ext.Ajax.request({
-                        url:this.checkStatusUrl,
+                        url:contextPath + this.checkStatusUrl,
                         method : 'GET',
                         callback : function(options,success,response  ){
                             if(response.status==200 && response.responseText){
@@ -48,7 +48,7 @@ var activityMonitor = function(){
         pingServer : function() {
             if(enable){
                 Ext.Ajax.request({
-                    url:this.pingServiceUrl,
+                    url:contextPath + this.pingServiceUrl,
                     method : 'GET',
                     callback : function(options,success,response  ){
                         if(response.status==200 && response.responseText){
