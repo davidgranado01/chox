@@ -432,14 +432,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException) || ex instanceof DataIntegrityViolationException) {
-            LOG.warn("Exception thrown: {}", ex.getMessage());
+            LOG.warn("Exception thrown: ", ex);
         } else if (ex instanceof AccessDeniedException) {
-            LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
+            LOG.error("AccessDeniedException thrown: ", ex);
             throw new AccessDeniedException(ex.getMessage());
         } else if (ex instanceof RuntimeException) {
-            LOG.error("handleException: exception is: {}", ex.getMessage());
+            LOG.error("handleException: exception is: ", ex);
         } else {
-            LOG.warn("handleException: exception is: {}", ex.getMessage());
+            LOG.warn("handleException: exception is: ", ex);
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
