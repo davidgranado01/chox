@@ -4,7 +4,7 @@
 <script type="text/javascript">
     function renderBillingPanel(billType)
     {
-        var paramStr = "billingType="+billType;
+        var paramStr = {"billingType":billType};
         Ext.get("admin_param_panel").load(choxUpdateEl({
             url: "/prv/p/loadBillingPanel.action",
             params: paramStr,
