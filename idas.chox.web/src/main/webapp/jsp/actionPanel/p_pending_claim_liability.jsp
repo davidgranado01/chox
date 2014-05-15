@@ -246,7 +246,6 @@ function refreshDesc(id){
                 </div>
             </div>
         </fieldset>
-        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
         <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>

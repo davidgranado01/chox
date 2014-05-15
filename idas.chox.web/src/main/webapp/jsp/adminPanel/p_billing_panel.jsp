@@ -28,7 +28,6 @@
         var initpage = function(){
             Ext.namespace('Chox','Chox.billing');
             Chox.appname = '<%= request.getContextPath()%>';
-//            Chox.nonce = '<%= session.getAttribute("SessionNonce")%>';
             Chox.billing.billingmode = '${billingType}';
             if ( Chox.billing.billingmode =='insurer' ){
                 Chox.billing.billingPageTitle = 'Insurer Billing';

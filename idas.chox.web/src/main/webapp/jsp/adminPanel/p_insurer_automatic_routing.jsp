@@ -420,8 +420,6 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
-                                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
-                                    <!--s:token/-->
                                 </form>
                             </div>
                         </div>
@@ -461,8 +459,6 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
-                                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
-                                    <!--s:token/-->
                                 </form>
                             </div>
                         </div>
@@ -488,9 +484,7 @@
                         <label class="chox-form-pop">Regular Expression</label>
                         <input id="expression" name="expression"/>
                     </div>
-                    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                     <div id="CDAutomaticRoutingEditScreenMessageBox" class="action-error-msg"></div>
-                    <!--s:token/-->
                 </form>
             </div>
         </div>

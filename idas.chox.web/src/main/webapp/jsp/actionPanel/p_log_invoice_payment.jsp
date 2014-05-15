@@ -18,7 +18,6 @@ var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDisc
 var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
 var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
 var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
-//var nonce = '<%= session.getAttribute("SessionNonce")%>';
 
     function doUpdateManualInvoice(action){
     
@@ -88,6 +87,5 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                 </div>
             </div>
         </fieldset>
-        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

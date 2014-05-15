@@ -68,12 +68,10 @@ Ext.onReady(function(){
                                 if (a.result.message && a.result.message.length > 0) {
                                     Ext.MessageBox.alert('Info', a.result.message,function(){   
                                             loadClaimDetail(<s:property value="id" />);
-//                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                             return false;
                                     });  
                                 } else {
                                         loadClaimDetail(<s:property value="id" />);
-//                                        window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                 }
 	                        }
 	                    },
@@ -81,7 +79,6 @@ Ext.onReady(function(){
 	                    	 	confPayRec.hide();
                                 Ext.MessageBox.alert('Error', a.result.message, function(){  
                                             loadClaimDetail(<s:property value="id" />);
-//                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce=<%= session.getAttribute("SessionNonce")%>";
                                             return false;
                                 });
 	                    }
