@@ -754,13 +754,7 @@
             var record = grid.getStore().getAt(rowIndex);
             if(record.get('claimId')>0){
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
-//                params = {
-//                    'id' : record.get('claimId'),
-//                    'tab' : currentTabIndex,
-//                    'nonce' : '<%= session.getAttribute("SessionNonce")%>'
-//                }
                 loadClaimDetail(record.get('claimId'), currentTabIndex);
-//                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?nonce=<%= session.getAttribute("SessionNonce")%>&id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
             }
         }
     }
@@ -897,7 +891,6 @@
                 <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
-        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
     <div id="uploadedFileGrid"></div>
 </div>

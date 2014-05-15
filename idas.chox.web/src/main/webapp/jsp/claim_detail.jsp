@@ -27,7 +27,6 @@
     var commentsDisabled = notesTabAccessibility === 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility === 0);
     var auditTrailDisabled = auditTrailTabAccessibility === 0;
-//    var nonce = '<%= session.getAttribute("SessionNonce")%>';
     var availableSlaExtensionDays = <s:property value="availableSlaExtensionDays" />;
     var appliedSlaExtDays = <s:property value="slaExtDays" />;
     var ecdDataStore;

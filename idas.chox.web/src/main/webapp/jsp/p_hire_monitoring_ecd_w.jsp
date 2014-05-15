@@ -142,5 +142,4 @@
             <div id="ecdGridHolder"></div>
         </div>
     </fieldset>
-    <!--<input type="hidden" id="EcdNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
 </form>

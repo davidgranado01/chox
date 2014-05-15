@@ -576,6 +576,4 @@
         </div>
 
     </fieldset>
-    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
-    <!--s:token/-->
 </form>

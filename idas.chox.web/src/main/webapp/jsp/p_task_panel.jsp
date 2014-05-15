@@ -182,7 +182,6 @@
                 checkBoxSelMod,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
                     renderer:function(value,p,r){
-//                        var params = {'id':r.data['claimId'], 'tab' : currentTabIndex, 'nonce':'<%= session.getAttribute("SessionNonce")%>'};
                         return '<a href="javascript:loadClaimDetail('+r.data['claimId']+','+currentTabIndex+');">' + value + '</a>';}},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
