@@ -10,7 +10,7 @@
 
     <!-- schedulerSupport="false" networkConnectorStartAsync="true" -->
     <broker id="embeddedLocalBroker" xmlns="http://activemq.apache.org/schema/core" useJmx="false"
-            persistent="true" brokerName="embeddedLocalBroker" >
+            persistent="true" brokerName="embeddedLocalBroker" start="false">
  
 
         <networkConnectors>
