@@ -677,6 +677,7 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
     singleSelect:true,
     listeners:{
         rowdeselect : function ( selmo, rowIndex, record ){
+            billingDetailGrid.getTopToolbar().items.get('save_button_id').disable();
             cb.bdetails.load({
                 params:{
                     billingId:0
@@ -1000,7 +1001,9 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         this.tbar = new Ext.Toolbar({
             items:[{
                 text:'Save ',
-                handler : function(){
+                disabled : true,
+                id : 'save_button_id',
+                handler : function(button){
                     var x = cb.bstore.getById(cb.bdetails.billingId);
                     //                    if ( x.get('reconciled') == true){
                     //                        return ;
@@ -1010,8 +1013,21 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     for(var i = 0 ; i < mrecs.length ; i++){
                         ma[i] = mrecs[i].data;
                     }
+//                    console.log(ma.length);
+                    if (ma.length < 1) {
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: 'No record changes found. Only the modified record(s) will be saved.',
+                            width:300,
+                            buttons: Ext.MessageBox.OK,
+                            icon : Ext.MessageBox.ERROR
+                        });
+                        button.disable();
+                        return false;
+                    }
+                    
                     jstr = Ext.util.JSON.encode(ma);
-
+                    
                     choxExtAjaxRequest({
                         url: '/prv/p/updateBillingDetail.action',
                         callback : function(options,success,response  ){
@@ -1021,6 +1037,13 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                             if(resp.success){
                                 cb.bdetails.commitChanges();
                                 cb.bstore.reload();
+                                Ext.MessageBox.show({
+                                    title: 'Success',
+                                    msg: resp.message,
+                                    width:200,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                button.disable();
                             }
                         },
                         params: {
@@ -1091,7 +1114,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         editor:cb.dtl_comment_edit
     }],
     listeners:{
-        headerclick: function ( grid, columnIndex, e ) {
+        headerclick: function ( grid, columnIndex, e ) { 
             if (columnIndex === 4 ){
                 if (grid.store.find('reconciled','false') > -1 ) {
                     grid.store.each(function(){
@@ -1112,7 +1135,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 }
             }
         },
-        cellclick:function( grid, rowIndex, columnIndex,  e ) {
+        cellclick:function( grid, rowIndex, columnIndex,  e ) { 
             var x = cb.bstore.getById(cb.bdetails.billingId);
             var rec= grid.store.getAt(rowIndex);
 
@@ -1146,6 +1169,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     return false;
                 }
             }
+            this.getTopToolbar().items.get('save_button_id').enable();
             return true;
         }
     }

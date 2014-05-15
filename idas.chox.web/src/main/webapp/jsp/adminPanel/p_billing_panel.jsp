@@ -3,6 +3,9 @@
 
 <script>
 
+    var billingDetailGrid;
+    var billingGrid;
+    
     Ext.onReady(function(){
         Ext.util.Format.gbMoney = function(v){
             v = (Math.round((v-0)*100))/100;
@@ -60,16 +63,15 @@
                 url:Chox.appname + '/prv/p/addBill.action'
             });
             Chox.billing.billingWindowObj = new Chox.billing.billingWindow();
-            
+            billingGrid = new Chox.billing.BillingGrid({btype:'<s:property value="billingType"/>'})
+            billingDetailGrid = new Chox.billing.BillingDetailGrid();
             var myPanel = new Ext.Panel({                
                 applyTo: 'billingPanel-div',
                 //title: Chox.billing.billingPageTitle,
                 border: true,
                 items:[
-                    new Chox.billing.BillingGrid({
-                        btype:'<s:property value="billingType"/>'                        
-                    }),
-                    new Chox.billing.BillingDetailGrid()
+                    billingGrid,
+                    billingDetailGrid
                 ],
                 autoWidth:true,
                 autoHeight: true,
