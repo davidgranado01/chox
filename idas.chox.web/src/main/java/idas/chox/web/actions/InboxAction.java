@@ -96,6 +96,12 @@ public class InboxAction extends BaseAction {
     }
 
     public String loadInbox() throws Exception {
+        /* 
+         * Clear the redirection Status message(refer claimAction) from the session(if present).
+         * Clearing the redirection Status message from the session is needed here only for the insurer 
+         * where the insurer switch claim to another insurer and returning to the inbox page instead navigating to the claim detail page.
+         */
+        removeRedirectionParamInSession();
         return SUCCESS;
     }
     

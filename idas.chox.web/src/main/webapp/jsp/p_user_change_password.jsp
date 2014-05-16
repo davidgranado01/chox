@@ -130,5 +130,4 @@
         <div class="action-error-msg" id="responseErrorBox"><s:property value="actionError" /></div>
         <div class="chox-form-submit-result" id="responseMessageBox"><s:property value="actionResult" /></div>
     </div>
-    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
 </form>

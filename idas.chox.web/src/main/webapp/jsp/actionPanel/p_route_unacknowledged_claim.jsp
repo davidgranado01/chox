@@ -163,7 +163,6 @@
                 </div>
                 <s:hidden name="id" id="claimId" />
                 <s:hidden name="name" id="name" />
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                 <div class="status-control-set">
                     <table class="status-table">
                         <tr>

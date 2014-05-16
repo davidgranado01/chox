@@ -209,7 +209,6 @@
     
 </script>
 <div class="sub-admin-tab-css">
-<!--    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     <div class="status-info">
         This tab allows you to setup white listed IP Addresses.
     </div>

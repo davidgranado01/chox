@@ -1552,13 +1552,7 @@
                 /*
                  *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
                  */
-//                params = {
-//                    'id' : record.get('id'),
-//                    'tab' : currentTabIndex,
-//                    'nonce' : '<%= session.getAttribute("SessionNonce")%>'
-//                }
                 loadClaimDetail(record.get('id'),currentTabIndex);
-//                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex +'&nonce=<%= session.getAttribute("SessionNonce")%>';
             };
             var selModel = grid.getSelectionModel();
             var selectedRecords = selModel.getSelections();
@@ -1794,7 +1788,6 @@
                         <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             </form>
         </div>
     </div>
@@ -1821,7 +1814,6 @@
                         <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             </form>
         </div>
     </div>
@@ -1842,7 +1834,6 @@
                         <td colspan="2"><div id="ownershipClaimFormMessageBox1" class="action-error-msg"/></td>
                     </tr>
                 </table>
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             </form>
         </div>
     </div>
@@ -1863,7 +1854,6 @@
                         <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             </form>
         </div>
     </div>
@@ -1872,7 +1862,6 @@
         <div id="couSelectionPanel">
             <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden" />
-                <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                         <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>

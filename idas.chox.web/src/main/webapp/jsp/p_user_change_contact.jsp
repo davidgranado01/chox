@@ -46,7 +46,6 @@
 
 </script>
         <form autocomplete="off" id="formChangeContact" action="<%= request.getContextPath()%>/prv/p/changeTelephone.action" class="XXentity-form" method="post">
-           <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
             <div class="status-info">
                 N.B. When a user is assigned a claim, the contact telephone number specified here will be attached to the claim via a Note.
             </div>

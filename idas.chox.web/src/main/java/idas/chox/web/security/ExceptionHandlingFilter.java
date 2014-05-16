@@ -8,13 +8,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.GenericFilterBean;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.csrf.CsrfException;
 import org.springframework.security.web.util.UrlUtils;
+import org.springframework.web.filter.GenericFilterBean;
+
+import org.apache.catalina.connector.ClientAbortException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExceptionHandlingFilter extends GenericFilterBean {
 
@@ -42,7 +45,7 @@ public class ExceptionHandlingFilter extends GenericFilterBean {
                 } else {
                     defaultRedirectStrategy.sendRedirect(httpRequest, httpResponse, "/jsp/InvalidCsrfToken.jsp");
                 }
-            } else {
+            } else if (!(ex instanceof ClientAbortException)) {
                 LOG.error("Exception thrown:", ex);
             }
         }

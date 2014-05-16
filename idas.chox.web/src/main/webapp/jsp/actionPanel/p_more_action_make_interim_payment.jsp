@@ -171,6 +171,5 @@
             </div>
             <div class="action-error-msg" id="ACKmMakeInterimPaymentMessageBox"></div>
         </fieldset>
-        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     </form>
 </div>

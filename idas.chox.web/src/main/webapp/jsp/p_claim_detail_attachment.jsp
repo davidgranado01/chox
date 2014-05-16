@@ -371,8 +371,6 @@
                 <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
-        <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
-        <!--s:token/-->
     </form>
     <div id="attachmentGrid"></div>
 </div>
