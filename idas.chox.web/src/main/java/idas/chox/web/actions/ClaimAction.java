@@ -497,6 +497,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else if (map.containsKey("redirectErrorMsg")) {
                 setActionError(map.get("redirectErrorMsg"));
             }
+            // Once the status message value is updated, clear it from the session.
             removeRedirectionParamInSession();
         }
         return SUCCESS;
