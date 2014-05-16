@@ -218,7 +218,7 @@ public class ActivityEventGenerator {
                 ActivityEvent.INVOICE_REJECTED_EVENT.build(this, (InvoiceRejection) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceRejectionAccept")) {
                 LOG.debug("InvoiceRejectionAccept activity found");
-                ActivityEvent.INVOICE_REJECTION_ACCEPTED_EVENT.build(this, (InvoiceRejection) activity, claim);
+                ActivityEvent.INVOICE_REJECTION_ACCEPTED_EVENT.build(this, (InvoiceRejectionAccept) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoiceRejectionContest")) {
                 LOG.debug("InvoiceRejectionContest activity found");
                 ActivityEvent.INVOICE_REJECTION_CONTESTED_EVENT.build(this, (InvoiceRejectionContest) activity, claim);
