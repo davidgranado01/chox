@@ -347,7 +347,7 @@ public class ActivityEventGenerator {
                     ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);            
                 }
             } else {
-                LOG.error("Activity not found");
+                LOG.error("No events to generate for activity '{}'", activityName);
             }
         } catch (Exception ex) {
             LOG.error("Error generating events for activity '{}' : {}\n", new Object[]{activityName, ex.getMessage(), ex});
