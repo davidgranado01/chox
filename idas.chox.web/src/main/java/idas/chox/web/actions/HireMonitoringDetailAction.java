@@ -137,6 +137,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
             if (model.isUpdateInsurer()) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());
+                updated = true;
             }
             if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
                     || (model.getRepairBookInDate() == null && repairBookedInDateOriginal != null)
