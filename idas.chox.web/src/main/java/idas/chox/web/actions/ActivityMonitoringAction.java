@@ -58,7 +58,11 @@ public class ActivityMonitoringAction extends BaseAction {
             for (Integer id : userIds) {
                 if (id != currentUserID) {
                     WebUser user = userService.getWebUser(id);
-                    if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
+                    if (user == null) {
+                        LOG.warn("No such user with id={}", id);
+                    } else if (getAuthenticatedUser() == null) {
+                        LOG.warn("No authenticated user when checking activity on claim with id={} ({})", claim.getId(), claim.getChoReference());
+                    } else if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
                             && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
                             || (getAuthenticatedUser().isCHO() && user.isCHO()
                             && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
