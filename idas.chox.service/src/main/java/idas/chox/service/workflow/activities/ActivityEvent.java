@@ -767,6 +767,12 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
         @Override
+        public void build(ActivityEventGenerator generator, UpdateManualInvoiceAgreeQuantum activity, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceAcceptedEvent from UpdateManualInvoiceAgreeQuantum activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+        @Override
         public void build(ActivityEventGenerator generator, InvoiceResubmit activity, Claim claim)  throws Exception {
             LOG.debug("Building InvoiceAcceptedEvent from InvoiceResubmit activity");
             generator.startEvent(claim, this.getName(), this.getEventId());

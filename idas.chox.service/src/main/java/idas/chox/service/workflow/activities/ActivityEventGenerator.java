@@ -201,6 +201,9 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("InvoiceAccepted")) {
                 LOG.debug("InvoiceAccepted activity found");
                 ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceAccepted) activity, claim);
+            }  else if (activityName.equalsIgnoreCase("UpdateManualInvoiceAgreeQuantum")) {
+                LOG.debug("UpdateManualInvoiceAgreeQuantum activity found");
+                ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (UpdateManualInvoiceAgreeQuantum) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoicePaymentLogged")) {
                 LOG.debug("InvoicePaymentLogged activity found");
                 ActivityEvent.INVOICE_PAID_EVENT.build(this, (InvoicePaymentLogged) activity, claim);
