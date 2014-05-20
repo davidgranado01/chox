@@ -4,21 +4,21 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-
-public class TimeoutFilter extends GenericFilterBean {
+/*
+ * This class extends OncePerRequestFilter to prevent the forward(httpServelet DispatcherType) request being filterd by this filter.
+ */
+public class TimeoutFilter extends OncePerRequestFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimeoutFilter.class);
     private static final long TIMEOUT_PERIOD = 3600000; // 60 minutes
@@ -36,10 +36,8 @@ public class TimeoutFilter extends GenericFilterBean {
     private final String ACTIVITY_MONITOR_CHECK_STRING = "activityMonitoringAction";
 
     @Override
-    public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain fc) throws IOException, ServletException {
 
-        final HttpServletRequest request = (HttpServletRequest) sr;
-        final HttpServletResponse response = (HttpServletResponse) sr1;
         HttpSession session = request.getSession();
         String serveletPath = request.getServletPath();
 
@@ -60,7 +58,7 @@ public class TimeoutFilter extends GenericFilterBean {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // if the user is not authenticated then return the login page unless the request is for login page. 
+        // if the user is not authenticated then return the login page unless the request is for the login page or from the login page. 
         if (!((auth != null && auth.isAuthenticated()) || serveletPath.contains(LOGIN_PAGE_REQUEST_URL)
                 || serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
@@ -104,15 +102,14 @@ public class TimeoutFilter extends GenericFilterBean {
                 } else if (serveletPath.contains(LOGOUT_STRING)) { // If this is logout request then directly go to login page.
                     defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
                     return;
-                } else if (!serveletPath.contains(SESSION_EXPIRED_JSP_URL)) { // If this is for any other request(non ajax) then show the error message.
+                } else { // If this is non xmlhttp request(non ajax) then show the error message.
                     defaultRedirectStrategy.sendRedirect(request, response, SESSION_EXPIRED_JSP_URL);
                     return;
                 }
 
             }
-            // If not an Ajax requst and not one of the checked url then should not proceed as TIME_ACCESSED_SESSION_ATTRIB is null.
+            // If not an Ajax requst and not login url request then should not proceed as TIME_ACCESSED_SESSION_ATTRIB is null.
         } else if (!isAjax
-                && !serveletPath.contains(SESSION_EXPIRED_JSP_URL)
                 && !serveletPath.contains(LOGIN_STRING)) {
             /* 
              * Tomcat delete the previously provided session to the login.action(login form) page if the user did not login before the timeout period.
@@ -128,16 +125,22 @@ public class TimeoutFilter extends GenericFilterBean {
                     return;
                 }
             } else {
+                if (auth != null) { // If the auth is not null then clear the securityContext. Auth is not null only when one of the concurrent request timed out.  
+                    SecurityContextHolder.clearContext();
+                }
                 defaultRedirectStrategy.sendRedirect(request, response, SESSION_EXPIRED_JSP_URL);
                 return;
             }
 
         } else if (isAjax) { // Ajax request shold not proceed to the application when TIME_ACCESSED_SESSION_ATTRIB is null. 
+            if (auth != null) { // If the auth is not null then clear the securityContext. Auth is not null only when one of the concurrent request timed out. 
+                SecurityContextHolder.clearContext();
+            }
             response.setStatus(418);
             return;
         }
         // Only set the access time if the request is not in one of the following - hidden request, login page request and session expired page request.
-        if (!isHiddenViewingStatusRequest && !serveletPath.contains(LOGIN_STRING) && !serveletPath.contains(SESSION_EXPIRED_JSP_URL)) {
+        if (!isHiddenViewingStatusRequest && !serveletPath.contains(LOGIN_STRING)) {
             session.setAttribute(TIME_ACCESSED_SESSION_ATTRIB, (Long) System.currentTimeMillis());
         }
         // Continue with next filter chain
