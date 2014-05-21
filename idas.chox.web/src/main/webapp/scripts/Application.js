@@ -66,10 +66,10 @@ Ext.onReady(function() {
 });
 
 function isCsrfParamPresent() {
-    if (!csrfParam || !csrfParam[csrfParameterName]) {
+    if (!csrfParam ||!csrfParameterName || !csrfParam[csrfParameterName]) {
         Ext.MessageBox.show({
-            title: 'Error',
-            msg: 'Authentication token not found. Data can not be loaded for this request. Please try again.',
+            title: 'Internal Error Occurred',
+            msg: 'Data can not be loaded for this request. Please try again.',
             width:300,
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR

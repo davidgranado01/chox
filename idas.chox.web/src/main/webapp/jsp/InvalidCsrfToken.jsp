@@ -4,7 +4,7 @@
 <script type="text/javascript">
     Ext.onReady(function(){
         Ext.MessageBox.show({
-            title: 'Authentication Token Not Found',
+            title: 'Internal Error Occurred',
             msg: 'Request can not be completed. Please try again.',
             width:300,
             buttons: Ext.MessageBox.OK,
