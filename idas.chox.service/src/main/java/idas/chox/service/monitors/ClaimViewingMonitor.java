@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Emmanuel
  */
 public final class ClaimViewingMonitor {
+
     private static ClaimViewingMonitor instance = new ClaimViewingMonitor();
     private ConcurrentHashMap<String, ClaimViewState> claims = new ConcurrentHashMap<String, ClaimViewState>();
 
@@ -18,17 +19,17 @@ public final class ClaimViewingMonitor {
         return instance;
     }
 
-    public List<Integer> ping(Integer claimId, String CompanyType, Integer orgId, Integer userId, long interval) {
+    public List<ActivityMonitorUserDetail> ping(Integer claimId, ActivityMonitorUserDetail activityMonitorUserDetail, long interval) {
         String key = forStateKey(claimId);
 
         if (claims.containsKey(key)) {
             ClaimViewState vs = claims.get(key);
-            vs.ping(userId, interval);
+            vs.ping(activityMonitorUserDetail, interval);
         } else {
-            ClaimViewState vs = new ClaimViewState(userId, interval);
+            ClaimViewState vs = new ClaimViewState(activityMonitorUserDetail, interval);
             claims.putIfAbsent(key, vs);
-        }        
-        return getWhoIsViewing(key);        
+        }
+        return getWhoIsViewing(key);
     }
 
     private String forStateKey(Integer claimId) {
@@ -36,35 +37,26 @@ public final class ClaimViewingMonitor {
         return String.format("%d", claimId);
     }
 
-    public List<Integer> getWhoIsViewing(Integer claimId, String CompanyType, Integer orgId) {
-//        previously we used org and org type "%d_%s_%d", claimId, CompanyType, orgId
-        String stateKey = String.format("%d", claimId);
-        return getWhoIsViewing(stateKey);
-    }
-
-    private List<Integer> getWhoIsViewing(String key) {
+    private List<ActivityMonitorUserDetail> getWhoIsViewing(String key) {
         ClaimViewState cvs = claims.get(key);
-        if(cvs == null)
-        {
+        if (cvs == null) {
             return null;
         }
         if (!cvs.isExpired()) {
-            return cvs.getUserIds();
+            return cvs.getClaimViewingUsers();
         } else {
             claims.remove(key);
             return null;
         }
 
     }
-    
-    public boolean isClaimViewingBySomeBody(Integer claimId, String CompanyType, Integer orgId)
-    {
+
+    public boolean isClaimViewingBySomeBody(Integer claimId) {
 //        previously we used org and org type "%d_%s_%d", claimId, CompanyType, orgId
         String key = String.format("%d", claimId);
-        
+
         ClaimViewState cvs = claims.get(key);
-        if(cvs == null)
-        {
+        if (cvs == null) {
             return false;
         }
         if (!cvs.isExpired()) {

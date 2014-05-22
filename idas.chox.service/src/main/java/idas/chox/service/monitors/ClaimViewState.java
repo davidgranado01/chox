@@ -12,39 +12,39 @@ import org.slf4j.LoggerFactory;
  * @author Emmanuel
  */
 public class ClaimViewState extends ViewState {
+
     private static final Logger LOG = LoggerFactory.getLogger(ClaimViewState.class);
+    private ConcurrentHashMap<ActivityMonitorUserDetail, ViewState> users = new ConcurrentHashMap<ActivityMonitorUserDetail, ViewState>();
 
-    private ConcurrentHashMap<Integer, ViewState> users = new ConcurrentHashMap<Integer, ViewState>();
-
-    public ClaimViewState(Integer userId, long interval) {
+    public ClaimViewState(ActivityMonitorUserDetail activityMonitorUserDetail, long interval) {
         super(interval);
-        users.put(userId, new ViewState(interval));
-        LOG.trace("Created for user: {}", userId);
+        users.put(activityMonitorUserDetail, new ViewState(interval));
+        LOG.trace("Created for user: {}", activityMonitorUserDetail.getId());
     }
 
-    public void ping(Integer userId, long interval) {
-        users.putIfAbsent(userId, new ViewState(interval));
-        users.get(userId).refresh();
+    public void ping(ActivityMonitorUserDetail activityMonitorUserDetail, long interval) {
+        users.putIfAbsent(activityMonitorUserDetail, new ViewState(interval));
+        users.get(activityMonitorUserDetail).refresh();
         this.refresh();
-        LOG.trace("User {} refreshed.", userId);
+        LOG.trace("User {} refreshed.", activityMonitorUserDetail.getId());
     }
 
-    public List<Integer> getUserIds() {
-        List<Integer> result = null;
-        for (Integer i : users.keySet()) {
+    public List<ActivityMonitorUserDetail> getClaimViewingUsers() {
+        List<ActivityMonitorUserDetail> result = null;
+        for (ActivityMonitorUserDetail activityMonitorUserDetail : users.keySet()) {
             if (result == null) {
-                result = new ArrayList<Integer>();
+                result = new ArrayList<ActivityMonitorUserDetail>();
             }
-            ViewState v = users.get(i);
+            ViewState v = users.get(activityMonitorUserDetail);
             if (!v.isExpired()) {
-                LOG.trace("adding user to result: {}", i);
-                result.add(i);
+                LOG.trace("adding user to result: {}", activityMonitorUserDetail.getId());
+                result.add(activityMonitorUserDetail);
             } else {
-                LOG.trace("removing user from result: {} (should probably be from users)", i);
-                result.remove(i);
+                LOG.trace("removing user from result: {} (should probably be from users)", activityMonitorUserDetail.getId());
+                result.remove(activityMonitorUserDetail);
             }
         }
-        LOG.trace("Returning {} user ids (viewing claim)", result.size());
+        LOG.trace("Returning {} user ids (viewing claim)", result != null ? result.size() : 0);
         return result;
     }
 }
