@@ -42,6 +42,8 @@ import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
+import org.springframework.security.access.AccessDeniedException;
+import org.xml.sax.SAXException;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
@@ -516,6 +518,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 setErrorMessage("File is not a valid file.");
                 return false;
             }
+        } catch (SAXException ex) {
+            bordereau.setStatus("Error");
+            bordereau.setDescription("Illegal Content");
+            saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
+            /*
+             * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
+             */
+            throw new AccessDeniedException("Illegal content found in XML file");
         } catch (Exception ex) {
             LOG.error("Exception thrown in saving file while writing to document : {}", ex.getMessage());
             bordereau.setStatus("Error");

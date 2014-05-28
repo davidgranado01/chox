@@ -34,12 +34,15 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * Misc XML utilities
  */
 public final class XMLUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(XMLUtils.class);
 
     private XMLUtils() {
     }
@@ -252,8 +255,30 @@ public final class XMLUtils {
             return null;
         }
         DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
-        DocumentBuilder db=dbf.newDocumentBuilder();
-        Document doc=db.parse(new InputSource(new StringReader(xmlText)));
+        Document doc = null;
+        try {
+               LOG.info("Disabling XXE Processing in toDocument(String)....");
+         dbf.setExpandEntityReferences(false);
+            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
+            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
+            String FEATURE = "http://xml.org/sax/features/external-general-entities";
+            dbf.setFeature(FEATURE, false);
+ 
+            // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
+            FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
+            dbf.setFeature(FEATURE, true);
+            DocumentBuilder db=dbf.newDocumentBuilder();
+            doc=db.parse(new InputSource(new StringReader(xmlText)));
+        } catch (ParserConfigurationException e) {
+            // This should catch a failed setFeature feature
+            LOG.error("ParserConfigurationException was thrown. The feature is probably not supported by your XML processor: {}\n", e.getMessage(), e);
+        } catch (SAXException e) {
+            // On Apache, this should be thrown when disallowing DOCTYPE
+            LOG.error("A DOCTYPE was passed into the XML document");
+        } catch (IOException e) {
+            // XXE that points to a file that doesn't exist
+            LOG.error("IOException occurred, XXE may still possible: " + e.getMessage());
+        }
         return doc;
     }
 
@@ -264,9 +289,31 @@ public final class XMLUtils {
             return null;
         }
         DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
-        DocumentBuilder db=dbf.newDocumentBuilder();
-        Document doc=db.parse(xmlFile);
-        return doc;
+        Document doc = null;
+        try {
+            LOG.info("Disabling XXE Processing in toDocument(File)....");
+            dbf.setExpandEntityReferences(false);
+            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
+            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
+            String FEATURE = "http://xml.org/sax/features/external-general-entities";
+            dbf.setFeature(FEATURE, false);
+ 
+            // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
+            FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
+            dbf.setFeature(FEATURE, true);
+            DocumentBuilder db=dbf.newDocumentBuilder();
+            doc=db.parse(xmlFile);
+        } catch (ParserConfigurationException e) {
+            // This should catch a failed setFeature feature
+            LOG.error("ParserConfigurationException was thrown. The feature is probably not supported by your XML processor: {}\n", e.getMessage(), e);
+        } catch (SAXException e) {
+            // On Apache, this should be thrown when disallowing DOCTYPE
+            LOG.error("A DOCTYPE was passed into the XML document");
+        } catch (IOException e) {
+            // XXE that points to a file that doesn't exist
+            LOG.error("IOException occurred, XXE may still possible: " + e.getMessage());
+        }
+         return doc;
     }
 
     /**
