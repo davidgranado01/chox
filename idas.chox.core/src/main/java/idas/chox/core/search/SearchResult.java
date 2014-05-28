@@ -7,15 +7,15 @@ import java.util.List;
  * @author Emmanuel
  */
 public class SearchResult {
-    private
 
-    List result;
+    private List result;
     private int totalCount;
-    
-    public SearchResult(List result,int totalCount)
- {
+    private String colorCode;
+
+    public SearchResult(List result, int totalCount, String colorCode) {
         this.result = result;
         this.totalCount = totalCount;
+        this.colorCode = colorCode;
 
     }
 
@@ -35,5 +35,11 @@ public class SearchResult {
         this.totalCount = totalCount;
     }
 
+    public String getColorCode() {
+        return colorCode;
+    }
 
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
 }

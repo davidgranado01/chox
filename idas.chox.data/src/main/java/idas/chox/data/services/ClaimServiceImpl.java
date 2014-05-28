@@ -524,7 +524,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
-        return new SearchResult(claims, totalCount);
+        return new SearchResult(claims, totalCount, null);
     }
 
     @Override

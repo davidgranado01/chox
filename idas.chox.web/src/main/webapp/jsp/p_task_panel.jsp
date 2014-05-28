@@ -17,7 +17,6 @@
     var taskPanelRecordPerPage=20;
 
     Ext.onReady(function(){
-        var createNewTaskWindowHeight = 310;
 
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
         // LOAD RECORDS
@@ -49,6 +48,13 @@
                 url: '/prv/p/getVisibleTasks.action',
                 reader:tasksJsonReader,
                 remoteSort: true
+                ,listeners: {
+                             load: function(store, records, options) {
+                                 if (store.baseParams.hideCompleted && store.baseParams.showAssignedTasksOnly) {
+                                     updateTaskTabCount(store.getTotalCount(), store.reader.jsonData.colorCode);
+                                 }
+                             }
+                         }
             });
         </s:else>
 
@@ -114,13 +120,6 @@
                      }
                     ,'-'
                     ,{
-                        text:'Add New Task',
-                        id : 'addNewTaskButtonId',
-                        handler : addNewTask,
-                        disabled : <s:property value="isChoxAdmin" />
-                    }
-                    ,'-'
-                    ,{
                         text:'Show Completed Tasks',
                         id : 'hideCompletedTasksButtonId',
                         enableToggle: true,
@@ -161,22 +160,17 @@
                  ]
         });
         
-       
-   if (document.getElementById('tasksGridId')) {
-
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
             renderTo:'tasksGridId',
             enableHdMenu:false,
             enableColumnMove: false,
-            autoScroll: true,
             layout:'fit',
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
             bbar: pagingBar,
             tbar:tbar,
-            title : '<div style="text-align:center;">Task Management</div>',
             loadMask: true,
             columns: [
                 checkBoxSelMod,
@@ -189,8 +183,8 @@
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
-            width:630,
-            height:220
+            width:'100%',
+            autoHeight:true
         });
 
         tasksGrid.getView().getRowClass = function(record, index) {
@@ -223,8 +217,9 @@
             fieldLabel: 'Task Type',
             hiddenName: 'taskTypeCombo',
             id: 'taskTypeComboId',
+            msgTarget : 'qtip',
             triggerAction: 'all',
-            width: 250,
+            width: 180,
             selectOnFocus: true,
             mode: 'local',
             editable: false,
@@ -272,15 +267,14 @@
             data: paymentMethodData
         });
 
+        isCHO = <s:property value="isCHO" />;
+        
         var paymentMethodCombo = new Ext.form.ComboBox({
             store: paymentMethodStore,
             width: 100,
-<s:if test="isCHO">
-            fieldLabel: 'Requested Payment Method',
-</s:if>
-<s:else>
-            fieldLabel: 'Actual Payment Method',
-</s:else>
+            fieldLabel: (isCHO) ? 'Requested Payment Method' : 'Actual Payment Method',
+            msgTarget : 'qtip',
+            hidden : true,
             valueField: 'paymentMethodValue',
             id: 'paymentMethodComboId',
             hiddenName: 'paymentMethod',
@@ -296,27 +290,25 @@
             emptyText: 'Please Select'
         });
 
-        isCHO = <s:property value="isCHO" />;
+        
         taskTypeCombo.on('select', function(box, record, index) {
             var selection = box.getValue();
             if (selection === 'Total Loss Payment') {
                 if (!isCHO) {
                      Ext.getCmp('paymentDateId').show();
                      Ext.getCmp('paymentDateId').allowBlank = false;
-                     Ext.getCmp('paymentDateId').validate();
                 }
                 Ext.getCmp('paymentMethodComboId').show();
                 Ext.getCmp('paymentMethodComboId').allowBlank = false;
-                Ext.getCmp('paymentMethodComboId').validate();
+                createNewTaskForm.doLayout();
             } else {
                 Ext.getCmp('paymentMethodComboId').hide();
                 Ext.getCmp('paymentMethodComboId').allowBlank = true;
-                Ext.getCmp('paymentMethodComboId').validate();
                 if (!isCHO) {
                      Ext.getCmp('paymentDateId').hide();
-                    Ext.getCmp('paymentDateId').allowBlank = true;
-                    Ext.getCmp('paymentDateId').validate();
+                     Ext.getCmp('paymentDateId').allowBlank = true;
                 }
+                createNewTaskForm.doLayout();
             }
         });
         
@@ -350,8 +342,10 @@
             // Create the visibility role combo used for insurer internal tasks only
             visibilityRoleCombo = new Ext.form.ComboBox({
                 fieldLabel: 'Visibility Role',
+                msgTarget : 'qtip',
                 hiddenName: 'visibilityRoleCombo',
                 id: 'visibilityRoleComboId',
+                hidden : true,
                 mode: 'local',
                 editable: false,
                 allowBlank: false,
@@ -365,12 +359,12 @@
                 displayField:'webUserroleName',
                 width: 170
             });
-            createNewTaskWindowHeight = 360;
         }
 
         visibilityCombo = new Ext.form.ComboBox({
             fieldLabel: 'Visibility',
             hiddenName: 'visibilityCombo',
+            msgTarget : 'qtip',
             id: 'visibilityComboId',
             mode: 'local',
             editable: false,
@@ -399,10 +393,12 @@
                         if (!isCHO && this.value == 2) {
                             Ext.getCmp('visibilityRoleComboId').show();
                             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').show();
+                            createNewTaskForm.doLayout();
                         }
                         else if (!isCHO) { // hide the combo
                             Ext.getCmp('visibilityRoleComboId').hide();
                             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
+                            createNewTaskForm.doLayout();
                         }
                         // if external task, claim is mandatory otherwise optional
                         if (this.value == 3) {
@@ -427,57 +423,89 @@
 
         if (!isCHO) {
             createNewTaskForm = new Ext.FormPanel({
+                hidden : <s:property value="isChoxAdmin" />,
                 monitorValid: true,
+                title : '<div style="text-align:center;">Task Management</div>',
                 frame:true,
                 id: 'createNewTaskFormId',
+                renderTo : 'tasksCreateWindow',
                 bodyStyle:'padding:5px 5px 0',
-                labelWidth: 110, // label settings here cascade unless overridden
-                labelAlign: 'right',
-                defaults: {width: 230},
-                defaultType: 'textfield',
-                items: [
-                    new Ext.form.DateField({
-                        fieldLabel: 'Due Date',
-                        name: 'dueDate',
-                        id: 'dueDateId',
-                        allowBlank: false,
-                        format: 'd/m/Y',
-                        minValue: new Date(),
-                        width: 90
-                    }),
-                    visibilityCombo,
-                    visibilityRoleCombo,
-                    taskTypeCombo,
-                    paymentMethodCombo,
-                    new Ext.form.DateField({
-                        fieldLabel: 'Payment Date',
-                        name: 'paymentDate',
-                        id: 'paymentDateId',
-                        allowBlank: false,
-                        format: 'd/m/Y',
-                        width: 90
-                    }),                    
-                    {
-                        fieldLabel: 'Description',
-                        name: 'description',
-                        id: 'descriptionId',
-                        allowBlank: false,
-                        minLength: 5,
-                        xtype: 'textarea',
-                        maxLength: 256,
-                        maxLengthText: 'maximum of 256 characters',
-                        minLengthText: 'minimum of 5 characters',
-                        width: 250
-                    },
-                    linkToClaimToggle,
-                    {
-                        fieldLabel: 'Supplier Reference',
-                        name: 'supplierRef',
-                        id: 'supplierRefId',
-                        allowBlank: false,
-                        width: 80,
-                        disabled: false
-                    }],
+                height : 'auto',
+                width:'100%',
+                items : [{
+                        layout: 'hbox',
+                        height : 'auto',
+                        width:'100%',
+                        items : [{
+                                    layout: 'form',
+                                    height : 'auto',
+                                    labelWidth: 110,
+                                    width:'35%',
+                                    defaults: {width: 180},
+                                    labelAlign: 'right',
+                                    items : [
+                                                new Ext.form.DateField({
+                                                fieldLabel: 'Due Date',
+                                                msgTarget : 'qtip',
+                                                name: 'dueDate',
+                                                id: 'dueDateId',
+                                                allowBlank: false,
+                                                format: 'd/m/Y',
+                                                minValue: new Date(),
+                                                width: 90
+                                                }),
+                                                visibilityCombo,
+                                                visibilityRoleCombo,
+                                                taskTypeCombo,
+                                                paymentMethodCombo,
+                                                new Ext.form.DateField({
+                                                    fieldLabel: 'Payment Date',
+                                                    msgTarget : 'qtip',
+                                                    name: 'paymentDate',
+                                                    id: 'paymentDateId',
+                                                    hidden : true,
+                                                    allowBlank: false,
+                                                    format: 'd/m/Y',
+                                                    width: 90
+                                                })
+                                            ]
+                                }, 
+                                {
+                                    layout: 'form',
+                                    height : 'auto',
+                                    labelWidth: 110,
+                                    defaults: {width: 180},
+                                    labelAlign: 'right',
+                                    items : [
+                                                {
+                                                    fieldLabel: 'Description',
+                                                    msgTarget : 'qtip',
+                                                    name: 'description',
+                                                    id: 'descriptionId',
+                                                    allowBlank: false,
+                                                    minLength: 5,
+                                                    xtype: 'textarea',
+                                                    maxLength: 256,
+                                                    maxLengthText: 'maximum of 256 characters',
+                                                    minLengthText: 'minimum of 5 characters',
+                                                    width: 250
+                                                },
+                                                linkToClaimToggle,
+                                                {
+                                                    fieldLabel: 'Supplier Reference',
+                                                    msgTarget : 'qtip',
+                                                    xtype: 'textfield',
+                                                    name: 'supplierRef',
+                                                    id: 'supplierRefId',
+                                                    allowBlank: false,
+                                                    width: 180,
+                                                    disabled: false
+                                                }
+                                            ]
+                                }
+                            ]
+
+                }],
                 buttons: [
                     {
                         text: 'Create',
@@ -509,18 +537,17 @@
                             ajax.loadJson2(url, param, function(data){
                                 if(data.resultType==='YesNo'){
                                     if(data.result==='yes'){
-                                        createNewTaskWindow.hide();
                                         loadTasks();
+                                        createNewTaskForm.form.reset();
+                                        Ext.getCmp('paymentMethodComboId').hide();
+                                        Ext.getCmp('paymentDateId').hide();
+                                        Ext.getCmp('visibilityRoleComboId').hide();
+                                        createNewTaskForm.doLayout();
                                     }
                                 }else if(data.resultType==='Message'){
                                     Ext.Msg.alert('Error creating new task',data.result);
                                 }
                             });
-                        }
-                    }, {
-                        text:'Cancel',
-                        handler:function(){
-                            createNewTaskWindow.hide();
                         }
                     }]
             });
@@ -528,46 +555,75 @@
         else {
             createNewTaskForm = new Ext.FormPanel({
                 monitorValid: true,
+                title : '<div style="text-align:center;">Task Management</div>',
                 frame:true,
+                renderTo : 'tasksCreateWindow',
                 id: 'createNewTaskFormId',
                 bodyStyle:'padding:5px 5px 0',
-                labelWidth: 110, // label settings here cascade unless overridden
-                labelAlign: 'right',
-                defaultType: 'textfield',
-                items: [
-                    new Ext.form.DateField({
-                        fieldLabel: 'Due Date',
-                        name: 'dueDate',
-                        id: 'dueDateId',
-                        allowBlank: false,
-                        minValue: new Date(),
-                        format: 'd/m/Y',
-                        width: 90
-                    }),
-                    visibilityCombo,
-                    taskTypeCombo,
-                    paymentMethodCombo,
-                    {
-                        fieldLabel: 'Description',
-                        name: 'description',
-                        id: 'descriptionId',
-                        allowBlank: false,
-                        minLength: 5,
-                        xtype: 'textarea',
-                        maxLength: 256,
-                        maxLengthText: 'maximum of 256 characters',
-                        minLengthText: 'minimum of 5 characters',
-                        width: 250
-                    },
-                    linkToClaimToggle,
-                    {
-                        fieldLabel: 'Supplier Reference',
-                        name: 'supplierRef',
-                        id: 'supplierRefId',
-                        allowBlank: false,
-                        width: 80,
-                        disabled: false
-                    }],
+                height : 'auto',
+                width:'100%',
+                items : [{
+                            layout: 'hbox',
+                            height : 'auto',
+                            width:'100%',
+                            items : [{
+                                        layout: 'form',
+                                        height : 'auto',
+                                        labelWidth: 110,
+                                        width:'35%',
+                                        defaults: {width: 180},
+                                        labelAlign: 'right',
+                                        items : [
+                                                    new Ext.form.DateField({
+                                                        fieldLabel: 'Due Date',
+                                                        msgTarget : 'qtip',
+                                                        name: 'dueDate',
+                                                        id: 'dueDateId',
+                                                        allowBlank: false,
+                                                        minValue: new Date(),
+                                                        format: 'd/m/Y',
+                                                        width: 90
+                                                    }),
+                                                    visibilityCombo,
+                                                    taskTypeCombo,
+                                                    paymentMethodCombo
+                                        ]
+                                }, 
+                                {
+                                        layout: 'form',
+                                        height : 'auto',
+                                        labelWidth: 110,
+                                        defaults: {width: 180},
+                                        labelAlign: 'right',
+                                        items : [
+                                                   {
+                                                        fieldLabel: 'Description',
+                                                        msgTarget : 'qtip',
+                                                        name: 'description',
+                                                        id: 'descriptionId',
+                                                        allowBlank: false,
+                                                        minLength: 5,
+                                                        xtype: 'textarea',
+                                                        maxLength: 256,
+                                                        maxLengthText: 'maximum of 256 characters',
+                                                        minLengthText: 'minimum of 5 characters',
+                                                        width: 250
+                                                    },
+                                                    linkToClaimToggle,
+                                                    {
+                                                        fieldLabel: 'Supplier Reference',
+                                                        xtype: 'textfield',
+                                                        msgTarget : 'qtip',
+                                                        name: 'supplierRef',
+                                                        id: 'supplierRefId',
+                                                        allowBlank: false,
+                                                        width: 180,
+                                                        disabled: false
+                                                    } 
+                                        ]
+                                }
+                            ]
+                }],
                 buttons: [
                     {
                         text: 'Create',
@@ -595,37 +651,22 @@
                             ajax.loadJson2(url, param, function(data){
                                 if(data.resultType==='YesNo'){
                                     if(data.result==='yes'){
-                                        createNewTaskWindow.hide();
                                         loadTasks();
+                                        createNewTaskForm.form.reset();
+                                        Ext.getCmp('paymentMethodComboId').hide();
+                                        createNewTaskForm.doLayout();
                                     }
                                 }else if(data.resultType==='Message'){
                                     Ext.Msg.alert('Error creating new task',data.result);
                                 }
                             });
                         }
-                    }, {
-                        text:'Cancel',
-                        handler:function(){
-                            createNewTaskWindow.hide();
-                        }
                     }]
             });
 
         }
-        createNewTaskWindow = new Ext.Window({
-            title: 'Add New Task',
-            hidden: true,
-            closable:false,
-            resizable: true,
-            layout: 'fit',
-            width: 420,
-            height: createNewTaskWindowHeight,
-            items  : [createNewTaskForm]
-        });
-
         taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
         loadTasks();
-      }
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
@@ -651,6 +692,9 @@
     function loadTasks(){
         tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
+        if (!hideCompleted || !showAssignedTasksOnly) {
+            updateTaskTab();
+        }
     }
 
     function markAsComplete() {
@@ -679,33 +723,6 @@
         }
     }
 
-    function addNewTask() {
-    
-        taskTypeStore.load({params:{visibility: 1}});
-        
-        Ext.getCmp('linkToClaimToggleId').enable();
-        createNewTaskWindow.show();
-        Ext.getCmp('createNewTaskFormId').getForm().reset();
-        // Hide the Total Loss Payment fields
-        var paymentMethodCombo = Ext.getCmp('paymentMethodComboId');
-        if (paymentMethodCombo){
-            paymentMethodCombo.hide();
-            paymentMethodCombo.allowBlank = true;
-            paymentMethodCombo.validate();
-        }
-        var paymentDate = Ext.getCmp('paymentDateId');
-        if (paymentDate){
-            paymentDate.hide();
-            paymentDate.allowBlank = true;
-            paymentDate.validate();
-        }
-        // Hide the visibility role combo (and label)
-        if (Ext.getCmp('visibilityRoleComboId')) {
-            Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
-            Ext.getCmp('visibilityRoleComboId').hide();
-        }
-    }
-
     function toggleComplete(el) {
         hideCompleted = !hideCompleted;
         loadTasks();
@@ -718,5 +735,6 @@
     
 </script>
 
-<div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
+<div id="tasksCreateWindow"></div>
+<div id="tasksGridId"></div>
 

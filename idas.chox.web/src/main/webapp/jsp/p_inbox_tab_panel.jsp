@@ -240,8 +240,3 @@
             executeResult="true" />
     </div>
 </div>
-<s:if test="taskManagementEnabled">
-    <div id="taskPanelDiv">
-        <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
-    </div>
-</s:if>

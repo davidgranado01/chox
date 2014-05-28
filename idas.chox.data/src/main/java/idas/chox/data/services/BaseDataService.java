@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -217,6 +218,13 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
         return ((Long) totalCountResult.get(0)).intValue();
+    }
+    
+    public Date getTaskMinDueDate(Criteria criteria) {
+        criteria.setProjection(Projections.min("dueDate"));
+        List minDueDateResult = criteria.list();
+        criteria.setProjection(null);
+        return ((Date) minDueDateResult.get(0));
     }
     
     public void addSort(Criteria criteria, String sort, String dir) {

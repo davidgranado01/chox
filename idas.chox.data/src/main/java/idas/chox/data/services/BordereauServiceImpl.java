@@ -93,7 +93,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         criteria.setMaxResults(limit);
 
 
-        return new SearchResult(criteria.list(), totalCount);
+        return new SearchResult(criteria.list(), totalCount, null);
 
     }
 

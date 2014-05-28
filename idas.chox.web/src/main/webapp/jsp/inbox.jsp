@@ -22,6 +22,9 @@
         var doInsurerClaimOwnerAction;
         var manualInvoiceFilter;
         var dashboardActionName;
+        var isChoxAdmin = <s:property value="isChoxAdmin"/>;
+        var isTaskManagementEnabled = <s:property value="taskManagementEnabled"/>;
+        var taskTabTitle = isChoxAdmin ? 'Task' : 'Task<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
@@ -1597,7 +1600,9 @@
                 renderTo: 'tabPanel',
                 autoheight:true,
                 activeTab: selectedIndex,
+                listeners: {beforerender : updateTaskTab},
                 items:[
+                    {contentEl:'taskPanelTab', id:'taskPanelTabId', title: taskTabTitle, autoHeight:'true', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getTaskPanel.action'})},
                     {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInboxTabPanel.action'})},
                     {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action'})},
                     {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})},
@@ -1618,8 +1623,10 @@
                     renderTo: 'tabPanel',
                     autoheight: true,
                     activeTab: selectedIndex,
+                    listeners: {beforerender : updateTaskTab},
                     items:[
                         {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})},
+                        {contentEl:'taskPanelTab', id:'taskPanelTabId', title: taskTabTitle, autoHeight:'true', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getTaskPanel.action'})},
                         {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInboxTabPanel.action'})},
                         {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action'})},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})},
@@ -1631,6 +1638,10 @@
 
 
     </s:else>
+        
+    <s:if test="taskManagementEnabled != true">
+            tabs.remove('taskPanelTabId', true);
+    </s:if>
 
     <s:if test="menuAccessibility.isDashBoardMenuAccessibility!=true">
             tabs.remove('boardPanelTabId', true);
@@ -1748,6 +1759,36 @@
                     });
                 }
             });
+        }
+        
+        function updateTaskTab() {
+            if (isChoxAdmin || !isTaskManagementEnabled) {
+                return;
+            }
+            choxExtAjaxRequest({
+                        url: '/prv/p/getVisibleTasks.action',
+                        success : function(response, opts) {
+                            var resp = Ext.decode(response.responseText);
+                            if (resp && tabs) {
+                                updateTaskTabCount(resp.totalCount, resp.colorCode);
+                            }
+                        },
+                        params: {
+                            hideCompleted : true,
+                            showAssignedTasksOnly : true
+                        }
+            });
+        }
+        
+        function updateTaskTabCount(taskCount, colorCode) {
+            if (tabs) {
+                var color = colorCode;
+                if (taskCount <= 0) { 
+                    color = 'black';
+                }
+                taskTabTitle = 'Task<sup  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</sup>';
+                tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
+            }
         }
 
     </script>

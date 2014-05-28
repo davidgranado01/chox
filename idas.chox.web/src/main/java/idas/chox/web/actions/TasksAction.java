@@ -67,6 +67,7 @@ public class TasksAction extends BaseAction {
     private String sort;
     private String dir;
     private int totalCount;
+    private String colorCode;
     private WebUserUserRoleService webUserUserRoleService;
     private AuditTrailService auditTrailService;
     private InputStream reportStream;
@@ -173,7 +174,7 @@ public class TasksAction extends BaseAction {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",results:").append(jObject.toString()).append("}").toString();
+            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:").append(jObject.toString()).append("}").toString();
             return jsonString;
         }
         return "";
@@ -224,10 +225,12 @@ public class TasksAction extends BaseAction {
                 SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
+                colorCode = searchResult.getColorCode();
             } else {
                 SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
+                colorCode = searchResult.getColorCode();
             }
         } else {
             if (this.getIsCHO()) {

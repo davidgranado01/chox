@@ -297,7 +297,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         }
 
-        return new SearchResult(users, totalCount);
+        return new SearchResult(users, totalCount, null);
     }
 
     

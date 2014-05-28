@@ -5,19 +5,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.*;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.WebUserUserRoleService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.data.events.ChoxEvent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -282,6 +285,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         boolean isCHO = false;
         List<Task> results = new ArrayList<Task>();
+        String colorCode = null;
 
         // select insurer task depends upon the visibility role. 
         ArrayList<String> visibilityRole = new ArrayList<String>();
@@ -641,6 +645,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             
             criteria.add(relatedTaskRestriction);
             totalCount = totalCount(criteria);
+            
+            Date minDueDate = getTaskMinDueDate(criteria);
+            if (minDueDate != null) {
+                int days = DateHelper.getNumberOfDaysBetween(new Date(), minDueDate);
+                colorCode = (days > 0) ? "green" : (days < 0) ? "red" : "orange";
+            } else {
+                colorCode = "green";
+            }
 
             LOG.debug("Found {} tasks", totalCount);
             
@@ -664,7 +676,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         } catch (Exception ex) {
             LOG.error("Exception caught retrieving visible tasks: ", ex);
         }
-        return new SearchResult(results, totalCount);
+        return new SearchResult(results, totalCount, colorCode);
     }
     
     private void sortTasks(Criteria criteria, String sort, String dir) {
