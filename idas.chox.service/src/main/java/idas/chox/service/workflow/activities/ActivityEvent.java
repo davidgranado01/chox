@@ -930,9 +930,9 @@ public enum ActivityEvent {
     }
 
     public void build(ActivityEventGenerator generator, Activity activity, Claim claim) throws Exception {
-        LOG.error("No activity-specific Events to build for activity {}", AopUtils.getTargetClass(activity).getSimpleName());
-        generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
-//        generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
+        LOG.warn("No activity-specific Events to build for activity {}", AopUtils.getTargetClass(activity).getSimpleName());
+//        generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+        generator.startEvent(claim, new StringBuilder().append(this.getName()).toString(), this.getEventId());
         generator.completeEvent(claim);
     }
 
