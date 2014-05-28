@@ -84,7 +84,7 @@ var ajax = function() {
     function handleInvalidCsrfError()
     {
         Ext.MessageBox.show({
-            title: 'Authentication Token Not Found',
+            title: 'Internal Error Occurred',
             msg: INVALID_CSRF_TOKEN_ERROR_MSG,
             width: 300,
             buttons: Ext.MessageBox.OK,

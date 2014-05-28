@@ -74,13 +74,12 @@ public class TimeoutFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (isAjax && (serveletPath.contains(CHECK_VIEWING_STATUS_STRING) || serveletPath.contains(ACTIVITY_MONITOR_CHECK_STRING))) {
+            isHiddenViewingStatusRequest = true;
+        }
+
         if (session.getAttribute(TIME_ACCESSED_SESSION_ATTRIB) != null) {
             long lastTimeAccessed = (Long) session.getAttribute(TIME_ACCESSED_SESSION_ATTRIB);
-
-            if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
-                    && (serveletPath.contains(CHECK_VIEWING_STATUS_STRING) || serveletPath.contains(ACTIVITY_MONITOR_CHECK_STRING))) {
-                isHiddenViewingStatusRequest = true;
-            }
 
             if (System.currentTimeMillis() - lastTimeAccessed > TIMEOUT_PERIOD) {
 
