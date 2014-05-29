@@ -219,7 +219,6 @@
             id: 'taskTypeComboId',
             msgTarget : 'qtip',
             triggerAction: 'all',
-            width: 180,
             selectOnFocus: true,
             mode: 'local',
             editable: false,
@@ -271,7 +270,6 @@
         
         var paymentMethodCombo = new Ext.form.ComboBox({
             store: paymentMethodStore,
-            width: 100,
             fieldLabel: (isCHO) ? 'Requested Payment Method' : 'Actual Payment Method',
             msgTarget : 'qtip',
             hidden : true,
@@ -281,7 +279,6 @@
             displayField: 'paymentMethodValue',
             typeAhead: true,
             mode: 'local',
-            listWidth: 100,
             selectOnFocus: true,
             forceSelection: true,
             triggerAction: 'all',
@@ -357,7 +354,6 @@
                 store: visibilityRoleStore,
                 valueField:'webUserroleRole',
                 displayField:'webUserroleName',
-                width: 170
             });
         }
 
@@ -384,7 +380,6 @@
             }),
             valueField:'myId',
             displayField:'myText',
-            width: 90,
             listeners: {
                 select: { fn:function(combo, value) {
                         //                                        Ext.getCmp('visibilityRoleComboId').clearValue();
@@ -451,8 +446,7 @@
                                                 id: 'dueDateId',
                                                 allowBlank: false,
                                                 format: 'd/m/Y',
-                                                minValue: new Date(),
-                                                width: 90
+                                                minValue: new Date()
                                                 }),
                                                 visibilityCombo,
                                                 visibilityRoleCombo,
@@ -465,8 +459,7 @@
                                                     id: 'paymentDateId',
                                                     hidden : true,
                                                     allowBlank: false,
-                                                    format: 'd/m/Y',
-                                                    width: 90
+                                                    format: 'd/m/Y'
                                                 })
                                             ]
                                 }, 
@@ -498,7 +491,6 @@
                                                     name: 'supplierRef',
                                                     id: 'supplierRefId',
                                                     allowBlank: false,
-                                                    width: 180,
                                                     disabled: false
                                                 }
                                             ]
@@ -581,8 +573,7 @@
                                                         id: 'dueDateId',
                                                         allowBlank: false,
                                                         minValue: new Date(),
-                                                        format: 'd/m/Y',
-                                                        width: 90
+                                                        format: 'd/m/Y'
                                                     }),
                                                     visibilityCombo,
                                                     taskTypeCombo,
@@ -617,7 +608,6 @@
                                                         name: 'supplierRef',
                                                         id: 'supplierRefId',
                                                         allowBlank: false,
-                                                        width: 180,
                                                         disabled: false
                                                     } 
                                         ]
