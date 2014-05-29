@@ -1799,6 +1799,7 @@
     <div id="tabPanel"></div>
 
     <div id="boardPanelTab" class="x-hide-display"></div>
+    <div id="taskPanelTab" class="x-hide-display"></div>
     <div id="filterPanelTab" class="x-hide-display"></div>
     <div id="searchPanelTab" class="x-hide-display"></div>
     <div id="reportPanelTab" class="x-hide-display"></div>
