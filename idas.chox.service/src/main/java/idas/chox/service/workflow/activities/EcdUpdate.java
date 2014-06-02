@@ -12,6 +12,8 @@ import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
 import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class EcdUpdate extends BaseActivity {
     static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);
@@ -99,7 +101,11 @@ public class EcdUpdate extends BaseActivity {
             LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
-        
+        String supportingNoteClean = Jsoup.clean(supportingNote, Whitelist.basic());
+        if (!supportingNote.equals(supportingNoteClean)) {
+            LOG.warn("Supporting note contains forbidden content - possible XSS attack: {}", supportingNote);
+            throw new Exception("Supporting note contains forbidden content");
+        }
         // Check there is no existig ECD with same date and reason (bug#2621)
         List<HireMonitoringEcd> existingECDs = hireMonitoringEcdService.getHireMonitoringEcdsByClaimId(claim.getId());
         for (HireMonitoringEcd existingECD : existingECDs) {
