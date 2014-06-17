@@ -307,7 +307,7 @@ public class TasksAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_INS_USER", "ROLE_CHO_USER"})
+    @Secured ({"ROLE_INS", "ROLE_CHO"})
     public String createNewTask() {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
