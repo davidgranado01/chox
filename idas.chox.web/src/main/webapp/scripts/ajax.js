@@ -13,7 +13,7 @@ Ext.onReady(function(){
 var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
-    var SHOW_AJAX_GENERAL_ERROR_MSG = false;
+    var SHOW_AJAX_GENERAL_ERROR_MSG = true;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
@@ -55,30 +55,8 @@ var ajax = function() {
             
             return true;
         }
-        handleGeneralErrors(response.Errors);
+        handleGeneralError(response.Errors);
         return false;
-    }
-
-    function handleGeneralErrors(errors)
-    {
-        if(SHOW_ERROR_MSG)
-        {
-            if(errors){
-                ui.promptErrorsMsg(errors);
-            }
-            else{
-                // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-                if (SHOW_AJAX_GENERAL_ERROR_MSG) {
-                    Ext.MessageBox.show({
-                        title: 'Error',
-                        msg: AJAX_GENERAL_ERROR_MSG,
-                        width:300,
-                        buttons: Ext.MessageBox.OK,
-                        icon : Ext.MessageBox.ERROR
-                    });
-                }
-            }
-        }
     }
 
     function handleInvalidCsrfError()
@@ -111,6 +89,9 @@ var ajax = function() {
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
+                        ,fn: function reloadThePage(){
+                            window.history.back();
+                        }
                     });
                 }
             }

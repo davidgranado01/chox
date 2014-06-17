@@ -212,7 +212,7 @@ public class ClaimRejection extends BaseActivity {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
         }
 
-        if (!claim.getClaimNumber().equals(claimNumber)) {
+        if (claimNumber!= null && !claimNumber.isEmpty() && !claimNumber.equals(claim.getClaimNumber())) {
             claim.setClaimNumber(claimNumber);
             claimNumberUpdated = true;
         }
