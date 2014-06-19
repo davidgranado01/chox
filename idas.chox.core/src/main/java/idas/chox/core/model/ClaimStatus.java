@@ -154,14 +154,14 @@ public class ClaimStatus {
         return status;
     }
 
-    public static List<String> getInsurerClosedStatus(boolean isManualInvoiceAllowed){
+    public static List<String> getInsurerClosedStatus(boolean isManualInvoiceAllowed) {
         List<String> status = getCompletedStatus(isManualInvoiceAllowed);
         status.add(INVOICE_PAYMENT_LOGGED);
 
         return status;
     }
 
-    public static List<String> getCompletedStatus(boolean isManualInvoiceAllowed){
+    public static List<String> getCompletedStatus(boolean isManualInvoiceAllowed) {
         List<String> status = new ArrayList<String>();
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(INVOICE_REJECTED_ACCEPTED);

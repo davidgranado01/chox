@@ -15,7 +15,6 @@ var ajax = function() {
     var SHOW_ERROR_MSG = true;
     var SHOW_AJAX_GENERAL_ERROR_MSG = true;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
-    var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var INVALID_CSRF_TOKEN_ERROR_MSG = 'Request can not be completed. Please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has expired. Please login again.';
@@ -89,8 +88,13 @@ var ajax = function() {
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
-                        ,fn: function reloadThePage(){
-                            window.history.back();
+                        ,fn: function reloadThePage() {
+                            // When loadJson post request returns other than json format response(e.g. access denied jsp page)
+                            // Jquery throws error and calling the error handler when parsing the response. And the error message is undefined and it lands in this method.
+                            // So we need to reload the page to logout the user(incase if the response is access-denied), otherwise the user 
+                            // need to make another request to know that they have been logged out in the previous request. 
+                            // For futer changes consider the above mentioned scenario before chaning the below line.
+                            location.reload(); 
                         }
                     });
                 }
@@ -123,7 +127,6 @@ var ajax = function() {
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR,
             fn: function redirectToAccessDeniedPage(){
-//                window.location = REDIRECT_ON_ACCESS_DENIED; 
                 logout();
             }
         });
@@ -151,7 +154,6 @@ var ajax = function() {
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
                     fn: function redirectToAccessDeniedPage(){
-//                        window.location = REDIRECT_ON_ACCESS_DENIED; 
                         logout();
                     }
                 });
@@ -192,7 +194,6 @@ var ajax = function() {
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
                     fn: function redirectToAccessDeniedPage(){
-//                        window.location = REDIRECT_ON_ACCESS_DENIED; 
                         logout();
                     }
                 });

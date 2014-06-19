@@ -1524,12 +1524,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return statuses;
     }
-
-    public void setTab(Integer tab) {
-        if (tab >= 0) {
-            getSession().put("tabIndex", tab);
-        }
-    }
+//    public void setTab(Integer tab) {
+//        if (tab >= 0) {
+//            getSession().put("tabIndex", tab);
+//        }
+//    }
 
     public BigDecimal getTotalAmountToPayBeforeNewPenaltyCharge() {
         return totalAmountToPayBeforeNewPenaltyCharge;

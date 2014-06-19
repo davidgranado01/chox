@@ -101,12 +101,13 @@
 
         var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header: ' '});
 
-        var pagingBar = new Ext.PagingToolbar({
+        var taskGridPagingBar = new Ext.PagingToolbar({
             pageSize: taskPanelRecordPerPage,
             store: tasksDataStore,
             displayInfo: true,
             displayMsg: 'Displaying Tasks {0} - {1} of {2}',
             emptyMsg: "No Tasks to display"
+            ,plugins: new Ext.ux.ProgressBarPager()
         });
 
         
@@ -169,14 +170,14 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
-            bbar: pagingBar,
+            bbar: taskGridPagingBar,
             tbar:tbar,
             loadMask: true,
             columns: [
                 checkBoxSelMod,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
                     renderer:function(value,p,r){
-                        return '<a href="javascript:loadClaimDetail('+r.data['claimId']+','+currentTabIndex+');">' + value + '</a>';}},
+                        return '<a href="javascript:loadClaimDetail('+r.data['claimId']+');">' + value + '</a>';}},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},

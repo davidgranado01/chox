@@ -2,31 +2,28 @@ package idas.chox.service.filters;
 
 import idas.chox.core.search.ClaimSearchCriteria;
 
-/**
- *
- * @author John
- */
-public class FilterInterimPayment extends BaseFilter {
+public class AllClaimsFilter extends BaseFilter {
+    private String status;
     private String name;
     private String key;
 
+
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, ClaimSearchCriteria claimSearchCriteria) {
-//        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-        claimSearchCriteria.setShowOpenClaimsOnly(true);
-        claimSearchCriteria.setIsManual(getIsManualFilter());
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
+
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        claimSearchCriteria.setIsInterimPaymentMade(true);
-
-//        if (claimTypeId > -1) {
-//            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-//            claimTypes.add(ClaimType.values()[claimTypeId]);
-//            claimSearchCriteria.setClaimTypes(claimTypes);
-//        }
 
         return claimSearchCriteria;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -46,5 +43,5 @@ public class FilterInterimPayment extends BaseFilter {
     public void setKey(String key) {
         this.key = key;
     }
-
+    
 }

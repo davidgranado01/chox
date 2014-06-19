@@ -439,11 +439,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
-        return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "created", "desc");
-    }
-
-    @Override
-    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
+        
+        Integer start = searchCriteria.getStart();
+        Integer limit = searchCriteria.getLimit();
+        String sort = searchCriteria.getSort();
+        String dir = searchCriteria.getDir();
+            
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());

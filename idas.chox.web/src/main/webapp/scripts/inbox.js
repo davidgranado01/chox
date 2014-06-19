@@ -33,10 +33,10 @@ if (Ext.isWebKit && Ext.webKitVersion >= 535.2) { // probably not the exact vers
 }
 
 function doExportExcel(){
-    if(!ds.getCount()){
+    if(!claimStore.getCount()){
         Ext.Msg.alert('','No record found, Please try again');
     }else{
-        if( ds.getTotalCount()<=6000){
+        if( claimStore.getTotalCount()<=6000){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                 Ext.MessageBox.show({
                     title        : 'Exporting Claims...', 
@@ -135,9 +135,9 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if(ds.getTotalCount()>=resp.exportedClaimCount){
+                }else if(claimStore.getTotalCount()>=resp.exportedClaimCount){
                                 
-                    var i = resp.exportedClaimCount/ds.getTotalCount();
+                    var i = resp.exportedClaimCount/claimStore.getTotalCount();
                     if(resp.writingToFile){
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', 'Please wait - report is now being exported to an Excel file...');
                     }else{

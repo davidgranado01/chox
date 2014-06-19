@@ -112,7 +112,7 @@ div.outer
 
 div.inner
 {
-    width:1000px;
+    width:1270px;
     margin:0px auto;
     text-align:left;
 }
@@ -566,11 +566,11 @@ table.searchForm
 
 table.searchForm td
 {
-    padding:4px; 
+    padding:2px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
     width:16%;
-    border:1px #ccc solid;
+    /*border:1px #ccc solid;*/
     vertical-align:top;
 
 }
@@ -1676,3 +1676,66 @@ br.smallBr
     border-radius:30px;
     box-shadow:1px 1px 1px gray;
 }
+
+.add-task {
+    background-image:url("../images/add_task.gif") !important;
+    height: 20px !important;
+    padding-left: 28px !important;
+}
+
+.back-button {
+    background-image:url("../images/chox_left.gif") !important;
+    height: 20px !important;
+    padding-left: 28px !important;
+}
+
+.export-to-excel {
+    background-image:url("../images/excel.gif") !important;
+    height: 20px !important;
+    padding-left: 28px !important;
+}
+/* This button was generated using CSSButtonGenerator.com */
+
+#QueueGridId .x-grid3-row-selected .x-grid3-cell-inner {
+    
+    font-weight: bold;
+    color:rgb(108, 12, 184);
+    
+/*    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b6cbe4), color-stop(48%, #bfd2e6), color-stop(52%, #8dc0f5), color-stop(100%, #98c5f5));
+    background-image: -webkit-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
+    background-image: -moz-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
+    background-image: -o-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
+    background-image: -ms-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
+    background-image: linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5)*/
+}
+
+#QueueGridId .x-grid3-row-selected {
+    font-weight: bold;
+    background-color: #E2ECF5 !important;
+    /*background-color: #C9E0F5 !important;*/
+}
+
+#QueueGridId .x-grid3-cell-inner {
+    white-space: normal; /* changed from nowrap */
+    color:#15428b;
+    font-size:11px;
+    cursor: pointer;
+
+/*    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(48%, #f9f9f9), color-stop(52%, #e2e2e2), color-stop(100%, #e7e7e7));
+    background-image: -moz-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
+    background-image: -o-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
+    background-image: -ms-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
+    background-image: linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7)*/
+}
+
+/*#QueueGridId .x-grid3-row-over td {
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e4f3ff), color-stop(48%, #d9edff), color-stop(52%, #c2d8f2), color-stop(100%, #c6dcf6)) !important;
+}*/
+
+#QueueGridId .x-grid3-row td {
+    line-height: 16px;
+} 
+
+/*.x-grid3-cell-inner {
+    white-space: normal !important;  changed from nowrap 
+}*/

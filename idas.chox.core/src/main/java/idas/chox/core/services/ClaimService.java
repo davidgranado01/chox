@@ -31,8 +31,6 @@ public interface ClaimService extends DataService {
 
     SearchResult searchClaims(ClaimSearchCriteria searchCriteria);
 
-    SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir);
-
     void updateClaim(Claim claim);
     
     void checkRepairBookedInDateAnomaly(Claim claim);

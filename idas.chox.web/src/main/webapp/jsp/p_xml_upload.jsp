@@ -489,7 +489,7 @@
                 {header: "Error Message", width:210, dataIndex: 'message', sortable: true, resizable: true},
                 {header: "BRE Failure Message", width:210, dataIndex: 'breFailureMessages', sortable: true, resizable: true}
             ],
-            width:1000
+            width:1270
             ,height:50
         });
 
@@ -553,7 +553,7 @@
             defaultDays=1;
             canSelectRow=true;
             loadUploadedFiles();
-            refreshFilterPanel();
+            loadQueueGrid();
         }
     
     }
@@ -744,7 +744,7 @@
             Ext.MessageBox.show({
                 title: title,
                 msg: msg,
-                width : 1000,
+                width : 1270,
                 buttons: Ext.MessageBox.OK
             });
 
@@ -754,7 +754,7 @@
             var record = grid.getStore().getAt(rowIndex);
             if(record.get('claimId')>0){
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
-                loadClaimDetail(record.get('claimId'), currentTabIndex);
+                loadClaimDetail(record.get('claimId'));
             }
         }
     }

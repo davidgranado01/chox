@@ -1,13 +1,11 @@
 package idas.chox.service.filters;
 
 import idas.chox.core.model.Filter;
-import idas.chox.core.search.ClaimSearchCriteria;
-import idas.chox.core.services.ClaimService;
 
 public abstract class BaseFilter implements Filter {
 
-    private ClaimService claimService;
-    private Integer count;
+//    private ClaimService claimService;
+//    private Integer count;
     private boolean isManualFilter = false;
     private boolean isFilterWorkGroup = false;
     private boolean isFilterOwnership = false;
@@ -80,12 +78,12 @@ public abstract class BaseFilter implements Filter {
         this.isFilterSupplierOwnership = isFilterSupplierOwnership;
     }
 
-    @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, int insurerId, int choId, int claimTypeId) {
-        return getClaimSearchCriteria(insurerId, choId, claimTypeId);
-    }
-
-    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId, int claimTypeId) {return null;};
+//    @Override
+//    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, ClaimSearchCriteria claimSearchCriteria) {
+//        return getClaimSearchCriteria();
+//    }
+//
+//    public ClaimSearchCriteria getClaimSearchCriteria() {return null;};
 
     @Override
     public boolean getIsManualFilter() {

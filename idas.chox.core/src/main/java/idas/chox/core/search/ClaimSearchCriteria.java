@@ -564,4 +564,150 @@ public class ClaimSearchCriteria implements Serializable {
             this.hireAndRepairSearchParamIds = hireAndRepairSearchParamIds;
         }
     }
+    
+       /*
+     * Please note this method will return only Claim statuses from the
+     * loaded(model) claimSearchCriteria and not from available Claim statuses.
+     */
+    public String getClaimStatusesAsString() {
+
+        if (getStatuses() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (String c : getStatuses()) {
+                returnString.append(c).append(",");
+            }
+            return returnString.toString().isEmpty() ? "" : returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+
+    /*
+     * Please note this method will return only Insurer Ids from the
+     * loaded(model) claimSearchCriteria and not from available Insurer Id.
+     */
+    public String getInsurerIdsAsString() {
+
+        if (getInsurerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getInsurerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+
+    /*
+     * Please note this method will return only Supplier Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Id.
+     */
+    public String getSupplierIdsAsString() {
+
+        if (getSupplierIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getSupplierIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+
+    /*
+     * Please note this method will return only Workgroup Ids from the
+     * loaded(model) claimSearchCriteria and not from available Workgroup Id.
+     */
+    public String getWorkgroupIdsAsString() {
+
+        if (getWorkgroupIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getWorkgroupIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only Supplier Claim owner Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
+     */
+    public String getSupplierClaimOwnerIdsAsString() {
+
+        if (getSupplierClaimOwnerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getSupplierClaimOwnerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+     /*
+     * Please note this method will return only Supplier Claim owner Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
+     */
+    public String getClaimOwnerIdsAsString() {
+
+        if (getClaimOwnerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getClaimOwnerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only claim types from the
+     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
+     */
+    public String getClaimTypesValueAsString() {
+
+        if (getClaimTypes() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (ClaimType c : getClaimTypes()) {
+                returnString.append(c.getClaimTypeValue()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only hire and repair search param from the
+     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
+     */
+    public String getHireAndRepairSearchParamAsString() {
+
+        if (getHireAndRepairSearchParamIds()!= null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getHireAndRepairSearchParamIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only Liability value from the
+     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
+     */
+    public String getLiabilityStatusesValueAsString() {
+
+        if (getLiabilityStatuses() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (LiabilityStatus s : getLiabilityStatuses()) {
+                returnString.append(s.getLiablityValue()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+
+    
 }

@@ -9,10 +9,8 @@
             width:300,
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR
-            ,fn: function redirectToInboxPage(){
+            ,fn: function reloadThePage(){
                 window.history.back();
-//               loadInboxGetRequest();
-//                logout();
             }
         });
     })

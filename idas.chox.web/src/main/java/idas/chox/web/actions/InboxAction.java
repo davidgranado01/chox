@@ -37,11 +37,20 @@ public class InboxAction extends BaseAction {
     private ClaimService claimService;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList = new ArrayList<Integer>();;
-    private int showHistory;
+//    private int showHistory;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
     private String jsonData;
+    private boolean loadingInboxPageFirstTimeAfterLogin;
+
+    public boolean isLoadingInboxPageFirstTimeAfterLogin() {
+        return loadingInboxPageFirstTimeAfterLogin;
+    }
+
+    public void setLoadingInboxPageFirstTimeAfterLogin(boolean loadingInboxPageFirstTimeAfterLogin) {
+        this.loadingInboxPageFirstTimeAfterLogin = loadingInboxPageFirstTimeAfterLogin;
+    }
 
     public int getActivityMonitorRequestInterval() {
         return claimService.getActivityMonitorRequestInterval();
@@ -63,9 +72,9 @@ public class InboxAction extends BaseAction {
         this.lookupService = lookupService;
     }
 
-    public int getShowHistory() {
-        return showHistory;
-    }
+//    public int getShowHistory() {
+//        return showHistory;
+//    }
 
     public boolean isShowSplash() {
         if (!getAuthenticatedUser().isShowSplash()) {
@@ -78,17 +87,17 @@ public class InboxAction extends BaseAction {
         this.showSplash = showSplash;
     }
 
-    public void setShowHistory(int showHistory) {
-        LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
-        if (showHistory == 10) {
-            if(getSession()!= null) {
-                getSession().put("tabIndex", 0);
-            }
-            this.showHistory = 0;
-        } else {
-            this.showHistory = showHistory;
-        }
-    }
+//    public void setShowHistory(int showHistory) {
+//        LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
+//        if (showHistory == 10) {
+//            if(getSession()!= null) {
+//                getSession().put("tabIndex", 0);
+//            }
+//            this.showHistory = 0;
+//        } else {
+//            this.showHistory = showHistory;
+//        }
+//    }
 
     @Override
     public String execute() throws Exception {
@@ -102,6 +111,12 @@ public class InboxAction extends BaseAction {
          * where the insurer switch claim to another insurer and returning to the inbox page instead navigating to the claim detail page.
          */
         removeRedirectionParamInSession();
+        if (getSession().containsKey("loadingInboxPageFirstTimeAfterLogin")) {
+            loadingInboxPageFirstTimeAfterLogin = false;
+        } else {
+            getSession().put("loadingInboxPageFirstTimeAfterLogin", true);
+            loadingInboxPageFirstTimeAfterLogin = true;
+        }
         return SUCCESS;
     }
     
@@ -235,15 +250,15 @@ public class InboxAction extends BaseAction {
     }
 
     /*********** END - BATCH UPDATE ACCESS RIGHT **************/
-    public Integer getTab() {
-        if (getSession().containsKey("tabIndex")) {
-            LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
-            return (Integer) getSession().get("tabIndex");
-        } else {
-            LOG.debug("getTab is called and the returning value is 0");
-            return 0;
-        }
-    }
+//    public Integer getTab() {
+//        if (getSession().containsKey("tabIndex")) {
+//            LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
+//            return (Integer) getSession().get("tabIndex");
+//        } else {
+//            LOG.debug("getTab is called and the returning value is 0");
+//            return 0;
+//        }
+//    }
 
     public ApplicationAccessibility getApplicationAccessibility() {
         return applicationAccessibility;
@@ -340,35 +355,35 @@ public class InboxAction extends BaseAction {
         return getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership();
     }
 
-    public int getFilterOrgId() {
-        if (getSession().containsKey("filterOrgId")) {
-            return (Integer) getSession().get("filterOrgId");
-        } else {
-            return -1;
-        }
-    }
-
-    public int getFilterClaimTypeId() {
-        if (getSession().containsKey("filterClaimTypeId")) {
-            return (Integer) getSession().get("filterClaimTypeId");
-        } else {
-            return -1;
-        }
-    }
-    
-    public String getGridTitle() {
-        if (getSession().containsKey("gridTitle")) {
-            return (String) getSession().get("gridTitle");
-        } else {
-            return "";
-        }
-    }
-    
-    public String getFilterKey() {
-        if (getSession().containsKey("filterKey")) {
-            return (String) getSession().get("filterKey");
-        } else {
-            return "";
-        }
-    }
+//    public int getFilterOrgId() {
+//        if (getSession().containsKey("filterOrgId")) {
+//            return (Integer) getSession().get("filterOrgId");
+//        } else {
+//            return -1;
+//        }
+//    }
+//
+//    public int getFilterClaimTypeId() {
+//        if (getSession().containsKey("filterClaimTypeId")) {
+//            return (Integer) getSession().get("filterClaimTypeId");
+//        } else {
+//            return -1;
+//        }
+//    }
+//
+//    public String getGridTitle() {
+//        if (getSession().containsKey("gridTitle")) {
+//            return (String) getSession().get("gridTitle");
+//        } else {
+//            return "";
+//        }
+//    }
+//
+//    public String getFilterKey() {
+//        if (getSession().containsKey("filterKey")) {
+//            return (String) getSession().get("filterKey");
+//        } else {
+//            return "";
+//        }
+//    }
 }

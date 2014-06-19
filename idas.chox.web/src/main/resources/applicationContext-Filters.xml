@@ -3,7 +3,19 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
        default-autowire="byName">
-
+       
+    <bean id="AllClaims" class="idas.chox.service.filters.AllClaimsFilter" >
+        <property name="name" value="All Claims"/>
+        <property name="key" value="AllClaims"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+    
     <bean id="RejectedClaims" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Rejected Claims"/>
         <property name="key" value="RejectedClaims"/>
@@ -350,7 +362,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterAwaitingLiabilityResolution" >
         <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
         <property name="key" value="AwaitingLiabilityResolution"/>
         <property name="status" value="AwaitingLiabilityResolution"/>

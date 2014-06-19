@@ -6,7 +6,7 @@ import idas.chox.core.search.ClaimSearchCriteria;
  *
  * @author emmanuel
  */
-public interface Filter {
+public interface Filter { 
 
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_REJECTED_SUBSCRIBER_CLAIMS = "RejectedSubscriberClaims";
@@ -62,6 +62,6 @@ public interface Filter {
     boolean getIsCheckEngineers();
     boolean getIsManualFilter();
 
-    ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId, int claimTypeid);
+    ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria);
     
 }

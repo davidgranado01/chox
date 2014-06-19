@@ -62,7 +62,7 @@
 
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
-            width:1000,
+            width:1270,
             activeTab: selectedTab,
             frame:false,
             plain:true,
@@ -371,7 +371,7 @@
 
 </script>
 <div id="claimDetailScreenDiv">
-    <div style="width:1000px">
+    <div style="width:1270px">
 
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
 

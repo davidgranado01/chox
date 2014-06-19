@@ -33,7 +33,7 @@ import idas.chox.service.reports.ClaimsGridExportReport;
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
-    private static final int MAX_EXPORT_SIZE = 65535; // Cannot generate an Excel file with more lines than this
+    private static final int MAX_EXPORT_SIZE = 65536; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
     private String errorMessage;
@@ -130,17 +130,17 @@ public class ExcelGeneratorAction extends BaseAction {
         return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + ",tooManyRows:" + tooManyRows + "}";
     }
 
-    public void setTab(int tab) {
-        LOG.debug("setTab is called with the tab value of   '{}'", tab);
-        if (tab > 0) {
-            getSession().put("tabIndex", tab);
-            LOG.debug("tabindex is put in the session with the value of '{}'", tab);
-        } else {
-            getSession().put("tabIndex", 0);
-            LOG.debug("tabindex is put in the session with the value of 0");
-        }
-
-    }
+//    public void setTab(int tab) {
+//        LOG.debug("setTab is called with the tab value of   '{}'", tab);
+//        if (tab > 0) {
+//            getSession().put("tabIndex", tab);
+//            LOG.debug("tabindex is put in the session with the value of '{}'", tab);
+//        } else {
+//            getSession().put("tabIndex", 0);
+//            LOG.debug("tabindex is put in the session with the value of 0");
+//        }
+//
+//    }
 
     public String getErrorMessage() {
         return errorMessage;
@@ -167,9 +167,16 @@ public class ExcelGeneratorAction extends BaseAction {
 
         if (getSession() != null) {
 
-            c = (ClaimSearchCriteria) getSession().get("searchReportCriteria");
+            c = (ClaimSearchCriteria) getSession().get("searchCriteria");
 
             if (c != null && c.getLimit() > 0) {
+                
+                c.setStart(0);
+                c.setLimit(MAX_EXPORT_SIZE);
+                // Excel report should be exported as it is sorted in the UI.
+//                c.setSort("created");
+//                c.setDir("desc");
+                
                 SearchResult searchResult = claimService.searchClaims(c);
                 List<Claim> claims = searchResult.getResult();
                 LOG.debug("Total No of Claims : '{}'", claims.size());

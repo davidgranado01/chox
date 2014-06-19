@@ -78,7 +78,11 @@ public class SecureDataService extends BaseDataService {
 
         Integer choId = this.getSecurityInfoProvider().getCurrentUser().getChorganisation().getId();
         if (choId == null) {
-            LOG.error("Cannot get insurers for null choId.");
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Cannot get insurers for null choId.", ex);
+            }
             return ids;
         }
 
@@ -114,7 +118,11 @@ public class SecureDataService extends BaseDataService {
 
         Integer insurerId = this.getSecurityInfoProvider().getCurrentUser().getInsurer().getId();
         if (insurerId == null) {
-            LOG.error("Cannot get suppliers for null insurerId.");
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Cannot get suppliers for null insurerId.", ex);
+            }
             return ids;
         }
 

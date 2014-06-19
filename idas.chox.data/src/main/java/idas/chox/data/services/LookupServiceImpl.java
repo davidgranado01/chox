@@ -267,7 +267,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (currentUser.isAnInsurer()) {
             return getSuppliers(currentUser.getInsurer().getId(),excludeManualCHO);
         } else {
-            LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName(), ex);
+            }
             return new ArrayList<Chorganisation>();
         }
     }
@@ -304,7 +308,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (!currentUser.isAnInsurer()){
             return getInsurers(currentUser.getChorganisation().getId());
         } else {
-            LOG.error("Trying to get insurers for an Insurer user ({})", currentUser.getDisplayName());
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Trying to get insurers for an Insurer user ({}): ", currentUser.getDisplayName(), ex);
+            }
             return new ArrayList<Insurer>();
         }
     }
@@ -337,7 +345,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception caught getting Sites for Insurer with ID={}: {}", insurerId, ex.getMessage());
+            LOG.error("Exception caught getting Sites for Insurer with ID={}: ", insurerId, ex);
         }
         return sites;
     }
@@ -374,7 +382,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception caught getting Teams by Site for Insurer with ID={}: {}", insurerId, ex.getMessage());
+            LOG.error("Exception caught getting Teams by Site for Insurer with ID={}: ", insurerId, ex);
         }
         return teams;
     }
@@ -394,7 +402,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         List<Insurer> results = new ArrayList<Insurer>();
 
         if (choId == null) {
-            LOG.error("Cannot get insurers for null choId.");
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Cannot get insurers for null choId.", ex);
+            }
             return results;
         }
 
@@ -423,7 +435,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception caught getting Insurers for CHO with ID={}: {}", choId, ex.getMessage());
+            LOG.error("Exception caught getting Insurers for CHO with ID={}:", choId, ex);
         }
 
         return results;
@@ -436,7 +448,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         List<Chorganisation> results = new ArrayList<Chorganisation>();
 
         if (insurerId == null) {
-            LOG.error("Cannot get suppliers for null insurerId.");
+            try {
+                throw new Exception();
+            } catch(Exception ex) {
+                LOG.error("Cannot get suppliers for null insurerId.", ex);
+            }
             return results;
         }
 
@@ -466,7 +482,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception caught getting suppliers for insurer with ID={}: {}", insurerId, ex.getMessage());
+            LOG.error("Exception caught getting suppliers for insurer with ID={}:", insurerId, ex);
         }
 
         return results;

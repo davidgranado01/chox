@@ -36,11 +36,20 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private int totalCount;
     private String actionResult;
     private String filterName;
-    private int filterOrgId;
-    private int filterClaimTypeId = -1;
+//    private int filterOrgId;
+//    private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
     private boolean canLoadData = true;
-    private boolean inbox;
+//    private boolean inbox;
+    private boolean loadSearchPanelSelectionFromSession;
+
+    public boolean isLoadSearchPanelSelectionFromSession() {
+        return loadSearchPanelSelectionFromSession;
+    }
+
+    public void setLoadSearchPanelSelectionFromSession(boolean loadSearchPanelSelectionFromSession) {
+        this.loadSearchPanelSelectionFromSession = loadSearchPanelSelectionFromSession;
+    }
 
     public boolean isCanLoadData() {
         return canLoadData;
@@ -60,102 +69,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return claimStatusesLookupItem;
     }
     
-    /*
-     * Please note this method will return only Claim statuses from the
-     * loaded(model) claimSearchCriteria and not from available Claim statuses.
-     */
-    public String getClaimStatusesAsString() {
-
-        if (claimSearchCriteria.getStatuses() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (String c : claimSearchCriteria.getStatuses()) {
-                returnString.append(c).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-
-    /*
-     * Please note this method will return only Insurer Ids from the
-     * loaded(model) claimSearchCriteria and not from available Insurer Id.
-     */
-    public String getInsurerIdsAsString() {
-
-        if (claimSearchCriteria.getInsurerIds() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getInsurerIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-
-    /*
-     * Please note this method will return only Supplier Ids from the
-     * loaded(model) claimSearchCriteria and not from available Supplier Id.
-     */
-    public String getSupplierIdsAsString() {
-
-        if (claimSearchCriteria.getSupplierIds() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getSupplierIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-
-    /*
-     * Please note this method will return only Workgroup Ids from the
-     * loaded(model) claimSearchCriteria and not from available Workgroup Id.
-     */
-    public String getWorkgroupIdsAsString() {
-
-        if (claimSearchCriteria.getWorkgroupIds() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getWorkgroupIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-    
-    /*
-     * Please note this method will return only Supplier Claim owner Ids from the
-     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
-     */
-    public String getSupplierClaimOwnerIdsAsString() {
-
-        if (claimSearchCriteria.getSupplierClaimOwnerIds() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getSupplierClaimOwnerIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-    
-     /*
-     * Please note this method will return only Supplier Claim owner Ids from the
-     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
-     */
-    public String getClaimOwnerIdsAsString() {
-
-        if (claimSearchCriteria.getClaimOwnerIds() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getClaimOwnerIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-    
+ 
     public List<LookupItem> getClaimTypesAsLookupItem() {
         if (claimTypesLookupItem == null) {
             claimTypesLookupItem = this.lookupService.getClaimTypes(getAuthenticatedUser());
@@ -163,37 +77,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return claimTypesLookupItem;
     }
 
-    /*
-     * Please note this method will return only claim types from the
-     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
-     */
-    public String getClaimTypesValueAsString() {
-
-        if (claimSearchCriteria.getClaimTypes() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (ClaimType c : claimSearchCriteria.getClaimTypes()) {
-                returnString.append(c.getClaimTypeValue()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-    
-    /*
-     * Please note this method will return only hire and repair search param from the
-     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
-     */
-    public String getHireAndRepairSearchParamAsString() {
-
-        if (claimSearchCriteria.getHireAndRepairSearchParamIds()!= null) {
-            StringBuilder returnString = new StringBuilder();
-            for (Integer i : claimSearchCriteria.getHireAndRepairSearchParamIds()) {
-                returnString.append(i.toString()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
     
     public List<LookupItem> getLiabilityStatusesAsLookupItem() {
         return getLiabilityStatusesAsLookupItem(false);
@@ -206,22 +89,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return liabilityStatusesLookupItem;
     }
     
-    /*
-     * Please note this method will return only Liability value from the
-     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
-     */
-    public String getLiabilityStatusesValueAsString() {
-
-        if (claimSearchCriteria.getLiabilityStatuses() != null) {
-            StringBuilder returnString = new StringBuilder();
-            for (LiabilityStatus s : claimSearchCriteria.getLiabilityStatuses()) {
-                returnString.append(s.getLiablityValue()).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-
     public String getStatusesJsonString() {
         String statusesJson = JSONArray.fromObject(getClaimStatusesAsLookupItem()).toString();
         return "{totalCount:" + claimStatusesLookupItem.size() + ", results:" + statusesJson + "}";
@@ -260,6 +127,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public List getInsurers() {
         if (insurers == null) {
+            if (getIsInsurer()) {
+                return new ArrayList<Insurer>();
+            }
             insurers = this.lookupService.getInsurers();
         }
         return insurers;
@@ -314,10 +184,18 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         if (canLoadData) {
             LOG.debug("In doSearchClaim().");
-            Integer start = claimSearchCriteria.getStart();
-            Integer limit = claimSearchCriteria.getLimit();
-            String sort = claimSearchCriteria.getSort();
-            String dir = claimSearchCriteria.getDir();
+//            Integer start = claimSearchCriteria.getStart();
+//            Integer limit = claimSearchCriteria.getLimit();
+//            String sort = claimSearchCriteria.getSort();
+//            String dir = claimSearchCriteria.getDir();
+            
+            if (claimSearchCriteria.getSort() == null || claimSearchCriteria.getSort().isEmpty()) {
+                claimSearchCriteria.setSort("created");
+            }
+            
+            if (claimSearchCriteria.getDir() == null || claimSearchCriteria.getDir().isEmpty()) {
+                claimSearchCriteria.setDir("desc");
+            }
 
             if (!claimSearchCriteria.validate()) {
                 LOG.warn("Claim search criteria are invalid.");
@@ -329,31 +207,29 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 results = new ArrayList<Object>();
                 return SUCCESS;
             }
-            getSession().put("searchCriteria", claimSearchCriteria);
             
-            filterName = getFilterName();
-            filterOrgId = getFilterOrgId();
-            filterClaimTypeId = getFilterClaimTypeId();
+//            filterName = getFilterName();
+//            filterOrgId = getFilterOrgId();
+//            filterClaimTypeId = getFilterClaimTypeId();
             if (!StringHelper.isEmpty(filterName)) {
                 Filter filter = filterService.getFilter(filterName);
-                ClaimSearchCriteria filterCriteria;
+//                ClaimSearchCriteria filterCriteria;
                 if (this.getIsCHO()) {
-                    LOG.debug("Filtering on insurerId={}", filterOrgId);
-                    filterCriteria = filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId);
+//                    LOG.debug("Filtering on insurerId={}", filterOrgId);
+                    filter.getClaimSearchCriteria(Boolean.TRUE, claimSearchCriteria);
                 } else if (this.getIsInsurer()) {
-                    LOG.debug("Filtering on choId={}", filterOrgId);
-                    filterCriteria = filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId);
+//                    LOG.debug("Filtering on choId={}", filterOrgId);
+                    filter.getClaimSearchCriteria(Boolean.FALSE, claimSearchCriteria);
                 } else {
-                    filterCriteria = filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId);
+                    filter.getClaimSearchCriteria(null, claimSearchCriteria);
                     LOG.debug("No search filter on organisation");
                 }
 
-                mergeClaimSearchCriteria(filterCriteria);
-                claimSearchCriteria = filterCriteria;
+//                mergeClaimSearchCriteria(filterCriteria);
+//                claimSearchCriteria = filterCriteria;
             }
 
-            getSession().put("searchReportCriteria", null); 
-            getSession().put("searchReportCriteria", claimSearchCriteria);
+            getSession().put("searchCriteria", claimSearchCriteria);
 
             LOG.debug("Calling search claim service");
             if (claimSearchCriteria == null) {
@@ -361,7 +237,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 results = new ArrayList<Object>();
                 return SUCCESS;
             }
-            SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
+            SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria);
             LOG.debug("Search claim service retrieved {} results", searchResult.getTotalCount());
 
             results = searchResult.getResult();
@@ -369,6 +245,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             LOG.debug("Returning SUCCESS from doSearchClaim() action");
             return SUCCESS;
         } else {
+            getSession().put("searchCriteria", null);
             results = new ArrayList<Object>();
             return SUCCESS;
         }
@@ -402,10 +279,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     @Override
     public void prepare() throws Exception {
 
-        if (claimSearchCriteria == null) {
-            if (getSession() != null && getSession().containsKey("searchCriteria")) {
+        if (claimSearchCriteria == null) { 
+            if (loadSearchPanelSelectionFromSession && getSession() != null && getSession().containsKey("searchCriteria")) {
                 claimSearchCriteria = (ClaimSearchCriteria) getSession().get("searchCriteria");
-            } else {
+            } else { 
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
@@ -416,52 +293,52 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return actionResult;
     }
 
-    public String getFilterName() {
-        if (getSession().containsKey("filterKey") && inbox) {
-            return (String) getSession().get("filterKey");
-        } else {
-            return filterName;
-        }
-    }
+//    public String getFilterName() {
+//        if (getSession().containsKey("filterKey") && inbox) {
+//            return (String) getSession().get("filterKey");
+//        } else {
+//            return filterName;
+//        }
+//    }
 
-    public int getFilterOrgId() {
-        if (getSession().containsKey("filterOrgId") && inbox) {
-            return (Integer) getSession().get("filterOrgId");
-        } else {
-            return filterOrgId;
-        }
-    }
+//    public int getFilterOrgId() {
+//        if (getSession().containsKey("filterOrgId") && inbox) {
+//            return (Integer) getSession().get("filterOrgId");
+//        } else {
+//            return filterOrgId;
+//        }
+//    }
 
     public void setFilterName(String filterName) {
         this.filterName = filterName;
     }
 
-    public void setFilterOrgId(int filterOrgId) {
-        this.filterOrgId = filterOrgId;
-    }
+//    public void setFilterOrgId(int filterOrgId) {
+//        this.filterOrgId = filterOrgId;
+//    }
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
     }
 
-    public int getFilterClaimTypeId() {
-        if (getSession().containsKey("filterClaimTypeId") && inbox) {
-            return (Integer) getSession().get("filterClaimTypeId");
-        } else {
-            return filterClaimTypeId;
-        }
-    }
-
-    public void setFilterClaimTypeId(int filterClaimTypeId) {
-        this.filterClaimTypeId = filterClaimTypeId;
-    }
-
-    public boolean isInbox() {
-        return inbox;
-    }
-
-    public void setInbox(boolean inbox) {
-        this.inbox = inbox;
-    }
+//    public int getFilterClaimTypeId() {
+//        if (getSession().containsKey("filterClaimTypeId") && inbox) {
+//            return (Integer) getSession().get("filterClaimTypeId");
+//        } else {
+//            return filterClaimTypeId;
+//        }
+//    }
+//
+//    public void setFilterClaimTypeId(int filterClaimTypeId) {
+//        this.filterClaimTypeId = filterClaimTypeId;
+//    }
+//
+//    public boolean isInbox() {
+//        return inbox;
+//    }
+//
+//    public void setInbox(boolean inbox) {
+//        this.inbox = inbox;
+//    }
     
 }

@@ -24,8 +24,8 @@ Ext.onReady(function() {
      */
     choxDataStore = function(config) {
         Ext.apply(this, {url : ''}, config);
-        choxDataStore.superclass.constructor.call(this, {
-            proxy: new Ext.data.HttpProxy({url: contextPath + config.url, method: 'POST'})
+        choxDataStore.superclass.constructor.call(this, { 
+            proxy: new Ext.data.HttpProxy({url: contextPath + config.url, method: 'POST', timeout : config.timeout ? config.timeout : 60000})
         });
         this.on('beforeload', function(store,records,options) {
                 var temporaryParams = {};
@@ -56,7 +56,8 @@ Ext.onReady(function() {
             method: 'POST',
             params : Ext.apply({}, csrfParam, config.params),
             scripts:true, 
-            text : config.text || ''
+            text : config.text || '',
+            callback : config.callback
         }
     };
 
@@ -111,24 +112,19 @@ function logout() {
 // jquery way of submitting http form.
 function loadHome() {
     var homeURL = contextPath + '/prv/inbox.action';
-    var form = $('<form action="' + homeURL + '" method="post">' +
-                        '<input type="hidden" name="showHistory" value="'+ 1 +'"/>' +
-                        '</form>');
-                    $('body').append(form);
-                    choxJqueryHttpSubmit($(form));
+    var form = $('<form action="' + homeURL + '" method="post"> </form>');
+    $('body').append(form);
+    choxJqueryHttpSubmit($(form));
 }
 
 // Extjs way of submitting http form. This can be shortened as loadHome() method.
-function loadClaimDetail(claimId, tabIndex) {
+function loadClaimDetail(claimId) {
     isCsrfParamPresent();
     var claimDetailPageUrl = contextPath + '/prv/openClaimDetail.action';
     var tempParams = {};
     if (claimId) {
         tempParams['id'] = claimId;
     }
-    if (tabIndex) {
-        tempParams['tab'] =  tabIndex;
-    } 
     if (Ext.get('claimDetailScreenDiv')) {
         Ext.get('claimDetailScreenDiv').mask("Loading Please Wait...");
     }
@@ -151,11 +147,6 @@ function loadClaimDetail(claimId, tabIndex) {
     });
     claimForm.doLayout();
     claimForm.getForm().submit();
-}
-
-// Use this loading inbox function only for token missing error. Otherwise please use loadInbox function.
-function loadInboxGetRequest() {
-    window.location = contextPath + '/prv/inbox.action?showHistory=1';
 }
 
 // Extjs way of submitting http form. This can be shortened as loadHome() method.

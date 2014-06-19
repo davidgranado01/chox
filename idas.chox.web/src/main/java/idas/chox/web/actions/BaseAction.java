@@ -96,15 +96,15 @@ public class BaseAction extends ActionSupport implements SessionAware {
         this.session = session;
     }
 
-    public boolean isSearchHistory() {
-        return session.containsKey("searchHistory");
-    }
-
-    public void setSearchHistory(boolean searchHistory) {
-        if (session != null && !session.containsKey("searchHistory") && searchHistory) {
-            session.put("searchHistory", searchHistory);
-        }
-    }
+//    public boolean isSearchHistory() {
+//        return session.containsKey("searchHistory");
+//    }
+//
+//    public void setSearchHistory(boolean searchHistory) {
+//        if (session != null && !session.containsKey("searchHistory") && searchHistory) {
+//            session.put("searchHistory", searchHistory);
+//        }
+//    }
 
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
