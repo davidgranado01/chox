@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Filter;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.FilterService;
 import idas.chox.service.security.ApplicationAccessibility;
 
@@ -20,6 +22,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
     private List<Filter> availableFilters;
     private BeanFactory beanFactory;
     private ApplicationAccessibility applicationAccessibility;
+    private SecurityInfoProvider securityInfoProvider;
 
     @Override
     public List<Filter> getAvailableFilters(WebUser webUser) {
@@ -71,6 +74,27 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isClaimUploadEnabled()) {
                             LOG.debug("Not adding queue '{}' as claim upload not enabled.", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT)
+                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentTeamEnable()
+                                && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MI)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+                            LOG.debug("Not adding queue '{}' as payment team is enabled and user is PC only", filter.getName());
+                            continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED)
+                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentTeamEnable()
+                                && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MI)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_UPLOAD)
+                                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+                            LOG.debug("Not adding queue '{}' as payment team is enabled and user is PC only", filter.getName());
+                            continue;
+                        }  else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM)
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentTeamEnable()) {
+                            LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
+                            continue;
                         }
                         
                      
@@ -109,5 +133,13 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
 
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
+    }
+
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return securityInfoProvider;
+    }
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
     }
 }

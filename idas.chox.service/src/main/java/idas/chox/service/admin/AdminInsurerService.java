@@ -526,7 +526,18 @@ public class AdminInsurerService extends SecureDataService {
 
         return this.actionResponse;
     }
-    
+
+    public ActionResponse triggerInsurerWorkgroupStpExcluded(Workgroup workgroup, int insurerId) {
+        this.actionResponse = new ActionResponse();
+
+        Insurer insurer = insurerService.getInsurer(insurerId);
+
+        workgroup.setStpExcluded(!workgroup.isStpExcluded());
+        workgroupService.saveWorkgroup(workgroup);
+
+        return this.actionResponse;
+    }
+
     public ActionResponse updateInsurerIntelligentNote(InsurerIntelligentNote iin) {
         this.actionResponse = new ActionResponse();
         insurerIntelligentNoteService.updateInsurerIntelligentNote(iin);

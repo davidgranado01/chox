@@ -9,6 +9,7 @@ public class Workgroup extends Entity implements Serializable {
     private String team;
     private Insurer insurer;
     private boolean status;
+    private boolean stpExcluded;
 
     public boolean isStatus() {
         return status;
@@ -48,5 +49,17 @@ public class Workgroup extends Entity implements Serializable {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+    public boolean isStpExcluded() {
+        return stpExcluded;
+    }
+
+    public String GetStpExcludedDesc() {
+        return stpExcluded ? "On" : "Off";
+    }
+
+    public void setStpExcluded(boolean stpExcluded) {
+        this.stpExcluded = stpExcluded;
     }
 }

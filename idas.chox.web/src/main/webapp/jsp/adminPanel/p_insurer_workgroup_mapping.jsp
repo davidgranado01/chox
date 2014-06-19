@@ -23,6 +23,10 @@
                 {name:'insurerName'},
                 {name:'status'},
                 {name:'statusDesc'},
+        <s:if test="insurerPaymentsTeamEnabled">
+                {name:'stpExcluded'},
+                {name:'stpExcludedDesc'},
+        </s:if>
                 {name:'createdBy'},
                 {name:'createdDate'}
             ]
@@ -46,8 +50,11 @@
                 {header: "Workgroup", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Site", width: 80, dataIndex: 'site', sortable: true, resizable: true},
                 {header: "Team", width: 100, dataIndex: 'team', sortable: true, resizable: true},
-                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>"}},
-                {header: "Action", width: 60, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>";}},
+        <s:if test="insurerPaymentsTeamEnabled">
+                {header: "STP Excluded", width: 50, dataIndex: 'stpExcludedDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>";}},
+        </s:if>
+                {header: "Action", width: 60, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>";}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -66,11 +73,21 @@
 
     function workgroup_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = workgroup_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==4){
+        if(columnIndex===4){
             workgroup_triggerStatusUpdateRecord(gridView);
-        }else if(columnIndex==5){
+        }
+        <s:if test="insurerPaymentsTeamEnabled">
+        else if(columnIndex===5){
+            workgroup_triggerStatusStpExcluded(gridView);
+        } else if(columnIndex===6){
             workgroup_triggerStatusRemoveRecord(gridView);
         }
+        </s:if>
+        <s:else >
+        else if(columnIndex===5){
+            workgroup_triggerStatusRemoveRecord(gridView);
+        }
+        </s:else>
     }
 
     function workgroup_triggerStatusAddRecord(){
@@ -100,6 +117,15 @@
 
         var workgroupId = gridView.get("id");
         var url = "/prv/p/triggerInsurerWorkgroupStatus.action";
+        var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
+        ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
+
+    }
+
+    function workgroup_triggerStatusStpExcluded(gridView){
+
+        var workgroupId = gridView.get("id");
+        var url = "/prv/p/triggerInsurerWorkgroupStpExcluded.action";
         var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
         ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
 
@@ -211,6 +237,14 @@
                     </div>
                 </td>
             </tr>
+        <s:if test="insurerPaymentsTeamEnabled">
+            <tr><td>
+                    <div class="label-block">
+                        <p class="std-label">Exclude from STP</p><s:checkbox name="stpExcluded" id="stpExcludedId" value="stpExcluded" />
+                    </div>
+                </td>
+            </tr>
+        </s:if>
             <tr><td align="center">
                     <input type="button" onclick="javascript:return workgroup_triggerStatusAddRecord();" value="Add"/>
                 </td>

@@ -4,26 +4,26 @@ import java.io.Serializable;
 
 public class WebUserRole extends Entity implements Serializable {
 
+    public static final String ROLE_CHOX_ADMIN= "ROLE_CHOX_ADMIN";
     public static final String ROLE_CHOX = "ROLE_CHOX";
     public static final String ROLE_INS = "ROLE_INS";
-    public static final String ROLE_CHO = "ROLE_CHO";
-    public static final String ROLE_CH = "ROLE_INS_CH";
-    public static final String ROLE_PC = "ROLE_INS_PC";
-    public static final String ROLE_COM = "ROLE_INS_COM";
-    public static final String ROLE_UPLOAD = "ROLE_INS_UPLOAD";
-    public static final String ROLE_CR = "ROLE_INS_CR";
-    public static final String ROLE_FNOL = "ROLE_INS_FNOL";
-    public static final String ROLE_CH_MNG = "ROLE_CHO_MNG";
-    public static final String ROLE_CH_OPR = "ROLE_CHO_OPR";
+    public static final String ROLE_INS_CH = "ROLE_INS_CH";
+    public static final String ROLE_INS_PC = "ROLE_INS_PC";
+    public static final String ROLE_INS_COM = "ROLE_INS_COM";
+    public static final String ROLE_INS_UPLOAD = "ROLE_INS_UPLOAD";
+    public static final String ROLE_INS_CR = "ROLE_INS_CR";
+    public static final String ROLE_INS_FNOL = "ROLE_INS_FNOL";
     public static final String ROLE_INS_MNG = "ROLE_INS_MNG";
     public static final String ROLE_INS_SCR = "ROLE_INS_SCR";
-    public static final String ROLE_CHOX_ADMIN= "ROLE_CHOX_ADMIN";
-    public static final String ROLE_CHO_MI = "ROLE_CHO_MI";
     public static final String ROLE_INS_MI = "ROLE_INS_MI";
     public static final String ROLE_INS_SUP = "ROLE_INS_SUP";
     public static final String ROLE_INS_ADMIN = "ROLE_INS_ADMIN";
-    public static final String ROLE_INS_USER = "ROLE_INS_USER";
-    public static final String ROLE_CHO_USER = "ROLE_CHO_USER";
+    public static final String ROLE_INS_USER_MNG = "ROLE_INS_USER";
+    public static final String ROLE_CHO = "ROLE_CHO";
+    public static final String ROLE_CHO_MNG = "ROLE_CHO_MNG";
+    public static final String ROLE_CHO_OPR = "ROLE_CHO_OPR";
+    public static final String ROLE_CHO_MI = "ROLE_CHO_MI";
+    public static final String ROLE_CHO_USER_MNG = "ROLE_CHO_USER";
 
     private String name;
     private String description;

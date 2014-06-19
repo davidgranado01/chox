@@ -104,7 +104,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         //     owners can delete
         if (attachment.getCreatedBy().getId().intValue() == webUserId || userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN)) {
             canDelete = true;
-        } else if (userInRole(webUser, WebUserRole.ROLE_CH_MNG) && attachment.getCreatedBy().getChorganisation() != null
+        } else if (userInRole(webUser, WebUserRole.ROLE_CHO_MNG) && attachment.getCreatedBy().getChorganisation() != null
                 && attachment.getCreatedBy().getChorganisation().getId().intValue() == webUser.getChorganisation().getId().intValue()) {
             canDelete = true;
         } else if (userInRole(webUser, WebUserRole.ROLE_INS_MNG) && attachment.getCreatedBy().getInsurer() != null

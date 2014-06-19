@@ -19,9 +19,9 @@ public class FinalReview extends BaseFilter {
 //        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
 //        claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
-        claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
-        claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
-        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
+        claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 //        if (insurerId > -1) {
 //            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
 //        }

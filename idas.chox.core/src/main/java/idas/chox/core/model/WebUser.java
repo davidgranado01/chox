@@ -338,7 +338,7 @@ public class WebUser extends Entity implements Serializable {
 
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS_CH)) {
                     bFlag = true;
                     break;
                 }

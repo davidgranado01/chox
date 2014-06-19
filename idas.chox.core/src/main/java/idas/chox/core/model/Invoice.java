@@ -236,6 +236,7 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal repairAcquisitionFee;
     private BigDecimal collaborationFee;
     private Integer collaborationQty;
+    private boolean paymentTeam;
 
     public BigDecimal getRepairAdminFee() {
         return repairAdminFee;
@@ -1586,6 +1587,18 @@ public class Invoice extends Entity implements Serializable {
             LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), ex);
         }
         return false;
+    }
+
+    public boolean isPaymentTeam() {
+        return paymentTeam;
+    }
+
+    public String getPaymentTeamDesc() {
+        return paymentTeam ? "Yes" : "No";
+    }
+
+    public void setPaymentTeam(boolean paymentTeam) {
+        this.paymentTeam = paymentTeam;
     }
     
     public enum DisplayName {

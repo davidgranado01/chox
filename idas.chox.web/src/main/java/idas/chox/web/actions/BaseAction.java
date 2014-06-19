@@ -121,22 +121,22 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public boolean getIsAdmin() {
         return securityInfoProvider.getIsCHOXAdmin()
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_ADMIN)
-                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG);
+                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG);
     }
 
     public boolean getIsCH() {
-        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH);
     }
 
     public boolean getIsOp() {
-        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR);
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_OPR);
     }
 
     public boolean isPcOnly() {
-        boolean isPc = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_PC);
+        boolean isPc = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC);
         boolean isMng = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
-        boolean isCH = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
-        boolean isUpload = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD);
+        boolean isCH = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH);
+        boolean isUpload = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_UPLOAD);
 
         return isPc && !isMng && !isCH && !isUpload;
     }
@@ -261,6 +261,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    public boolean getInsurerPaymentsTeamEnabled() {
+        if (getIsCHO()) {
+            return false;
+        } else if (getIsChoxAdmin()) {
+            return true;
+        } else {
+            return getAuthenticatedUser().getInsurer().isPaymentTeamEnable();
+        }
+    }
+
     public boolean getIsChoxAdmin() {
 
         return securityInfoProvider.getIsCHOXAdmin();
@@ -268,9 +278,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean getCanExport() {
         boolean result = true;
-        if (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER)) {
+        if (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER_MNG)) {
             result = !getAuthenticatedUser().getInsurer().isRestrictExport();
-        } else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR)) {
+        } else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_OPR)) {
             result = !getAuthenticatedUser().getChorganisation().isRestrictExport();
         }
         return result;
@@ -365,14 +375,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         if (getIsInsurer()) {
             iRoleType = 1;
             if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_ADMIN)
-                    || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER)) {
+                    || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER_MNG)) {
                 iRoleType = 2;
             }
         }
 
         if (getIsCHO()) {
             iRoleType = 3;
-            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG)) {
+            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG)) {
                 iRoleType = 4;
             }
         }
@@ -426,7 +436,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean getIsUserHasManagerRole() {
         return (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) ? true
-                : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG)) ? true : false;
+                : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG)) ? true : false;
     }
 
     protected void handleException(Exception ex) {

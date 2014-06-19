@@ -104,7 +104,7 @@ public class RoleHelper {
                             if (webUserrole.isOwnershipRelated()) {
                                 isEnabled = true;
                             }
-                            if (webUserrole.getName().equals(WebUserRole.ROLE_CH_MNG)) {
+                            if (webUserrole.getName().equals(WebUserRole.ROLE_CHO_MNG)) {
                                 isManager = true;
                             }
                         }

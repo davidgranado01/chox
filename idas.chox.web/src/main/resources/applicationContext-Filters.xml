@@ -168,9 +168,9 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="NewClaimsToBerouted" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="NewClaimsToBeRouted" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="New Claims To Be Routed"/>
-        <property name="key" value="NewClaimsToBerouted"/>
+        <property name="key" value="NewClaimsToBeRouted"/>
         <property name="status" value="ClaimUnacknowledgedUnrouted"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
@@ -381,6 +381,18 @@
         <property name="status" value="AwaitingInvoicePayment"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
+    <bean id="PaymentTeam" class="idas.chox.service.filters.PaymentTeam" >
+        <property name="name" value="Payments Team"/>
+        <property name="key" value="PaymentTeam"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>

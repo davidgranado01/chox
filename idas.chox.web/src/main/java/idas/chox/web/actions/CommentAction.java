@@ -129,7 +129,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
                 WebUser user = model.getCreatedBy();
                 if (getAuthenticatedUser().isCHOXAdmin() 
                         || ((getAuthenticatedUser().getId().compareTo(user.getId())==0 
-                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())   
+                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())   
                              || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
                             && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
 

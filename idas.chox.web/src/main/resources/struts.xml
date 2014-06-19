@@ -1156,7 +1156,10 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="triggerInsurerWorkgroupStatus" class="idas.chox.web.actions.InsurerWorkgroupAction" method="triggerInsurerWorkgroupStatus">
-            
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="triggerInsurerWorkgroupStpExcluded" class="idas.chox.web.actions.InsurerWorkgroupAction" method="triggerInsurerWorkgroupStpExcluded">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>

@@ -1,0 +1,18 @@
+--------------------------------------------------------------------------------
+-- 8.3.1 Payment Processing Updates
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN payment_team_enable boolean not null default false;
+ALTER TABLE invoice ADD COLUMN payment_team boolean not null default false;
+ALTER TABLE invoice_original ADD COLUMN payment_team boolean not null default false;
+ALTER TABLE workgroup ADD COLUMN stp_excluded boolean not null default false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'filter.PaymentTeam', false, false, false, false);
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_PC' FROM accessibility WHERE name='filter.PaymentTeam';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='filter.PaymentTeam';
+    
+----------------------
+-- End of 8.3.1
+----------------------

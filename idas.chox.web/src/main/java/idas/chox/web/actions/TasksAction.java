@@ -509,7 +509,7 @@ public class TasksAction extends BaseAction {
                 excelTask.setSupplierReference(task.getClaim().getChoReference());
                 excelTask.setTaskCurrentClaimStatus(task.getClaim().getStatus());
 
-                if (task.getVisibilityRole() != null && task.getVisibilityRole().equals(WebUserRole.ROLE_CH)) {
+                if (task.getVisibilityRole() != null && task.getVisibilityRole().equals(WebUserRole.ROLE_INS_CH)) {
                     if (task.getClaim().getClaimOwner() != null) {
                         excelTask.setTaskOwner(task.getClaim().getClaimOwner().getDisplayName());
                     }

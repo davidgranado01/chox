@@ -714,31 +714,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
         
-        if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
+        if (searchCriteria.isWorkgroupCheck() && !searchCriteria.isManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
             }
         }
 
-        if (searchCriteria.getIsWorkgroupCheck() && searchCriteria.isIsManual()) {
+        if (searchCriteria.isWorkgroupCheck() && searchCriteria.isManual()) {
             if (RoleHelper.isManualWorkgroupValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
             }
         }
 
-        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & !searchCriteria.isIsManual()) {
+        if (searchCriteria.isOwnerShipCheck() && getCurrentUser().isAnInsurer() & !searchCriteria.isManual()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
 
-        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & searchCriteria.isIsManual()) {
+        if (searchCriteria.isOwnerShipCheck() && getCurrentUser().isAnInsurer() & searchCriteria.isManual()) {
             if (RoleHelper.isManualOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
 
-        if (searchCriteria.getIsSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
+        if (searchCriteria.isSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
                         Restrictions.isNull("supplierClaimOwner.id")));
@@ -889,7 +889,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.in("wg.id", searchCriteria.getWorkgroupIds().toArray()));
         }
 
-        if (searchCriteria.getIsAnomalies()) {
+        if (searchCriteria.isAnomalies()) {
             DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
             DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
             criteria.add(Subqueries.propertyIn("id", inSubclause));
@@ -905,7 +905,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.gt("iv.totalPenaltyCharge", BigDecimal.ZERO));
         }
 
-        if (searchCriteria.getIsPenaltyChargeApplied()) {
+        if (searchCriteria.isPenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
@@ -985,7 +985,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getIsInterimPaymentMade()) {
+        if (searchCriteria.isInterimPaymentMade()) {
             criteria.add(Restrictions.gtProperty("iv.interimPaymentMade", "iv.interimPaymentReceived"));
         }
 
@@ -1045,7 +1045,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.in("claimType", ClaimTypes.toArray()));
         }
 
-        if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
+        if (searchCriteria.isSupplementaryInvoiceOnly()) {
             criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
         }
 
@@ -1171,6 +1171,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
+        /*
+         * Payments Team Filter
+         */
+        if (searchCriteria.getPaymentsTeamFilter() != null) {
+                criteria.add(Restrictions.ge("iv.paymentTeam", searchCriteria.getPaymentsTeamFilter()));
+        }
+ 
         /*
          * Final Review
          */

@@ -72,6 +72,7 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal interimPaymentOriginal;
     private BigDecimal repairAdminFeeOriginal;
     private BigDecimal repairAcquisitionFeeOriginal;
+    private boolean paymentTeam;
 
     public BigDecimal getRepairAdminFeeOriginal() {
         return repairAdminFeeOriginal;
@@ -577,5 +578,18 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     public void setVatAmountCollectedOriginal(BigDecimal vatAmountCollectedOriginal) {
             this.vatAmountCollectedOriginal = vatAmountCollectedOriginal;
+    }
+
+    public boolean isPaymentTeam() {
+        return paymentTeam;
+    }
+
+    public String getPaymentTeamDesc() {
+        return paymentTeam ? "Yes" : "No";
+    }
+
+
+    public void setPaymentTeam(boolean paymentTeam) {
+        this.paymentTeam = paymentTeam;
     }
 }

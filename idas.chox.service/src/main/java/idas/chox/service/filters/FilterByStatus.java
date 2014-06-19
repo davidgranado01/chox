@@ -20,10 +20,10 @@ public class FilterByStatus extends BaseFilter {
         // None of the queue shows closed claims, so the below line is not required.
 //        claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
-        claimSearchCriteria.setIsManual(getIsManualFilter());
-        claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
-        claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
-        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        claimSearchCriteria.setManual(getIsManualFilter());
+        claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
+        claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         
         //in case of "Rejected Claims" queue we don't want to display the fixed fee claim types
 //        if(getStatus().equals(ClaimStatus.CLAIM_REJECTED) && claimTypeId == -1){

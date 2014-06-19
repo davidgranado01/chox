@@ -202,6 +202,29 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         return SUCCESS;
 
     }
+
+    public String triggerInsurerWorkgroupStpExcluded() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
+
+        if (this.insurerId > 0 && this.workgroupId > 0) {
+
+            try {
+
+                ActionResponse response = adminInsurerService.triggerInsurerWorkgroupStpExcluded(model, this.insurerId);
+                setActionResponse(response);
+
+            } catch (Exception ex) {
+                handleException(ex);
+                return ERROR;
+            }
+        }
+
+        return SUCCESS;
+
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
 

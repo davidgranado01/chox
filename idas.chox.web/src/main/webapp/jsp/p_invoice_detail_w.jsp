@@ -639,12 +639,20 @@
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
+                                                <label class="std-label-ro">Invoice with Payments Team</label>
+                                                <label class="std-data-ro"><s:property value="paymentTeamDesc" /></label>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claims Handling #</label>
                                                 <input type="text" class="chox-ttxt" id="invoiceRecalculatehandlingInvoiceNoId" name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
                                             </div>
                                         </td>
                                         <td>
-
                                         </td>
 
                                     </tr>

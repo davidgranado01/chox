@@ -113,7 +113,7 @@ public class InsurerPaymentReport implements Report {
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
             // FILTER BY WORKGROUP AND OWNERSHIO ONLY
-            if (RoleHelper.isCheckSelectedRoleExist(currentUser.getRoles(), WebUserRole.ROLE_CH)) {
+            if (RoleHelper.isCheckSelectedRoleExist(currentUser.getRoles(), WebUserRole.ROLE_INS_CH)) {
 
                 if (RoleHelper.isWorkgroupValidationEnabledUser(currentUser)) {
                     sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=").append(currentUser.getId()).append(") ");

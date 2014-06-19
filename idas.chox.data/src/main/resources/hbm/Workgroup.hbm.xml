@@ -13,6 +13,7 @@
     <property column="site" name="site" not-null="true"/>
     <property column="team" name="team" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="stp_excluded" name="stpExcluded" not-null="true"/>
     <property column="status" name="status" not-null="true"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

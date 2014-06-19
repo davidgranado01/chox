@@ -208,6 +208,7 @@
 
     <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl" scope="prototype">
         <property name="applicationAccessibility" ref="applicationAccessibility"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="availableFilters">
             <list>
                 <ref bean="RejectedClaims" />
@@ -222,7 +223,7 @@
                 <ref bean="InvoicePaymentLogged" />
                 <ref bean="InterimPayment" />
                 <ref bean="AwaitingLitigationOutcome" />
-                <ref bean="NewClaimsToBerouted" />
+                <ref bean="NewClaimsToBeRouted" />
                 <ref bean="ClaimUnacknowledgedUnassigned" />
                 <ref bean="ClaimReferredToFNOL" />
                 <ref bean="ClaimsAwaitingAcknowledgement" />
@@ -241,6 +242,7 @@
                 <ref bean="FinalReviewCho" />
                 <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
+                <ref bean="PaymentTeam" />
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />

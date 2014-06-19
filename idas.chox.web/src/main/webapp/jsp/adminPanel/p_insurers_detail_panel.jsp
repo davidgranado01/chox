@@ -888,6 +888,14 @@
                                         </div>
                                     </td>
                                 </tr>
+                               <tr>
+                                    <td colspan=2>
+                                        <div class="chox-form-item" id="paymentTeamHolder">
+                                            <label class="chox-form-std-label">Enable Payment Team</label>
+                                            <s:checkbox name="paymentTeamEnable" id="paymentTeamEnableId" value="paymentTeamEnable" />
+                                        </div>
+                                    </td>
+                                </tr>
                                  <tr>
                                     <td colspan="3">
                                     <br/>

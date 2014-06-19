@@ -345,11 +345,11 @@ public class AdminUserService extends SecureDataService {
     }
 
     private void doValidateWebUserByRole(WebUser webUser, String webUserRoleCode) {
-        if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_COM)) {
+        if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_INS_COM)) {
             doComRoleValidation(webUser);
-        } else if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_FNOL)) {
+        } else if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_INS_FNOL)) {
             doFnolRoleValidation(webUser);
-        } else if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_CH)) {
+        } else if (webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_INS_CH)) {
             doClaimHandlerRoleValidation(webUser);
         }
     }
@@ -357,7 +357,7 @@ public class AdminUserService extends SecureDataService {
     private void doComRoleValidation(WebUser webUser) {
 
         boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(webUser.getInsurer().getId(), webUser.getWorkgroupIds(), -1);
-        boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_COM);
+        boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_INS_COM);
 
         if (hasOpenClaims && !hasOtherUsers) {
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Claim Ownership Manager' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
@@ -367,7 +367,7 @@ public class AdminUserService extends SecureDataService {
     private void doFnolRoleValidation(WebUser webUser) {
 
         boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByStatusExist(webUser.getInsurer().getId(), webUser.getWorkgroupIds(), ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-        boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_FNOL);
+        boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_INS_FNOL);
 
         if (hasOpenClaims && !hasOtherUsers) {
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Insurer FNOL Handler' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
@@ -387,7 +387,7 @@ public class AdminUserService extends SecureDataService {
 
             // WOPRKGROUP ENABLED ONLY
             boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(webUser.getInsurer().getId(), webUser.getWorkgroupIds(), -1);
-            boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_CH);
+            boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_INS_CH);
 
             if (hasOpenClaims && !hasOtherUsers) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Claim Handler' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
@@ -424,15 +424,15 @@ public class AdminUserService extends SecureDataService {
 
         if (claimService.isOpenClaimByWorkgroupExist(webUserWorkgroup.getWorkgroup().getId())) {
 
-            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_CH, webUserWorkgroup)) {
+            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_INS_CH, webUserWorkgroup)) {
                 userRolesWithError.add("Insurer Claim Handler Role");
             }
 
-            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_COM, webUserWorkgroup)) {
+            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_INS_COM, webUserWorkgroup)) {
                 userRolesWithError.add("Insurer Claim Ownership Manager Role");
             }
 
-            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_FNOL, webUserWorkgroup)) {
+            if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_INS_FNOL, webUserWorkgroup)) {
                 userRolesWithError.add("Insurer FNOL Handler Role");
             }
 
@@ -480,7 +480,7 @@ public class AdminUserService extends SecureDataService {
 
             boolean isOpenItemForUser = claimService.isOpenClaimByWorkgroupIdByUserExist(webUser.getInsurer().getId(), workgroupId, webUserId);
 
-            if (webUser.getInsurer().isClaimOwnershipEnable() && isOpenItemForUser && RoleHelper.isCheckSelectedRoleExist(webUser.getRoles(), WebUserRole.ROLE_CH)) {
+            if (webUser.getInsurer().isClaimOwnershipEnable() && isOpenItemForUser && RoleHelper.isCheckSelectedRoleExist(webUser.getRoles(), WebUserRole.ROLE_INS_CH)) {
                 getActionResponse().AddError("User '" + webUser.getDisplayName() + "' has open claim(s) assigned to them within Workgroup '" + workgroup.getName() + "', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s)");
             } else {
                 webUser.getWorkgroups().remove(workgroup);

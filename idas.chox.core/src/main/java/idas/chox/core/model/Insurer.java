@@ -39,6 +39,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean claimLocked;
     private boolean onlineSupportEnable;
     private boolean taskManagementEnable;
+    private boolean paymentTeamEnable;
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
     private String autoRoutingEnableId;
@@ -728,5 +729,13 @@ public class Insurer extends Entity implements Serializable {
     public void setInsurerManualAutoRoutingEnable(
             boolean insurerManualAutoRoutingEnable) {
         this.insurerManualAutoRoutingEnable = insurerManualAutoRoutingEnable;
+    }
+
+    public boolean isPaymentTeamEnable() {
+        return paymentTeamEnable;
+    }
+
+    public void setPaymentTeamEnable(boolean paymentTeamEnable) {
+        this.paymentTeamEnable = paymentTeamEnable;
     }
 }

@@ -20,10 +20,10 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
 //        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setLiabilityStatusUpdated(true);
-        claimSearchCriteria.setIsManual(getIsManualFilter());
-        claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
-        claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
-        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        claimSearchCriteria.setManual(getIsManualFilter());
+        claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
+        claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
         // unnecessary as this is done when setShowOpenClaimsOnly to true.
 //        claimSearchCriteria.setStatusExcludeList(excludeList);

@@ -41,10 +41,11 @@ public class ClaimSearchCriteria implements Serializable {
     private Date lastModifiedDateFrom;
     private Date lastModifiedDateTo;
     private Set<Integer> workgroupIds;
-    private boolean isAnomalies;
-    private boolean isPenaltyChargeApplied;
-    private boolean isInterimPaymentMade;
-    private boolean isEscalatedToSupervisor;
+    private boolean anomalies;
+    private boolean penaltyChargeApplied;
+    private boolean interimPaymentMade;
+    private boolean escalatedToSupervisor;
+    private Boolean paymentsTeamFilter;
     private int start;
     private int limit;
     private String sort;
@@ -52,16 +53,16 @@ public class ClaimSearchCriteria implements Serializable {
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
     private boolean showOpenClaimsOnly = true;
-    private boolean isSupplementaryInvoiceOnly;
+    private boolean supplementaryInvoiceOnly;
     private boolean penaltyChargesAppliedOnly;
     private Set<Integer> claimOwnerIds;
     private Set<Integer> supplierClaimOwnerIds;
-    private boolean isManual;
-    private boolean isWorkgroupCheck;
-    private boolean isOwnerShipCheck;
-    private boolean isSupplierOwnerShipCheck;
+    private boolean manual;
+    private boolean workgroupCheck;
+    private boolean ownerShipCheck;
+    private boolean supplierOwnershipCheck;
     private Set<LiabilityStatus> liabilityStatuses;
-    private boolean isLiabilityStatusUpdated;
+    private boolean liabilityStatusUpdated;
     private Set<ClaimType> claimTypes;
     private Boolean finalReviewCho;
     private Boolean finalReviewIns;
@@ -100,9 +101,9 @@ public class ClaimSearchCriteria implements Serializable {
         if (workgroupIds != null) {
             sb.append("workgroupIds=").append(Arrays.toString(workgroupIds.toArray())).append("\n");
         }
-        sb.append("isAnomalies=").append(isAnomalies).append("\n")
-                .append("ispenaltyChargeApplied=").append(isPenaltyChargeApplied).append("\n")
-                .append("isInterimPaymentMade=").append(isInterimPaymentMade).append("\n")
+        sb.append("isAnomalies=").append(anomalies).append("\n")
+                .append("ispenaltyChargeApplied=").append(penaltyChargeApplied).append("\n")
+                .append("isInterimPaymentMade=").append(interimPaymentMade).append("\n")
                 .append("start=").append(start).append("\n")
                 .append("limit=").append(limit).append("\n")
                 .append("sort=").append(sort).append("\n")
@@ -116,14 +117,14 @@ public class ClaimSearchCriteria implements Serializable {
         if (supplierClaimOwnerIds != null) {
             sb.append("supplierClaimOwnerIds=").append(Arrays.toString(supplierClaimOwnerIds.toArray())).append("\n");
         }
-        sb.append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
-                .append("isOwnerShipCheck=").append(isOwnerShipCheck).append("\n")
-                .append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n");
+        sb.append("isWorkgroupCheck=").append(workgroupCheck).append("\n")
+                .append("isOwnerShipCheck=").append(ownerShipCheck).append("\n")
+                .append("isSupplierOwnerShipCheck=").append(supplierOwnershipCheck).append("\n");
         if (liabilityStatuses != null) {
             sb.append("liabilityStatuses =").append(Arrays.toString(liabilityStatuses.toArray())).append("\n");
         }
-        sb.append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n")
-                .append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n")
+        sb.append("isLiabilityStatusUpdated=").append(liabilityStatusUpdated).append("\n")
+                .append("isSupplementaryInvoiceOnly=").append(supplementaryInvoiceOnly).append("\n")
                 .append("penaltyChargesAppliedOnly=").append(penaltyChargesAppliedOnly).append("\n");
         if (claimTypes != null) {
             sb.append("claimTypes=").append(Arrays.toString(claimTypes.toArray())).append("\n");
@@ -169,12 +170,12 @@ public class ClaimSearchCriteria implements Serializable {
         }
     }
 
-    public boolean isIsSupplementaryInvoiceOnly() {
-        return isSupplementaryInvoiceOnly;
+    public boolean isSupplementaryInvoiceOnly() {
+        return supplementaryInvoiceOnly;
     }
 
-    public void setIsSupplementaryInvoiceOnly(boolean isSupplementaryInvoiceOnly) {
-        this.isSupplementaryInvoiceOnly = isSupplementaryInvoiceOnly;
+    public void setSupplementaryInvoiceOnly(boolean supplementaryInvoiceOnly) {
+        this.supplementaryInvoiceOnly = supplementaryInvoiceOnly;
     }
 
     public boolean isPenaltyChargesAppliedOnly() {
@@ -186,11 +187,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public boolean isLiabilityStatusUpdated() {
-        return isLiabilityStatusUpdated;
+        return liabilityStatusUpdated;
     }
 
-    public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
-        this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
+    public void setLiabilityStatusUpdated(boolean liabilityStatusUpdated) {
+        this.liabilityStatusUpdated = liabilityStatusUpdated;
     }
 
     public Set<LiabilityStatus> getLiabilityStatuses() {
@@ -357,28 +358,28 @@ public class ClaimSearchCriteria implements Serializable {
         this.rentalEndDate = rentalEndDate;
     }
 
-    public boolean getIsAnomalies() {
-        return isAnomalies;
+    public boolean isAnomalies() {
+        return anomalies;
     }
 
-    public void setIsAnomalies(boolean isAnomalies) {
-        this.isAnomalies = isAnomalies;
+    public void setAnomalies(boolean anomalies) {
+        this.anomalies = anomalies;
     }
 
-    public boolean getIsPenaltyChargeApplied() {
-        return isPenaltyChargeApplied;
+    public boolean isPenaltyChargeApplied() {
+        return penaltyChargeApplied;
     }
 
-    public void setIsPenaltyChargeApplied(boolean isPenaltyChargeApplied) {
-        this.isPenaltyChargeApplied = isPenaltyChargeApplied;
+    public void setPenaltyChargeApplied(boolean penaltyChargeApplied) {
+        this.penaltyChargeApplied = penaltyChargeApplied;
     }
 
-    public boolean getIsInterimPaymentMade() {
-        return isInterimPaymentMade;
+    public boolean isInterimPaymentMade() {
+        return interimPaymentMade;
     }
 
-    public void setIsInterimPaymentMade(boolean isInterimPaymentMade) {
-        this.isInterimPaymentMade = isInterimPaymentMade;
+    public void setInterimPaymentMade(boolean interimPaymentMade) {
+        this.interimPaymentMade = interimPaymentMade;
     }
 
     public int getStart() {
@@ -429,28 +430,28 @@ public class ClaimSearchCriteria implements Serializable {
         this.lastModifiedDateTo = lastModifiedDateTo;
     }
 
-    public boolean getIsOwnerShipCheck() {
-        return isOwnerShipCheck;
+    public boolean isOwnerShipCheck() {
+        return ownerShipCheck;
     }
 
-    public void setIsOwnerShipCheck(boolean isOwnerShipCheck) {
-        this.isOwnerShipCheck = isOwnerShipCheck;
+    public void setOwnerShipCheck(boolean ownerShipCheck) {
+        this.ownerShipCheck = ownerShipCheck;
     }
 
-    public boolean getIsSupplierOwnerShipCheck() {
-        return isSupplierOwnerShipCheck;
+    public boolean isSupplierOwnerShipCheck() {
+        return supplierOwnershipCheck;
     }
 
-    public void setIsSupplierOwnerShipCheck(boolean isSupplierOwnerShipCheck) {
-        this.isSupplierOwnerShipCheck = isSupplierOwnerShipCheck;
+    public void setSupplierOwnerShipCheck(boolean supplierOwnerShipCheck) {
+        this.supplierOwnershipCheck = supplierOwnerShipCheck;
     }
 
-    public boolean getIsWorkgroupCheck() {
-        return isWorkgroupCheck;
+    public boolean isWorkgroupCheck() {
+        return workgroupCheck;
     }
 
-    public void setIsWorkgroupCheck(boolean isWorkgroupCheck) {
-        this.isWorkgroupCheck = isWorkgroupCheck;
+    public void setWorkgroupCheck(boolean workgroupCheck) {
+        this.workgroupCheck = workgroupCheck;
     }
 
     public Set<Integer> getClaimOwnerIds() {
@@ -522,19 +523,19 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public boolean isEscalatedToSupervisor() {
-        return isEscalatedToSupervisor;
+        return escalatedToSupervisor;
     }
 
-    public void setEscalatedToSupervisor(boolean isEscalatedToSupervisor) {
-        this.isEscalatedToSupervisor = isEscalatedToSupervisor;
+    public void setEscalatedToSupervisor(boolean escalatedToSupervisor) {
+        this.escalatedToSupervisor = escalatedToSupervisor;
     }
 
-    public boolean isIsManual() {
-        return isManual;
+    public boolean isManual() {
+        return manual;
     }
 
-    public void setIsManual(boolean isManual) {
-        this.isManual = isManual;
+    public void setManual(boolean manual) {
+        this.manual = manual;
     }
 
     public Boolean isFinalReviewCho() {
@@ -709,5 +710,12 @@ public class ClaimSearchCriteria implements Serializable {
         return null;
     }
 
+    public void setPaymentsTeamFilter(Boolean paymentsTeamFilter) {
+        this.paymentsTeamFilter = paymentsTeamFilter;
+    }
+
+    public Boolean getPaymentsTeamFilter() {
+        return paymentsTeamFilter;
+    }
     
 }

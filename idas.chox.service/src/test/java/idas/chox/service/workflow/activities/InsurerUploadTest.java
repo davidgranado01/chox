@@ -40,7 +40,7 @@ public class InsurerUploadTest extends BaseTest {
         fakeSecurityInfoProvider.setIsINS(false);
          
         WebUserRole webUserRole = new WebUserRole();
-        webUserRole.setName(WebUserRole.ROLE_CH_OPR);
+        webUserRole.setName(WebUserRole.ROLE_CHO_OPR);
         Set roles = new HashSet();
         roles.add(webUserRole);
         

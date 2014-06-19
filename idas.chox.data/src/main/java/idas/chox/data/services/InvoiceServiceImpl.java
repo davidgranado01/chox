@@ -115,6 +115,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setTotalLossFeeVatOriginal(inv.getTotalLossFeeVat());
             invOriginal.setTotalLossFeeGrossOriginal(inv.getTotalLossFeeGross());
             invOriginal.setInsurerDiscountOriginal(inv.getInsurerDiscount());
+            invOriginal.setPaymentTeam(inv.isPaymentTeam());
             save(invOriginal);
             return invOriginal;
             

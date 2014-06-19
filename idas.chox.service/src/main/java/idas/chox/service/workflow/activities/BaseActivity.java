@@ -161,7 +161,7 @@ public abstract class BaseActivity implements Activity {
         }
         // If Insurer is locked and claim ownership is enabled, and if the user is a CH, then the user must own the claim
         if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
-                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
+                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
             if (claim.getClaimOwner() == null || claim.getClaimOwner().getId().intValue() != getCurrentUser().getId().intValue()) {
                 LOG.error("User {} has attempted to action claim '{}' which he does not own.", getCurrentUser().getId(), claim.getChoReference());
@@ -171,7 +171,7 @@ public abstract class BaseActivity implements Activity {
         
         // If Insurer is locked and workgroups are enabled, and if the user is a COM or FNOL, then the user must be in the same workgroup
         if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isWorkgroupEnable() && securityInfoProvider.getIsINS()
-                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
+                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
             if (claim.getWorkgroup() == null || !userWorkgroupService.isUserWorkgroupExist(claim.getWorkgroup().getId(), getCurrentUser().getId())) {
                 LOG.error("User {} has attempted to action claim '{}' which is not in a workgroup to which they belong.", getCurrentUser().getId(), claim.getChoReference());

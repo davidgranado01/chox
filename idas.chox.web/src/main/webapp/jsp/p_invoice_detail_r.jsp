@@ -31,6 +31,11 @@
                                       </div> -->
                                 </tr>
                                 <tr>
+                                    <td><label class="std-label-ro">Invoice with Payments Team</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro"><s:property value="paymentTeamDesc" /></label></td>
+                                </tr>
+                                <tr>
                                     <td><label class="std-label-ro">Supplier Claims Handling #</label></td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="handlingInvoiceNo" /></label></td>

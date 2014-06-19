@@ -298,7 +298,7 @@ public class InboxAction extends BaseAction {
     }
 
     public boolean getIsComUser() {
-        return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_COM);
+        return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_COM);
     }
 
     public boolean getIsScrUser() {
