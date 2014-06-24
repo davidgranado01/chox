@@ -15,7 +15,7 @@ public class FinalReview extends BaseFilter {
 
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
 //        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
 //        claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));

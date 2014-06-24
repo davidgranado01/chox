@@ -427,21 +427,30 @@
         }
 
     
-        function submitBreBandDetailFrom(){
+        function submitBreBandDetailForm(asCopy){
                 var protocolVehicleClassCeilingRecords = [];
                 var i = 0;
+                $("#asCopy").val(asCopy);
+
+                if (asCopy){
+                    // Add each record to the protocolVehicleClassCeilingRecords
+                    this.protocolVehicleClassCeiling_gridviewStore.each(function(item){
+                        protocolVehicleClassCeilingRecords[i] = item.data;
+                        i++;
+                    });
+                } else {
+                    // now add the removed records to the protocolVehicleClassCeilingRecords
+                    Ext.each(this.protocolVehicleClassCeiling_gridviewStore.removedList,function(item){
+                        protocolVehicleClassCeilingRecords[i] = item.data;
+                        i++;
+                    });
                 
-                // now add the removed records to the protocolVehicleClassCeilingRecords
-                Ext.each(this.protocolVehicleClassCeiling_gridviewStore.removedList,function(item){
-                    protocolVehicleClassCeilingRecords[i] = item.data;
-                    i++;
-                });
-                
-                // add the updated/new records to the protocolVehicleClassCeilingRecords
-                Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(),function(item){
-                    protocolVehicleClassCeilingRecords[i] = item.data;
-                    i++;
-                });
+                    // add the updated/new records to the protocolVehicleClassCeilingRecords
+                    Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(),function(item){
+                        protocolVehicleClassCeilingRecords[i] = item.data;
+                        i++;
+                    });
+                }
                 
                 //Empty the removed records list.
                 this.protocolVehicleClassCeiling_gridviewStore.removedList = [];
@@ -453,7 +462,6 @@
                     $("form#formUpdateInsurerBreBandDetail").append($(input));
                 }
                 
-//                $("#formUpdateInsurerBreBandDetail").submit(); // submit the form.
                 choxJqueryHttpSubmit($("form#formUpdateInsurerBreBandDetail"));
                 $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);
                 $("#submitMesResult").show().fadeOut(10000);
@@ -669,6 +677,7 @@
 
     <form id="formUpdateInsurerBreBandDetail" name="formUpdateInsurerBreBandDetail"
           action="<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetail.action" method="POST" class="XXentity-form">
+       <s:hidden id="asCopy" name="asCopy" />
 
         <div class="form-container">
 
@@ -679,8 +688,9 @@
                             <div class="label-block">
                                 <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                                <input type="button" value="Save" onclick="javascript: submitBreBandDetailFrom();"/>
+                                <input type="button" value="Save" onclick="javascript: submitBreBandDetailForm(false);"/>
                                 <s:if test="!isNew">
+                                    <input type="button" value="Save As Copy" onclick="javascript: submitBreBandDetailForm(true);"/>
                                     <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                                 </s:if>
                                 <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
@@ -720,7 +730,15 @@
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
                     </div>
-                            
+<s:if test="insurerPaymentsTeamEnabled">                         
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Payments Team</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="paymentTeamActive" value="paymentTeamActive" /></div><label class="chox-form-std-label"><b>Use Payments Team</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable use of offshore 'Payments Team'</div>
+                        </div>
+                    </div>
+</s:if>     
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Penalty Charges</div>
                         <div class="chox-form-checkboxitem">

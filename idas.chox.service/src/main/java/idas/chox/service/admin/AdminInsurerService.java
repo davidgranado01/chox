@@ -14,6 +14,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.InsurerIntelligentNote;
+import idas.chox.core.model.ProtocolVehicleClassCeiling;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.WebUser;
@@ -288,7 +289,7 @@ public class AdminInsurerService extends SecureDataService {
 
     public ActionResponse updateInsurerBreBand(BreBand breBand, int insurerId, boolean isNew) {
         this.actionResponse = new ActionResponse();
-
+        
         breBand.setInsurer(insurerService.getInsurer(insurerId));
 
         if (breBandService.isBreBandNameExist(breBand)) {

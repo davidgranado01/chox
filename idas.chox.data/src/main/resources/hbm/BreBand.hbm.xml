@@ -157,6 +157,7 @@
         <property column="total_loss_net_ceiling_check" name="totalLossFeeNetCeilingCheck" not-null="true"/>
         <property column="total_loss_storage_fee_check" name="totalLossAndStorageFeeCheck" not-null="true"/>
         <property column="max_allowed_total_loss_net" name="maxAllowedTotalLossNetFee" not-null="true"/>
+        <property column="payment_team_active" name="paymentTeamActive" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

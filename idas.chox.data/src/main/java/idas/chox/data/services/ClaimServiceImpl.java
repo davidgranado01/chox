@@ -745,6 +745,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getApprovedInvoiceOwnershipSearchParamIds() != null && !searchCriteria.getApprovedInvoiceOwnershipSearchParamIds().isEmpty()) {
+            Criterion claimsHandlerOnlyClaims = Restrictions.eq("id", -1);
+            Criterion paymentTeamOnlyClaims = Restrictions.eq("id", -1);
+
+            for (Integer restrictionId : searchCriteria.getHireAndRepairSearchParamIds()) {
+                if (restrictionId == 1) {
+                    claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
+                } else if (restrictionId == 2) {
+                    paymentTeamOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.TRUE);
+                }
+            }
+            criteria.add(Restrictions.disjunction()
+                    .add(claimsHandlerOnlyClaims)
+                    .add(paymentTeamOnlyClaims));
+        }
+
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
 
             /* The SQL Query for the below criteria is:

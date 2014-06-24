@@ -76,7 +76,7 @@
                 && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
 
            // Route Claim BATCH UPDATE LOGIC
-            if (filterName !== 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+            if (filterName !== 'NewClaimsToBeRouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
                 doClaimRoutedAction.setText('Re-Route Claim(s)'); 
             } else {
                 doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 

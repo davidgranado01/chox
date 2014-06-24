@@ -93,4 +93,5 @@ public abstract class BaseFilter implements Filter {
     public void setIsManualFilter(boolean isManualFilter) {
         this.isManualFilter = isManualFilter;
     }
-}
+
+ }

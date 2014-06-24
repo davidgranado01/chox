@@ -11,13 +11,13 @@ public class FilterAwaitingLiabilityResolution extends BaseFilter {
 
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
-        claimSearchCriteria.setIsManual(getIsManualFilter());
-        claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
-        claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
-        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        claimSearchCriteria.setManual(getIsManualFilter());
+        claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
+        claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
   
         if (isCHO == null) { // CHOX Admin
             claimSearchCriteria.setFinalReviewCho(Boolean.FALSE);

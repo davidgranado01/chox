@@ -15,7 +15,7 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
 
 //        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(true);

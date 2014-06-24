@@ -22,6 +22,7 @@ import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
+import org.apache.commons.lang3.SerializationUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private String protocolVehicleClassCeilingRecords;
     private VehicleClassService vehicleClassService;
     private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
+    private boolean asCopy;
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
@@ -139,11 +141,24 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
-            checkVersion(Arrays.asList(model));
-            if (!protocolVehicleClassCeilingRecords.isEmpty()) {
-                updateProtocolVehicleClassCeiling();
+            if (asCopy) {
+                objectId = "-1";
+                BreBand newModel = (BreBand) SerializationUtils.clone(model);
+                newModel.setId(null);
+                newModel.setProtocolVehicleClassCeilings(null);
+                List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings = model.getProtocolVehicleClassCeilings();
+                for (ProtocolVehicleClassCeiling protocolVehicleClassCeiling : protocolVehicleClassCeilings) {
+                    adminInsurerService.evict(protocolVehicleClassCeiling);
+                }
+                adminInsurerService.evict(model);
+                model = newModel;
+            } else {
+                checkVersion(Arrays.asList(model));
             }
             ActionResponse response;
+            if (asCopy || !protocolVehicleClassCeilingRecords.isEmpty()) {
+                updateProtocolVehicleClassCeiling(asCopy);
+            }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
@@ -155,16 +170,15 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    private void updateProtocolVehicleClassCeiling() {
+    private void updateProtocolVehicleClassCeiling(boolean asCopy) {
         List<VehicleClassCeilingViewData> vehicleClassCeilingViewDatas =
-                ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {
-        }.getType()));
+                ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {}.getType()));
         if (vehicleClassCeilingViewDatas != null) {
             for (VehicleClassCeilingViewData vehicleClassCeilingViewData : vehicleClassCeilingViewDatas) {
                 ProtocolVehicleClassCeiling pvcc;
-                if (vehicleClassCeilingViewData.getId() > 0) {
+                if (!asCopy && vehicleClassCeilingViewData.getId() > 0) {
                     pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeiling(vehicleClassCeilingViewData.getId());
-                } else if (model.getId() == null || (pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeilingByVehicleClass(vehicleClassCeilingViewData.getVehicleClassId(), model.getId())) == null) {
+                } else if (asCopy || model.getId() == null || (pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeilingByVehicleClass(vehicleClassCeilingViewData.getVehicleClassId(), model.getId())) == null) {
                     pvcc = new ProtocolVehicleClassCeiling();
                     pvcc.setVehicleClass(vehicleClassService.getVehicleClass(vehicleClassCeilingViewData.getVehicleClassId()));
                     pvcc.setBreBand(model);
@@ -238,6 +252,14 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
         this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
+    }
+
+    public boolean getAsCopy() {
+        return asCopy;
+    }
+
+    public void setAsCopy(boolean asCopy) {
+        this.asCopy = asCopy;
     }
 }
 

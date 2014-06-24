@@ -97,7 +97,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean hireVatHireEndCheck;
     private boolean hireVatInvoicedDateCheck;
     private boolean repairVatCompletionDateCheck;
-    private boolean useSupplierRates;;
+    private boolean useSupplierRates;
     private boolean totalLabourCostBusinessRule;
     private boolean dateRepairCommencedChkForNonMobileVehicle;
     private boolean dateRepairBookInDateChkForMobileVehicle;
@@ -155,9 +155,11 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean engineerNetFeeCheck;
     private boolean totalLossFeeNetCeilingCheck;
     private boolean totalLossAndStorageFeeCheck;
+    private boolean paymentTeamActive;
     
     public BreBand() {
     }
+
 
     public Insurer getInsurer() {
         return insurer;
@@ -1509,5 +1511,13 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setTotalLossAndStorageFeeCheck(boolean totalLossAndStorageFeeCheck) {
         this.totalLossAndStorageFeeCheck = totalLossAndStorageFeeCheck;
+    }
+
+    public boolean isPaymentTeamActive() {
+        return paymentTeamActive;
+    }
+
+    public void setPaymentTeamActive(boolean paymentTeamActive) {
+        this.paymentTeamActive = paymentTeamActive;
     }
 }

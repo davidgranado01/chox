@@ -25,6 +25,7 @@
     var statusSearchScreenCombo;
     var liabilityStatusSearchScreenCombo;
     var hireAndRepairSearchParamCombo;
+    var approvedInvoiceOwnershipSearchParamCombo;
     var searchColumsPanel;
     var queueDataStore;
     var queueGrid;
@@ -1136,9 +1137,9 @@
                         }
                     },
                     afterrender : function(){
-                        if ('<s:property value="HireAndRepairSearchParamAsString"/>') {
-                            this.setValue('<s:property value="HireAndRepairSearchParamAsString"/>');
-                            hireAndRepairSearchComboNumberOfSelectedRecord = '<s:property value="HireAndRepairSearchParamAsString"/>'.split(',').length;
+                        if ('<s:property value="hireAndRepairSearchParamAsString"/>') {
+                            this.setValue('<s:property value="hireAndRepairSearchParamAsString"/>');
+                            hireAndRepairSearchComboNumberOfSelectedRecord = '<s:property value="hireAndRepairSearchParamAsString"/>'.split(',').length;
                         }
                     },
                     select : function(){
@@ -1163,7 +1164,69 @@
                     }
                 }
             });
+ 
+            var approvedInvoiceOwnershipSearchParamData = [['Claims Handlers & Payments Team', 1],['Claims Handlers', 2], ['Payments Team', 3]];
             
+            var approvedInvoiceOwnershipParamStore = new Ext.data.ArrayStore({
+                    fields: [
+                       {name: 'text', type: 'string'},
+                       {name: 'value', type: 'int'}
+                    ]
+            });
+            
+            approvedInvoiceOwnershipParamStore.loadData(approvedInvoiceOwnershipSearchParamData);
+            // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
+            var approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = 0;
+            
+            approvedInvoiceOwnershipSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
+                store : approvedInvoiceOwnershipSearchParamStore,
+                width: 200,
+                fieldLabel: 'Hire & Repair Management Status',
+                valueField : 'value',
+                id : 'approvedInvoiceOwnershipSearchParamComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- ALL ---',
+                removeValuesFromStore : false,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>') {
+                            this.setValue('<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>');
+                            approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = '<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>'.split(',').length;
+                        }
+                    },
+                    select : function(){
+                        approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord ++;
+                        statusChange();
+                        doLayoutSearchPanel();
+//                        searchClaim(true);
+                    },
+                    removeitem : function() {
+                        if (!this.getValue() && approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord >=1) {
+                            approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = 0;
+                            this.reset();
+                            this.clearValue();
+                            statusChange();
+//                            searchClaim(true);
+                        } else if (approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord >= 1){
+                            approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord --;
+                            statusChange();
+//                            searchClaim(true); 
+                        }
+                        doLayoutSearchPanel();
+                    }
+                }
+            });
+
             // Add claim type drop-down menu
             var claimTypesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -1298,7 +1361,7 @@
                 items: [insurerSearchScreenCombo, supplierSearchScreenCombo, 
                             workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
                             supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo, 
-                            hireAndRepairSearchParamCombo, penaltyChargesAppliedCheckBox, 
+                            hireAndRepairSearchParamCombo, approvedInvoiceOwnershipParamCombo,penaltyChargesAppliedCheckBox, 
                             penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification,
                             finalReviewChoCheckBox, finalReviewInsCheckBox]
             };
@@ -1573,6 +1636,7 @@
             var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
             var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
+            var approvedInvoiceOwnershipSearchScreen = Ext.getCmp('approvedInvoiceOwnershipSearchParamComboId').getValue().split(",");
 
             return {
                 filterName : '',
@@ -1608,7 +1672,8 @@
                 liabilityStatuses : liabilityStatuses,
                 claimTypes : claimTypes,
                 isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
-                hireAndRepairSearchParamIds : hireAndRepairSearchScreen
+                hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
+                approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen
             };
         }
         
@@ -1748,6 +1813,8 @@
             claimTypesSearchScreenCombo.clearValue();
             hireAndRepairSearchParamCombo.reset();
             hireAndRepairSearchParamCombo.clearValue();
+            approvedInvoiceOwnershipSearchParamCombo.reset();
+            approvedInvoiceOwnershipSearchParamCombo.clearValue();
             statusSearchScreenCombo.reset();
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();

@@ -27,6 +27,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<String> statusExcludeList;
     private Set<Integer> insurerIds;
     private Set<Integer> hireAndRepairSearchParamIds;
+    private Set<Integer> approvedInvoiceOwnershipSearchParamIds;
     private String thirdPartyVrn;
     private String customerVrn;
     private String invoiceNumber;
@@ -84,6 +85,9 @@ public class ClaimSearchCriteria implements Serializable {
         }
         if (hireAndRepairSearchParamIds != null) {
             sb.append("hireAndRepairSearchParamIds=").append(Arrays.toString(hireAndRepairSearchParamIds.toArray())).append("\n");
+        }
+        if (approvedInvoiceOwnershipSearchParamIds != null) {
+            sb.append("approvedInvoiceOwnershipSearchParamIds=").append(Arrays.toString(approvedInvoiceOwnershipSearchParamIds.toArray())).append("\n");
         }
         sb.append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
                 .append("customerVrn=").append(customerVrn).append("\n")
@@ -565,7 +569,20 @@ public class ClaimSearchCriteria implements Serializable {
             this.hireAndRepairSearchParamIds = hireAndRepairSearchParamIds;
         }
     }
-    
+
+    public Set<Integer> getApprovedInvoiceOwnershipSearchParamIds() {
+        return approvedInvoiceOwnershipSearchParamIds;
+    }
+
+    public void setApprovedInvoiceOwnershipSearchParamIds(Set<Integer> approvedInvoiceOwnershipSearchParamIds) {
+        if (approvedInvoiceOwnershipSearchParamIds.contains(null) || approvedInvoiceOwnershipSearchParamIds.contains(0)) {
+            this.approvedInvoiceOwnershipSearchParamIds = null;
+        } else {
+            this.approvedInvoiceOwnershipSearchParamIds = approvedInvoiceOwnershipSearchParamIds;
+        }
+    }
+
+
        /*
      * Please note this method will return only Claim statuses from the
      * loaded(model) claimSearchCriteria and not from available Claim statuses.
@@ -687,6 +704,22 @@ public class ClaimSearchCriteria implements Serializable {
         if (getHireAndRepairSearchParamIds()!= null) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getHireAndRepairSearchParamIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only hire and repair search param from the
+     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
+     */
+    public String getApprovedInvoiceOwnershipSearchParamAsString() {
+
+        if (getApprovedInvoiceOwnershipSearchParamIds()!= null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
             }
             return returnString.toString().substring(0, returnString.length() - 1);

@@ -88,7 +88,8 @@ public class InvoiceResubmit extends BaseActivity {
         }
         
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())
-                && claim.getInsurer().isPaymentTeamEnable() && (claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+                && claim.getInsurer().isPaymentTeamEnable() && claim.getBreBand().isPaymentTeamActive()
+                && (claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
             // move claim to next status
             setCurrentStatus(claim.getStatus());

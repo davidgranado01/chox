@@ -1,5 +1,6 @@
 package idas.chox.service.filters;
 
+import idas.chox.core.model.ClaimStatus;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -15,7 +16,7 @@ public class FilterByStatus extends BaseFilter {
 //    private static final String AWAITING_LIABILITY_RESOLUTION = "AwaitingLiabilityResolution";
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
 //        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         // None of the queue shows closed claims, so the below line is not required.
 //        claimSearchCriteria.setShowOpenClaimsOnly(false);
@@ -24,7 +25,12 @@ public class FilterByStatus extends BaseFilter {
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        
+// Need to set following for 'Approved Invoices Awaiting Payment' and
+// 'Manual Invoices Approved By BRE' queues  if payments team active....   
+        if (paymentsTeamActive && (getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)
+                || getStatus().equals(ClaimStatus.MANUAL_INVOICE_APPROVED))) {
+            claimSearchCriteria.setPaymentsTeamFilter(Boolean.FALSE);
+        } 
         //in case of "Rejected Claims" queue we don't want to display the fixed fee claim types
 //        if(getStatus().equals(ClaimStatus.CLAIM_REJECTED) && claimTypeId == -1){
 //            Set<ClaimType> claimTypes = EnumSet.of(ClaimType.GTA, 

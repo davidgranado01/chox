@@ -53,13 +53,13 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
             ClaimSearchCriteria filterClaimSearchCriteria = getClaimSearchCriteria();
             try {
                 if (getIsCHO()) {
-                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterClaimSearchCriteria)));
+                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, false, filterClaimSearchCriteria)));
                     filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
                 } else if (getIsInsurer()) {
-                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, filterClaimSearchCriteria)));
+                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, getInsurerPaymentsTeamEnabled(), filterClaimSearchCriteria)));
                     filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
                 } else {
-                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(null, filterClaimSearchCriteria)));
+                    filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(null, true, filterClaimSearchCriteria)));
                     filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
                 }
             } catch (Exception ex) {
