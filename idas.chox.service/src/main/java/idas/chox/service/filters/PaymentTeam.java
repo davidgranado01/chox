@@ -11,8 +11,7 @@ public class PaymentTeam extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
-        claimSearchCriteria.setShowOpenClaimsOnly(false);
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList("AwaitingInvoicePayment", "ManualInvoiceBREApproved")));
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());

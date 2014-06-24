@@ -11,7 +11,7 @@ public class FilterInterimPayment extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());

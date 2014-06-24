@@ -52,7 +52,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
 //            removeUnwantedSearchCriteria(filterClaimSearchCriteria);
             ClaimSearchCriteria filterClaimSearchCriteria = getClaimSearchCriteria();
             try {
-                filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria, getInsurerPaymentsTeamEnabled())));
+                filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria)));
                 filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
             } catch (Exception ex) {
                 LOG.error("Error setting up filter '{}': ", filter.getName(), ex);

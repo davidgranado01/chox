@@ -55,6 +55,6 @@ public interface Filter {
     boolean getIsCheckEngineers();
     boolean getIsManualFilter();
 
-    ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive);
+    ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria);
     
 }

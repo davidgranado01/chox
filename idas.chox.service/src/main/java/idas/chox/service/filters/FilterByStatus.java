@@ -13,7 +13,7 @@ public class FilterByStatus extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setManual(getIsManualFilter());
@@ -23,7 +23,8 @@ public class FilterByStatus extends BaseFilter {
 
 // Need to set following for 'Approved Invoices Awaiting Payment' and
 // 'Manual Invoices Approved By BRE' queues  if payments team active....   
-        if (paymentsTeamActive && (getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)
+        if ((getCurrentUser().isCHOXAdmin() || (getCurrentUser().isAnInsurer() && getCurrentUser().getInsurer().isPaymentTeamEnable()))
+                && (getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)
                 || getStatus().equals(ClaimStatus.MANUAL_INVOICE_APPROVED))) {
             claimSearchCriteria.setPaymentsTeamFilter(Boolean.FALSE);
         } 

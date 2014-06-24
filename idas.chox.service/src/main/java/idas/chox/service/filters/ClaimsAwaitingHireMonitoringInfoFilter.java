@@ -14,7 +14,7 @@ public class ClaimsAwaitingHireMonitoringInfoFilter extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setManual(getIsManualFilter());

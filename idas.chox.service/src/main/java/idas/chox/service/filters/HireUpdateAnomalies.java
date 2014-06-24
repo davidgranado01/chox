@@ -8,7 +8,7 @@ public class HireUpdateAnomalies extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setAnomalies(true);
         claimSearchCriteria.setShowOpenClaimsOnly(true);

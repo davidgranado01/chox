@@ -8,7 +8,7 @@ public class PenaltyChargesApplied extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
         claimSearchCriteria.setPenaltyChargeApplied(true);
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setManual(getIsManualFilter());
