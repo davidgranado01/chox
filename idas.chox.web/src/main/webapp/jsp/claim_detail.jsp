@@ -44,7 +44,6 @@
             Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
             $('.chox-form-container').css({"background":"#fff"});
         }
-
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -326,7 +325,7 @@
         </s:if>
         <s:else >
             Ext.get('claimDetailScreenDiv').mask();
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){loadInbox(true)});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){loadInbox(true);});
         </s:else>
         
     }
