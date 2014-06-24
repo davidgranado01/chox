@@ -63,8 +63,8 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<LiabilityStatus> liabilityStatuses;
     private boolean isLiabilityStatusUpdated;
     private Set<ClaimType> claimTypes;
-    private Boolean finalReviewCho;
-    private Boolean finalReviewIns;
+    private boolean finalReviewCho;
+    private boolean finalReviewIns;
 
     @Override
     public String toString() {
@@ -537,19 +537,19 @@ public class ClaimSearchCriteria implements Serializable {
         this.isManual = isManual;
     }
 
-    public Boolean isFinalReviewCho() {
+    public boolean isFinalReviewCho() {
         return finalReviewCho;
     }
 
-    public void setFinalReviewCho(Boolean finalReviewCho) {
+    public void setFinalReviewCho(boolean finalReviewCho) {
         this.finalReviewCho = finalReviewCho;
     }
 
-    public Boolean isFinalReviewIns() {
+    public boolean isFinalReviewIns() {
         return finalReviewIns;
     }
 
-    public void setFinalReviewIns(Boolean finalReviewIns) {
+    public void setFinalReviewIns(boolean finalReviewIns) {
         this.finalReviewIns = finalReviewIns;
     }
 

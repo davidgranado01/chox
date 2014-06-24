@@ -13,24 +13,14 @@ public class FilterFixedFeeRejected extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
-//        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-//        claimSearchCriteria.setShowOpenClaimsOnly(false);
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
+
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setIsManual(getIsManualFilter());
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         claimSearchCriteria.setClaimTypes(EnumSet.of(ClaimType.FIXED_FEE));
-//        if (insurerId > -1) {
-//            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-//        }
-//        if (choId > -1) {
-//            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
-//        }
-//        if (claimTypeId > -1 && !ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId])) {
-//            return null;
-//        }
 
         return claimSearchCriteria;
     }

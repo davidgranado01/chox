@@ -1,36 +1,34 @@
 package idas.chox.service.filters;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.search.ClaimSearchCriteria;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
 
-public class FilterAwaitingLiabilityResolution extends BaseFilter {
+public class ClaimsAwaitingInvoiceDataFilter extends BaseFilter {
+
     private String status;
     private String name;
     private String key;
 
-
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setIsManual(getIsManualFilter());
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-  
-        if (isCHO == null) { // CHOX Admin
-            claimSearchCriteria.setFinalReviewCho(Boolean.FALSE);
-            claimSearchCriteria.setFinalReviewIns(Boolean.FALSE);
-        } else if (isCHO) {
-            claimSearchCriteria.setFinalReviewCho(Boolean.FALSE);
-        } else {
-            claimSearchCriteria.setFinalReviewIns(Boolean.FALSE);
+        
+        if (getCurrentUser().isAnInsurer() && ClaimStatus.CLAIM_AWAITING_INVOICE_DATA.equals(getStatus())) {
+            // Insurer should only see Insurer Uploaded Claims in these queue
+            claimSearchCriteria.setClaimTypes(EnumSet.of(ClaimType.INSURER_UPLOAD));
         }
-
         return claimSearchCriteria;
     }
-
+    
     public String getStatus() {
         return status;
     }
@@ -56,5 +54,5 @@ public class FilterAwaitingLiabilityResolution extends BaseFilter {
     public void setKey(String key) {
         this.key = key;
     }
-    
+   
 }

@@ -277,4 +277,9 @@ public class ClaimStatus {
         preInvoiceStatus.add(CLAIM_PENDING);
         return preInvoiceStatus;
     }
+    
+    public static boolean isThisStatusAssociatedWithUniqueSearchCriteria(String claimStatus) {
+        return claimStatus.equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+    }
+    
 }

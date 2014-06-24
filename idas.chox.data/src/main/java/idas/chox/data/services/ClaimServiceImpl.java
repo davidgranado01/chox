@@ -1171,23 +1171,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
-        /*
-         * Final Review
-         */
-        // First, check if both flags are non-null (NB. must be CHOX Admin and both flags must be equal!
-        if (searchCriteria.isFinalReviewCho() != null && searchCriteria.isFinalReviewIns() != null) {
-            if (searchCriteria.isFinalReviewIns()) {
-                criteria.add(Restrictions.disjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
-                    .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
+        if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
+            for (String claimStatus : searchCriteria.getStatuses()) {
+                if (ClaimStatus.isThisStatusAssociatedWithUniqueSearchCriteria(claimStatus)) {
+                    Criterion uniqueRestriction = getClaimStatusUniqueSearchCriteria(searchCriteria);
+                    if (uniqueRestriction != null) {
+                        criteria.add(uniqueRestriction);
+                    }
+                }
             }
-            else {
-                criteria.add(Restrictions.conjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
-                    .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
-            }
-        } else if (searchCriteria.isFinalReviewCho() != null) {
-            criteria.add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho().booleanValue()));
-        } else if (searchCriteria.isFinalReviewIns() != null) {
-            criteria.add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns().booleanValue()));
         }
         return criteria;
     }
@@ -1738,6 +1730,42 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         return updated;
+    }
+    
+    public Criterion getClaimStatusUniqueSearchCriteria(ClaimSearchCriteria searchCriteria) {
+        if (searchCriteria.getStatuses().contains(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)) {
+            if (getCurrentUser().isAnInsurer()) {
+                return Restrictions.disjunction()
+                        .add(Restrictions.conjunction()
+                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
+                                .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())))
+                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
+            } else if (getCurrentUser().isCHO()) {
+                return Restrictions.disjunction()
+                        .add(Restrictions.conjunction()
+                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
+                                .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho())))
+                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
+            } else { // CHOX Admin
+                Criterion finalReviewChoxAdminRestriction;
+                // For chox Admin eithr finalReviewCho or finalReviewIns should be true to appear in the Final Review queue.
+                if (searchCriteria.isFinalReviewIns() || searchCriteria.isFinalReviewCho()) {
+                    finalReviewChoxAdminRestriction = Restrictions.disjunction()
+                            .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
+                            .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns()));
+                } else { // For chox Admin both finalReviewCho and finalReviewIns should be false to appear in the Awaiting Liability Resolution queue.
+                    finalReviewChoxAdminRestriction = Restrictions.conjunction()
+                            .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
+                            .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns()));
+                }
+                return Restrictions.disjunction()
+                        .add(Restrictions.conjunction()
+                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
+                                .add(finalReviewChoxAdminRestriction))
+                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
+            }
+        }
+        return null;
     }
 
 }
