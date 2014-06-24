@@ -36,6 +36,11 @@
             // change the header width to 1300px from 1000px(used for claim detail page).
             $('div.inner').css({"width":"1190px"});
             Ext.QuickTips.init();
+            if (isChoxAdmin) {
+                Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-seeTestTheme.css");
+            } else if (<s:property value="isInsurer"/>) {
+                Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
+            }
             setupDashboardActionName();
             loadDataFromSession();
             // Need to comes before setupTabPanel method so that we can hide or show the grid depends on the tab selected.
