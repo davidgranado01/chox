@@ -9,7 +9,7 @@ public class AllClaimsFilter extends BaseFilter {
 
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
 
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());

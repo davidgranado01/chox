@@ -15,31 +15,20 @@ public class FinalReview extends BaseFilter {
 
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
-//        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-//        claimSearchCriteria.setShowOpenClaimsOnly(false);
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
+
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-//        if (insurerId > -1) {
-//            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-//        }
-//        if (choId > -1) {
-//            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
-//        } 
-//        if (claimTypeId > -1) {
-//            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-//            claimTypes.add(ClaimType.values()[claimTypeId]);
-//            claimSearchCriteria.setClaimTypes(claimTypes);
-//        }
-        if (isCHO == null) {
-            claimSearchCriteria.setFinalReviewIns(Boolean.TRUE);
-            claimSearchCriteria.setFinalReviewCho(Boolean.TRUE);
-        } else if (isCHO) {
-            claimSearchCriteria.setFinalReviewCho(Boolean.TRUE);
+
+        if (getCurrentUser().isCHOXAdmin()) {
+            claimSearchCriteria.setFinalReviewIns(true);
+            claimSearchCriteria.setFinalReviewCho(true);
+        } else if (getCurrentUser().isCHO()) {
+            claimSearchCriteria.setFinalReviewCho(true);
         } else {
-            claimSearchCriteria.setFinalReviewIns(Boolean.TRUE);
+            claimSearchCriteria.setFinalReviewIns(true);
         }
         return claimSearchCriteria;
     }

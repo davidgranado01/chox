@@ -1386,10 +1386,12 @@
                 timeout:1800000,
                 listeners:  {
                     load :  function(store, records, options) {
-                                console.log(options);
-                                if (options.searchScreenTrigger) { console.log("setting isSearchScreenSearch to true");
+//                                console.log(options);
+                                if (options.searchScreenTrigger) { 
+//                                    console.log("setting isSearchScreenSearch to true");
                                     isSearchScreenSearch = true;
-                                } else { console.log("setting isSearchScreenSearch to false");
+                                } else { 
+//                                    console.log("setting isSearchScreenSearch to false");
                                     isSearchScreenSearch = false;
                                 }
                                 selectPreviouslySelectedQueue();
@@ -1496,7 +1498,7 @@
         }
         
         function onQueueSelection(rsm, rowIndex, record) { 
-            console.log("In onQueueSelection method.");
+//            console.log("In onQueueSelection method.");
 //            claimsGridTitle = "Queue: "+ record.get('queueName');
             var baseParams;
             if (canLoadClaimsOnQueueSelection) {
@@ -1536,16 +1538,16 @@
             clearForm();
             var statuses = record.get('claimSearchCriteria').claimStatusesAsString;
             statusComboNumberOfSelectedRecord = statuses.split(',').length;
-            console.log('statusComboNumberOfSelectedRecord  count is = ' +statusComboNumberOfSelectedRecord);
+//            console.log('statusComboNumberOfSelectedRecord  count is = ' +statusComboNumberOfSelectedRecord);
             if (statuses) { 
-                console.log('statuses not empty so setting the value = ' + statuses);
+//                console.log('statuses not empty so setting the value = ' + statuses);
                 statusSearchScreenCombo.setValue(statuses);
             }
             
             var claimType = record.get('claimSearchCriteria').claimTypesValueAsString;
             claimTypesComboNumberOfSelectedRecord = claimType.split(',').length;
             if (claimType) {
-                console.log('claimType not empty so setting the value = ' + claimType);
+//                console.log('claimType not empty so setting the value = ' + claimType);
                 claimTypesSearchScreenCombo.setValue(claimType);
             }
             
@@ -1663,6 +1665,8 @@
                 supplierClaimOwnerIds : supplierClaimOwnerIds,
                 customerVrn : customerVrn,
                 showOpenClaimsOnly : showOpenClaimsOnly,
+                finalReviewIns : finalReviewIns,
+                finalReviewCho : finalReviewCho,
                 liabilityStatusUpdated : liabilityStatusUpdated,
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 isPenaltyChargeApplied : penaltyChargesToBeApplied,
@@ -1890,15 +1894,4 @@
 
 <div id="searchPageHolder" class="search-panel-holder">
     <div id="searchPanel"></div>
-    <table width="100%">
-        <tr>
-            <td width="30%"></td>
-            <td align="right" style="padding-left:20px;" >
-                <div id="searchButton"></div>
-            </td>
-            <td align="left" style="padding-left:20px;" >
-                <div id="resetButton"></div>
-            </td>
-        </tr>
-    </table>
 </div>

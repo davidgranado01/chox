@@ -11,20 +11,13 @@ public class FilterInterimPayment extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
-//        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         claimSearchCriteria.setInterimPaymentMade(true);
-
-//        if (claimTypeId > -1) {
-//            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-//            claimTypes.add(ClaimType.values()[claimTypeId]);
-//            claimSearchCriteria.setClaimTypes(claimTypes);
-//        }
 
         return claimSearchCriteria;
     }

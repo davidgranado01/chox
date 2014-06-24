@@ -54,7 +54,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.ClaimsAwaitingHireMonitoringInfoFilter" >
         <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>
         <property name="status" value="AwaitingCarHireInfo"/>
@@ -67,7 +67,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="AwaitingInvoiceData" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="AwaitingInvoiceData" class="idas.chox.service.filters.ClaimsAwaitingInvoiceDataFilter" >
         <property name="name" value= "Awaiting Invoice Data"/>
         <property name="key" value= "AwaitingInvoiceData"/>
         <property name="status" value= "AwaitingInvoiceData"/>
@@ -362,7 +362,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterAwaitingLiabilityResolution" >
+    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
         <property name="key" value="AwaitingLiabilityResolution"/>
         <property name="status" value="AwaitingLiabilityResolution"/>

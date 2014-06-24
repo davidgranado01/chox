@@ -8,25 +8,13 @@ public class PenaltyChargesApplied extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, boolean paymentsTeamActive, ClaimSearchCriteria claimSearchCriteria) {
-//        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
+    public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria, boolean paymentsTeamActive) {
         claimSearchCriteria.setPenaltyChargeApplied(true);
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-//        if (insurerId > -1) {
-//            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-//        }
-//        if (choId > -1) {
-//            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
-//        }
-//        if (claimTypeId > -1) {
-//            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-//            claimTypes.add(ClaimType.values()[claimTypeId]);
-//            claimSearchCriteria.setClaimTypes(claimTypes);
-//        }
 
         return claimSearchCriteria;
     }
