@@ -1,9 +1,10 @@
 package idas.chox.service.filters;
 
 import idas.chox.core.model.Filter;
-import idas.chox.data.services.SecureDataService;
+import idas.chox.core.security.SecurityInfoProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class BaseFilter extends SecureDataService implements Filter {
+public abstract class BaseFilter implements Filter {
 
     private boolean isManualFilter = false;
     private boolean isFilterWorkGroup = false;
@@ -13,6 +14,12 @@ public abstract class BaseFilter extends SecureDataService implements Filter {
     private boolean isCheckOwnership = false;
     private boolean isCheckFnol = false;
     private boolean isCheckEngineers = false;
+    @Autowired
+    protected SecurityInfoProvider securityInfoProvider;
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
 
     @Override
     public boolean getIsCheckEngineers() {
@@ -85,4 +92,5 @@ public abstract class BaseFilter extends SecureDataService implements Filter {
     public void setIsManualFilter(boolean isManualFilter) {
         this.isManualFilter = isManualFilter;
     }
+    
 }

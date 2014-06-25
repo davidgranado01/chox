@@ -55,7 +55,9 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
                 filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria)));
                 filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
             } catch (Exception ex) {
-                LOG.error("Error setting up filter '{}': ", filter.getName(), ex);
+                // Changed to warn from error because when the user logout immediately after clicking the inbox queue but before the server sends the respons then 
+                // error is being thrown while getting the user information. Need to investigate further to see why it is not throwing exception all the times but some times.
+                LOG.warn("Error setting up filter '{}': ", filter.getName(), ex);
             }
             LOG.debug("    filter description: '{}'", filterViewData.getDescription());
             filterViewData.setQueueName(filter.getName());

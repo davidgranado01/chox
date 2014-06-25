@@ -76,7 +76,7 @@
                 Ext.state.Manager.set("filter_org_id",-1);
                 Ext.state.Manager.set("recentlyClickedQueueRowNumber",null);
                 Ext.state.Manager.set("isClaimSearchMade", false);
-                Ext.state.Manager.set("currentTabIndex", 0);
+                Ext.state.Manager.set("currentTabIndex", isChoxAdmin ? 1 : 0);
 //                Ext.state.Manager.set("syncWithSearchField", false);
                 manualInvoiceFilter = false;
             </s:if>
