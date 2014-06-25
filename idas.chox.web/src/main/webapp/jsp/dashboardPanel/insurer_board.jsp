@@ -330,20 +330,23 @@
                 <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
                     </td></tr>
                 <tr>
-                    <th nowrap><label id="tipTitle">Credit Hire Organisation</label></th>
+                    <!--<th nowrap><label id="tipTitle">Credit Hire Organisation</label></th>-->
+                    <th nowrap style="width:100%;"><label id="tipTitle">Credit Hire Organisation</label></th>
                     <td><div id="searchScreenCHODropDownDiv"></div></td>
                 </tr>
 
                 <s:if test="isInsurer">
                 <s:if test="insurerIsWorkgroupEnabled">
                 <tr>
-                    <th nowrap><label id="tipTitle1">Workgroup</label></th>
+                    <!--<th nowrap><label id="tipTitle1">Workgroup</label></th>-->
+                    <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
                     <td><div id="dashBoardWorkgroupComboDiv"></div></td>
                 </tr>
                 </s:if>
                 <s:if test="insurerIsClaimOwnershipEnabled">
                 <tr>
-                    <th nowrap><label id="tipTitle2">Claim Owner</label></th>
+                    <!--<th nowrap><label id="tipTitle2">Claim Owner</label></th>-->
+                    <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
                     <td><div id="dashBoardClaimOwnerComboDiv"></div></td>
                 </tr>
                 </s:if>
@@ -360,15 +363,15 @@ if (isIE) {
 }
 %>
  <% if (isFirefox){ %>
-                    <div style="height:1178px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1178px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
 <% } else if(isIE && versionIE > 9){ %>
-                    <div style="height:1115px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1115px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
 <% } else { %>
-                    <div style="height:1095px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1095px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
 <% }%>
 </s:if>
                 <s:else>
-                    <div style="height:790px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:790px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
                 </s:else>
             
         </div>

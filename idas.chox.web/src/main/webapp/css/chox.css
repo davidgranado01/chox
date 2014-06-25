@@ -112,7 +112,7 @@ div.outer
 
 div.inner
 {
-    width:1270px;
+    width:1000px;
     margin:0px auto;
     text-align:left;
 }
@@ -683,6 +683,22 @@ div.status-info
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
+.search-panel-status-info
+{  
+    background-color:white;
+    border:1px orange solid;
+    padding:2px 2px 2px 10px;
+    font-weight:normal;
+    font-size:12px;
+    vertical-align:middle;
+    /*margin-bottom:4px;*/
+    white-space:normal;
+    background-repeat: no-repeat;
+    background-position: 10px center; 
+    /*background-image: url('../images/default/window/icon-info.gif');*/
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
 div.status-info-popup
 {  
     background-color:white;
@@ -894,8 +910,9 @@ table.dashboard th
     padding:6px;  
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
-    font-weight:bold;  
-    width:100%;
+    font-weight:bold; 
+    /*width:100%;*/
+    width:25%;
     border-bottom:1px #ccc solid;
 }
 
@@ -912,7 +929,8 @@ table.dashboard td
     padding:6px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
-    width:180px;
+    /*width:180px;*/
+    width:25%;
     border-bottom:1px #ccc solid;    
     text-align:right;
 }

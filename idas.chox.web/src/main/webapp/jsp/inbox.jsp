@@ -27,12 +27,14 @@
         var actionMenu;
         var batchUpdateSelectionModel;
 //        var isQueueSelectionSearch = false;
-        var isSearchScreenSearch = false;
+//        var isSearchScreenSearch = false;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
         Ext.onReady(function() {
+            // change the header width to 1300px from 1000px(used for claim detail page).
+            $('div.inner').css({"width":"1300px"});
             Ext.QuickTips.init();
             setupDashboardActionName();
             loadDataFromSession();
@@ -122,18 +124,21 @@
                         var baseParams = Ext.apply({}, options.params, store.baseParams);
                         
 //                        if (baseParams.canLoadData !== false && typeof baseParams.canLoadData !== 'undefined') { 
+                        // This is used as key(when rendering the grid) weather to load the empty grid or load grid with previos search criteria. 
                         if (baseParams.canLoadData === true) {
                             Ext.state.Manager.set("isClaimSearchMade", true);
                         } else {
                             Ext.state.Manager.set("isClaimSearchMade", false);
                         }
-                        
+                        // store the search criteria in the cookie
                         Ext.state.Manager.set("claims_grid_baseParams", baseParams);
-//                        claimsGrid.setTitle("");
+                        claimsGrid.setTitle("");
                     }
                     ,load: function(store, records, options) {
 //                        if (options.params.canLoadData) {
-                            claimsGrid.setTitle("Search Result" +" ("+store.getTotalCount()+")");
+                          if (options.params.gridTitle !== '') {
+                              claimsGrid.setTitle(options.params.gridTitle +" ("+store.getTotalCount()+")");
+                          }
 //                        } else if(options.params.canLoadData === false) {
 //                            claimsGrid.setTitle("");
 //                        } else if(typeof options.params.canLoadData === 'undefined') {
@@ -184,7 +189,7 @@
                                     }
                                 }
                             },
-                width: 1270,
+                width: 1300,
                 enableColumnMove: false,
                 columns: [
                     batchUpdateSelectionModel,
@@ -336,6 +341,7 @@
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight: true,
+                width : 1300,
                 activeTab: Ext.state.Manager.get("currentTabIndex"),
                 listeners: { 
                     beforerender : updateTaskTab,

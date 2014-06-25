@@ -28,9 +28,6 @@
     var searchColumsPanel;
     var queueDataStore;
     var queueGrid;
-//    var claimsGridTitle;
-    // This is used to load claimGrid page start param from session when queue selected and page reloaded/refereshed/back from claim detail page.
-    var canLoadClaimsOnQueueSelection = true;
 //    var isQueueSyncWithSearchField = Ext.state.Manager.get("syncWithSearchField");
     
     // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
@@ -52,7 +49,7 @@
             var supplierReferenceField=new Ext.form.TextField({
                 id:"supplierReferenceId",
                 name:"supplierReference",
-                width: 180,
+                width: 160,
                 fieldLabel: 'Supplier Ref',
                 allowBlank:true,
                 value:'<s:property value="supplierReference" escapeJavaScript="true"/>',
@@ -68,7 +65,7 @@
             var claimNumberField=new Ext.form.TextField({
                 id:"claimNumberId",
                 name:"claimNumber",
-                width: 180,
+                width: 160,
                 fieldLabel: 'Claim Number',
                 allowBlank:true,
                 value:'<s:property value="claimNumber" escapeJavaScript="true"/>',
@@ -85,7 +82,7 @@
             var invoiceNumberField=new Ext.form.TextField({
                 id:"invoiceNumberId",
                 name:"invoiceNumber",
-                width: 180,
+                width: 160,
                 fieldLabel: 'Invoice Number',
                 allowBlank:true,
                 value:'<s:property value="invoiceNumber" escapeJavaScript="true"/>',
@@ -101,7 +98,7 @@
             var customerVrnField=new Ext.form.TextField({
                 id:"customerVrnId",
                 name:"customerVrn",
-                width: 180,
+                width: 160,
                 fieldLabel: 'Supplier VRN',
                 allowBlank:true,
                 value:'<s:property value="customerVrn" escapeJavaScript="true"/>',
@@ -117,7 +114,7 @@
             var thirdPartyVrnField=new Ext.form.TextField({
                 id:"thirdPartyVrnId",
                 name:"thirdPartyVrn",
-                width: 180,
+                width: 160,
                 fieldLabel: 'Insurer VRN',
                 allowBlank:true,
                 value:'<s:property value="thirdPartyVrn" escapeJavaScript="true"/>',
@@ -149,9 +146,11 @@
             var liabilityStatusUpdateNotification = new Ext.form.Checkbox({
                 name:'liabilityStatusUpdated',
                 id:'liabilityStatusUpdatedId',
+                disabled : <s:property value="isInsurer"/>,
+                hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Liability Status Updated',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:245px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -167,7 +166,7 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="isSupplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:245px',
                 checked: <s:property value="isSupplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -183,7 +182,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:245px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -197,9 +196,11 @@
             var penaltyChargesToBeAppliedCheckBox = new Ext.form.Checkbox({
                 name:'isPenaltyChargeApplied',
                 id:'penaltyChargesToBeAppliedCheckBoxId',
+                disabled : <s:property value="isInsurer"/>,
+                hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="isPenaltyChargeApplied"/>',
                 fieldLabel: 'Penalty Charges To Be Applied',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:245px',
                 checked: <s:property value="isPenaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -217,7 +218,7 @@
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="finalReviewCho"/>',
                 fieldLabel: 'Final Review CHO',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:150px',
                 checked: ('<s:property value="finalReviewCho"/>' === true) ? true : ('<s:property value="finalReviewCho"/>' === false) ? false : null,
                 listeners:{
                     check:function (el, e) {
@@ -235,7 +236,7 @@
                 hidden : <s:property value="isCHO"/>,
                 value:'<s:property value="finalReviewIns"/>',
                 fieldLabel: 'Final Review Insurer',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:245px',
                 checked: ('<s:property value="finalReviewIns"/>' === true) ? true : ('<s:property value="finalReviewIns"/>' === false) ? false : null,
                 listeners:{
                     check:function (el, e) {
@@ -250,6 +251,8 @@
                 name:'isAnomalies',
                 id:'anomaliesCheckBoxId',
                 value:'<s:property value="isAnomalies"/>',
+                disabled : <s:property value="isCHO"/>,
+                hidden : <s:property value="isCHO"/>,
                 fieldLabel: 'Is Anomalies',
                 labelStyle: 'width:150px',
                 checked: <s:property value="isAnomalies"/>,
@@ -265,9 +268,11 @@
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
+                disabled : <s:property value="isCHO"/>,
+                hidden : <s:property value="isCHO"/>,
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Escalated To Supervisor',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:245px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -281,6 +286,8 @@
             var interimPaymentMadeCheckBox = new Ext.form.Checkbox({
                 name:'isInterimPaymentMade',
                 id:'interimPaymentMadeCheckBoxId',
+                disabled : <s:property value="isInsurer"/>,
+                hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="isInterimPaymentMade"/>',
                 fieldLabel: 'Is Interim Payment Made',
                 labelStyle: 'width:150px',
@@ -478,7 +485,7 @@
             var reviewRequiredDateFromPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateFrom',
                 fieldLabel: 'Hire Monitoring Review Required Date From',
-                labelStyle: 'width:160px',
+                labelStyle: 'width:140px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -501,7 +508,7 @@
             var reviewRequiredDateToPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateTo',
                 fieldLabel: 'Hire Monitoring Review Required Date To',
-                labelStyle: 'width:160px',
+                labelStyle: 'width:140px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -546,7 +553,7 @@
                 var insurerComboNumberOfSelectedRecord = 0;
                 insurerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : insurersStore,
-                    width: 200,
+                    width: 280,
                     valueField : 'text',
                     id : 'searchScreenInsurerComboId',
                     displayField :'value',
@@ -622,7 +629,7 @@
                 var supplierComboNumberOfSelectedRecord = 0;
                 supplierSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : suppliersStore,
-                    width: 200,
+                    width: 280,
                     fieldLabel: 'Supplier Name',
                     disabled : <s:property value="isCHO"/>,
                     hidden : <s:property value="isCHO"/>,
@@ -702,7 +709,7 @@
                 var workgroupComboNumberOfSelectedRecord = 0;
                 workgroupSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : workgroupSearchScreenStore,
-                    width: 200,
+                    width: 280,
                     fieldLabel: 'Workgroup',
                     disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
                     hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
@@ -793,7 +800,7 @@
                 var claimOwnerComboNumberOfSelectedRecord = 0;
                 claimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : claimOwnerSearchScreenStore,
-                    width: 200,
+                    width: 280,
                     fieldLabel: (<s:property value="isInsurer"/>) ? 'Claim Owner' : 'Insurer\'s Claim Owner',
                     disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
@@ -890,7 +897,7 @@
                 var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
                 supplierClaimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : supplierClaimOwnerSearchScreenStore,
-                    width: 200,
+                    width: 280,
                     fieldLabel: <s:property value="isCHO"/> ? 'Claim Owner' : 'Supplier Claim Owner',
                     disabled : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
                     hidden : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
@@ -981,7 +988,7 @@
             
             statusSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : statusesStore,
-                width: 180,
+                width: 280,
                 fieldLabel: 'Status',
                 valueField : 'text',
                 id : 'statusSearchScreenComboId',
@@ -1055,7 +1062,7 @@
             var liabilityStatusComboNumberOfSelectedRecord = 0;
             liabilityStatusSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : liabilityStatusesStore,
-                width: 200,
+                width: 280,
                 fieldLabel: 'Liability Status',
                 valueField : 'value',
                 id : 'liabilityStatusSearchScreenComboId',
@@ -1117,7 +1124,7 @@
             
             hireAndRepairSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : hireAndRepairSearchParamStore,
-                width: 200,
+                width: 280,
                 fieldLabel: 'Hire & Repair Management Status',
                 valueField : 'value',
                 id : 'hireAndRepairSearchParamComboId',
@@ -1189,7 +1196,7 @@
             claimTypesComboNumberOfSelectedRecord = 0;
             claimTypesSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : claimTypesStore,
-                width: 180,
+                width: 280,
                 fieldLabel: 'Claim Type',
                 valueField : 'value',
                 id : 'claimTypesSearchScreenComboId',
@@ -1242,7 +1249,7 @@
             // Create the search and reset buttons
             var searchButton = new Ext.Button({
                 text: 'Search',
-                scale : 'medium',
+                scale : 'small',
                 width : 100,
                 handler: function(button, event) {
                     searchClaim(true);
@@ -1252,31 +1259,30 @@
             var resetButton = new Ext.Button({
                 text: 'Reset',
                 width : 100,
-                scale : 'medium',
+                scale : 'small',
                 handler: function(button, event) {
-                    clearForm();
-                    loadQueueGrid(false);
-                    var rowIndex = Ext.state.Manager.get("recentlyClickedQueueRowNumber");
-                    if (typeof rowIndex !== 'undefined') { 
-                        queueGrid.getSelectionModel().selectRow(rowIndex);
+                    if (!selectPreviouslySelectedQueue(true)) {
+                        // If none of the queue is selected previously then reset the search form.
+                        searchClaim(false);
                     }
-//                    searchClaim(true);
                 }
             });
             
             var leftColumn = {
-                width:310,
+                width:280,
                 height : 'auto',
                 style: {
                     paddingLeft:'10px'
                 },
                 layout: 'form',
-                items: [supplierReferenceField,claimNumberField,
+                items: [supplierReferenceField, claimNumberField,
                             invoiceNumberField, customerVrnField, 
-                            thirdPartyVrnField, 
-                            statusSearchScreenCombo, claimTypesSearchScreenCombo, 
-                            reviewRequiredDateFromPicker, reviewRequiredDateToPicker, 
-                            supplementaryInvoicedClaimsCheckBox]
+                            thirdPartyVrnField, reviewRequiredDateFromPicker, 
+                            reviewRequiredDateToPicker,
+                            supplementaryInvoicedClaimsCheckBox, penaltyChargesAppliedCheckBox,
+                            penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification, 
+                            finalReviewInsCheckBox, escalatedToSupervisorCheckBox
+                        ]
             };
 
             var middleColumn = {
@@ -1287,20 +1293,19 @@
                         statusModifiedDateFromPicker, statusModifiedDateToPicker,
                         invoiceUploadDateFromPicker, invoiceUploadDateToPicker, 
                         rentalStartDatePicker, rentalEndDatePicker, openClaimsCheckBox,
-                        anomaliesCheckBox, escalatedToSupervisorCheckBox,
-                        interimPaymentMadeCheckBox]
+                        anomaliesCheckBox, interimPaymentMadeCheckBox,
+                        finalReviewChoCheckBox]
             };
 
             var rightColumn = {
-                width:350,
+                width:400,
                 height : 'auto',
                 layout: 'form',
-                items: [insurerSearchScreenCombo, supplierSearchScreenCombo, 
+                items: [statusSearchScreenCombo, claimTypesSearchScreenCombo, 
+                            insurerSearchScreenCombo, supplierSearchScreenCombo, 
                             workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
                             supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo, 
-                            hireAndRepairSearchParamCombo, penaltyChargesAppliedCheckBox, 
-                            penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification,
-                            finalReviewChoCheckBox, finalReviewInsCheckBox]
+                            hireAndRepairSearchParamCombo]
             };
             
             var queueReader = new Ext.data.JsonReader({
@@ -1323,23 +1328,20 @@
                 timeout:1800000,
                 listeners:  {
                     load :  function(store, records, options) {
-//                                console.log(options);
                                 if (options.searchScreenTrigger) { 
-//                                    console.log("setting isSearchScreenSearch to true");
-                                    isSearchScreenSearch = true;
+                                    selectPreviouslySelectedQueue(true);
                                 } else { 
-//                                    console.log("setting isSearchScreenSearch to false");
-                                    isSearchScreenSearch = false;
+                                    selectPreviouslySelectedQueue(false);
                                 }
-                                selectPreviouslySelectedQueue();
                             }
-                },
+                }
             });
             
             queueGrid = new Ext.grid.GridPanel({
                 store: queueDataStore,
                 id : 'QueueGridId',
                 enableColumnMove: false,
+                frame : true,
                 enableHdMenu:false,
                 selModel : new Ext.grid.RowSelectionModel({ // best practice to use selectionModel instead of grid rowClick listner.
                                 listeners:  {rowselect : onQueueSelection}
@@ -1353,7 +1355,7 @@
                 ],
                 stripeRows: true,
                 autoExpandColumn: 'queueNameId',
-                height: 420,
+                height: 430,
                 width: 300,
 //                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
@@ -1365,22 +1367,43 @@
                             }
                 })
             });
-
            
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
-                width : 970,
+                width : 980,
                 frame : true,
-                height : 420,
+                height : 370,
                 autoScroll : true,
                 items : [leftColumn,middleColumn,rightColumn],
+                headerAsText : true,
+//                headerCfg: {cls: 'search-panel-status-info'},
+                title : '<div class="search-panel-status-info">Search Screen Information Panel</div>'
+//                buttons : [searchButton, resetButton], // moved to separate panel.
+//                buttonAlign : 'center'
+            });
+            
+            var buttonPanel = new Ext.Panel({
                 buttons : [searchButton, resetButton],
+                frame : true,
+                width : 980,
+                height : 30,
                 buttonAlign : 'center'
             });
             
+            // We need to create another button panel to separate the search panel frame from search and reset button.
+            // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
+            var searchAndButtonPanel = new Ext.Panel({
+                width : 1000,
+                height : 430,
+                frame : true,
+                items : [searchColumsPanel, buttonPanel]
+            });
+            
+            
+            
             new Ext.Panel({
                 layout : 'hbox',
-                items : [queueGrid, searchColumsPanel],
+                items : [queueGrid, searchAndButtonPanel],
                 renderTo : 'searchPanel',
                 listeners:  {afterrender : loadQueueGrid}
             });
@@ -1404,72 +1427,65 @@
             }
         }
         
-//        function reSelectQueue() {
-//            var rowIndex = Ext.state.Manager.get("recentlyClickedQueueRowNumber");
-//            if (typeof rowIndex !== 'undefined') {
-//                queueGrid.getSelectionModel().deselectRow(rowIndex);
-//                queueGrid.getSelectionModel().selectRow(rowIndex);
-//            }
-//        }
-        
-        function selectPreviouslySelectedQueue() {
-//            console.log("In selectPreviouslySelectedQueue method");
+        function selectPreviouslySelectedQueue(canLoadClaimsGridData) {
+            
             var rowIndex = Ext.state.Manager.get("recentlyClickedQueueRowNumber");
-            if (typeof rowIndex !== 'undefined') { 
-//                console.log("rowIndex is present, that means queue is previously selected.");
-                // if it is loaded from session then the claims grid is loaded using session base param when rendered. No need to load it from here.
-                if (!isSearchScreenSearch) {
-                    canLoadClaimsOnQueueSelection = false;
-//                    console.log("canLoadClaimsOnQueueSelection set to false to prevent duplicate claim grid data loading.");
+            if (typeof rowIndex !== 'undefined') {
+                if (canLoadClaimsGridData) {
+                    queueGrid.getSelectionModel().selectRow(rowIndex);
+                } else {
+                    // remove rowSelect listner to avoid loading the claims grid data when the queue is selected.
+                    queueGrid.getSelectionModel().removeListener('rowselect', onQueueSelection);
+                    queueGrid.getSelectionModel().selectRow(rowIndex);
+                    // add the rowSelect listner back to activate loading the claims grid when the queue is selected.
+                    queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
                 }
-                queueGrid.getSelectionModel().selectRow(rowIndex);
-                // code after the below lines are not executed, need investigation.
                 queueGrid.getView().focusRow(queueGrid.getSelectionModel().hasNext() ? rowIndex+1 : rowIndex);
-            } else {
-                if (isSearchScreenSearch) { 
-//                    console.log("isSearchScreenSearch is true so change isSearchScreenSearch to false and return without further action.");
-                    isSearchScreenSearch = false;
-                    return;
-                }
+                return true; // this line is not working. All the code below the above focusRow method line is not working. Need investigation.
             }
+            return false;
+        }
+        
+        function resetQueue(canLoadClaimsGridData) {
+            
+            if (canLoadClaimsGridData) {
+                queueGrid.getSelectionModel().selectRow(0);
+            } else {
+                // remove rowSelect listner to avoid loading the claims grid data when the queue is selected.
+                queueGrid.getSelectionModel().removeListener('rowselect', onQueueSelection);
+                queueGrid.getSelectionModel().selectRow(0);
+                Ext.state.Manager.set("recentlyClickedQueueRowNumber", 0);
+                // add the rowSelect listner back to activate loading the claims grid when the queue is selected.
+                queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
+            }
+            
         }
         
         function onQueueSelection(rsm, rowIndex, record) { 
-//            console.log("In onQueueSelection method.");
-//            claimsGridTitle = "Queue: "+ record.get('queueName');
-            var baseParams;
-            if (canLoadClaimsOnQueueSelection) {
-//                console.log("canLoadClaimsOnQueueSelection check passed, that means claim grid can be loaded on queue click");
-                var queueFilterName = record.get('key');
-//                    console.log("isQueueSyncWithSearchField is true, so need to update the search screen with queue search criteria.");
-                if (isSearchScreenSearch) { 
-//                        console.log("isSearchScreenSearch is true so change isSearchScreenSearch to false.");
-                    isSearchScreenSearch = false;
-//                        return;
-                } else {
-                    updateSearchScreenFieldsWithQueueFilterCriteria(record);
-                }
-                baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName});
-                
-                Ext.state.Manager.set("recentlyClickedQueueRowNumber", rowIndex);
-                doDataLoad(baseParams);
-            } else { 
-//                console.log("canLoadClaimsOnQueueSelection check failed, that means claims grid can not be loaded this time by the queue selection.");
-                // if it is loaded from session then the claims grid is loaded using session base param when rendered. No need to load it from here.
-//                baseParams = Ext.state.Manager.get("claims_grid_baseParams");
-                // change canLoadClaimsOnQueueSelection to true so next time the claims grid is loaded when queue is clicked.
-                canLoadClaimsOnQueueSelection = true;
-                if (isSearchScreenSearch) { 
-//                    console.log("isSearchScreenSearch is true so setting it to false and return without further action.");
-                    isSearchScreenSearch = false;
-                    return;
-                }
-            }
-            
+
+            var queueFilterName = record.get('key');
+            var queueName = record.get('queueName');
+            // populate the necessery search criteria in the search panel.
+            updateSearchScreenFieldsWithQueueFilterCriteria(record);
+            var baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName, "gridTitle" : queueName});
+            Ext.state.Manager.set("recentlyClickedQueueRowNumber", rowIndex);
+            // load the claims grid data.
+            doDataLoad(baseParams);
+            // set the searchPanel information message
+            setSearchPanelInfo(queueName);
+            // we need layout the search panel here because incase if the size of the search panel increased 
+            // as a result of setting up queue search criteria in the search panel.
+            doLayoutSearchPanel();
             // The below line need to be investigated
             updateManualInvoiceBatchUpdate(queueFilterName);
         }
-
+        
+        function setSearchPanelInfo(msg) {
+            if (searchColumsPanel) {
+                searchColumsPanel.setTitle('<div class="search-panel-status-info">'+msg+'</div>');
+            }
+        }
+        
         function updateSearchScreenFieldsWithQueueFilterCriteria(record) {
 
             clearForm();
@@ -1626,9 +1642,15 @@
             /*
              *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
              */
-            var searchBaseParam = {canLoadData : canSearchForData};
+            var searchBaseParam;
             if (canSearchForData) {
-                searchBaseParam = getSearchParameters();
+                resetQueue(false);
+                searchBaseParam = Ext.apply(getSearchParameters(), {"gridTitle" : 'Custom Search Result'});
+                // set the searchPanel information message
+                setSearchPanelInfo('Custom Search Result');
+            } else { 
+                searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
+                clearForm();
             }
             doDataLoad(searchBaseParam);
         }

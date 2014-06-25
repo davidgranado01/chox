@@ -215,19 +215,21 @@
                 <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
                     </td></tr>
                 <tr>
-                    <th nowrap><label id="tipTitle">Insurer</label></th>
+                    <!--<th nowrap><label id="tipTitle">Insurer</label></th>-->
+                    <th nowrap style="width:100%;"><label id="tipTitle">Insurer</label></th>
                     <td><div id="dashBoardChoInsurerDropDownDiv"></div></td>
                 </tr>
                 <s:if test="isCHO">
                 <s:if test="choIsClaimOwnershipEnabled">
                 <tr>
-                    <th nowrap><label id="tipTitle1">Claim Owner</label></th>
+                    <!--<th nowrap><label id="tipTitle1">Claim Owner</label></th>-->
+                    <th nowrap style="width:100%;"><label id="tipTitle1">Claim Owner</label></th>
                     <td><div id="dashBoardChoClaimOwnerComboDiv"></div></td>
                 </tr>
                 </s:if>
                 </s:if>
             </table>
-            <div style="height:750px; width:960px" id="resultHolder" name="resultHolder"></div>
+            <div style="height:750px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
         </div>        
 
     </fieldset>
