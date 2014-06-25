@@ -166,10 +166,10 @@
             var supplementaryInvoicedClaimsCheckBox = new Ext.form.Checkbox({
                 name:'isSupplementaryInvoiceOnly',
                 id:'supplementaryInvoicedCheckBoxId',
-                value:'<s:property value="isSupplementaryInvoiceOnly"/>',
+                value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
                 labelStyle: 'width:230px',
-                checked: <s:property value="isSupplementaryInvoiceOnly"/>,
+                checked: <s:property value="supplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -198,10 +198,10 @@
             var penaltyChargesToBeAppliedCheckBox = new Ext.form.Checkbox({
                 name:'isPenaltyChargeApplied',
                 id:'penaltyChargesToBeAppliedCheckBoxId',
-                value:'<s:property value="isPenaltyChargeApplied"/>',
+                value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Penalty Charges To Be Applied',
                 labelStyle: 'width:230px',
-                checked: <s:property value="isPenaltyChargeApplied"/>,
+                checked: <s:property value="penaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -250,10 +250,10 @@
             var anomaliesCheckBox = new Ext.form.Checkbox({
                 name:'isAnomalies',
                 id:'anomaliesCheckBoxId',
-                value:'<s:property value="isAnomalies"/>',
+                value:'<s:property value="anomalies"/>',
                 fieldLabel: 'Is Anomalies',
                 labelStyle: 'width:150px',
-                checked: <s:property value="isAnomalies"/>,
+                checked: <s:property value="anomalies"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -282,10 +282,10 @@
             var interimPaymentMadeCheckBox = new Ext.form.Checkbox({
                 name:'isInterimPaymentMade',
                 id:'interimPaymentMadeCheckBoxId',
-                value:'<s:property value="isInterimPaymentMade"/>',
+                value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Is Interim Payment Made',
                 labelStyle: 'width:150px',
-                checked: <s:property value="isInterimPaymentMade"/>,
+                checked: <s:property value="interimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -1165,23 +1165,23 @@
                 }
             });
  
-            var approvedInvoiceOwnershipSearchParamData = [['Claims Handlers & Payments Team', 1],['Claims Handlers', 2], ['Payments Team', 3]];
+            var approvedInvoiceOwnershipSearchParamData = [['Claims Handlers', 1], ['Payments Team', 2]];
             
-            var approvedInvoiceOwnershipParamStore = new Ext.data.ArrayStore({
+            var approvedInvoiceOwnershipSearchParamStore = new Ext.data.ArrayStore({
                     fields: [
                        {name: 'text', type: 'string'},
                        {name: 'value', type: 'int'}
                     ]
             });
             
-            approvedInvoiceOwnershipParamStore.loadData(approvedInvoiceOwnershipSearchParamData);
+            approvedInvoiceOwnershipSearchParamStore.loadData(approvedInvoiceOwnershipSearchParamData);
             // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
             var approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = 0;
             
             approvedInvoiceOwnershipSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : approvedInvoiceOwnershipSearchParamStore,
                 width: 200,
-                fieldLabel: 'Hire & Repair Management Status',
+                fieldLabel: 'Approved Invoices Ownership',
                 valueField : 'value',
                 id : 'approvedInvoiceOwnershipSearchParamComboId',
                 displayField :'text',
@@ -1361,7 +1361,7 @@
                 items: [insurerSearchScreenCombo, supplierSearchScreenCombo, 
                             workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
                             supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo, 
-                            hireAndRepairSearchParamCombo, approvedInvoiceOwnershipParamCombo,penaltyChargesAppliedCheckBox, 
+                            hireAndRepairSearchParamCombo, approvedInvoiceOwnershipSearchParamCombo,penaltyChargesAppliedCheckBox, 
                             penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification,
                             finalReviewChoCheckBox, finalReviewInsCheckBox]
             };
