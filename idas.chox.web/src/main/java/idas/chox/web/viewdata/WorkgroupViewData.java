@@ -14,7 +14,7 @@ public class WorkgroupViewData {
     private String createdBy;
     private String createdDate;
     private boolean status;
-    private String statusDesc;
+    private boolean stpExcluded;
 
     public WorkgroupViewData(Workgroup object) {
 
@@ -27,11 +27,7 @@ public class WorkgroupViewData {
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.status = object.isStatus();
-
-        this.statusDesc = "Yes";
-        if (!object.isStatus()) {
-            this.statusDesc = "No";
-        }
+        this.stpExcluded = object.isStpExcluded();
 
     }
 
@@ -108,10 +104,19 @@ public class WorkgroupViewData {
     }
 
     public String getStatusDesc() {
-        return statusDesc;
+        return status ? "Yes" : "No";
     }
 
-    public void setStatusDesc(String statusDesc) {
-        this.statusDesc = statusDesc;
+    public boolean isStpExcluded() {
+        return stpExcluded;
     }
+
+    public void setStpExcluded(boolean stpExcluded) {
+        this.stpExcluded = stpExcluded;
+    }
+
+    public String getStpExcludedDesc() {
+        return stpExcluded ? "Yes" : "No";
+    }
+
 }

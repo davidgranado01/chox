@@ -329,6 +329,7 @@
         }
         
         displayAutoRoutingTpiAndSusbscriberFields();
+        displayPaymentsTeamFields();
         
         $.validator.addMethod(
             "checkGtaRegexField",
@@ -411,29 +412,80 @@
             $('#nameField').hide();
     });
     
+    function displayPaymentsTeamFields() {
+        var claimWorkgroupEnable = doWorkgroupCheck();
+        var claimOwnershipEnable = doOwnershipCheck();
+        if($('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val()){
+            $("#invoiceWorkgroupId").hide();
+            $("#invoiceClaimOwnerId").hide();
+            $("#gtaExclusionDivId").hide();
+            $("#tpiExclusionDivId").hide();
+            $("#subscriberExclusionDivId").hide();
+            $("#fixedFeeExclusionDivId").hide();
+            $("#collaborationProtocolExclusionDivId").hide();
+            $("#insurerVsInsurerExclusionDivId").hide();
+            $("#insurerManualExclusionDivId").hide();
+        }else{
+            if (claimWorkgroupEnable)
+                $("#invoiceWorkgroupDivId").show();
+            if (claimOwnershipEnable)
+                $("#invoiceClaimOwnerDivId").show();
+            $("#gtaExclusionDivId").show();
+            $("#insurerVsInsurerExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="thirdPartyInterventionActivated"]:checked').val())
+                $("#tpiExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowSubscriberClaims"]:checked').val())
+                $("#subscriberExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowFixedFeeClaims"]:checked').val())
+                $("#fixedFeeExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowCollaborationProtocolClaims"]:checked').val())
+                $("#collaborationProtocolExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
+                || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
+                $("#insurerManualExclusionDivId").show();
+        }
+    
+    }
+    
     function displayAutoRoutingTpiAndSusbscriberFields() {
-        if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
             $("#tpiTr").show();
+            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
+                $("#tpiExclusionDivId").show();      
+        }
         else
             $("#tpiTr").hide();
         
-        if($('form#formUpdateInsurerDetail input[name="allowSubscriberClaims"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="allowSubscriberClaims"]:checked').val()){
             $("#subscriberTr").show();
+            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
+                $("#subscriberExclusionDivId").show();      
+        }
         else
             $("#subscriberTr").hide();
         
-        if($('form#formUpdateInsurerDetail input[name="allowFixedFeeClaims"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="allowFixedFeeClaims"]:checked').val()){
             $("#fixedFeeTr").show();
+            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
+                $("#fixedFeeExclusionDivId").show();      
+        }
         else
             $("#fixedFeeTr").hide();
         
-        if($('form#formUpdateInsurerDetail input[name="allowCollaborationProtocolClaims"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="allowCollaborationProtocolClaims"]:checked').val()){
             $("#collaborationProtocolTr").show();
+            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
+                $("#collaborationProtocolExclusionDivId").show();      
+        }
         else
             $("#collaborationProtocolTr").hide();
         
-        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()
+            || $('form#formUpdateInsurerDetail input[name="claimUploadEnabled"]:checked').val()){
             $("#insurerManualTr").show();
+            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
+                $("#insurerManualExclusionDivId").show();      
+        }
         else
             $("#insurerManualTr").hide();
     }
@@ -520,7 +572,8 @@
 
     function doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable){
         
-        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()){
+        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()
+    || $('form#formUpdateInsurerDetail input[name="claimUploadEnabled"]:checked').val()){
             if (claimOwnershipEnable) {
               $("#manualInvoiceOwnershipHolder").slideDown();  
             }
@@ -546,14 +599,52 @@
         return tpiEnableEnable;
     }
 
+    function doPaymentsTeamEnableCheck(){
+        var claimWorkgroupEnable = doWorkgroupCheck();
+        var claimOwnershipEnable = doOwnershipCheck();
+        displayPaymentsTeamFields();
+        var paymentsTeamEnable = false;
+        if($('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val()){
+            paymentsTeamEnable = true;
+            $("#invoiceWorkgroupId").hide();
+            $("#invoiceClaimOwnerId").hide();
+            $("#gtaExclusionDivId").hide();
+            $("#tpiExclusionDivId").hide();
+            $("#subscriberExclusionDivId").hide();
+            $("#fixedFeeExclusionDivId").hide();
+            $("#collaborationProtocolExclusionDivId").hide();
+            $("#insurerVsInsurerExclusionDivId").hide();
+            $("#insurerManualExclusionDivId").hide();
+        }else{
+            if(claimWorkgroupEnable)
+                $("#invoiceWorkgroupId").slideDown();
+            if(claimOwnershipEnable)
+                $("#invoiceClaimOwnerId").slideDown();
+            $("#gtaExclusionDivId").show();
+            $("#insurerVsInsurerExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="thirdPartyInterventionActivated"]:checked').val())
+                $("#tpiExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowSubscriberClaims"]:checked').val())
+                $("#subscriberExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowFixedFeeClaims"]:checked').val())
+                $("#fixedFeeExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="allowCollaborationProtocolClaims"]:checked').val())
+                $("#collaborationProtocolExclusionDivId").show();
+            if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
+                    || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
+                $("#insurerManualExclusionDivId").show();
+        }
+        return paymentsTeamEnable;
+    }
+
     function doOwnershipCheck(){
         var claimOwnershipEnable = false;
         if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
             claimOwnershipEnable = true;
-            $("#TpiClaimOwnerId").slideDown();
+            $("#invoiceClaimOwnerId").slideDown();
             $("#manualInvoiceOwnershipHolder").slideDown();
         }else{
-            $("#TpiClaimOwnerId").hide();
+            $("#invoiceClaimOwnerId").hide();
             $('form#formUpdateInsurerDetail input[name="enableManualInvoiceOwnership"]').attr('checked', false);
             $("#manualInvoiceOwnershipHolder").hide();
         }
@@ -824,7 +915,151 @@
                                     <label class="chox-form-std-label1">Invoice Identification String (TPI)</label>
                                     <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                                 </div>
+                                <br/>
+                        <fieldset class="x-fieldset">
+                            <legend>Straight Through Invoice Processing (STP)</legend>
+                            <table>
+                               <tr>
+                                    <td colspan=2>
+                                        <div class="chox-form-item" id="paymentTeamHolder">
+                                            <label class="chox-form-std-label">Enable Payment Team</label>
+                                            <s:checkbox name="paymentTeamEnable" value="paymentTeamEnable" onclick="doPaymentsTeamEnableCheck(this)"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="3">
+                                    <br/>
+                                        <div class="chox-form-item">
+                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">
+                                            Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types.
+                                            Note that an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route
+                                            the invoice. In addition, activation of the 'Payments Team' option will keep invoices with their current Workgroup and Owner.
+                                            Note that Insurer Upload Invoices will be moved directly to 'ManualInvoiceBREApproved:
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item">
+                                            <label class="chox-form-std-label">GTA</label>
+                                            <s:checkbox name="gtaAutoRoutingEnable" id="gtaAutoRoutingEnable" value="gtaAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="gtaExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="gtaExclusionId"  name="gtaRegexExpression" value="<s:property value="gtaRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="tpiTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" >
+                                            <label class="chox-form-std-label">TPI</label>
+                                            <s:checkbox name="tpiAutoRoutingEnable" id="tpiAutoRoutingEnable" value="tpiAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="tpiExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="subscriberTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="tpiOwnershipHolder">
+                                            <label class="chox-form-std-label">Subscriber</label>
+                                            <s:checkbox name="subscriberAutoRoutingEnable" id="subscriberAutoRoutingEnable" value="subscriberAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="subscriberExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="fixedFeeTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="fixedFeeHolder">
+                                            <label class="chox-form-std-label">Fixed Fee</label>
+                                            <s:checkbox name="fixedFeeAutoRoutingEnable" id="fixedFeeAutoRoutingEnable" value="fixedFeeAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="fixedFeeExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="collaborationProtocolTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="collaborationProtocolHolder">
+                                            <label class="chox-form-std-label">Collaboration Protocol</label>
+                                            <s:checkbox name="collaborationProtocolAutoRoutingEnable" id="collaborationProtocolAutoRoutingEnable" value="collaborationProtocolAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="collaborationProtocolExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="collaborationProtocolExclusionId"  name="collaborationProtocolRegexExpression" value="<s:property value="collaborationProtocolRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="insurerVsInsurerHolder">
+                                            <label class="chox-form-std-label">Insurer Vs Insurer</label>
+                                            <s:checkbox name="insurerVsInsurerAutoRoutingEnable" id="insurerVsInsurerAutoRoutingEnable" value="insurerVsInsurerAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="insurerVsInsurerExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="insurerManualTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="insurerManualOwnershipHolder">
+                                            <label class="chox-form-std-label">Insurer Upload</label>
+                                            <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" id="insurerManualExclusionDivId">
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="insurerManualExclusionId"  name="insurerManualRegexExpression" value="<s:property value="insurerManualRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <br/>
+                                        <br/>
+                                        <div class="chox-form-item" id="invoiceWorkgroupId">
+                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
+                                            <div id="workgroupComboDiv1"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="chox-form-item" id="invoiceClaimOwnerId">
+                                            <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices</label>
+                                            <div id="claimOwnerComboDiv1"></div>
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
                         </fieldset>
+           </fieldset>
                         
                         <fieldset class="x-fieldset">
                             <legend>Workgroup & Ownership</legend>
@@ -886,143 +1121,6 @@
                                             <label class="chox-form-std-label">Enable Insurer Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
-                                    </td>
-                                </tr>
-                               <tr>
-                                    <td colspan=2>
-                                        <div class="chox-form-item" id="paymentTeamHolder">
-                                            <label class="chox-form-std-label">Enable Payment Team</label>
-                                            <s:checkbox name="paymentTeamEnable" id="paymentTeamEnableId" value="paymentTeamEnable" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td colspan="3">
-                                    <br/>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">
-                                            Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for 
-                                            the following claim types (note an exclusion regex can optionally be specified which, 
-                                            if matched on the claim number, will NOT move or re-route the invoice). 
-                                            Note that Insurer Upload Invoices will be moved directly to 'ManualInvoiceBREApproved: </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="40%">
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">GTA</label>
-                                            <s:checkbox name="gtaAutoRoutingEnable" id="gtaAutoRoutingEnable" value="gtaAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="gtaExclusionId"  name="gtaRegexExpression" value="<s:property value="gtaRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="tpiTr">
-                                    <td width="40%">
-                                        <div class="chox-form-item" >
-                                            <label class="chox-form-std-label">TPI</label>
-                                            <s:checkbox name="tpiAutoRoutingEnable" id="tpiAutoRoutingEnable" value="tpiAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="subscriberTr">
-                                    <td width="40%">
-                                        <div class="chox-form-item" id="tpiOwnershipHolder">
-                                            <label class="chox-form-std-label">Subscriber</label>
-                                            <s:checkbox name="subscriberAutoRoutingEnable" id="subscriberAutoRoutingEnable" value="subscriberAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" id="subscriberExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="fixedFeeTr">
-                                    <td width="40%">
-                                        <div class="chox-form-item" id="fixedFeeHolder">
-                                            <label class="chox-form-std-label">Fixed Fee</label>
-                                            <s:checkbox name="fixedFeeAutoRoutingEnable" id="fixedFeeAutoRoutingEnable" value="fixedFeeAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="collaborationProtocolTr">
-                                    <td width="40%">
-                                        <div class="chox-form-item" id="collaborationProtocolHolder">
-                                            <label class="chox-form-std-label">Collaboration Protocol</label>
-                                            <s:checkbox name="collaborationProtocolAutoRoutingEnable" id="collaborationProtocolAutoRoutingEnable" value="collaborationProtocolAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="collaborationProtocolExclusionId"  name="collaborationProtocolRegexExpression" value="<s:property value="collaborationProtocolRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="40%">
-                                        <div class="chox-form-item" id="insurerVsInsurerHolder">
-                                            <label class="chox-form-std-label">Insurer Vs Insurer</label>
-                                            <s:checkbox name="insurerVsInsurerAutoRoutingEnable" id="insurerVsInsurerAutoRoutingEnable" value="insurerVsInsurerAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" id="insurerVsInsurerExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="insurerManualTr">
-                                    <td width="40%">
-                                        <div class="chox-form-item" id="insurerManualOwnershipHolder">
-                                            <label class="chox-form-std-label">Insurer Upload</label>
-                                            <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
-                                        </div>
-                                    </td>
-                                    <td width="70%">
-                                        <div class="chox-form-item" id="insurerManualExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="insurerManualExclusionId"  name="insurerManualRegexExpression" value="<s:property value="insurerManualRegexExpression" />"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <br/>
-                                        <br/>
-                                        <div class="chox-form-item" id="invoiceWorkgroupId">
-                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
-                                            <div id="workgroupComboDiv1"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="chox-form-item" id="TpiClaimOwnerId">
-                                            <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices</label>
-                                            <div id="claimOwnerComboDiv1"></div>
-                                        </div>
-                                        
                                     </td>
                                 </tr>
                                 

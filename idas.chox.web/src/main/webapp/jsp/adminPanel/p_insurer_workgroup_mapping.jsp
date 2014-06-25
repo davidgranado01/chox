@@ -95,19 +95,20 @@
         var workgroupName = $("#workgroupName").val();
         var workgroupTeam = $("#workgroupTeam").val();
         var workgroupSite = $("#workgroupSite").val();
-
-        if(workgroupName==null || workgroupName==""){
+        var stpExcluded = $("#stpExcluded").val();
+        
+        if(workgroupName===null || workgroupName===""){
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Name'");
-        }else if(workgroupTeam==null || workgroupTeam==""){
+        }else if(workgroupTeam===null || workgroupTeam===""){
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Team'");
-        }else if(workgroupSite==null || workgroupSite==""){
+        }else if(workgroupSite===null || workgroupSite===""){
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Site'");
         }else{
             var url = "/prv/p/addNewInsurerWorkgroup.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam};
+            var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam,"stpExcluded":stpExcluded};
             ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }
 
@@ -133,7 +134,7 @@
 
     function workgroup_triggerStatusRemoveRecord(gridView){
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this Workgroup?',function(btn){
-        if(btn=='yes'){
+        if(btn==='yes'){
 
             var workgroupId = gridView.get("id");
 
@@ -159,7 +160,7 @@
 
                 outputDiv.addClass("chox-form-submit-result");
 
-                if(response.resultType && response.resultType == 'Message')
+                if(response.resultType && response.resultType === 'Message')
                 {
                     Ext.MessageBox.show({
                         title: '',
@@ -240,7 +241,7 @@
         <s:if test="insurerPaymentsTeamEnabled">
             <tr><td>
                     <div class="label-block">
-                        <p class="std-label">Exclude from STP</p><s:checkbox name="stpExcluded" id="stpExcludedId" value="stpExcluded" />
+                        <p class="std-label">Exclude from STP</p><s:checkbox name="stpExcluded" id="stpExcluded" value="stpExcluded" />
                     </div>
                 </td>
             </tr>

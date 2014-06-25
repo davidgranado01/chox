@@ -55,10 +55,6 @@ public class Workgroup extends Entity implements Serializable {
         return stpExcluded;
     }
 
-    public String GetStpExcludedDesc() {
-        return stpExcluded ? "On" : "Off";
-    }
-
     public void setStpExcluded(boolean stpExcluded) {
         this.stpExcluded = stpExcluded;
     }
