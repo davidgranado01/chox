@@ -14,6 +14,8 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
     SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='filter.PaymentTeam';
 
 ALTER TABLE bre_band ADD COLUMN payment_team_active boolean not null default false;
+
+DELETE from accessibility_item where role='ROLE_INS_PC' and accessibility_id=(select id from accessibility where name='filter.ManualInvoiceBREApproved');
 ----------------------
 -- End of 8.3.1
 ----------------------
