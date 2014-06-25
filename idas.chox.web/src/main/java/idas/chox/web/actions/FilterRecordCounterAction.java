@@ -61,7 +61,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
             filterViewData.setQueueName(filter.getName());
             filterViewData.setClaimSearchCriteria(filterClaimSearchCriteria);
             filterViewDatas.add(filterViewData);
-            LOG.info("Time taken to get the claims count for queue '{}' is {} ", filter.getName(), (System.currentTimeMillis() - startTime));
+            LOG.trace("Time taken to get the claims count for queue '{}' is {} ", filter.getName(), (System.currentTimeMillis() - startTime));
         }
         return SUCCESS;
     }
