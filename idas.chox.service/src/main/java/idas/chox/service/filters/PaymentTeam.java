@@ -12,12 +12,12 @@ public class PaymentTeam extends BaseFilter {
 
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
-        claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList("AwaitingInvoicePayment", "ManualInvoiceBREApproved")));
+        claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList("AwaitingInvoicePayment")));
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        claimSearchCriteria.setPaymentsTeamFilter(Boolean.TRUE);        
+        claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<Integer>(Arrays.asList(new Integer[]{new Integer("2")})));
 
         return claimSearchCriteria;
     }

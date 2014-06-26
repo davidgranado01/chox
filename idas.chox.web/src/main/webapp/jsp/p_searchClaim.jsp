@@ -1187,7 +1187,7 @@
             
             approvedInvoiceOwnershipSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : approvedInvoiceOwnershipSearchParamStore,
-                width: 200,
+                width: 280,
                 fieldLabel: 'Approved Invoices Ownership',
                 valueField : 'value',
                 id : 'approvedInvoiceOwnershipSearchParamComboId',
@@ -1368,8 +1368,8 @@
                             insurerSearchScreenCombo, supplierSearchScreenCombo, 
                             workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
                             supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo,
-                            approvedInvoiceOwnershipSearchParamCombo,
-                            hireAndRepairSearchParamCombo]
+                            hireAndRepairSearchParamCombo, approvedInvoiceOwnershipSearchParamCombo
+                ]
             };
             
             var queueReader = new Ext.data.JsonReader({
@@ -1566,6 +1566,13 @@
             if (claimType) {
 //                console.log('claimType not empty so setting the value = ' + claimType);
                 claimTypesSearchScreenCombo.setValue(claimType);
+            }
+            
+            var paymentsTeam = record.get('claimSearchCriteria').approvedInvoiceOwnershipSearchParamAsString;
+console.log("Payments Team as string: ", paymentsTeam);
+            approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = paymentsTeam.split(',').length;
+            if (paymentsTeam) {
+                approvedInvoiceOwnershipSearchParamCombo.setValue(paymentsTeam);
             }
             
             var isLiabilityUpdated = record.get('claimSearchCriteria').liabilityStatusUpdated;

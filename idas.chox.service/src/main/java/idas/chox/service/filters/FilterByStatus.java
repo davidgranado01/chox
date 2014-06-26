@@ -1,9 +1,9 @@
 package idas.chox.service.filters;
 
-import idas.chox.core.model.ClaimStatus;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.search.ClaimSearchCriteria;
 
 public class FilterByStatus extends BaseFilter {
@@ -21,12 +21,11 @@ public class FilterByStatus extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
-// Need to set following for 'Approved Invoices Awaiting Payment' and
-// 'Manual Invoices Approved By BRE' queues  if payments team active....   
-        if ((getCurrentUser().isCHOXAdmin() || (getCurrentUser().isAnInsurer() && getCurrentUser().getInsurer().isPaymentTeamEnable()))
-                && (getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)
-                || getStatus().equals(ClaimStatus.MANUAL_INVOICE_APPROVED))) {
-            claimSearchCriteria.setPaymentsTeamFilter(Boolean.FALSE);
+        // Need to set following for 'Approved Invoices Awaiting Payment' queueif payments team active....   
+        if ((securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
+                    && securityInfoProvider.getCurrentUser().getInsurer().isPaymentTeamEnable()))
+                && getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+            claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<Integer>(Arrays.asList(new Integer[]{new Integer("1")})));
         } 
 
         return claimSearchCriteria;

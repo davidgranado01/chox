@@ -115,8 +115,6 @@
                                     item.set('id',null); 
                                     item.markDirty(); 
                                     addList.push(item);
-//                                    store.remove(item);
-//                                    console.dir(this);
                                  });
                                 store.removeAll(true); 
                                 store.add(addList);
@@ -374,7 +372,6 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-//                    doInsurerBreBandBack();
                 }
             } 
         }
@@ -395,9 +392,6 @@
                         var url = "/prv/p/updateInsurerBreBandDetailPanel.action";
                         var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
                         ajax.loadHtml2(url, param, doInsurerBreBandBack);
-                        //                    ajax.loadHtml(url,param,function(data){
-                        //                        $(target).html(data);
-                        //                    });
 
                     } else { // if this is existing bre band detail then
                         onProtocolVehicleClassPageRefresh();
@@ -411,7 +405,6 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-//                    doInsurerBreBandBack();
                 }
 
             }
@@ -592,7 +585,6 @@
             }
             
             if (validForm){
-//                mesBox.text("").show();
                 return true;
             } else {
                 return false;
@@ -623,7 +615,6 @@
                 validForm = false;
             }
             if (validForm){
-//                mesBox.text("").show();
                 return true;
             } else {
                 return false;
@@ -690,7 +681,7 @@
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                                 <input type="button" value="Save" onclick="javascript: submitBreBandDetailForm(false);"/>
                                 <s:if test="!isNew">
-                                    <input type="button" value="Save As Copy" onclick="javascript: submitBreBandDetailForm(true);"/>
+                                    <input type="button" value="Copy" onclick="javascript: submitBreBandDetailForm(true);"/>
                                     <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                                 </s:if>
                                 <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />

@@ -745,11 +745,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        /*
+         * Payments Team Filter
+         */
         if (searchCriteria.getApprovedInvoiceOwnershipSearchParamIds() != null && !searchCriteria.getApprovedInvoiceOwnershipSearchParamIds().isEmpty()) {
             Criterion claimsHandlerOnlyClaims = Restrictions.eq("id", -1);
             Criterion paymentTeamOnlyClaims = Restrictions.eq("id", -1);
 
-            for (Integer restrictionId : searchCriteria.getHireAndRepairSearchParamIds()) {
+            for (Integer restrictionId : searchCriteria.getApprovedInvoiceOwnershipSearchParamIds()) {
                 if (restrictionId == 1) {
                     claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
                 } else if (restrictionId == 2) {
@@ -1187,13 +1190,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
-        /*
-         * Payments Team Filter
-         */
-        if (searchCriteria.getPaymentsTeamFilter() != null) {
-                criteria.add(Restrictions.ge("iv.paymentTeam", searchCriteria.getPaymentsTeamFilter()));
-        }
- 
         if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
             for (String claimStatus : searchCriteria.getStatuses()) {
                 if (ClaimStatus.isThisStatusAssociatedWithUniqueSearchCriteria(claimStatus)) {

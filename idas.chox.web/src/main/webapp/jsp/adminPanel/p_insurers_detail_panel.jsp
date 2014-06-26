@@ -425,6 +425,8 @@
             $("#collaborationProtocolExclusionDivId").hide();
             $("#insurerVsInsurerExclusionDivId").hide();
             $("#insurerManualExclusionDivId").hide();
+            $("#paymentTeamActiveLabelId").show();
+            $("#paymentTeamNotActiveLabelId").hide();
         }else{
             if (claimWorkgroupEnable)
                 $("#invoiceWorkgroupDivId").show();
@@ -443,6 +445,8 @@
             if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
                 || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
                 $("#insurerManualExclusionDivId").show();
+            $("#paymentTeamActiveLabelId").hide();
+            $("#paymentTeamNotActiveLabelId").show();
         }
     
     }
@@ -615,6 +619,8 @@
             $("#collaborationProtocolExclusionDivId").hide();
             $("#insurerVsInsurerExclusionDivId").hide();
             $("#insurerManualExclusionDivId").hide();
+            $("#paymentTeamActiveLabelId").show();
+            $("#paymentTeamNotActiveLabelId").hide();
         }else{
             if(claimWorkgroupEnable)
                 $("#invoiceWorkgroupId").slideDown();
@@ -633,6 +639,8 @@
             if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
                     || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
                 $("#insurerManualExclusionDivId").show();
+            $("#paymentTeamActiveLabelId").hide();
+            $("#paymentTeamNotActiveLabelId").show();
         }
         return paymentsTeamEnable;
     }
@@ -919,23 +927,38 @@
                         <fieldset class="x-fieldset">
                             <legend>Straight Through Invoice Processing (STP)</legend>
                             <table>
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="chox-form-item">
+                                            <label class="chox-form-std-label1" style="width:680px; text-align: left;">
+                                                Activating the Payments Team will add a new queue labelled 'Payments Team' which will
+                                                be visible to the Payments Clerk role and contain claims that have passed the Business
+                                                Rules and been straight through processed to Awaiting Invoice Payment. Setup of active
+                                                Workgroups and CHOs for this process is made via the BRE Bands and Workgroup setup.
+                                            </label>
+                                        </div>
+                                    </td>
+
+                                </tr>
                                <tr>
                                     <td colspan=2>
                                         <div class="chox-form-item" id="paymentTeamHolder">
-                                            <label class="chox-form-std-label">Enable Payment Team</label>
+                                            <label class="chox-form-std-label">Enable Payments Team</label>
                                             <s:checkbox name="paymentTeamEnable" value="paymentTeamEnable" onclick="doPaymentsTeamEnableCheck(this)"/>
                                         </div>
                                     </td>
                                 </tr>
                                  <tr>
                                     <td colspan="3">
-                                    <br/>
                                         <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">
-                                            Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types.
-                                            Note that an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route
-                                            the invoice. In addition, activation of the 'Payments Team' option will keep invoices with their current Workgroup and Owner.
-                                            Note that Insurer Upload Invoices will be moved directly to 'ManualInvoiceBREApproved:
+                                            <label class="chox-form-std-label1" style="width:680px; text-align: left;" id="paymentTeamNotActiveLabelId">
+                                                Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be
+                                                re-routed for the following claim types. Note that an exclusion regex can optionally
+                                                be specified which, if matched on the claim number, will NOT move or re-route the invoice:
+                                            </label>
+                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;" id="paymentTeamActiveLabelId">
+                                                Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' for the
+                                                following claim types:
                                             </label>
                                         </div>
                                     </td>

@@ -46,7 +46,6 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean penaltyChargeApplied;
     private boolean interimPaymentMade;
     private boolean escalatedToSupervisor;
-    private Boolean paymentsTeamFilter;
     private int start;
     private int limit;
     private String sort;
@@ -743,12 +742,4 @@ public class ClaimSearchCriteria implements Serializable {
         return null;
     }
 
-    public void setPaymentsTeamFilter(Boolean paymentsTeamFilter) {
-        this.paymentsTeamFilter = paymentsTeamFilter;
-    }
-
-    public Boolean getPaymentsTeamFilter() {
-        return paymentsTeamFilter;
-    }
-    
 }
