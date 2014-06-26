@@ -22,7 +22,7 @@ public class ClaimsAwaitingHireMonitoringInfoFilter extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         
-        if (getCurrentUser().isAnInsurer() && ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO.equals(getStatus())) {
+        if (super.securityInfoProvider.getCurrentUser().isAnInsurer() && ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO.equals(getStatus())) {
             // Insurer should only see Insurer Uploaded Claims in these queue
             claimSearchCriteria.setClaimTypes(EnumSet.of(ClaimType.INSURER_UPLOAD));
         }

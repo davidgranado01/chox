@@ -36,7 +36,7 @@
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
     Ext.onReady(function(){
-
+        
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -62,7 +62,7 @@
 
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
-            width:1270,
+            width:1000,
             activeTab: selectedTab,
             frame:false,
             plain:true,
@@ -371,7 +371,7 @@
 
 </script>
 <div id="claimDetailScreenDiv">
-    <div style="width:1270px">
+    <div style="width:1000px">
 
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
 

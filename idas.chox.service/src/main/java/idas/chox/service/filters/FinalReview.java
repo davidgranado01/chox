@@ -22,10 +22,10 @@ public class FinalReview extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
-        if (getCurrentUser().isCHOXAdmin()) {
+        if (super.securityInfoProvider.getCurrentUser().isCHOXAdmin()) {
             claimSearchCriteria.setFinalReviewIns(true);
             claimSearchCriteria.setFinalReviewCho(true);
-        } else if (getCurrentUser().isCHO()) {
+        } else if (super.securityInfoProvider.getCurrentUser().isCHO()) {
             claimSearchCriteria.setFinalReviewCho(true);
         } else {
             claimSearchCriteria.setFinalReviewIns(true);

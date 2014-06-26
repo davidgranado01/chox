@@ -499,6 +499,7 @@
                             ]
 
                 }],
+                buttonAlign : 'left',
                 buttons: [
                     {
                         text: 'Create',
@@ -615,6 +616,7 @@
                                 }
                             ]
                 }],
+                buttonAlign : 'left',
                 buttons: [
                     {
                         text: 'Create',
