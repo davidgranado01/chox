@@ -25,6 +25,7 @@
     var statusSearchScreenCombo;
     var liabilityStatusSearchScreenCombo;
     var hireAndRepairSearchParamCombo;
+    var finalReviewValuesCombo;
     var searchColumsPanel;
     var queueDataStore;
     var queueGrid;
@@ -1087,7 +1088,7 @@
                 reader : finalReviewValuesJsonReader
             });
 
-            var finalReviewValuesCombo = new Ext.form.ComboBox({
+            finalReviewValuesCombo = new Ext.form.ComboBox({
                 store : finalReviewValuesStore,
                 width: 120,
                 fieldLabel: 'Show Claims With Final Liability Stance Only',
@@ -1109,13 +1110,21 @@
                         }
                     },
                     afterrender : function(){
-                        if ('<s:property value="finalReviewValue"/>') {
+                        if ('<s:property value="finalReviewValue"/>' > 0) {
                             this.setValue('<s:property value="finalReviewValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
                         }
                     },
                     select : function(){
 //                        doLayoutSearchPanel();
 //                        searchClaim(true);
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
+                            this.reset();
+                            this.clearValue();
+                        }
                     }
                 }
             });
@@ -1286,37 +1295,51 @@
                     paddingLeft:'10px'
                 },
                 layout: 'form',
-                items: [supplierReferenceField, claimNumberField,
-                            invoiceNumberField, customerVrnField, 
-                            thirdPartyVrnField, reviewRequiredDateFromPicker, 
-                            reviewRequiredDateToPicker,
-                            supplementaryInvoicedClaimsCheckBox, penaltyChargesAppliedCheckBox,
-                            penaltyChargesToBeAppliedCheckBox, 
-                            liabilityStatusUpdateNotification, escalatedToSupervisorCheckBox
-                        ]
+                items: [supplierReferenceField, 
+                        claimNumberField,
+                        invoiceNumberField,
+                        customerVrnField, 
+                        thirdPartyVrnField,
+                        reviewRequiredDateToPicker,
+                        reviewRequiredDateFromPicker, 
+                        supplementaryInvoicedClaimsCheckBox,
+                        penaltyChargesAppliedCheckBox,
+                        penaltyChargesToBeAppliedCheckBox, 
+                        liabilityStatusUpdateNotification,
+                        escalatedToSupervisorCheckBox]
             };
 
             var middleColumn = {
                 width:280,
                 height : 'auto',
                 layout: 'form',
-                items: [claimUploadDateFromPicker, claimUploadDateToPicker,
-                        statusModifiedDateFromPicker, statusModifiedDateToPicker,
-                        invoiceUploadDateFromPicker, invoiceUploadDateToPicker, 
-                        rentalStartDatePicker, rentalEndDatePicker, 
-                        finalReviewValuesCombo, openClaimsCheckBox,
-                        anomaliesCheckBox, interimPaymentMadeCheckBox]
+                items: [claimUploadDateToPicker,
+                        claimUploadDateFromPicker,
+                        statusModifiedDateToPicker,
+                        statusModifiedDateFromPicker,
+                        invoiceUploadDateToPicker, 
+                        invoiceUploadDateFromPicker,
+                        rentalEndDatePicker, 
+                        rentalStartDatePicker,
+                        finalReviewValuesCombo,
+                        openClaimsCheckBox,
+                        anomaliesCheckBox,
+                        interimPaymentMadeCheckBox]
             };
 
             var rightColumn = {
                 width:400,
                 height : 'auto',
                 layout: 'form',
-                items: [statusSearchScreenCombo, claimTypesSearchScreenCombo, 
-                            insurerSearchScreenCombo, supplierSearchScreenCombo, 
-                            workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
-                            supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo, 
-                            hireAndRepairSearchParamCombo]
+                items: [statusSearchScreenCombo,
+                        claimTypesSearchScreenCombo, 
+                        insurerSearchScreenCombo,
+                        supplierSearchScreenCombo, 
+                        workgroupSearchScreenCombo,
+                        claimOwnerSearchScreenCombo, 
+                        supplierClaimOwnerSearchScreenCombo,
+                        liabilityStatusSearchScreenCombo, 
+                        hireAndRepairSearchParamCombo]
             };
             
             var queueReader = new Ext.data.JsonReader({
@@ -1556,7 +1579,9 @@
             }
             
             var finalReviewChoValue = record.get('claimSearchCriteria').finalReviewValue;
-            Ext.getCmp('finalReviewValuesSearchScreenComboId').setValue(finalReviewChoValue);
+            if (finalReviewChoValue > 0) {
+                finalReviewValuesCombo.setValue(finalReviewChoValue);
+            }
             
             var anomalies = record.get('claimSearchCriteria').isAnomalies;
             if (anomalies) {
@@ -1810,7 +1835,8 @@
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();
             liabilityStatusSearchScreenCombo.clearValue();
-        
+            finalReviewValuesCombo.reset();
+            finalReviewValuesCombo.clearValue();
         
             if (insurerSearchScreenCombo){
                 selectedInsClaimOwnerValues = null;
