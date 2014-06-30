@@ -15,7 +15,6 @@ public class ActivityFactory implements BeanFactoryAware {
     private WorkflowContext workflowContext;
 
     public Activity getActivity(String name) {
-
         Activity activity =   (Activity) beanFactory.getBean(name);
         LOG.debug("Activity Name " + name + " Activity " +activity.getClass());
         activity.setWorkflowContext(workflowContext);

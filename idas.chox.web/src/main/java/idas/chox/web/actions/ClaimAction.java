@@ -221,6 +221,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
 
 
+    @Override
     public boolean isShowMessage() {
         return showMessage;
     }
@@ -1143,7 +1144,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActivityAccessibilityForActionPanel(action,
                     getAuthenticatedUser(), claim);
-            LOG.debug("Access right for panel '{}' : {}", action, accessRight);
+            LOG.debug("Access for {} os {}", action, accessRight);
+            // If Invoice is with Payments Team then do not show InvoicePaymentLogged for PC
+            if (action.equals("InvoicePaymentLogged") 
+                    && claim.getInsurer().isPaymentTeamEnable() && claim.getInvoice().isPaymentTeam()
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_PC)
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN)) {
+                // Do not show if no PC or CHOX Admin role
+                accessRight = 0;
+            } else if (action.equals("InvoicePaymentLogged")
+                    && claim.getInsurer().isPaymentTeamEnable() && !claim.getInvoice().isPaymentTeam()
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_CH)
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MI)
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN)) {
+                // Do not show if no CH, MNG, MI or CHOX Admin role
+                accessRight = 0;
+            }
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
                 return action;

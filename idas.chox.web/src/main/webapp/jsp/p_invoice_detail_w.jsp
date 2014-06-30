@@ -639,11 +639,13 @@
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
-                                                <label class="std-label-ro">Invoice with Payments Team</label>
+                                                <label class="chox-form-std-label">Invoice with Payments Team</label>
                                                 <label class="std-data-ro"><s:property value="paymentTeamDesc" /></label>
                                             </div>
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <label></label>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>

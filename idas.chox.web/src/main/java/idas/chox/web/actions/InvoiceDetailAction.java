@@ -963,6 +963,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getClaimInvoiceNo();
     }
 
+    public java.lang.String getPaymentTeamDesc() {
+        return invoice.getPaymentTeamDesc();
+    }
+
     public void setClaimInvoiceNo(java.lang.String claimInvoiceNo) {
         if (actionSelected != reset && invoice != null) {
 

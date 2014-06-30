@@ -57,7 +57,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
     <form id="logInvoicePayment" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
         <fieldset class="x-fieldset"><legend>Invoice Ready For Payment - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:if test="isInsurerManual">
+            <s:if test="isInsurerManual || invoiceWithPaymentsTeam">
                 <s:hidden id="name" name="name" />
             </s:if>
             <div>
