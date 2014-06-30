@@ -44,6 +44,8 @@ public interface Filter {
     String getKey();
 
     String getName();
+    
+    String getQueueDescription();
 
      // setcount, getcount method removed for bug#964
     

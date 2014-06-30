@@ -132,7 +132,7 @@
                 id:'showOpenClaimsOnlyId',
                 value:'<s:property value="showOpenClaimsOnly"/>',
                 fieldLabel: 'Show Open Claims Only',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:230px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -149,8 +149,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
-                fieldLabel: 'Liability Status Updated',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims With Liability Status Update Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -166,7 +166,7 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="isSupplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
-                labelStyle: 'width:245px',
+                labelStyle: 'width:230px',
                 checked: <s:property value="isSupplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -182,7 +182,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:245px',
+                labelStyle: 'width:230px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -199,8 +199,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="isPenaltyChargeApplied"/>',
-                fieldLabel: 'Penalty Charges To Be Applied',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="isPenaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -217,8 +217,8 @@
                 value:'<s:property value="isAnomalies"/>',
                 disabled : <s:property value="isCHO"/>,
                 hidden : <s:property value="isCHO"/>,
-                fieldLabel: 'Is Anomalies',
-                labelStyle: 'width:150px',
+                fieldLabel: 'Show Claims With Hire Updates Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="isAnomalies"/>,
                 listeners:{
                     check:function (el, e) {
@@ -232,11 +232,11 @@
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
-                disabled : <s:property value="isCHO"/>,
-                hidden : <s:property value="isCHO"/>,
+                disabled : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
+                hidden : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
                 value:'<s:property value="escalatedToSupervisor"/>',
-                fieldLabel: 'Escalated To Supervisor',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims Escalated To Supervisor Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -253,8 +253,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="isInterimPaymentMade"/>',
-                fieldLabel: 'Is Interim Payment Made',
-                labelStyle: 'width:150px',
+                fieldLabel: 'Show Claims With Interim Payments Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="isInterimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
@@ -1090,7 +1090,7 @@
             var finalReviewValuesCombo = new Ext.form.ComboBox({
                 store : finalReviewValuesStore,
                 width: 120,
-                fieldLabel: 'Final Liability Stance',
+                fieldLabel: 'Show Claims With Final Liability Stance Only',
                 labelStyle: 'width:150px',
                 valueField : 'value',
                 id : 'finalReviewValuesSearchScreenComboId',
@@ -1291,8 +1291,8 @@
                             thirdPartyVrnField, reviewRequiredDateFromPicker, 
                             reviewRequiredDateToPicker,
                             supplementaryInvoicedClaimsCheckBox, penaltyChargesAppliedCheckBox,
-                            penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification, 
-                            escalatedToSupervisorCheckBox
+                            penaltyChargesToBeAppliedCheckBox, 
+                            liabilityStatusUpdateNotification, escalatedToSupervisorCheckBox
                         ]
             };
 
@@ -1325,9 +1325,10 @@
                 fields:
                     [
                     {name:'queueName'},
-                    {name:'queueClaimsCount'},
+                    {name:'queueCount'},
                     {name:'key'},
-                    {name:'description'},
+                    {name:'queueNameWithCount'},
+                    {name:'queueDescription'},
                     {name:'searchParam'},
                     {name:'claimSearchCriteria'}
                 ]
@@ -1361,12 +1362,12 @@
                     {
                         id       :'queueNameId',
                         sortable : false, 
-                        dataIndex: 'description'
+                        dataIndex: 'queueNameWithCount'
                     }
                 ],
                 stripeRows: true,
                 autoExpandColumn: 'queueNameId',
-                height: 430,
+                height: 440,// This height should be same as searchAndButtonPanel height
                 width: 300,
 //                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
@@ -1411,7 +1412,7 @@
                 layout : 'hbox',
                 width : 980,
                 frame : true,
-                height : 370,
+                height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
                 autoScroll : true,
                 items : [leftColumn,middleColumn,rightColumn],
                 headerAsText : true,
@@ -1425,7 +1426,7 @@
                 buttons : [searchButton, resetButton],
                 frame : true,
                 width : 980,
-                height : 30,
+                height : 'auto',
                 buttonAlign : 'center'
             });
             
@@ -1433,7 +1434,7 @@
             // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
             var searchAndButtonPanel = new Ext.Panel({
                 width : 1000,
-                height : 430,
+                height : 440, // This height should be same as queueGrid height
                 frame : true,
                 items : [searchColumsPanel, buttonPanel]
             });
@@ -1504,6 +1505,7 @@
 
             var queueFilterName = record.get('key');
             var queueName = record.get('queueName');
+            var queueDescription = record.get('queueDescription');
             // populate the necessery search criteria in the search panel.
             updateSearchScreenFieldsWithQueueFilterCriteria(record);
             var baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName, "gridTitle" : queueName});
@@ -1511,7 +1513,7 @@
             // load the claims grid data.
             doDataLoad(baseParams);
             // set the searchPanel information message
-            setSearchPanelInfo(queueName);
+            setSearchPanelInfo(queueDescription);
             // we need layout the search panel here because incase if the size of the search panel increased 
             // as a result of setting up queue search criteria in the search panel.
             doLayoutSearchPanel();

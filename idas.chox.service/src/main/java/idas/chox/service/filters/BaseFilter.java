@@ -14,6 +14,7 @@ public abstract class BaseFilter implements Filter {
     private boolean isCheckOwnership = false;
     private boolean isCheckFnol = false;
     private boolean isCheckEngineers = false;
+    private String queueDescription;
     @Autowired
     protected SecurityInfoProvider securityInfoProvider;
 
@@ -91,6 +92,14 @@ public abstract class BaseFilter implements Filter {
 
     public void setIsManualFilter(boolean isManualFilter) {
         this.isManualFilter = isManualFilter;
+    }
+
+    public String getQueueDescription() {
+        return queueDescription;
+    }
+
+    public void setQueueDescription(String queueDescription) {
+        this.queueDescription = queueDescription;
     }
     
 }

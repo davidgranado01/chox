@@ -9,9 +9,10 @@ import idas.chox.core.search.ClaimSearchCriteria;
 public class FilterViewData {
 
     private String key;
-    private String description;
+    private String queueNameWithCount;
     private String queueName;
-    private int queueClaimsCount;
+    private int queueCount;
+    private String queueDescription;
     private ClaimSearchCriteria claimSearchCriteria; 
 
     public ClaimSearchCriteria getClaimSearchCriteria() {
@@ -22,12 +23,20 @@ public class FilterViewData {
         this.claimSearchCriteria = claimSearchCriteria;
     }
 
-    public int getQueueClaimsCount() {
-        return queueClaimsCount;
+    public String getQueueDescription() {
+        return queueDescription;
     }
 
-    public void setQueueClaimsCount(int queueClaimsCount) {
-        this.queueClaimsCount = queueClaimsCount;
+    public void setQueueDescription(String queueDescription) {
+        this.queueDescription = queueDescription;
+    }
+
+    public int getQueueCount() {
+        return queueCount;
+    }
+
+    public void setQueueCount(int queueCount) {
+        this.queueCount = queueCount;
     }
 
     public String getQueueName() {
@@ -38,12 +47,12 @@ public class FilterViewData {
         this.queueName = queueName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getQueueNameWithCount() {
+        return queueNameWithCount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setQueueNameWithCount(String queueNameWithCount) {
+        this.queueNameWithCount = queueNameWithCount;
     }
 
     public String getKey() {

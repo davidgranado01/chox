@@ -47,18 +47,19 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
             LOG.debug("Setting up filter '{}'", filter.getName());
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
+            filterViewData.setQueueDescription(filter.getQueueDescription());
 //            ClaimSearchCriteria filterClaimSearchCriteria = (ClaimSearchCriteria) SerializationUtils.clone(claimSearchCriteria);
 //            removeUnwantedSearchCriteria(filterClaimSearchCriteria);
             ClaimSearchCriteria filterClaimSearchCriteria = getClaimSearchCriteria();
             try {
-                filterViewData.setQueueClaimsCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria)));
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), filterViewData.getQueueClaimsCount()));
+                filterViewData.setQueueCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria)));
+                filterViewData.setQueueNameWithCount(String.format("%s (%d)", filter.getName(), filterViewData.getQueueCount()));
             } catch (Exception ex) {
                 // Changed to warn from error because when the user logout immediately after clicking the inbox queue but before the server sends the respons then 
                 // error is being thrown while getting the user information. Need to investigate further to see why it is not throwing exception all the times but some times.
                 LOG.warn("Error setting up filter '{}': ", filter.getName(), ex);
             }
-            LOG.debug("    filter description: '{}'", filterViewData.getDescription());
+            LOG.debug("    filter description: '{}'", filterViewData.getQueueNameWithCount());
             filterViewData.setQueueName(filter.getName());
             filterViewData.setClaimSearchCriteria(filterClaimSearchCriteria);
             filterViewDatas.add(filterViewData);
