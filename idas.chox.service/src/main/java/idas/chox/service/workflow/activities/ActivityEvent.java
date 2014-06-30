@@ -845,6 +845,14 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    INVOICE_SWITCHED_FROM_PAYMENTS_TEAM_EVENT             (39, "InvoiceSwitchedFromPaymentsTeamEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building InvoiceSwitchedFromPaymentsTeamEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     // Non-activity based events - should be moved to ChoxEvents in data package TODO
 //    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved

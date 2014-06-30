@@ -2665,6 +2665,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
+    public boolean isInvoiceWithPaymentsTeam() {
+        if (claim.getInvoice() == null)
+            return false;
+
+        return claim.getInvoice().isPaymentTeam();
+    }
+
     public boolean isFinalReviewRequired() {
         if (getAuthenticatedUser().isCHO()) {
             return claim.isFinalReviewCho();

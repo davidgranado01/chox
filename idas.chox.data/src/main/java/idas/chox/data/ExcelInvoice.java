@@ -101,6 +101,7 @@ public class ExcelInvoice {
     private BigDecimal finalPayment;
     private BigDecimal repairAdminFee;
     private BigDecimal repairAcquisitionFee;
+    private Boolean paymentsTeam;
 
     public ExcelInvoice(Map data, boolean isCHO) {
         claimStatus = (String) data.get("claimstatus");
@@ -217,6 +218,7 @@ public class ExcelInvoice {
         choDiscountFeePaid = (BigDecimal) data.get("chodiscountfeepaid");
         insurerDiscountFeePaid = (BigDecimal) data.get("insurerdiscountfeepaid");
         finalPayment = (BigDecimal) data.get("finalpayment");
+        paymentsTeam = (Boolean) data.get("paymentsteam");
     }
 
     public BigDecimal getAdditionalDriverFee() {
@@ -557,5 +559,16 @@ public class ExcelInvoice {
 
     public BigDecimal getRepairAcquisitionFee() {
         return repairAcquisitionFee;
+    }
+
+    public Boolean getPaymentsTeam() {
+        return paymentsTeam;
+    }
+
+    public String getPaymentsTeamDesc() {
+        if (paymentsTeam == null)
+                return "";
+        
+        return paymentsTeam ? "Yes" : "No";
     }
 }

@@ -196,7 +196,7 @@ public class ClaimsGridExportReport {
             .append(" i.repair_penalty_charge_paid as repairpenaltychargepaid, i.claim_handler_charge_paid as claimhandlerchargepaid,")
             .append(" i.deduction_claim_handler_fee_paid as deductionclaimhandlerfeepaid, i.cho_discount_fee_paid as chodiscountfeepaid,")
             .append(" i.insurer_discount_fee_paid as insurerdiscountfeepaid, i.final_payment as finalpayment,")
-            .append(" i.repair_admin_fee as repairadminfee, i.repair_acquisition_fee as repairacquisitionfee")
+            .append(" i.repair_admin_fee as repairadminfee, i.repair_acquisition_fee as repairacquisitionfee, i.payment_team as paymentsteam")
             .append(" from claim c")
             .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
             .append(" join invoice i on (c.invoice_id = i.id)")

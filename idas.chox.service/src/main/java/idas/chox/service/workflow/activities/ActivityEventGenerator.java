@@ -349,6 +349,9 @@ public class ActivityEventGenerator {
                     ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);
                     ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);            
                 }
+            } else if (activityName.equalsIgnoreCase("SwitchFromPaymentsTeam")) {
+                LOG.debug("SwitchFromPaymentsTeam activity found");
+                ActivityEvent.INVOICE_SWITCHED_FROM_PAYMENTS_TEAM_EVENT.build(this, claim);
             } else {
                 LOG.error("No events to generate for activity '{}'", activityName);
             }

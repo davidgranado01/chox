@@ -284,12 +284,15 @@ public class ClaimFileReportData {
     private BigDecimal extrasRepairAcquisitionFee;
     private boolean subscriberClaim;
     private boolean collaborationClaim;
-
+    private String  invoicePaymentsTeam;
+    private boolean paymentsTeamActivated;
+    
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
         subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
         collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
+        paymentsTeamActivated = claim.getInsurer().isPaymentTeamEnable();
         if (claim.getChorganisation() != null) {
             choName = claim.getChorganisation().getName();
         }
@@ -308,6 +311,7 @@ public class ClaimFileReportData {
             finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
         } else if (currentUser.isCHO()) {
             finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
+//            paymentsTeamActivated = false;
         } else if (currentUser.isCHOXAdmin()) {
             finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
                     + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
@@ -701,6 +705,7 @@ public class ClaimFileReportData {
             paymentDetailsChoDiscountFeePaid = invoice.getChoDiscountFeePaid();
             paymentDetailsInsurerDiscountFeePaid = invoice.getInsurerDiscountFeePaid();
             paymentDetailsFinalPayment = invoice.getFinalPayment();
+            invoicePaymentsTeam = invoice.getPaymentTeamDesc();
         }
 
         EngineerReport engineerReport = claim.getEngineerReport();
@@ -2756,6 +2761,14 @@ public class ClaimFileReportData {
 
     public boolean isCollaborationClaim() {
         return collaborationClaim;
+    }
+
+    public String getInvoicePaymentsTeam() {
+        return invoicePaymentsTeam;
+    }
+
+    public boolean isPaymentsTeamActivated() {
+        return paymentsTeamActivated;
     }
 
 }

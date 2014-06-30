@@ -36,6 +36,14 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
     
     }
 
+    function switchToClaimsHandler(){
+    
+        $('form#logInvoicePayment input[id="name"]').val('switchFromPaymentsTeam');
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        choxJqueryHttpSubmit($("form#logInvoicePayment"));
+    
+    }
+
     function callInterimPayment(){
     	 var target = "#moreActionPanel";
          var url = "/prv/p/makeInterimPayment.action";
@@ -61,6 +69,10 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                     If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
                     this button should only be used if this is intended to be a final payment.  However if an interim payment 
                     is being made please click on the ‘Make Interim Payment’ button.’
+                    <s:if test="invoiceWithPaymentsTeam">
+                        Alternatively, if you are not in a position to make a payment and need to return the claim to
+                        the claims handler please click on 'Switch To Claims Handler'.
+                    </s:if>
                   </s:else>
                 </div>
                 <div class="status-info-submit">
@@ -81,7 +93,10 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                                     <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLogAction();"/>
                                     <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/>
                                 </s:else>
-                                </td>
+                                <s:if test="invoiceWithPaymentsTeam">
+                                    <input type="button" id="switchClaimsHandlerButtonId"value="Switch To Claims Handler" onclick="switchToClaimsHandler();"/>
+                                </s:if>
+                              </td>
                         </tr>
                     </table>
                 </div>

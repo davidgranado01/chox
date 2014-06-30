@@ -111,4 +111,5 @@
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
         <property name="reasonOfDelayService" ref="reasonOfDelayService" />
     </bean>
+    <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
 </beans>

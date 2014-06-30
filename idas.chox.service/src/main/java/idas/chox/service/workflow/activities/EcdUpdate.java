@@ -2,6 +2,10 @@ package idas.chox.service.workflow.activities;
 
 
 import java.util.Date;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +15,6 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
-import java.util.List;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class EcdUpdate extends BaseActivity {
     static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);
