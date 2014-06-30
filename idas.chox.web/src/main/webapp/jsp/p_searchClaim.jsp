@@ -26,6 +26,7 @@
     var liabilityStatusSearchScreenCombo;
     var hireAndRepairSearchParamCombo;
     var approvedInvoiceOwnershipSearchParamCombo;
+    var finalReviewValuesCombo;
     var searchColumsPanel;
     var queueDataStore;
     var queueGrid;
@@ -133,7 +134,7 @@
                 id:'showOpenClaimsOnlyId',
                 value:'<s:property value="showOpenClaimsOnly"/>',
                 fieldLabel: 'Show Open Claims Only',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:230px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -150,8 +151,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
-                fieldLabel: 'Liability Status Updated',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims With Liability Status Update Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -167,7 +168,6 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
-                labelStyle: 'width:245px',
                 checked: <s:property value="supplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -183,7 +183,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:245px',
+                labelStyle: 'width:230px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -200,8 +200,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="penaltyChargeApplied"/>',
-                fieldLabel: 'Penalty Charges To Be Applied',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="penaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -218,8 +218,8 @@
                 value:'<s:property value="anomalies"/>',
                 disabled : <s:property value="isCHO"/>,
                 hidden : <s:property value="isCHO"/>,
-                fieldLabel: 'Is Anomalies',
-                labelStyle: 'width:150px',
+                fieldLabel: 'Show Claims With Hire Updates Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="anomalies"/>,
                 listeners:{
                     check:function (el, e) {
@@ -233,11 +233,11 @@
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
-                disabled : <s:property value="isCHO"/>,
-                hidden : <s:property value="isCHO"/>,
+                disabled : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
+                hidden : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
                 value:'<s:property value="escalatedToSupervisor"/>',
-                fieldLabel: 'Escalated To Supervisor',
-                labelStyle: 'width:245px',
+                fieldLabel: 'Show Claims Escalated To Supervisor Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -254,8 +254,8 @@
                 disabled : <s:property value="isInsurer"/>,
                 hidden : <s:property value="isInsurer"/>,
                 value:'<s:property value="interimPaymentMade"/>',
-                fieldLabel: 'Is Interim Payment Made',
-                labelStyle: 'width:150px',
+                fieldLabel: 'Show Claims With Interim Payments Only',
+                labelStyle: 'width:230px',
                 checked: <s:property value="interimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
@@ -1088,10 +1088,10 @@
                 reader : finalReviewValuesJsonReader
             });
 
-            var finalReviewValuesCombo = new Ext.form.ComboBox({
+            finalReviewValuesCombo = new Ext.form.ComboBox({
                 store : finalReviewValuesStore,
                 width: 120,
-                fieldLabel: 'Final Liability Stance',
+                fieldLabel: 'Show Claims With Final Liability Stance Only',
                 labelStyle: 'width:150px',
                 valueField : 'value',
                 id : 'finalReviewValuesSearchScreenComboId',
@@ -1110,13 +1110,21 @@
                         }
                     },
                     afterrender : function(){
-                        if ('<s:property value="finalReviewValue"/>') {
+                        if ('<s:property value="finalReviewValue"/>' > 0) {
                             this.setValue('<s:property value="finalReviewValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
                         }
                     },
                     select : function(){
 //                        doLayoutSearchPanel();
 //                        searchClaim(true);
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
+                            this.reset();
+                            this.clearValue();
+                        }
                     }
                 }
             });
@@ -1351,38 +1359,52 @@
                     paddingLeft:'10px'
                 },
                 layout: 'form',
-                items: [supplierReferenceField, claimNumberField,
-                            invoiceNumberField, customerVrnField, 
-                            thirdPartyVrnField, reviewRequiredDateFromPicker, 
-                            reviewRequiredDateToPicker,
-                            supplementaryInvoicedClaimsCheckBox, penaltyChargesAppliedCheckBox,
-                            penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification, 
-                            escalatedToSupervisorCheckBox
-                        ]
+                items: [supplierReferenceField, 
+                        claimNumberField,
+                        invoiceNumberField,
+                        customerVrnField, 
+                        thirdPartyVrnField,
+                        reviewRequiredDateToPicker,
+                        reviewRequiredDateFromPicker, 
+                        supplementaryInvoicedClaimsCheckBox,
+                        penaltyChargesAppliedCheckBox,
+                        penaltyChargesToBeAppliedCheckBox, 
+                        liabilityStatusUpdateNotification,
+                        escalatedToSupervisorCheckBox]
             };
 
             var middleColumn = {
                 width:280,
                 height : 'auto',
                 layout: 'form',
-                items: [claimUploadDateFromPicker, claimUploadDateToPicker,
-                        statusModifiedDateFromPicker, statusModifiedDateToPicker,
-                        invoiceUploadDateFromPicker, invoiceUploadDateToPicker, 
-                        rentalStartDatePicker, rentalEndDatePicker, 
-                        finalReviewValuesCombo, openClaimsCheckBox,
-                        anomaliesCheckBox, interimPaymentMadeCheckBox]
+                items: [claimUploadDateToPicker,
+                        claimUploadDateFromPicker,
+                        statusModifiedDateToPicker,
+                        statusModifiedDateFromPicker,
+                        invoiceUploadDateToPicker, 
+                        invoiceUploadDateFromPicker,
+                        rentalEndDatePicker, 
+                        rentalStartDatePicker,
+                        finalReviewValuesCombo,
+                        openClaimsCheckBox,
+                        anomaliesCheckBox,
+                        interimPaymentMadeCheckBox]
             };
 
             var rightColumn = {
                 width:400,
                 height : 'auto',
                 layout: 'form',
-                items: [statusSearchScreenCombo, claimTypesSearchScreenCombo, 
-                            insurerSearchScreenCombo, supplierSearchScreenCombo, 
-                            workgroupSearchScreenCombo, claimOwnerSearchScreenCombo, 
-                            supplierClaimOwnerSearchScreenCombo, liabilityStatusSearchScreenCombo,
-                            hireAndRepairSearchParamCombo, approvedInvoiceOwnershipSearchParamCombo
-                ]
+                items: [statusSearchScreenCombo,
+                        claimTypesSearchScreenCombo, 
+                        insurerSearchScreenCombo,
+                        supplierSearchScreenCombo, 
+                        workgroupSearchScreenCombo,
+                        claimOwnerSearchScreenCombo, 
+                        supplierClaimOwnerSearchScreenCombo,
+                        liabilityStatusSearchScreenCombo, 
+                        hireAndRepairSearchParamCombo,
+                        approvedInvoiceOwnershipSearchParamCombo]
             };
             
             var queueReader = new Ext.data.JsonReader({
@@ -1391,9 +1413,10 @@
                 fields:
                     [
                     {name:'queueName'},
-                    {name:'queueClaimsCount'},
+                    {name:'queueCount'},
                     {name:'key'},
-                    {name:'description'},
+                    {name:'queueNameWithCount'},
+                    {name:'queueDescription'},
                     {name:'searchParam'},
                     {name:'claimSearchCriteria'}
                 ]
@@ -1427,12 +1450,12 @@
                     {
                         id       :'queueNameId',
                         sortable : false, 
-                        dataIndex: 'description'
+                        dataIndex: 'queueNameWithCount'
                     }
                 ],
                 stripeRows: true,
                 autoExpandColumn: 'queueNameId',
-                height: 430,
+                height: 440,// This height should be same as searchAndButtonPanel height
                 width: 300,
 //                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
@@ -1477,7 +1500,7 @@
                 layout : 'hbox',
                 width : 980,
                 frame : true,
-                height : 370,
+                height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
                 autoScroll : true,
                 items : [leftColumn,middleColumn,rightColumn],
                 headerAsText : true,
@@ -1491,7 +1514,7 @@
                 buttons : [searchButton, resetButton],
                 frame : true,
                 width : 980,
-                height : 30,
+                height : 'auto',
                 buttonAlign : 'center'
             });
             
@@ -1499,7 +1522,7 @@
             // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
             var searchAndButtonPanel = new Ext.Panel({
                 width : 1000,
-                height : 430,
+                height : 440, // This height should be same as queueGrid height
                 frame : true,
                 items : [searchColumsPanel, buttonPanel]
             });
@@ -1570,6 +1593,7 @@
 
             var queueFilterName = record.get('key');
             var queueName = record.get('queueName');
+            var queueDescription = record.get('queueDescription');
             // populate the necessery search criteria in the search panel.
             updateSearchScreenFieldsWithQueueFilterCriteria(record);
             var baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName, "gridTitle" : queueName});
@@ -1577,7 +1601,7 @@
             // load the claims grid data.
             doDataLoad(baseParams);
             // set the searchPanel information message
-            setSearchPanelInfo(queueName);
+            setSearchPanelInfo(queueDescription);
             // we need layout the search panel here because incase if the size of the search panel increased 
             // as a result of setting up queue search criteria in the search panel.
             doLayoutSearchPanel();
@@ -1627,7 +1651,9 @@ console.log("Payments Team as string: ", paymentsTeam);
             }
             
             var finalReviewChoValue = record.get('claimSearchCriteria').finalReviewValue;
-            Ext.getCmp('finalReviewValuesSearchScreenComboId').setValue(finalReviewChoValue);
+            if (finalReviewChoValue > 0) {
+                finalReviewValuesCombo.setValue(finalReviewChoValue);
+            }
             
             var anomalies = record.get('claimSearchCriteria').isAnomalies;
             if (anomalies) {
@@ -1885,7 +1911,8 @@ console.log("Payments Team as string: ", paymentsTeam);
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();
             liabilityStatusSearchScreenCombo.clearValue();
-        
+            finalReviewValuesCombo.reset();
+            finalReviewValuesCombo.clearValue();
         
             if (insurerSearchScreenCombo){
                 selectedInsClaimOwnerValues = null;

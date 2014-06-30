@@ -33,7 +33,7 @@ public enum FinalReviewMapping {
 
     public static List<FinalReviewMapping> getChoFinalReviewMappings() {
         List<FinalReviewMapping> choFinalReviewMappings = new ArrayList<FinalReviewMapping>();
-        choFinalReviewMappings.add(CHECK_NOT_REQUIRED);
+//        choFinalReviewMappings.add(CHECK_NOT_REQUIRED);
         choFinalReviewMappings.add(CHO_TRUE);
         choFinalReviewMappings.add(CHO_FALSE);
         return choFinalReviewMappings;
@@ -41,7 +41,7 @@ public enum FinalReviewMapping {
 
     public static List<FinalReviewMapping> getInsFinalReviewMappings() {
         List<FinalReviewMapping> insFinalReviewMappings = new ArrayList<FinalReviewMapping>();
-        insFinalReviewMappings.add(CHECK_NOT_REQUIRED);
+//        insFinalReviewMappings.add(CHECK_NOT_REQUIRED);
         insFinalReviewMappings.add(INS_TRUE);
         insFinalReviewMappings.add(INS_FALSE);
         return insFinalReviewMappings;
@@ -49,7 +49,7 @@ public enum FinalReviewMapping {
 
     public static List<FinalReviewMapping> getChoxAdminFinalReviewMappings() {
         List<FinalReviewMapping> choxAdminFinalReviewMappings = new ArrayList<FinalReviewMapping>();
-        choxAdminFinalReviewMappings.add(CHECK_NOT_REQUIRED);
+//        choxAdminFinalReviewMappings.add(CHECK_NOT_REQUIRED);
         choxAdminFinalReviewMappings.add(CHO_TRUE);
         choxAdminFinalReviewMappings.add(CHO_FALSE);
         choxAdminFinalReviewMappings.add(INS_TRUE);

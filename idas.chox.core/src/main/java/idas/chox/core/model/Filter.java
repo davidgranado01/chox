@@ -45,6 +45,8 @@ public interface Filter {
     String getKey();
 
     String getName();
+    
+    String getQueueDescription();
 
     boolean getIsFilterWorkGroup();
     boolean getIsFilterOwnership();
