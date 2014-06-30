@@ -362,7 +362,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.AwaitingLiabilityResolution" >
         <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
         <property name="key" value="AwaitingLiabilityResolution"/>
         <property name="status" value="AwaitingLiabilityResolution"/>

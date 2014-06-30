@@ -24,7 +24,6 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
     private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
 //    private int filterOrgId = -1;
 //    private int filterClaimTypeId = -1;
-    private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
     private boolean syncWithSearchCriteria = true;
 
@@ -98,13 +97,6 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
 //    public void setFilterClaimTypeId(int filterClaimTypeId) {
 //        this.filterClaimTypeId = filterClaimTypeId;
 //    }
-    public String getFilterName() {
-        return filterName;
-    }
-
-    public void setFilterName(String filterName) {
-        this.filterName = filterName;
-    }
 
     @Override
     public ClaimSearchCriteria getModel() {

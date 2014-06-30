@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.common.OrganisationType;
+import idas.chox.core.enums.FinalReviewMapping;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
@@ -1171,16 +1172,39 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
-        if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
-            for (String claimStatus : searchCriteria.getStatuses()) {
-                if (ClaimStatus.isThisStatusAssociatedWithUniqueSearchCriteria(claimStatus)) {
-                    Criterion uniqueRestriction = getClaimStatusUniqueSearchCriteria(searchCriteria);
-                    if (uniqueRestriction != null) {
-                        criteria.add(uniqueRestriction);
-                    }
+        if (searchCriteria.getFinalReviewValue() != FinalReviewMapping.CHECK_NOT_REQUIRED.getValue()) {
+            if (getCurrentUser().isCHO()) {
+                if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_TRUE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewCho", true));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_FALSE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewCho", false));
+                }
+            } else if (getCurrentUser().isAnInsurer()) {
+                if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.INS_TRUE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewIns", true));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.INS_FALSE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewIns", false));
+                }
+            } else if (getCurrentUser().isCHOXAdmin()) {
+                if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_TRUE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewCho", true));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_FALSE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewCho", false));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.INS_TRUE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewIns", true));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.INS_FALSE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewIns", false));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_OR_INS_TRUE.getValue()) {
+                    criteria.add(Restrictions.disjunction()
+                                .add(Restrictions.eq("finalReviewCho", true))
+                                .add(Restrictions.eq("finalReviewIns", true)));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_FALSE.getValue()) {
+                    criteria.add(Restrictions.eq("finalReviewCho", false));
+                    criteria.add(Restrictions.eq("finalReviewIns", false));
                 }
             }
         }
+
         return criteria;
     }
 
@@ -1731,41 +1755,4 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         
         return updated;
     }
-    
-    public Criterion getClaimStatusUniqueSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        if (searchCriteria.getStatuses().contains(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)) {
-            if (getCurrentUser().isAnInsurer()) {
-                return Restrictions.disjunction()
-                        .add(Restrictions.conjunction()
-                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
-                                .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())))
-                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
-            } else if (getCurrentUser().isCHO()) {
-                return Restrictions.disjunction()
-                        .add(Restrictions.conjunction()
-                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
-                                .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho())))
-                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
-            } else { // CHOX Admin
-                Criterion finalReviewChoxAdminRestriction;
-                // For chox Admin eithr finalReviewCho or finalReviewIns should be true to appear in the Final Review queue.
-                if (searchCriteria.isFinalReviewIns() || searchCriteria.isFinalReviewCho()) {
-                    finalReviewChoxAdminRestriction = Restrictions.disjunction()
-                            .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
-                            .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns()));
-                } else { // For chox Admin both finalReviewCho and finalReviewIns should be false to appear in the Awaiting Liability Resolution queue.
-                    finalReviewChoxAdminRestriction = Restrictions.conjunction()
-                            .add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
-                            .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns()));
-                }
-                return Restrictions.disjunction()
-                        .add(Restrictions.conjunction()
-                                .add(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)))
-                                .add(finalReviewChoxAdminRestriction))
-                        .add(Restrictions.not(Restrictions.in("status", Arrays.asList(ClaimStatus.AWAITING_LIABILITY_RESOLUTION))));
-            }
-        }
-        return null;
-    }
-
 }

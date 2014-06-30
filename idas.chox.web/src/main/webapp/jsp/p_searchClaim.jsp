@@ -210,42 +210,6 @@
                     }
                 }
             });
-
-            var finalReviewChoCheckBox = new Ext.form.Checkbox({
-                name:'finalReviewCho',
-                id:'finalReviewChoCheckBoxId',
-                disabled : <s:property value="isInsurer"/>,
-                hidden : <s:property value="isInsurer"/>,
-                value:'<s:property value="finalReviewCho"/>',
-                fieldLabel: 'Final Review CHO',
-                labelStyle: 'width:150px',
-                checked: ('<s:property value="finalReviewCho"/>' === true) ? true : ('<s:property value="finalReviewCho"/>' === false) ? false : null,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
-            });
-            
-            var finalReviewInsCheckBox = new Ext.form.Checkbox({
-                name:'finalReviewIns',
-                id:'finalReviewInsCheckBoxId',
-                disabled : <s:property value="isCHO"/>,
-                hidden : <s:property value="isCHO"/>,
-                value:'<s:property value="finalReviewIns"/>',
-                fieldLabel: 'Final Review Insurer',
-                labelStyle: 'width:245px',
-                checked: ('<s:property value="finalReviewIns"/>' === true) ? true : ('<s:property value="finalReviewIns"/>' === false) ? false : null,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
-            });
             
             var anomaliesCheckBox = new Ext.form.Checkbox({
                 name:'isAnomalies',
@@ -1108,6 +1072,53 @@
                     }
                 }
             });
+            var finalReviewValuesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+            var finalReviewValues = Ext.util.JSON.decode('<s:property value="finalReviewValuesJsonString" escape="false"/>');
+            var finalReviewValuesStore = new Ext.data.Store({
+                data : finalReviewValues,
+                reader : finalReviewValuesJsonReader
+            });
+
+            var finalReviewValuesCombo = new Ext.form.ComboBox({
+                store : finalReviewValuesStore,
+                width: 120,
+                fieldLabel: 'Final Liability Stance',
+                labelStyle: 'width:150px',
+                valueField : 'value',
+                id : 'finalReviewValuesSearchScreenComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- N/A ---',
+//                removeValuesFromStore : false,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="finalReviewValue"/>') {
+                            this.setValue('<s:property value="finalReviewValue"/>'); 
+                        }
+                    },
+                    select : function(){
+//                        doLayoutSearchPanel();
+//                        searchClaim(true);
+                    }
+                }
+            });
 
             var hireAndRepairSearchParamData = [['Hire Only', 1],['Repair Only', 2], ['Hire and Repair', 3], ['No Hire or Repair', 4]];
             
@@ -1281,7 +1292,7 @@
                             reviewRequiredDateToPicker,
                             supplementaryInvoicedClaimsCheckBox, penaltyChargesAppliedCheckBox,
                             penaltyChargesToBeAppliedCheckBox, liabilityStatusUpdateNotification, 
-                            finalReviewInsCheckBox, escalatedToSupervisorCheckBox
+                            escalatedToSupervisorCheckBox
                         ]
             };
 
@@ -1292,9 +1303,9 @@
                 items: [claimUploadDateFromPicker, claimUploadDateToPicker,
                         statusModifiedDateFromPicker, statusModifiedDateToPicker,
                         invoiceUploadDateFromPicker, invoiceUploadDateToPicker, 
-                        rentalStartDatePicker, rentalEndDatePicker, openClaimsCheckBox,
-                        anomaliesCheckBox, interimPaymentMadeCheckBox,
-                        finalReviewChoCheckBox]
+                        rentalStartDatePicker, rentalEndDatePicker, 
+                        finalReviewValuesCombo, openClaimsCheckBox,
+                        anomaliesCheckBox, interimPaymentMadeCheckBox]
             };
 
             var rightColumn = {
@@ -1368,6 +1379,34 @@
                 })
             });
            
+            var radioGroupPanel = new Ext.form.RadioGroup({
+                                    layout: 'hbox',
+                                    defaultType: 'button',
+                                    columns: 1,
+                                    width: 300,
+                                    height: 430,
+                                    autoScroll : true,
+                                    defaults: {
+                                        enableToggle: true,
+                                        toggleGroup: 'mygroup',
+                                        allowDepress: false
+                                    },
+                                    items: [
+                                        { text: 'Rejected Claims (61)', height : '30px'},
+                                        { text: 'Liability Status Update Notifications (326)', height : '30px'},
+                                        { text: 'Awaiting Litigation Outcome (21)', height : '30px'},
+                                        { text: 'Claims Awaiting Hire Monitoring Information (266)', height : '30px'},
+                                        { text: 'Awaiting Invoice Data (23)', height : '30px'},
+                                        { text: 'Incorrect Invoice Data Calculations (0)', height : '30px'},
+                                        { text: 'Contested Invoices Referred To CHO (45)', height : '30px'},
+                                        { text: 'Penalty Charges To Be Applied (130)', height : '30px'},
+                                        { text: 'Approved Invoices Awaiting Liability Resolution (79)', height : '30px'},
+                                        { text: 'Interim Payments To Be Received (15)', height : '30px'},
+                                        { text: 'Invoices With Final Review (0)', height : '30px'},
+                                        { text: 'Payments To Be Received (108)', height : '30px'}
+                                    ]
+                                });
+                                
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
                 width : 980,
@@ -1514,15 +1553,8 @@
                 Ext.getCmp('penaltyChargesToBeAppliedCheckBoxId').setValue(true);
             }
             
-            var finalReviewCho = record.get('claimSearchCriteria').finalReviewCho;
-            if (finalReviewCho) {
-                Ext.getCmp('finalReviewChoCheckBoxId').setValue(true);
-            }
-            
-            var finalReviewIns = record.get('claimSearchCriteria').finalReviewIns;
-            if (finalReviewIns) {
-                Ext.getCmp('finalReviewInsCheckBoxId').setValue(true);
-            }
+            var finalReviewChoValue = record.get('claimSearchCriteria').finalReviewValue;
+            Ext.getCmp('finalReviewValuesSearchScreenComboId').setValue(finalReviewChoValue);
             
             var anomalies = record.get('claimSearchCriteria').isAnomalies;
             if (anomalies) {
@@ -1583,12 +1615,11 @@
             var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
             var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
             var penaltyChargesToBeApplied = Ext.query('*[name$=isPenaltyChargeApplied]')[0].checked;
-            var finalReviewIns = Ext.query('*[name$=finalReviewIns]')[0].checked;
-            var finalReviewCho = Ext.query('*[name$=finalReviewCho]')[0].checked;
             var anomalies = Ext.query('*[name$=isAnomalies]')[0].checked;
             var escalatedToSupervisor = Ext.query('*[name$=escalatedToSupervisor]')[0].checked;
             var interimPaymentMade = Ext.query('*[name$=isInterimPaymentMade]')[0].checked;
             var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
+            var finalReviewValue = Ext.getCmp('finalReviewValuesSearchScreenComboId').getValue();
             var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
 
@@ -1617,8 +1648,7 @@
                 supplierClaimOwnerIds : supplierClaimOwnerIds,
                 customerVrn : customerVrn,
                 showOpenClaimsOnly : showOpenClaimsOnly,
-                finalReviewIns : finalReviewIns,
-                finalReviewCho : finalReviewCho,
+                finalReviewValue : finalReviewValue,
                 liabilityStatusUpdated : liabilityStatusUpdated,
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 isPenaltyChargeApplied : penaltyChargesToBeApplied,

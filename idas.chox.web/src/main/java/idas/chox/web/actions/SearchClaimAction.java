@@ -30,12 +30,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private List<LookupItem> claimStatusesLookupItem;
     private List<LookupItem> claimTypesLookupItem;
     private List<LookupItem> liabilityStatusesLookupItem;
+    private List<LookupItem> finalReviewValuesLookupItem;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private List<Object> results;
     private int totalCount;
     private String actionResult;
-    private String filterName;
 //    private int filterOrgId;
 //    private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
@@ -87,6 +87,18 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             liabilityStatusesLookupItem = this.lookupService.getLiabilityStatuses(withNull);
         }
         return liabilityStatusesLookupItem;
+    }
+    
+    public List<LookupItem> getFinalReviewValuesAsLookupItem() {
+        if (finalReviewValuesLookupItem == null) {
+            finalReviewValuesLookupItem = this.lookupService.getFinalReviewValues();
+        }
+        return finalReviewValuesLookupItem;
+    }
+    
+    public String getFinalReviewValuesJsonString() {
+        String finalReviewValuesJson = JSONArray.fromObject(getFinalReviewValuesAsLookupItem()).toString();
+        return "{totalCount:" + finalReviewValuesLookupItem.size() + ", results:" + finalReviewValuesJson + "}";
     }
     
     public String getStatusesJsonString() {
@@ -211,8 +223,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 //            filterName = getFilterName();
 //            filterOrgId = getFilterOrgId();
 //            filterClaimTypeId = getFilterClaimTypeId();
-            if (!StringHelper.isEmpty(filterName)) {
-                Filter filter = filterService.getFilter(filterName);
+            if (claimSearchCriteria.getFilterName() != null && !StringHelper.isEmpty(claimSearchCriteria.getFilterName())) {
+                Filter filter = filterService.getFilter(claimSearchCriteria.getFilterName());
 //                ClaimSearchCriteria filterCriteria;
                 filter.getClaimSearchCriteria(claimSearchCriteria);
 //                mergeClaimSearchCriteria(filterCriteria);
@@ -298,10 +310,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 //            return filterOrgId;
 //        }
 //    }
-
-    public void setFilterName(String filterName) {
-        this.filterName = filterName;
-    }
 
 //    public void setFilterOrgId(int filterOrgId) {
 //        this.filterOrgId = filterOrgId;
