@@ -421,6 +421,7 @@
     <bean id="PaymentTeam" class="idas.chox.service.filters.PaymentTeam" >
         <property name="name" value="Payments Team"/>
         <property name="key" value="PaymentTeam"/>
+        <property name="queueDescription" value="Shows claims where the invoice has been approved for payment by Payments Team and liability is resolved, a payment awaits"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
