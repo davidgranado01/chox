@@ -1201,6 +1201,8 @@
                 width: 280,
                 fieldLabel: 'Approved Invoices Ownership',
                 valueField : 'value',
+                disabled : <s:property value="isCHO || (isInsurer && !insurerPaymentsTeamEnabled)"/>,
+                hidden : <s:property value="isCHO || (isInsurer && !insurerPaymentsTeamEnabled)"/>,
                 id : 'approvedInvoiceOwnershipSearchParamComboId',
                 displayField :'text',
                 typeAhead : true,
