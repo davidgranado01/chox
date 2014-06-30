@@ -64,8 +64,8 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<LiabilityStatus> liabilityStatuses;
     private boolean liabilityStatusUpdated;
     private Set<ClaimType> claimTypes;
-    private boolean finalReviewCho;
-    private boolean finalReviewIns;
+    private int finalReviewValue;
+    private String filterName;
 
     @Override
     public String toString() {
@@ -159,6 +159,14 @@ public class ClaimSearchCriteria implements Serializable {
             }
         }
         return true;
+    }
+
+    public int getFinalReviewValue() {
+        return finalReviewValue;
+    }
+
+    public void setFinalReviewValue(int finalReviewValue) {
+        this.finalReviewValue = finalReviewValue;
     }
 
     public Set<ClaimType> getClaimTypes() {
@@ -541,22 +549,6 @@ public class ClaimSearchCriteria implements Serializable {
         this.manual = manual;
     }
 
-    public boolean isFinalReviewCho() {
-        return finalReviewCho;
-    }
-
-    public void setFinalReviewCho(boolean finalReviewCho) {
-        this.finalReviewCho = finalReviewCho;
-    }
-
-    public boolean isFinalReviewIns() {
-        return finalReviewIns;
-    }
-
-    public void setFinalReviewIns(boolean finalReviewIns) {
-        this.finalReviewIns = finalReviewIns;
-    }
-
     public Set<Integer> getHireAndRepairSearchParamIds() {
         return hireAndRepairSearchParamIds;
     }
@@ -581,8 +573,16 @@ public class ClaimSearchCriteria implements Serializable {
         }
     }
 
+    
+    public String getFilterName() {
+        return filterName;
+    }
 
-       /*
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
+    }
+
+    /*
      * Please note this method will return only Claim statuses from the
      * loaded(model) claimSearchCriteria and not from available Claim statuses.
      */

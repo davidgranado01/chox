@@ -1,23 +1,23 @@
 package idas.chox.data.services;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import idas.chox.core.enums.FinalReviewMapping;
 
 import idas.chox.core.model.*;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.util.LookupItemTextComparator;
 import idas.chox.core.util.RoleHelper;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
@@ -486,6 +486,36 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
 
         return results;
+    }
+
+    @Override
+    public List getFinalReviewValues() {
+        List<LookupItem> items = new ArrayList<LookupItem>();
+
+        if (getCurrentUser().isCHO()) {
+            for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getChoFinalReviewMappings()) {
+                items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
+            }
+        } else if (getCurrentUser().isAnInsurer()) {
+            for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getInsFinalReviewMappings()) {
+                items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
+            }
+        } else if (getCurrentUser().isCHOXAdmin()) {
+            for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getChoxAdminFinalReviewMappings()) {
+                if (finalReviewMapping.equals(FinalReviewMapping.CHO_TRUE)) {
+                    items.add(new LookupItem("Cho true", Integer.toString(finalReviewMapping.getValue())));
+                } else if (finalReviewMapping.equals(FinalReviewMapping.CHO_FALSE)) {
+                    items.add(new LookupItem("Cho false", Integer.toString(finalReviewMapping.getValue())));
+                } else if (finalReviewMapping.equals(FinalReviewMapping.INS_TRUE)) {
+                    items.add(new LookupItem("Ins true", Integer.toString(finalReviewMapping.getValue())));
+                } else if (finalReviewMapping.equals(FinalReviewMapping.INS_FALSE)) {
+                    items.add(new LookupItem("Ins false", Integer.toString(finalReviewMapping.getValue())));
+                } else {
+                    items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
+                }
+            }
+        }
+        return items;
     }
 
 }
