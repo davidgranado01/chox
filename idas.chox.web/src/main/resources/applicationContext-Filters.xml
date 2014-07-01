@@ -17,7 +17,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
-    <bean id="RejectedClaims" class="idas.chox.service.filters.FilterByStatus" >
+    <bean id="RejectedClaims" class="idas.chox.service.filters.FilterRejectedClaims" >
         <property name="name" value="Rejected Claims"/>
         <property name="key" value="RejectedClaims"/>
         <property name="status" value="ClaimRejected"/>

@@ -34,6 +34,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private List<Object> results;
+    private List<Filter> filters;
     private int totalCount;
     private String actionResult;
 //    private int filterOrgId;
@@ -137,6 +138,81 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
+    public boolean isAnomaliesCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter anomoliesFilter = filterService.getFilter("HireUpdateAnomalies");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(anomoliesFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the HireUpdateAnomalies filter ", ex);
+        }
+        return isVisible;
+    }
+    
+    public boolean isEscalatedToSupervisorCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter escalatedToSupervisorFilter = filterService.getFilter("EscalatedInvoicesToSupervisor");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(escalatedToSupervisorFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the EscalatedInvoicesToSupervisor filter ", ex);
+        }
+        return isVisible;
+    }
+    
+    public boolean isLiabilityStatusUpdateNotificationCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter liabilityUpdatedFilter = filterService.getFilter("LiabilityUpdate");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(liabilityUpdatedFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the LiabilityUpdate filter ", ex);
+        }
+        return isVisible;
+    }
+    
+    public boolean isPenaltyChargesToBeAppliedCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter penaltyChargesAppliedFilter = filterService.getFilter("PenaltyChargesApplied");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(penaltyChargesAppliedFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the PenaltyChargesApplied filter ", ex);
+        }
+        return isVisible;
+    }
+    
+    public boolean isInterimPaymentMadeCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter interimPaymentFilter = filterService.getFilter("InterimPayment");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(interimPaymentFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the InterimPayment filter ", ex);
+        }
+        return isVisible;
+    }
+    
     public List getInsurers() {
         if (insurers == null) {
             if (getIsInsurer()) {
@@ -293,6 +369,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     @Override
     public String getActionResult() {
         return actionResult;
+    }
+    
+    private List<Filter> getAvailableFilters() {
+        if (filters == null) {
+            filters = filterService.getAvailableFilters(this.getAuthenticatedUser());
+        }
+        return filters;
     }
 
 //    public String getFilterName() {

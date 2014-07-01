@@ -71,9 +71,6 @@
         function loadDataFromSession() { 
             <s:if test="loadingInboxPageFirstTimeAfterLogin"> 
                 Ext.state.Manager.set("claims_grid_baseParams",null);
-                Ext.state.Manager.set("queue_filterName",null);
-                Ext.state.Manager.set("filter_claim_type_id",-1);
-                Ext.state.Manager.set("filter_org_id",-1);
                 Ext.state.Manager.set("recentlyClickedQueueRowNumber",null);
                 Ext.state.Manager.set("isClaimSearchMade", false);
                 Ext.state.Manager.set("currentTabIndex", isChoxAdmin ? 1 : 0);
