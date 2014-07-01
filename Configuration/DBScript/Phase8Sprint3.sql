@@ -26,6 +26,8 @@ ALTER TABLE bre_band ADD COLUMN payment_team_active boolean not null default fal
 DELETE from accessibility_item where role='ROLE_INS_PC' and accessibility_id=(select id from accessibility where name='filter.ManualInvoiceBREApproved');
 
 UPDATE accessibility SET claim_type=17 WHERE name='activity.UpdateManualInvoicePaid.AwaitingInvoicePayment';
+
+UPDATE accessibility SET name='filter.NewClaimsToBeRouted' WHERE name='filter.NewClaimsToBerouted';
 ----------------------
 -- End of 8.3.1
 ----------------------
