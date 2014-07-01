@@ -7,12 +7,12 @@ public enum FinalReviewMapping {
 
     /* For Chox Admin different description is used for some description at the LookupServiceImpl.java located in the data package.*//* For Chox Admin different description is used for some description at the LookupServiceImpl.java located in the data package.*/
     CHECK_NOT_REQUIRED  (0, "N/A"),
-    CHO_TRUE            (1, "Yes"),
-    CHO_FALSE           (2, "No"),
-    INS_TRUE            (3, "Yes"),
-    INS_FALSE           (4, "No"),
-    CHO_OR_INS_TRUE    (5, "Ins or Cho Yes"),
-    CHO_AND_INS_FALSE   (6, "Ins & Cho No");
+    CHO_TRUE            (1, "True"),
+    CHO_FALSE           (2, "False"),
+    INS_TRUE            (3, "True"),
+    INS_FALSE           (4, "False"),
+    CHO_OR_INS_TRUE    (5, "Ins or Cho True"),
+    CHO_AND_INS_FALSE   (6, "Ins & Cho False");
 
     private final int value;
     private final String description;

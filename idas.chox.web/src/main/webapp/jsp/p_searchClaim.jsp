@@ -38,9 +38,6 @@
     
     Ext.onReady(function(){
 
-        new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
-
-
             <s:if test="isInsurer" >
             insurerSearchScreenId = '<s:property value="UserOrganisationId"/>'.split(",");
             </s:if>
@@ -133,14 +130,19 @@
                 name:'showOpenClaimsOnly',
                 id:'showOpenClaimsOnlyId',
                 value:'<s:property value="showOpenClaimsOnly"/>',
-                fieldLabel: 'Show Open Claims Only',
+                fieldLabel: 'Show Open Claims Only<img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" />',
+                labelSeparator : '  :',
                 labelStyle: 'width:230px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
+                tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.',
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
 //                            searchClaim(true);
                         }
+                    }, 
+                    render : function(c) { 
+                        new Ext.ToolTip({ target: 'help-open-items-icon', html: c.tip});
                     }
                 }
             });
@@ -148,8 +150,8 @@
             var liabilityStatusUpdateNotification = new Ext.form.Checkbox({
                 name:'liabilityStatusUpdated',
                 id:'liabilityStatusUpdatedId',
-                disabled : <s:property value="isInsurer"/>,
-                hidden : <s:property value="isInsurer"/>,
+                disabled : !<s:property value="LiabilityStatusUpdateNotificationCheckBoxVisible"/>,
+                hidden : !<s:property value="LiabilityStatusUpdateNotificationCheckBoxVisible"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Show Claims With Liability Status Update Only',
                 labelStyle: 'width:230px',
@@ -197,8 +199,8 @@
             var penaltyChargesToBeAppliedCheckBox = new Ext.form.Checkbox({
                 name:'isPenaltyChargeApplied',
                 id:'penaltyChargesToBeAppliedCheckBoxId',
-                disabled : <s:property value="isInsurer"/>,
-                hidden : <s:property value="isInsurer"/>,
+                disabled : !<s:property value="penaltyChargesToBeAppliedCheckBoxVisible"/>,
+                hidden : !<s:property value="penaltyChargesToBeAppliedCheckBoxVisible"/>,
                 value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
                 labelStyle: 'width:230px',
@@ -216,8 +218,8 @@
                 name:'isAnomalies',
                 id:'anomaliesCheckBoxId',
                 value:'<s:property value="anomalies"/>',
-                disabled : <s:property value="isCHO"/>,
-                hidden : <s:property value="isCHO"/>,
+                disabled : !<s:property value="anomaliesCheckBoxVisible"/>,
+                hidden : !<s:property value="anomaliesCheckBoxVisible"/>,
                 fieldLabel: 'Show Claims With Hire Updates Only',
                 labelStyle: 'width:230px',
                 checked: <s:property value="anomalies"/>,
@@ -233,8 +235,8 @@
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
-                disabled : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
-                hidden : <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isInsurer"/> && !<s:property value="InsurerIsSupervisorEnabled"/>),
+                disabled : !<s:property value="escalatedToSupervisorCheckBoxVisible"/>,
+                hidden : !<s:property value="escalatedToSupervisorCheckBoxVisible"/>,
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Show Claims Escalated To Supervisor Only',
                 labelStyle: 'width:230px',
@@ -251,8 +253,8 @@
             var interimPaymentMadeCheckBox = new Ext.form.Checkbox({
                 name:'isInterimPaymentMade',
                 id:'interimPaymentMadeCheckBoxId',
-                disabled : <s:property value="isInsurer"/>,
-                hidden : <s:property value="isInsurer"/>,
+                disabled : !<s:property value="interimPaymentMadeCheckBoxVisible"/>,
+                hidden : !<s:property value="interimPaymentMadeCheckBoxVisible"/>,
                 value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Show Claims With Interim Payments Only',
                 labelStyle: 'width:230px',
@@ -450,7 +452,7 @@
             var reviewRequiredDateFromPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateFrom',
                 fieldLabel: 'Hire Monitoring Review Required Date From',
-                labelStyle: 'width:140px',
+                labelStyle: 'width:150px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -473,7 +475,7 @@
             var reviewRequiredDateToPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateTo',
                 fieldLabel: 'Hire Monitoring Review Required Date To',
-                labelStyle: 'width:140px',
+                labelStyle: 'width:150px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -1091,7 +1093,7 @@
             finalReviewValuesCombo = new Ext.form.ComboBox({
                 store : finalReviewValuesStore,
                 width: 120,
-                fieldLabel: 'Show Claims With Final Liability Stance Only',
+                fieldLabel: 'Show Claims With Final Liability Stance',
                 labelStyle: 'width:150px',
                 valueField : 'value',
                 id : 'finalReviewValuesSearchScreenComboId',
@@ -1364,31 +1366,31 @@
                         invoiceNumberField,
                         customerVrnField, 
                         thirdPartyVrnField,
-                        reviewRequiredDateToPicker,
-                        reviewRequiredDateFromPicker, 
+                        openClaimsCheckBox,
+                        interimPaymentMadeCheckBox,
                         supplementaryInvoicedClaimsCheckBox,
                         penaltyChargesAppliedCheckBox,
                         penaltyChargesToBeAppliedCheckBox, 
                         liabilityStatusUpdateNotification,
-                        escalatedToSupervisorCheckBox]
+                        escalatedToSupervisorCheckBox,
+                        anomaliesCheckBox]
             };
 
             var middleColumn = {
                 width:280,
                 height : 'auto',
                 layout: 'form',
-                items: [claimUploadDateToPicker,
-                        claimUploadDateFromPicker,
-                        statusModifiedDateToPicker,
+                items: [claimUploadDateFromPicker,
+                        claimUploadDateToPicker,
                         statusModifiedDateFromPicker,
-                        invoiceUploadDateToPicker, 
+                        statusModifiedDateToPicker,
                         invoiceUploadDateFromPicker,
-                        rentalEndDatePicker, 
+                        invoiceUploadDateToPicker, 
                         rentalStartDatePicker,
-                        finalReviewValuesCombo,
-                        openClaimsCheckBox,
-                        anomaliesCheckBox,
-                        interimPaymentMadeCheckBox]
+                        rentalEndDatePicker, 
+                        reviewRequiredDateFromPicker, 
+                        reviewRequiredDateToPicker,
+                        finalReviewValuesCombo]
             };
 
             var rightColumn = {
@@ -1535,7 +1537,7 @@
                 renderTo : 'searchPanel',
                 listeners:  {afterrender : loadQueueGrid}
             });
-
+            
         });
 
         function loadQueueGrid(searchScreenTrigger) {
@@ -1567,6 +1569,8 @@
                     queueGrid.getSelectionModel().selectRow(rowIndex);
                     // add the rowSelect listner back to activate loading the claims grid when the queue is selected.
                     queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
+                    // set the information panel info 
+                    setSearchPanelInfo(queueGrid.getSelectionModel().getSelected().get('queueDescription'));
                 }
                 queueGrid.getView().focusRow(queueGrid.getSelectionModel().hasNext() ? rowIndex+1 : rowIndex);
                 return true; // this line is not working. All the code below the above focusRow method line is not working. Need investigation.
@@ -1589,7 +1593,7 @@
             
         }
         
-        function onQueueSelection(rsm, rowIndex, record) { 
+        function onQueueSelection(rsm, rowIndex, record) {
 
             var queueFilterName = record.get('key');
             var queueName = record.get('queueName');

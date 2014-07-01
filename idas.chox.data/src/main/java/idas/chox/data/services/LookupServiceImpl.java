@@ -503,13 +503,13 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (getCurrentUser().isCHOXAdmin()) {
             for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getChoxAdminFinalReviewMappings()) {
                 if (finalReviewMapping.equals(FinalReviewMapping.CHO_TRUE)) {
-                    items.add(new LookupItem("Cho true", Integer.toString(finalReviewMapping.getValue())));
+                    items.add(new LookupItem("Cho True", Integer.toString(finalReviewMapping.getValue())));
                 } else if (finalReviewMapping.equals(FinalReviewMapping.CHO_FALSE)) {
-                    items.add(new LookupItem("Cho false", Integer.toString(finalReviewMapping.getValue())));
+                    items.add(new LookupItem("Cho False", Integer.toString(finalReviewMapping.getValue())));
                 } else if (finalReviewMapping.equals(FinalReviewMapping.INS_TRUE)) {
-                    items.add(new LookupItem("Ins true", Integer.toString(finalReviewMapping.getValue())));
+                    items.add(new LookupItem("Ins True", Integer.toString(finalReviewMapping.getValue())));
                 } else if (finalReviewMapping.equals(FinalReviewMapping.INS_FALSE)) {
-                    items.add(new LookupItem("Ins false", Integer.toString(finalReviewMapping.getValue())));
+                    items.add(new LookupItem("Ins False", Integer.toString(finalReviewMapping.getValue())));
                 } else {
                     items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
                 }
