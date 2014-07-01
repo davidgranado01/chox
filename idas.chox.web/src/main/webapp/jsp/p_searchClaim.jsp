@@ -132,7 +132,7 @@
                 value:'<s:property value="showOpenClaimsOnly"/>',
                 fieldLabel: 'Show Open Claims Only<img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" />',
                 labelSeparator : '  :',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.',
                 listeners:{
@@ -150,11 +150,11 @@
             var liabilityStatusUpdateNotification = new Ext.form.Checkbox({
                 name:'liabilityStatusUpdated',
                 id:'liabilityStatusUpdatedId',
-                disabled : !<s:property value="LiabilityStatusUpdateNotificationCheckBoxVisible"/>,
-                hidden : !<s:property value="LiabilityStatusUpdateNotificationCheckBoxVisible"/>,
+                disabled : !<s:property value="liabilityStatusUpdateNotificationCheckBoxVisible"/>,
+                hidden : !<s:property value="liabilityStatusUpdateNotificationCheckBoxVisible"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Show Claims With Liability Status Update Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -170,6 +170,7 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
+                labelStyle: 'width:240px',
                 checked: <s:property value="supplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -185,7 +186,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -203,7 +204,7 @@
                 hidden : !<s:property value="penaltyChargesToBeAppliedCheckBoxVisible"/>,
                 value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="penaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -221,7 +222,7 @@
                 disabled : !<s:property value="anomaliesCheckBoxVisible"/>,
                 hidden : !<s:property value="anomaliesCheckBoxVisible"/>,
                 fieldLabel: 'Show Claims With Hire Updates Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="anomalies"/>,
                 listeners:{
                     check:function (el, e) {
@@ -239,7 +240,7 @@
                 hidden : !<s:property value="escalatedToSupervisorCheckBoxVisible"/>,
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Show Claims Escalated To Supervisor Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -257,7 +258,7 @@
                 hidden : !<s:property value="interimPaymentMadeCheckBoxVisible"/>,
                 value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Show Claims With Interim Payments Only',
-                labelStyle: 'width:230px',
+                labelStyle: 'width:240px',
                 checked: <s:property value="interimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
@@ -1357,9 +1358,11 @@
             var leftColumn = {
                 width:280,
                 height : 'auto',
-                style: {
-                    paddingLeft:'10px'
-                },
+//                style: {
+//                    paddingLeft:'10px'
+//                },
+                labelAlign: 'right',
+                labelWidth: 90,
                 layout: 'form',
                 items: [supplierReferenceField, 
                         claimNumberField,
@@ -1380,6 +1383,7 @@
                 width:280,
                 height : 'auto',
                 layout: 'form',
+                labelAlign: 'right',
                 items: [claimUploadDateFromPicker,
                         claimUploadDateToPicker,
                         statusModifiedDateFromPicker,
@@ -1397,6 +1401,7 @@
                 width:400,
                 height : 'auto',
                 layout: 'form',
+                labelAlign: 'right',
                 items: [statusSearchScreenCombo,
                         claimTypesSearchScreenCombo, 
                         insurerSearchScreenCombo,
