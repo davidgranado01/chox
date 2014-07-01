@@ -1634,7 +1634,6 @@
             }
             
             var paymentsTeam = record.get('claimSearchCriteria').approvedInvoiceOwnershipSearchParamAsString;
-console.log("Payments Team as string: ", paymentsTeam);
             approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = paymentsTeam.split(',').length;
             if (paymentsTeam) {
                 approvedInvoiceOwnershipSearchParamCombo.setValue(paymentsTeam);
@@ -1645,7 +1644,7 @@ console.log("Payments Team as string: ", paymentsTeam);
                 Ext.getCmp('liabilityStatusUpdatedId').setValue(true);
             }
             
-            var isPenaltyChargesApplied = record.get('claimSearchCriteria').isPenaltyChargeApplied;
+            var isPenaltyChargesApplied = record.get('claimSearchCriteria').penaltyChargeApplied;
             if (isPenaltyChargesApplied) {
                 Ext.getCmp('penaltyChargesToBeAppliedCheckBoxId').setValue(true);
             }
@@ -1655,7 +1654,7 @@ console.log("Payments Team as string: ", paymentsTeam);
                 finalReviewValuesCombo.setValue(finalReviewChoValue);
             }
             
-            var anomalies = record.get('claimSearchCriteria').isAnomalies;
+            var anomalies = record.get('claimSearchCriteria').anomalies;
             if (anomalies) {
                 Ext.getCmp('anomaliesCheckBoxId').setValue(true);
             }
@@ -1665,7 +1664,7 @@ console.log("Payments Team as string: ", paymentsTeam);
                 Ext.getCmp('escalatedToSupervisorCheckBoxId').setValue(true);
             }
             
-            var interimPaymentMade = record.get('claimSearchCriteria').isInterimPaymentMade;
+            var interimPaymentMade = record.get('claimSearchCriteria').interimPaymentMade;
             if (interimPaymentMade) {
                 Ext.getCmp('interimPaymentMadeCheckBoxId').setValue(true);
             }
