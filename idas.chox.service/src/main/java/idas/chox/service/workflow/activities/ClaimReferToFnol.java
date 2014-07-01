@@ -196,11 +196,11 @@ public class ClaimReferToFnol extends BaseActivity {
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
 
-            if (workgroup != null && claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
+            if (workgroup != null && (claim.getWorkgroup() == null || claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0)) {
                 claim.setWorkgroup(workgroup);
                 claimRouted = true;
             }
-            if (claimOwner != null) {
+            if (claimOwner != null && (claim.getClaimOwner()== null || claim.getClaimOwner().getId().compareTo(claimOwner.getId())!=0)) {
                 claim.setClaimOwner(claimOwner);
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                 getDataService().save(claim);
