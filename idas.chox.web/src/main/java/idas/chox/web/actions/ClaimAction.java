@@ -164,6 +164,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean finalReviewRequired;
     private String finalReviewReason;
     private ActivityEventGenerator activityEventGenerator;
+    private String customerClaimNumber;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -579,6 +580,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String updateCustomerClaimNumber() {
+        try {
+            LOG.info("New customer claim number is: {}", customerClaimNumber);
+            LOG.info("Old customer claim number is: {}", claim.getCustomer().getClaimReference());
+            claim.getCustomer().setClaimReference(customerClaimNumber.trim());
+            this.claimService.updateClaim(claim);
+            activityEventGenerator.generate(claim, ActivityEvent.CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown updating the customer claim number for claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the customer claim number. Please contact CHOX support.");
+            updateRedirectionParamInSession();
+            return ERROR;
+        }
+
+        updateRedirectionParamInSession();
+        return SUCCESS;
+    }
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String updateInvoiceReviewRequired() {
         try {
@@ -659,6 +678,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
+    public boolean getIsCustomerClaimNumberDuplicated() {
+        boolean bFlag = false;
+
+        if (!customerClaimNumber.isEmpty()) {
+            if (claimService.isCustomerClaimNumberExist(customerClaimNumber, claim.getId(), Boolean.TRUE)) {
+                bFlag = true;
+            }
+        }
+
+        return bFlag;
+    }
+
     public boolean getIsDuplicatedSupplementaryInvoiceExists() {
         boolean bFlag = false;
 
@@ -684,6 +715,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="MORE ACTION - DROP DOWN">
     public String getUpdateInsurerClaimNumber() {
+        return SUCCESS;
+    }
+
+    public String getUpdateCustomerClaimNumber() {
         return SUCCESS;
     }
 
@@ -2752,6 +2787,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         LOG.debug("Claim has not been escalated to supervisor");
         return false;
+    }
+
+    public String getCustomerClaimNumber() {
+        return claim.getCustomer().getClaimReference();
+    }
+
+    public void setCustomerClaimNumber(String customerClaimNumber) {
+        LOG.info("Setting customer claim number to '{}'", customerClaimNumber);
+        this.customerClaimNumber = customerClaimNumber;
     }
     
 }

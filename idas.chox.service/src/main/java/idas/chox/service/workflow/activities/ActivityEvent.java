@@ -899,6 +899,15 @@ public enum ActivityEvent {
             this.addClaimHireMonitoringParameters(generator, claim);
             generator.completeEvent(claim);
         }
+    },
+    CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT             (40, "CustomerClaimNumberAssignedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
+            LOG.warn("Building CustomerClaimNumberAssignedEvent event (not from activity!)...");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+            generator.addParameter("customerClaimNumber", claim.getCustomer().getClaimReference());
+            generator.completeEvent(claim);
+        }
     };
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);

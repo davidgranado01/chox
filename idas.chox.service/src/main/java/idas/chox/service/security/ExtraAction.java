@@ -6,6 +6,7 @@ import java.util.List;
 public class ExtraAction {
 
     public static final String UPDATE_INSURER_CLAIM_NUMBER = "updateInsurerClaimNumber";
+    public static final String UPDATE_CUSTOMER_CLAIM_NUMBER = "updateCustomerClaimNumber";
     public static final String UPDATE_CLAIM_WORKGROUP_AND_OWNER = "updateClaimWorkgroupAndOwner";
     public static final String ESCALATE_UNASSIGNED_CLAIM = "escalateUnassignedClaim";
     public static final String UPDATE_LIABILITY = "updateLiability";
@@ -41,6 +42,7 @@ public class ExtraAction {
         extraActionList.add(UPDATE_CLAIM_WORKGROUP);
         extraActionList.add(UPDATE_CLAIM_WORKGROUP_AND_OWNER);
         extraActionList.add(UPDATE_INSURER_CLAIM_NUMBER);
+        extraActionList.add(UPDATE_CUSTOMER_CLAIM_NUMBER);
         extraActionList.add(UPDATE_INSURER_CLAIM_OWNER);
         extraActionList.add(UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL);
         extraActionList.add(UPDATE_LIABILITY);
@@ -56,6 +58,8 @@ public class ExtraAction {
         String returnStr = "";
         if (extraAction.equalsIgnoreCase(UPDATE_INSURER_CLAIM_NUMBER)) {
             returnStr = "Update Insurer Claim Number";
+        } else if (extraAction.equalsIgnoreCase(UPDATE_CUSTOMER_CLAIM_NUMBER)) {
+            returnStr = "Update Customer Claim Number";
         } else if (extraAction.equalsIgnoreCase(UPDATE_CLAIM_WORKGROUP_AND_OWNER)) {
             returnStr = "Update Workgroup/Claim Owner";
         } else if (extraAction.equalsIgnoreCase(ESCALATE_UNASSIGNED_CLAIM)) {

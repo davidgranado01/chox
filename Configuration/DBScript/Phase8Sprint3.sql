@@ -31,3 +31,41 @@ UPDATE accessibility SET name='filter.NewClaimsToBeRouted' WHERE name='filter.Ne
 ----------------------
 -- End of 8.3.1
 ----------------------
+
+
+--------------------------------------------------------------------------------
+-- 8.3.4 Adjust Customer Claim Number for Supplementary Invoice Uploads
+--------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.AwaitingInvoicePayment', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.AwaitingLiabilityResolution', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.AwaitingLitigationOutcome', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.ContestedInvoiceReferredToInsurer', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoiceApprovedByBRE', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoiceEscalated', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoiceEscalatedToHandler', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoicePaymentLogged', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoiceReferredToClaimsHandler', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.InvoiceReferredToEngineer', false, false, false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'extraAction.updateCustomerClaimNumber.PaymentReceived', false, false, false, false;
+
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 2, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name like 'extraAction.updateCustomerClaimNumber.%';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 2, 'ROLE_CHO_OPR' FROM accessibility WHERE name like 'extraAction.updateCustomerClaimNumber.%';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 2, 'ROLE_CHO_MNG' FROM accessibility WHERE name like 'extraAction.updateCustomerClaimNumber.%';
+
+----------------------
+-- End of 8.3.4
+----------------------

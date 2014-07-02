@@ -19,6 +19,7 @@ public class AlertAction extends BaseAction {
     private ClaimService claimService;
     private Integer claimId;
     private String claimNumber;
+    private String customerClaimNumber;
     private String customerClaimRefNum;
     private List duplicatedClaims;
     private String actionResult;
@@ -99,6 +100,26 @@ public class AlertAction extends BaseAction {
         return SUCCESS;
     }
     
+    public String isCustomerClaimNumberDuplicated() {
+        try {
+            if (!customerClaimNumber.isEmpty() && claimId != 0) {
+                if (claimService == null) {
+                    LOG.error("No Claim Service in AlertAction.isCustomerClaimNumberDuplicated: claimId={}, claimNumber='{}'",
+                            new Object[]{claimId, claimNumber});
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether customer claim number is already associated with another claim(s). Do you wish to continue?");
+                } else if (claimService.isCustomerClaimNumberExist(customerClaimNumber, claimId, Boolean.TRUE)) {
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The customer claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
+                }
+            }
+        } catch (Exception ex) {
+            LOG.warn("Exception thrown: claimId={}, customerClaimNumber='{}', claimService={}",
+                    new Object[]{claimId, customerClaimNumber, claimService, ex});
+            this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether customer claim number is already associated with another claim(s). Do you wish to continue?");
+        }
+
+        return SUCCESS;
+    }
+    
     public List getOtherDuplicatedClaims() {
         return duplicatedClaims;
     }
@@ -121,6 +142,14 @@ public class AlertAction extends BaseAction {
 
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
+    }
+
+    public String getCustomerClaimNumber() {
+        return customerClaimNumber;
+    }
+
+    public void setCustomerClaimNumber(String customerClaimNumber) {
+        this.customerClaimNumber = customerClaimNumber;
     }
 
     public String getCustomerClaimRefNum() {

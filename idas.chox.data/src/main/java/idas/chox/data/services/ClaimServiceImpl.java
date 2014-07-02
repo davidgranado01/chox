@@ -303,6 +303,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return ((Long) result.get(0)).intValue();
     }
 
+
     @Override
     public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
