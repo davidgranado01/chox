@@ -1,0 +1,121 @@
+package idas.chox.service.workflow.activities;
+
+import java.util.Date;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.VehicleHire;
+import idas.chox.core.services.NotificationService;
+//import idas.chox.core.services.VehicleHireService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.data.notifications.HireVehicleUpdatedNotification;
+
+
+public class HireUpdate extends BaseActivity {
+    static final Logger LOG = LoggerFactory.getLogger(HireUpdate.class);
+//    private VehicleHireService vehicleHireService;
+    private VehicleClass vehicleClass;
+    private NotificationService notificationService;
+    private Date hireStartDate;
+    private Date hireStartDateTime;
+    private String hireStartTime;
+    private boolean updateInsurer;
+
+/*
+    public void setVehicleHireService(VehicleHireService vehicleHireService) {
+        this.vehicleHireService = vehicleHireService;
+    }
+
+    public VehicleClass getVehicleClass() {
+        return vehicleClass;
+    }
+*/
+    
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
+    
+    public void setVehicleClass(VehicleClass vehicleClass) {
+        this.vehicleClass = vehicleClass;
+    }
+
+    public Date getHireStartDate() {
+        return hireStartDate;
+    }
+
+    public void setHireStartDate(Date hireStartDate) {
+        this.hireStartDate = hireStartDate;
+    }
+
+    public String getHireStartTime() {
+        return hireStartTime;
+    }
+
+    public void setHireStartTime(String hireStartTime) {
+        this.hireStartTime = hireStartTime;
+    }
+
+    public boolean isUpdateInsurer() {
+        return updateInsurer;
+    }
+
+    public Date getHireStartDateTime() {
+        return hireStartDateTime;
+    }
+
+    public void setUpdateInsurer(boolean updateInsurer) {
+        this.updateInsurer = updateInsurer;
+    }
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+        if (hireStartDate == null) {
+            LOG.warn("Hire Start Date is null. Can not update Hire Start.");
+            throw new Exception("Hire Start Date is null. Can not update Hire Start.");
+        }
+        String hireStartTimeClean = Jsoup.clean(hireStartTime, Whitelist.basic());
+        if (!hireStartTimeClean.equals(hireStartTime)) {
+            LOG.warn("Hire Start Time contains forbidden content - possible XSS attack: {}", hireStartTime);
+            throw new Exception("Hire Start Time contains forbidden content");
+        }
+        // Merge date and time
+        try {
+            Date time = DateHelper.getTimeFormat().parse(hireStartTime);
+            hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
+            throw new Exception("Error setting Hire Start date/time");
+        }
+
+    }
+
+    @Override
+    protected void doProcess(Claim claim) {
+
+        VehicleHire vh = claim.getVehicleHire();
+
+        if (vh.getHireStartOriginal() == null) {
+            vh.setHireStartOriginal(vh.getHireStart());
+        }
+
+        vh.setHireStart(hireStartDateTime);
+        vh.setVehicleClass(vehicleClass);
+        
+//        vehicleHireService.saveVehicleHire(vh);
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) {
+        activityEventGenerator.generate(claim, this);
+        if (updateInsurer) {
+                notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
+        }
+    }
+}

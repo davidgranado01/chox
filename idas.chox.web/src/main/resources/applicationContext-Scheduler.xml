@@ -127,7 +127,26 @@
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
-    
+
+    <bean id="hireUpdateEmailJob" class="idas.chox.web.scheduler.HireUpdateSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="xlsFileParser" ref="xlsFileParser"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+        <property name="vehicleClassService" ref="vehicleClassService" />
+        <property name="activityFactory" ref="activityFactory" />
+    </bean>
+        
     <bean id="totalLossNotificationEmailJob" class="idas.chox.web.scheduler.TotalLossNotificationEmailSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="attachmentTypeService" ref="attachmentTypeService" />
@@ -225,6 +244,12 @@
     
     <bean id="ecdUpdateMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="ecdUpdateEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="hireUpdateMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hireUpdateEmailJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
@@ -327,6 +352,14 @@
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 6/30 8-14 ? * 1,7" /> 
     </bean> 
+    <bean id="cronHireMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="hireUpdateMailJobDetail" /> 
+        <property name="cronExpression" value="0 6/31 7-19 ? * 2-6" /> 
+    </bean> 
+    <bean id="cronHireMailUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="hireUpdateMailJobDetail" /> 
+        <property name="cronExpression" value="0 6/31 8-14 ? * 1,7" /> 
+    </bean> 
     <bean id="cronTotalLossNotificationTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="totalLossNotificationMailJobDetail" /> 
         <property name="cronExpression" value="0 8/30 7-19 ? * 2-6" /> 
@@ -371,6 +404,7 @@
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
                 <ref bean="updateDashboardJobDetail" />
                 <ref bean="ecdUpdateMailJobDetail" />
+                <ref bean="hireUpdateMailJobDetail" />
                 <ref bean="totalLossNotificationMailJobDetail" />
                 <ref bean="totalLossPackMailJobDetail" />
                 <ref bean="updateWorkflowTablesJobDetail" />
@@ -390,6 +424,8 @@
                 <ref bean="updateDashboardTriggerDaily" />
                 <ref bean="cronECDMailUpdateTriggerWeek" />
                 <ref bean="cronECDMailUpdateTriggerWeekend" />
+                <ref bean="cronHireMailUpdateTriggerWeek" />
+                <ref bean="cronHireMailUpdateTriggerWeekend" />
                 <ref bean="cronTotalLossNotificationTriggerWeek" />
                 <ref bean="cronTotalLossNotificationTriggerWeekend" />
                 <ref bean="cronTotalLossPackTriggerWeek" />

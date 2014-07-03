@@ -18,7 +18,8 @@ public enum NotificationType {
 
             return false;
         }
-    };
+    },
+    HireVehicleUpdatedNotification("HireVehicleUpdatedNotification");
 
     private String type;
     private static final Set insurerNotifications;

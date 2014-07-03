@@ -34,6 +34,123 @@ UPDATE accessibility SET name='filter.NewClaimsToBeRouted' WHERE name='filter.Ne
 
 
 --------------------------------------------------------------------------------
+-- 8.3.3 Hire Start Updates
+--------------------------------------------------------------------------------
+INSERT INTO scheduler_job (login_username, login_password, job_name, email_subject,
+                           autherised_user, bcc_receiver,
+                           error_message_receiver,
+                           created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT 'erac_scheduler', 'Ch0xAdm1n1', 'HIRE_UPDATE', 'CHOX Support Email: Hire Update Request',
+            'elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk,neil.coogan@ehi.com,rasmus.k.kristensen@ehi.com',
+            'John.Dowson@SherwoodTS.co.uk', 'seeni.shanmugam@sherwoodts.co.uk,john.dowson@sherwoodts.co.uk',
+            999, now(), 999, now(), 0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedUnrouted', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedRouted', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedUnassigned', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimReferredToFNOL', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimReferredToEngineer', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimUpdatedByEngineer', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.AwaitingCarHireInfo', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.AwaitingInvoiceData', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimRejectionContested', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimRejected', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.SubscriberClaimRejected', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.HireUpdate.ClaimPending', false, false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedUnrouted', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedRouted', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimUnacknowledgedUnassigned', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimReferredToFNOL', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimReferredToEngineer', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimUpdatedByEngineer', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.AwaitingCarHireInfo', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.AwaitingInvoiceData', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimRejectionContested', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimRejected', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.SubscriberClaimRejected', false, false, 17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+    SELECT 'activity.HireUpdate.ClaimPending', false, false, 17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_MNG', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_OPR', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_CH', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_MNG', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_UPLOAD', 1
+    FROM accessibility
+    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+
+
+----------------------
+-- End of 8.3.3
+----------------------
+
+
+--------------------------------------------------------------------------------
 -- 8.3.4 Adjust Customer Claim Number for Supplementary Invoice Uploads
 --------------------------------------------------------------------------------
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)

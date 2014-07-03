@@ -75,12 +75,10 @@
             rules: {
                 rentalStart:{dateITA:true},
                 rentalStartTime:{time:true}
- //               vehicleClassId : { min: }
             },
             messages: {
                 rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'"},
                 rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"}
- //               vehicleClassId:{min: "You must select a Vehicle Class"}
             }
         });
         ui.ajaxForm(form,null,'html');
@@ -109,11 +107,15 @@
                 <span id="rentalMonitoringStartTimePH"></span></div>
             <div class="chox-form-button">
                 <input type="submit" id="hireMonitoringVehicleSubmitButtonId" value="Save Changes" />
+                <s:if test="isInsurer">
+                    <s:checkbox disabled='true' id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                </s:if>
+                <s:else>
+                    <s:checkbox id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                </s:else>
             </div>
             <div id="HVDmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
             <div id="HVDSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
-    <!--s:token/-->
 </form>
