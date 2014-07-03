@@ -39,15 +39,15 @@
     });
 
 
-    function updateManualInvoiceBatchUpdate(filterName) {
+    function updateManualInvoiceBatchUpdate(filterKey) {
 
         // MANUAL INVOICE BATCH UPDATE LOGIC
 
-        if (filterName === 'ManualInvoiceContested' || filterName === 'ManualInvoiceBRERejected' 
-            || filterName === 'ManualInvoiceBREApproved' || filterName === 'ManualInvoicesToBeAssigned') {
+        if (filterKey === 'ManualInvoiceContested' || filterKey === 'ManualInvoiceBRERejected' 
+            || filterKey === 'ManualInvoiceBREApproved' || filterKey === 'ManualInvoicesToBeAssigned') {
            Ext.state.Manager.set("manualInvoiceFilter",true);
            manualInvoiceFilter = true;
-           if (filterName === 'ManualInvoicesToBeAssigned') {
+           if (filterKey === 'ManualInvoicesToBeAssigned') {
                 doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
                 doClaimRoutedAction.setText('Route Claim(s)');
                 doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
@@ -76,7 +76,7 @@
                 && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
 
            // Route Claim BATCH UPDATE LOGIC
-            if (filterName !== 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+            if (filterKey !== 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
                 doClaimRoutedAction.setText('Re-Route Claim(s)'); 
             } else {
                 doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
@@ -1284,8 +1284,6 @@
                 }
 
             }, this);
-            
-            updateManualInvoiceBatchUpdate(Ext.state.Manager.get("queue_filterName"));
     }
 
 

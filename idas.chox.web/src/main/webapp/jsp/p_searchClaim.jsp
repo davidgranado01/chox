@@ -1377,11 +1377,12 @@
                 timeout:1800000,
                 listeners:  {
                     load :  function(store, records, options) {
-                                if (options.searchScreenTrigger) { 
+                                selectPreviouslySelectedQueue(false);
+                                /*if (options.searchScreenTrigger) { 
                                     selectPreviouslySelectedQueue(true);
                                 } else { 
                                     selectPreviouslySelectedQueue(false);
-                                }
+                                }*/
                             }
                 }
             });
@@ -1487,13 +1488,14 @@
             
         });
 
-        function loadQueueGrid(searchScreenTrigger) {
+        function loadQueueGrid(/*searchScreenTrigger*/) {
             queueDataStore.baseParams = getSearchParameters();
-            if (searchScreenTrigger === true) {
+            queueDataStore.load();
+            /*if (searchScreenTrigger === true) {
                 queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
             } else {
                 queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
-            }
+            }*/
         }
         
         function deSelectQueue() {
@@ -1510,7 +1512,7 @@
             if (typeof rowIndex !== 'undefined') {
                 if (canLoadClaimsGridData) {
                     queueGrid.getSelectionModel().selectRow(rowIndex);
-                } else {
+                } else { // we do not want to load the claims grid as the claims grid is already loaded using the saved cookie params when the grid is redered.
                     // remove rowSelect listner to avoid loading the claims grid data when the queue is selected.
                     queueGrid.getSelectionModel().removeListener('rowselect', onQueueSelection);
                     queueGrid.getSelectionModel().selectRow(rowIndex);
@@ -1518,6 +1520,7 @@
                     queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
                     // set the information panel info 
                     setSearchPanelInfo(queueGrid.getSelectionModel().getSelected().get('queueDescription'));
+                    updateManualInvoiceBatchUpdate(queueGrid.getSelectionModel().getSelected().get('key'));
                 }
                 queueGrid.getView().focusRow(queueGrid.getSelectionModel().hasNext() ? rowIndex+1 : rowIndex);
                 return true; // this line is not working. All the code below the above focusRow method line is not working. Need investigation.
@@ -1556,7 +1559,6 @@
             // we need layout the search panel here because incase if the size of the search panel increased 
             // as a result of setting up queue search criteria in the search panel.
             doLayoutSearchPanel();
-            // The below line need to be investigated
             updateManualInvoiceBatchUpdate(queueFilterName);
         }
         
