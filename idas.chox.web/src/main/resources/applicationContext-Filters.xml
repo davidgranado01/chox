@@ -7,7 +7,7 @@
     <bean id="AllClaims" class="idas.chox.service.filters.AllClaimsFilter" >
         <property name="name" value="All Claims"/>
         <property name="key" value="AllClaims"/>
-        <property name="queueDescription" value="Shows all open claims"/>
+        <property name="queueDescription" value="All open claims"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -21,7 +21,7 @@
         <property name="name" value="Rejected Claims"/>
         <property name="key" value="RejectedClaims"/>
         <property name="status" value="ClaimRejected"/>
-        <property name="queueDescription" value="Shows claim notifications rejected by the Insurer"/>
+        <property name="queueDescription" value="Claim notifications rejected by the Insurer"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -35,7 +35,7 @@
         <property name="name" value="Rejected Fixed Fee Claims"/>
         <property name="key" value="RejectedFixedFeeClaims"/>
         <property name="status" value="ClaimRejected"/>
-        <property name="queueDescription" value="Shows Fixed Fee claim notifications rejected by the Insurer"/>
+        <property name="queueDescription" value="Fixed Fee claim notifications rejected by the Insurer"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -48,7 +48,7 @@
         <property name="name" value="Rejected Subscriber Claims"/>
         <property name="key" value="RejectedSubscriberClaims"/>
         <property name="status" value="SubscriberClaimRejected"/>
-        <property name="queueDescription" value="Shows Subscriber claim notifications rejected by the Insurer"/>
+        <property name="queueDescription" value="Subscriber claim notifications rejected by the Insurer"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -62,7 +62,7 @@
         <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>
         <property name="status" value="AwaitingCarHireInfo"/>
-        <property name="queueDescription" value="Shows claim notifications which have been accepted by the Insurer and the hire/repair is currently in progress"/>
+        <property name="queueDescription" value="Claim notifications which have been accepted by the Insurer and the hire/repair is currently in progress"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -76,7 +76,7 @@
         <property name="name" value= "Awaiting Invoice Data"/>
         <property name="key" value= "AwaitingInvoiceData"/>
         <property name="status" value= "AwaitingInvoiceData"/>
-        <property name="queueDescription" value="Shows claims where the hire/repair is complete and the invoice can now be uploaded against the claim"/>
+        <property name="queueDescription" value="Claims where the hire/repair is complete and the invoice can now be uploaded against the claim"/>
         <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
@@ -89,7 +89,7 @@
     <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated" >
         <property name="name" value= "Liability Status Update Notifications"/>
         <property name="key" value= "LiabilityUpdate"/>
-        <property name="queueDescription" value="Shows claims which have had a liability status update made by the Insurer"/>
+        <property name="queueDescription" value="Claims which have had a liability status update made by the Insurer"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -103,7 +103,7 @@
         <property name="name" value="Incorrect Invoice Data Calculations"/>
         <property name="key" value="IncorrectInvoiceDataCalculations"/>
         <property name="status" value="InvoiceDataCalculationIncorrect"/>
-        <property name="queueDescription" value="Shows claims where an invoice has been uploaded but there are calculation/rate issues with the invoice that need amending before the Insurer gets sight of the claim"/>
+        <property name="queueDescription" value="Claims where an invoice has been uploaded but there are calculation/rate issues with the invoice that need amending before the Insurer gets sight of the claim"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -117,7 +117,7 @@
         <property name="name" value="Contested Invoices Referred To CHO"/>
         <property name="key" value="ContestedInvoicesReferredToCHO"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
-        <property name="queueDescription" value="Shows claims where the Insurer has reviewed the invoice and have comments in regards to quantum/payment which require review"/>
+        <property name="queueDescription" value="Claims where the Insurer has reviewed the invoice and have comments in regards to quantum/payment which require review"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -130,7 +130,7 @@
     <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied" >
         <property name="name" value= "Penalty Charges To Be Applied"/>
         <property name="key" value= "PenaltyChargesApplied"/>
-        <property name="queueDescription" value="Shows claims where penalty charges can be applied to the invoice due to the age of the invoice which has not yet been paid"/>
+        <property name="queueDescription" value="Claims where penalty charges can be applied to the invoice due to the age of the invoice which has not yet been paid"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -144,7 +144,7 @@
         <property name="name" value="Payments To Be Received"/>
         <property name="key" value="InvoicePaymentLogged"/>
         <property name="status" value="InvoicePaymentLogged"/>
-        <property name="queueDescription" value="Shows claims where an Insurer has made full payment on the invoice and the payment should have been sent"/>
+        <property name="queueDescription" value="Claims where an Insurer has made full payment on the invoice and the payment should have been sent"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -157,7 +157,7 @@
     <bean id="InterimPayment" class="idas.chox.service.filters.FilterInterimPayment" >
         <property name="name" value= "Interim Payments To Be Received"/>
         <property name="key" value= "InterimPayment"/>
-        <property name="queueDescription" value="Shows claims where an Insurer has made an interim payment on the invoice and the payment should have been sent"/>
+        <property name="queueDescription" value="Claims where an Insurer has made an interim payment on the invoice and the payment should have been sent"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -171,7 +171,7 @@
         <property name="name" value= "Awaiting Litigation Outcome"/>
         <property name="key" value="AwaitingLitigationOutcome"/>
         <property name="status" value="AwaitingLitigationOutcome"/>
-        <property name="queueDescription" value="Shows claims which will/are litigated by the CHO"/>
+        <property name="queueDescription" value="Claims which will/are litigated by the CHO"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
@@ -185,7 +185,7 @@
         <property name="name" value="New Claims To Be Routed"/>
         <property name="key" value="NewClaimsToBerouted"/>
         <property name="status" value="ClaimUnacknowledgedUnrouted"/>
-        <property name="queueDescription" value="Shows new claims which require a Workgroup to be assigned"/>
+        <property name="queueDescription" value="New claims which require a Workgroup to be assigned"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -199,7 +199,7 @@
         <property name="name" value="New Claims To Be Assigned"/>
         <property name="key" value="ClaimUnacknowledgedUnassigned"/>
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
-        <property name="queueDescription" value="Shows new claims which require a Claim Owner to be assigned"/>
+        <property name="queueDescription" value="New claims which require a Claim Owner to be assigned"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
@@ -213,7 +213,7 @@
         <property name="name" value="Claims To Be Registered"/>
         <property name="key" value="ClaimReferredToFNOL"/>
         <property name="status" value="ClaimReferredToFNOL"/>
-        <property name="queueDescription" value="Shows claims which have been sent to FNOL for claim registration on the Insurer’s internal claim system"/>
+        <property name="queueDescription" value="Claims which have been sent to FNOL for claim registration on the Insurer’s internal claim system"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -227,7 +227,7 @@
         <property name="name" value="Claims Awaiting Acknowledgement"/>
         <property name="key" value="ClaimsAwaitingAcknowledgement"/>
         <property name="status" value="ClaimUnacknowledgedRouted"/>
-        <property name="queueDescription" value="Shows claims which require an Insurer to either acknowledge or reject a new claim notification and set the current liability stance"/>
+        <property name="queueDescription" value="Claims which require an Insurer to either acknowledge or reject a new claim notification and set the current liability stance"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -241,7 +241,7 @@
         <property name="name" value="Re-Submitted Claims Awaiting Acknowledgement"/>
         <property name="key" value="ReSubmittedClaimsAwaitingAcknowledgement"/>
         <property name="status" value="ClaimRejectionContested"/>
-        <property name="queueDescription" value="Shows new claim notifications which have previously been rejected to the CHO and the CHO have now responded with comments which require review"/>
+        <property name="queueDescription" value="New claim notifications which have previously been rejected to the CHO and the CHO have now responded with comments which require review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -255,7 +255,7 @@
         <property name="name" value="Claims Pending"/>
         <property name="key" value="ClaimPending"/>
         <property name="status" value="ClaimPending"/>
-        <property name="queueDescription" value="Shows claims which are yet to be acknowledged/rejected and have been marked as pending by the Insurer as awaiting further information"/>
+        <property name="queueDescription" value="Claims which are yet to be acknowledged/rejected and have been marked as pending by the Insurer as awaiting further information"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -269,7 +269,7 @@
         <property name="name" value="Claim Referred To Engineer"/>
         <property name="key" value="ClaimReferredToEngineer"/>
         <property name="status" value="ClaimReferredToEngineer"/>
-        <property name="queueDescription" value="Shows new claims which have been referred by a Claims Handler to an Engineer for review"/>
+        <property name="queueDescription" value="New claims which have been referred by a Claims Handler to an Engineer for review"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -283,7 +283,7 @@
         <property name="name" value="Claims Updated By Engineer"/>
         <property name="key" value="ClaimUpdatedByEngineer"/>
         <property name="status" value="ClaimUpdatedByEngineer"/>
-        <property name="queueDescription" value="Shows new claims which have been referred by a Claims Handler to an Engineer and the Engineer has returned the claim with comments"/>
+        <property name="queueDescription" value="New claims which have been referred by a Claims Handler to an Engineer and the Engineer has returned the claim with comments"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -296,7 +296,7 @@
     <bean id="HireUpdateAnomalies" class="idas.chox.service.filters.HireUpdateAnomalies" >
         <property name="name" value= "Hire Update Notifications/Warnings"/>
         <property name="key" value= "HireUpdateAnomalies"/>
-        <property name="queueDescription" value="Shows claims which are in hire/repair and the CHO has updated the claim e.g. LOU date update and which requires review"/>
+        <property name="queueDescription" value="Claims which are in hire/repair and the CHO has updated the claim e.g. LOU date update and which requires review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -310,7 +310,7 @@
         <property name="name" value="Escalated Invoices"/>
         <property name="key" value="EscalatedInvoices"/>
         <property name="status" value="InvoiceEscalated"/>
-        <property name="queueDescription" value="Shows claims where the invoice has failed one or more Engineer type business rules and is with an Engineer for review"/>
+        <property name="queueDescription" value="Claims where the invoice has failed one or more Engineer type business rules and is with an Engineer for review"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -324,7 +324,7 @@
         <property name="name" value="Escalated Invoices To Handler"/>
         <property name="key" value="InvoiceEscalatedToHandler"/>
         <property name="status" value="InvoiceEscalatedToHandler"/>
-        <property name="queueDescription" value="Shows claims where the invoice has failed one or more Claims Handler type business rules and is with a Claims Handler for review"/>
+        <property name="queueDescription" value="Claims where the invoice has failed one or more Claims Handler type business rules and is with a Claims Handler for review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -338,7 +338,7 @@
         <property name="name" value="Invoice Referred By Claim Handler"/>
         <property name="key" value="InvoicesReferredToEngineer"/>
         <property name="status" value="InvoiceReferredToEngineer"/>
-        <property name="queueDescription" value="Shows claims with an invoice which has been reviewed by a Claims Handler and referred to an Engineer for review"/>
+        <property name="queueDescription" value="Claims with an invoice which has been reviewed by a Claims Handler and referred to an Engineer for review"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -352,7 +352,7 @@
         <property name="name" value="Invoice Referred By Engineer"/>
         <property name="key" value="InvoiceReferredToClaimsHandler"/>
         <property name="status" value="InvoiceReferredToClaimsHandler"/>
-        <property name="queueDescription" value="Shows claims with an invoice which has been reviewed by an Engineer and referred to a Claims Handler for review"/>
+        <property name="queueDescription" value="Claims with an invoice which has been reviewed by an Engineer and referred to a Claims Handler for review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -366,7 +366,7 @@
         <property name="name" value="Contested Invoices Referred To Insurer"/>
         <property name="key" value="ContestedInvoicesReferredToInsurer"/>
         <property name="status" value="ContestedInvoiceReferredToInsurer"/>
-        <property name="queueDescription" value="Shows claims where the CHO has reviewed the invoice rejection and have added comments in regards to quantum/payment which require review"/>
+        <property name="queueDescription" value="Claims where the CHO has reviewed the invoice rejection and have added comments in regards to quantum/payment which require review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -380,7 +380,7 @@
         <property name="name" value="Invoices Approved By BRE"/>
         <property name="key" value="InvoicesApprovedByBRE"/>
         <property name="status" value="InvoiceApprovedByBRE"/>
-        <property name="queueDescription" value="Shows claims with an invoice and the invoice has passed all of the business rules"/>
+        <property name="queueDescription" value="Claims with an invoice and the invoice has passed all of the business rules"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -394,7 +394,7 @@
         <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
         <property name="key" value="AwaitingLiabilityResolution"/>
         <property name="status" value="AwaitingLiabilityResolution"/>
-        <property name="queueDescription" value="Shows claims which have been approved for payment on a quantum basis but liability has yet to be agreed"/>
+        <property name="queueDescription" value="Claims which have been approved for payment on a quantum basis but liability has yet to be agreed"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -408,7 +408,7 @@
         <property name="name" value="Approved Invoices Awaiting Payment"/>
         <property name="key" value="ApprovedInvoicesAwaitingPayment"/>
         <property name="status" value="AwaitingInvoicePayment"/>
-        <property name="queueDescription" value="Shows claims where the invoice has been approved for payment and liability is resolved, a payment awaits"/>
+        <property name="queueDescription" value="Claims where the invoice has been approved for payment and liability is resolved, a payment awaits"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -422,7 +422,7 @@
         <property name="name" value="Invoices To Be Assigned"/>
         <property name="key" value="InvoiceUnassigned"/>
         <property name="status" value="InvoiceUnassigned"/>
-        <property name="queueDescription" value="Shows TPI claims which require a Claim Owner to be assigned"/>
+        <property name="queueDescription" value="TPI claims which require a Claim Owner to be assigned"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
@@ -436,7 +436,7 @@
         <property name="name" value="Manual Invoices To Be Assigned"/>
         <property name="key" value="ManualInvoicesToBeAssigned"/>
         <property name="status" value="ManualInvoiceUnassigned"/>
-        <property name="queueDescription" value="Shows manual claims which require Workgroup/Claim Owner assignment"/>
+        <property name="queueDescription" value="Manual claims which require Workgroup/Claim Owner assignment"/>
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
@@ -451,7 +451,7 @@
         <property name="name" value="Manual Invoices Approved By BRE"/>
         <property name="key" value="ManualInvoiceBREApproved"/>
         <property name="status" value="ManualInvoiceBREApproved"/>
-        <property name="queueDescription" value="Shows manual claims where the invoice has passed all of the business rules"/>
+        <property name="queueDescription" value="Manual claims where the invoice has passed all of the business rules"/>
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
@@ -466,7 +466,7 @@
         <property name="name" value="Manual Invoices Rejected By BRE"/>
         <property name="key" value="ManualInvoiceBRERejected"/>
         <property name="status" value="ManualInvoiceBRERejected"/>
-        <property name="queueDescription" value="Shows manual claims where the invoice has failed one or more business rules"/>
+        <property name="queueDescription" value="Manual claims where the invoice has failed one or more business rules"/>
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
@@ -481,7 +481,7 @@
         <property name="name" value="Manual Invoices Contested With CHO"/>
         <property name="key" value="ManualInvoiceContested"/>
         <property name="status" value="ManualInvoiceContested"/>
-        <property name="queueDescription" value="Shows manual claims where the invoice is currently in dispute with the CHO"/>
+        <property name="queueDescription" value="Manual claims where the invoice is currently in dispute with the CHO"/>
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
@@ -495,7 +495,7 @@
     <bean id="EscalatedInvoicesToSupervisor" class="idas.chox.service.filters.InvoiceEscalatedToSupervisor" >
         <property name="name" value="Escalated Invoices to Supervisor"/>
         <property name="key" value="EscalatedInvoicesToSupervisor"/>
-        <property name="queueDescription" value="Shows claims with an invoice, to be in this queue the invoice has either been contested a certain number of times or due to the age of the invoice"/>
+        <property name="queueDescription" value="Claims with an invoice, to be in this queue the invoice has either been contested a certain number of times or due to the age of the invoice"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
@@ -509,7 +509,7 @@
         <property name="name" value="Invoices With Final Review"/>
         <property name="key" value="FinalReviewCho"/>
         <property name="status" value="AwaitingLiabilityResolution"/>
-        <property name="queueDescription" value="Shows claims which have an on-going liability dispute and a final stance has been made by the Insurer, thus eliminating unnecessary claim touch points"/>
+        <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made by the Insurer, thus eliminating unnecessary claim touch points"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
@@ -523,7 +523,7 @@
         <property name="name" value="Invoices With Final Review"/>
         <property name="key" value="FinalReviewIns"/>
         <property name="status" value="AwaitingLiabilityResolution"/>
-        <property name="queueDescription" value="Shows claims which have an on-going liability dispute and a final stance has been made, thus eliminating unnecessary claim touch points"/>
+        <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made, thus eliminating unnecessary claim touch points"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
