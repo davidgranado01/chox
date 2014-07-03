@@ -35,6 +35,9 @@
     // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
     var statusComboNumberOfSelectedRecord = 0;
     var claimTypesComboNumberOfSelectedRecord = 0;
+    var workgroupComboNumberOfSelectedRecord = 0;
+    var claimOwnerComboNumberOfSelectedRecord = 0;
+    var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
     
     Ext.onReady(function(){
 
@@ -546,6 +549,7 @@
                                this.setValue('<s:property value="insurerIdsAsString" />');
                                insurerSearchScreenId = '<s:property value="insurerIdsAsString" />'.split(",");
                                insurerComboNumberOfSelectedRecord = '<s:property value="insurerIdsAsString" />'.split(',').length;
+                               doLayoutSearchPanel();
                             }
                         },
                         select : function(){
@@ -622,6 +626,7 @@
                                 this.setValue('<s:property value="supplierIdsAsString" />');
                                 supplierSearchScreenId = '<s:property value="supplierIdsAsString" />'.split(",");
                                 supplierComboNumberOfSelectedRecord = '<s:property value="supplierIdsAsString" />'.split(',').length;
+                                doLayoutSearchPanel();
                             }
                         },
                         select : function(){
@@ -673,8 +678,6 @@
                     }}
                 });
 //                workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
-                // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
-                var workgroupComboNumberOfSelectedRecord = 0;
                 workgroupSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : workgroupSearchScreenStore,
                     width: 280,
@@ -710,6 +713,7 @@
                                         if ('<s:property value="workgroupIdsAsString" />') {
                                             workgroupSearchScreenCombo.setValue('<s:property value="workgroupIdsAsString" />');
                                             workgroupComboNumberOfSelectedRecord = '<s:property value="workgroupIdsAsString" />'.split(',').length;
+                                            doLayoutSearchPanel();
                                         }
                                     }
                                 });
@@ -764,8 +768,7 @@
                          if (selectedInsClaimOwnerValues && claimOwnerSearchScreenCombo) {claimOwnerSearchScreenCombo.reset();claimOwnerSearchScreenCombo.setValue(selectedInsClaimOwnerValues);}
                     }}
                 });
-                // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
-                var claimOwnerComboNumberOfSelectedRecord = 0;
+
                 claimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : claimOwnerSearchScreenStore,
                     width: 280,
@@ -796,6 +799,7 @@
                                         if ('<s:property value="claimOwnerIdsAsString"/>') {
                                             claimOwnerSearchScreenCombo.setValue('<s:property value="claimOwnerIdsAsString"/>');
                                             claimOwnerComboNumberOfSelectedRecord = '<s:property value="claimOwnerIdsAsString"/>'.split(',').length;
+                                            doLayoutSearchPanel();
                                         }
                                     }
                                 });
@@ -861,8 +865,7 @@
                         }},
                     reader : supplierClaimOwnerReader
                 });
-                // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
-                var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+
                 supplierClaimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : supplierClaimOwnerSearchScreenStore,
                     width: 280,
@@ -894,6 +897,7 @@
                                         if ('<s:property value="supplierClaimOwnerIdsAsString"/>') {
                                             supplierClaimOwnerSearchScreenCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
                                             supplierClaimOwnerComboNumberOfSelectedRecord = '<s:property value="supplierClaimOwnerIdsAsString"/>'.split(',').length;
+                                            doLayoutSearchPanel();
                                         }
                                     }
                                 });
@@ -978,6 +982,7 @@
                         if ('<s:property value="claimStatusesAsString"/>') {
                             this.setValue('<s:property value="claimStatusesAsString"/>'); 
                             statusComboNumberOfSelectedRecord = '<s:property value="claimStatusesAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
                         }
                         
                     },
@@ -1052,6 +1057,7 @@
                         if ('<s:property value="liabilityStatusesValueAsString"/>') {
                             this.setValue('<s:property value="liabilityStatusesValueAsString"/>'); 
                             liabilityStatusComboNumberOfSelectedRecord = '<s:property value="liabilityStatusesValueAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
                         }
                     },
                     select : function(){
@@ -1166,9 +1172,10 @@
                         }
                     },
                     afterrender : function(){
-                        if ('<s:property value="hireAndRepairSearchParamAsString"/>') {
-                            this.setValue('<s:property value="hireAndRepairSearchParamAsString"/>');
-                            hireAndRepairSearchComboNumberOfSelectedRecord = '<s:property value="hireAndRepairSearchParamAsString"/>'.split(',').length;
+                        if ('<s:property value="HireAndRepairSearchParamAsString"/>') {
+                            this.setValue('<s:property value="HireAndRepairSearchParamAsString"/>');
+                            hireAndRepairSearchComboNumberOfSelectedRecord = '<s:property value="HireAndRepairSearchParamAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
                         }
                     },
                     select : function(){
@@ -1233,6 +1240,7 @@
                         if ('<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>') {
                             this.setValue('<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>');
                             approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord = '<s:property value="approvedInvoiceOwnershipSearchParamAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
                         }
                     },
                     select : function(){
@@ -1305,6 +1313,7 @@
                         if ('<s:property value="ClaimTypesValueAsString"/>') {
                             this.setValue('<s:property value="ClaimTypesValueAsString"/>');
                             claimTypesComboNumberOfSelectedRecord = '<s:property value="ClaimTypesValueAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
                         }
                     },
                     select : function(){
@@ -1435,11 +1444,12 @@
                 timeout:1800000,
                 listeners:  {
                     load :  function(store, records, options) {
-                                if (options.searchScreenTrigger) { 
+                                selectPreviouslySelectedQueue(false);
+                                /*if (options.searchScreenTrigger) { 
                                     selectPreviouslySelectedQueue(true);
                                 } else { 
                                     selectPreviouslySelectedQueue(false);
-                                }
+                                }*/
                             }
                 }
             });
@@ -1545,13 +1555,14 @@
             
         });
 
-        function loadQueueGrid(searchScreenTrigger) {
+        function loadQueueGrid(/*searchScreenTrigger*/) {
             queueDataStore.baseParams = getSearchParameters();
-            if (searchScreenTrigger === true) {
+            queueDataStore.load();
+            /*if (searchScreenTrigger === true) {
                 queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
             } else {
                 queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
-            }
+            }*/
         }
         
         function deSelectQueue() {
@@ -1568,7 +1579,7 @@
             if (typeof rowIndex !== 'undefined') {
                 if (canLoadClaimsGridData) {
                     queueGrid.getSelectionModel().selectRow(rowIndex);
-                } else {
+                } else { // we do not want to load the claims grid as the claims grid is already loaded using the saved cookie params when the grid is redered.
                     // remove rowSelect listner to avoid loading the claims grid data when the queue is selected.
                     queueGrid.getSelectionModel().removeListener('rowselect', onQueueSelection);
                     queueGrid.getSelectionModel().selectRow(rowIndex);
@@ -1576,6 +1587,7 @@
                     queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
                     // set the information panel info 
                     setSearchPanelInfo(queueGrid.getSelectionModel().getSelected().get('queueDescription'));
+                    updateManualInvoiceBatchUpdate(queueGrid.getSelectionModel().getSelected().get('key'));
                 }
                 queueGrid.getView().focusRow(queueGrid.getSelectionModel().hasNext() ? rowIndex+1 : rowIndex);
                 return true; // this line is not working. All the code below the above focusRow method line is not working. Need investigation.
@@ -1614,7 +1626,6 @@
             // we need layout the search panel here because incase if the size of the search panel increased 
             // as a result of setting up queue search criteria in the search panel.
             doLayoutSearchPanel();
-            // The below line need to be investigated
             updateManualInvoiceBatchUpdate(queueFilterName);
         }
         
@@ -1626,7 +1637,31 @@
         
         function updateSearchScreenFieldsWithQueueFilterCriteria(record) {
 
-            clearForm();
+            clearForm(false);
+            
+            var workgrops = record.get('claimSearchCriteria').workgroupIdsAsString;
+//            console.log('workgrops  = ' + workgrops);
+            workgroupComboNumberOfSelectedRecord = workgrops.split(',').length;
+            if (workgrops) {
+                workgroupSearchScreenCombo.setValue(workgrops);
+            }
+            
+            var insClaimOwners = record.get('claimSearchCriteria').claimOwnerIdsAsString;
+            claimOwnerComboNumberOfSelectedRecord = insClaimOwners.split(',').length;
+            if (insClaimOwners) {
+                claimOwnerSearchScreenCombo.setValue(insClaimOwners);
+            } else { // we need to rest the value to clear the default owner selection.
+                claimOwnerSearchScreenCombo.reset();
+                claimOwnerSearchScreenCombo.clearValue();
+            }
+//            console.log('insClaimOwners  = ' + insClaimOwners);
+            
+            var supplierClaimOwners = record.get('claimSearchCriteria').supplierClaimOwnerIdsAsString;
+            supplierClaimOwnerComboNumberOfSelectedRecord = supplierClaimOwners.split(',').length;
+            if (supplierClaimOwners) {
+                supplierClaimOwnerSearchScreenCombo.setValue(supplierClaimOwners);
+            }
+            
             var statuses = record.get('claimSearchCriteria').claimStatusesAsString;
             statusComboNumberOfSelectedRecord = statuses.split(',').length;
 //            console.log('statusComboNumberOfSelectedRecord  count is = ' +statusComboNumberOfSelectedRecord);
@@ -1678,6 +1713,7 @@
                 Ext.getCmp('interimPaymentMadeCheckBoxId').setValue(true);
             }
             
+            doLayoutSearchPanel();
         }
         
         function getSearchParameters() {
@@ -1756,7 +1792,7 @@
                 supplierClaimOwnerIds : supplierClaimOwnerIds,
                 customerVrn : customerVrn,
                 showOpenClaimsOnly : showOpenClaimsOnly,
-                finalReviewValue : finalReviewValue,
+                finalReviewValue : (finalReviewValue === '') ? 0 : finalReviewValue,
                 liabilityStatusUpdated : liabilityStatusUpdated,
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 isPenaltyChargeApplied : penaltyChargesToBeApplied,
@@ -1787,9 +1823,9 @@
                 searchBaseParam = Ext.apply(getSearchParameters(), {"gridTitle" : 'Custom Search Result'});
                 // set the searchPanel information message
                 setSearchPanelInfo('Custom Search Result');
-            } else { 
+            } else { // when reset button clicked else condition is invoked
                 searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
-                clearForm();
+                clearForm(true);
             }
             doDataLoad(searchBaseParam);
         }
@@ -1887,7 +1923,7 @@
             </s:if>
         }
 
-        function clearForm(){
+        function clearForm(canSetDefaultClaimOwner) {
 
             $('#searchPanel').contents().find(':input').each(function() {
 
@@ -1971,9 +2007,12 @@
                 supplierClaimOwnerSearchScreenCombo.reset();
                 supplierClaimOwnerSearchScreenCombo.clearValue();
             }
-       
-            setDefaultClaimOwner();
-            //            setDefaultSupplierClaimOwner();
+            
+            if (canSetDefaultClaimOwner) {
+                    setDefaultClaimOwner();
+//                    setDefaultSupplierClaimOwner();
+            }
+            
         }
 
         function statusChange(){
