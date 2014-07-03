@@ -1100,7 +1100,7 @@
             finalReviewValuesCombo = new Ext.form.ComboBox({
                 store : finalReviewValuesStore,
                 width: 120,
-                fieldLabel: 'Show Claims With Final Liability Stance',
+                fieldLabel: 'Final Review',
                 labelStyle: 'width:150px',
                 valueField : 'value',
                 id : 'finalReviewValuesSearchScreenComboId',
@@ -1154,7 +1154,7 @@
             hireAndRepairSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : hireAndRepairSearchParamStore,
                 width: 280,
-                fieldLabel: 'Hire & Repair Management Status',
+                fieldLabel: 'Hire/Repair Status',
                 valueField : 'value',
                 id : 'hireAndRepairSearchParamComboId',
                 displayField :'text',
