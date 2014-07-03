@@ -260,6 +260,18 @@ public class InboxAction extends BaseAction {
 //        }
 //    }
 
+    // This is to avoid showing the 'Task' tab as default active tab when the user logs in. 
+    public int getPreSelectedActiveTab() {
+        int activeTab = 0;
+        if (isTaskManagementEnabled()
+                && ((getIsComUser() || getIsScrUser()) // for com and scr user dashboard tab is not set as the first tab so checking for dashboard availablity for them is not correct.
+                // if 'Task' tab enabled but not 'DashBoard' tab then choose 'Inbox' tab as active tab.
+                || (!getMenuAccessibility().getIsDashBoardMenuAccessibility()))) {
+            activeTab = 1;
+        }
+        return activeTab;
+    }
+    
     public ApplicationAccessibility getApplicationAccessibility() {
         return applicationAccessibility;
     }

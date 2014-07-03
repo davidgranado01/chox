@@ -715,34 +715,38 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
         
+        // For filter's workgroup check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
-                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
+                searchCriteria.setWorkgroupIds(getCurrentUser().getWorkgroupIds());
             }
         }
 
+        // For filter's workgroup check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.getIsWorkgroupCheck() && searchCriteria.isIsManual()) {
             if (RoleHelper.isManualWorkgroupValidationEnabledUser(getCurrentUser())) {
-                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
+                searchCriteria.setWorkgroupIds(getCurrentUser().getWorkgroupIds());
             }
         }
 
+        // For filter's ownership check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & !searchCriteria.isIsManual()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
-                criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
+                searchCriteria.setClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
             }
         }
 
+        // For filter's ownership check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & searchCriteria.isIsManual()) {
             if (RoleHelper.isManualOwnershipValidationEnabledUser(getCurrentUser())) {
-                criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
+                searchCriteria.setClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
             }
         }
-
+        
+        // For filter's supplier Owner check, we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.getIsSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
-                criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
-                        Restrictions.isNull("supplierClaimOwner.id")));
+                searchCriteria.setSupplierClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
             }
         }
 
@@ -829,10 +833,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
-            ArrayList<Integer> ClaimOwnerIds = new ArrayList<Integer>();
-
-            ClaimOwnerIds.addAll(searchCriteria.getClaimOwnerIds());
-            criteria.add(Restrictions.in("claimOwner.id", ClaimOwnerIds.toArray()));
+            criteria.add(Restrictions.in("claimOwner.id", searchCriteria.getClaimOwnerIds().toArray()));
         }
 
         if (searchCriteria.getSupplierClaimOwnerIds() != null && !searchCriteria.getSupplierClaimOwnerIds().isEmpty()) {
