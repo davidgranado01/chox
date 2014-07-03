@@ -22,10 +22,8 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
     private List<Filter> filters;
     private ClaimService claimService;
     private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
-//    private int filterOrgId = -1;
-//    private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
-    private boolean syncWithSearchCriteria = true;
+//    private boolean syncWithSearchCriteria = true;
 
     public String getJsonData() {
         try {
@@ -55,9 +53,9 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
                 filterViewData.setQueueCount(claimService.countClaims(filter.getClaimSearchCriteria(filterClaimSearchCriteria)));
                 filterViewData.setQueueNameWithCount(String.format("%s (%d)", filter.getName(), filterViewData.getQueueCount()));
             } catch (Exception ex) {
-                // Changed to warn from error because when the user logout immediately after clicking the inbox queue but before the server sends the respons then 
-                // error is being thrown while getting the user information. Need to investigate further to see why it is not throwing exception all the times but some times.
-                LOG.warn("Error setting up filter '{}': ", filter.getName(), ex);
+                // Sometime this error happens when the user logout immediately after clicking the inbox queue but before the server sends the respons. 
+                // Error is thrown while getting the user information. Need to investigate further to see why it is not throwing exception all the times but some times.
+                LOG.error("Error setting up filter '{}': ", filter.getName(), ex);
             }
             LOG.debug("    filter description: '{}'", filterViewData.getQueueNameWithCount());
             filterViewData.setQueueName(filter.getName());
@@ -84,32 +82,9 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
         return filterViewDatas;
     }
 
-//    public int getFilterOrgId() {
-//        return filterOrgId;
-//    }
-//
-//    public void setFilterOrgId(int filterOrgId) {
-//        this.filterOrgId = filterOrgId;
-//    }
-//    public int getFilterClaimTypeId() {
-//        return filterClaimTypeId;
-//    }
-//
-//    public void setFilterClaimTypeId(int filterClaimTypeId) {
-//        this.filterClaimTypeId = filterClaimTypeId;
-//    }
-
     @Override
     public ClaimSearchCriteria getModel() {
         return claimSearchCriteria;
-    }
-
-    public boolean isSyncWithSearchCriteria() {
-        return syncWithSearchCriteria;
-    }
-
-    public void setSyncWithSearchCriteria(boolean syncWithSearchCriteria) {
-        this.syncWithSearchCriteria = syncWithSearchCriteria;
     }
 
     @Override
@@ -117,29 +92,41 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
         claimSearchCriteria = new ClaimSearchCriteria();
     }
     
-//    private void removeUnwantedSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
-//        // For queue count it should not depend upon the user selected statuses.
-//        if (claimSearchCriteria.getStatuses() != null && !claimSearchCriteria.getStatuses().isEmpty()) {
-//            claimSearchCriteria.getStatuses().clear();
-//        }
-//    }
+//<editor-fold defaultstate="collapsed" desc="comment">
+    /*public boolean isSyncWithSearchCriteria() {
+    return syncWithSearchCriteria;
+    }
+    
+    public void setSyncWithSearchCriteria(boolean syncWithSearchCriteria) {
+    this.syncWithSearchCriteria = syncWithSearchCriteria;
+    }
+    
+    private void removeUnwantedSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
+    // For queue count it should not depend upon the user selected statuses.
+    if (claimSearchCriteria.getStatuses() != null && !claimSearchCriteria.getStatuses().isEmpty()) {
+    claimSearchCriteria.getStatuses().clear();
+    }
+    }*/
+//</editor-fold>
     
     private ClaimSearchCriteria getClaimSearchCriteria() {
         ClaimSearchCriteria clonedClaimSearchCriteria = new ClaimSearchCriteria();
-        if (syncWithSearchCriteria) {
-
-            if (claimSearchCriteria.getSupplierIds() != null) {
-                clonedClaimSearchCriteria.setSupplierIds(claimSearchCriteria.getSupplierIds());
-            }
-
-            if (claimSearchCriteria.getInsurerIds() != null) {
-                clonedClaimSearchCriteria.setInsurerIds(claimSearchCriteria.getInsurerIds());
-            }
-
-            if (claimSearchCriteria.getClaimTypes() != null) {
-                clonedClaimSearchCriteria.setClaimTypes(claimSearchCriteria.getClaimTypes());
-            }
+//<editor-fold defaultstate="collapsed" desc="comment">
+        /*        if (syncWithSearchCriteria) {
+        
+        if (claimSearchCriteria.getSupplierIds() != null) {
+        clonedClaimSearchCriteria.setSupplierIds(claimSearchCriteria.getSupplierIds());
         }
+        
+        if (claimSearchCriteria.getInsurerIds() != null) {
+        clonedClaimSearchCriteria.setInsurerIds(claimSearchCriteria.getInsurerIds());
+        }
+        
+        if (claimSearchCriteria.getClaimTypes() != null) {
+        clonedClaimSearchCriteria.setClaimTypes(claimSearchCriteria.getClaimTypes());
+        }
+        }*/
+//</editor-fold>
         return clonedClaimSearchCriteria;
     }
 
