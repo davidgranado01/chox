@@ -33,6 +33,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
+//    private String REG_TIME = "^([0-9]|0[0-9]|1?[0-9]|2[0-3]):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     public static final String JOB_NAME = "HIRE_UPDATE";
     private ClaimService claimService;
     private VehicleClassService vehicleClassService;
@@ -55,7 +56,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             if (row.intValue() != 0) { // ignore first row - should contain header
                 List<String> cells = xlsDataMap.get(row);
 
-                if (cells.size() < 5) {
+                if (cells.size() < 4) {
                     //ignore row
                     LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
                     continue;
@@ -79,14 +80,16 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 String hireStartTime = cells.get(3).trim();
                 hireStartTime = validateHireStartTime(hireStartTime, statusString);
 
-                /* Check update insurer column is valid */
-                String updateInsurerString = cells.get(4).trim();
-                boolean updateInsurer = validateUpdateInsurer(updateInsurerString, statusString);
+                /* Check update insurer column is valid, if present */
+                boolean updateInsurer = false;
+                if (cells.size() > 4) {
+                    updateInsurer = validateUpdateInsurer(cells.get(4).trim(), statusString);
+                }
 
                 /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty()) {
                     try {
-                        Activity activity = (EcdUpdate) activityFactory.getActivity("hireUpdate");
+                        Activity activity = (HireUpdate) activityFactory.getActivity("hireUpdate");
                         ((HireUpdate)activity).setVehicleClass(vehicleClass);
                         ((HireUpdate)activity).setHireStartDate(hireStartDate);
                         ((HireUpdate)activity).setHireStartTime(hireStartTime);
@@ -96,7 +99,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     } catch (AccessDeniedException ex) {
                         statusString.append("Failed: No Access to Hire Update Activity (Invalid Claim Status '")
                                 .append(claim.getStatus()).append("')");
-                        LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job", ex);
+                        LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job");
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred");
                         LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
@@ -107,9 +110,12 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* update the result message into column 5 for each row.*/
                 if (xlsDataMap.get(row).size() < 5) {
+                    xlsDataMap.get(row).add("dummy column");
+                }
+                if (xlsDataMap.get(row).size() < 6) {
                     xlsDataMap.get(row).add(statusString.toString());
                 } else {
-                    xlsDataMap.get(row).set(4, statusString.toString());
+                    xlsDataMap.get(row).set(5, statusString.toString());
                 }
             }
         }
@@ -133,10 +139,10 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             for (Integer row : rowNumbers) {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
-                    if (cells.size() >= 4) { // We expect at least three columns
+                    if (cells.size() >= 5) { // We expect at least three columns
                         emailMsg.append(String.format("%-22s", cells.get(0).trim()));
-                        emailMsg.append("    ");
-                        emailMsg.append(cells.get(4).trim());
+                        emailMsg.append("\t\t");
+                        emailMsg.append(cells.get(5).trim());
                         emailMsg.append("\n");
                     }
                 }
@@ -197,7 +203,8 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private String validateHireStartTime(String hireStartTime, StringBuilder statusString) {
         if (!regexExpressionChecker(REG_TIME, hireStartTime)) {
             statusString.append("  Invalid Format for Hire Start (Time).");
-        }
+        } 
+        
         return hireStartTime;
     }
 

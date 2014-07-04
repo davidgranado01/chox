@@ -11,14 +11,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.NotificationService;
-//import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.HireVehicleUpdatedNotification;
 
 
 public class HireUpdate extends BaseActivity {
     static final Logger LOG = LoggerFactory.getLogger(HireUpdate.class);
-//    private VehicleHireService vehicleHireService;
     private VehicleClass vehicleClass;
     private NotificationService notificationService;
     private Date hireStartDate;
@@ -26,15 +24,10 @@ public class HireUpdate extends BaseActivity {
     private String hireStartTime;
     private boolean updateInsurer;
 
-/*
-    public void setVehicleHireService(VehicleHireService vehicleHireService) {
-        this.vehicleHireService = vehicleHireService;
-    }
-
+    
     public VehicleClass getVehicleClass() {
         return vehicleClass;
     }
-*/
     
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
@@ -100,15 +93,22 @@ public class HireUpdate extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         VehicleHire vh = claim.getVehicleHire();
-
-        if (vh.getHireStartOriginal() == null) {
-            vh.setHireStartOriginal(vh.getHireStart());
+        if (vh == null) {
+            vh = new VehicleHire();
+            claim.setVehicleHire(vh);
+        }else {
+            // If no original values then save current ones
+            if (vh.getHireStartOriginal() == null && vh.getHireStart() != null) {
+                vh.setHireStartOriginal(vh.getHireStart());
+            }
+            if (vh.getVehicleClassOriginal() == null && vh.getVehicleClass() != null) {
+                vh.setVehicleClassOriginal(vh.getVehicleClass());
+            }
         }
 
         vh.setHireStart(hireStartDateTime);
         vh.setVehicleClass(vehicleClass);
         
-//        vehicleHireService.saveVehicleHire(vh);
     }
 
     @Override
