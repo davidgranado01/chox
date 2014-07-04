@@ -111,5 +111,10 @@
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
         <property name="reasonOfDelayService" ref="reasonOfDelayService" />
     </bean>
+    <bean id="hireUpdate" class="idas.chox.service.workflow.activities.HireUpdate" scope="prototype">
+        <property name="vehicleClassService" ref="vehicleClassService" />
+        <property name="notificationService" ref="notificationService" />
+        <!-- property name="vehicleHireService" ref="vehicleHireService" / -->
+    </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
 </beans>

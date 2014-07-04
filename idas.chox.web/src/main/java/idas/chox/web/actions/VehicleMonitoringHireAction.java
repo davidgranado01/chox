@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.data.notifications.HireVehicleUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.service.workflow.activities.ActivityEvent;
 
@@ -21,10 +23,20 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
     private static final Logger LOG = LoggerFactory.getLogger(VehicleMonitoringHireAction.class);
 
     private LookupService lookupService;
+    private NotificationService notificationService;
     private int vehicleClassMonitoringId;
-
+    boolean updateInsurer;
+    
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
+    public void setUpdateInsurer(boolean updateInsurer) {
+        this.updateInsurer = updateInsurer;
     }
 
     @Override
@@ -55,7 +67,11 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
             claim.setVehicleHire(model);
             String result = super.updateModel();
 
-            activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
+            activityEventGenerator.generate(claim, ActivityEvent.HIRE_VEHICLE_UPDATED_EVENT);
+
+            if (updateInsurer) {
+                notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
+            }
 
             return result;
         } catch (Exception ex) {

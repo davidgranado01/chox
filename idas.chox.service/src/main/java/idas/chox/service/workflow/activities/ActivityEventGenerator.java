@@ -181,6 +181,9 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("EcdUpdate")) {
                 LOG.debug("EcdUpdate activity found");
                 ActivityEvent.ECD_UPDATED_EVENT.build(this, (EcdUpdate) activity, claim);
+            }  else if (activityName.equalsIgnoreCase("HireUpdate")) {
+                LOG.debug("HireUpdate activity found");
+                ActivityEvent.HIRE_VEHICLE_UPDATED_EVENT.build(this, (HireUpdate) activity, claim);
             } else if (activityName.equalsIgnoreCase("FullInvoicePaymentReceived")) {
                 LOG.debug("FullInvoicePaymentReceived activity found");
                 ActivityEvent.FULL_PAYMENT_RECEIVED_EVENT.build(this, (FullInvoicePaymentReceived) activity, claim);

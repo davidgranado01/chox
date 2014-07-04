@@ -608,6 +608,13 @@ public enum ActivityEvent {
     },
     HIRE_CAR_INFO_PROVIDED_EVENT            (21, "HireCarInfoProvidedEvent") {
         @Override
+        public void build(ActivityEventGenerator generator, HireUpdate activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireCarInfoProvidedEvent from HireUpdate activity");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
         public void build(ActivityEventGenerator generator, ClaimAwaitingCarHireInfo activity, Claim claim)  throws Exception {
             LOG.debug("Building HireCarInfoProvidedEvent from ClaimAwaitingCarHireInfo activity");
             generator.startEvent(claim, this.getName(), this.getEventId());
@@ -853,6 +860,31 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT             (40, "CustomerClaimNumberAssignedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
+            LOG.warn("Building CustomerClaimNumberAssignedEvent event (not from activity!)...");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+            generator.addParameter("customerClaimNumber", claim.getCustomer().getClaimReference());
+            generator.completeEvent(claim);
+        }
+    },
+    HIRE_VEHICLE_UPDATED_EVENT           (41, "HireVehicleUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building HireVehicleUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireVehicleParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, HireUpdate activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireVehicleUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireVehicleParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     // Non-activity based events - should be moved to ChoxEvents in data package TODO
 //    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved
@@ -900,15 +932,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
-    CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT             (40, "CustomerClaimNumberAssignedEvent") {
-        @Override
-        public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
-            LOG.warn("Building CustomerClaimNumberAssignedEvent event (not from activity!)...");
-            generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
-            generator.addParameter("customerClaimNumber", claim.getCustomer().getClaimReference());
-            generator.completeEvent(claim);
-        }
-    };
+;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);
     private final int eventId;
@@ -1034,6 +1058,11 @@ public enum ActivityEvent {
 
     public void build(ActivityEventGenerator generator, EcdUpdate activity, Claim claim)  throws Exception {
         LOG.warn("Build with EcdUpdate activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, HireUpdate activity, Claim claim)  throws Exception {
+        LOG.warn("Build with HireUpdate activity called and no overiding method - will call generic event builder");
         build(generator, (Activity)activity, claim);
     }
 

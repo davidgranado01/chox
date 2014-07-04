@@ -4,8 +4,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.util.DateHelper;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 
 /**
  *
@@ -28,14 +26,18 @@ public class CommentViewData {
 
         String orgName = "";
         WebUser user = comment.getCreatedBy();
-        if (user != null && user.isAnInsurer() && user.getInsurer() != null) {
-            orgName = String.format("(%1$s)", user.getInsurer().getName());
-        } else if (user != null && !user.isAnInsurer() && user.getChorganisation() != null ) {
-            orgName = String.format("(%1$s)", user.getChorganisation().getName());
+        if (user != null) {
+            if (user.isAnInsurer() && user.getInsurer() != null) {
+                orgName = String.format("(%1$s)", user.getInsurer().getName());
+            } else if (!user.isAnInsurer() && user.getChorganisation() != null ) {
+                orgName = String.format("(%1$s)", user.getChorganisation().getName());
+            }
+            createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+        } else {
+            createdBy = "unknown";
         }
-        this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         if (authenticatedUser.isCHOXAdmin() 
-                        || ((authenticatedUser.getId().compareTo(user.getId())==0 
+                        || (user != null && (authenticatedUser.getId().compareTo(user.getId())==0 
                              || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())   
                              || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
                             && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {

@@ -350,7 +350,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
             if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
                     || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId().intValue() != getUserOrganisationId())))) {
-                LOG.debug("Failed access validation - throwing AccessDeniedException");
+                    LOG.warn("Access Denied for user trying to update password: getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}", 
+                        new Object[]{getUserOrganisationType(), model.isAnInsurer(), model.getId(), model.getChorganisation(), getUserOrganisationId(), getAuthenticatedUser().getId(), getRoleTypeForHelpFile()});
                 throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
             }
             LOG.debug("Passed access validation");
