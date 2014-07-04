@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.util.DateHelper;
+import java.text.SimpleDateFormat;
 
 public class XlsFileParser {
 
@@ -111,23 +112,47 @@ public class XlsFileParser {
             List<String> cellStringList = new ArrayList<String>();
             for (int j = 0; j < cellStoreList.size(); j++) {
                 HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-                if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)) {
-                    LOG.debug("cell is date formated");
+                if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
+                        && !isTime(myCell)) {
+                    LOG.debug("cell is date formated : {}", myCell.getNumericCellValue());
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
                     cellStringList.add(DateHelper.getLocalDateFormat().format(date));
-                } else if (myCell != null) {
+                } else if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
+                        && isTime(myCell)) {
+                    LOG.debug("cell is time formated : {}", myCell.getNumericCellValue());
+                    Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
+//                    LOG.info("Setting time cell to string value : {}", DateHelper.getTimeFormat().format(date));
+                    cellStringList.add(DateHelper.getTimeFormat().format(date));
+                }else if (myCell != null) {
                     myCell.setCellType(Cell.CELL_TYPE_STRING);
                     cellStringList.add(myCell.getStringCellValue().trim());
                 } else {
                     LOG.debug("cell is null");
                     cellStringList.add("");
                 }
-                LOG.debug("rowNumber - cellNmber - cellValue - {} : {} : {}", new Object[]{i,j,cellStoreList.get(j)});
+                LOG.debug("rowNumber - cellNmber - cellValue - {} : {} : {}", new Object[]{i,j,cellStringList.get(j)});
             }
             
             xlsDataMap.put(i, cellStringList);
         }
         return xlsDataMap;
+    }
+
+    private boolean isTime(HSSFCell myCell) {
+      Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
+      boolean isTime = false;
+  
+      /* get date year.
+       *"Time-only" values have date set to 31-Dec-1899 so if year is "1899"
+       * you can assume it is a "time-only" value 
+       */
+        String dateStamp = (new SimpleDateFormat("yyyy")).format(date);
+
+        if (dateStamp.equals("1899")){
+            isTime = true;
+        }
+        
+        return isTime;
     }
     
      

@@ -83,7 +83,7 @@ public class ECDUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         statusString.append("Success: Updated.");
                     } catch (AccessDeniedException ex) {
                         statusString.append("Failed: No Access to ECD Update Activity (Invalid Claim Status)");
-                        LOG.warn("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
+                        LOG.warn("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job");
                     } catch (Exception ex) {
                         if (ex.getMessage().equals("ECD Update Already Exists")) {
                             statusString.append("Failed: ECD Update Already Exists");

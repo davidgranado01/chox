@@ -120,29 +120,29 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_ty
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_CHOX_ADMIN', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%';
+    WHERE name like 'activity.HireUpdate.%';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_CHO_MNG', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%' AND claim_type is null;
+    WHERE name like 'activity.HireUpdate.%' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_CHO_OPR', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%' AND claim_type is null;
+    WHERE name like 'activity.HireUpdate.%' AND claim_type is null;
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_INS_CH', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+    WHERE name like 'activity.HireUpdate.%' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_INS_MNG', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+    WHERE name like 'activity.HireUpdate.%' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_INS_UPLOAD', 1
     FROM accessibility
-    WHERE name like 'activity.EcdUpdate.%' and claim_type = 17;
+    WHERE name like 'activity.HireUpdate.%' and claim_type = 17;
 
 
 ----------------------
