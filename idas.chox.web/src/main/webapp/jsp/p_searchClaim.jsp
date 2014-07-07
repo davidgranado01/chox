@@ -275,7 +275,7 @@
             var claimUploadDateFromPicker = new Ext.form.DateField({
                 name: 'claimUploadDateFrom',
                 fieldLabel: 'Claim Upload Date From',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -297,7 +297,7 @@
             var claimUploadDateToPicker = new Ext.form.DateField({
                 name: 'claimUploadDateTo',
                 fieldLabel: 'Claim Upload Date To',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -319,7 +319,7 @@
             var statusModifiedDateFromPicker = new Ext.form.DateField({
                 name: 'statusModifiedDateFrom',
                 fieldLabel: 'Status Modified Date From',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -341,7 +341,7 @@
             var statusModifiedDateToPicker = new Ext.form.DateField({
                 name: 'statusModifiedDateTo',
                 fieldLabel: 'Status Modified Date To',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -370,7 +370,7 @@
             var invoiceUploadDateFromPicker = new Ext.form.DateField({
                 name: 'invoiceUploadDateFrom',
                 fieldLabel: 'Invoice Upload Date From',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -392,7 +392,7 @@
             var invoiceUploadDateToPicker = new Ext.form.DateField({
                 name: 'invoiceUploadDateTo',
                 fieldLabel: 'Invoice Upload Date To',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -413,7 +413,7 @@
             var rentalStartDatePicker = new Ext.form.DateField({
                 name: 'rentalStartDate',
                 fieldLabel: 'Hire Start Date From',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -434,7 +434,7 @@
             var rentalEndDatePicker = new Ext.form.DateField({
                 name: 'rentalEndDate',
                 fieldLabel: 'Hire Start Date To',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -456,7 +456,7 @@
             var reviewRequiredDateFromPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateFrom',
                 fieldLabel: 'Hire Monitoring Review Required Date From',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -479,7 +479,7 @@
             var reviewRequiredDateToPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateTo',
                 fieldLabel: 'Hire Monitoring Review Required Date To',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 disabled : !<s:property value="isCHO"/>,
                 hidden : !<s:property value="isCHO"/>,
                 width: 120,
@@ -1101,7 +1101,7 @@
                 store : finalReviewValuesStore,
                 width: 120,
                 fieldLabel: 'Final Review',
-                labelStyle: 'width:150px',
+                labelStyle: 'width:155px',
                 valueField : 'value',
                 id : 'finalReviewValuesSearchScreenComboId',
                 displayField :'text',
@@ -1154,6 +1154,7 @@
             hireAndRepairSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : hireAndRepairSearchParamStore,
                 width: 280,
+                labelStyle: 'width:99px',
                 fieldLabel: 'Hire/Repair Status',
                 valueField : 'value',
                 id : 'hireAndRepairSearchParamComboId',
@@ -1347,6 +1348,10 @@
                 text: 'Search',
                 scale : 'small',
                 width : 100,
+                style: {
+                    marginBottom: '0px',
+                    marginTop: '0px'
+                },
                 handler: function(button, event) {
                     searchClaim(true);
                 }
@@ -1356,6 +1361,10 @@
                 text: 'Reset',
                 width : 100,
                 scale : 'small',
+                style: {
+                    marginBottom: '0px',
+                    marginTop: '0px'
+                },
                 handler: function(button, event) {
                     if (!selectPreviouslySelectedQueue(true)) {
                         // If none of the queue is selected previously then reset the search form.
@@ -1371,7 +1380,7 @@
 //                    paddingLeft:'10px'
 //                },
                 labelAlign: 'right',
-                labelWidth: 90,
+                labelWidth: 95,
                 layout: 'form',
                 items: [supplierReferenceField, 
                         claimNumberField,
@@ -1472,7 +1481,7 @@
                 ],
                 stripeRows: true,
                 autoExpandColumn: 'queueNameId',
-                height: 440,// This height should be same as searchAndButtonPanel height
+                height: 450,// This height should be same as searchAndButtonPanel height
                 width: 300,
 //                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
@@ -1528,18 +1537,20 @@
             });
             
             var buttonPanel = new Ext.Panel({
-                buttons : [searchButton, resetButton],
+                fbar : [searchButton, resetButton],
+                header : false,
                 frame : true,
                 width : 980,
-                height : 'auto',
+                height : 50,
                 buttonAlign : 'center'
+                ,margins : {top : 0}
             });
             
             // We need to create another button panel to separate the search panel frame from search and reset button.
             // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
             var searchAndButtonPanel = new Ext.Panel({
                 width : 1000,
-                height : 440, // This height should be same as queueGrid height
+                height : 450, // This height should be same as queueGrid height
                 frame : true,
                 items : [searchColumsPanel, buttonPanel]
             });
