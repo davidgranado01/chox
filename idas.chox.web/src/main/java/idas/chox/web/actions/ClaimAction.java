@@ -1181,11 +1181,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     getAuthenticatedUser(), claim);
             LOG.debug("Access for {} os {}", action, accessRight);
             // If Invoice is with Payments Team then do not show InvoicePaymentLogged for PC
-<<<<<<< HEAD
-            if ("InvoicePaymentLogged".equals(action) 
-=======
             if (accessRight > 0 && "InvoicePaymentLogged".equals(action) 
->>>>>>> Phase8Sprint3
                     && claim.getInsurer().isPaymentTeamEnable() 
                     && (claim.getInvoice() == null || claim.getInvoice().isPaymentTeam())
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_PC)
