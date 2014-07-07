@@ -2796,7 +2796,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setCustomerClaimNumber(String customerClaimNumber) {
-        LOG.info("Setting customer claim number to '{}'", customerClaimNumber);
+        LOG.debug("Setting customer claim number to '{}'", customerClaimNumber);
         this.customerClaimNumber = customerClaimNumber;
     }
     
