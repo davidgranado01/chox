@@ -229,7 +229,7 @@
                 </s:if>
                 </s:if>
             </table>
-            <div style="height:750px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
+            <div style="height:750px; width:1250px" id="resultHolder" name="resultHolder"></div>
         </div>        
 
     </fieldset>

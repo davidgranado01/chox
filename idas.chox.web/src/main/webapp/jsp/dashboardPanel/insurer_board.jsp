@@ -363,15 +363,15 @@ if (isIE) {
 }
 %>
  <% if (isFirefox){ %>
-                    <div style="height:1178px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1178px; width:1250px" id="resultHolder" name="resultHolder"></div>
 <% } else if(isIE && versionIE > 9){ %>
-                    <div style="height:1115px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1115px; width:1250px" id="resultHolder" name="resultHolder"></div>
 <% } else { %>
-                    <div style="height:1095px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1095px; width:1250px" id="resultHolder" name="resultHolder"></div>
 <% }%>
 </s:if>
                 <s:else>
-                    <div style="height:790px; /*width:960px*/" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:790px; width:1250px" id="resultHolder" name="resultHolder"></div>
                 </s:else>
             
         </div>
