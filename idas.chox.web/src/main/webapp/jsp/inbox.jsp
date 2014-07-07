@@ -338,7 +338,7 @@
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight: true,
-                width : 1300,
+//                width : 1300,
                 activeTab: Ext.state.Manager.get("currentTabIndex"),
                 listeners: { 
                     beforerender : updateTaskTab,
