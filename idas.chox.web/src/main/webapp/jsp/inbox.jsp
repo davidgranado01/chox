@@ -21,7 +21,7 @@
         var dashboardActionName;
         var isChoxAdmin = <s:property value="isChoxAdmin"/>;
         var isTaskManagementEnabled = <s:property value="taskManagementEnabled"/>;
-        var taskTabTitle = isChoxAdmin ? 'Task' : 'Task<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
+        var taskTabTitle = isChoxAdmin ? 'Task<sup>'+' '+'</sup>' : 'Task<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
         var filterName;
         var title;
         var actionMenu;
@@ -267,35 +267,35 @@
             var inboxTab = { 
                             contentEl:'searchPanelTab', 
                             id:'searchPanelTabId', 
-                            title:'Inbox', 
+                            title:'Inbox<sup>'+' '+'</sup>',
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action', params : {loadSearchPanelSelectionFromSession : (Ext.state.Manager.get("isClaimSearchMade")) ? true : false}})
             };
             var reportTab = { 
                             contentEl:'reportPanelTab', 
                             id:'reportPanelTabId', 
-                            title:'Reports', 
+                            title:'Reports<sup>'+' '+'</sup>',
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})
             };
             var adminTab = { 
                             contentEl:'adminPanelTab', 
                             id:'adminPanelTabId', 
-                            title:'Admin', 
+                            title:'Admin<sup>'+' '+'</sup>', 
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/adminFunction.action'})
             };
             var dashboardTab = { 
                                 contentEl:'boardPanelTab', 
                                 id:'boardPanelTabId', 
-                                title:'Dashboard', 
+                                title:'Dashboard<sup>'+' '+'</sup>', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
             };
             var xmlUploadTab = { 
                                 contentEl:'xmlUploadTab', 
                                 id:'xmlUploadTabId', 
-                                title:'Claim/Invoice Upload', 
+                                title:'Claim/Invoice Upload<sup>'+' '+'</sup>', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/XmlUpload.action'})
             };
@@ -334,7 +334,7 @@
             <s:if test="menuAccessibility.isUploadMenuAccessibility">
                 tabItems.push(xmlUploadTab);
             </s:if>
-                
+
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight: true,
@@ -351,12 +351,12 @@
         }
 
         function handleActivate(tab){
-            
+
             claimsGrid.hide();
             Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
             activityMonitor.clearViewingStatus();
 
-            if(tab.title === 'Inbox') {
+            if(tab.title.indexOf('Inbox') > -1) {
                 
                 claimsGrid.show();
                 
@@ -364,10 +364,10 @@
                         activityMonitor.refreshViewingStatus();
                 </s:if>
                 
-                if(tab.title === 'Search'){
+                if(tab.title.indexOf('Search') > -1){
                     doClaimRoutedAction.setText('Route Claim(s)');
                 }
-            } else if(tab.title === 'Claim/Invoice Upload') {
+            } else if(tab.title.indexOf('Claim/Invoice Upload') > -1) { 
                 Ext.fly('xmlClaimsStatusGridDiv').removeClass('x-hide-display');
             }
         }
