@@ -22,7 +22,6 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
-import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.service.workflow.activities.HireUpdate;
 
 
