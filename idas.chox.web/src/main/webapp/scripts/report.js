@@ -18,6 +18,7 @@ function generateReport(queryString)
         
         choxExtAjaxRequest({
             url: '/prv/p/generateReportFile.action',
+            timeout : 3600000,
             params : Ext.apply({'reportName' : reportName}, queryString),
             callback : function(options,success,response  ){
             }
@@ -118,6 +119,7 @@ function generateReport1(queryString,reportName)
        
     choxExtAjaxRequest({
         url: '/prv/p/generateReportFile.action',
+        timeout : 3600000,
         params : Ext.apply({'reportName' : reportName}, queryString),
         callback : function(options,success,response  ){
         }
