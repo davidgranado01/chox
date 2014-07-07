@@ -354,7 +354,7 @@
                 forceSelection: true,
                 store: visibilityRoleStore,
                 valueField:'webUserroleRole',
-                displayField:'webUserroleName',
+                displayField:'webUserroleName'
             });
         }
 
@@ -429,14 +429,14 @@
                 height : 'auto',
                 width:'100%',
                 items : [{
-                        layout: 'hbox',
+                        layout: 'column',
                         height : 'auto',
                         width:'100%',
                         items : [{
                                     layout: 'form',
                                     height : 'auto',
                                     labelWidth: 110,
-                                    width:'35%',
+                                    columnWidth:.35,
                                     defaults: {width: 180},
                                     labelAlign: 'right',
                                     items : [
@@ -468,6 +468,7 @@
                                     layout: 'form',
                                     height : 'auto',
                                     labelWidth: 110,
+                                    columnWidth:.5,
                                     defaults: {width: 180},
                                     labelAlign: 'right',
                                     items : [
@@ -557,14 +558,14 @@
                 height : 'auto',
                 width:'100%',
                 items : [{
-                            layout: 'hbox',
+                            layout: 'column',
                             height : 'auto',
                             width:'100%',
                             items : [{
                                         layout: 'form',
                                         height : 'auto',
                                         labelWidth: 110,
-                                        width:'35%',
+                                        columnWidth:.35,
                                         defaults: {width: 180},
                                         labelAlign: 'right',
                                         items : [
@@ -586,6 +587,7 @@
                                         layout: 'form',
                                         height : 'auto',
                                         labelWidth: 110,
+                                        columnWidth:.5,
                                         defaults: {width: 180},
                                         labelAlign: 'right',
                                         items : [
