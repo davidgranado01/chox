@@ -144,7 +144,6 @@
         <property name="imapMailReceiver" ref="imapMailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="vehicleClassService" ref="vehicleClassService" />
-        <property name="notificationService" ref="notificationService" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
         
@@ -163,7 +162,6 @@
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
         <property name="claimService" ref="claimService" />
-        <property name="notificationService" ref="notificationService" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
         
@@ -439,6 +437,7 @@
                 <ref bean="updateDashboardJobDetail" />
                 <ref bean="ecdUpdateMailJobDetail" />
                 <ref bean="hireUpdateMailJobDetail" />
+                <ref bean="louUpdateMailJobDetail" />
                 <ref bean="totalLossNotificationMailJobDetail" />
                 <ref bean="totalLossPackMailJobDetail" />
                 <ref bean="updateWorkflowTablesJobDetail" />
@@ -460,6 +459,8 @@
                 <ref bean="cronECDMailUpdateTriggerWeekend" />
                 <ref bean="cronHireMailUpdateTriggerWeek" />
                 <ref bean="cronHireMailUpdateTriggerWeekend" />
+                <ref bean="cronLouMailUpdateTriggerWeek" />
+                <ref bean="cronLouMailUpdateTriggerWeekend" />
                 <ref bean="cronTotalLossNotificationTriggerWeek" />
                 <ref bean="cronTotalLossNotificationTriggerWeekend" />
                 <ref bean="cronTotalLossPackTriggerWeek" />

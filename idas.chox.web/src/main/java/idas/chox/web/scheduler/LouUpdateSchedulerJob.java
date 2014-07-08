@@ -30,7 +30,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     
     private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
-    public static final String JOB_NAME = "LOu_UPDATE";
+    public static final String JOB_NAME = "LOU_UPDATE";
     private ClaimService claimService;
 
     public void setClaimService(ClaimService claimService) {
@@ -70,7 +70,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check Inspection booked date provided is valid and parse the string date to java date */
                 if (cells.size() > 2 && !cells.get(2).isEmpty()) {
-                    Date inspectionBookedDate = validateDate(cells.get(2).trim(), statusString);
+                    Date inspectionBookedDate = validateDate(cells.get(2).trim(), statusString, "Inspection Booked Date");
                     if (inspectionBookedDate != null) {
                         ((LouUpdate)activity).setInspectionBookedDate(inspectionBookedDate);
                         update = true;
@@ -79,7 +79,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check Inspection date provided is valid and parse the string date to java date */
                 if (cells.size() > 3 && !cells.get(3).isEmpty()) {
-                    Date inspectionDate = validateDate(cells.get(3).trim(), statusString);
+                    Date inspectionDate = validateDate(cells.get(3).trim(), statusString, "Inspection Date");
                     if (inspectionDate != null) {
                         ((LouUpdate)activity).setInspectionDate(inspectionDate);
                         update = true;
@@ -88,7 +88,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check repair authorised date provided is valid and parse the string date to java date */
                 if (cells.size() > 4 && !cells.get(4).isEmpty()) {
-                    Date repairAuthorisedDate = validateDate(cells.get(4).trim(), statusString);
+                    Date repairAuthorisedDate = validateDate(cells.get(4).trim(), statusString, "Date Repair Authorised");
                     if (repairAuthorisedDate != null) {
                         ((LouUpdate)activity).setRepairAuthorisedDate(repairAuthorisedDate);
                         update = true;
@@ -97,7 +97,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check repair booked-in date provided is valid and parse the string date to java date */
                 if (cells.size() > 5 && !cells.get(5).isEmpty()) {
-                    Date repairBookedInDate = validateDate(cells.get(5).trim(), statusString);
+                    Date repairBookedInDate = validateDate(cells.get(5).trim(), statusString, "Repair Book-In Date");
                     if (repairBookedInDate != null) {
                         ((LouUpdate)activity).setRepairBookedInDate(repairBookedInDate);
                         update = true;
@@ -106,7 +106,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check repair commenced date provided is valid and parse the string date to java date */
                 if (cells.size() > 6 && !cells.get(6).isEmpty()) {
-                    Date repairCommencedDate = validateDate(cells.get(6).trim(), statusString);
+                    Date repairCommencedDate = validateDate(cells.get(6).trim(), statusString, "Date Repair Commenced");
                     if (repairCommencedDate != null) {
                         ((LouUpdate)activity).setRepairCommencedDate(repairCommencedDate);
                         update = true;
@@ -115,7 +115,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check repair completion date provided is valid and parse the string date to java date */
                 if (cells.size() > 7 && !cells.get(7).isEmpty()) {
-                    Date repairCompletionDate = validateDate(cells.get(7).trim(), statusString);
+                    Date repairCompletionDate = validateDate(cells.get(7).trim(), statusString, "Repair Completion Date");
                     if (repairCompletionDate != null) {
                         ((LouUpdate)activity).setRepairCompletionDate(repairCompletionDate);
                         update = true;
@@ -131,7 +131,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer made date provided is valid and parse the string date to java date */
                 if (cells.size() > 9 && !cells.get(9).isEmpty()) {
-                    Date totalLossMadeDate = validateDate(cells.get(9).trim(), statusString);
+                    Date totalLossMadeDate = validateDate(cells.get(9).trim(), statusString, "Date Totel Loss Offer Made");
                     if (totalLossMadeDate != null) {
                         ((LouUpdate)activity).setTotalLossMadeDate(totalLossMadeDate);
                         update = true;
@@ -140,7 +140,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer accepted date provided is valid and parse the string date to java date */
                 if (cells.size() > 10 && !cells.get(10).isEmpty()) {
-                    Date totalLossAcceptedDate = validateDate(cells.get(10).trim(), statusString);
+                    Date totalLossAcceptedDate = validateDate(cells.get(10).trim(), statusString, "Date Total Loss Offer Accepted");
                     if (totalLossAcceptedDate != null) {
                         ((LouUpdate)activity).setTotalLossAcceptedDate(totalLossAcceptedDate);
                         update = true;
@@ -149,7 +149,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer issued date provided is valid and parse the string date to java date */
                 if (cells.size() > 11 && !cells.get(11).isEmpty()) {
-                    Date totalLossIssuedDate = validateDate(cells.get(11).trim(), statusString);
+                    Date totalLossIssuedDate = validateDate(cells.get(11).trim(), statusString, "Date Total Loss Offer Issued");
                     if (totalLossIssuedDate != null) {
                         ((LouUpdate)activity).setTotalLossIssuedDate(totalLossIssuedDate);
                         update = true;
@@ -158,7 +158,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer received date provided is valid and parse the string date to java date */
                 if (cells.size() > 12 && !cells.get(12).isEmpty()) {
-                    Date totalLossReceivedDate = validateDate(cells.get(12).trim(), statusString);
+                    Date totalLossReceivedDate = validateDate(cells.get(12).trim(), statusString, "Date Total Loss Offer Received");
                     if (totalLossReceivedDate != null) {
                         ((LouUpdate)activity).setTotalLossReceivedDate(totalLossReceivedDate);
                         update = true;
@@ -198,10 +198,19 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 }
 
 
-                /* Check Name of IME provided is valid */
+                /* Check Non Provision Reason provided is valid */
                 if (cells.size() > 17 && !cells.get(17).isEmpty()) {
-                    ((LouUpdate)activity).setNonProvisionReason(cells.get(17).trim());
-                    update = true;
+                    String npr = cells.get(17).trim();
+                    if (npr.equals("Point Blank Refusal")
+                            || npr.equals("Faxed Garage")
+                            || npr.equals("Information Not Available/No System Access")
+                            || npr.equals("Non Contactable/Ring Through")
+                            || npr.equals("Update Obtained By Other Source")) {
+                        ((LouUpdate)activity).setNonProvisionReason(npr);
+                        update = true;
+                    } else {
+                        statusString.append(" Invalid 'Labour Information Non-Provision Reason' Provided.");
+                    }
                 }
 
                 /* Check 'Repair Only (No Hire)?' column is valid, if present */
@@ -247,20 +256,20 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         statusString.append("Failed: An Internal Error Occurred");
                         LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
                     }
-                } if (!update) {
-                    statusString.insert(0, "Nothing to update:");
+                } else if (!update) {
+                    statusString.insert(0, "Nothing to update.");
                 } else {
                     statusString.insert(0, "Failed:");
                 }
 
                 /* update the result message into column 24 for each row.*/
-                for (int i=xlsDataMap.get(row).size(); i < 23; i++) {
-                    xlsDataMap.get(row-1).add("dummy column");
+                for (int i=cells.size(); i < 23; i++) {
+                    cells.add("dummy column");
                 }
-                if (xlsDataMap.get(row).size() == 23) {
-                    xlsDataMap.get(row).add(statusString.toString());
+                if (cells.size() == 23) {
+                    cells.add(statusString.toString());
                 } else {
-                    xlsDataMap.get(row).set(24, statusString.toString());
+                    cells.set(23, statusString.toString());
                 }
             }
         }
@@ -317,20 +326,20 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return claim;
     }
     
-    private Date validateDate(String hireStartDateString, StringBuilder statusString) {
+    private Date validateDate(String hireStartDateString, StringBuilder statusString, String columnName) {
         Date hireStartDate = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
         sdf.setLenient(false);
         if (hireStartDateString.isEmpty()) {
-            statusString.append(" No Hire Start (Date) Provided.");
+            statusString.append(" No '").append(columnName).append("' provided.");
         } else if (hireStartDateString.length() != sdf.toPattern().length()) {
-            statusString.append(" Invalid Format For Hire Start (Date).");
+            statusString.append(" Invalid Format For '").append(columnName).append("'.");
         } else {
             try {
                 hireStartDate = sdf.parse(hireStartDateString);
             } catch (ParseException ex) {
-                statusString.append(" Invalid Format For Hire Start (Date).");
-                LOG.warn("Parse exception thrown for hire-start date {}", hireStartDateString, ex);
+                statusString.append(" Invalid Format For '").append(columnName).append("'.");
+                LOG.warn("Parse exception thrown for column {}: {}", columnName, hireStartDateString);
             }
         }
         return hireStartDate;

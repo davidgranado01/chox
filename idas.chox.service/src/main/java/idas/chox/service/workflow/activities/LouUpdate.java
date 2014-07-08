@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.NotificationService;
-import idas.chox.data.notifications.HireVehicleUpdatedNotification;
+import idas.chox.data.notifications.HireUpdatedNotification;
 
 
 public class LouUpdate extends BaseActivity {
@@ -362,7 +362,7 @@ public class LouUpdate extends BaseActivity {
     protected void afterProcess(Claim claim) {
         activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
         if (updateInsurer) {
-                notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
+                notificationService.addNotification(claim, new HireUpdatedNotification());
         }
     }
 }
