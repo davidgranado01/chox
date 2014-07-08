@@ -1604,17 +1604,17 @@ where name='PT9';
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
 select 0, id, 179.29, 99.99, '2014-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
-where name='PT9';
+where name='PT9A';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
 select 0, id, 179.29, 99.99, '2014-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
-where name='PT9';
+where name='PT9EST';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
 select 0, id, 184.29, 99.99, '2014-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
-where name='PT9';
+where name='PT9ESTA';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
 select 0, id, 127.80, 99.99, '2014-07-01 00:00:00', 999, now(), 999, now()
