@@ -107,7 +107,9 @@ public class HireUpdate extends BaseActivity {
         }
 
         vh.setHireStart(hireStartDateTime);
-        vh.setVehicleClass(vehicleClass);
+        if (vehicleClass != null) {
+            vh.setVehicleClass(vehicleClass);
+        }
         
     }
 
