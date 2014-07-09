@@ -11,12 +11,18 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_ma
 INSERT INTO accessibility_item(accessibility_id, access_right, role)
     SELECT id, 1, 'ROLE_INS_PC' FROM accessibility WHERE name='filter.PaymentTeam';
 INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MNG' FROM accessibility WHERE name='filter.PaymentTeam';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MI' FROM accessibility WHERE name='filter.PaymentTeam';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
     SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='filter.PaymentTeam';
 
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
     SELECT 'activity.SwitchFromPaymentsTeam.AwaitingInvoicePayment', false, false, false, false;
 INSERT INTO accessibility_item(accessibility_id, access_right, role)
     SELECT id, 1, 'ROLE_INS_PC' FROM accessibility WHERE name='activity.SwitchFromPaymentsTeam.AwaitingInvoicePayment';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MNG' FROM accessibility WHERE name='activity.SwitchFromPaymentsTeam.AwaitingInvoicePayment';
 INSERT INTO accessibility_item(accessibility_id, access_right, role)
     SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='activity.SwitchFromPaymentsTeam.AwaitingInvoicePayment';
 
