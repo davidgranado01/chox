@@ -155,6 +155,12 @@ public class NewInvoice extends BaseActivity {
 
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())
                 && claim.getInsurer().isPaymentTeamEnable() && claim.getBreBand().isPaymentTeamActive()
+                && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaAutoRoutingEnable())
+                    || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberAutoRoutingEnable())
+                    || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable())
+                    || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeeAutoRoutingEnable())
+                    || (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isInsurerManualAutoRoutingEnable())
+                    || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isColaborationProtocolAutoRoutingEnable()))
                 && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
             // move claim to next status

@@ -22,7 +22,6 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
-import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.service.workflow.activities.HireUpdate;
 
 
@@ -69,15 +68,30 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 Claim claim = validateClaimReferenceNumber(referenceNumber, statusString);
                 
                 /* Check vehicle class is valid */
-                String vehicleClassString = cells.get(1).trim();
-                VehicleClass vehicleClass = validateVehicleClass(vehicleClassString, statusString);
-
+                String vehicleClassString = null;
+                if (cells.size() > 1) {
+                    vehicleClassString = cells.get(1).trim();
+                }
+                VehicleClass vehicleClass = null;
+                if (vehicleClassString != null && !vehicleClassString.isEmpty()) {
+                    vehicleClass = validateVehicleClass(vehicleClassString, statusString);
+                }
+                
                 /* Check Hire Start date provided is valid and parse the string date to java date.*/
-                String hireStartString = cells.get(2).trim();
+                String hireStartString = null;
+                if (cells.size() > 2) {
+                    hireStartString = cells.get(2).trim();
+                }
                 Date hireStartDate = validateHireStartDate(hireStartString, statusString);
 
                 /* Check Hire Start time provided is valid */
-                String hireStartTime = cells.get(3).trim();
+                String hireStartTime = null;
+                if (cells.size() > 3) {
+                    hireStartTime = cells.get(3).trim();
+                }
+                if (hireStartTime == null || hireStartTime.isEmpty()) {
+                    hireStartTime = "00:00";
+                }
                 hireStartTime = validateHireStartTime(hireStartTime, statusString);
 
                 /* Check update insurer column is valid, if present */
