@@ -400,7 +400,7 @@
         $.validator.addMethod(
                 "checkCollaborationProtocolRegexField",
                 function(value, element) {
-                        if ($('form#formUpdateInsurerDetail input[id="collaborationProtocolAutoRoutingEnable"]:checked').val()
+                        if ($('form#formUpdateInsurerDetail input[id="colaborationProtocolAutoRoutingEnable"]:checked').val()
                                 && $('#collaborationProtocolExclusionId').val() === ""){
                             return false;
                         }
@@ -1023,7 +1023,7 @@
                                     <td width="40%">
                                         <div class="chox-form-item" id="collaborationProtocolHolder">
                                             <label class="chox-form-std-label">Collaboration Protocol</label>
-                                            <s:checkbox name="collaborationProtocolAutoRoutingEnable" id="collaborationProtocolAutoRoutingEnable" value="collaborationProtocolAutoRoutingEnable" />
+                                            <s:checkbox name="colaborationProtocolAutoRoutingEnable" id="colaborationProtocolAutoRoutingEnable" value="colaborationProtocolAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
