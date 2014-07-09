@@ -1470,6 +1470,7 @@
                 frame : true,
                 enableHdMenu:false,
                 selModel : new Ext.grid.RowSelectionModel({ // best practice to use selectionModel instead of grid rowClick listner.
+                                singleSelect : true,
                                 listeners:  {rowselect : onQueueSelection}
                            }),
                 columns: [
