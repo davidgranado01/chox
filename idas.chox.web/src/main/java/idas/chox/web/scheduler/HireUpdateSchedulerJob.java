@@ -57,7 +57,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 if (cells.size() < 4) {
                     //ignore row
-                    LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
+                    LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
                     continue;
                 }
                 
@@ -89,10 +89,12 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 if (cells.size() > 3) {
                     hireStartTime = cells.get(3).trim();
                 }
-                if (hireStartTime == null || hireStartTime.isEmpty()) {
-                    hireStartTime = "00:00";
+                if (hireStartTime != null && hireStartTime.isEmpty()) {
+                    hireStartTime = null;
+                } else if (hireStartTime != null) {
+                    hireStartTime = validateHireStartTime(hireStartTime, statusString);
                 }
-                hireStartTime = validateHireStartTime(hireStartTime, statusString);
+
 
                 /* Check update insurer column is valid, if present */
                 boolean updateInsurer = false;

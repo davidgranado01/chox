@@ -73,18 +73,24 @@ public class HireUpdate extends BaseActivity {
             LOG.warn("Hire Start Date is null. Can not update Hire Start.");
             throw new Exception("Hire Start Date is null. Can not update Hire Start.");
         }
-        String hireStartTimeClean = Jsoup.clean(hireStartTime, Whitelist.basic());
-        if (!hireStartTimeClean.equals(hireStartTime)) {
-            LOG.warn("Hire Start Time contains forbidden content - possible XSS attack: {}", hireStartTime);
-            throw new Exception("Hire Start Time contains forbidden content");
+        if (hireStartTime != null) {
+            String hireStartTimeClean = Jsoup.clean(hireStartTime, Whitelist.basic());
+            if (!hireStartTimeClean.equals(hireStartTime)) {
+                LOG.warn("Hire Start Time contains forbidden content - possible XSS attack: {}", hireStartTime);
+                throw new Exception("Hire Start Time contains forbidden content");
+            }
         }
         // Merge date and time
-        try {
-            Date time = DateHelper.getTimeFormat().parse(hireStartTime);
-            hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
-            throw new Exception("Error setting Hire Start date/time");
+        if (hireStartTime != null) {
+            try {
+                Date time = DateHelper.getTimeFormat().parse(hireStartTime);
+                hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
+            } catch (Exception ex) {
+                LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
+                throw new Exception("Error setting Hire Start date/time");
+            }
+        } else {
+            hireStartDateTime = hireStartDate;
         }
 
     }
