@@ -2,6 +2,7 @@ package idas.chox.web.scheduler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.apache.poi.hssf.usermodel.*;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.util.DateHelper;
-import java.text.SimpleDateFormat;
 
 public class XlsFileParser {
 
@@ -69,7 +69,8 @@ public class XlsFileParser {
                         for (; cellNumber < myCell.getColumnIndex(); cellNumber++) {
                             cellStoreVector.add(null);
                         }
-                        cellStoreVector.add(myCell);
+                       cellStoreVector.add(myCell);
+                       cellNumber++;
                         if (myCell.getCellType() != Cell.CELL_TYPE_BLANK) {
                             isDataExistsForThisRow = true;
                         }
@@ -121,9 +122,9 @@ public class XlsFileParser {
                         && isTime(myCell)) {
                     LOG.debug("cell is time formated : {}", myCell.getNumericCellValue());
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
-//                    LOG.info("Setting time cell to string value : {}", DateHelper.getTimeFormat().format(date));
                     cellStringList.add(DateHelper.getTimeFormat().format(date));
-                }else if (myCell != null) {
+                } else if (myCell != null) {
+                    LOG.debug("cell is a string : {}", myCell.getStringCellValue());
                     myCell.setCellType(Cell.CELL_TYPE_STRING);
                     cellStringList.add(myCell.getStringCellValue().trim());
                 } else {
@@ -132,7 +133,7 @@ public class XlsFileParser {
                 }
                 LOG.debug("rowNumber - cellNmber - cellValue - {} : {} : {}", new Object[]{i,j,cellStringList.get(j)});
             }
-            
+            LOG.debug("Adding cell {}: {}", i, cellStringList);
             xlsDataMap.put(i, cellStringList);
         }
         return xlsDataMap;
