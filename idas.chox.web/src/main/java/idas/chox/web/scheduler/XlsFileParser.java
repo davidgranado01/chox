@@ -117,7 +117,13 @@ public class XlsFileParser {
                         && !isTime(myCell)) {
                     LOG.debug("cell is date formated : {}", myCell.getNumericCellValue());
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
-                    cellStringList.add(DateHelper.getLocalDateFormat().format(date));
+                    // Does the date have a time component - presume no if hh, mm and ss are 0
+                    if (new SimpleDateFormat("hh:mm:ss").format(date).equals("00:00:00")
+                            || new SimpleDateFormat("mm:ss").format(date).equals("00:00")) {
+                        cellStringList.add(DateHelper.getLocalDateFormat().format(date));
+                    } else {
+                        cellStringList.add(DateHelper.getLocalDateTimeFormat().format(date));
+                    }
                 } else if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
                         && isTime(myCell)) {
                     LOG.debug("cell is time formated : {}", myCell.getNumericCellValue());

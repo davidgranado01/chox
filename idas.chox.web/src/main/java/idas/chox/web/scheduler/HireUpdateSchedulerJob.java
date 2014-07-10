@@ -191,17 +191,25 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private Date validateHireStartDate(String hireStartDateString, StringBuilder statusString) {
         Date hireStartDate = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
-        sdf.setLenient(false);
+        SimpleDateFormat sdf1 = DateHelper.getLocalDateTimeFormat();
+        sdf.setLenient(true);
         if (hireStartDateString.isEmpty()) {
             statusString.append(" No Hire Start (Date) Provided.");
-        } else if (hireStartDateString.length() != sdf.toPattern().length()) {
+        } else if (hireStartDateString.length() != sdf.toPattern().length()
+                && hireStartDateString.length() != sdf1.toPattern().length()) {
             statusString.append(" Invalid Format For Hire Start (Date).");
         } else {
             try {
-                hireStartDate = sdf.parse(hireStartDateString);
+                if (hireStartDateString.length() > 10) { // Extremelly dodgy!
+                    hireStartDate = sdf1.parse(hireStartDateString);
+                } else {
+                    hireStartDate = sdf.parse(hireStartDateString);
+                }
+                LOG.debug("Date parsed - {} as {}", hireStartDateString, hireStartDate);
             } catch (ParseException ex) {
                 statusString.append(" Invalid Format For Hire Start (Date).");
                 LOG.warn("Parse exception thrown for hire-start date {}", hireStartDateString, ex);
+
             }
         }
         return hireStartDate;

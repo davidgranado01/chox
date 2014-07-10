@@ -79,7 +79,8 @@ public class HireUpdate extends BaseActivity {
                 LOG.warn("Hire Start Time contains forbidden content - possible XSS attack: {}", hireStartTime);
                 throw new Exception("Hire Start Time contains forbidden content");
             }
-        }
+        } 
+
         // Merge date and time
         if (hireStartTime != null) {
             try {
