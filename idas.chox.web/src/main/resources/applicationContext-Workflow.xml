@@ -45,7 +45,7 @@
     <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" scope="prototype"/>
     <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" scope="prototype"/>
     <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" scope="prototype"/>
-	<bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
+    <bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
@@ -113,6 +113,10 @@
     </bean>
     <bean id="hireUpdate" class="idas.chox.service.workflow.activities.HireUpdate" scope="prototype">
         <property name="notificationService" ref="notificationService" />
+    </bean>
+    <bean id="louUpdate" class="idas.chox.service.workflow.activities.LouUpdate" scope="prototype">
+        <property name="notificationService" ref="notificationService" />
+        <property name="claimService" ref="claimService" />
     </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
 </beans>

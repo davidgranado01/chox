@@ -21,8 +21,10 @@ public class FilterByStatus extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
-        // Need to set following for 'Approved Invoices Awaiting Payment' queueif payments team active....   
-        if ((securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
+        // Need to set following for 'Approved Invoices Awaiting Payment' queueif payments team active....
+        //NB: null check added to getCurrentUser() to prevent error being thrown when user logd out before queues loaded
+        if (securityInfoProvider.getCurrentUser() != null
+                && (securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
                     && securityInfoProvider.getCurrentUser().getInsurer().isPaymentTeamEnable()))
                 && getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
             claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<Integer>(Arrays.asList(new Integer[]{new Integer("1")})));

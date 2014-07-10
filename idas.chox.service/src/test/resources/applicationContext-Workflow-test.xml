@@ -124,6 +124,10 @@
     <bean id="hireUpdate" class="idas.chox.service.workflow.activities.HireUpdate" scope="prototype">
         <property name="notificationService" ref="notificationService" />
     </bean>
+    <bean id="louUpdate" class="idas.chox.service.workflow.activities.LouUpdate" scope="prototype">
+        <property name="notificationService" ref="notificationService" />
+        <property name="claimService" ref="claimService" />
+    </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
     
 </beans>
