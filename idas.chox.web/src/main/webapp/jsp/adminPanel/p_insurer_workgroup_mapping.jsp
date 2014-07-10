@@ -95,7 +95,11 @@
         var workgroupName = $("#workgroupName").val();
         var workgroupTeam = $("#workgroupTeam").val();
         var workgroupSite = $("#workgroupSite").val();
-        var stpExcluded = $("#stpExcluded").val();
+        var stpExcluded;
+        if ($("#stpExcluded").attr('checked'))
+            stpExcluded = true;
+        else
+            stpExcluded = false;
         
         if(workgroupName===null || workgroupName===""){
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
@@ -208,6 +212,7 @@
         $("#workgroupName").val('');
         $("#workgroupTeam").val('');
         $("#workgroupSite").val('');
+        $("#stpExcluded").attr('checked', false);
     }
     
 </script>
