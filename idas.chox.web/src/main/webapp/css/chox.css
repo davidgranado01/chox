@@ -1708,7 +1708,6 @@ br.smallBr
     /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
     /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
     border-radius:30px;
-    box-shadow:1px 1px 1px gray;
 }
 
 .add-task {
@@ -1732,16 +1731,12 @@ br.smallBr
 
 #QueueGridId .x-grid3-row {
     border-color: white !important;
-    border : 2px solid;
-    /*border : 3px solid;*/
+    /*border : 2px solid;*/
+    border : 3px solid;
 }
 
 #QueueGridId .x-grid3-row td {
     line-height: 16px;
-}
-
-#QueueGridId .x-grid3-row-over td {
-    /*background-color: white !important;*/
 }
 
 #QueueGridId .x-grid3-cell-inner {
@@ -1750,14 +1745,26 @@ br.smallBr
     font-size:11px;
     cursor: pointer;
     /*text-align: center;*/
-    /*background-color: #ECECEC;*/
-    background-color: /*rgba(211, 224, 243, 0.54);*/#ECECEC;
+    /*background-color: rgba(180, 180, 180, 0.15);*/
+    background-color: #ECECEC;
+    -moz-border-bottom-left-radius: 6px;
+    -moz-border-bottom-right-radius: 6px;
+    -moz-border-top-left-radius: 6px;
+    -moz-border-top-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    /*box-shadow: 1px 1px 1px 0px #888888;*/
-    /*box-shadow: 1px 1px 1px 0px #B8B4B4;*/
+
+/*    -moz-box-shadow: 1px 1px 1px 0px #B8B4B4;
+    -webkit-box-shadow: 1px 1px 1px 0px #B8B4B4;
+    box-shadow: 1px 1px 1px 0px #B8B4B4;*/
+    
+    /*behavior: url(../scripts/PIE-1.0.0/PIE.htc);*/
 }
 
 #QueueGridId .x-grid3-row-over .x-grid3-cell-inner {
@@ -1776,15 +1783,19 @@ br.smallBr
     font-weight: bold;
     background-color: #98c5f5 !important;
     color:black;
-    border-color: red !important;
-    /*box-shadow: 0px 0px 0px 0px #B8B4B4;*/
+    
+/*    -moz-box-shadow: 0px 0px 0px 0px #B8B4B4;
+    -webkit-box-shadow: 0px 0px 0px 0px #B8B4B4;
+    box-shadow: 0px 0px 0px 0px #B8B4B4;*/
 }
 
 #QueueGridId .x-grid3-row-selected {
     background-color: white !important;
-    /*border : 0px;*/
+    border-color: white !important;
 }
 
+#QueueGridId .x-grid3-row-selected td {
+}
 /*.x-grid3-cell-inner {
     white-space: normal !important;  changed from nowrap 
 }*/
