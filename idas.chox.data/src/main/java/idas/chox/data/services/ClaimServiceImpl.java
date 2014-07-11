@@ -76,20 +76,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private NotificationService notificationService;
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
-    private static final Set anomaliesStatus = new HashSet(9);
     private EventService eventService;
-
-    static {
-            anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            anomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
-            anomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
-            anomaliesStatus.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-            anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-    }
 
     @Override
     public int getActivityMonitorRequestInterval() {
@@ -895,7 +882,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
             DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
             criteria.add(Subqueries.propertyIn("id", inSubclause));
-            criteria.add(Restrictions.in("status", anomaliesStatus));
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
