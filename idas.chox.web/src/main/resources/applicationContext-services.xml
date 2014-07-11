@@ -217,7 +217,6 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="availableFilters">
             <list>
-                <ref bean="AllClaims" />
                 <ref bean="RejectedClaims" />
                 <ref bean="RejectedSubscriberClaims" />
                 <ref bean="RejectedFixedFeeClaims" />
