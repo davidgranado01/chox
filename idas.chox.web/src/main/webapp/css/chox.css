@@ -699,6 +699,22 @@ div.status-info
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
+.search-panel-status-info-selected
+{  
+    background-color:/*#E2ECF5;*/#98c5f5;
+    border:1px orange solid;
+    padding:2px 2px 2px 10px;
+    font-weight:bold;
+    font-size:11px;
+    vertical-align:middle;
+    /*margin-bottom:4px;*/
+    white-space:normal;
+    background-repeat: no-repeat;
+    background-position: 10px center; 
+    /*background-image: url('../images/default/window/icon-info.gif');*/
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
 div.status-info-popup
 {  
     background-color:white;
@@ -1714,23 +1730,17 @@ br.smallBr
 }
 /* This button was generated using CSSButtonGenerator.com */
 
-#QueueGridId .x-grid3-row-selected .x-grid3-cell-inner {
-    
-    font-weight: bold;
-    color:rgb(108, 12, 184);
-    
-/*    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b6cbe4), color-stop(48%, #bfd2e6), color-stop(52%, #8dc0f5), color-stop(100%, #98c5f5));
-    background-image: -webkit-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
-    background-image: -moz-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
-    background-image: -o-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
-    background-image: -ms-linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5);
-    background-image: linear-gradient(top, #b6cbe4,#bfd2e6 48%,#8dc0f5 52%,#98c5f5)*/
+#QueueGridId .x-grid3-row {
+    border-color: white !important;
+    border : 2px solid;
 }
 
-#QueueGridId .x-grid3-row-selected {
-    font-weight: bold;
-    background-color: #E2ECF5 !important;
-    /*background-color: #C9E0F5 !important;*/
+#QueueGridId .x-grid3-row td {
+    line-height: 16px;
+}
+
+#QueueGridId .x-grid3-row-over td {
+    /*background-color: white !important;*/
 }
 
 #QueueGridId .x-grid3-cell-inner {
@@ -1738,21 +1748,36 @@ br.smallBr
     color:#15428b;
     font-size:11px;
     cursor: pointer;
-
-/*    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(48%, #f9f9f9), color-stop(52%, #e2e2e2), color-stop(100%, #e7e7e7));
-    background-image: -moz-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
-    background-image: -o-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
-    background-image: -ms-linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7);
-    background-image: linear-gradient(top, #ffffff,#f9f9f9 48%,#e2e2e2 52%,#e7e7e7)*/
+    /*text-align: center;*/
+    background-color: /*rgba(211, 224, 243, 0.54);*/#ECECEC;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
-/*#QueueGridId .x-grid3-row-over td {
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e4f3ff), color-stop(48%, #d9edff), color-stop(52%, #c2d8f2), color-stop(100%, #c6dcf6)) !important;
-}*/
+#QueueGridId .x-grid3-row-over .x-grid3-cell-inner {
+    background-color: #CCE6F7;/*#B6E2FF*/
+}
 
-#QueueGridId .x-grid3-row td {
-    line-height: 16px;
-} 
+#QueueGridId .x-grid3-row-over {
+    border-color: white !important;
+}
+
+#QueueGridId .x-grid3-row-over td {
+}
+
+#QueueGridId .x-grid3-row-selected .x-grid3-cell-inner {
+    font-weight: bold;
+    background-color: #98c5f5 !important;
+    color:black;
+    border-color: red !important;
+}
+
+#QueueGridId .x-grid3-row-selected {
+    background-color: white !important;
+    /*border : 0px;*/
+}
 
 /*.x-grid3-cell-inner {
     white-space: normal !important;  changed from nowrap 

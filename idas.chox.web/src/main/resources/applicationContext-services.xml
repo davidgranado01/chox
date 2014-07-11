@@ -216,7 +216,6 @@
         <property name="applicationAccessibility" ref="applicationAccessibility"/>
         <property name="availableFilters">
             <list>
-                <ref bean="AllClaims" />
                 <ref bean="RejectedClaims" />
                 <ref bean="RejectedSubscriberClaims" />
                 <ref bean="RejectedFixedFeeClaims" />
