@@ -37,6 +37,7 @@
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+    var canUnselectTheSelectedQueue = false;
     
     Ext.onReady(function(){
 
@@ -1425,7 +1426,27 @@
                             getTotalWidth: function() {
                                 return "auto";
                             }
+//                            , rowOverCls : ''
+//                            ,selectedRowClass : 'x-btn x-btn-noicon x-column x-btn-pressed x-btn-small x-btn-icon-small-left'
                 })
+                /* 
+                 * The below listners are workaround to un-select a selected queue. As there is no unSelect listners in the RowSelectionModel, i come up with this solution.
+                 * rowmousedown listner used to findout the selected row is same as previously selected row(This can not be done in rowClick event), then this information
+                 * is used in the rowClick event to deselect or ignore the selection.
+                 */
+                ,listeners:  { rowmousedown : function(grid, rowIndex, e) { 
+                                                    if (rowIndex === Ext.state.Manager.get("recentlyClickedQueueRowNumber")) {
+                                                        canUnselectTheSelectedQueue = true;
+                                                    }
+                                }
+                                ,rowclick : function (grid, rowIndex, e) { 
+                                                    if (canUnselectTheSelectedQueue) {
+                                                        deSelectQueue();
+                                                        searchClaim(false);
+                                                        canUnselectTheSelectedQueue = false;
+                                                    }
+                                }
+                }
             });
            
             var radioGroupPanel = new Ext.form.RadioGroup({
@@ -1516,6 +1537,7 @@
             if (typeof rowIndex !== 'undefined') { 
                 queueGrid.getSelectionModel().deselectRow(rowIndex);
             }
+            setSearchPanelInfo('Custom Search Result');
         }
         
         function selectPreviouslySelectedQueue(canLoadClaimsGridData) {
@@ -1531,7 +1553,7 @@
                     // add the rowSelect listner back to activate loading the claims grid when the queue is selected.
                     queueGrid.getSelectionModel().addListener('rowselect', onQueueSelection);
                     // set the information panel info 
-                    setSearchPanelInfo(queueGrid.getSelectionModel().getSelected().get('queueDescription'));
+                    setSearchPanelInfo(queueGrid.getSelectionModel().getSelected().get('queueDescription'), rowIndex);
                     updateManualInvoiceBatchUpdate(queueGrid.getSelectionModel().getSelected().get('key'));
                 }
                 queueGrid.getView().focusRow(queueGrid.getSelectionModel().hasNext() ? rowIndex+1 : rowIndex);
@@ -1539,7 +1561,7 @@
             }
             return false;
         }
-        
+        // The below method is not usable/can be removed as we now removed the 'All Claims' queue.
         function resetQueue(canLoadClaimsGridData) {
             
             if (canLoadClaimsGridData) {
@@ -1567,16 +1589,21 @@
             // load the claims grid data.
             doDataLoad(baseParams);
             // set the searchPanel information message
-            setSearchPanelInfo(queueDescription);
+            setSearchPanelInfo(queueDescription, rowIndex);
             // we need layout the search panel here because incase if the size of the search panel increased 
             // as a result of setting up queue search criteria in the search panel.
             doLayoutSearchPanel();
             updateManualInvoiceBatchUpdate(queueFilterName);
         }
         
-        function setSearchPanelInfo(msg) {
+        function setSearchPanelInfo(msg, rowIndex) {
             if (searchColumsPanel) {
-                searchColumsPanel.setTitle('<div class="search-panel-status-info">'+msg+'</div>');
+                if (rowIndex >= 0) { // change the queue description panel background color(white for 'All Claims' queue , blue for all other queues).
+                    searchColumsPanel.setTitle('<div class="search-panel-status-info-selected">'+msg+'</div>');
+                } else {
+                    searchColumsPanel.setTitle('<div class="search-panel-status-info">'+msg+'</div>');
+                }
+                
             }
         }
         
@@ -1756,7 +1783,8 @@
              */
             var searchBaseParam;
             if (canSearchForData) {
-                resetQueue(false);
+//                resetQueue(false); // removed as part of removing the 'All Claims' queue.
+                deSelectQueue();
                 searchBaseParam = Ext.apply(getSearchParameters(), {"gridTitle" : 'Custom Search Result'});
                 // set the searchPanel information message
                 setSearchPanelInfo('Custom Search Result');
