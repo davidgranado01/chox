@@ -1834,13 +1834,13 @@
                 finalReviewValue : (finalReviewValue === '') ? 0 : finalReviewValue,
                 liabilityStatusUpdated : liabilityStatusUpdated,
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
-                isPenaltyChargeApplied : penaltyChargesToBeApplied,
-                isAnomalies : anomalies,
+                penaltyChargeApplied : penaltyChargesToBeApplied,
+                anomalies : anomalies, 
                 escalatedToSupervisor : escalatedToSupervisor,
-                isInterimPaymentMade : interimPaymentMade,
+                interimPaymentMade : interimPaymentMade,
                 liabilityStatuses : liabilityStatuses,
                 claimTypes : claimTypes,
-                isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
+                supplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
                 hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
                 approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen
             };
