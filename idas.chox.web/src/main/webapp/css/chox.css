@@ -1733,6 +1733,7 @@ br.smallBr
 #QueueGridId .x-grid3-row {
     border-color: white !important;
     border : 2px solid;
+    /*border : 3px solid;*/
 }
 
 #QueueGridId .x-grid3-row td {
@@ -1749,11 +1750,14 @@ br.smallBr
     font-size:11px;
     cursor: pointer;
     /*text-align: center;*/
+    /*background-color: #ECECEC;*/
     background-color: /*rgba(211, 224, 243, 0.54);*/#ECECEC;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    /*box-shadow: 1px 1px 1px 0px #888888;*/
+    /*box-shadow: 1px 1px 1px 0px #B8B4B4;*/
 }
 
 #QueueGridId .x-grid3-row-over .x-grid3-cell-inner {
@@ -1765,6 +1769,7 @@ br.smallBr
 }
 
 #QueueGridId .x-grid3-row-over td {
+    background-color: white;
 }
 
 #QueueGridId .x-grid3-row-selected .x-grid3-cell-inner {
@@ -1772,6 +1777,7 @@ br.smallBr
     background-color: #98c5f5 !important;
     color:black;
     border-color: red !important;
+    /*box-shadow: 0px 0px 0px 0px #B8B4B4;*/
 }
 
 #QueueGridId .x-grid3-row-selected {

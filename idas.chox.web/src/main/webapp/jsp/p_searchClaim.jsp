@@ -1481,7 +1481,7 @@
                         dataIndex: 'queueNameWithCount'
                     }
                 ],
-                stripeRows: true,
+//                stripeRows: true,
                 autoExpandColumn: 'queueNameId',
                 height: 450,// This height should be same as searchAndButtonPanel height
                 width: 300,
