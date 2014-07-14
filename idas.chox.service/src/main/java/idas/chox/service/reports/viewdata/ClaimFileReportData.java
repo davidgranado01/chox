@@ -391,13 +391,13 @@ public class ClaimFileReportData {
             vehicleTypeRequired = cust.getTypeVehicleRequired();
             specialRequirements = cust.getSpecialRequirements();
             if (cust.getAverageDailyMileage() != null) {
-                averageDailyMileage = cust.getAverageDailyMileage().toString();
+                averageDailyMileage = cust.getAverageDailyMileage();
             }
             else {
                 averageDailyMileage = "";
             }
             if (cust.getVehicleYear() != null) {
-                customerVehicleYear = cust.getVehicleYear().toString();
+                customerVehicleYear = cust.getVehicleYear();
             }
             else {
                 customerVehicleYear = "";

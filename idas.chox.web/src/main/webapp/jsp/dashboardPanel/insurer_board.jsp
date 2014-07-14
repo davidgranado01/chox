@@ -248,7 +248,7 @@
 
         var selectedValue = '-1';
         var selected = $("#dashboardSupplierId option:selected");
-        if(selected.val() != ""){
+        if(selected.val() !== ""){
             selectedValue = selected.val();
         }
 
@@ -257,7 +257,7 @@
     }
 
     function doDashBoardInsurerSearchSelectOnChange(){
-        if (dashBoardWorkgroupStore != -1) {
+        if (dashBoardWorkgroupStore !== -1) {
 
             // ToDo: if workgroups are disabled for insurer, disable workgroup menu
             // ToDo: if claim ownership is disabled for insurer, disable claim-owner menu
@@ -284,7 +284,7 @@
     function doDashBoardShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
 
      
-        if (dashBoardClaimOwnerStore != -1) {
+        if (dashBoardClaimOwnerStore !== -1) {
             dashBoardClaimOwnerStore.removeAll();
             dashBoardClaimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
             dashBoardClaimOwnerCombo.reset();
@@ -305,7 +305,7 @@
     function doInsurerSearchWorkgroupOnChange(){
 
         var workgroupId = -1;
-        if (dashBoardWorkgroupCombo!= -1 && dashBoardWorkgroupCombo.getValue() != null) {
+        if (dashBoardWorkgroupCombo !== -1 && dashBoardWorkgroupCombo.getValue() !== null) {
             workgroupId = dashBoardWorkgroupCombo.getValue().split(",");
         }
         doDashBoardShowClaimHandler(workgroupId, dashBoardInsurerId);
@@ -363,7 +363,7 @@ if (isIE) {
 }
 %>
  <% if (isFirefox){ %>
-                    <div style="height:1178px; width:1140px" id="resultHolder" name="resultHolder"></div>
+=                    <div style="height:1178px; width:1140px" id="resultHolder" name="resultHolder"></div>
 <% } else if(isIE && versionIE > 9){ %>
                     <div style="height:1115px; width:1140px" id="resultHolder" name="resultHolder"></div>
 <% } else { %>

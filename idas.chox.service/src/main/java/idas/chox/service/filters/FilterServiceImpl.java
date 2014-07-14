@@ -27,7 +27,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
     @Override
     public List<Filter> getAvailableFilters(WebUser webUser) {
 
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         if (availableFilters != null) {
             if (webUser != null) {

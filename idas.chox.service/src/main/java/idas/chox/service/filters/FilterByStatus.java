@@ -15,7 +15,7 @@ public class FilterByStatus extends BaseFilter {
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
-        claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
+        claimSearchCriteria.setStatuses(new HashSet<>(Arrays.asList(getStatus())));
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
@@ -27,7 +27,7 @@ public class FilterByStatus extends BaseFilter {
                 && (securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
                     && securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()))
                 && getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-            claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<Integer>(Arrays.asList(new Integer[]{new Integer("1")})));
+            claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
         } 
 
         return claimSearchCriteria;

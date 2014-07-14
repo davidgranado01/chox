@@ -28,9 +28,8 @@
         var batchUpdateSelectionModel;
 //        var isQueueSelectionSearch = false;
 //        var isSearchScreenSearch = false;
-           
-        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-        Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
+//        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+//        Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
         Ext.onReady(function() {
             // change the header width to 1300px from 1000px(used for claim detail page).
@@ -301,21 +300,21 @@
             var adminTab = { 
                             contentEl:'adminPanelTab', 
                             id:'adminPanelTabId', 
-                            title:'Admin', 
+                            title:'Admin<sup>'+' '+'</sup>', 
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/adminFunction.action'})
             };
             var dashboardTab = { 
                                 contentEl:'boardPanelTab', 
                                 id:'boardPanelTabId', 
-                                title:'Dashboard', 
+                                title:'Dashboard<sup>'+' '+'</sup>', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
             };
             var xmlUploadTab = { 
                                 contentEl:'xmlUploadTab', 
                                 id:'xmlUploadTabId', 
-                                title:'Claim/Invoice Upload', 
+                                title:'Claim/Invoice Upload<sup>'+' '+'</sup>', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/XmlUpload.action'})
             };
@@ -419,7 +418,7 @@
                 if (taskCount <= 0) { 
                     color = 'black';
                 }
-                var title = 'Tasks'
+                var title = 'Tasks';
                 if (taskCount < 10) {
                     title = title + '&nbsp';
                 } else if (taskCount < 100) {

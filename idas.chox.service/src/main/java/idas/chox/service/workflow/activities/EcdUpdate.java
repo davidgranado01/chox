@@ -9,13 +9,13 @@ import org.jsoup.safety.Whitelist;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jsoup.nodes.Document.OutputSettings;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
-import org.jsoup.nodes.Document.OutputSettings;
 
 public class EcdUpdate extends BaseActivity {
     static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);

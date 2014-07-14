@@ -299,6 +299,7 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 ----------------------
 -- End of 8.3.4
 ----------------------
+<<<<<<< HEAD
 
 --------------------------------------------------------------------------------
 -- bug#2858 - Production - Task Panel "Created By" Sorting Order Is Inconsistent
@@ -528,3 +529,5 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 ----------------------
 -- End of bug#2863
 ----------------------
+=======
+>>>>>>> merge conflict fixed

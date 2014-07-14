@@ -159,8 +159,6 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return emailMsg.toString();
     }
 
-
-
     private VehicleClass validateVehicleClass(String vehicleClassString, StringBuilder statusString) {
         VehicleClass vehicleclass = vehicleClassService.getVehicleClassByName(vehicleClassString);
         if (vehicleclass == null) {

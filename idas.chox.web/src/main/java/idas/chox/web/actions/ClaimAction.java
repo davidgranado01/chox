@@ -789,11 +789,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             try {
                 WebUser newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
                 // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId()) {
                     throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
                 // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                if (newClaimOwner.getChorganisation().getId() != claim.getChorganisation().getId().intValue()) {
                     throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
 
@@ -911,11 +911,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
 
                     // Check workgroup belongs to the Insurer
-                    if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    if (workgroup.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
                         throw new AccessDeniedException("Workgroup does not belong to Insurer");
                     }
                     // Check user belongs to the Insurer
-                    if (newClaimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    if (newClaimOwner.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
                         throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
                     }
 
@@ -969,7 +969,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     }
 
                     // Check user belongs to the Insurer
-                    if (newClaimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    if (newClaimOwner.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
                         throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
                     }
 
@@ -1040,7 +1040,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (escalateWorkgroupId > 0) {
                 Workgroup workgroup = workgroupService.getWorkgroup(escalateWorkgroupId);
                 // Check workgroup belongs to the Insurer
-                if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                if (workgroup.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
                     throw new AccessDeniedException("Workgroup does not belong to Insurer");
                 }
                 claim.setWorkgroup(workgroup);
@@ -1229,17 +1229,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsClaimNotificationEditable() {
-        if (applicationAccessibility.checkNotificationAccessibilityEditable("NotificationNotesNotification",
-                getAuthenticatedUser(), claim) < 2) {
-            return false;
-        }
-        return true;
+        return applicationAccessibility.checkNotificationAccessibilityEditable("NotificationNotesNotification",
+                getAuthenticatedUser(), claim) >= 2;
     }
 
     public List getExtraActionList() {
 
         List<String> actions = ExtraAction.getExtraActions();
-        extraActionList = new ArrayList<LookupItem>();
+        extraActionList = new ArrayList<>();
         for (String actionName : actions) {
             String extraActionDescription;
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", actionName, claim.getStatus());
@@ -1427,10 +1424,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 @Override
                 public boolean apply(Notification object) {
-                    if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
-                        return true;
-                    }
-                    return false;
+                    return NotificationType.getNotificationType(object.getType()).isInsurerType();
                 }
             });
             LOG.debug("Notification Return List Size Insurer: {}", returnList.size());
@@ -1440,10 +1434,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 @Override
                 public boolean apply(Notification object) {
-                    if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
-                        return false;
-                    }
-                    return true;
+                    return !NotificationType.getNotificationType(object.getType()).isInsurerType();
                 }
             });
             LOG.debug("Notification Return List Size Cho: {} ", returnList.size());
@@ -1716,7 +1707,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
             }
 
-            rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
+            rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm()));
         }
 
         return rejectEnabled;
@@ -1746,7 +1737,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         }
-        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBefore3pm() && (claim.getSlaExtDays() < maxAllowedSlaExtDays))) ? true : false;
+        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBefore3pm() && (claim.getSlaExtDays() < maxAllowedSlaExtDays)));
     }
     
     public int getAvailableSlaExtensionDays() {
@@ -1784,12 +1775,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      */
     public boolean isSubscriberClaimRejected() {
 
-        if (ClaimType.isSubscriber(claim.getClaimType()) && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(claim.getStatus())
-                && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection())) {
-            return true;
-        }
-        
-        return false;
+        return ClaimType.isSubscriber(claim.getClaimType()) && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(claim.getStatus())
+                && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection());
     }
  
     public boolean isSubscriberClaimUnder5Days() {
@@ -1812,11 +1799,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getSubscriberClaimDays();
         }
 
-        if (claimDays < (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
-            return true;
-        }
-
-        return false;
+        return claimDays < (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays());
     }
     
     public boolean isSubscriberClaimAt5Days() {
@@ -1880,11 +1863,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getFixedFeeClaimDays();
         }
 
-        if (claimDays < (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
-            return true;
-        }
-
-        return false;
+        return claimDays < (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays());
     }
 
     public boolean isFixedFeeClaimAt14Days() {
@@ -2184,7 +2163,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public List<LookupItem> getFinalReviewReasons() {
-        List<LookupItem> reasons = new ArrayList<LookupItem>(4);
+        List<LookupItem> reasons = new ArrayList<>(4);
 
         reasons.add(new LookupItem("Final Liability Stance", "Final Liability Stance"));
         reasons.add(new LookupItem("Indemnity Issues", "Indemnity Issues"));
@@ -2196,7 +2175,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
-        List<LookupItem> rorItems = new ArrayList<LookupItem>();
+        List<LookupItem> rorItems = new ArrayList<>();
         for (ReasonOfRejection ror : reasonOfClaimRejections) {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
@@ -2214,7 +2193,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
-        List<LookupItem> rorItems = new ArrayList<LookupItem>();
+        List<LookupItem> rorItems = new ArrayList<>();
         for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
@@ -2225,7 +2204,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
 
-        List<HireMonitoringEcdViewData> viewDatas = new ArrayList<HireMonitoringEcdViewData>();
+        List<HireMonitoringEcdViewData> viewDatas = new ArrayList<>();
         int seq = 1;
         for (HireMonitoringEcd h : hireMonitoringEcds) {
             viewDatas.add(new HireMonitoringEcdViewData(h, seq));
@@ -2300,19 +2279,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-            return true;
-        }
-
-        return false;
+        return claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0;
     }
 
     public boolean getPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-            return true;
-        }
-
-        return false;
+        return claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0;
     }
 
     public BigDecimal getEngineerFeeGrossPaid() {
@@ -2499,11 +2470,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         long days = DateHelper.getNumberOf24HourPeriodsBetween(loggedDate, new Date());
         LOG.debug("Invoice Payment Logged {} days ago", days);
 
-        if (days > 9) {
-            return true;
-        }
-
-        return false;
+        return days > 9;
     }
 
     public void setJsonData(String jsonData) {
@@ -2541,7 +2508,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      * Switch claim to multiple insurer functionality.
      */
     public String getInsurersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getMappedInsurers().size());
+        List<LookupItem> luItems = new ArrayList<>(getMappedInsurers().size());
         for (Insurer insurer : mappedInsurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
@@ -2552,7 +2519,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         List<PenaltyCharge> repairPenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.REPAIR);
-        List<LookupItem> luItems = new ArrayList<LookupItem>(repairPenaltyCharges.size());
+        List<LookupItem> luItems = new ArrayList<>(repairPenaltyCharges.size());
         for (PenaltyCharge repairPenaltyPercentageEnum : repairPenaltyCharges) {
             // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
             String perdec = new StringBuilder()
@@ -2569,7 +2536,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         List<PenaltyCharge> hirePenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.HIRE);
-        List<LookupItem> luItems = new ArrayList<LookupItem>(hirePenaltyCharges.size());
+        List<LookupItem> luItems = new ArrayList<>(hirePenaltyCharges.size());
         for (PenaltyCharge hirePenaltyPercentageEnum : hirePenaltyCharges) {
             // Append Age to Hire Penalty Percentage Desc eg. (30 days - 7.5%) 
             String perdec = new StringBuilder()
@@ -2674,19 +2641,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isAddPenaltyChargeConfigValidation() {
-        if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(DateHelper.removeTime(claim.getInvoice().getCreatedDate())) >= 0) {
-            return true;
-        }
-
-        return false;
+        return getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(DateHelper.removeTime(claim.getInvoice().getCreatedDate())) >= 0;
     }
 
     @Override
     public void validate() {
 
         if (claim != null && (claim.getChorganisation() != null || claim.getInsurer() != null)) {
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            if ((getIsInsurer() && claim.getInsurer().getId() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                 LOG.error("ClaimAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
@@ -2715,10 +2678,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int getInsurerIdForReasonOfRejection() {
         int insurerIdt = -1;
         if (getAuthenticatedUser().getInsurer() != null) {
-            insurerIdt = getAuthenticatedUser().getInsurer().getId().intValue();
+            insurerIdt = getAuthenticatedUser().getInsurer().getId();
         }
         if (claim.getInsurer() != null) {
-            insurerIdt = claim.getInsurer().getId().intValue();
+            insurerIdt = claim.getInsurer().getId();
         }
         return insurerIdt;
     }

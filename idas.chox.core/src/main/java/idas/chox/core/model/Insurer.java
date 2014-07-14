@@ -177,7 +177,7 @@ public class Insurer extends Entity implements Serializable {
     }
 
     public Insurer() {
-        vehicleClassCeilings = new ArrayList<VehicleClassCeiling>();
+        vehicleClassCeilings = new ArrayList<>();
     }
 
     public BigDecimal getChoAgreedBenefitValue() {

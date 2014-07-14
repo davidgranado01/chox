@@ -891,7 +891,7 @@
                                         <div class="chox-form-item">
                                             <label class="chox-form-std-label1" style="width:680px; text-align: left;">
                                                 Activating the Payments Team for any of the following claim types will add a new queue
-                                                labelled 'Payments Team' which will be visible to the Payments Clerk role and contain
+                                                labeled 'Payments Team' which will be visible to the Payments Clerk role and contain
                                                 claims that have passed the Business Rules and been straight through processed to Awaiting
                                                 Invoice Payment. Setup of active Workgroups and CHOs for this process is made via the BRE Bands and Workgroup setup.
                                             </label>

@@ -778,7 +778,11 @@
             Ext.MessageBox.show({
                 title: title,
                 msg: msg,
+<<<<<<< HEAD
                 width : 1180,
+=======
+                width : 1300,
+>>>>>>> merge conflict fixed
                 buttons: Ext.MessageBox.OK
             });
 

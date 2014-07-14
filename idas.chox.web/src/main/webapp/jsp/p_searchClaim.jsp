@@ -1528,6 +1528,34 @@
                 }
             });
            
+            var radioGroupPanel = new Ext.form.RadioGroup({
+                                    layout: 'hbox',
+                                    defaultType: 'button',
+                                    columns: 1,
+                                    width: 300,
+                                    height: 430,
+                                    autoScroll : true,
+                                    defaults: {
+                                        enableToggle: true,
+                                        toggleGroup: 'mygroup',
+                                        allowDepress: false
+                                    },
+                                    items: [
+                                        { text: 'Rejected Claims (61)', height : '30px'},
+                                        { text: 'Liability Status Update Notifications (326)', height : '30px'},
+                                        { text: 'Awaiting Litigation Outcome (21)', height : '30px'},
+                                        { text: 'Claims Awaiting Hire Monitoring Information (266)', height : '30px'},
+                                        { text: 'Awaiting Invoice Data (23)', height : '30px'},
+                                        { text: 'Incorrect Invoice Data Calculations (0)', height : '30px'},
+                                        { text: 'Contested Invoices Referred To CHO (45)', height : '30px'},
+                                        { text: 'Penalty Charges To Be Applied (130)', height : '30px'},
+                                        { text: 'Approved Invoices Awaiting Liability Resolution (79)', height : '30px'},
+                                        { text: 'Interim Payments To Be Received (15)', height : '30px'},
+                                        { text: 'Invoices With Final Review (0)', height : '30px'},
+                                        { text: 'Payments To Be Received (108)', height : '30px'}
+                                    ]
+                                });
+                                
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
                 width : 890,
@@ -1559,10 +1587,8 @@
                 height : 450, // This height should be same as queueGrid height
                 frame : true,
                 items : [searchColumsPanel, buttonPanel]
-            });
-            
-            
-            
+            });            
+
             new Ext.Panel({
                 layout : 'hbox',
                 items : [queueGrid, searchAndButtonPanel],

@@ -519,7 +519,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public void updateModelInSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (model != null && model.getVersion() != null && model.getId() != null) {
-                HashMap<String, Integer> map = new HashMap<String, Integer>();
+                HashMap<String, Integer> map = new HashMap<>();
                 map.put("version", model.getVersion());
                 map.put("id", model.getId());
                 getSession().put(model.getClass().getSimpleName(), map);
@@ -559,7 +559,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
     
     public void updateRedirectionParamInSession() {
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
 //        map.put("redirect", true);
         if (message != null && !message.isEmpty()) {
             map.put("redirectStatusMsg", message);

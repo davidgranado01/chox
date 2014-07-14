@@ -29,7 +29,7 @@ public class XlsFileParser {
      */
     public Map<Integer, List<String>> readExcelFile(InputStream inputStream) {
 
-        List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
+        List<List<Cell>> cellListHolder = new ArrayList<>();
 
         try {
 
@@ -48,7 +48,7 @@ public class XlsFileParser {
             while (rowIter.hasNext()) {
                 HSSFRow myRow = (HSSFRow) rowIter.next();
                 Iterator<Cell> cellIter = myRow.cellIterator();
-                List<Cell> cellStoreVector = new ArrayList<Cell>();
+                List<Cell> cellStoreVector = new ArrayList<>();
                 int cellNumber = 0;
                 boolean isDataExistsForThisRow = false;
                 while (cellIter.hasNext()) {
@@ -107,10 +107,10 @@ public class XlsFileParser {
      *         List is the data returned in row.
      */
     private Map<Integer, List<String>> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
-        Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
+        Map<Integer, List<String>> xlsDataMap = new HashMap<>();
         for (int i = 0; i < dataHolder.size(); i++) {
             List<Cell> cellStoreList = dataHolder.get(i);
-            List<String> cellStringList = new ArrayList<String>();
+            List<String> cellStringList = new ArrayList<>();
             for (int j = 0; j < cellStoreList.size(); j++) {
                 HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
                 if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)

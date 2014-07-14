@@ -183,7 +183,7 @@
 
     function doChoClaimOwnerHandler(selectedSupplierId){
 
-        if (dashBoardChoClaimOwnerStore != -1) {
+        if (dashBoardChoClaimOwnerStore !== -1) {
             dashBoardChoClaimOwnerCombo.reset();
             dashBoardChoClaimOwnerStore.removeAll();
             dashBoardChoClaimOwnerCombo.clearValue();

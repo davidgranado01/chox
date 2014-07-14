@@ -21,7 +21,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
     private FilterService filterService;
     private List<Filter> filters;
     private ClaimService claimService;
-    private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
+    private List<FilterViewData> filterViewDatas = new ArrayList<>();
     private ClaimSearchCriteria claimSearchCriteria;
 //    private boolean syncWithSearchCriteria = true;
 
