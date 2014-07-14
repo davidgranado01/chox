@@ -1468,6 +1468,7 @@
                 store: queueDataStore,
                 id : 'QueueGridId',
                 enableColumnMove: false,
+                enableColumnResize : false,
                 frame : true,
                 enableHdMenu:false,
                 selModel : new Ext.grid.RowSelectionModel({ // best practice to use selectionModel instead of grid rowClick listner.
@@ -1489,7 +1490,7 @@
                 loadMask : {msg:"Loading Queues..."},
                 view : new Ext.grid.GridView({ // this is to hide the vertical bar space when the vertical bar is not shown.
                             forceFit    : true,
-                            scrollOffset: 0,
+                            scrollOffset:  (find_MSIE_version() > 0 && find_MSIE_version() < 9) ? 10 : 0,
                             getTotalWidth: function() {
                                 return "auto";
                             }
