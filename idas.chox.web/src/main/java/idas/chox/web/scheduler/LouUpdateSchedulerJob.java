@@ -256,10 +256,10 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         statusString.append("Failed: An Internal Error Occurred");
                         LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
                     }
-                } else if (!update) {
+                } else if (statusString.toString().isEmpty() && !update) {
                     statusString.insert(0, "Nothing to update.");
                 } else {
-                    statusString.insert(0, "Failed:");
+                    statusString.insert(0, "Failed: ");
                 }
 
                 /* update the result message into column 24 for each row.*/
