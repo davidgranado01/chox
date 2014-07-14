@@ -1746,8 +1746,8 @@ br.smallBr
     cursor: pointer;
     /*text-align: center;*/
     /*background-color: rgba(180, 180, 180, 0.15);*/
-    /*background-color: #F3F3F3;*/
-    background-color: #ECECEC;
+    background-color: #F3F3F3;
+    /*background-color: #ECECEC;*/
     -moz-border-bottom-left-radius: 6px;
     -moz-border-bottom-right-radius: 6px;
     -moz-border-top-left-radius: 6px;
@@ -1761,9 +1761,9 @@ br.smallBr
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 
-/*    -moz-box-shadow: 1px 1px #BBC4C5;
-    -webkit-box-shadow: 1px 1px #BBC4C5;
-    box-shadow: 1px 1px #BBC4C5;*/
+    -moz-box-shadow: 1.5px 1.5px #BBC4C5;
+    -webkit-box-shadow: 1.5px 1.5px #BBC4C5;
+    box-shadow: 1.5px 1.5px #BBC4C5;
     
     /*behavior: url(../scripts/PIE-1.0.0/PIE.htc);*/
 }
@@ -1785,9 +1785,9 @@ br.smallBr
     background-color: #98c5f5 !important;
     color:black;
     
-/*    -moz-box-shadow: 0px 0px 0px 0px #B8B4B4;
-    -webkit-box-shadow: 0px 0px 0px 0px #B8B4B4;
-    box-shadow: 0px 0px 0px 0px #B8B4B4;*/
+    -moz-box-shadow: 1px 1px #BBC4C5 inset;
+    -webkit-box-shadow: 1px 1px #BBC4C5 inset;
+    box-shadow: 1px 1px #BBC4C5 inset;
 }
 
 #QueueGridId .x-grid3-row-selected {
