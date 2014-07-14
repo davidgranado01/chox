@@ -116,17 +116,21 @@ public class XlsFileParser {
                 if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
                         && !isTime(myCell)) {
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
-                    // Does the date have a time component - presume no if hh, mm and ss are 0
-                    if (new SimpleDateFormat("hh:mm:ss").format(date).equals("00:00:00")
-                            || new SimpleDateFormat("hh:mm").format(date).equals("00:00")) {
+                    // Does the date have a time component - check the date format
+                    if (myCell.getCellStyle().getDataFormatString().equals("m/d/yy")) {
                         cellStringList.add(DateHelper.getLocalDateFormat().format(date));
-                    } else {
+                    } else { // assume we have a datetime
+LOG.debug("Date has a time component: {} : {}", new SimpleDateFormat("HH:mm:ss").format(date), myCell.getCellStyle().getDataFormatString());
                         cellStringList.add(DateHelper.getLocalDateTimeFormat().format(date));
                     }
                 } else if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
-                        && isTime(myCell)) {
+                        && isTime(myCell)) { 
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
-                    cellStringList.add(DateHelper.getTimeFormat().format(date));
+                    if (myCell.getCellStyle().getDataFormatString().equals("h:mm")) {
+                        cellStringList.add((new SimpleDateFormat("HH:mm")).format(date));
+                    } else {
+                        cellStringList.add((new SimpleDateFormat("HH:mm:ss")).format(date));
+                    }
                 } else if (myCell != null) {
                     myCell.setCellType(Cell.CELL_TYPE_STRING);
                     cellStringList.add(myCell.getStringCellValue().trim());

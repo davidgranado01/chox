@@ -31,8 +31,8 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     
     private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
-//    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
-    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
+    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
+//    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     public static final String JOB_NAME = "HIRE_UPDATE";
     private ClaimService claimService;
     private VehicleClassService vehicleClassService;
