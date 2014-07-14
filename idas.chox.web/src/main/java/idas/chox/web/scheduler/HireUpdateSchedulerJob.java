@@ -31,8 +31,8 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     
     private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
-    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
-//    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
+//    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
+    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     public static final String JOB_NAME = "HIRE_UPDATE";
     private ClaimService claimService;
     private VehicleClassService vehicleClassService;
@@ -192,7 +192,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         Date hireStartDate = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
 //        SimpleDateFormat sdf1 = DateHelper.getLocalDateTimeFormat();
-        sdf.setLenient(true);
+        sdf.setLenient(false);
         if (hireStartDateString.isEmpty()) {
             statusString.append(" No Hire Start (Date) Provided.");
         } else if (hireStartDateString.length() != sdf.toPattern().length()) {
@@ -204,7 +204,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 LOG.debug("Date parsed - {} as {}", hireStartDateString, hireStartDate);
             } catch (ParseException ex) {
                 statusString.append(" Invalid Format For Hire Start (Date).");
-                LOG.warn("Parse exception thrown for hire-start date {}", hireStartDateString, ex);
+                LOG.warn("Parse exception thrown for hire-start date {}", hireStartDateString);
 
             }
         }
