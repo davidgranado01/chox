@@ -56,7 +56,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
                 // Sometime this error happens when the user logout immediately after clicking the inbox queue but before the server sends the respons. 
                 // Error is thrown while getting the user information. Need to investigate further to see why it is not throwing exception all the times but some times.
                 if (getAuthenticatedUser() == null) {
-                    LOG.warn("Error setting up filter '{}' when authenticated user is empty: ", filter.getName(), ex);
+                    LOG.warn("Error setting up filter '{}' when authenticated user is empty: ", filter.getName());
                 } else {
                     LOG.error("Error setting up filter '{}': ", filter.getName(), ex);
                 }
