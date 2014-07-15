@@ -1184,6 +1184,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (accessRight > 0 && "InvoicePaymentLogged".equals(action) 
                     && claim.getInsurer().isPaymentTeamEnable() 
                     && (claim.getInvoice() == null || claim.getInvoice().isPaymentTeam())
+                    && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_PC)
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN)) {
                 // Do not show if no PC or CHOX Admin role
