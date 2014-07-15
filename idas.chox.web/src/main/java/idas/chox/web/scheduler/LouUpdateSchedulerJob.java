@@ -131,7 +131,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer made date provided is valid and parse the string date to java date */
                 if (cells.size() > 9 && !cells.get(9).isEmpty()) {
-                    Date totalLossMadeDate = validateDate(cells.get(9).trim(), statusString, "Date Totel Loss Offer Made");
+                    Date totalLossMadeDate = validateDate(cells.get(9).trim(), statusString, "Date Total Loss Offer Made");
                     if (totalLossMadeDate != null) {
                         ((LouUpdate)activity).setTotalLossMadeDate(totalLossMadeDate);
                         update = true;
@@ -149,7 +149,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer issued date provided is valid and parse the string date to java date */
                 if (cells.size() > 11 && !cells.get(11).isEmpty()) {
-                    Date totalLossIssuedDate = validateDate(cells.get(11).trim(), statusString, "Date Total Loss Offer Issued");
+                    Date totalLossIssuedDate = validateDate(cells.get(11).trim(), statusString, "Date Total Loss Cheque Issued");
                     if (totalLossIssuedDate != null) {
                         ((LouUpdate)activity).setTotalLossIssuedDate(totalLossIssuedDate);
                         update = true;
@@ -158,7 +158,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check total loss offer received date provided is valid and parse the string date to java date */
                 if (cells.size() > 12 && !cells.get(12).isEmpty()) {
-                    Date totalLossReceivedDate = validateDate(cells.get(12).trim(), statusString, "Date Total Loss Offer Received");
+                    Date totalLossReceivedDate = validateDate(cells.get(12).trim(), statusString, "Date Total Loss Cheque Received");
                     if (totalLossReceivedDate != null) {
                         ((LouUpdate)activity).setTotalLossReceivedDate(totalLossReceivedDate);
                         update = true;
