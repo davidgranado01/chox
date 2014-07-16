@@ -31,7 +31,8 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
 
     function confirmPaymentLog(action){
     
-        $('form#logInvoicePayment input[id="name"]').val(action)
+//        $('form#logInvoicePayment input[id="name"]').val(action);
+        $('form#logInvoicePayment input[id="name"]').remove();
         return confirmPaymentLogAction();
     
     }
@@ -90,7 +91,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                                     <input type="button" id="UMIPFormId" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
                                 </s:if>
                                 <s:else>
-                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLogAction();"/>
+                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLog('invoicePaymentLogged');"/>
                                     <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/>
                                 </s:else>
                                 <s:if test="invoiceWithPaymentsTeam">
