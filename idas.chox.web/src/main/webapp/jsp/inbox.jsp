@@ -28,13 +28,13 @@
         var batchUpdateSelectionModel;
 //        var isQueueSelectionSearch = false;
 //        var isSearchScreenSearch = false;
-        
+           
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
         Ext.onReady(function() {
             // change the header width to 1300px from 1000px(used for claim detail page).
-            $('div.inner').css({"width":"1300px"});
+            $('div.inner').css({"width":"1265px"});
             Ext.QuickTips.init();
             setupDashboardActionName();
             loadDataFromSession();
@@ -186,7 +186,7 @@
                                     }
                                 }
                             },
-                width: 1300,
+                width: 1265,
                 enableColumnMove: false,
                 columns: [
                     batchUpdateSelectionModel,

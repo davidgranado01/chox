@@ -46,7 +46,7 @@
     </bean>
     
     <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.ClaimsAwaitingHireMonitoringInfoFilter" >
-        <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
+        <property name="name" value="Claims Awaiting Hire Monitoring Info"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>
         <property name="status" value="AwaitingCarHireInfo"/>
         <property name="queueDescription" value="Claim notifications which have been accepted by the Insurer and the hire/repair is currently in progress"/>

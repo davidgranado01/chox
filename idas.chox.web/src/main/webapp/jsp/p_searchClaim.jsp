@@ -1375,7 +1375,7 @@
             });
             
             var leftColumn = {
-                width:280,
+                width:270,
                 height : 'auto',
 //                style: {
 //                    paddingLeft:'10px'
@@ -1485,7 +1485,7 @@
 //                stripeRows: true,
                 autoExpandColumn: 'queueNameId',
                 height: 450,// This height should be same as searchAndButtonPanel height
-                width: 300,
+                width: 275,
 //                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
                 view : new Ext.grid.GridView({ // this is to hide the vertical bar space when the vertical bar is not shown.
@@ -1517,37 +1517,9 @@
                 }
             });
            
-            var radioGroupPanel = new Ext.form.RadioGroup({
-                                    layout: 'hbox',
-                                    defaultType: 'button',
-                                    columns: 1,
-                                    width: 300,
-                                    height: 430,
-                                    autoScroll : true,
-                                    defaults: {
-                                        enableToggle: true,
-                                        toggleGroup: 'mygroup',
-                                        allowDepress: false
-                                    },
-                                    items: [
-                                        { text: 'Rejected Claims (61)', height : '30px'},
-                                        { text: 'Liability Status Update Notifications (326)', height : '30px'},
-                                        { text: 'Awaiting Litigation Outcome (21)', height : '30px'},
-                                        { text: 'Claims Awaiting Hire Monitoring Information (266)', height : '30px'},
-                                        { text: 'Awaiting Invoice Data (23)', height : '30px'},
-                                        { text: 'Incorrect Invoice Data Calculations (0)', height : '30px'},
-                                        { text: 'Contested Invoices Referred To CHO (45)', height : '30px'},
-                                        { text: 'Penalty Charges To Be Applied (130)', height : '30px'},
-                                        { text: 'Approved Invoices Awaiting Liability Resolution (79)', height : '30px'},
-                                        { text: 'Interim Payments To Be Received (15)', height : '30px'},
-                                        { text: 'Invoices With Final Review (0)', height : '30px'},
-                                        { text: 'Payments To Be Received (108)', height : '30px'}
-                                    ]
-                                });
-                                
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
-                width : 980,
+                width : 970,
                 frame : true,
                 height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
                 autoScroll : true,
@@ -1563,7 +1535,7 @@
                 fbar : [searchButton, resetButton],
                 header : false,
                 frame : true,
-                width : 980,
+                width : 970,
                 height : 50,
                 buttonAlign : 'center'
                 ,margins : {top : 0}
@@ -1572,7 +1544,7 @@
             // We need to create another button panel to separate the search panel frame from search and reset button.
             // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
             var searchAndButtonPanel = new Ext.Panel({
-                width : 1000,
+                width : 990,
                 height : 450, // This height should be same as queueGrid height
                 frame : true,
                 items : [searchColumsPanel, buttonPanel]

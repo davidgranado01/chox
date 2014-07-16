@@ -1732,11 +1732,13 @@ br.smallBr
 #QueueGridId .x-grid3-row {
     border-color: white !important;
     /*border : 2px solid;*/
-    border : 3px solid;
+    border : 1.5px solid;
 }
 
 #QueueGridId .x-grid3-row td {
     line-height: 16px;
+/*    padding-left: 7px !important;
+    padding-right: 7px !important;*/
 }
 
 #QueueGridId .x-grid3-cell-inner {

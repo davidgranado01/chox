@@ -489,7 +489,7 @@
                 {header: "Error Message", width:210, dataIndex: 'message', sortable: true, resizable: true},
                 {header: "BRE Failure Message", width:210, dataIndex: 'breFailureMessages', sortable: true, resizable: true}
             ],
-            width:1300
+            width: 1265
             ,height:50
         });
 
@@ -744,7 +744,7 @@
             Ext.MessageBox.show({
                 title: title,
                 msg: msg,
-                width : 1300,
+                width : 1265,
                 buttons: Ext.MessageBox.OK
             });
 
