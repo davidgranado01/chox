@@ -4,6 +4,33 @@
 --                                                                   --
 -----------------------------------------------------------------------
 update vehicle_class_price_special_rate
+    set price = 41.18
+from vehicle_class vc
+where vehicle_class_price_special_rate.vehicle_class_id = vc.id
+  and name = 'M3'
+  and chorganisation_id = 1007
+  and insurer_id in (3,19)
+  and start_date = '2013-12-01';
+
+update vehicle_class_price_special_rate
+    set price = 46.33
+from vehicle_class vc
+where vehicle_class_price_special_rate.vehicle_class_id = vc.id
+  and (name = 'M3A' or name='M3EST' or name='M3ESTA')
+  and chorganisation_id = 1007
+  and insurer_id in (3,19)
+  and start_date = '2013-12-01';
+
+update vehicle_class_price_special_rate
+      set price = 57.66
+from vehicle_class vc
+where vehicle_class_price_special_rate.vehicle_class_id = vc.id
+  and name = 'F3'
+  and chorganisation_id = 1007
+  and insurer_id in (3,19)
+  and start_date = '2013-12-01';
+
+update vehicle_class_price_special_rate
     set price = 92.68
 from vehicle_class vc
 where vehicle_class_price_special_rate.vehicle_class_id = vc.id
@@ -61,14 +88,12 @@ update vehicle_class_price_special_rate
     set price = 47.36
 from vehicle_class vc
 where vehicle_class_price_special_rate.vehicle_class_id = vc.id
-  and name like 'CP%%'
+  and name like 'CP%'
   and chorganisation_id = 1007
   and insurer_id in (3,19)
   and start_date = '2013-12-01';
 
 
-
-
-    -----------------------------------------------------------------------
-    -- End of bug#2849                                                   --
-    -----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-- End of bug#2849                                                   --
+-----------------------------------------------------------------------
