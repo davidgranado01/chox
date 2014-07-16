@@ -47,6 +47,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             // first row is header
             if (row.intValue() != 0) { // ignore first row - should contain header
                 boolean update = false;
+                boolean repairDatesUpdated = false;
                 List<String> cells = xlsDataMap.get(row);
 
                 if (cells.size() < 1) {
@@ -101,6 +102,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     if (repairBookedInDate != null) {
                         ((LouUpdate)activity).setRepairBookedInDate(repairBookedInDate);
                         update = true;
+                        repairDatesUpdated = true;
                     }
                 }
 
@@ -119,6 +121,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     if (repairCompletionDate != null) {
                         ((LouUpdate)activity).setRepairCompletionDate(repairCompletionDate);
                         update = true;
+                        repairDatesUpdated = true;
                     }
                 }
 
@@ -243,6 +246,35 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     ((LouUpdate)activity).setUpdateInsurer(updateInsurer);
                 }
 
+                // Check Repair Completion Date is after the booked-in date
+                if (repairDatesUpdated) {
+                    Date bookedIn = null;
+                    Date completionDate = null;
+                   
+                    if (((LouUpdate)activity).getRepairCompletionDate() != null && ((LouUpdate)activity).getRepairBookedInDate() != null) {
+                        bookedIn = ((LouUpdate)activity).getRepairBookedInDate();
+                        completionDate = ((LouUpdate)activity).getRepairCompletionDate();
+                    } else if (((LouUpdate)activity).getRepairCompletionDate() != null) { // Booked-in date is null
+                        completionDate = ((LouUpdate)activity).getRepairCompletionDate();
+                        if (claim != null && claim.getHireMonitoringDetail() != null) {
+                            bookedIn = claim.getHireMonitoringDetail().getRepairBookInDate();
+                        }
+                    } else { // Repair Completion Date is null
+                        bookedIn = ((LouUpdate)activity).getRepairBookedInDate();
+                        if (claim != null && claim.getHireMonitoringDetail() != null) {
+                            completionDate = claim.getHireMonitoringDetail().getRepairCompletionDate();
+                        }
+                    }
+                    
+                    if (bookedIn != null && completionDate != null && ((LouUpdate)activity).getRepairCompletionDate() != null
+                            && completionDate.compareTo(bookedIn) < 0 ) {
+                        statusString.append("The Repair Completion Date cannot be before the Repair Book In Date");
+                    } else if (bookedIn != null && completionDate != null 
+                            && bookedIn.compareTo(completionDate) > 0 ) {
+                        statusString.append("The Repair Book In Date cannot be after the Repair Completion Date");
+                    }
+                }
+
                 /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty() && update) {
                     try {
@@ -253,7 +285,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                                 .append(claim.getStatus()).append("')");
                         LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job");
                     } catch (Exception ex) {
-                        statusString.append("Failed: An Internal Error Occurred");
+                        statusString.append("Failed: ").append(ex.getMessage());
                         LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
                     }
                 } else if (statusString.toString().isEmpty() && !update) {
