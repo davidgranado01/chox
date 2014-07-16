@@ -233,15 +233,15 @@ function isTrue(a){
     }
 }
 
-function triggerCss(targer, isError){
-    $(targer).html("");
-    $(targer).removeClass("chox-form-submit-result");
-    $(targer).removeClass("action-error-msg");
+function triggerCss(target, isError) {
+    $(target).html("");
+    $(target).removeClass("chox-form-submit-result");
+    $(target).removeClass("action-error-msg");
 
     if(isError){
-        $(targer).addClass("action-error-msg");
+        $(target).addClass("action-error-msg");
     }else{
-        $(targer).addClass("chox-form-submit-result");
+        $(target).addClass("chox-form-submit-result");
     }
 }
 

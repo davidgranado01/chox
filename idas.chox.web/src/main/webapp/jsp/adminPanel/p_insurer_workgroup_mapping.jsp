@@ -64,6 +64,25 @@
         });
 
         workgroup_loadGridViewList();
+        
+        var form = $("form#insurerWorkgroupMappingForm");
+
+        form.validate({
+            ignore: [],
+            errorLabelContainer: "#CDInsurerWorkgroupMessageBox",
+            rules: {
+                workgroupName : {required:true},
+                workgroupSite : {required:true},
+                workgroupTeam : {required:true}
+            },
+            messages: {
+                workgroupName : { required : "Please enter 'Workgroup Name'" },
+                workgroupSite : { required : "Please enter 'Workgroup Team'" },
+                workgroupTeam : { required : "Please enter 'Workgroup Site'" }
+            }
+        });
+        
+        ui.ajaxForm(form, workgroup_onSubmitResponseReceived, 'json');
 
     });
 
@@ -88,34 +107,6 @@
             workgroup_triggerStatusRemoveRecord(gridView);
         }
         </s:else>
-    }
-
-    function workgroup_triggerStatusAddRecord(){
-
-        var workgroupName = $("#workgroupName").val();
-        var workgroupTeam = $("#workgroupTeam").val();
-        var workgroupSite = $("#workgroupSite").val();
-        var stpExcluded;
-        if ($("#stpExcluded").attr('checked'))
-            stpExcluded = true;
-        else
-            stpExcluded = false;
-        
-        if(workgroupName===null || workgroupName===""){
-            triggerCss("div#CDInsurerWorkgroupMessageBox", true);
-            $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Name'");
-        }else if(workgroupTeam===null || workgroupTeam===""){
-            triggerCss("div#CDInsurerWorkgroupMessageBox", true);
-            $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Team'");
-        }else if(workgroupSite===null || workgroupSite===""){
-            triggerCss("div#CDInsurerWorkgroupMessageBox", true);
-            $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Site'");
-        }else{
-            var url = "/prv/p/addNewInsurerWorkgroup.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam,"stpExcluded":stpExcluded};
-            ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
-        }
-
     }
 
     function workgroup_triggerStatusUpdateRecord(gridView){
@@ -154,16 +145,10 @@
         var response = eval('(' + responseText.trim() + ')');
         var outputDiv = $('div#CDInsurerWorkgroupMessageBox');
 
-        triggerCss("div#CDInsurerWorkgroupMessageBox", true);
-
         if(response)
         {
-            triggerCss("div#CDInsurerWorkgroupMessageBox", false);
-
             if(response.isValid){
-
-                outputDiv.addClass("chox-form-submit-result");
-
+                clearFormValues();
                 if(response.resultType && response.resultType === 'Message')
                 {
                     Ext.MessageBox.show({
@@ -173,19 +158,14 @@
                         buttons: Ext.MessageBox.OK
                     });
                     workgroup_loadGridViewList();
-                    clearFormValues();
                 }
                 else
                 {
-                    //                    alert("Your Changes Have Been Saved");
                     workgroup_loadGridViewList();
-                    clearFormValues();
                 }
-
             }
             else
             {
-                triggerCss("div#CDInsurerWorkgroupMessageBox", true);
                 $.each(response.errors, function() {
                     
                     Ext.Msg.show({
@@ -195,13 +175,13 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-                    //                    outputDiv.append(this.toString());
                 });
                 workgroup_loadGridViewList();
             }
         }
         else
         {
+            triggerCss(outputDiv, true);
             outputDiv.append("Unknown Error Encountered, please try again.");
             outputDiv.addClass("submit-error");
         }
@@ -223,40 +203,30 @@
     </div>
 
     <div class="grid-view-header">
-
-        <table width="100%">
-            <tr><td>
-                    <div class="label-block">
-                        <p class="std-label">Workgroup name<span class="mandatory">*</span> </p><input name="workgroupName" id="workgroupName" type="text">
-                    </div>
-                </td>
-            </tr>
-            <tr><td>
-                    <div class="label-block">
-                        <p class="std-label">Site<span class="mandatory">*</span> </p><input name="workgroupSite" id="workgroupSite" type="text">
-                    </div>
-                </td>
-            </tr>
-            <tr><td>
-                    <div class="label-block">
-                        <p class="std-label">Team<span class="mandatory">*</span> </p><input name="workgroupTeam" id="workgroupTeam" type="text">
-                    </div>
-                </td>
-            </tr>
-        <s:if test="insurerPaymentsTeamEnabled">
-            <tr><td>
-                    <div class="label-block">
-                        <p class="std-label">Exclude from STP</p><s:checkbox name="stpExcluded" id="stpExcluded" value="stpExcluded" />
-                    </div>
-                </td>
-            </tr>
-        </s:if>
-            <tr><td align="center">
-                    <input type="button" onclick="javascript:return workgroup_triggerStatusAddRecord();" value="Add"/>
-                </td>
-            </tr>
-        </table>
-
+        <form id="insurerWorkgroupMappingForm" name="insurerWorkgroupMappingForm" class="XXentity-form" action="<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action" method="post">
+            <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Workgroup name<span class="mandatory">*</span></label>
+                <input name="workgroupName" id="workgroupName" type="text">
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Site<span class="mandatory">*</span></label>
+                <input name="workgroupSite" id="workgroupSite" type="text">
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Team<span class="mandatory">*</span></label>
+                <input name="workgroupTeam" id="workgroupTeam" type="text">
+            </div>
+            <s:if test="insurerPaymentsTeamEnabled">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Exclude from STP</label>
+                    <s:checkbox name="stpExcluded" id="stpExcluded" value="stpExcluded" />
+                </div>
+            </s:if>
+            <div class="chox-form-button">
+                <input type="submit" value="Add"/>
+            </div>
+        </form>
     </div>
     <div id="CDInsurerWorkgroupMessageBox" class="chox-form-submit-result"></div>
     <div id="workgroup_gridviewGrid"></div>
