@@ -117,7 +117,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                                 .append(claim.getStatus()).append("')");
                         LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job");
                     } catch (Exception ex) {
-                        statusString.append("Failed: An Internal Error Occurred");
+                        statusString.append("Failed: An Internal Error Occurred.");
                         LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
                     }
                 } else {

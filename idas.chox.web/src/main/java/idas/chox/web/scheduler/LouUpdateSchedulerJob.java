@@ -65,8 +65,13 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 
                 /* Check name of Repairer is valid */
                 if (cells.size() > 1 && !cells.get(1).isEmpty()) {
-                    ((LouUpdate)activity).setRepairerName(cells.get(1).trim());
-                    update = true;
+                    String repairerName = cells.get(1).trim();
+                    if (repairerName.length() > 128) {
+                        statusString.append(" The 'Name of Repairer' must be 128 characters or less.");
+                    } else {
+                        ((LouUpdate)activity).setRepairerName(repairerName);
+                        update = true;
+                    }
                 }
 
                 /* Check Inspection booked date provided is valid and parse the string date to java date */
@@ -170,8 +175,13 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
                 /* Check Name of IME provided is valid */
                 if (cells.size() > 13 && !cells.get(13).isEmpty()) {
-                    ((LouUpdate)activity).setImeName(cells.get(13).trim());
-                    update = true;
+                    String imeName = cells.get(13).trim();
+                    if (imeName.length() > 200) {
+                        statusString.append(" The 'Name of IME' must be 200 characters or less.");
+                    } else {
+                        ((LouUpdate)activity).setImeName(imeName);
+                        update = true;
+                    }
                 }
 
                 /* Check Labour Rate provided is valid */
@@ -285,8 +295,8 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                                 .append(claim.getStatus()).append("')");
                         LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job");
                     } catch (Exception ex) {
-                        statusString.append("Failed: ").append(ex.getMessage());
-                        LOG.warn("Exception occurred when updating hire start via email scheduler job", ex);
+                        statusString.append("Failed: An Internal Error Occurred.");
+                        LOG.warn("Exception occurred when updating hire start via email scheduler job: {}", ex.getMessage());
                     }
                 } else if (statusString.toString().isEmpty() && !update) {
                     statusString.insert(0, "Nothing to update.");
