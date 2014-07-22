@@ -30,35 +30,30 @@ public class InvoiceResubmit extends BaseActivity {
         //Insurer Upload claim type is handled in InsurerUpload activity
         if (ClaimType.isGTA(claim.getClaimType())
                 && claim.getInsurer().isGtaAutoRoutingEnable()
-                && !claim.getInsurer().isPaymentTeamEnable()
                 && (claimNumber == null || claim.getInsurer().getGtaRegexExpression() == null
                     || claim.getInsurer().getGtaRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase()))) {
             autoRoutedInvoice = true;
         } else if (ClaimType.isSubscriber(claim.getClaimType())
                 && claim.getInsurer().isSubscriberAutoRoutingEnable()
-                && !claim.getInsurer().isPaymentTeamEnable()
                 && (claimNumber == null || claim.getInsurer().getSubscriberRegexExpression() == null
                     || claim.getInsurer().getSubscriberRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase()))) {
             autoRoutedInvoice = true;
         } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())
                 && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
-                && !claim.getInsurer().isPaymentTeamEnable()
                 && (claimNumber == null || claim.getInsurer().getInsurerVsInsurerRegexExpression() == null
                     || claim.getInsurer().getInsurerVsInsurerRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase()))) {
             autoRoutedInvoice = true;
         } else if (ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getInsurer().isFixedFeeAutoRoutingEnable()
-                && !claim.getInsurer().isPaymentTeamEnable()
                 && (claimNumber == null || claim.getInsurer().getFixedFeeRegexExpression() == null
                     || claim.getInsurer().getFixedFeeRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase()))) {
             autoRoutedInvoice = true;
         } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())
                 && claim.getInsurer().isColaborationProtocolAutoRoutingEnable()
-                && !claim.getInsurer().isPaymentTeamEnable()
                 && (claimNumber == null || claim.getInsurer().getCollaborationProtocolRegexExpression() == null
                     || claim.getInsurer().getCollaborationProtocolRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getCollaborationProtocolRegexExpression(), claimNumber.toUpperCase()))) {
@@ -87,23 +82,8 @@ public class InvoiceResubmit extends BaseActivity {
             throw new Exception("ERROR : Invoice data calculation incorrect");
         }
         
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())
-                && claim.getInsurer().isPaymentTeamEnable() && claim.getBreBand().isPaymentTeamActive()
-                && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaAutoRoutingEnable())
-                    || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberAutoRoutingEnable())
-                    || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable())
-                    || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeeAutoRoutingEnable())
-                    || (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isInsurerManualAutoRoutingEnable())
-                    || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isColaborationProtocolAutoRoutingEnable()))
-                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
-            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-            // move claim to next status
-            setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(getCurrentStatus());
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            claim.getInvoice().setPaymentTeam(true);
+        if (autoRoutedInvoice && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             invoiceAccepted = true;
-        } else if (autoRoutedInvoice && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             // re-route claim
             if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());
@@ -117,6 +97,21 @@ public class InvoiceResubmit extends BaseActivity {
                 claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                 claimOwnerAssigned = true;
             }
+        }
+
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())
+                && claim.getBreBand().isPaymentTeamActive()
+                && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
+                    || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
+                    || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
+                    || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeePaymentsTeamEnable())
+                    || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))
+                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+            claim.getInvoice().setPaymentTeam(true);
+            invoiceAccepted = true;
+        }
+
+        if (invoiceAccepted) {
             getDataService().save(claim);
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
             // move claim to next status

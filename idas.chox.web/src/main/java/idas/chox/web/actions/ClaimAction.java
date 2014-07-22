@@ -1182,7 +1182,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Access for {} os {}", action, accessRight);
             // If Invoice is with Payments Team then do not show InvoicePaymentLogged for PC
             if (accessRight > 0 && "InvoicePaymentLogged".equals(action) 
-                    && claim.getInsurer().isPaymentTeamEnable() 
+                    && claim.getInsurer().isPaymentsTeamEnable() 
                     && (claim.getInvoice() == null || claim.getInvoice().isPaymentTeam())
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_PC)
@@ -1190,7 +1190,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 // Do not show if no PC or CHOX Admin role
                 accessRight = 0;
             } else if (accessRight > 0 && "InvoicePaymentLogged".equals(action)
-                    && claim.getInsurer().isPaymentTeamEnable()
+                    && claim.getInsurer().isPaymentsTeamEnable()
                     && (claim.getInvoice() == null || !claim.getInvoice().isPaymentTeam())
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_CH)
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)

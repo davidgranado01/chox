@@ -413,85 +413,80 @@
     });
     
     function displayPaymentsTeamFields() {
-        var claimWorkgroupEnable = doWorkgroupCheck();
-        var claimOwnershipEnable = doOwnershipCheck();
-        if($('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val()){
-            $("#invoiceWorkgroupId").hide();
-            $("#invoiceClaimOwnerId").hide();
-            $("#gtaExclusionDivId").hide();
-            $("#tpiExclusionDivId").hide();
-            $("#subscriberExclusionDivId").hide();
-            $("#fixedFeeExclusionDivId").hide();
-            $("#collaborationProtocolExclusionDivId").hide();
-            $("#insurerVsInsurerExclusionDivId").hide();
-            $("#insurerManualExclusionDivId").hide();
-            $("#paymentTeamActiveLabelId").show();
-            $("#paymentTeamNotActiveLabelId").hide();
+        $("#gtaPaymentsTeamDivId").show();
+        $("#insurerVsInsurerPaymentsTeamDivId").show();
+        if ($('form#formUpdateInsurerDetail input[id="thirdPartyInterventionActivated"]:checked').val()){
+            $("#tpiPaymentsTeamDivId").show();
         }else{
-            if (claimWorkgroupEnable)
-                $("#invoiceWorkgroupDivId").show();
-            if (claimOwnershipEnable)
-                $("#invoiceClaimOwnerDivId").show();
-            $("#gtaExclusionDivId").show();
-            $("#insurerVsInsurerExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="thirdPartyInterventionActivated"]:checked').val())
-                $("#tpiExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowSubscriberClaims"]:checked').val())
-                $("#subscriberExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowFixedFeeClaims"]:checked').val())
-                $("#fixedFeeExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowCollaborationProtocolClaims"]:checked').val())
-                $("#collaborationProtocolExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
-                || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
-                $("#insurerManualExclusionDivId").show();
-            $("#paymentTeamActiveLabelId").hide();
-            $("#paymentTeamNotActiveLabelId").show();
+            $("#tpiPaymentsTeamDivId").hide();
         }
-    
+        if ($('form#formUpdateInsurerDetail input[id="allowSubscriberClaims"]:checked').val()){
+            $("#subscriberPaymentsTeamDivId").show();
+        }else{
+            $("#subscriberPaymentsTeamDivId").hide();
+        }
+        if ($('form#formUpdateInsurerDetail input[id="allowFixedFeeClaims"]:checked').val()){
+            $("#fixedFeePaymentsTeamDivId").show();
+        }else{
+            $("#fixedFeePaymentsTeamDivId").hide();
+        }
+        if ($('form#formUpdateInsurerDetail input[id="allowCollaborationProtocolClaims"]:checked').val()){
+            $("#collaborationPaymentsTeamDivId").show();
+        }else{
+            $("#collaborationPaymentsTeamDivId").hide();
+        }
+        if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
+                || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val()){
+            $("#insurerManualPaymentsTeamDivId").show();
+        }else {
+            $("#insurerManualPaymentsTeamDivId").hide();
+        }
     }
     
     function displayAutoRoutingTpiAndSusbscriberFields() {
         if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
             $("#tpiTr").show();
-            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
-                $("#tpiExclusionDivId").show();      
+            $("#tpiPaymentsTeamDivId").show();      
         }
-        else
+        else {
             $("#tpiTr").hide();
-        
+            $("#tpiPaymentsTeamDivId").hide();      
+        }
         if($('form#formUpdateInsurerDetail input[name="allowSubscriberClaims"]:checked').val()){
             $("#subscriberTr").show();
-            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
-                $("#subscriberExclusionDivId").show();      
+            $("#subscriberPaymentsTeamDivId").show();      
         }
-        else
+        else {
             $("#subscriberTr").hide();
-        
+            $("#subscriberPaymentsTeamDivId").hide();      
+        }
         if($('form#formUpdateInsurerDetail input[name="allowFixedFeeClaims"]:checked').val()){
             $("#fixedFeeTr").show();
-            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
-                $("#fixedFeeExclusionDivId").show();      
+            $("#fixedFeePaymentsTeamDivId").show();      
         }
-        else
+        else {
             $("#fixedFeeTr").hide();
+            $("#fixedFeePaymentsTeamDivId").hide();      
+        }
         
         if($('form#formUpdateInsurerDetail input[name="allowCollaborationProtocolClaims"]:checked').val()){
             $("#collaborationProtocolTr").show();
-            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
-                $("#collaborationProtocolExclusionDivId").show();      
+            $("#collaborationProtocolPaymentsTeamDivId").show();      
         }
-        else
+        else{
             $("#collaborationProtocolTr").hide();
+            $("#collaborationPaymentsTeamDivId").hide();      
+        }
         
         if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()
             || $('form#formUpdateInsurerDetail input[name="claimUploadEnabled"]:checked').val()){
             $("#insurerManualTr").show();
-            if(!$('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val())
-                $("#insurerManualExclusionDivId").show();      
+            $("#insurerManualPaymentsTeamDivId").show();      
         }
-        else
+        else{
             $("#insurerManualTr").hide();
+            $("#insurerManualPaymentsTeamDivId").hide();      
+        }
     }
     
     function getInsurerAdminTabIndex(){
@@ -577,7 +572,7 @@
     function doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable){
         
         if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()
-    || $('form#formUpdateInsurerDetail input[name="claimUploadEnabled"]:checked').val()){
+                || $('form#formUpdateInsurerDetail input[name="claimUploadEnabled"]:checked').val()){
             if (claimOwnershipEnable) {
               $("#manualInvoiceOwnershipHolder").slideDown();  
             }
@@ -604,45 +599,9 @@
     }
 
     function doPaymentsTeamEnableCheck(){
-        var claimWorkgroupEnable = doWorkgroupCheck();
-        var claimOwnershipEnable = doOwnershipCheck();
         displayPaymentsTeamFields();
-        var paymentsTeamEnable = false;
-        if($('form#formUpdateInsurerDetail input[name="paymentTeamEnable"]:checked').val()){
-            paymentsTeamEnable = true;
-            $("#invoiceWorkgroupId").hide();
-            $("#invoiceClaimOwnerId").hide();
-            $("#gtaExclusionDivId").hide();
-            $("#tpiExclusionDivId").hide();
-            $("#subscriberExclusionDivId").hide();
-            $("#fixedFeeExclusionDivId").hide();
-            $("#collaborationProtocolExclusionDivId").hide();
-            $("#insurerVsInsurerExclusionDivId").hide();
-            $("#insurerManualExclusionDivId").hide();
-            $("#paymentTeamActiveLabelId").show();
-            $("#paymentTeamNotActiveLabelId").hide();
-        }else{
-            if(claimWorkgroupEnable)
-                $("#invoiceWorkgroupId").slideDown();
-            if(claimOwnershipEnable)
-                $("#invoiceClaimOwnerId").slideDown();
-            $("#gtaExclusionDivId").show();
-            $("#insurerVsInsurerExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="thirdPartyInterventionActivated"]:checked').val())
-                $("#tpiExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowSubscriberClaims"]:checked').val())
-                $("#subscriberExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowFixedFeeClaims"]:checked').val())
-                $("#fixedFeeExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="allowCollaborationProtocolClaims"]:checked').val())
-                $("#collaborationProtocolExclusionDivId").show();
-            if ($('form#formUpdateInsurerDetail input[id="invoiceUploadEnabled"]:checked').val()
-                    || $('form#formUpdateInsurerDetail input[id="claimUploadEnabled"]:checked').val())
-                $("#insurerManualExclusionDivId").show();
-            $("#paymentTeamActiveLabelId").hide();
-            $("#paymentTeamNotActiveLabelId").show();
-        }
-        return paymentsTeamEnable;
+
+        return true;
     }
 
     function doOwnershipCheck(){
@@ -931,23 +890,71 @@
                                     <td colspan="3">
                                         <div class="chox-form-item">
                                             <label class="chox-form-std-label1" style="width:680px; text-align: left;">
-                                                Activating the Payments Team will add a new queue labelled 'Payments Team' which will
-                                                be visible to the Payments Clerk role and contain claims that have passed the Business
-                                                Rules and been straight through processed to Awaiting Invoice Payment. Setup of active
-                                                Workgroups and CHOs for this process is made via the BRE Bands and Workgroup setup.
+                                                Activating the Payments Team for any of the following claim types will add a new queue
+                                                labelled 'Payments Team' which will be visible to the Payments Clerk role and contain
+                                                claims that have passed the Business Rules and been straight through processed to Awaiting
+                                                Invoice Payment. Setup of active Workgroups and CHOs for this process is made via the BRE Bands and Workgroup setup.
                                             </label>
                                         </div>
                                     </td>
 
                                 </tr>
                                <tr>
-                                    <td colspan=2>
-                                        <div class="chox-form-item" id="paymentTeamHolder">
-                                            <label class="chox-form-std-label">Enable Payments Team</label>
-                                            <s:checkbox name="paymentTeamEnable" value="paymentTeamEnable" onclick="doPaymentsTeamEnableCheck(this)"/>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="gtaPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">GTA</label>
+                                            <s:checkbox name="gtaPaymentsTeamEnable" id="gtaPaymentsTeamEnable" value="gtaPaymentsTeamEnable" />
                                         </div>
                                     </td>
-                                </tr>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="tpiPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">TPI</label>
+                                            <s:checkbox name="tpiPaymentsTeamEnable" id="tpiPaymentsTeamEnable" value="tpiPaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="subscriberPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">Subscriber</label>
+                                            <s:checkbox name="subscriberPaymentsTeamEnable" id="subscriberPaymentsTeamEnable" value="subscriberPaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="fixedFeePaymentsTeamDivId">
+                                            <label class="chox-form-std-label">Fixed Fee</label>
+                                            <s:checkbox name="fixedFeePaymentsTeamEnable" id="fixedFeePaymentsTeamEnable" value="fixedFeePaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="collaborationPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">Collaboration Protocol</label>
+                                            <s:checkbox name="collaborationPaymentsTeamEnable" id="collaborationPaymentsTeamEnable" value="collaborationPaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="insurerVsInsurerPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">Insurer Vs Insurer</label>
+                                            <s:checkbox name="insurerVsInsurerPaymentsTeamEnable" id="insurerVsInsurerPaymentsTeamEnable" value="insurerVsInsurerPaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="insurerManualPaymentsTeamDivId">
+                                            <label class="chox-form-std-label">Insurer Upload</label>
+                                            <s:checkbox name="insurerManualPaymentsTeamEnable" id="insurerManualPaymentsTeamEnable" value="insurerManualPaymentsTeamEnable" />
+                                        </div>
+                                    </td>
+                               </tr>
                                  <tr>
                                     <td colspan="3">
                                         <div class="chox-form-item">
@@ -955,10 +962,6 @@
                                                 Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be
                                                 re-routed for the following claim types. Note that an exclusion regex can optionally
                                                 be specified which, if matched on the claim number, will NOT move or re-route the invoice:
-                                            </label>
-                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;" id="paymentTeamActiveLabelId">
-                                                Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' for the
-                                                following claim types:
                                             </label>
                                         </div>
                                     </td>

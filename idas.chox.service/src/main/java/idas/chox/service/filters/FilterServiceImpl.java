@@ -75,7 +75,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as claim upload not enabled.", filter.getName());
                             continue;
                         } else if (filter.getKey().equals(Filter.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT)
-                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentTeamEnable()
+                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentsTeamEnable()
                                 && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC)
                                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH)
                                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MI)
@@ -83,7 +83,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as payment team is enabled and user is PC only", filter.getName());
                             continue;
                         } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED)
-                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentTeamEnable()
+                                && webUser.isAnInsurer() && webUser.getInsurer().isPaymentsTeamEnable()
                                 && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC)
                                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH)
                                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MI)
@@ -92,7 +92,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as payment team is enabled and user is PC only", filter.getName());
                             continue;
                         }  else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM)
-                                && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentTeamEnable()) {
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentsTeamEnable()) {
                             LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
                             continue;
                         }

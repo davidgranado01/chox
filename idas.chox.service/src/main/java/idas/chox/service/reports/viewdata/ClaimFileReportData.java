@@ -292,7 +292,7 @@ public class ClaimFileReportData {
         claimType = claim.getClaimType().toString();
         subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
         collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
-        paymentsTeamActivated = claim.getInsurer().isPaymentTeamEnable();
+        paymentsTeamActivated = claim.getInsurer().isPaymentsTeamEnable();
         if (claim.getChorganisation() != null) {
             choName = claim.getChorganisation().getName();
         }

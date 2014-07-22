@@ -25,7 +25,7 @@ public class FilterByStatus extends BaseFilter {
         //NB: null check added to getCurrentUser() to prevent error being thrown when user logd out before queues loaded
         if (securityInfoProvider.getCurrentUser() != null
                 && (securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
-                    && securityInfoProvider.getCurrentUser().getInsurer().isPaymentTeamEnable()))
+                    && securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()))
                 && getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
             claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<Integer>(Arrays.asList(new Integer[]{new Integer("1")})));
         } 

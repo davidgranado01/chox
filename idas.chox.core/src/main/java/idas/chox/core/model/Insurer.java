@@ -39,7 +39,13 @@ public class Insurer extends Entity implements Serializable {
     private boolean claimLocked;
     private boolean onlineSupportEnable;
     private boolean taskManagementEnable;
-    private boolean paymentTeamEnable;
+    private boolean gtaPaymentsTeamEnable;
+    private boolean subscriberPaymentsTeamEnable;
+    private boolean fixedFeePaymentsTeamEnable;
+    private boolean insurerVsInsurerPaymentsTeamEnable;
+    private boolean collaborationPaymentsTeamEnable;
+    private boolean insurerManualPaymentsTeamEnable;
+    private boolean tpiPaymentsTeamEnable;
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
     private String autoRoutingEnableId;
@@ -731,11 +737,65 @@ public class Insurer extends Entity implements Serializable {
         this.insurerManualAutoRoutingEnable = insurerManualAutoRoutingEnable;
     }
 
-    public boolean isPaymentTeamEnable() {
-        return paymentTeamEnable;
+    public boolean isGtaPaymentsTeamEnable() {
+        return gtaPaymentsTeamEnable;
     }
 
-    public void setPaymentTeamEnable(boolean paymentTeamEnable) {
-        this.paymentTeamEnable = paymentTeamEnable;
+    public void setGtaPaymentsTeamEnable(boolean gtaPaymentsTeamEnable) {
+        this.gtaPaymentsTeamEnable = gtaPaymentsTeamEnable;
     }
+
+    public boolean isSubscriberPaymentsTeamEnable() {
+        return subscriberPaymentsTeamEnable;
+    }
+
+    public void setSubscriberPaymentsTeamEnable(boolean subscriberPaymentsTeamEnable) {
+        this.subscriberPaymentsTeamEnable = subscriberPaymentsTeamEnable;
+    }
+
+    public boolean isFixedFeePaymentsTeamEnable() {
+        return fixedFeePaymentsTeamEnable;
+    }
+
+    public void setFixedFeePaymentsTeamEnable(boolean fixedFeePaymentsTeamEnable) {
+        this.fixedFeePaymentsTeamEnable = fixedFeePaymentsTeamEnable;
+    }
+
+    public boolean isInsurerVsInsurerPaymentsTeamEnable() {
+        return insurerVsInsurerPaymentsTeamEnable;
+    }
+
+    public void setInsurerVsInsurerPaymentsTeamEnable(boolean insurerVsInsurerPaymentsTeamEnable) {
+        this.insurerVsInsurerPaymentsTeamEnable = insurerVsInsurerPaymentsTeamEnable;
+    }
+
+    public boolean isCollaborationPaymentsTeamEnable() {
+        return collaborationPaymentsTeamEnable;
+    }
+
+    public void setCollaborationPaymentsTeamEnable(boolean collaborationPaymentsTeamEnable) {
+        this.collaborationPaymentsTeamEnable = collaborationPaymentsTeamEnable;
+    }
+
+    public boolean isInsurerManualPaymentsTeamEnable() {
+        return insurerManualPaymentsTeamEnable;
+    }
+
+    public boolean isPaymentsTeamEnable() {
+        return gtaPaymentsTeamEnable || subscriberPaymentsTeamEnable || fixedFeePaymentsTeamEnable
+                || insurerVsInsurerPaymentsTeamEnable || collaborationPaymentsTeamEnable || insurerManualPaymentsTeamEnable;
+    }
+
+    public void setInsurerManualPaymentsTeamEnable(boolean insurerManualPaymentsTeamEnable) {
+        this.insurerManualPaymentsTeamEnable = insurerManualPaymentsTeamEnable;
+    }
+
+    public boolean isTpiPaymentsTeamEnable() {
+        return tpiPaymentsTeamEnable;
+    }
+
+    public void setTpiPaymentsTeamEnable(boolean tpiPaymentsTeamEnable) {
+        this.tpiPaymentsTeamEnable = tpiPaymentsTeamEnable;
+    }
+
 }

@@ -53,7 +53,7 @@
     <property column="is_subscriber_auto_routing_enable" name="subscriberAutoRoutingEnable" not-null="true"/>
     <property column="is_fixed_fee_auto_routing_enable" name="fixedFeeAutoRoutingEnable" not-null="true"/>
     <property column="is_collaboration_auto_routing_enable" name="colaborationProtocolAutoRoutingEnable" not-null="true"/>
-    <property column="is_insurer_vs_isnurer_auto_routing_enable" name="insurerVsInsurerAutoRoutingEnable" not-null="true"/>
+    <property column="is_insurer_vs_insurer_auto_routing_enable" name="insurerVsInsurerAutoRoutingEnable" not-null="true"/>
     <property column="is_insurer_manual_auto_routing_enable" name="insurerManualAutoRoutingEnable" not-null="true"/>
     <property column="force_password_change" name="forcePasswordChange" not-null="true"/>
     <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
@@ -75,7 +75,13 @@
     <property column="enable_manual_invoice_ownership" name="enableManualInvoiceOwnership" not-null="true"/>
     <property column="ecd_increase_trigger" name="ecdIncreaseTriggerPercentage" not-null="true"/>
     <property column="restrict_export" name="restrictExport" not-null="true"/>
-    <property column="payment_team_enable" name="paymentTeamEnable" not-null="true"/>
+    <property column="gta_payments_team_enable" name="gtaPaymentsTeamEnable" not-null="true"/>
+    <property column="subscriber_payments_team_enable" name="subscriberPaymentsTeamEnable" not-null="true"/>
+    <property column="fixed_fee_payments_team_enable" name="fixedFeePaymentsTeamEnable" not-null="true"/>
+    <property column="insurer_vs_insurer_payments_team_enable" name="insurerVsInsurerPaymentsTeamEnable" not-null="true"/>
+    <property column="collaboration_payments_team_enable" name="collaborationPaymentsTeamEnable" not-null="true"/>
+    <property column="insurer_manual_payments_team_enable" name="insurerManualPaymentsTeamEnable" not-null="true"/>
+    <property column="tpi_payments_team_enable" name="tpiPaymentsTeamEnable" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

@@ -95,7 +95,12 @@ public class NewTpiClaim extends BaseActivity {
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
             LOG.debug("TPI Claim status is InvoiceApprovedByBRE.");
-            
+            if (claim.getBreBand().isPaymentTeamActive()
+                    && ClaimType.isTPI(claim.getClaimType()) && claim.getInsurer().isTpiPaymentsTeamEnable()
+                    && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+                claim.getInvoice().setPaymentTeam(true);
+                invoiceAccepted = true; 
+            }
             if (!autoRoutedInvoice) {
                 LOG.debug("Invoice not auto-routed so moving to InvoiceUnassigned");
                 // move claim to next status

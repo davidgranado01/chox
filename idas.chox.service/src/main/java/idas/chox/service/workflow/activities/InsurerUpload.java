@@ -129,24 +129,30 @@ public class InsurerUpload extends BaseActivity {
 
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
 
-        if (autoRoutedInvoice && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+        if (claim.getBreBand().isPaymentTeamActive()
+                    && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
+                    && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+                claim.getInvoice().setPaymentTeam(true);
+        }
+
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && (autoRoutedInvoice || claim.getInvoice().isPaymentTeam())) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
 
-            if (claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+            if (autoRoutedInvoice && claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());
                 claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 claimRouted = true;
             }
 
             //re-assign claim
-            if (claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().getInvoiceOwner() != null) {
+            if (autoRoutedInvoice && claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().getInvoiceOwner() != null) {
                 claim.setClaimOwnerOriginal(claim.getClaimOwner());
                 claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                 claimOwnerAssigned = true;
             }
 
-            if (isEnableManualInvoiceWorkgroupOwnership && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+            if (autoRoutedInvoice && isEnableManualInvoiceWorkgroupOwnership && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
