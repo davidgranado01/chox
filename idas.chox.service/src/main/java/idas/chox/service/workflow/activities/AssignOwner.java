@@ -73,6 +73,9 @@ public class AssignOwner extends BaseActivity {
         }
         if (!ClaimType.isTPI(claim.getClaimType())) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getTpiClaimStatus())
+                && claim.getInvoice().isPaymentTeam()) {
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
             claim.setStatus(claim.getTpiClaimStatus());
         }
