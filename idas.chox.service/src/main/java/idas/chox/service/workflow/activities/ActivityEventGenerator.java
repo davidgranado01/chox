@@ -88,7 +88,7 @@ public class ActivityEventGenerator {
 //        activity.generateEvents(claim);
         
         String activityName = AopUtils.getTargetClass(activity).getSimpleName();
-        LOG.info("Generating events for activity {}", activityName);
+        LOG.debug("Generating events for activity {}", activityName);
 
         try {
             if (activityName.equalsIgnoreCase("AcknowledgeClaim")) {

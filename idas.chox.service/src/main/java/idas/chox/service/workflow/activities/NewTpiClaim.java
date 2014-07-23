@@ -141,7 +141,7 @@ public class NewTpiClaim extends BaseActivity {
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)
                     || claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
-            LOG.debug("TPI Claim status is InvoiceEscalated or InvoiceEscalatedTolaimsHandler - moving to InvoiceUnassigned");
+            LOG.debug("TPI Claim status is InvoiceEscalated or InvoiceEscalatedToClaimsHandler - moving to InvoiceUnassigned");
             // move claim to next status
             super.setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(super.getCurrentStatus());

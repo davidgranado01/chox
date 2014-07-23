@@ -22,7 +22,7 @@ public class DocumentHelper {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             try {
                 dbf.setNamespaceAware(true);
-                LOG.info("Disabling XXE Processing in toDocument(File)....");
+                LOG.debug("Disabling XXE Processing in toDocument(File)....");
                 dbf.setExpandEntityReferences(false);
                 // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
                 // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
