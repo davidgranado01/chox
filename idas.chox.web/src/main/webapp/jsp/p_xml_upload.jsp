@@ -420,7 +420,7 @@
                 {header: "Error Message", width:150, dataIndex: 'message', sortable: true, resizable: true}
 
             ],
-            width:1290,
+            width:1255,
             height:210
         });
 
