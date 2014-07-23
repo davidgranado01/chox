@@ -624,4 +624,9 @@ public class OwnerWorkflowReport implements Report {
         }
         return columnsToHide;
     }
+
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
 }

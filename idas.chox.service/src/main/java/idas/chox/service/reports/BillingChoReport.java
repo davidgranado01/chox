@@ -151,7 +151,7 @@ public class BillingChoReport implements Report {
         return new ExcelReportBuilder(){
 
             @Override
-            public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
+            public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook, boolean brandingLogo) {
                 return resultWorkbook;
             }
 
@@ -211,6 +211,11 @@ public class BillingChoReport implements Report {
     @Override
     public short[] getColumnsToHide() {
         return null;
+    }
+
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
     }
 
 }

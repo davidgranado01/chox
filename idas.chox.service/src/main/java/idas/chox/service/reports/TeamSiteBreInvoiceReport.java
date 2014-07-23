@@ -449,4 +449,9 @@ public class TeamSiteBreInvoiceReport implements Report {
 
         return reportRows;
     }
+
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
 }

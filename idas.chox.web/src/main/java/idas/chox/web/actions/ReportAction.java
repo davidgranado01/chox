@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.LookupService;
@@ -114,10 +115,16 @@ public class ReportAction extends BaseAction implements ParameterAware {
             getSession().put("cancelExportOperation", false);
             getSession().put("reportFileLocation", null);
         }
-
+        
         if ("ClaimFileReport-Excel".equals(reportName) && !getCanExport()) {
             LOG.error("Illegal attempt to generate Claim File Report by user '{}'", getAuthenticatedUser().getDisplayName());
             throw new AccessDeniedException("Illegal attempt to generate Claim File Report.");
+        }
+        
+        if ("ClaimFileReport-Excel".equals(reportName)) {
+            int claimId = Integer.parseInt(((String[]) parametersMap.get("claimId"))[0]);
+            Claim claim = (Claim)baseDataService.get(Claim.class, claimId);
+            this.parametersMap.put("isBrandingReport", isBrandingType(claim));
         }
 
         final Report report = ReportFactory.getReportByName(reportName);
@@ -290,6 +297,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public void setParameters(Map parametersMap) {
         this.parametersMap = parametersMap;
         this.parametersMap.put("CurrentUser", this.getAuthenticatedUser());
+        this.parametersMap.put("isBrandingReport", isBrandingType(null));
     }
 
     public InputStream getReportStream() {

@@ -46,6 +46,7 @@
         <property column="disable_private_notes" name="disablePrivateNotes" not-null="true"/>
         <property column="blocked_message" name="blockedMessage" not-null="true"/>
         <property column="restrict_export" name="restrictExport" not-null="true"/>
+        <property column="branding" name="branding" type="idas.chox.data.hibernate.BrandMapping"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         

@@ -320,4 +320,9 @@ public class ClaimStatusWorkflowReport implements Report {
         }
         return returnValue;
     }
+
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
 }

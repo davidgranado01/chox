@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="branding.jspf" %>
 
 <script type="text/javascript">
 
@@ -1211,6 +1212,12 @@
                                 <label class="chox-form-std-label">Disable Private Notes</label>
                                 <s:checkbox name="disablePrivateNotes" value="disablePrivateNotes" onclick="doToggleInsurerDiscount()" />
                             </div>
+                            
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label1">ERAC Branding</label>
+                                <div id="brandingComboDiv"></div>
+                            </div>
+                            
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label1">Restrict Export Functions For User Manager roles?</label>
                                 <s:checkbox name="restrictExport" value="restrictExport" />

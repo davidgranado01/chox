@@ -117,10 +117,6 @@ div.inner
     text-align:left;
 }
 
-div#tabPanel{
-    background-color:#DFE8F6;
-}
-
 a{
 
     color: #15428b;
@@ -172,19 +168,6 @@ div#chox-menu
 }
 #tabContainer
 {
-}
-
-.chox-form-container
-{
-    background: #dfe8f6;
-    padding: 6px;
-}
-
-.chox-form-container-taskPanel
-{
-    background: #dfe8f6;
-    padding: 6px;
-    border: 1px solid #8bb8f3;
 }
 
 fieldset div
@@ -502,10 +485,7 @@ label.chox-claim-header-text
     margin-left: 10px;
     vertical-align:top;
 }
-div.comments
-{
-    background: #dfe8f6;
-}
+
 div.comments input[type=button]
 {
     margin-left: 6px;
@@ -553,17 +533,6 @@ div.excel-export
     font-size:11px;
 }
 
-
-table.searchForm
-{
-
-    background: #dfe8f6; 
-    width:99.6%;
-    border-collapse:collapse;
-    margin:2px;
-
-}
-
 table.searchForm td
 {
     padding:2px; 
@@ -580,13 +549,6 @@ table.searchForm label
 
 }
 
-div.buttonPanel
-{
-    background: #dfe8f6; 
-    text-align:center;
-    padding:5px;
-
-}
 ul.inbox{
     margin:10px;
 }
@@ -932,14 +894,6 @@ table.dashboard th
     border-bottom:1px #ccc solid;
 }
 
-table.dashboard
-{   
-    background: #dfe8f6; 
-    width:99.6%;
-    border-collapse:collapse;
-    margin: 16px 2px 2px 2px;        
-}
-
 table.dashboard td
 {
     padding:6px; 
@@ -1097,15 +1051,6 @@ img.tip-target
     padding-top:5px;
     /*    padding-bottom:15px;*/
     border:1px solid #B5B8C8;
-}
-
-.sub-admin-tab-css{
-    background:inherit;
-    background-color:inherit;
-    background:#dfe8f6;
-    background-color:#dfe8f6;
-    padding:10px 5px 5px 5px;
-    height:610px;
 }
 
 .gird-view-object{
@@ -1267,11 +1212,6 @@ img.help-icon{
     padding-left:2px;
 }
 
-#vccSelectionPanel{
-    padding:20px 10px 20px 10px;
-    background: #dfe8f6;
-}
-
 td.pop-claim-ownership-label{
     width:25%;
     height:20px;
@@ -1345,15 +1285,6 @@ div.instruction-message{
 
 
 /******* REPORT - START ************/
-
-table.report-form{
-
-    background: #dfe8f6;
-    width:99.6%;
-    border-collapse:collapse;
-    margin:2px;
-
-}
 
 table.report-form td{
     padding:4px;
@@ -1522,13 +1453,6 @@ div#chox-admin-holder{
     margin: 12px;
 }
 
-div.upload-status-container
-{
-    overflow:auto;
-    border:solid 1px black;
-    background:#dfe8f6
-}
-
 div.upload-status-container h2
 {
     font-family: tahoma,arial,verdana,sans-serif;
@@ -1645,17 +1569,6 @@ table.upload-status-table td
 }
 
 /******* XML UPLOAD STATUS - END ************/
-
-.claim-detail-tab{
-    background:#dfe8f6;
-    background-color:#dfe8f6;
-    padding:10px 5px 5px 5px;
-}
-
-.search-panel-holder{
-    background: #dfe8f6;
-    background-color:#dfe8f6;
-}
 
 div#gridHolder div.x-grid3-cell-inner
 {

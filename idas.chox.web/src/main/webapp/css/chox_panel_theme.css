@@ -1,0 +1,102 @@
+div#tabPanel{
+    background-color:#DFE8F6;
+}
+
+.chox-form-container
+{
+    background: #dfe8f6;
+    padding: 6px;
+}
+
+.chox-form-container-taskPanel
+{
+    background: #dfe8f6;
+    padding: 6px;
+    border: 1px solid #8bb8f3;
+}
+
+div.comments
+{
+    background: #dfe8f6;
+}
+
+table.searchForm
+{
+
+    background: #dfe8f6; 
+    width:99.6%;
+    border-collapse:collapse;
+    margin:2px;
+
+}
+
+div.buttonPanel
+{
+    background: #dfe8f6; 
+    text-align:center;
+    padding:5px;
+
+}
+
+table.dashboard
+{   
+    background: #dfe8f6; 
+    width:99.6%;
+    border-collapse:collapse;
+    margin: 16px 2px 2px 2px;        
+}
+
+.sub-admin-tab-css{
+    background:inherit;
+    background-color:inherit;
+    background:#dfe8f6;
+    background-color:#dfe8f6;
+    padding:10px 5px 5px 5px;
+    height:610px;
+}
+
+#vccSelectionPanel{
+    padding:20px 10px 20px 10px;
+    background: #dfe8f6;
+}
+
+table.report-form{
+
+    background: #dfe8f6;
+    width:99.6%;
+    border-collapse:collapse;
+    margin:2px;
+
+}
+
+div.upload-status-container
+{
+    overflow:auto;
+    border:solid 1px black;
+    background:#dfe8f6
+}
+
+.claim-detail-tab{
+    background:#dfe8f6;
+    background-color:#dfe8f6;
+    padding:10px 5px 5px 5px;
+}
+
+.search-panel-holder{
+    background: #dfe8f6;
+    background-color:#dfe8f6;
+}
+
+/*.branding-grid-row .x-grid3-row-over td {
+    background-color: red;#B6E2FF
+}*/
+
+.branding-grid-row .x-grid3-row-over {
+    background-color: red !important;/*#B6E2FF*/
+    background-image : none !important;
+}
+
+.branding-grid-row {
+    background-color:#E2F0E2;
+}
+

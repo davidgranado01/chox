@@ -126,6 +126,31 @@
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>false</removeIncluded>
                             <includes>
+                                <include>**/xtheme-erac-min.css</include>
+                                <include>**/xtheme-erac_ie6-min.css</include>
+                            </includes>
+                            <output>${project.build.directory}/${project.build.finalName}/css/branding-libs-${js.aggregator.libs}-min.css</output>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>false</removeIncluded>
+                            <includes>
+                                <include>**/branding_panel_theme-min.css</include>
+                            </includes>
+                            <output>${project.build.directory}/${project.build.finalName}/css/branding_panel_theme-${js.aggregator.choxall}-min.css</output>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>false</removeIncluded>
+                            <includes>
+                                <include>**/chox_panel_theme-min.css</include>
+                            </includes>
+                            <output>${project.build.directory}/${project.build.finalName}/css/chox_panel_theme-${js.aggregator.choxall}-min.css</output>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>false</removeIncluded>
+                            <includes>
                                 <include>**/chox-min.css</include>
                             </includes>
                             <output>${project.build.directory}/${project.build.finalName}/css/chox-${js.aggregator.choxall}-min.css</output>

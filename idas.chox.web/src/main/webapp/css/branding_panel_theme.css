@@ -1,0 +1,145 @@
+div#tabPanel{
+    background-color:#E2F0E2;
+}
+
+.chox-form-container
+{
+    background: #E2F0E2;
+    padding: 6px;
+}
+
+.chox-form-container-taskPanel
+{
+    background: #E2F0E2;
+    padding: 6px;
+    border: 1px solid #8bb8f3;
+}
+
+div.comments
+{
+    background: #E2F0E2;
+}
+
+table.searchForm
+{
+
+    background: #E2F0E2; 
+    width:99.6%;
+    border-collapse:collapse;
+    margin:2px;
+
+}
+
+div.buttonPanel
+{
+    background: #E2F0E2; 
+    text-align:center;
+    padding:5px;
+
+}
+
+table.dashboard
+{   
+    background: #E2F0E2; 
+    width:99.6%;
+    border-collapse:collapse;
+    margin: 16px 2px 2px 2px;        
+}
+
+.sub-admin-tab-css{
+    background:inherit;
+    background-color:inherit;
+    background:#E2F0E2;
+    background-color:#E2F0E2;
+    padding:10px 5px 5px 5px;
+    height:610px;
+}
+
+#vccSelectionPanel{
+    padding:20px 10px 20px 10px;
+    background: #E2F0E2;
+}
+
+table.report-form{
+
+    background: #E2F0E2;
+    width:99.6%;
+    border-collapse:collapse;
+    margin:2px;
+
+}
+
+div.upload-status-container
+{
+    overflow:auto;
+    border:solid 1px black;
+    background:#E2F0E2
+}
+
+.claim-detail-tab{
+    background:#E2F0E2;
+    background-color:#E2F0E2;
+    padding:10px 5px 5px 5px;
+}
+
+.search-panel-holder{
+    background: #E2F0E2;
+    background-color:#E2F0E2;
+}
+
+/*.branding-grid-row {
+    background-color:#E2F0E2;
+}*/
+
+#QueueGridId .x-grid3-row-selected .x-grid3-cell-inner {
+    font-weight: bold;
+    background-color: #A7CCA7 !important;
+    color:black;
+    
+    -moz-box-shadow: 1px 1px #BBC4C5 inset;
+    -webkit-box-shadow: 1px 1px #BBC4C5 inset;
+    box-shadow: 1px 1px #BBC4C5 inset;
+}
+
+#QueueGridId .x-grid3-row-over .x-grid3-cell-inner {
+    background-color: #E2F0E2;/*#B6E2FF*/
+}
+
+.search-panel-status-info-selected
+{  
+    background-color:/*#E2ECF5;*/#A7CCA7;
+    border:1px orange solid;
+    padding:2px 2px 2px 10px;
+    font-weight:bold;
+    font-size:11px;
+    vertical-align:middle;
+    /*margin-bottom:4px;*/
+    white-space:normal;
+    background-repeat: no-repeat;
+    background-position: 10px center; 
+    /*background-image: url('../images/default/window/icon-info.gif');*/
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
+#top-menu{	
+    margin: 0;
+    padding: 0;
+    z-index:30;
+    float: right;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    color:black;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.blockUI-background {
+    background-color: green;
+}
+
+div.chox-claim-header
+{
+    border: 1px black solid;
+    font: 11px tahoma,arial,verdana,sans-serif;
+    margin-bottom: 10px;
+}

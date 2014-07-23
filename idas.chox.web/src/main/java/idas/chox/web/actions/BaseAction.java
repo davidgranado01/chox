@@ -1,35 +1,33 @@
 package idas.chox.web.actions;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
-import org.springframework.security.access.AccessDeniedException;
-
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
-
-import org.hibernate.StaleObjectStateException;
-
 import com.opensymphony.xwork2.ActionContext;
-
 import com.opensymphony.xwork2.ActionSupport;
-
-import net.sf.json.JSONObject;
-
+import idas.chox.core.model.Branding;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Entity;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -574,4 +572,52 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public void removeRedirectionParamInSession() {
         getSession().remove("redirect");
     }
+    
+    public String getBrandingJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>();
+        for (Branding branding : Branding.values()) {
+            luItems.add(new LookupItem(branding.getDescription(), branding.getbrandingValue().toString()));
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+    }
+    
+    public String getBrandingType() {
+        if (getAuthenticatedUser().isAnInsurer()) {
+            return getAuthenticatedUser().getInsurer().getBranding().getDescription();
+        } else if (getAuthenticatedUser().isCHO()) {
+            return getAuthenticatedUser().getChorganisation().getBranding().getDescription();
+        } else {
+            return Branding.NO_BRANDING.getDescription();
+        }
+    }
+    
+    public boolean isBrandingType(Claim claim) {
+        
+        if (getAuthenticatedUser().isCHO()) {
+            if (getAuthenticatedUser().getChorganisation().getBranding().getDescription().equalsIgnoreCase(Branding.FULL_BRANDING.getDescription())) {
+                return true;
+            } else if (getAuthenticatedUser().getChorganisation().getBranding().getDescription().equalsIgnoreCase(Branding.PARTIAL_BRANDING.getDescription())) {
+                if (claim != null) {
+                    if (claim.getChorganisation().getName().contains("Enterprise")) {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } else if (getAuthenticatedUser().isAnInsurer()) {
+            if (getAuthenticatedUser().getInsurer().getBranding().getDescription().equalsIgnoreCase(Branding.FULL_BRANDING.getDescription())) {
+                return true;
+            } else if (getAuthenticatedUser().getInsurer().getBranding().getDescription().equalsIgnoreCase(Branding.PARTIAL_BRANDING.getDescription())) {
+                if (claim != null) {
+                    if (claim.getChorganisation().getName().contains("Enterprise")) {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    } 
 }

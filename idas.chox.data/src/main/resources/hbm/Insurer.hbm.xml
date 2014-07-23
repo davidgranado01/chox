@@ -82,6 +82,7 @@
     <property column="collaboration_payments_team_enable" name="collaborationPaymentsTeamEnable" not-null="true"/>
     <property column="insurer_manual_payments_team_enable" name="insurerManualPaymentsTeamEnable" not-null="true"/>
     <property column="tpi_payments_team_enable" name="tpiPaymentsTeamEnable" not-null="true"/>
+    <property column="branding" name="branding" type="idas.chox.data.hibernate.BrandMapping"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

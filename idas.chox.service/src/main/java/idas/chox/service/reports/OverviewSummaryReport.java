@@ -1459,4 +1459,9 @@ public class OverviewSummaryReport implements Report {
     public short[] getColumnsToHide() {
         return null;
     }
+
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
 }

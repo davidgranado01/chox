@@ -37,14 +37,8 @@
 
     Ext.onReady(function(){
         
-        if (<s:property value="isChoxAdmin"/>) {
-            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-seeTestTheme.css");
-            $('.chox-form-container').css({"background":"#F1F5F5"});
-        } else if (<s:property value="isInsurer"/>) {
-            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
-            $('.chox-form-container').css({"background":"#fff"});
-        }
-
+//        changeBrandingCss();
+        
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -377,11 +371,23 @@
         Ext.get('claimDetailScreenDiv').mask("Loading search result ...");
     }
 
+//    function changeBrandingCss() {
+//        if (<s:property value="isCHO"/>) {
+//            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-seeTestTheme.css");
+//            $('.chox-form-container').css({"background":"#F1F5F5"});
+//        } else if (<s:property value="isInsurer"/>) {
+//            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
+//            $('.chox-form-container').css({"background":"#fff"});
+//        }
+//    }
 </script>
 <div id="claimDetailScreenDiv">
     <div style="width:1000px">
 
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
+<!--            <script type="text/javascript">
+                changeBrandingCss();
+            </script>-->
 
             <fieldset class="x-fieldset loaded open-by-default">
                 <legend>Claim Summary</legend>

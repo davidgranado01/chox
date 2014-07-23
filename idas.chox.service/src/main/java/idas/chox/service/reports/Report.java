@@ -24,4 +24,6 @@ public interface Report {
     
     public short[] getColumnsToHide();
     
+    public boolean isBrandingReportFormat();
+    
 }

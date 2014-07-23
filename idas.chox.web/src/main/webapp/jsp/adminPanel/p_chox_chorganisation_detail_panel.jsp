@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="branding.jspf" %>
 
 <script type="text/javascript">
 
@@ -564,11 +565,16 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
+                                        <label class="chox-form-std-label1">ERAC Branding</label>
+                                        <div id="brandingComboDiv"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable IP Whitelist</label>
                                         <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
                                     </div>
                                 </td>
-                                
                             </tr>
                             <tr>
                                 <td>

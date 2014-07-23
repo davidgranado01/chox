@@ -28,6 +28,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.Branding;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -2784,4 +2785,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.customerClaimNumber = customerClaimNumber;
     }
     
+    public boolean isBrandingClaim() {
+        return isBrandingType(claim);
+    } 
 }

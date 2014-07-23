@@ -297,4 +297,9 @@ public class AverageSettlementAmountReport implements Report {
     public short[] getColumnsToHide() {
         return null;
     }
+    
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
 }

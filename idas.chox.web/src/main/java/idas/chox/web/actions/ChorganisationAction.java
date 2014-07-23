@@ -241,5 +241,4 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
-
 }

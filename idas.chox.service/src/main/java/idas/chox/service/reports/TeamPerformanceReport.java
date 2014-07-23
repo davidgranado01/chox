@@ -322,4 +322,9 @@ public class TeamPerformanceReport implements Report{
         return null;
     }
 
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
+
 }

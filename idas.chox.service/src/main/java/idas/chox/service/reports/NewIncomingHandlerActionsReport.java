@@ -696,4 +696,9 @@ public class NewIncomingHandlerActionsReport implements Report {
         return columnsToHide;
     }
 
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
+
 }

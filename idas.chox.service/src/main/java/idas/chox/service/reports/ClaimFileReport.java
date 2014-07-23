@@ -102,4 +102,9 @@ public class ClaimFileReport implements Report {
         return null;
     }
 
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
+
 }

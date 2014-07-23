@@ -87,6 +87,15 @@ public class Insurer extends Entity implements Serializable {
     private boolean enableManualInvoiceWorkgroups;
     private boolean enableManualInvoiceOwnership;
     private boolean restrictExport;
+    private Branding Branding;
+
+    public Branding getBranding() {
+        return Branding;
+    }
+
+    public void setBranding(Branding Branding) {
+        this.Branding = Branding;
+    }
 
     public String getBlockedMessage() {
         return blockedMessage;

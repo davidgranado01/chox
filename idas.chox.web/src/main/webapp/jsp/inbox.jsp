@@ -26,20 +26,18 @@
         var title;
         var actionMenu;
         var batchUpdateSelectionModel;
+        var brandingType = '<s:property value="brandingType"/>';
+        var isPartialBranding = (brandingType === 'Partial') ? true : false;
 //        var isQueueSelectionSearch = false;
 //        var isSearchScreenSearch = false;
-//        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-//        Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
+        
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+        Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
         Ext.onReady(function() {
             // change the header width to 1300px from 1000px(used for claim detail page).
             $('div.inner').css({"width":"1190px"});
             Ext.QuickTips.init();
-            if (isChoxAdmin) {
-                Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-seeTestTheme.css");
-            } else if (<s:property value="isInsurer"/>) {
-                Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
-            }
             setupDashboardActionName();
             loadDataFromSession();
             // Need to comes before setupTabPanel method so that we can hide or show the grid depends on the tab selected.
@@ -238,7 +236,14 @@
                 autoHeight:true,
                 enableHdMenu:false,
                 title:' ',
-                viewConfig:{forceFit:true},
+                viewConfig:{
+                    forceFit:true
+                    ,getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
+                        if (isPartialBranding && record.get('cho').indexOf("Enterprise") > -1) {
+                            return 'branding-grid-row';
+                        }
+                    }
+                },
                 bbar: pagingBar,
                 tbar:[actionMenu, '->', claimsExportToExcelTbar]
             });

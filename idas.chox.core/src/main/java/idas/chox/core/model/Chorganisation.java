@@ -71,6 +71,15 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean restrictExport;
     private int maxAllowedSlaExtForSubscriber;
     private int maxAllowedSlaExtForFixedFee;
+    private Branding Branding;
+
+    public Branding getBranding() {
+        return Branding;
+    }
+
+    public void setBranding(Branding Branding) {
+        this.Branding = Branding;
+    }
 
     public int getMaxAllowedSlaExtForSubscriber() {
         return maxAllowedSlaExtForSubscriber;

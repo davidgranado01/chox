@@ -27,24 +27,29 @@ public class ExcelReportBuilder implements ReportBuilder {
 
         boolean addLogo = true;
 
-        if (report.getReportCode().equals("RPT100")) {
-            addLogo = false;
-        }
+//        if (report.getReportCode().equals("RPT100")) {
+//            addLogo = false;
+//        }
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
         short[] columnsToHide = report.getColumnsToHide();
         LOG.info("Report data generated - constructing report from template file '{}'", templeteName);
-        return doCreateReport(reportParameters, templeteName, addLogo, columnsToHide);
+        return doCreateReport(reportParameters, templeteName, addLogo, columnsToHide, report.isBrandingReportFormat());
     }
 
     
-    public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
+    public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook, boolean brandingLogo) {
 
         int col = 1, row = 0;
 
         try {
-
-            InputStream fis = new ClassPathResource(reportTemplatePath + "choxLogo.jpg").getInputStream();
+            InputStream fis;
+            if (brandingLogo) {
+                fis = new ClassPathResource(reportTemplatePath + "erac.jpg").getInputStream();
+            } else {
+                fis = new ClassPathResource(reportTemplatePath + "choxLogo.jpg").getInputStream();
+            }
+            
             ByteArrayOutputStream img_bytes = new ByteArrayOutputStream();
             int b;
             while ((b = fis.read()) != -1) {
@@ -67,7 +72,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     }
 
     
-    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide) {
+    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide, boolean brandingLogo) {
         ByteArrayOutputStream out = null;
         try {
             InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
@@ -79,7 +84,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             
             if (addLogo) {
-                resultWorkbook = appendImage(resultWorkbook);
+                resultWorkbook = appendImage(resultWorkbook, brandingLogo);
             }
             resultWorkbook.write(out);
         } catch (Exception e) {

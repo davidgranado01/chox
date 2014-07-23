@@ -40,7 +40,12 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="middle">
                             <td>
-                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo" />
+                                <s:if test='brandingClaim || brandingType.equalsIgnoreCase("full")'>
+                                    <img src="<%= request.getContextPath()%>/images/erac.jpg" style="display: inline; float: left; width: 97px; height: 32px" alt="ERAC Logo" />
+                                </s:if>
+                                <s:else>
+                                    <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo" />
+                                </s:else>
                             </td>
                             <td width="100%" align="right">
 

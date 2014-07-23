@@ -370,4 +370,9 @@ public class ClaimRejectedReport implements Report {
         return reportRows;
     }
 
+    @Override
+    public boolean isBrandingReportFormat() {
+        return (Boolean) externalParameter.get("isBrandingReport");
+    }
+
 }
