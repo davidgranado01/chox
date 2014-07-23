@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
@@ -19,6 +20,7 @@ public class NewTpiClaimTest extends BaseTest {
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        claim.setBreBand(new BreBand());
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         Activity activity = activityFactory.getActivity("newTpiClaim");
         activity.process(claim);
@@ -48,6 +50,7 @@ public class NewTpiClaimTest extends BaseTest {
     public void testMakeNewTotalInterimPayment2() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setBreBand(new BreBand());
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(null);
         claim.setTpiClaimStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
@@ -67,6 +70,7 @@ public class NewTpiClaimTest extends BaseTest {
     public void testMakeNewTotalInterimPayment3() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setBreBand(new BreBand());
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(null);
         claim.setTpiClaimStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
