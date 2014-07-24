@@ -49,6 +49,7 @@ function doExportExcel(){
             }else{
                 choxExtAjaxRequest({
                     url: '/prv/p/generateExportFile.action',
+                    timeout : 3600000,
                     callback : function(options,success,response  ){
                     }
                 });
@@ -236,6 +237,7 @@ function doTaskExportExcel(){
             }else{
                 choxExtAjaxRequest({
                     url: "/prv/p/generateTaskExportFile.action",
+                    timeout : 3600000,
                     params : {'hideCompleted' : hideCompleted, 'showAssignedTasksOnly' : showAssignedTasksOnly},
                     callback : function(options,success,response  ){
                     }

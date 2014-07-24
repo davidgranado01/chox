@@ -433,7 +433,7 @@ public class TasksAction extends BaseAction {
             getSession().put("exceptionThrown", false);
         }
 
-        String rtnStr = ERROR;
+        String rtnStr = SUCCESS;
         try {
             if (getSession() != null) {
                 SearchResult searchResult;
