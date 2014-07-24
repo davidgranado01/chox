@@ -7,7 +7,7 @@
     
     Ext.onReady(function() {
 
-            ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
+        ui.unvalidatedDateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
 
         var rentalStartTimPicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
@@ -61,7 +61,7 @@
             if (value === '') return true;
             else return (/^(\d{2}:\d{2})$/).test(value);
         });
-
+        
         var form = $("#formUpdateHireMonitoringVehicle");
 
         var fsets =  $('legend',form);
@@ -71,13 +71,13 @@
 
         form.validate(
         {
-            errorLabelContainer: "#HVMDmessageBox",
+            errorLabelContainer: "#HVDmessageBox",
             rules: {
-                rentalStart:{dateITA:true},
+                rentalStart:{dateITA:true, required : true},
                 rentalStartTime:{time:true}
             },
             messages: {
-                rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'"},
+                rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'", required : "You must select a 'Hire Start (Date)'"},
                 rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"}
             }
         });
@@ -99,7 +99,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Hire Start (Date)</label>
+                    Hire Start (Date)<span class="mandatory">*</span></label>
                 <span id="rentalMonitoringStartPH"></span></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
