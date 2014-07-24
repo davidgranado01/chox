@@ -509,7 +509,7 @@
         <property name="name" value="Invoices With Final Review"/>
         <property name="key" value="FinalReviewCho"/>
         <property name="status" value="AwaitingLiabilityResolution"/>
-        <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made by the Insurer, thus eliminating unnecessary claim touch points"/>
+        <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made, thus eliminating unnecessary claim touch points"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
