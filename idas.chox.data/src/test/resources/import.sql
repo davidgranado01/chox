@@ -660,6 +660,8 @@ INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, chec
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 355, 'activity.UpdateManualInvoicePaid.AwaitingInvoicePayment', false, false, false, false, false, false, false, false, false;
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 356, 'activity.EcdUpdate.ClaimUnacknowledgedUnassigned', false, false, false, false, false, false, false, false, false;
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 357, 'activity.SwitchFromPaymentsTeam.AwaitingInvoicePayment', false, false, false, false, false, false, false, false, false;
+INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 358, 'activity.HireUpdate.AwaitingCarHireInfo', false, false, false, false, false, false, false, false, false;
+INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 359, 'activity.LouUpdate.AwaitingCarHireInfo', false, false, false, false, false, false, false, false, false;
 
 
 
@@ -1019,3 +1021,5 @@ INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  355, 355, 'ALL', 1;
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  356, 356, 'ALL', 1;
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  357, 357, 'ALL', 1;
+INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  358, 358, 'ALL', 1;
+INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  359, 359, 'ALL', 1;
