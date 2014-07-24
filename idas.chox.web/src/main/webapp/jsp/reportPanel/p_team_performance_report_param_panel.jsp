@@ -9,8 +9,8 @@
 
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
-        ui.dateField('startDate',getTodayDate(),'dateFromDiv');
-        ui.dateField('endDate',getTodayDate(),'dateToDiv');
+        ui.unvalidatedDateField('startDate',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('endDate',getTodayDate(),'dateToDiv');
 
         var teamPerformanceReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -138,11 +138,11 @@
                 startDate: {
                 	max:"'Period to' can't be before 'Period From'",
                     required:"A value must be supplied for 'Period From'",
-                    dateITA:"You must supply a date value 'Period From'"
+                    dateITA:"You must supply valid date format for 'Period From'"
                 },
                 endDate: {
                     required:"A value must be supplied for 'Period To'",
-                    dateITA:"You must supply a date value 'Period To'"
+                    dateITA:"You must supply valid date format for 'Period To'"
                 }
             }
         });

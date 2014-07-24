@@ -5,7 +5,7 @@
     var ecdDateDateField;
     Ext.onReady(function() {
 
-        ecdDateDateField = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
+        ecdDateDateField = ui.unvalidatedDateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
 
         var form = $("#formAddNewHireMonitoringEcd");
 

@@ -7,7 +7,7 @@
 
 
     Ext.onReady(function(){
-        ui.dateField('DateStart',getTodayDate(),'startDateDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'startDateDiv');
 
     <s:if test="isCHO" > 
 
@@ -115,7 +115,7 @@
                 messages: {
                     DateStart: {
                         required:"A value must be supplied for 'Create Date'",
-                        dateITA:"You must supply a date value for 'Create Date'"
+                        dateITA:"You must supply valid date format for 'Create Date'"
                     }
                 }
             });

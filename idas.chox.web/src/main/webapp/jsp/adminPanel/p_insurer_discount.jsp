@@ -365,8 +365,8 @@
                 
             },
             messages: {
-                dateFrom : {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'"},
-                dateTo : {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"},
+                dateFrom : {required:"A value must be supplied for 'Date From'", dateITA:"You must supply valid date format for 'Date From'", max:"'Date To' can't be before 'Date From'"},
+                dateTo : {required:"A value must be supplied for 'Date To'", dateITA:"You must supply valid date format for 'Date To'"},
                 discountPercentage : {required:"A value must be supplied for 'Discount Percentage'", max :"Maximum allowed discount is 100%"},
                 insurerDiscountTypeComboId : {checkDiscountType : "Please select a Discount Type from the drop-down list"},
                 insurerDiscountSupplierId : {checkCHOId : "Please select a CHO from the drop-down list"}

@@ -283,6 +283,7 @@
                 //            hideMode: 'offsets',
                 value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -304,6 +305,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="claimUploadDateTo" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -327,6 +329,7 @@
                 //            hideMode: 'offsets',
                 value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateFrom" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -348,6 +351,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateTo" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -360,14 +364,6 @@
                 }
             });
 
-
-            // This is REALLY weird, but we have to create an unused DateField first.
-            // If this is not created, the next one we create and use (invoiceUploadDateFromPicker)
-            // does not get displayed and screws up the table layout! But only for Insurers
-            <s:if test="isInsurer" >
-            new Ext.form.DateField({});
-            </s:if>
-
             var invoiceUploadDateFromPicker = new Ext.form.DateField({
                 name: 'invoiceUploadDateFrom',
                 fieldLabel: 'Invoice Upload Date From',
@@ -377,6 +373,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateFrom" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -399,6 +396,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateTo" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -420,6 +418,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="rentalStartDate" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -441,6 +440,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="rentalEndDate" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -465,6 +465,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -488,6 +489,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
                 showWeekNumber: true,
+                msgTarget : 'qtip',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {

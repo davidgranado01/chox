@@ -7,8 +7,8 @@
     
     Ext.onReady(function(){
 
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('DateEnd',getTodayDate(),'dateToDiv');
 
         $("form#formReportParam").validate(
         {
@@ -33,12 +33,12 @@
                             return true;
                     },
                     required:"A value must be supplied for 'Date From'",
-                    dateITA:"You must supply a date value 'Date From'"
+                    dateITA:"You must supply valid date format for 'Date From'"
                 },
                 DateEnd: {
                 	max:"'Date to' can't be before 'Date From'",
                     required:"A value must be supplied for 'Date To'",
-                    dateITA:"You must supply a date value 'Date To'"
+                    dateITA:"You must supply valid date format for 'Date To'"
                 }
             }
         });

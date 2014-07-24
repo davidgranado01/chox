@@ -12,8 +12,9 @@
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
+            msgTarget : 'qtip',
         <s:if test="addPenaltyChargeConfigValidation" >
-            invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
+//            invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
             minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
         </s:if>
                 //            hideMode: 'offsets',

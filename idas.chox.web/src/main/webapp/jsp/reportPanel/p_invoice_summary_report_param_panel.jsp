@@ -7,8 +7,8 @@
     
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('DateEnd',getTodayDate(),'dateToDiv');
 
         $("form#formReportParam").validate(
         {
@@ -34,11 +34,11 @@
                 DateStart: {
                 	max:"'Invoice Uploaded To' can't be before 'Invoice Uploaded From'",
                     required:"A value must be supplied for 'Invoice Uploaded From'",
-                    dateITA:"You must supply a date value 'Invoice Uploaded From'"
+                    dateITA:"You must supply valid date format for 'Invoice Uploaded From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Invoice Uploaded To'",
-                    dateITA:"You must supply a date value 'Invoice Uploaded To'"
+                    dateITA:"You must supply valid date format for 'Invoice Uploaded To'"
                 }
             }
         });

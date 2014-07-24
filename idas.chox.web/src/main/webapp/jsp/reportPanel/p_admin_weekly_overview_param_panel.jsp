@@ -14,7 +14,7 @@
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
-            validationEvent : true,
+            validationEvent : false,
             //                        value: getTodayDate(),
             renderTo: 'dateFromDiv',
             disabledDays: [0,2,3,4,5,6] 
@@ -28,7 +28,7 @@
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
-            validationEvent : true,
+            validationEvent : false,
             //            value: defaultValue,
             renderTo: 'dateToDiv',
             disabledDays: [1,2,3,4,5,6] 
@@ -55,8 +55,8 @@
                 DateEnd:{required:true, dateITA:true}
             },
             messages: {
-                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'"},
-                DateEnd: {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"
+                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply valid date format for 'Date From'", max:"'Date To' can't be before 'Date From'"},
+                DateEnd: {required:"A value must be supplied for 'Date To'", dateITA:"You must supply valid date format for 'Date To'"
                 }
             }
         });

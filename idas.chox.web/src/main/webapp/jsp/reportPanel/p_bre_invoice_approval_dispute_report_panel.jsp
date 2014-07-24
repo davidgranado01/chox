@@ -7,7 +7,7 @@
     
     
     Ext.onReady(function(){
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'dateFromDiv');
         
     <s:if test="isInsurer" >
 
@@ -62,7 +62,7 @@
                 messages: {
                     DateStart: {
                         required:"A value must be supplied for 'Start Date'",
-                        dateITA:"You must supply a date value for 'Start Date'"
+                        dateITA:"You must supply valid date format for 'Start Date'"
                     }
                 }
             });

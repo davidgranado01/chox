@@ -146,7 +146,8 @@ var ui = function(){
             showWeekNumber: true,
             validationEvent : true,
             value: defaultValue,
-            renderTo:target
+            renderTo:target,
+            msgTarget : 'qtip'
         });
 
         return dateField;

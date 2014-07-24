@@ -7,8 +7,8 @@
     var isClaimOwnerShipEnabled = <s:property value="insurerIsClaimOwnershipEnabled"/>;
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('DateEnd',getTodayDate(),'dateToDiv');
 
         $("form#formReportParam").validate(
         {
@@ -34,11 +34,11 @@
                 DateStart: {
                 	max:"'Period to' can't be before 'Period From'",
                     required:"A value must be supplied for 'Period From'",
-                    dateITA:"You must supply a date value 'Period From'"
+                    dateITA:"You must supply valid date format for 'Period From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Period To'",
-                    dateITA:"You must supply a date value 'Period To'"
+                    dateITA:"You must supply valid date format for 'Period To'"
                 }
             }
         });

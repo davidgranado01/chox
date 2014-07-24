@@ -7,8 +7,8 @@
 
     Ext.onReady(function(){
         
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        ui.unvalidatedDateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.unvalidatedDateField('DateEnd',getTodayDate(),'dateToDiv');
 
         $("form#formReportParam").validate(
         {
@@ -34,11 +34,11 @@
                 DateStart: {
                 	max:"'Date To' can't be before 'Date From'",
                     required:"A value must be supplied for 'Claim Uploaded Date From'",
-                    dateITA:"You must supply a date value 'Claim Uploaded Date From'"
+                    dateITA:"You must supply valid date format for 'Claim Uploaded Date From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Claim Uploaded Date To'",
-                    dateITA:"You must supply a date value 'Claim Uploaded Date To'"
+                    dateITA:"You must supply valid date format for 'Claim Uploaded Date To'"
                 }
             }
         });

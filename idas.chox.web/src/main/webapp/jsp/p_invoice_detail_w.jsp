@@ -50,7 +50,7 @@
             }
         };
         createVehicleClassPriceHelpNote();
-        ui.dateField('dateInvoiced', '<s:date format="dd/MM/yyyy" name="dateInvoiced" />' ,'dateInvoicedPH');
+        ui.unvalidatedDateField('dateInvoiced', '<s:date format="dd/MM/yyyy" name="dateInvoiced" />' ,'dateInvoicedPH');
         var form0= $("#formUpdateInvoiceRecalculationForm");
         var form = $("#formUpdateInvoiceForm");
         var form1 = $("#formUpdateExtrasFORM");
@@ -187,7 +187,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="rentalStart" />',
                 showWeekNumber: true,
-                validationEvent : true
+                validationEvent : false
             });
        
        var rentalEndDatePicker = new Ext.form.DateField({
@@ -198,7 +198,7 @@
                 format: 'd/m/Y',
                 value: '<s:date format="dd/MM/yyyy" name="rentalEnd" />',
                 showWeekNumber: true,
-                validationEvent : true
+                validationEvent : false
             });
             
         rentalStartTimePicker = new Ext.form.TimeField({
