@@ -26,7 +26,7 @@
             width: 80,
             renderTo: 'brandingComboDiv',
             valueField: 'value',
-            value : '<s:property value="branding.getDescription()"/>',
+            value : '<s:property value="branding.getbrandingValue()"/>',
             id: 'brandingComboId',
             hiddenName: 'branding',
             displayField:'text',
