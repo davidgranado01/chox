@@ -84,7 +84,7 @@ public class InsurerUploadTest extends BaseTest {
 
             claim.setChorganisation(chorganisationService.getChorganisation(1006));
             claim.setInsurer(insurerService.getInsurerByName("RSA"));
-
+            claim.setInvoice(claimResult.getInvoice());
             Activity activity = activityFactory.getActivity("insurerUpload");
             activity.process(claim);
             Assert.assertEquals(ClaimStatus.MANUAL_INVOICE_APPROVED, claim.getStatus());
