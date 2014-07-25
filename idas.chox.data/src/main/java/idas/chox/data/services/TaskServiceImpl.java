@@ -661,6 +661,11 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
             }
             
+            if (sort != null && sort.equalsIgnoreCase("createdBy")) {
+                // left join on claim used here to sort the task by choReference.
+                criteria.createAlias("this.createdBy", "w", CriteriaSpecification.LEFT_JOIN);
+            }
+            
             criteria.setFirstResult(start);
             criteria.setMaxResults(limit);
             criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
@@ -693,7 +698,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
-                addSort(criteria, "createdBy", dir);
+                addSort(criteria, "w.firstName", dir);
             }
         } else {
             criteria.addOrder(Order.desc("dueDate"));
