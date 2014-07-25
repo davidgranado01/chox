@@ -782,7 +782,7 @@ public class Insurer extends Entity implements Serializable {
     }
 
     public boolean isPaymentsTeamEnable() {
-        return gtaPaymentsTeamEnable || subscriberPaymentsTeamEnable || fixedFeePaymentsTeamEnable
+        return gtaPaymentsTeamEnable || subscriberPaymentsTeamEnable || fixedFeePaymentsTeamEnable || tpiPaymentsTeamEnable
                 || insurerVsInsurerPaymentsTeamEnable || collaborationPaymentsTeamEnable || insurerManualPaymentsTeamEnable;
     }
 
