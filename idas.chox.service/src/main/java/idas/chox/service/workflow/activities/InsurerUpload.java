@@ -134,8 +134,12 @@ public class InsurerUpload extends BaseActivity {
                     && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
                 claim.getInvoice().setPaymentTeam(true);
         }
-
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && (autoRoutedInvoice || claim.getInvoice().isPaymentTeam())) {
+        boolean invoicePassedBre = false;
+        
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            invoicePassedBre = true;
+        }
+        if (invoicePassedBre && autoRoutedInvoice) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
 
@@ -169,11 +173,11 @@ public class InsurerUpload extends BaseActivity {
                 claim.setManualInvoiceApproved(true);
             }
 
-        } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && !isEnableManualInvoiceWorkgroupOwnership) {
+        } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && invoicePassedBre && !isEnableManualInvoiceWorkgroupOwnership) {
             claim.setManualInvoiceApproved(true);
             super.setCurrentStatus("");
             claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+        } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && invoicePassedBre) {
             claim.setManualInvoiceApproved(true);
             super.setCurrentStatus("");
             claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
@@ -187,13 +191,25 @@ public class InsurerUpload extends BaseActivity {
             }
         } else {
             // Insurer Claim
-            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            if (invoicePassedBre) {
                 claim.setManualInvoiceApproved(true);
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
             } else {
                 claim.setManualInvoiceApproved(false);
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
             }
+        }
+        
+        if (invoicePassedBre && claim.getBreBand().isPaymentTeamActive()
+                && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
+                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+            claim.getInvoice().setPaymentTeam(true);
+            getDataService().save(claim);
+            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            // move claim to next status
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
         LOG.debug("Finished InsurerUpload activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
 

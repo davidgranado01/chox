@@ -118,7 +118,6 @@ public class InvoiceResubmit extends BaseActivity {
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            invoiceAccepted = true;
         }
 
     }
