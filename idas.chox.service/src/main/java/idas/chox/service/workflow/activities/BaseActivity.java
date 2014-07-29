@@ -235,7 +235,7 @@ public abstract class BaseActivity implements Activity {
             auditTrail.setOriginalStatus(currentStatus);
 
             Date currentDate = DateHelper.getCurrentDateTime();
-            currentDate.setTime(currentDate.getTime() + (timeInterval * 1000));
+            currentDate.setTime(currentDate.getTime() + timeInterval);
 
             auditTrail.setUpdateDate(currentDate);
             auditTrail.setUser(getCurrentUser());

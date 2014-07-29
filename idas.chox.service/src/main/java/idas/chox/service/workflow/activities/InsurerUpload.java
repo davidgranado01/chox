@@ -13,6 +13,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.services.BreBandService;
 import idas.chox.service.xml.util.NodeHelper;
 
@@ -135,10 +136,17 @@ public class InsurerUpload extends BaseActivity {
                 claim.getInvoice().setPaymentTeam(true);
         }
         boolean invoicePassedBre = false;
-        
+        boolean paymentsTeamInvoice = false;
+
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             invoicePassedBre = true;
         }
+        if (claim.getBreBand().isPaymentTeamActive()
+                && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
+                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+            paymentsTeamInvoice = true;
+        }
+
         if (invoicePassedBre && autoRoutedInvoice) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
@@ -161,7 +169,7 @@ public class InsurerUpload extends BaseActivity {
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
                 getDataService().save(claim);
-                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -100);
             }
 
             // move claim to next status
@@ -200,16 +208,22 @@ public class InsurerUpload extends BaseActivity {
             }
         }
         
-        if (invoicePassedBre && claim.getBreBand().isPaymentTeamActive()
-                && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
-                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+        if (invoicePassedBre && paymentsTeamInvoice) {
             claim.getInvoice().setPaymentTeam(true);
+        }
+        
+        if (invoicePassedBre && paymentsTeamInvoice && ClaimStatus.MANUAL_INVOICE_APPROVED.equals(claim.getStatus())) {
             getDataService().save(claim);
-            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            logTransaction(claim, claim.getPreviousStatus()==null? "": claim.getPreviousStatus(), claim.getStatus(), -50);
             // move claim to next status
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN) {
+                claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+            } else {
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            }
         }
         LOG.debug("Finished InsurerUpload activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
 

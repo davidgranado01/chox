@@ -129,7 +129,7 @@ public class NewTpiClaim extends BaseActivity {
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
                 getDataService().save(claim);
-                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);
 
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
@@ -159,7 +159,7 @@ public class NewTpiClaim extends BaseActivity {
         } else {
             LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
             getDataService().save(claim);
-            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);            
+            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);            
         }
     }
 

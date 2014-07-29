@@ -8,6 +8,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 
@@ -102,12 +103,29 @@ public class AssignManualInvoiceOwner extends BaseActivity {
 
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
+            if (workgroup.isStpExcluded() && claim.getInvoice().isPaymentTeam()) {
+                claim.getInvoice().setPaymentTeam(false);
+            }
         } else {
             LOG.debug("Workgroup is not enabled for this insurer.");
         }
 
         if (!updateOnly) {
-            if (claim.isManualInvoiceApproved()) {
+            if (claim.isManualInvoiceApproved() && claim.getInvoice().isPaymentTeam()) {
+                claim.setPreviousStatus(claim.getStatus());
+                claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+                setCurrentStatus(claim.getStatus());
+                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), -50);
+                // move claim to next status
+                claim.setPreviousStatus(getCurrentStatus());
+                
+                if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN) {
+                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                } else {
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+               }
+            } else if (claim.isManualInvoiceApproved()) {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
             } else {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
