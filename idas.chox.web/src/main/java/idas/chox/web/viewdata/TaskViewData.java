@@ -97,7 +97,7 @@ public class TaskViewData {
             toBeCompletedBy = "CHO";
         }
         String orgName = "";
-        WebUser user = task.getCreatedBy();
+        WebUser user = task.getRaisedBy();
         if (user != null) {
             Chorganisation cho = user.getChorganisation();
             Insurer ins = user.getInsurer();

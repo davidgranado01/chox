@@ -169,6 +169,11 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 }
             }
         }
+        
+        if (task.getRaisedBy() == null) {
+            task.setRaisedBy(this.getSecurityInfoProvider().getCurrentUser());
+        }
+        
         if (!task.getInsurer() && task.getVisibility() == 3) {
             // Need to set visibility role depending upon the claim status for CHO external tasks
             if (task.getClaim() == null) {
@@ -661,9 +666,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
             }
             
-            if (sort != null && sort.equalsIgnoreCase("createdBy")) {
+            if (sort != null && sort.equalsIgnoreCase("raisedBy")) {
                 // left join on claim used here to sort the task by choReference.
-                criteria.createAlias("this.createdBy", "w", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.raisedBy", "w", CriteriaSpecification.LEFT_JOIN);
             }
             
             criteria.setFirstResult(start);
@@ -697,7 +702,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 addSort(criteria, "description", dir);
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
-            } else if (sort.equalsIgnoreCase("createdBy")) {
+            } else if (sort.equalsIgnoreCase("raisedBy")) {
                 addSort(criteria, "w.firstName", dir);
             }
         } else {
