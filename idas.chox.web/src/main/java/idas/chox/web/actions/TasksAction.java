@@ -87,7 +87,11 @@ public class TasksAction extends BaseAction {
     }
 
     public void setSort(String sort) {
-        this.sort = sort;
+        if (sort != null && sort.equals("createdBy")) {
+            this.sort = "raisedBy";
+        } else {
+            this.sort = sort;
+        }
     }
 
     public String getDir() {
@@ -200,9 +204,6 @@ public class TasksAction extends BaseAction {
         }
 
         for (Task c : tasks) {
-            if (c.getRaisedBy() != null) {
-                c.setCreatedBy(c.getRaisedBy());
-            }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 

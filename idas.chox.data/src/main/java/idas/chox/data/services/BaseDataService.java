@@ -229,9 +229,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     
     public void addSort(Criteria criteria, String sort, String dir) {
         if (dir.equalsIgnoreCase("desc")) {
-            criteria.addOrder(Order.desc(sort));
+            criteria.addOrder(Order.desc(sort).ignoreCase());
         } else {
-            criteria.addOrder(Order.asc(sort));
+            criteria.addOrder(Order.asc(sort).ignoreCase());
         }
     }
     

@@ -299,3 +299,11 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 ----------------------
 -- End of 8.3.4
 ----------------------
+
+--------------------------------------------------------------------------------
+-- bug#2858 - Production - Task Panel "Created By" Sorting Order Is Inconsistent
+--------------------------------------------------------------------------------
+UPDATE task SET raised_by = created_by WHERE raised_by is null;
+----------------------
+-- End of bug#2858
+----------------------
