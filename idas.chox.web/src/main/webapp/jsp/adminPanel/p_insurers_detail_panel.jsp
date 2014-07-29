@@ -961,7 +961,9 @@
                                             <label class="chox-form-std-label1" style="width:680px; text-align: left;" id="paymentTeamNotActiveLabelId">
                                                 Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be
                                                 re-routed for the following claim types. Note that an exclusion regex can optionally
-                                                be specified which, if matched on the claim number, will NOT move or re-route the invoice:
+                                                be specified which, if matched on the claim number, will NOT move or re-route the invoice.
+                                                Note that unless the Payments Team is activated Insurer Upload Invoices will be moved
+                                                directly to 'Manual Invoice BRE Approved':
                                             </label>
                                         </div>
                                     </td>
