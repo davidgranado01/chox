@@ -70,8 +70,10 @@
 
         function loadDataFromSession() {  
             <s:if test="loadingInboxPageFirstTimeAfterLogin"> 
-                Ext.state.Manager.set("claims_grid_baseParams",null);
-                Ext.state.Manager.set("recentlyClickedQueueRowNumber",null);
+                Ext.state.Manager.set("claims_grid_baseParams", null);
+                Ext.state.Manager.set("xml_upload_grid_baseParams", null);
+                Ext.state.Manager.set("recentlyClickedQueueRowNumber", null);
+                Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", null);
                 Ext.state.Manager.set("isClaimSearchMade", false);
                 Ext.state.Manager.set("currentTabIndex", <s:property value="preSelectedActiveTab"/>);
 //                Ext.state.Manager.set("syncWithSearchField", false);

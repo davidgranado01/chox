@@ -35,8 +35,8 @@ Ext.onReady(function() {
                 msg: "We encountered a problem processing this request, please try again.",
                 width: 300,
                 buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR,
-                fn: function(){location.reload();}
+                icon: Ext.MessageBox.ERROR
+//                ,fn: function(){location.reload();}
             });
 
         });

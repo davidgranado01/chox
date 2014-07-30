@@ -11,17 +11,12 @@
     var xmlClaimsStatusGrid;
     var processStatus=0;
     var xmlUploadFileGridRecordPerPage=10;
-    var start=0;
-    var defaultDays = 1;
     var processing = false;
     var selectedFileId;
     var selectedFileTotalClaims;
     var intervelId;
     var totalRecordLoaded=0;
     var sm;
-    var lastSelectedFile=-1;
-    var canSelectRow = false;
-
 
     Ext.onReady(function(){
         
@@ -40,12 +35,15 @@
             header: ' ',
             listeners:{
                 rowselect : function ( selmo, rowIndex, record ){
-                    lastSelectedFile=rowIndex;
+                    if (uploadedFileData.lastOptions.params) {
+                        Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", uploadedFileData.lastOptions.params.start + rowIndex);
+                    } else {
+                        Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", uploadedFileData.baseParams.start + rowIndex);
+                    }
                     if(record.get('processed')){
                         setGridHeight(record.get('totalClaims'));
                         xmlClaimsStatusGrid.getGridEl().mask('Please wait loading claims ...');
                         loadProcessedClaimDetails(record.get('id'));
-                        claimDetailsGridRowColourRenderer();
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
                     }else if(record.get('status')=="Processing.."){
                         uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
@@ -66,7 +64,7 @@
                     
                 },
                 rowdeselect : function(){
-                    lastSelectedFile=-1;
+                    Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", null);
                     emptyClaimsDetailGrid();
                 }
             }
@@ -121,7 +119,6 @@
                                                     intervelId=window.clearInterval(intervelId);
                                                     processStatus=0;
                                                     uploadedFileGrid.getGridEl().unmask();
-                                                    defaultDays=1;
                                                     loadUploadedFiles();
                                                 }
                                             }
@@ -136,7 +133,6 @@
                                                 });
                                                 processStatus=0;
                                                 uploadedFileGrid.getGridEl().unmask();
-                                                defaultDays=1;
                                                 loadUploadedFiles();
                                             }}else{
                                             /*
@@ -229,7 +225,6 @@
                                     timeout:480000,
                                     callback : function(options,success,response){
                                         uploadedFileGrid.getGridEl().unmask();
-                                        defaultDays=1;
                                         loadUploadedFiles();
                                         if(response.responseText){
                                             var resp = Ext.util.JSON.decode(response.responseText);
@@ -294,8 +289,7 @@
                     id : 'fileUploadUploadTodayButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('Files Uploaded Today');
-                        defaultDays=1;
-                        loadUploadedFiles();
+                        loadUploadedFiles(1);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
@@ -303,8 +297,7 @@
                     id : 'fileUploadIn7DaysButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('Files Uploaded In Last 7 Days');
-                        defaultDays=6;
-                        loadUploadedFiles();
+                        loadUploadedFiles(6);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
@@ -312,8 +305,7 @@
                     id : 'fileUploadIn30DaysButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('Files Uploaded In Last 30 Days');
-                        defaultDays=29;
-                        loadUploadedFiles();
+                        loadUploadedFiles(29);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
@@ -321,8 +313,7 @@
                     id : 'fileUploadAllButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('All Uploaded Files');
-                        defaultDays = 999;
-                        loadUploadedFiles();
+                        loadUploadedFiles(999);
                         emptyClaimsDetailGrid();
                     }
                 }
@@ -369,20 +360,26 @@
             remoteSort: true
             ,listeners:  {
                             load: function( store, records, options){
-                                if(canSelectRow){
-                                    SelectLastSelectedRow();
-                                    canSelectRow=false
+                                var previouslySelectedRowIndex = Ext.state.Manager.get("recentlyClickedXmlUploadRowNumber");
+                                if (previouslySelectedRowIndex >= 0) {
+                                    if (options.params.start <= previouslySelectedRowIndex && (options.params.start+options.params.limit) >= previouslySelectedRowIndex) {
+                                        sm.selectRow(previouslySelectedRowIndex - options.params.start);
+                                    } else {
+                                        emptyClaimsDetailGrid();
+                                    }
                                 }
                             },
-                            beforeload : function(scope,options){
-                                uploadedFileData.baseParams = {"days":defaultDays};
+                            beforeload : function(store, options) {
+                                var baseParams = Ext.apply({}, options.params, store.baseParams);
+                                Ext.state.Manager.set("xml_upload_grid_baseParams", baseParams);
+//                                uploadedFileData.baseParams = {"days":defaultDays};
                             }
             }
         });
 
         uploadedFileData.setDefaultSort('createdDate', 'desc');
 
-        var pagingBar = new Ext.PagingToolbar({
+        var xmlUploadedFilepagingBar = new Ext.PagingToolbar({
             pageSize: xmlUploadFileGridRecordPerPage,
             store: uploadedFileData,
             displayInfo: true,
@@ -391,6 +388,20 @@
             plugins: new Ext.ux.ProgressBarPager()
         });
 
+        var gridRowNumber = Ext.extend(Ext.grid.RowNumberer, {
+            renderer: function(v, p, record, rowIndex, colIndex, store) {
+                if (this.rowspan) {
+                    p.cellAttr = 'rowspan="' + this.rowspan + '"';
+                }
+
+//                var so = store.lastOptions;
+//                var sop = so ? so.params: null;
+//                return ((sop && sop.start) ? sop.start: 0) + rowIndex + 1;
+                var start = (store.lastOptions.params) ? store.lastOptions.params.start : store.baseParams.start;
+                return start + rowIndex + 1;
+            }
+        });
+        
         uploadedFileGrid = new Ext.grid.GridPanel({
             id : 'uploadedFileGridId',
             listeners: {cellclick:FilesOnClick},
@@ -399,17 +410,22 @@
             renderTo:'uploadedFileGrid',
             enableHdMenu:false,
             layout:'fit',
-            viewConfig:{forceFit:true},
+            viewConfig:{
+                forceFit:true,
+                getRowClass: uploadedFileDetailsGridRowColourRenderer
+            },
             selModel : sm,
             tbar:tbar,
-            bbar: pagingBar,
+            bbar: xmlUploadedFilepagingBar,
             title:'Files Uploaded Today',
             deferRowRender:false,
             enableColumnMove: false,
+            stateId:'xml_uploaded_files_grid',
+            stateful:true,
             columns: [
                 
                 sm,
-                new Ext.grid.RowNumberer(),
+                new gridRowNumber(),
                 {header: "File Name", width:100, dataIndex: 'fileName', sortable: true, resizable: true},
                 {header: "File Size", width:50, dataIndex: 'fileSize', sortable: true, resizable: true},
                 {header: "Total Claims", width:40, dataIndex: 'totalClaims', sortable: true, resizable: true},
@@ -421,11 +437,10 @@
 
             ],
             width:1255,
-            height:210
+            height:320
         });
 
         
-        defaultDays=1;
         loadUploadedFiles();
 
 
@@ -472,7 +487,10 @@
             //bbar : exportToExcelButtonBar,
             enableHdMenu:false,
             layout:'fit',
-            viewConfig:{forceFit:true},
+            viewConfig:{
+                forceFit:true,
+                getRowClass: claimDetailsGridRowColourRenderer
+            },
             title:'Uploaded Claim Details',
             tbar : exortToExcelTbar,
             columns: [
@@ -541,7 +559,6 @@
         if(selectedFileTotalClaims>totalRecordLoaded){
             processing = true;
             loadLiveProcessedClaimDetails(selectedFileId);
-            claimDetailsGridRowColourRenderer();
         }else{
             setGridHeight(totalRecordLoaded);
             processing = false;
@@ -550,10 +567,12 @@
             totalRecordLoaded=0;
             processStatus=0;
             uploadedFileGrid.getGridEl().unmask();
-            defaultDays=1;
-            canSelectRow=true;
             loadUploadedFiles();
-            loadQueueGrid();
+            // check the inbox tab is loaded before loading the inbox queue grid. 
+            if (typeof(loadQueueGrid) != "undefined") {
+                loadQueueGrid();
+            }
+            
         }
     
     }
@@ -602,8 +621,7 @@
         }
     }
 
-    function claimDetailsGridRowColourRenderer(){
-        xmlClaimsStatusGrid.getView().getRowClass = function(record, index) {
+    function claimDetailsGridRowColourRenderer(record) {
             var status = record.data.claimStatus;
             if(!record.data.valid){
                 return 'red-row';
@@ -618,11 +636,9 @@
             }else{
                 return 'blue-row';
             }
-        };
     }
 
-    function uploadedFileDetailsGridRowColourRenderer(){
-        uploadedFileGrid.getView().getRowClass = function(record, index) {
+    function uploadedFileDetailsGridRowColourRenderer(record) {
             var status = record.data.status;
             if(status=='Waiting to be Processed'){
                 return 'black-row';
@@ -635,7 +651,6 @@
             }else if(record.data.valid==false || status=='Error'){
                 return 'gray-row'
             }
-        };
     }
 
     function validateFileExtension(fileName) {
@@ -643,11 +658,20 @@
         return exp.test(fileName);
     }
 
-    function loadUploadedFiles(){
+    function loadUploadedFiles(days) {
         resetUploadedFileForm();
-        uploadedFileData.load({ params: { start:start, limit:xmlUploadFileGridRecordPerPage}});
-        uploadedFileDetailsGridRowColourRenderer();
-        //sm.selectFirstRow();
+        if (days) {
+            uploadedFileData.baseParams = {days: days};
+            uploadedFileData.load({params: {start : 0, limit : xmlUploadFileGridRecordPerPage}});
+        } else {
+            if (!Ext.state.Manager.get("xml_upload_grid_baseParams")) {
+                uploadedFileData.baseParams = {days: 1};
+                uploadedFileData.load({params: {start : 0, limit : xmlUploadFileGridRecordPerPage}});
+            } else { 
+                uploadedFileData.baseParams = Ext.state.Manager.get("xml_upload_grid_baseParams");
+                uploadedFileData.load();
+            }
+        }
     }
 
     function resetUploadedFileForm(){
@@ -724,7 +748,7 @@
         }
         Ext.get('uploadClaimForm').unmask();
         uploadedFileGrid.setTitle('Uploaded Files (Today)');
-        defaultDays=1;
+        Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", 0);
         loadUploadedFiles();
         emptyClaimsDetailGrid();
         //        xmlClaimsStatusGrid.setHeight(50);
@@ -838,11 +862,6 @@
             });
         }
     }
-    
-    function SelectLastSelectedRow(){
-        sm.selectRow(lastSelectedFile);
-    }
-
 
 </script>
  <!--<form autocomplete="off" id="generateUploadedClaimsDetailFormId" action="<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action"  method="post">
