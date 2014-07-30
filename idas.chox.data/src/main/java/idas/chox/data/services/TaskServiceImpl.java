@@ -703,6 +703,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
             } else if (sort.equalsIgnoreCase("raisedBy")) {
+                addSort(criteria, "w.lastName", dir);
                 addSort(criteria, "w.firstName", dir);
             }
         } else {
