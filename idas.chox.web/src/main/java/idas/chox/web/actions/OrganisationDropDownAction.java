@@ -3,32 +3,35 @@ package idas.chox.web.actions;
 import idas.chox.core.services.LookupService;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
 public class OrganisationDropDownAction extends BaseAction {
 
-    private List organisationList = null;
+    private List organisationList = new ArrayList();
     private String selectedOrganisationTypeId;
     private LookupService service;
-
+    private static final Logger LOG = LoggerFactory.getLogger(OrganisationDropDownAction.class);
+    
     @Override
     public String execute() throws Exception {
 
 
         if (selectedOrganisationTypeId != null && !selectedOrganisationTypeId.equals("")) {
             if ((getIsCHO() && ! "3".equals(selectedOrganisationTypeId)) || (getIsInsurer() && ! "2".equals(selectedOrganisationTypeId))) {
+                LOG.warn("Provided organisationTypeId '{}' is not matching with the current user org id '{}'. Possible hack attempt!!!.", selectedOrganisationTypeId, getUserOrganisationType());
                 throw new AccessDeniedException("You do not have the correct access role to view the requested data. You will now be logged out.");
             }
             getOrganisationList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
+            LOG.warn("OrganisationTypeId is not present in the request. Returning empty organisationList.", selectedOrganisationTypeId);
             return SUCCESS;
         }
     }
 
     private void getOrganisationList(String id) {
-
-        this.organisationList = new ArrayList();
 
         // 2: INSURER
         // 3: CHORGANISATION

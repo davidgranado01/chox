@@ -27,6 +27,20 @@ Ext.onReady(function() {
         choxDataStore.superclass.constructor.call(this, { 
             proxy: new Ext.data.HttpProxy({url: contextPath + config.url, method: 'POST', timeout : config.timeout ? config.timeout : 60000})
         });
+        
+        this.on('exception', function(ex, type, action, options, response, arg) {
+            
+            Ext.MessageBox.show({
+                title: 'Internal Error Occurred',
+                msg: "We encountered a problem processing this request, please try again.",
+                width: 300,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR,
+                fn: function(){location.reload();}
+            });
+
+        });
+        
         this.on('beforeload', function(store,records,options) {
                 var temporaryParams = {};
                 if (isCsrfParamPresent()) {
