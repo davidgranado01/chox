@@ -25,6 +25,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.util.XmlHelper;
@@ -51,6 +52,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private boolean isUpdateManagingRepair = false;
     private boolean isInsurerUpload = false;
     Chorganisation chorganisation;
+    private InsurerService insurerService;
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
 
     @Override
     public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
@@ -318,7 +324,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
-            claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
+            claim.setInsurer(insurerService.getInsurer(securityInfoProvider.getCurrentUser().getInsurer().getId()));
             claim.setClaimType(ClaimType.INSURER_INVOICE);
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
                // Check CHO allows insurer upload

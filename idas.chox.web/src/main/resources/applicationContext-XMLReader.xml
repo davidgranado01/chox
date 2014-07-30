@@ -23,6 +23,7 @@
             <list>
                 <bean class="idas.chox.service.xml.readers.ClaimHeaderReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
+                    <property name="insurerService" ref="insurerService"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.CustomerReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
