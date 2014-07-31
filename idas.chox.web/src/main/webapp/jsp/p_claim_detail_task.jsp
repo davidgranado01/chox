@@ -23,7 +23,8 @@
             renderTo: 'dueDateDivId',
             minValue: new Date(),
             format: 'd/m/Y',
-            width: 90
+            width: 90,
+            validationEvent : false
         });
 
         new Ext.form.DateField({
@@ -202,14 +203,14 @@
                     errorLabelContainer: "#claimTaskFormMsgBox",
                     rules: {
                         claimTaskDescription: {required: true},
-                        dueDate: {required: true},
+                        dueDate: {required: true, dateITA:true},
 //                        taskTypeCombo: {required: true},
                         claimVisibilityRoleCombo: {required: true}
                     },
                     messages:
                             {
                                 claimTaskDescription: {required: "Please enter a 'Task Description'"},
-                                dueDate: {required: "Please enter a 'Due Date'"},
+                                dueDate: {required: "Please enter a 'Due Date'", dateITA:"You must supply valid date format for 'Due Date'"},
 //                                taskTypeCombo: {required: "Please enter a 'Task Type'"},
                                 claimVisibilityRoleCombo: {required: "Please enter a role to receive this task"}
                             }
