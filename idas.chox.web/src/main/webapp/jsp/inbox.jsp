@@ -26,8 +26,6 @@
         var title;
         var actionMenu;
         var batchUpdateSelectionModel;
-        var brandingType = '<s:property value="brandingType"/>';
-        var isPartialBranding = (brandingType === 'Partial') ? true : false;
 //        var isQueueSelectionSearch = false;
 //        var isSearchScreenSearch = false;
         

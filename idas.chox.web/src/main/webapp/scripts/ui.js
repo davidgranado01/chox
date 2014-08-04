@@ -219,35 +219,46 @@ var ui = function(){
     };
 }();
 
+Ext.onReady(function(){
+    var blockUIBackground = {
+            backgroundColor:'#6c8cbe',
+            opacity:        '0.5'
+    };
+        
+    if ((isFullBranding != undefined && isFullBranding) || (isBrandingClaim != undefined && isBrandingClaim)) {
+        blockUIBackground = {
+            backgroundColor:'#198A6C',
+            opacity:        '0.5'
+        };
+    }
 
+    $.blockUI.defaults = {
+        message:  '<h1 class="block">Please wait...</h1>',
 
-$.blockUI.defaults = {
-    message:  '<h1 class="block">Please wait...</h1>',
+        css: {
+            padding:        '10px',
+            margin:         0,
+            width:          '30%',
+            top:            '10%',
+            left:           '35%',
+            textAlign:      'center',
+            color:          '#000',
+            border:         '3px solid #aaa',
+            backgroundColor:'#fff',
+            cursor:         'wait' ,
+            height: 'auto'
+        },
 
-    css: {
-        padding:        '10px',
-        margin:         0,
-        width:          '30%',
-        top:            '10%',
-        left:           '35%',
-        textAlign:      'center',
-        color:          '#000',
-        border:         '3px solid #aaa',
-        backgroundColor:'#fff',
-        cursor:         'wait' ,
-        height: 'auto'
-    },
+        overlayCSS:  blockUIBackground,
 
-    overlayCSS:  {
-        backgroundColor:'#6c8cbe',
-        opacity:        '0.5'
-    },
+        baseZ: 1000,
+        centerX: true,
+        centerY: true,
+        allowBodyStretch: true,
+        constrainTabKey: true,
+        fadeOut:  0,
+        applyPlatformOpacityRules: true
+    };
+    
+})
 
-    baseZ: 1000,
-    centerX: true,
-    centerY: true,
-    allowBodyStretch: true,
-    constrainTabKey: true,
-    fadeOut:  0,
-    applyPlatformOpacityRules: true
-};

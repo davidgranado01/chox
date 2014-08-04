@@ -143,3 +143,11 @@ div.chox-claim-header
     font: 11px tahoma,arial,verdana,sans-serif;
     margin-bottom: 10px;
 }
+
+#QueueGridId .x-grid3-cell-inner {
+    color:black;
+}
+
+.x-progress-bar {
+    background-image: url(../images/erac/panel/light-hd.gif) !important;
+}

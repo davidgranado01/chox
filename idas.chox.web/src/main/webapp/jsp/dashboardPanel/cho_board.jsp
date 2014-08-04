@@ -171,15 +171,12 @@
 
         var param = {"insurerId":insurerId,"choClaimOwnerId":claimOwnerId};
 
-      
-        $("#resultHolder").addClass("blockUI-background");
         $("#resultHolder").block();
         
         
         var url = "/prv/p/showChoBoard.action";
         ajax.loadHtml2(url,param,function(data){
             $("#resultHolder").html(data);
-            $("#resultHolder").removeClass("blockUI-background");
         });
     }
 

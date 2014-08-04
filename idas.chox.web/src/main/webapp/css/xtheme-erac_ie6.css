@@ -110,14 +110,14 @@ border-color:#000206;
 background-color:#e1f4e9;
 }
 *.x-tab-strip span.x-tab-strip-text{
-font:normal 11px tahoma , arial , helvetica;
-color:#222222;
+font:normal 12px tahoma , arial , helvetica;
+color:#FFFFFF;
 }
 *.x-tab-strip-over span.x-tab-strip-text{
-color:#111111;
+color:#FFFFFF;
 }
 *.x-tab-strip-active span.x-tab-strip-text{
-color:#111111;
+color:#FFFFFF;
 font-weight:bold;
 }
 *.x-tab-strip-disabled *.x-tabs-text{

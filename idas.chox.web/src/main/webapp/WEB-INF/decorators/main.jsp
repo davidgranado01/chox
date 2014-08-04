@@ -26,6 +26,13 @@
                 var csrfParam = {
                     '${_csrf.parameterName}' : '${_csrf.token}'
                 };
+                
+                var contextPath = '<%= request.getContextPath()%>';
+                var brandingType = '<s:property value="brandingType"/>';
+                var isPartialBranding = (brandingType === 'Partial') ? true : false;
+                var isFullBranding = (brandingType === 'Full') ? true : false;
+                var isBrandingClaim = '<s:property value="brandingClaim"/>';
+
 	</script>
     </head>
 
@@ -41,7 +48,7 @@
                         <tr valign="middle">
                             <td>
                                 <s:if test='brandingClaim || brandingType.equalsIgnoreCase("full")'>
-                                    <img src="<%= request.getContextPath()%>/images/erac.jpg" style="display: inline; float: left; width: 97px; height: 32px" alt="ERAC Logo" />
+                                    <img src="<%= request.getContextPath()%>/images/erac.jpg" style="display: inline; float: left; width: 175px; height: 35px" alt="ERAC Logo" />
                                 </s:if>
                                 <s:else>
                                     <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo" />
