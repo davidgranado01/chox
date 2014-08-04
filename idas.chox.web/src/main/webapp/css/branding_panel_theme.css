@@ -151,3 +151,7 @@ div.chox-claim-header
 .x-progress-bar {
     background-image: url(../images/erac/panel/light-hd.gif) !important;
 }
+
+div.claims-grid-title-text {
+    color : white;
+}

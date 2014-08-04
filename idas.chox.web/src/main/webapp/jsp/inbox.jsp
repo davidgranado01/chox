@@ -148,7 +148,7 @@
                             }
 //                        if (options.params.canLoadData) {
                           if (options.params.gridTitle !== '') {
-                              claimsGrid.setTitle(options.params.gridTitle +" ("+store.getTotalCount()+")");
+                              claimsGrid.setTitle('<div class="claims-grid-title-text">'+options.params.gridTitle +" ("+store.getTotalCount()+")"+'</div>');
                           }
 //                        } else if(options.params.canLoadData === false) {
 //                            claimsGrid.setTitle("");

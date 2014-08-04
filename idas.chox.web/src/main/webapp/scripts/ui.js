@@ -260,5 +260,5 @@ Ext.onReady(function(){
         applyPlatformOpacityRules: true
     };
     
-})
+});
 
