@@ -121,6 +121,8 @@
                 listeners:{
                     beforeload: function(store, options) {
                         var baseParams = Ext.apply({}, options.params, store.baseParams);
+                        options.params.queueCount = null;
+                        options.params.queueNumber = null;
                         
 //                        if (baseParams.canLoadData !== false && typeof baseParams.canLoadData !== 'undefined') { 
                         // This is used as key(when rendering the grid) weather to load the empty grid or load grid with previos search criteria. 
@@ -134,6 +136,14 @@
                         claimsGrid.setTitle("");
                     }
                     ,load: function(store, records, options) {
+                            // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
+                            if (store.baseParams.queueCount !== store.getTotalCount()) {
+                                if (typeof queueGrid !== 'undefined') {
+                                    var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
+                                    queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
+                                    queueRecord.commit();
+                                }
+                            }
 //                        if (options.params.canLoadData) {
                           if (options.params.gridTitle !== '') {
                               claimsGrid.setTitle(options.params.gridTitle +" ("+store.getTotalCount()+")");

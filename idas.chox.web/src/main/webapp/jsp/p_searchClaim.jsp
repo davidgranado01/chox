@@ -1626,7 +1626,7 @@
             var queueDescription = record.get('queueDescription');
             // populate the necessery search criteria in the search panel.
             updateSearchScreenFieldsWithQueueFilterCriteria(record);
-            var baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName, "gridTitle" : queueName});
+            var baseParams = Ext.apply(getSearchParameters(), {"filterName" : queueFilterName, "gridTitle" : queueName, "queueNumber" : rowIndex, "queueCount" : record.get('queueCount')});
             Ext.state.Manager.set("recentlyClickedQueueRowNumber", rowIndex);
             // load the claims grid data.
             doDataLoad(baseParams);
