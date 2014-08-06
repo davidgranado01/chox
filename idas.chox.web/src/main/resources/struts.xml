@@ -1332,7 +1332,7 @@
         <action name="getComments" class="idas.chox.web.actions.CommentAction" method="getComments">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
-        <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
+        <action name="createNewComment" class="idas.chox.web.actions.ClaimActivityAction">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>

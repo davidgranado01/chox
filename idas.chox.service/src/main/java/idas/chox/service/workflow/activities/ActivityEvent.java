@@ -890,18 +890,18 @@ public enum ActivityEvent {
 //    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
-        public void build(ActivityEventGenerator generator, Claim claim, Comment comment)  throws Exception {
+        public void build(ActivityEventGenerator generator, AddNote activity, Claim claim)  throws Exception {
             LOG.debug("Building NoteAddedEvent");
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            if (comment.getVisibilityType() == 0) { // All
+            if (activity.getVisibilityType() == 0) { // All
                 generator.startEvent(claim, this.getName(), this.getEventId());
-            } else if (comment.getVisibilityType() == 1) { // Insurer Only
+            } else if (activity.getVisibilityType() == 1) { // Insurer Only
                 generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
-            } else if (comment.getVisibilityType() == 2) { // CHO Only
+            } else if (activity.getVisibilityType() == 2) { // CHO Only
                 generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             }
-            generator.addParameter("note", comment.getComment());
-            generator.addParameter("createdBy", comment.getCreatedBy().getFullName());
+            generator.addParameter("note", activity.getComment());
+            generator.addParameter("createdBy", activity.getNote().getCreatedBy().getFullName());
             generator.completeEvent(claim);
         }
     },
@@ -962,14 +962,18 @@ public enum ActivityEvent {
         generator.completeEvent(claim);
     }
 
-    public void build(ActivityEventGenerator generator, Claim claim, Comment comment) throws Exception {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+//    public void build(ActivityEventGenerator generator, Claim claim, Comment comment) throws Exception {
+//        throw new UnsupportedOperationException("Not implemented yet");
+//    }
 
     public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment) throws Exception {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    public void build(ActivityEventGenerator generator, AddNote activity, Claim claim)  throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+    
     public void build(ActivityEventGenerator generator, Activity activity, Claim claim) throws Exception {
         LOG.warn("No activity-specific Events to build for activity {}", AopUtils.getTargetClass(activity).getSimpleName());
 //        generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());

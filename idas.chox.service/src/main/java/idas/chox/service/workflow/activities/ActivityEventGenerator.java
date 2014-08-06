@@ -54,20 +54,20 @@ public class ActivityEventGenerator {
         }
     }
 
-    public void generate(final Claim claim, final Comment comment, ActivityEvent event) {
-        try {
-            event.build(this, claim, comment);
-        } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
-            return;
-        }
-
-        try {
-            eventGenerator.sendEvents();
-        } catch (Exception ex) {
-            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
-        }
-    }
+//    public void generate(final Claim claim, final Comment comment, ActivityEvent event) {
+//        try {
+//            event.build(this, claim, comment);
+//        } catch (Exception ex) {
+//            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
+//            return;
+//        }
+//
+//        try {
+//            eventGenerator.sendEvents();
+//        } catch (Exception ex) {
+//            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
+//        }
+//    }
 
     public void generate(final Claim claim, final Attachment attachment, ActivityEvent event) {
         try {
@@ -100,6 +100,9 @@ public class ActivityEventGenerator {
                     ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
                 }
                 ActivityEvent.CLAIM_ACKNOWLEDGED_EVENT.build(this, (AcknowledgeClaim) activity, claim);
+            }  else if (activityName.equalsIgnoreCase("AddNote")) {
+                LOG.debug("AddNote activity found");
+                ActivityEvent.NOTE_ADDED_EVENT.build(this, (AddNote) activity, claim);
             } else if (activityName.equalsIgnoreCase("AssignManualInvoiceOwner")) {
                 LOG.debug("AssignManualInvoiceOwner activity found");
                 ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (AssignManualInvoiceOwner) activity, claim);

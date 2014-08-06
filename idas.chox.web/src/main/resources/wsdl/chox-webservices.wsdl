@@ -36,6 +36,7 @@
             <xsd:element name="supplierReference2" type="chx:SupplierReference"/>
             <xsd:element name="result" type="chx:Result"/>
             <xsd:element name="ecdParam" type="chx:ECDParam"/>
+            <xsd:element name="note" type="chx:Note"/>
 
     <!-- Type Definitions -->
             <!-- Non-empty string -->
@@ -759,6 +760,14 @@
                     <xsd:element name="supportingNote" type="chx:NonEmptyString"/>
                 </xsd:sequence>
             </xsd:complexType>
+            
+            <xsd:complexType name="Note">
+                <xsd:sequence>
+                    <xsd:element name="supplierReference" type="chx:NonEmptyString"/>
+                    <xsd:element name="comment" type="chx:NonEmptyString"/>
+                    <xsd:element name="visibility" type="chx:String8"/>
+                </xsd:sequence>
+            </xsd:complexType>
 
         </xsd:schema>
 
@@ -792,6 +801,10 @@
     <wsdl:message name="ecdParam">
         <wsdl:part element="chx:ecdParam" name="ecdParam" />
     </wsdl:message>
+    
+    <wsdl:message name="note">
+        <wsdl:part element="chx:note" name="note" />
+    </wsdl:message>
 
     <wsdl:portType name="UploadService">
         <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
@@ -820,6 +833,11 @@
         
         <wsdl:operation name="updateECD">
             <wsdl:input message="tns:ecdParam" name="ecdParam"/>
+            <wsdl:output message="tns:result" name="result"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="addNote">
+            <wsdl:input message="tns:note" name="note"/>
             <wsdl:output message="tns:result" name="result"/>
         </wsdl:operation>
 
@@ -884,6 +902,18 @@
                 <soap:body use="literal" />
             </wsdl:output>
         </wsdl:operation>
+        
+        <wsdl:operation name="addNote">
+            <soap:operation soapAction="http://www.idaschox.com/services/UploadService/addNote" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
     </wsdl:binding>
 
 

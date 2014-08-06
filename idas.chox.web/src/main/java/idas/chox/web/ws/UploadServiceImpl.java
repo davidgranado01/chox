@@ -1,8 +1,9 @@
 package idas.chox.web.ws;
 
 
-import javax.jws.WebService;
 
+import com.idaschox.services.chox.*;
+import javax.jws.WebService;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
 import org.slf4j.Logger;
@@ -10,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import com.idaschox.services.chox.*;
 
 /**
  *
@@ -61,6 +60,14 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         return uploadServiceBean.updateECD(ecdParam);
+    }
+    
+    
+    @Override
+    public Result addNote(Note note) {
+
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.addNote(note);
     }
 
     @Override

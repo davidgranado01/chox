@@ -31,7 +31,8 @@ public class Options {
     private boolean updateECD;
     @Option(name = "-paymentreceived", usage = "Payment Received")
     private boolean paymentReceived;
-
+    @Option(name = "-addnote", usage = "Add Note")
+    private boolean addNote;
     
     public List<String> getArguments() {
         return arguments;
@@ -97,4 +98,11 @@ public class Options {
         this.paymentReceived = paymentReceived;
     }
 
+    public boolean isAddNote() {
+        return addNote;
+    }
+
+    public void setAddNote(boolean addNote) {
+        this.addNote = addNote;
+    }
 }

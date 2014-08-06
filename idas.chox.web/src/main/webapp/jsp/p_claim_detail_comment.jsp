@@ -183,6 +183,7 @@
     <form id="claimCommentForm" name="claimCommentForm" action="<%= request.getContextPath()%>/prv/p/createNewComment.action" method="POST">
         <div class="form-container">
             <input name="claimId" id="claimId" type="hidden" value="<s:property value="claimId" />" />
+            <input name="name" id="activityNameId" type="hidden" value="addNote" />
             <fieldset class="x-fieldset">
                 <legend>Add New Note</legend>
                 <div class="chox-form-item">

@@ -64,6 +64,7 @@
         <property name="claimService" ref="claimService" />
         <property name="webBordereauService" ref="webBordereauService" />
         <property name="activityFactory" ref="activityFactory" />
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 
 </beans>

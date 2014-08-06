@@ -16,11 +16,9 @@ import idas.chox.core.services.CommentService;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.workflow.activities.ActivityEvent;
 
 public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
-    private String comment;
     private JSONArray jObject;
     private int commentId;
     private CommentService commentService;
@@ -37,35 +35,34 @@ public class CommentAction extends ClaimModelAction<Comment> {
         this.commentId = commentId;
     }
 
-    public String createNewComment() {
-        try {
-            boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer()
-                    ? getAuthenticatedUser().getInsurer().isDisablePrivateNotes()
-                    : getAuthenticatedUser().isCHO()
-                    ? getAuthenticatedUser().getChorganisation().isDisablePrivateNotes()
-                    : claim.getInsurer().isDisablePrivateNotes();
-
-            if (disablePrivateNotes && model.getVisibilityType() != 0) {
-                LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
-                this.getActionResponse().AddError("Note can't be added. Insufficient priviliges!");
-                return ERROR;
-            }
-            model.setComment(getComment());
-            claim.addComment(model);
-            
-            String result = super.updateModel();
-            
-            // Generate NoteAdded Event
-            LOG.debug("Generating NoteAdded Event...");
-            activityEventGenerator.generate(claim, model, ActivityEvent.NOTE_ADDED_EVENT);
-            
-            return result;
-        } catch (Exception ex) {
-            LOG.warn("Error creating comment/note for claim {}", claim.getChoReference(), ex);
-            handleException(ex);
-            return ERROR;
-        }
-    }
+//    public String createNewComment() {
+//        try {
+//            boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer()
+//                    ? getAuthenticatedUser().getInsurer().isDisablePrivateNotes()
+//                    : getAuthenticatedUser().isCHO()
+//                    ? getAuthenticatedUser().getChorganisation().isDisablePrivateNotes()
+//                    : claim.getInsurer().isDisablePrivateNotes();
+//
+//            if (disablePrivateNotes && model.getVisibilityType() != 0) {
+//                LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+//                this.getActionResponse().AddError("Note can't be added. Insufficient priviliges!");
+//                return ERROR;
+//            }
+//            claim.addComment(model);
+//            
+//            String result = super.updateModel();
+//            
+//            // Generate NoteAdded Event
+//            LOG.debug("Generating NoteAdded Event...");
+////            activityEventGenerator.generate(claim, model, ActivityEvent.NOTE_ADDED_EVENT);
+//            
+//            return result;
+//        } catch (Exception ex) {
+//            LOG.warn("Error creating comment/note for claim {}", claim.getChoReference(), ex);
+//            handleException(ex);
+//            return ERROR;
+//        }
+//    }
 
     public String getJsonArrayData() {
         if (jObject != null) {
@@ -102,15 +99,6 @@ public class CommentAction extends ClaimModelAction<Comment> {
     @Override
     String getTabName() {
         return TabAccessibility.TAB_NOTES;
-    }
-
-    public String getComment() {
-        
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override

@@ -119,4 +119,6 @@
         <property name="claimService" ref="claimService" />
     </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
+    
+    <bean id="addNote" class="idas.chox.service.workflow.activities.AddNote" scope="prototype"/>
 </beans>

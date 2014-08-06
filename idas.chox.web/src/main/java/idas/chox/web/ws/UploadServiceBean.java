@@ -1,31 +1,29 @@
 package idas.chox.web.ws;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
-
 import com.idaschox.services.chox.*;
 import com.idaschox.services.chox.SubmissionResult.Messages;
-
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.AddNote;
 import idas.chox.service.workflow.activities.EcdUpdate;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
 
 public class UploadServiceBean {
@@ -38,8 +36,13 @@ public class UploadServiceBean {
     private ClaimService claimService;
     private WebBordereauService webBordereauService;
     private ActivityFactory activityFactory;
+    private SecurityInfoProvider securityInfoProvider;
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
     
-     public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
+    public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
         this.uploadClaimXMLService = uploadClaimXMLService;
     }
 
@@ -508,6 +511,52 @@ public class UploadServiceBean {
         } catch (Exception ex) {
             result.setStatus(false);
             result.setErrorMessage(new StringBuilder().append("Error processing request: ").append(ex.getMessage()).toString());
+        }
+
+        return result;
+    }
+    
+    public Result addNote(Note note) {
+        Result result = new Result();
+
+        Activity activity = activityFactory.getActivity("addNote");
+        Claim claim = null;
+
+        // Get the claim
+        try {
+            claim = claimService.getClaimByCHOReferenceNumber(note.getSupplierReference());
+            if (claim == null) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + note.getSupplierReference() + "' does not exist.");
+            } else {
+                int visibilityType = 0;
+                if (securityInfoProvider.getIsINS()) {
+                    if (note.getVisibility() != null && note.getVisibility().equalsIgnoreCase("private")) {
+                        visibilityType = 1;
+                    }
+                } else if (securityInfoProvider.getIsCHO()) {
+                    if (note.getVisibility() != null && note.getVisibility().equalsIgnoreCase("private")) {
+                        visibilityType = 2;
+                    }
+                } else {
+                    throw new Exception("Only users from Insurer/CHO organisation can add note.");
+                }
+
+                ((AddNote) activity).setComment(note.getComment());
+                ((AddNote) activity).setVisibilityType(visibilityType);
+
+                activity.process(claim);
+                result.setStatus(true);
+            }
+        } catch (InvalidClaimStatusException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + claim.getStatus());
+        } catch (AccessDeniedException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Error processing request: " +ex.getMessage());
         }
 
         return result;

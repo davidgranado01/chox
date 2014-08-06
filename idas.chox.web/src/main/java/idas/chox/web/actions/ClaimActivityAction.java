@@ -167,6 +167,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             jsonObject.put("success", Boolean.TRUE);
             if (getMessage() != null) {
                 jsonObject.put("message", getMessage());
+                this.getActionResponse().AssignMessageResult(getMessage());
             }
             setJsonData(jsonObject.toString());
             updateRedirectionParamInSession();
@@ -176,7 +177,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             jsonObject.put("success", Boolean.FALSE);
             jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
             setJsonData(jsonObject.toString());
-
+            this.getActionResponse().AddError("Sorry - No activity implemented for the requested activity action.");
         }
 
         return ERROR;
