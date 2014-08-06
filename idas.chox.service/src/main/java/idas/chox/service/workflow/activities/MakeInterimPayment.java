@@ -38,7 +38,7 @@ public class MakeInterimPayment extends BaseActivity {
     }
 
     @Override
-    protected void doProcess(Claim claim) {
+    protected void doProcess(Claim claim) throws Exception {
         Comment comment = null;
         if (newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0
                 && additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
@@ -47,14 +47,23 @@ public class MakeInterimPayment extends BaseActivity {
                 newTotalInterimPayment = null;
                 comment = Comment.newComment(0, "The interim payment has been removed");
             } else if (claim.getInvoice().getInterimPaymentMade() != null) {
+                if (claim.getInvoice().getInterimPaymentMade().add(newTotalInterimPayment).compareTo(claim.getInvoice().getTotalToPay()) > 0) {
+                    throw new Exception("The 'New Total Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'");
+                }
                 comment = Comment.newComment(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
             } else {
+                if (newTotalInterimPayment.compareTo(claim.getInvoice().getTotalToPay()) > 0) {
+                    throw new Exception("The 'Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'");
+                }
                 comment = Comment.newComment(0, "An interim payment of £" + newTotalInterimPayment.toString() + " has been made.");
             }
 
             claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
         } else if (additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0) {
             newTotalInterimPayment = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
+            if (newTotalInterimPayment.compareTo(claim.getInvoice().getTotalToPay()) > 0) {
+                throw new Exception("The 'Additional Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'");
+            }
             claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
             comment = Comment.newComment(0, "An additional interim payment of £" + additionalInterimPayment.toString() + " has been made."
                     + " The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());

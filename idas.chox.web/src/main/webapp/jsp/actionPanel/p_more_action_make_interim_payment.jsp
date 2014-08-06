@@ -2,10 +2,13 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-	var interimPayMade = false;
+    var interimPayMade = false;
+    var interimPayment;
     var currentRecAmount = <s:property value="interimPaymentReceived" />;
+    var totalToPay = <s:property value="totalToPay" />;;
 	<s:if test="interimPaymentMade > 0">
 		var interimPayMade = true;
+                interimPayment = <s:property value="interimPaymentMade" />;
 	</s:if>
 	
     Ext.onReady(function() {
@@ -76,10 +79,12 @@
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("add", {
                 required: true,
                 min: 0.01,
+                max : (totalToPay - interimPayment),
                 number:true,
                 messages: {
                     required:"You Must Enter An 'Additional Interim Payment Amount'",
-                	min:"The 'Additional Interim Payment Amount' Must Be Larger Than 0",
+                    min:"The 'Additional Interim Payment Amount' Must Be Larger Than 0",
+                    max : "The 'Additional Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'",
                     number:"The 'Additional Interim Payment Amount' Must Be A Monetary Value"}
             });
     	} else if (action == 'newTotal' && interimPayMade){
@@ -87,20 +92,24 @@
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
                 required: true,
                 min: currentRecAmount,
+                max : totalToPay,
             	number:true,
                 messages: {
                     required:"You Must Enter A 'New Total Interim Payment Amount'",
-                	min:"The 'New Total Interim Payment Amount' Must Be Greater Than Or Equal To The Current Interim Amount Received",
-                	number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
+                    min:"The 'New Total Interim Payment Amount' Must Be Greater Than Or Equal To The Current Interim Amount Received",
+                    max : "The 'New Total Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'",
+                    number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
             });
     	} else if (action == 'newTotal' && !interimPayMade) {
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
                 required: true,
                 min: 0.01,
+                max : totalToPay,
             	number:true,
                 messages: { required:"You Must Enter An 'Interim Payment Amount'",
                 	min:"The 'Interim Payment Amount' Must Be Larger Than 0",
+                        max : "The 'Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'",
                 	number:"The 'Interim Payment Amount' Must Be A Monetary Value"}
             });
 
