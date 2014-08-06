@@ -137,12 +137,11 @@
                     }
                     ,load: function(store, records, options) {
                             // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
-                            if (store.baseParams.queueCount !== store.getTotalCount()) {
-                                if (typeof queueGrid !== 'undefined') {
-                                    var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
-                                    queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
-                                    queueRecord.commit();
-                                }
+                            if (typeof queueGrid !== 'undefined' && typeof store.baseParams.queueNumber !== 'undefined' 
+                                    && store.baseParams.queueCount !== store.getTotalCount()) {
+                                var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
+                                queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
+                                queueRecord.commit();
                             }
 //                        if (options.params.canLoadData) {
                           if (options.params.gridTitle !== '') {
