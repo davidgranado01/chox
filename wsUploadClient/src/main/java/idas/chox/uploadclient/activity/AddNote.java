@@ -67,9 +67,9 @@ public class AddNote {
                                 statusString.append(" Only 'Public'/'Private' Strings Are Allowed For Visibility Type.");
                             }
                         }
-//                        else {
-//                            visibilityType = "public";
-//                        } 
+                        else { // setting visibilityType to public in the client is not necessery because the server anyway add as public note if the visibility not present. 
+                            visibilityType = "public";
+                        } 
 
                         if (statusString.toString().isEmpty()) {
                             try {
