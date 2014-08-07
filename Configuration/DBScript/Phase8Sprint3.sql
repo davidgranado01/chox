@@ -307,3 +307,224 @@ UPDATE task SET raised_by = created_by WHERE raised_by is null;
 ----------------------
 -- End of bug#2858
 ----------------------
+
+--------------------------------------------------------------------------------
+-- bug#2863 - Production - New Web Service required to add a note to a claim
+--------------------------------------------------------------------------------
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimUnacknowledgedUnrouted', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimUnacknowledgedRouted', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimRejected', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.SubscriberClaimRejected', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimRejectionAccepted', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimRejectionContested', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.AwaitingCarHireInfo', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.AwaitingInvoiceData', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceDataCalculationIncorrect', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceApprovedByBRE', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceEscalated', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceEscalatedToHandler', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ContestedInvoiceReferredToInsurer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ContestedInvoiceReferredToCHO', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceRejectionAccepted', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.AwaitingInvoicePayment', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoicePaymentLogged', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimReferredToEngineer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimReferredToFNOL', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimClosed', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimPending', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceReferredToClaimsHandler', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.PaymentReceived', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimUpdatedByEngineer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceReferredToEngineer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ClaimUnacknowledgedUnassigned', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.AwaitingLiabilityResolution', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.InvoiceUnassigned', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ManualInvoiceBREApproved', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ManualInvoiceBRERejected', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ManualInvoicePaid', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ManualInvoiceContested', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.AwaitingLitigationOutcome', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.AddNote.ManualInvoiceUnassigned', false, false;
+
+
+
+
+
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimUnacknowledgedUnrouted' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimUnacknowledgedRouted' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimRejected' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.SubscriberClaimRejected' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimRejectionAccepted' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimRejectionContested' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.AwaitingCarHireInfo' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.AwaitingInvoiceData' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceDataCalculationIncorrect' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceApprovedByBRE' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceEscalated' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceEscalatedToHandler' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ContestedInvoiceReferredToInsurer' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ContestedInvoiceReferredToCHO' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceRejectionAccepted' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.AwaitingInvoicePayment' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoicePaymentLogged' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimReferredToEngineer' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimReferredToFNOL' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimClosed' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimPending' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceReferredToClaimsHandler' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.PaymentReceived' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimUpdatedByEngineer' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceReferredToEngineer' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ClaimUnacknowledgedUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.AwaitingLiabilityResolution' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.InvoiceUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ManualInvoiceBREApproved' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ManualInvoiceBRERejected' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ManualInvoicePaid' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ManualInvoiceContested' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.AwaitingLitigationOutcome' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ALL', 1
+    FROM accessibility
+    WHERE name = 'activity.AddNote.ManualInvoiceUnassigned' AND claim_type is null;
+
+    
+----------------------
+-- End of bug#2863
+----------------------
