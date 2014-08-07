@@ -47,7 +47,7 @@ public class MakeInterimPayment extends BaseActivity {
                 newTotalInterimPayment = null;
                 comment = Comment.newComment(0, "The interim payment has been removed");
             } else if (claim.getInvoice().getInterimPaymentMade() != null) {
-                if (claim.getInvoice().getInterimPaymentMade().add(newTotalInterimPayment).compareTo(claim.getInvoice().getTotalToPay()) > 0) {
+                if (newTotalInterimPayment.compareTo(claim.getInvoice().getTotalToPay()) > 0) {
                     throw new Exception("The 'New Total Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'");
                 }
                 comment = Comment.newComment(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
