@@ -29,16 +29,17 @@ Ext.onReady(function() {
         });
         
         this.on('exception', function(ex, type, action, options, response, arg) {
-            
-            Ext.MessageBox.show({
-                title: 'Internal Error Occurred',
-                msg: "We encountered a problem processing this request, please try again.",
-                width: 300,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-//                ,fn: function(){location.reload();}
-            });
-
+            // Do not show the error message if the page is refereshed or the user navigated to different page before this request get response from server. 
+            if (response.status !== 0) {
+                Ext.MessageBox.show({
+                    title: 'Internal Error Occurred',
+                    msg: "We encountered a problem processing this request, please try again.",
+                    width: 300,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+    //                ,fn: function(){location.reload();}
+                });
+            }
         });
         
         this.on('beforeload', function(store,records,options) {
