@@ -133,7 +133,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
-        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
@@ -160,7 +160,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
-        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
@@ -185,7 +185,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
         List<WebUser> users = new ArrayList<WebUser>();
 
-        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         criteria.add(Restrictions.eq("status", true));
@@ -205,7 +205,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
         List<WebUser> users = new ArrayList<WebUser>();
 
-        Criteria criteria = getSession().createCriteria(WebUser.class);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class);
         if (activeUsersOnly) {
             criteria.add(Restrictions.eq("status", true))
                     .add(Restrictions.eq("blocked", false));

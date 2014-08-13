@@ -137,7 +137,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     
     @Override
     public int getNoOfRejectedInvoices(Integer reasonOfRejectionId) {
-        Criteria criteria = getSession().createCriteria(Invoice.class);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Invoice.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
         return countInvoices(criteria).intValue();
     }

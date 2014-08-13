@@ -304,7 +304,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         try {
 
-            Criteria criteria = getSession().createCriteria(Task.class);
+            Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Task.class);
 
             if (incompleteOnly) {
                 LOG.debug("Restricting to incomplete tasks");

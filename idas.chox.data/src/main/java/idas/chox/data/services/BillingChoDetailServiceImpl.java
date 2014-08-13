@@ -77,7 +77,7 @@ public class BillingChoDetailServiceImpl extends SecureDataService implements Bi
 
     @Override
     public List sumPaymentAmount(int billingChoId) {
-        Criteria criteria = getSession().createCriteria(BillingChoDetail.class);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(BillingChoDetail.class);
         criteria.createCriteria("billing").add(Restrictions.eq("id", billingChoId));
 
         ProjectionList projList = Projections.projectionList();

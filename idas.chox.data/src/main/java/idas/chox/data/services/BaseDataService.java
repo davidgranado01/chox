@@ -1,14 +1,14 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.Entity;
+import idas.chox.core.services.DataService;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -16,13 +16,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jdbc.Work;
 import org.hibernate.transform.Transformers;
-
-import idas.chox.core.model.Entity;
-import idas.chox.core.services.DataService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  *
@@ -38,13 +36,13 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public List externalQuery(final String query) {
 
-        SQLQuery q = this.getSession().createSQLQuery(query);
+        SQLQuery q = getSessionFactory().getCurrentSession().createSQLQuery(query);
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
 
     public int externalQueryCount(final String query, final Map parameters) {
 
-        SQLQuery q = this.getSession().createSQLQuery(query);
+        SQLQuery q = this.getSessionFactory().getCurrentSession().createSQLQuery(query);
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
@@ -56,7 +54,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public List externalQuery(final String query, final Map parameters) {
 
-        SQLQuery q = this.getSession().createSQLQuery(query);
+        SQLQuery q = this.getSessionFactory().getCurrentSession().createSQLQuery(query);
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
@@ -73,7 +71,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public List externalQuery(final String query, Map parameters, Class entityClass) {
 
-        SQLQuery q = this.getSession().createSQLQuery(query);
+        SQLQuery q = this.getSessionFactory().getCurrentSession().createSQLQuery(query);
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
@@ -94,100 +92,123 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         }
     }
 
-    public void callApplyAutoPenaltyCharge(int userId, int claimId) throws SQLException {
+    public void callApplyAutoPenaltyCharge(final int userId, final int claimId) throws SQLException {
         LOG.debug("Calling stored procedure applyAutoPenaltyCharge({}, {})....", userId, claimId);
         getCurrentSession().flush();
-        Statement s = this.getCurrentSession().connection().createStatement();
-        try {
-            s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
-        }
-        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-        catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                throw ex;
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
             }
-        }
-        finally {
-            getCurrentSession().flush();
-            s.close();
-        }
+        });
     }
 
-    public void callUpdateDashboard(int userId) throws SQLException {
+    public void callUpdateDashboard(final int userId) throws SQLException {
         LOG.debug("Calling stored procedure updatedashboard({})....", userId);
         getCurrentSession().flush();
-        Statement s = this.getCurrentSession().connection().createStatement();
-        try {
-            s.execute("select updateDashboard(" + userId + ")");
-        }
-        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-        catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                throw ex;
+        
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                
+                try {
+                    s.execute("select updateDashboard(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
+
             }
-        }
-        finally {
-            getCurrentSession().flush();
-            s.close();
-        }
+        });
     }
 
-    public void callAddMissingEcdTask(int userId) throws SQLException {
+    public void callAddMissingEcdTask(final int userId) throws SQLException {
         LOG.debug("Calling stored procedure addMissingEcdTask({})....", userId);
         getCurrentSession().flush();
-        Statement s = this.getCurrentSession().connection().createStatement();
-        try {
-            s.execute("select addMissingEcdTask(" + userId + ")");
-        }
-        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-        catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                throw ex;
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+
+                try {
+                    s.execute("select addMissingEcdTask(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
             }
-        }
-        finally {
-            getCurrentSession().flush();
-            s.close();
-        }
+        });
     }
 
-    public void callAddInvoicePenaltyTask(int userId) throws SQLException {
+    public void callAddInvoicePenaltyTask(final int userId) throws SQLException {
         LOG.debug("Calling stored procedure addInvoicePenaltyTask({})....", userId);
         getCurrentSession().flush();
-        Statement s = this.getCurrentSession().connection().createStatement();
-        try {
-            s.execute("select addInvoicePenaltyTask(" + userId + ")");
-        }
-        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-        catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                throw ex;
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select addInvoicePenaltyTask(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
             }
-        }
-        finally {
-            getCurrentSession().flush();
-            s.close();
-        }
+        });
     }
 
     public void callUpdateWorkflowTables(int userId) throws SQLException {
         LOG.debug("Calling stored procedure update_user_service({})....", userId);
         getCurrentSession().flush();
-        Statement s = this.getCurrentSession().connection().createStatement();
-        try {
-            s.execute("select update_user_service(id) from insurer where status=true");
-            s.execute("select update_workgroup_service(id) from insurer where status=true");
-        }
-        catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                throw ex;
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select update_user_service(id) from insurer where status=true");
+                    s.execute("select update_workgroup_service(id) from insurer where status=true");
+                } catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
             }
-        }
-        finally {
-            getCurrentSession().flush();
-            s.close();
-        }
-  }
+        });
+    }
     
     public List findByCriteria(final DetachedCriteria c) {
 
@@ -195,7 +216,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public List findByCriteria(final DetachedCriteria dc, Boolean cacheable) {
-        Criteria c = dc.getExecutableCriteria(getSession());
+        Criteria c = dc.getExecutableCriteria(getSessionFactory().getCurrentSession());
         c.setCacheable(true);
         return c.list();
     }
@@ -264,7 +285,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public Session getCurrentSession() {
-        return getSession();
+        return getSessionFactory().getCurrentSession();
     }
     
     @Override

@@ -181,7 +181,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Claim updateClaimWithInvalidSessionVersion(Claim claim) {
         LOG.debug("Evicting claim={} with version={}", claim.getId(), claim.getVersion());
         evict(claim);
-        claim = (Claim) getSession().load(Claim.class, claim.getId());
+        claim = (Claim) getSessionFactory().getCurrentSession().load(Claim.class, claim.getId());
         LOG.debug("Loaded new claim={} with version={}", claim.getId(), claim.getVersion());
         return claim;
     }
@@ -706,7 +706,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class)
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Claim.class)
             .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
@@ -978,7 +978,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                             .add(Restrictions.conjunction()
                                 .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
                                 .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_INVOICE)))))
-                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list()))
+                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).list()))
                         .setProjection(Projections.property("breband.insurer"));
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
@@ -1615,7 +1615,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return 0;
         }
         
-        Criteria criteria = getSession().createCriteria(AuditTrail.class);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuditTrail.class);
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
@@ -1634,7 +1634,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     @Override
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
-        Criteria criteria = getSession().createCriteria(Claim.class);
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Claim.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
         return totalCount(criteria);
     }

@@ -490,7 +490,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
              */
             
             getCurrentSession().clear();
-            bordereau = (Bordereau) getSession().load(Bordereau.class, bordereau.getId());
+            bordereau = (Bordereau) getSessionFactory().getCurrentSession().load(Bordereau.class, bordereau.getId());
             setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
             bordereauService.saveBordereau(bordereau);
             LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);

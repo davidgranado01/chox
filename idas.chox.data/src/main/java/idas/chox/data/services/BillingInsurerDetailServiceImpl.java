@@ -80,7 +80,7 @@ public class BillingInsurerDetailServiceImpl extends SecureDataService implement
 
     @Override
     	public List sumPaymentAmount(int billingInsurerId){
-		Criteria criteria = getSession().createCriteria(BillingInsurerDetail.class);
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(BillingInsurerDetail.class);
 		criteria.createCriteria("billing").add(Restrictions.eq("id", billingInsurerId));
 
 		ProjectionList projList = Projections.projectionList();
