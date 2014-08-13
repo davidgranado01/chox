@@ -45,15 +45,10 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private String sort;
     private String dir;
     private int totalCount;
-    private String userPasswordFormatMessage;
     private boolean activeUsersOnly;
 
     public String getDir() {
         return dir;
-    }
-
-    public String getUserPasswordFormatMessage() {
-        return userPasswordFormatMessage;
     }
 
     public int getMinPasswordLength() {
@@ -166,17 +161,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.users);
-        
-        if (totalCount == 0) {
-            return "{totalCount:" + 1 + ",results:" + userPasswordFormatMessage + "}";
-        }
         return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
-    }
-
-    public String getStringData() {
-        LOG.debug("Getting String data");
-//        return userPasswordFormatMessage;
-        return "{totalCount:" + 1 + ",results:" + userPasswordFormatMessage + "}";
     }
 
     public int getCurrentUserOrganisationId() {
