@@ -133,7 +133,9 @@
                         }
                         // store the search criteria in the cookie
                         Ext.state.Manager.set("claims_grid_baseParams", baseParams);
-                        claimsGrid.setTitle("");
+                        if (claimsGrid) {
+                            claimsGrid.setTitle("");
+                        }
                     }
                     ,load: function(store, records, options) {
                             // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
@@ -190,7 +192,7 @@
                 renderTo : 'gridHolder',
                 listeners:  {
                                 cellclick: maskInboxScreen,
-                                show : function(grid) {
+                                afterrender : function(grid) {
                                     if (Ext.state.Manager.get("isClaimSearchMade")) {
                                         claimStore.baseParams = Ext.state.Manager.get("claims_grid_baseParams");
                                         claimStore.load();
@@ -362,14 +364,16 @@
         }
 
         function handleActivate(tab){
-
-            claimsGrid.hide();
+            
+//            claimsGrid.hide();
+            Ext.fly('inboxClaimsGridId').addClass('x-hide-display');
             Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
             activityMonitor.clearViewingStatus();
 
             if(tab.title.indexOf('Inbox') > -1) {
                 
-                claimsGrid.show();
+//                claimsGrid.show();
+                Ext.fly('inboxClaimsGridId').removeClass('x-hide-display');
                 
                 <s:if test="isChoxAdmin!=true && enableActivityMonitor">
                         activityMonitor.refreshViewingStatus();
