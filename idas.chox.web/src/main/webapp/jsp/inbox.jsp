@@ -76,6 +76,7 @@
                 Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", null);
                 Ext.state.Manager.set("isClaimSearchMade", false);
                 Ext.state.Manager.set("currentTabIndex", <s:property value="preSelectedActiveTab"/>);
+                Ext.state.Manager.set("uploaded_files_grid_title", 'Files Uploaded Today');
 //                Ext.state.Manager.set("syncWithSearchField", false);
                 manualInvoiceFilter = false;
             </s:if>

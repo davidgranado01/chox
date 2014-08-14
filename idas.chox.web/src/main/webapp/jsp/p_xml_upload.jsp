@@ -17,6 +17,11 @@
     var intervelId;
     var totalRecordLoaded=0;
     var sm;
+    var FILES_UPLOADED_TODAY_TITLE = 'Files Uploaded Today';
+    var FILES_UPLOADED_IN_LAST_7_DAYS_TITLE = 'Files Uploaded In Last 7 Days';
+    var FILES_UPLOADED_IN_LAST_30_DAYS_TITLE = 'Files Uploaded In Last 30 Days';
+    var ALL_UPLOADED_FILES_TITLE = 'All Uploaded Files';
+    
 
     Ext.onReady(function(){
         
@@ -285,34 +290,38 @@
                         }
                     }
                 },'->',{
-                    text : 'Files Uploaded Today',
+                    text : FILES_UPLOADED_TODAY_TITLE,
                     id : 'fileUploadUploadTodayButtonId',
                     handler : function() {
-                        uploadedFileGrid.setTitle('Files Uploaded Today');
+                        uploadedFileGrid.setTitle(FILES_UPLOADED_TODAY_TITLE);
+                        Ext.state.Manager.set("uploaded_files_grid_title", FILES_UPLOADED_TODAY_TITLE);
                         loadUploadedFiles(1);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
-                    text : 'Files Uploaded In Last 7 days',
+                    text : FILES_UPLOADED_IN_LAST_7_DAYS_TITLE,
                     id : 'fileUploadIn7DaysButtonId',
                     handler : function() {
-                        uploadedFileGrid.setTitle('Files Uploaded In Last 7 Days');
+                        uploadedFileGrid.setTitle(FILES_UPLOADED_IN_LAST_7_DAYS_TITLE);
+                        Ext.state.Manager.set("uploaded_files_grid_title", FILES_UPLOADED_IN_LAST_7_DAYS_TITLE);
                         loadUploadedFiles(6);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
-                    text : 'Files Uploaded In Last 30 days',
+                    text : FILES_UPLOADED_IN_LAST_30_DAYS_TITLE,
                     id : 'fileUploadIn30DaysButtonId',
                     handler : function() {
-                        uploadedFileGrid.setTitle('Files Uploaded In Last 30 Days');
+                        uploadedFileGrid.setTitle(FILES_UPLOADED_IN_LAST_30_DAYS_TITLE);
+                        Ext.state.Manager.set("uploaded_files_grid_title", FILES_UPLOADED_IN_LAST_30_DAYS_TITLE);
                         loadUploadedFiles(29);
                         emptyClaimsDetailGrid();
                     }
                 },'-','',{
-                    text : 'All Uploaded Files',
+                    text : ALL_UPLOADED_FILES_TITLE,
                     id : 'fileUploadAllButtonId',
                     handler : function() {
-                        uploadedFileGrid.setTitle('All Uploaded Files');
+                        uploadedFileGrid.setTitle(ALL_UPLOADED_FILES_TITLE);
+                        Ext.state.Manager.set("uploaded_files_grid_title", ALL_UPLOADED_FILES_TITLE);
                         loadUploadedFiles(999);
                         emptyClaimsDetailGrid();
                     }
@@ -417,7 +426,7 @@
             selModel : sm,
             tbar:tbar,
             bbar: xmlUploadedFilepagingBar,
-            title:'Files Uploaded Today',
+            title: Ext.state.Manager.get("uploaded_files_grid_title"),
             deferRowRender:false,
             enableColumnMove: false,
             stateId:'xml_uploaded_files_grid',
@@ -747,9 +756,10 @@
             });
         }
         Ext.get('uploadClaimForm').unmask();
-        uploadedFileGrid.setTitle('Uploaded Files (Today)');
+        uploadedFileGrid.setTitle(FILES_UPLOADED_TODAY_TITLE);
         Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", 0);
-        loadUploadedFiles();
+        Ext.state.Manager.set("uploaded_files_grid_title", FILES_UPLOADED_TODAY_TITLE);
+        loadUploadedFiles(1);
         emptyClaimsDetailGrid();
         //        xmlClaimsStatusGrid.setHeight(50);
         //        xmlClaimsStatusData.removeAll();
