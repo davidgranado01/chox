@@ -34,6 +34,7 @@ public class MakeInterimPaymentTest extends BaseTest {
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         claim.setInvoice(invoiceService.getInvoice(999));
+        claim.getInvoice().setTotalToPay(BigDecimal.TEN);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
 
         MakeInterimPayment activity = (MakeInterimPayment) activityFactory.getActivity("makeInterimPayment");
@@ -54,6 +55,7 @@ public class MakeInterimPaymentTest extends BaseTest {
         Claim claim = new Claim();
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        invoice.setTotalToPay(BigDecimal.valueOf(20.00));
         claim.setInvoice(invoice);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
 
