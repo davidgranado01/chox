@@ -319,7 +319,7 @@
                         <div class="label-block">
                             <p class="std-label">Organisation Type:</p>
                             <select id="selectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
-                                <option value="1">Sherwood Organisation</option>
+                                <option value="1">Valexa Organisation</option>
                                 <option value="2">Insurer Organisation</option>
                                 <option value="3">Credit Hire Organisation</option>
                             </select>

@@ -230,7 +230,7 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label" style="width: 260px;">Organisation Type</label>
                         <b>
-                            <s:if test="OrganisationTypeId==1">Sherwood Organisation Users</s:if>
+                            <s:if test="OrganisationTypeId==1">Valexa Organisation Users</s:if>
                             <s:elseif test="OrganisationTypeId==2">Insurer Organisation Users</s:elseif>
                             <s:elseif test="OrganisationTypeId==3">Credit Hire Organisation Users</s:elseif>
                         </b>
@@ -243,7 +243,7 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label" style="width: 260px;">Company Name</label>
                             <b>
-                                <s:if test="OrganisationTypeId==1">Sherwood</s:if>
+                                <s:if test="OrganisationTypeId==1">Valexa</s:if>
                                 <s:elseif test="OrganisationTypeId==2"><s:property value="Insurer.name" /></s:elseif>
                                 <s:elseif test="OrganisationTypeId==3"><s:property value="Chorganisation.name" /></s:elseif>
                             </b>

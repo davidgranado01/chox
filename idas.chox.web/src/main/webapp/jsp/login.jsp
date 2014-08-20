@@ -71,8 +71,8 @@
         <div style="text-align:center; padding-top:10px;">
             <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>
-        <div class="footerText">This is a Sherwood Technology Solutions Ltd proprietary system. No use is allowed without appropriate authorisation.<br/>
-Unauthorised use of this system will constitute a breach of Sherwood Technology Solutions Ltd policy and<br/>
+        <div class="footerText">This is a Valexa Technologies Limited proprietary system. No use is allowed without appropriate authorisation.<br/>
+Unauthorised use of this system will constitute a breach of Valexa Technologies Limited policy and<br/>
 prosecution under pertinent legislation will apply. This system uses cookies, signing into this system will<br/>
 be taken as consent to use cookies, for details on how cookies are used see ‘Terms of Service’ above.</div>
    </body>

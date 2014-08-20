@@ -23,7 +23,7 @@
             <s:if test="webUser.isCHOXAdmin()">
                 <div class="chox-form-item">
                 <label class="chox-form-std-label">Organisation</label>
-                <label class="std-data-ro">Sherwood</label></div>
+                <label class="std-data-ro">Valexa</label></div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
