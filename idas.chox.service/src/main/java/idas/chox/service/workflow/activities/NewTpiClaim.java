@@ -85,6 +85,11 @@ public class NewTpiClaim extends BaseActivity {
             logTransaction(claim);
             newClaim = true;
         }
+        if (claim.getBreBand().isPaymentTeamActive()
+                && ClaimType.isTPI(claim.getClaimType()) && claim.getInsurer().isTpiPaymentsTeamEnable()
+                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+            claim.getInvoice().setPaymentTeam(true);
+        }
 
         if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             LOG.debug("TPI Claim status is InvoiceDataCalculationsIncorrect.");
@@ -98,7 +103,6 @@ public class NewTpiClaim extends BaseActivity {
             if (claim.getBreBand().isPaymentTeamActive()
                     && ClaimType.isTPI(claim.getClaimType()) && claim.getInsurer().isTpiPaymentsTeamEnable()
                     && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
-                claim.getInvoice().setPaymentTeam(true);
                 invoiceAccepted = true; 
             }
             if (!autoRoutedInvoice) {

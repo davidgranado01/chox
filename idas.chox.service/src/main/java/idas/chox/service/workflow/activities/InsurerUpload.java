@@ -129,22 +129,17 @@ public class InsurerUpload extends BaseActivity {
         claim.setStatusModifiedDate(new Date());
 
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
+        boolean invoicePassedBre = false;
+        boolean paymentsTeamInvoice = false;
 
         if (claim.getBreBand().isPaymentTeamActive()
                     && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
                     && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
-                claim.getInvoice().setPaymentTeam(true);
+                paymentsTeamInvoice = true;
         }
-        boolean invoicePassedBre = false;
-        boolean paymentsTeamInvoice = false;
 
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             invoicePassedBre = true;
-        }
-        if (claim.getBreBand().isPaymentTeamActive()
-                && claim.getInsurer().isInsurerManualPaymentsTeamEnable()
-                && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
-            paymentsTeamInvoice = true;
         }
 
         if (invoicePassedBre && autoRoutedInvoice) {
@@ -208,7 +203,7 @@ public class InsurerUpload extends BaseActivity {
             }
         }
         
-        if (invoicePassedBre && paymentsTeamInvoice) {
+        if (paymentsTeamInvoice) {
             claim.getInvoice().setPaymentTeam(true);
         }
         

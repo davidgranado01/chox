@@ -99,8 +99,7 @@ public class InvoiceResubmit extends BaseActivity {
             }
         }
 
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())
-                && claim.getBreBand().isPaymentTeamActive()
+        if (claim.getBreBand().isPaymentTeamActive()
                 && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
                     || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
                     || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
@@ -108,7 +107,9 @@ public class InvoiceResubmit extends BaseActivity {
                     || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))
                 && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
             claim.getInvoice().setPaymentTeam(true);
-            invoiceAccepted = true;
+            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                invoiceAccepted = true;
+            }
         }
 
         if (invoiceAccepted) {
