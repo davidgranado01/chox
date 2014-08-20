@@ -15,6 +15,7 @@
     <http pattern="/favicon.ico" security="none"/>
     <http pattern="/scripts/**" security="none"/>
     <http pattern="/services/**" security="none"/>
+    <http pattern="/terms_of_service.html" security="none"/>
 <!--    <http pattern="/login.action" security="none"/>-->
     
     <http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
