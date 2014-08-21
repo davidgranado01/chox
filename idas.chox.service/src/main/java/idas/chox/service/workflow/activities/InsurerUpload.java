@@ -207,7 +207,7 @@ public class InsurerUpload extends BaseActivity {
             claim.getInvoice().setPaymentTeam(true);
         }
         
-        if (invoicePassedBre && paymentsTeamInvoice && ClaimStatus.MANUAL_INVOICE_APPROVED.equals(claim.getStatus())) {
+        if (invoicePassedBre && (paymentsTeamInvoice || autoRoutedInvoice) && ClaimStatus.MANUAL_INVOICE_APPROVED.equals(claim.getStatus())) {
             getDataService().save(claim);
             logTransaction(claim, claim.getPreviousStatus()==null? "": claim.getPreviousStatus(), claim.getStatus(), -50);
             // move claim to next status
