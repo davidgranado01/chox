@@ -21,7 +21,7 @@
         var dashboardActionName;
         var isChoxAdmin = <s:property value="isChoxAdmin"/>;
         var isTaskManagementEnabled = <s:property value="taskManagementEnabled"/>;
-        var taskTabTitle = isChoxAdmin ? 'Task<sup>'+' '+'</sup>' : 'Task<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
+        var taskTabTitle = isChoxAdmin ? 'Tasks<sup>'+' '+'</sup>' : 'Tasks<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
         var filterName;
         var title;
         var actionMenu;
@@ -141,7 +141,7 @@
                     ,load: function(store, records, options) {
                             // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
                             if (typeof queueGrid !== 'undefined' && typeof store.baseParams.queueNumber !== 'undefined' 
-                                    && store.baseParams.queueCount !== store.getTotalCount()) {
+                                    && queueGrid.getStore().getTotalCount() > 0 && store.baseParams.queueCount !== store.getTotalCount()) {
                                 var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
                                 queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
                                 queueRecord.commit();
@@ -413,7 +413,7 @@
                 if (taskCount <= 0) { 
                     color = 'black';
                 }
-                taskTabTitle = 'Task<sup  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</sup>';
+                taskTabTitle = 'Tasks<sup  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</sup>';
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
         }
