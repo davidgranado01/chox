@@ -140,7 +140,14 @@ public class NewTpiClaim extends BaseActivity {
                 claim.setPreviousStatus(super.getCurrentStatus());
 
                 //if BRE approves the invoice and TPI is selected it will go into following status
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);  
+                if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
+                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                } else {
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                }
                 invoiceAccepted = true;
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)

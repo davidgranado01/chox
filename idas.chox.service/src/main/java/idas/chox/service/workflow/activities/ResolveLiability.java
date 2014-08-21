@@ -77,13 +77,12 @@ public class ResolveLiability extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
         }
-        if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL
-                && !ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType())
-                && ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
-                        || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
-                        || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
+        if ( !ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType()) &&
+            ( claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+             || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+             || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+             || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         } else {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);

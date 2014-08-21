@@ -184,7 +184,16 @@ public class NewInvoice extends BaseActivity {
             // move claim to next status
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType()) &&
+                   (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
+                claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+            } else {
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            }
         }
     }
 

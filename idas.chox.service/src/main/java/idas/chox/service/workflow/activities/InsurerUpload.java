@@ -214,10 +214,12 @@ public class InsurerUpload extends BaseActivity {
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
             if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN) {
+                || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED    ) {
                 claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
             } else {
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
         }
         LOG.debug("Finished InsurerUpload activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());

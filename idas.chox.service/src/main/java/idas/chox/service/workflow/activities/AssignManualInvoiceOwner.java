@@ -103,9 +103,9 @@ public class AssignManualInvoiceOwner extends BaseActivity {
 
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
-            if (workgroup.isStpExcluded() && claim.getInvoice().isPaymentTeam()) {
+            if (workgroup.isStpExcluded() && claim.getInvoice() != null && claim.getInvoice().isPaymentTeam()) {
                 claim.getInvoice().setPaymentTeam(false);
-            } else if (!workgroup.isStpExcluded() && claim.getBreBand().isPaymentTeamActive() && claim.getInsurer().isInsurerManualPaymentsTeamEnable()) {
+            } else if (!workgroup.isStpExcluded() && claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive() && claim.getInsurer().isInsurerManualPaymentsTeamEnable()) {
                 claim.getInvoice().setPaymentTeam(true);
             }
         } else {
