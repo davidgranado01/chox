@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.BreBand;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,14 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.model.Comment;
+import idas.chox.core.services.BreBandService;
 
 public class BatchUpdateAction extends BaseAction {
 
@@ -23,11 +26,16 @@ public class BatchUpdateAction extends BaseAction {
     private Integer workgroupId; // CLAIM OWNERSHIP
     private Integer claimOwnerId;
     private WorkgroupService workgroupService;
-
+    private BreBandService breBandService;
+    
     @Override
     public String execute() throws Exception {
 
         return SUCCESS;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public String doClaimOwnershipUpdateAction() {
@@ -69,6 +77,20 @@ public class BatchUpdateAction extends BaseAction {
 
             if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);
+                if (claim.getBreBand() == null) {
+                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setBreBand(choBand);
+                }
+                if (claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive() && !claim.getWorkgroup().isStpExcluded()
+                    && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
+                        || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
+                        || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
+                        || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeePaymentsTeamEnable())
+                        || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))) {
+                    claim.getInvoice().setPaymentTeam(true);
+                } else if (claim.getInvoice() != null && claim.getInvoice().isPaymentTeam()) {
+                    claim.getInvoice().setPaymentTeam(false);
+                }
             }
 
             claim.setClaimOwner(claimOwnerDBA);

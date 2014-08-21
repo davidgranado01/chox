@@ -70,6 +70,13 @@ public class AssignOwner extends BaseActivity {
         claim.setClaimOwner(claimOwner);
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
+            if (ClaimType.isTPI(claim.getClaimType()) && workgroup.isStpExcluded() && claim.getInvoice() != null) {
+                claim.getInvoice().setPaymentTeam(false);
+            } else if (ClaimType.isTPI(claim.getClaimType()) && !workgroup.isStpExcluded()
+                    && claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive()
+                    && claim.getInsurer().isTpiPaymentsTeamEnable()) {
+                claim.getInvoice().setPaymentTeam(true);
+            }
         }
         if (!ClaimType.isTPI(claim.getClaimType())) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);

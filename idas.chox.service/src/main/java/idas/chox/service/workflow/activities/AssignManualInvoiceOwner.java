@@ -22,7 +22,7 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     private boolean workgroupsEnabled;
     private boolean ownershipEnabled;
     private int workgroupId;
-
+    
     // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
     public WebUser getClaimOwner() {
         return claimOwner;
@@ -105,6 +105,8 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             claim.setWorkgroup(workgroup);
             if (workgroup.isStpExcluded() && claim.getInvoice().isPaymentTeam()) {
                 claim.getInvoice().setPaymentTeam(false);
+            } else if (!workgroup.isStpExcluded() && claim.getBreBand().isPaymentTeamActive() && claim.getInsurer().isInsurerManualPaymentsTeamEnable()) {
+                claim.getInvoice().setPaymentTeam(true);
             }
         } else {
             LOG.debug("Workgroup is not enabled for this insurer.");
@@ -120,7 +122,9 @@ public class AssignManualInvoiceOwner extends BaseActivity {
                 claim.setPreviousStatus(getCurrentStatus());
                 
                 if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN) {
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED    ) {
                     claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
                 } else {
                     claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);

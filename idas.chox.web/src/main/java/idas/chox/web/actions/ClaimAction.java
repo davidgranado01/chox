@@ -915,6 +915,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                     claim.setClaimOwner(newClaimOwner);
                     claim.setWorkgroup(workgroup);
+                    if (claim.getBreBand() == null) {
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                    }
+                    if (claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive() && !claim.getWorkgroup().isStpExcluded()
+                            && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
+                            || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
+                            || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
+                            || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeePaymentsTeamEnable())
+                            || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))) {
+                        claim.getInvoice().setPaymentTeam(true);
+                    } else if (claim.getInvoice() != null && claim.getInvoice().isPaymentTeam()) {
+                        claim.getInvoice().setPaymentTeam(false);
+                    }
                     this.claimService.updateClaim(claim);
 
                 } catch (Exception ex) {
