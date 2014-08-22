@@ -8,8 +8,10 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
+import java.math.BigDecimal;
 
 public class ResolveLiabilityTest extends BaseTest{
 
@@ -31,7 +33,9 @@ public class ResolveLiabilityTest extends BaseTest{
         claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
      
         ResolveLiability activity = (ResolveLiability) activityFactory.getActivity("resolveLiability");
-        
+        activity.setLiabilityStatus(LiabilityStatus.LIABILITY_ACCEPTED);
+        activity.setPercentageLiabilityCho(BigDecimal.ZERO);
+        activity.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.AWAITING_INVOICE_PAYMENT, claim.getStatus());
     }

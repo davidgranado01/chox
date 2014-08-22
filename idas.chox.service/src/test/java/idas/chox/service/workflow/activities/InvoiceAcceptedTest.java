@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
 
@@ -29,6 +30,7 @@ public class InvoiceAcceptedTest extends BaseTest{
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        claim.setLiability(LiabilityStatus.LIABILITY_ACCEPTED);
         InvoiceAccepted activity = (InvoiceAccepted) activityFactory.getActivity("acceptInvoice");
 
         

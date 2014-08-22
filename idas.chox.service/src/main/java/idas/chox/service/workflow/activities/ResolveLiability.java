@@ -46,8 +46,8 @@ public class ResolveLiability extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
-                && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
-                || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
+                && ((new BigDecimal(100.0)).compareTo(percentageLiabilityAccepted) != 0
+                || BigDecimal.ZERO.compareTo(percentageLiabilityCho) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
         }

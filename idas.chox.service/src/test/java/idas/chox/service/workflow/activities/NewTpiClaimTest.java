@@ -38,6 +38,7 @@ public class NewTpiClaimTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setThirdParty(thirdPartyService.getThirdParty(999));
         claim.setCustomer(customerService.getCustomer(999));
+        claim.setBreBand(new BreBand());
 
         NewTpiClaim activity = (NewTpiClaim) activityFactory.getActivity("newTpiClaim");
         activity.process(claim);
