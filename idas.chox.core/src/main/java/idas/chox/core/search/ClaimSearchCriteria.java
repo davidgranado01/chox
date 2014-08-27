@@ -604,7 +604,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getInsurerIdsAsString() {
 
-        if (getInsurerIds() != null) {
+        if (getInsurerIds() != null && !getInsurerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getInsurerIds()) {
                 returnString.append(i.toString()).append(",");
@@ -620,7 +620,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getSupplierIdsAsString() {
 
-        if (getSupplierIds() != null) {
+        if (getSupplierIds() != null && !getSupplierIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getSupplierIds()) {
                 returnString.append(i.toString()).append(",");
@@ -636,7 +636,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getWorkgroupIdsAsString() {
 
-        if (getWorkgroupIds() != null) {
+        if (getWorkgroupIds() != null && !getWorkgroupIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getWorkgroupIds()) {
                 returnString.append(i.toString()).append(",");
@@ -652,7 +652,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getSupplierClaimOwnerIdsAsString() {
 
-        if (getSupplierClaimOwnerIds() != null) {
+        if (getSupplierClaimOwnerIds() != null && !getSupplierClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getSupplierClaimOwnerIds()) {
                 returnString.append(i.toString()).append(",");
@@ -668,7 +668,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getClaimOwnerIdsAsString() {
 
-        if (getClaimOwnerIds() != null) {
+        if (getClaimOwnerIds() != null && !getClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getClaimOwnerIds()) {
                 returnString.append(i.toString()).append(",");
@@ -684,7 +684,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getClaimTypesValueAsString() {
 
-        if (getClaimTypes() != null) {
+        if (getClaimTypes() != null && !getClaimTypes().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (ClaimType c : getClaimTypes()) {
                 returnString.append(c.getClaimTypeValue()).append(",");
@@ -700,7 +700,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getHireAndRepairSearchParamAsString() {
 
-        if (getHireAndRepairSearchParamIds()!= null) {
+        if (getHireAndRepairSearchParamIds()!= null && !getHireAndRepairSearchParamIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getHireAndRepairSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
@@ -716,7 +716,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getApprovedInvoiceOwnershipSearchParamAsString() {
 
-        if (getApprovedInvoiceOwnershipSearchParamIds()!= null) {
+        if (getApprovedInvoiceOwnershipSearchParamIds()!= null && !getApprovedInvoiceOwnershipSearchParamIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
@@ -732,7 +732,7 @@ public class ClaimSearchCriteria implements Serializable {
      */
     public String getLiabilityStatusesValueAsString() {
 
-        if (getLiabilityStatuses() != null) {
+        if (getLiabilityStatuses() != null && !getLiabilityStatuses().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (LiabilityStatus s : getLiabilityStatuses()) {
                 returnString.append(s.getLiablityValue()).append(",");
