@@ -734,7 +734,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // For filter's supplier Owner check, we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
-                searchCriteria.setSupplierClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
+                searchCriteria.setSupplierClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId(), ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)));
             }
         }
 
@@ -848,10 +848,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (searchCriteria.getSupplierClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
                 // Remove -9 value from selected supplierClaimOwnerIds as we are adding null restriction.
-                searchCriteria.getSupplierClaimOwnerIds().remove(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED);
+//                searchCriteria.getSupplierClaimOwnerIds().remove(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED);
+                supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
+                supplierClaimOwnerIds.remove((Integer) ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED);
                 // If multiple SupplierClaimOwner selected with CLAIM_OWNER_NOT_ASSIGNED then use criteria OR condition.
-                if (searchCriteria.getSupplierClaimOwnerIds().size() > 0) {
-                    supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
+                if (supplierClaimOwnerIds.size() > 0) {
+                    
                     criteria.add(Restrictions.or(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()),
                             Restrictions.isNull("supplierClaimOwner.id")));
                 } else { // If only CLAIM_OWNER_NOT_ASSIGNED selected just add null restriction.
