@@ -16,6 +16,7 @@ RETURNS TABLE("Supplier Reference" VARCHAR,
               "Current CHOX Status" VARCHAR,
               "Invoice Upload Date" timestamp without time zone,
               "Hire Gross" numeric(10,2),
+              "Engineer Fee Gross" numeric(10,2),
               "Repair Gross" numeric(10,2),
               "Total Loss Fee Gross" numeric(10,2),
               "Storage & Recovery Gross" numeric(10,2),
@@ -47,6 +48,10 @@ SELECT c.cho_reference as "Supplier Reference",
      from claim c2, invoice i2, customer cu2
       where c2.invoice_id=i2.id and c2.insurer_id=c.insurer_id and c2.chorganisation_id=c.chorganisation_id
         and c2.customer_id = cu2.id and cu2.claim_reference=cu.claim_reference and c2.claim_type in (1,5,8,12,15,19,2,6,9,13,16,20)) as "Hire Gross",
+    (select case when c.claim_type not in (1,5,8,12,15,19) then inv.engineer_fee_gross else sum(i2.engineer_fee_gross) end
+     from claim c2, invoice i2, customer cu2
+      where c2.invoice_id=i2.id and c2.insurer_id=c.insurer_id and c2.chorganisation_id=c.chorganisation_id
+        and c2.customer_id = cu2.id and cu2.claim_reference=cu.claim_reference and c2.claim_type in (1,5,8,12,15,19,2,6,9,13,16,20)) as "Engineer Fee Gross",
     (select case when c.claim_type not in (1,5,8,12,15,19) then inv.repair_gross else sum(i2.repair_gross) end
      from claim c2, invoice i2, customer cu2
       where c2.invoice_id=i2.id and c2.insurer_id=c.insurer_id and c2.chorganisation_id=c.chorganisation_id
