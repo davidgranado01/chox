@@ -145,7 +145,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             if (fos != null) {
                 try {
                     fos.close();
-                } catch (Exception ex2) {
+                } catch (IOException ex2) {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
@@ -156,7 +156,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             if (fos != null) {
                 try {
                     fos.close();
-                } catch (Exception ex2) {
+                } catch (IOException ex2) {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
@@ -165,9 +165,13 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         synchronized (getSessionLock()) {
             if (!(Boolean) getSession().get("exceptionThrown")) {
-                getSession().put("reportFileLocation", reportFile.getAbsolutePath());
-                getSession().put("cancelExportOperation", false);
-                getSession().put("isExportFinished", true);
+                if (reportFile != null) {
+                    getSession().put("reportFileLocation", reportFile.getAbsolutePath());
+                    getSession().put("cancelExportOperation", false);
+                    getSession().put("isExportFinished", true);
+                } else {
+                    LOG.error("Cannot add null reportFileLocation to session");
+                }
             }
         }
         return SUCCESS;
@@ -210,7 +214,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     reportStream = new DeleteOnCloseFileInputStream(reportFile);
-                } catch (Exception ex) {
+                } catch (FileNotFoundException ex) {
                     LOG.error("exception in generating report {}", ex.getMessage());
                     createEmptyReport();
                 }
@@ -235,7 +239,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             reportStream = new DeleteOnCloseFileInputStream(emptyFile);
         } catch (FileNotFoundException ex) {
             LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             LOG.error("Exception thrown {}", ex.getMessage(), ex);
         }
     }

@@ -11,7 +11,11 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CsrfTokenChangingFilter extends OncePerRequestFilter {
+    private static final Logger LOG = LoggerFactory.getLogger(CsrfTokenChangingFilter.class);
 
     private final CsrfTokenRepository tokenRepository;
     private final String INBOX_PAGE_REQUEST_STRING = "inboxPage.action";
@@ -29,8 +33,10 @@ public class CsrfTokenChangingFilter extends OncePerRequestFilter {
                 && (request.getServletPath().contains(INBOX_PAGE_REQUEST_STRING) 
                 || request.getServletPath().contains(CLAIM_DETAILS_PAGE_REQUEST_STRING))) {
             CsrfToken csrfToken = tokenRepository.generateToken(request);
+            CsrfToken oldCSRFToken = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
             csrfToken = new SaveOnAccessCsrfToken(tokenRepository, request, response, csrfToken);
-
+            LOG.debug("Changing CSRF token from '{}' to '{}' using request attributes '{}' and '{}'",
+                    new Object[] {oldCSRFToken.getToken(), csrfToken.getToken(), CsrfToken.class.getName(), csrfToken.getParameterName()});
             request.setAttribute(CsrfToken.class.getName(), csrfToken);
             request.setAttribute(csrfToken.getParameterName(), csrfToken);
         }
