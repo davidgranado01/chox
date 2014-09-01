@@ -63,7 +63,7 @@ WHERE c.invoice_id = i.id
 
   AND a.claim_id = c.id
   AND a.new_status='PaymentReceived'
-  AND a.created_date BETWEEN startDate AND endDate -- Period parameter
+  AND a.created_date::Date BETWEEN startDate AND endDate -- Period parameter
 
   AND a.reverted = FALSE
   ORDER BY ins.name;
