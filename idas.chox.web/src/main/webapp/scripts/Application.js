@@ -82,6 +82,7 @@ Ext.onReady(function() {
 });
 
 function isCsrfParamPresent() {
+    return true;
     if (!csrfParam ||!csrfParameterName || !csrfParam[csrfParameterName]) {
         Ext.MessageBox.show({
             title: 'Internal Error Occurred',

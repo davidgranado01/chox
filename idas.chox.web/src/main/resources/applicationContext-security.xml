@@ -23,14 +23,14 @@
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
-        <custom-filter before="CSRF_FILTER" ref="customFilters" />
-        <custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" />
+        <!--custom-filter before="CSRF_FILTER" ref="customFilters" /-->
+        <!--custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" /-->
         <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
         <access-denied-handler ref="choxAccessDeniedHandler"/>
-        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
+        <!--csrf request-matcher-ref="csrfSecurityRequestMatcher"/-->
     </http>
     
-    <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
+    <!--beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" /-->
     
     <authentication-manager alias="authenticationManager" erase-credentials="true">
         <authentication-provider user-service-ref="userDetailsService">
@@ -73,10 +73,11 @@
     
     <beans:bean id="defaultRedirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy"/>
 
+<!--
     <beans:bean id="httpSessionCsrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
         <beans:property name="headerName" value="X-SECURITY" />
     </beans:bean>
-    
+-->
     <beans:bean id="logbackMdcInfoFilter" class="idas.chox.web.security.LogbackMdcInfoFilter" />
     
     <beans:bean id="exceptionHandlingFilter" class="idas.chox.web.security.ExceptionHandlingFilter">
@@ -86,13 +87,13 @@
     <beans:bean id="timeoutFilter" class="idas.chox.web.security.TimeoutFilter">
         <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
     </beans:bean>
-
+<!--
     <beans:bean id="csrfTokenChangingFilter" class="idas.chox.web.security.CsrfTokenChangingFilter">
         <beans:constructor-arg>
             <beans:ref bean="httpSessionCsrfTokenRepository"/>
         </beans:constructor-arg>
     </beans:bean>
-    
+-->
     <beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
         <beans:property name="authenticationFailureHandler" ref="failureHandler" />
         <beans:property name="authenticationSuccessHandler" ref="successHandler" />
