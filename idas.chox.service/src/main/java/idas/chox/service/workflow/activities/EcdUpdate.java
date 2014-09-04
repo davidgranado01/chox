@@ -104,7 +104,7 @@ public class EcdUpdate extends BaseActivity {
         }
         String supportingNoteClean = Jsoup.clean(supportingNote, Whitelist.basic());
         if (!supportingNote.equals(supportingNoteClean)) {
-            LOG.warn("Supporting note contains forbidden content - possible XSS attack: {}", supportingNote);
+            LOG.warn("Supporting note contains forbidden content - possible XSS attack: [clean] '{}' != '{}'", supportingNoteClean, supportingNote);
             throw new Exception("Supporting note contains forbidden content");
         }
         // Check there is no existig ECD with same date and reason (bug#2621)

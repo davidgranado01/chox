@@ -1,7 +1,10 @@
 package idas.chox.web.security;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.UserService;
 
 /**
  *
@@ -41,7 +42,18 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                                         AuthenticationException exception)
                     throws IOException, ServletException {
 
-        String username = request.getParameterValues("j_username")[0];
+        String username = null;
+        try {
+            username = request.getParameterValues("j_username")[0];
+        } catch (Exception ex) {
+            Enumeration<String> paramNames = request.getParameterNames();
+            StringBuilder pNames = new StringBuilder(); 
+            while (paramNames.hasMoreElements()) {
+                pNames.append(paramNames.nextElement()).append(" ");
+            }
+            LOG.error("No username found in request parameters: {}", pNames.toString());
+        }
+        
         LOG.debug("AuthenticationException thrown for login attempt with username='{}'\n", username, exception);
         
         WebUser user = userService.findByUserName(username);
