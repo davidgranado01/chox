@@ -49,7 +49,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             Enumeration<String> paramNames = request.getParameterNames();
             StringBuilder pNames = new StringBuilder(); 
             while (paramNames.hasMoreElements()) {
-                pNames.append(paramNames.nextElement()).append(" ");
+                String pName = paramNames.nextElement();
+                String pValue = null;
+                if (request.getParameterValues(pName).length > 0) {
+                    pValue = request.getParameterValues(pName)[0];
+                }
+                pNames.append(pName).append("=").append(pValue);
             }
             LOG.error("No username found in request parameters: {}", pNames.toString());
         }
