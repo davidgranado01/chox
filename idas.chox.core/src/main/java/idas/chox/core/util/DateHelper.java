@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,13 +157,12 @@ public class DateHelper {
 
     public static Date parse(String source, SimpleDateFormat dateFormat) {
 
-        if ((source.trim()).length() > 0 && source != null && !source.equalsIgnoreCase("")) {
+        if (source != null && (source.trim()).length() > 0 && !source.equalsIgnoreCase("")) {
 
             try {
                 return dateFormat.parse(source);
             } catch (ParseException ex) {
                 LOG.warn("Unable to parse date: '{}'", source);
-//                ex.printStackTrace();
                 return null;
             }
 
@@ -321,7 +319,6 @@ public class DateHelper {
                 (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
             diff--;
         }
-System.out.println("Difference between " + getSdf().format(first) + " and " + getSdf().format(last) + " is " + diff);
         return diff;
     }
 
