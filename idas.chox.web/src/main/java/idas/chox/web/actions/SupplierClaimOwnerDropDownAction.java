@@ -60,9 +60,11 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        LOG.debug("Executing in action {}", this);
         claimhandlers = new ArrayList<IdLookupItem>();
 
         if (getIsCHO()) {
+            LOG.debug("CHO - adding chorg id '{}'", getAuthenticatedUser().getChorganisation().getId());
             supplierId.clear();
             supplierId.add(getAuthenticatedUser().getChorganisation().getId());
         }
@@ -78,6 +80,8 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
                 items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
             }
             claimhandlers = items;
+        } else {
+            LOG.debug("No supplierID");
         }
 
         return SUCCESS;
