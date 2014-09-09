@@ -165,7 +165,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
             LOG.warn("UserID: {}, lastlogin='{}' version={}", new Object[]{user.getVersion(), user.getId(), user.getLastLoginDate()});
         }
-        LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
+        LOG.info("User '{}' logged-in successfully from IP address {} with HTTP sessionId='{}'.", new Object[]{user.toString(), request.getRemoteAddr(), request.getSession().getId()});
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }
