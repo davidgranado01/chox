@@ -48,7 +48,7 @@ public class EcdUpdate extends BaseActivity {
     }
 
     public void setSupportingNote(String supportingNote) {
-        this.supportingNote = supportingNote;
+        this.supportingNote = supportingNote.trim();
     }
 
     public void setUpdateInsurer(boolean updateInsurer) {
