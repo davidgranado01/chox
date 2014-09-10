@@ -182,8 +182,12 @@ public class InsurerDashboardBuilder {
         List<Integer> workgroupIds = new ArrayList<Integer>();
         List<Integer> claimOwnerIds = new ArrayList<Integer>();
 
-        String choOrgIdRaw = ((String[]) this.extParameters.get("supplierId"))[0].toString();
-        if (!choOrgIdRaw.isEmpty()) {
+        String choOrgIdRaw = null;
+        
+        if (extParameters != null && extParameters.containsKey("supplierId")) {
+            choOrgIdRaw = ((String[]) this.extParameters.get("supplierId"))[0];
+        }
+        if (choOrgIdRaw != null && !choOrgIdRaw.isEmpty()) {
             for (String choId : choOrgIdRaw.split(",")) {
                 choIds.add(Integer.parseInt(choId));
             }
@@ -191,8 +195,11 @@ public class InsurerDashboardBuilder {
             choIds.add(-1);
         }
 
-        String workgroupIdRaw = ((String[]) this.extParameters.get("workgroupId"))[0].toString();
-        if (!workgroupIdRaw.isEmpty()) {
+        String workgroupIdRaw = null;
+        if (extParameters != null && extParameters.containsKey("workgroupId")) {
+            workgroupIdRaw = ((String[]) this.extParameters.get("workgroupId"))[0];
+        }
+        if (workgroupIdRaw != null && !workgroupIdRaw.isEmpty()) {
             for (String wgId : workgroupIdRaw.split(",")) {
                 workgroupIds.add(Integer.parseInt(wgId));
             }
@@ -200,8 +207,11 @@ public class InsurerDashboardBuilder {
             workgroupIds.add(-1);
         }
 
-        String claimOwnerIdRaw = ((String[]) this.extParameters.get("claimOwnerId"))[0].toString();
-        if (!claimOwnerIdRaw.isEmpty()) {
+        String claimOwnerIdRaw = null;
+        if (extParameters != null && extParameters.containsKey("claimOwnerId")) {
+            claimOwnerIdRaw = ((String[]) this.extParameters.get("claimOwnerId"))[0];
+        }
+        if (claimOwnerIdRaw != null && !claimOwnerIdRaw.isEmpty()) {
             for (String ownerId : claimOwnerIdRaw.split(",")) {
                 claimOwnerIds.add(Integer.parseInt(ownerId));
             }
