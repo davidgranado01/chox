@@ -313,6 +313,11 @@ public class TasksAction extends BaseAction {
 
     @Secured ({"ROLE_INS", "ROLE_CHO"})
     public String createNewTask() {
+        if (taskType == null || dueDate == null || taskDescription == null) {
+            LOG.warn("Null parameter creating new task: taskType={}, dueDate={}, taskDescription={}",
+                    new Object[]{taskType,dueDate,taskDescription});
+            return ERROR;
+        }
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
         if (taskType.equals(TaskType.TOTAL_LOSS_PAYMENT.getDescription())) {
