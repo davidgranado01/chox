@@ -209,7 +209,7 @@ public class UserRoleAction extends BaseAction {
           }
       } catch (Exception ex) {
             handleException(ex);
-            LOG.debug("Error getting all available user roles: {}", ex.getMessage());
+            LOG.debug("Error getting all available user roles for user with id= {}: {}", webUserId, ex.getMessage());
             return ERROR;
       }
 
