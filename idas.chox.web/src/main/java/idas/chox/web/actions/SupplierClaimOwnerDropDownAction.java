@@ -1,14 +1,15 @@
 package idas.chox.web.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -45,7 +46,6 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
     }
 
     public String getJsonData() {
-        LOG.debug("Returning json data from claimhandlers: {}", claimhandlers);
 
         JSONArray jsonArray;
         try {
@@ -54,7 +54,7 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return null;
         }
-        LOG.debug("Returning json data: {}", jsonArray.toString());
+        LOG.trace("Returning json data: {}", jsonArray.toString());
         return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
     }
 
@@ -62,10 +62,14 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
     public String execute() throws Exception {
         LOG.debug("Executing in action {}", this);
         claimhandlers = new ArrayList<IdLookupItem>();
-
+        
         if (getIsCHO()) {
             LOG.debug("CHO - adding chorg id '{}'", getAuthenticatedUser().getChorganisation().getId());
-            supplierId.clear();
+            if (supplierId == null) {
+                supplierId = new HashSet<Integer>();
+            } else {
+                supplierId.clear();
+            }
             supplierId.add(getAuthenticatedUser().getChorganisation().getId());
         }
 
