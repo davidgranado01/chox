@@ -1,11 +1,15 @@
 package idas.chox.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.Set;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 
 public class RoleHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(RoleHelper.class);
 
     public static final int ORGANISATION_CHOX = 1;
     public static final int ORGANISATION_INS = 2;
@@ -151,7 +155,10 @@ public class RoleHelper {
     }
 
     public static boolean isInsurerUser(WebUser user) {
-        if (isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS)) {
+        if (user == null) {
+            LOG.warn("Cannot determine if insurer from null user");
+        }
+        else if (isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS)) {
             return true;
         }
         return false;
