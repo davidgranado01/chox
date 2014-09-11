@@ -12,7 +12,7 @@ function generateReport(queryString)
         });
         
         window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
-        directReportGenerationStatusIntervelId = setInterval(loadLiveDirectReportGenerationStatus, 1500);
+        directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1500);
             
     }else{
         
@@ -46,14 +46,14 @@ function generateReport(queryString)
         }      
     
                 
-        reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
+        reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
     }
 }
     
 function cancelReportGeneration(btn){
     if (btn === 'cancel'){
         Ext.MessageBox.hide();
-        reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
+        reportGenerationStatusIntervelId=window.clearTimeout(reportGenerationStatusIntervelId);
         choxExtAjaxRequest({
             url: '/prv/p/cancelReportGenerationExport.action',
             callback : function(options,success,response  ){
@@ -69,7 +69,7 @@ function cancelReportGeneration(btn){
                     }else{
                         Ext.MessageBox.show({
                             title: 'Error',
-                            msg: 'Export to Excel cancel failed. Please contact Chox Support.',
+                            msg: 'Export to Excel cancel failed.',
                             width:300,
                             buttons: Ext.MessageBox.OK,
                             icon : Ext.MessageBox.ERROR
@@ -91,13 +91,10 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
-                    window.location = contextPath+"/prv/p/downloadExcelReport.action?";
                     Ext.MessageBox.hide();
-                    reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
-                               
+                    window.location = contextPath+"/prv/p/downloadExcelReport.action?";
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -105,8 +102,9 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }
-                                                       
+                }else{
+                    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
+                }                                        
             }
         }
     });
@@ -135,7 +133,7 @@ function generateReport1(queryString,reportName)
         fn           : cancelReportGeneration
     });
                 
-    reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
+    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
 
 }
 
@@ -159,10 +157,8 @@ function loadLiveDirectReportGenerationStatus(){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
-                    directReportGenerationStatusIntervelId=window.clearInterval(directReportGenerationStatusIntervelId);
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    directReportGenerationStatusIntervelId=window.clearInterval(directReportGenerationStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -170,6 +166,8 @@ function loadLiveDirectReportGenerationStatus(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
+                }else{
+                    directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1500);
                 }
             }
         }
