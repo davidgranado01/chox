@@ -1,4 +1,4 @@
-var reportGenerationStatusIntervelId;
+var reportGenerationStatusIntervelId, directReportGenerationStatusIntervelId;
 var cancelled=false;
 function generateReport(queryString)
 {
@@ -94,7 +94,9 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
-                    window.location = contextPath+"/prv/p/downloadExcelReport.action?";
+                    if (!cancelled){
+                        window.location = contextPath+"/prv/p/downloadExcelReport.action?";
+                    }
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
                     Ext.MessageBox.show({

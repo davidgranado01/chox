@@ -1,3 +1,6 @@
+var directExportToExcelStatusIntervelId, exportToExcelIntervelId;
+var directTaskExportToExcelStatusIntervelId, taskExportToExcelIntervelId;
+
 if (!Ext.isDefined(Ext.webKitVersion)) {
     Ext.webKitVersion = Ext.isWebKit ? parseFloat(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)[1], 10) : NaN;
 }
@@ -45,7 +48,7 @@ function doExportExcel(){
                     closable     : false
                 });
                 window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
-                directExportToExcelStatusIntervelId = setInterval(loadDirectExportToExcelStatus, 1500);
+                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
             }else{
                 choxExtAjaxRequest({
                     url: '/prv/p/generateExportFile.action',
@@ -63,7 +66,7 @@ function doExportExcel(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setInterval(loadLiveExportToExcelClaimCount, 1500);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
             }
         }
         else{
@@ -73,9 +76,9 @@ function doExportExcel(){
 }
             
 function cancelExportToExcel(btn){
-    if (btn == 'cancel'){
+    if (btn === 'cancel'){
         Ext.MessageBox.hide();
-        exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
+        exportToExcelIntervelId=window.clearTimeout(exportToExcelIntervelId);
         choxExtAjaxRequest({
             url: '/prv/p/cancelExport.action',
             callback : function(options,success,response  ){
@@ -115,10 +118,8 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                 if(resp.isExportProcessFinished){
                     window.location= "doExportExcel.action?";
                     Ext.MessageBox.hide();
-                    exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -128,7 +129,6 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                     });
                 }else if(resp.tooManyRows){
                     Ext.MessageBox.hide();
-                    exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported claims.',
@@ -144,11 +144,13 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedClaimCount+' claims exported');
                     }
+                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
                 }
             }
         }
     });
-}
+};
+
 function doNotShowBrowserWarning(){
        
     choxExtAjaxRequest({
@@ -157,7 +159,7 @@ function doNotShowBrowserWarning(){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp && resp.isValid){
-                    if(resp.resultType && resp.resultType == 'Message')
+                    if(resp.resultType && resp.resultType === 'Message')
                     {
                     //                        Ext.MessageBox.show({
                     //                            title: '',
@@ -193,10 +195,8 @@ function loadDirectExportToExcelStatus(){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
-                    directExportToExcelStatusIntervelId=window.clearInterval(directExportToExcelStatusIntervelId);
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    directExportToExcelStatusIntervelId=window.clearInterval(directExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -206,7 +206,6 @@ function loadDirectExportToExcelStatus(){
                     });
                 }else if(resp.tooManyRows){
                     Ext.MessageBox.hide();
-                    directExportToExcelStatusIntervelId=window.clearInterval(directExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported claims.',
@@ -214,6 +213,8 @@ function loadDirectExportToExcelStatus(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
+                }else if(!resp.exportCancelled){
+                    directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
                 }
             }
         }
@@ -233,7 +234,7 @@ function doTaskExportExcel(){
                     closable     : false
                 });
                 window.location = contextPath+"/prv/doTaskExportExcel.action?directDownload="+ true + "&" +"hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly;
-                directTaskExportToExcelStatusIntervelId = setInterval(loadDirectTaskExportToExcelStatus, 1500);
+                directTaskExportToExcelStatusIntervelId = setTimeout(loadDirectTaskExportToExcelStatus, 1000);
             }else{
                 choxExtAjaxRequest({
                     url: "/prv/p/generateTaskExportFile.action",
@@ -252,7 +253,7 @@ function doTaskExportExcel(){
                     closable     : false,
                     fn           : cancelTaskExportToExcel
                 });
-                taskExportToExcelIntervelId = setInterval(loadLiveTaskExportToExcelClaimCount, 1500);
+                taskExportToExcelIntervelId = setTimeout(loadLiveTaskExportToExcelClaimCount, 1000);
             }
         }
         else{
@@ -264,7 +265,6 @@ function doTaskExportExcel(){
 function cancelTaskExportToExcel(btn){
     if (btn == 'cancel'){
         Ext.MessageBox.hide();
-        taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
         choxExtAjaxRequest({
             url: '/prv/p/cancelTaskExport.action',
             callback : function(options,success,response  ){
@@ -280,7 +280,7 @@ function cancelTaskExportToExcel(btn){
                     }else{
                         Ext.MessageBox.show({
                             title: 'Error',
-                            msg: 'Export to Excel cancel failed. Please contact Chox Support.',
+                            msg: 'Export to Excel cancel failed.',
                             width:300,
                             buttons: Ext.MessageBox.OK,
                             icon : Ext.MessageBox.ERROR
@@ -304,10 +304,8 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                 if(resp.isExportProcessFinished){
                     window.location= "doTaskExportExcel.action?";
                     Ext.MessageBox.hide();
-                    taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -317,7 +315,6 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                     });
                 }else if(resp.tooManyRows){
                     Ext.MessageBox.hide();
-                    taskExportToExcelIntervelId=window.clearInterval(taskExportToExcelIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported tasks.',
@@ -325,7 +322,7 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if(tasksDataStore.getTotalCount()>=resp.exportedTaskCount){
+                }else if(!resp.exportCancelled && tasksDataStore.getTotalCount()>=resp.exportedTaskCount){
 
                     var i = resp.exportedTaskCount/tasksDataStore.getTotalCount();
                     if(resp.writingToFile){
@@ -333,6 +330,7 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedTaskCount+' tasks exported');
                     }
+                    taskExportToExcelIntervelId = setTimeout(loadLiveTaskExportToExcelClaimCount, 1000);
                 }
             }
         }
@@ -348,10 +346,8 @@ function loadDirectTaskExportToExcelStatus(){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
-                    directTaskExportToExcelStatusIntervelId=window.clearInterval(directTaskExportToExcelStatusIntervelId);
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    directTaskExportToExcelStatusIntervelId=window.clearInterval(directTaskExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occurred. Please contact Chox Support.',
@@ -361,7 +357,6 @@ function loadDirectTaskExportToExcelStatus(){
                     });
                 }else if(resp.tooManyRows){
                     Ext.MessageBox.hide();
-                    directTaskExportToExcelStatusIntervelId=window.clearInterval(directTaskExportToExcelStatusIntervelId);
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported tasks.',
@@ -369,6 +364,8 @@ function loadDirectTaskExportToExcelStatus(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
+                }else if (!resp.exportCancelled) {
+                    directTaskExportToExcelStatusIntervelId = setTimeout(loadDirectTaskExportToExcelStatus, 1000);
                 }
             }
         }
