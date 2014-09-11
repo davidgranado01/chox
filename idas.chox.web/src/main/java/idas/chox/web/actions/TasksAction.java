@@ -316,6 +316,8 @@ public class TasksAction extends BaseAction {
         if (taskType == null || dueDate == null || taskDescription == null) {
             LOG.warn("Null parameter creating new task: taskType={}, dueDate={}, taskDescription={}",
                     new Object[]{taskType,dueDate,taskDescription});
+            setActionError("Cannot create new task as no parameters provide. If this error persists, please contact CHOX support");
+            getActionResponse().AssignMessageResult("Cannot create new task as no parameters provide. If this error persists, please contact CHOX support");
             return ERROR;
         }
         Task task = new Task();
