@@ -1,4 +1,5 @@
 var reportGenerationStatusIntervelId;
+var cancelled=false;
 function generateReport(queryString)
 {
        
@@ -15,7 +16,7 @@ function generateReport(queryString)
         directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1000);
             
     }else{
-        
+        cancelled = false;
         choxExtAjaxRequest({
             url: '/prv/p/generateReportFile.action',
             timeout : 3600000,
@@ -52,8 +53,9 @@ function generateReport(queryString)
     
 function cancelReportGeneration(btn){
     if (btn === 'cancel'){
-        Ext.MessageBox.hide();
+        cancelled = true;
         reportGenerationStatusIntervelId=window.clearTimeout(reportGenerationStatusIntervelId);
+        Ext.MessageBox.hide();
         choxExtAjaxRequest({
             url: '/prv/p/cancelReportGenerationExport.action',
             callback : function(options,success,response  ){
@@ -102,7 +104,7 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else{
+                }else if (!resp.exportCancelled && !cancelled){
                     reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
                 }                                        
             }
