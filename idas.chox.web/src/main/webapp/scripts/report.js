@@ -12,7 +12,7 @@ function generateReport(queryString)
         });
         
         window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
-        directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1500);
+        directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1000);
             
     }else{
         
@@ -133,7 +133,7 @@ function generateReport1(queryString,reportName)
         fn           : cancelReportGeneration
     });
                 
-    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
+    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
 
 }
 
@@ -167,7 +167,7 @@ function loadLiveDirectReportGenerationStatus(){
                         icon : Ext.MessageBox.ERROR
                     });
                 }else{
-                    directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1500);
+                    directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1000);
                 }
             }
         }
