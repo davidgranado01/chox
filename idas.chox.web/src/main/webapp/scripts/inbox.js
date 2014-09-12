@@ -1,5 +1,6 @@
 var directExportToExcelStatusIntervelId, exportToExcelIntervelId;
 var directTaskExportToExcelStatusIntervelId, taskExportToExcelIntervelId;
+var cancelled=false;
 
 if (!Ext.isDefined(Ext.webKitVersion)) {
     Ext.webKitVersion = Ext.isWebKit ? parseFloat(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)[1], 10) : NaN;
@@ -50,6 +51,7 @@ function doExportExcel(){
                 window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
                 directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
             }else{
+                cancelled = false;
                 choxExtAjaxRequest({
                     url: '/prv/p/generateExportFile.action',
                     timeout : 3600000,
@@ -77,6 +79,7 @@ function doExportExcel(){
             
 function cancelExportToExcel(btn){
     if (btn === 'cancel'){
+        cancelled = true;
         Ext.MessageBox.hide();
         exportToExcelIntervelId=window.clearTimeout(exportToExcelIntervelId);
         choxExtAjaxRequest({
@@ -100,11 +103,9 @@ function cancelExportToExcel(btn){
                             icon : Ext.MessageBox.ERROR
                         });
                     }
-                           
                 }
             }
         });
-                    
     }
 }
         
@@ -115,7 +116,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
-                if(resp.isExportProcessFinished){
+                if(!cancelled && resp.isExportProcessFinished){
                     window.location= "doExportExcel.action?";
                     Ext.MessageBox.hide();
                 }else if(resp.exceptionThrown){
@@ -136,7 +137,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if(claimStore.getTotalCount()>=resp.exportedClaimCount){
+                }else if(!cancelled && claimStore.getTotalCount()>=resp.exportedClaimCount){
                                 
                     var i = resp.exportedClaimCount/claimStore.getTotalCount();
                     if(resp.writingToFile){
@@ -213,7 +214,7 @@ function loadDirectExportToExcelStatus(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if(!resp.exportCancelled){
+                }else if(!resp.exportCancelled && !cancelled){
                     directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
                 }
             }
@@ -236,6 +237,7 @@ function doTaskExportExcel(){
                 window.location = contextPath+"/prv/doTaskExportExcel.action?directDownload="+ true + "&" +"hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly;
                 directTaskExportToExcelStatusIntervelId = setTimeout(loadDirectTaskExportToExcelStatus, 1000);
             }else{
+                cancelled = false;
                 choxExtAjaxRequest({
                     url: "/prv/p/generateTaskExportFile.action",
                     timeout : 3600000,
@@ -264,6 +266,7 @@ function doTaskExportExcel(){
             
 function cancelTaskExportToExcel(btn){
     if (btn == 'cancel'){
+        cancelled = true;
         Ext.MessageBox.hide();
         choxExtAjaxRequest({
             url: '/prv/p/cancelTaskExport.action',
@@ -301,9 +304,9 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
-                if(resp.isExportProcessFinished){
-                    window.location= "doTaskExportExcel.action?";
+                if(!cancelled && resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
+                    window.location= "doTaskExportExcel.action?";
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
                     Ext.MessageBox.show({
@@ -322,7 +325,7 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if(!resp.exportCancelled && tasksDataStore.getTotalCount()>=resp.exportedTaskCount){
+                }else if(!cancelled && !resp.exportCancelled && tasksDataStore.getTotalCount()>=resp.exportedTaskCount){
 
                     var i = resp.exportedTaskCount/tasksDataStore.getTotalCount();
                     if(resp.writingToFile){
@@ -330,7 +333,9 @@ var loadLiveTaskExportToExcelClaimCount = function updateExportedTask(){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedTaskCount+' tasks exported');
                     }
-                    taskExportToExcelIntervelId = setTimeout(loadLiveTaskExportToExcelClaimCount, 1000);
+                    if (!cancelled) {
+                        taskExportToExcelIntervelId = setTimeout(loadLiveTaskExportToExcelClaimCount, 1000);
+                    }
                 }
             }
         }
@@ -364,7 +369,7 @@ function loadDirectTaskExportToExcelStatus(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }else if (!resp.exportCancelled) {
+                }else if (!resp.exportCancelled && !cancelled) {
                     directTaskExportToExcelStatusIntervelId = setTimeout(loadDirectTaskExportToExcelStatus, 1000);
                 }
             }
