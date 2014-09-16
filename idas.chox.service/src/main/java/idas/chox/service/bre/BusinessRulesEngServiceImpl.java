@@ -124,7 +124,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         // at some point setting claim status need to be removed. there is no use doing it here. it's already being done in newinvoice class. 
         if (ClaimType.isTPI(claim.getClaimType())) {
             claim.setTpiClaimStatus(newClaimStatus);
-        }  else {
+        }  else if (!newClaimStatus.equals(oldStatus)) {
             claim.setPreviousStatus(oldStatus);
             claim.setStatus(newClaimStatus);
         }
