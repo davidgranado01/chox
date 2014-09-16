@@ -44,9 +44,9 @@ public class FileHelper {
         String result;
 
         if(isRandom){
-            result = TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName).toLowerCase();
+            result = TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName).replace(',', '-').toLowerCase();
         }else{
-            result = TextHelper.trimWhiteSpace(oldFileName).toLowerCase();
+            result = TextHelper.trimWhiteSpace(oldFileName).toLowerCase().replace(',', '-');
         }
 
         return result;

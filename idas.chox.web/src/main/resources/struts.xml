@@ -477,8 +477,8 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="createNewTask" class="idas.chox.web.actions.TasksAction" method="createNewTask">
-            
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="createNewTaskOnClaim" class="idas.chox.web.actions.TasksAction" method="createNewTask">
             
