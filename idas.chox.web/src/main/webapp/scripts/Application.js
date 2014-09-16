@@ -28,7 +28,8 @@ Ext.onReady(function() {
             proxy: new Ext.data.HttpProxy({url: contextPath + config.url, method: 'POST', timeout : config.timeout ? config.timeout : 60000})
         });
         
-        this.on('exception', function(ex, type, action, options, response, arg) {
+        // The below code is not necessery as exception is handled by the handleGeneralError method in ajax.js function. 
+        /*this.on('exception', function(ex, type, action, options, response, arg) {
             // Do not show the error message if the page is refereshed or the user navigated to different page before this request get response from server. 
             if (response.status !== 0) {
                 Ext.MessageBox.show({
@@ -40,7 +41,7 @@ Ext.onReady(function() {
     //                ,fn: function(){location.reload();}
                 });
             }
-        });
+        });*/
         
         this.on('beforeload', function(store,records,options) {
                 var temporaryParams = {};
