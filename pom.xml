@@ -54,7 +54,7 @@
         <spring-security-config.version>3.2.3.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.2.3.RELEASE</spring-security-web.version>
 
-        <struts.version>2.3.15.3</struts.version>
+        <struts.version>2.3.16.3</struts.version>
        
         <quartz-scheduler.version>2.1.7</quartz-scheduler.version>
         
