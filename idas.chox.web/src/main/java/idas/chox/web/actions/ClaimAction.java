@@ -267,7 +267,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setStopAutoPenaltyCharge(boolean stopAutoPenaltyCharge) {
-        claim.setAutoPenaltyChargeEnabled(!stopAutoPenaltyCharge);
+        if (claim != null) {
+            claim.setAutoPenaltyChargeEnabled(!stopAutoPenaltyCharge);
+        } else {
+            LOG.debug("Cannot set stopAutoPenaltyCharge to {} as no claim set.", stopAutoPenaltyCharge);
+        }
     }
 
     public int getLiabilityStatusValue() {
