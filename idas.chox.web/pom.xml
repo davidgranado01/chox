@@ -22,13 +22,6 @@
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>MessAdmin</id>
-            <url>http://messadmin.sourceforge.net/maven2/</url>
-        </repository>
-    </repositories>
-
     <build>
         <finalName>idas.chox.web</finalName>
         <pluginManagement>
@@ -499,48 +492,6 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Runtime Dependencies -->
-        <!-- MessAdmin -->
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-Core</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
-        </dependency>
-<!--    This plugin is not supporting for multiple SessionFactory. This can be uncommented if 
-        multiple sessionFactory support implemented in the next version. 
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-Hibernate</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
-        </dependency>-->
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-Ehcache</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
-        </dependency>
-		<!-- add here other MessAdmin plugins as required -->
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-ClickStream</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-SessionKiller</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.messadmin</groupId>
-            <artifactId>MessAdmin-ServletStats</artifactId>
-            <version>5.3</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.jolbox</groupId>

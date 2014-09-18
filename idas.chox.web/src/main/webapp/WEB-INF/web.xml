@@ -13,10 +13,6 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <listener>
-        <listener-class>clime.messadmin.core.MessAdminListener</listener-class>
-    </listener>
-
     <!-- Filters -->
     <filter>
         <filter-name>CachingResponseFilter</filter-name>
@@ -46,11 +42,6 @@
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
-    </filter>
-    <!-- MessAdmin Servlet Filter -->
-    <filter>
-        <filter-name>MessAdminFilter</filter-name>
-        <filter-class>clime.messadmin.filter.MessAdminFilter</filter-class>
     </filter>
 <!--    <filter>
         <filter-name>MultipartFilter</filter-name>
@@ -111,26 +102,12 @@
         <filter-name>struts-execute</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>MessAdminFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <!-- Servlets -->
     <servlet>
         <servlet-name>jspSupportServlet</servlet-name>
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
         <load-on-startup>5</load-on-startup>
-    </servlet>
-    <!-- MessAdmin Servlet -->
-    <servlet>
-        <servlet-name>MessAdminServlet</servlet-name>
-        <servlet-class>clime.messadmin.admin.MessAdminServlet</servlet-class>
-        <init-param>
-            <param-name>AuthorizationPassword</param-name>
-            <param-value>C0mpliance</param-value>
-        </init-param>
-        <load-on-startup>-1</load-on-startup>
     </servlet>
 
     <servlet>
@@ -158,11 +135,6 @@
     <servlet-mapping>
         <servlet-name>ViewStatusMessages</servlet-name>
         <url-pattern>/logBack/classicStatus</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>MessAdminServlet</servlet-name>
-        <url-pattern>/messadmin</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
