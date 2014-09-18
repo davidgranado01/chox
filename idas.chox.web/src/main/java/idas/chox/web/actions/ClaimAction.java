@@ -477,6 +477,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (getModelIdFromSession(Claim.class) != null) {
                 claim = claimService.getClaim(getModelIdFromSession(Claim.class));
                 id = claim.getId();
+                LOG.debug("No claim id provided - retrieved from session: {}", id);
+            } else if (LOG.isDebugEnabled()) {
+                LOG.debug("No claim id provided and no claim in session.");
             }
         } else {
             claim = claimService.getClaim(id);
@@ -485,6 +488,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.error("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
+        LOG.trace("Claim retrieved in prepare() with id={}", id);
         addModelToSession(Arrays.asList(claim));
     }
 

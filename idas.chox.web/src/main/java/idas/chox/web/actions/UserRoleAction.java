@@ -185,10 +185,10 @@ public class UserRoleAction extends BaseAction {
     }
 
     public String getAvailableUserRolesForTask() {
-      LOG.debug("Getting all available user roles for task assignment...");
+      LOG.trace("Getting all available user roles for task assignment...");
       Set<WebUserRole>  webUserRoles;
-      LOG.debug("Getting available user roles for user {}", webUserId);
-      LOG.debug("ObjectId = {}", objectId);
+      LOG.trace("Getting available user roles for user {}", webUserId);
+      LOG.trace("ObjectId = {}", objectId);
       try {
         Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
         if (insurer != null) {
