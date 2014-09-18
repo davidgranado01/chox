@@ -40,7 +40,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
     private Map<String, Object> session;
-    private String VALID_SESSION = "validSession";
+    private final String VALID_SESSION = "validSession";
     private BaseDataService baseDataService;
     private String message = null;
     private boolean showMessage = false;
