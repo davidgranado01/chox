@@ -82,10 +82,29 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
     public void setVehicleClassMonitoringId(int vehicleClassMonitoringId) {
         this.vehicleClassMonitoringId = vehicleClassMonitoringId;
+        LOG.debug("Vehicle Class Monitoring Id set as integer: {}", vehicleClassMonitoringId);
+    }
+
+    /*
+     * String setter added as we are getting an occasional OGNL error.
+     * Note that adding this means that the integer setter will not be called (from OGNL).
+     * This is a temporary fix - the problem is that LookupItem is used to populate the dropdown
+     * which returns (name, value) as (string, string).
+     */
+    public void setVehicleClassMonitoringId(String vehicleClassMonitoringIdString) throws Exception {
+        if (vehicleClassMonitoringIdString != null && !vehicleClassMonitoringIdString.isEmpty()) {
+            try {
+                this.vehicleClassMonitoringId = new Integer(vehicleClassMonitoringIdString);
+            } catch (NumberFormatException ex) {
+                LOG.error("Cannot conver '{}' to integer", vehicleClassMonitoringIdString);
+                throw new Exception("An Internal error occurred - please try agin. If this problem persists, please contact CHOX support.");
+            }
+        }
+        LOG.debug("Vehicle Class Monitoring Id set from string: {}", vehicleClassMonitoringIdString);
     }
 
     public int getVehicleClassMonitoringId() {
-        return this.model.getVehicleClass() != null ? vehicleClassMonitoringId = this.model.getVehicleClass().getId() : 0;
+        return model.getVehicleClass() != null ? model.getVehicleClass().getId() : 0;
     }
 
     public List<VehicleClass> getVehicleClasses() {
