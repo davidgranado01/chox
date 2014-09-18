@@ -9,14 +9,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
@@ -42,14 +47,12 @@ import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
-import org.springframework.security.access.AccessDeniedException;
-import org.xml.sax.SAXException;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
     private static final Object LOCK = new Object();
-    private static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
-    private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
+    private static final String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
+    private static final String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
 
     private BordereauService bordereauService;
     private BordereauReader bordereauReader;
@@ -358,7 +361,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         int noSuccessfullyProcessed = 0;
         Document document;
         List<ClaimResult> claimResults;
-        List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
+        List<UploadedXMLClaimsDetail> claimsDetails = Collections.synchronizedList(new ArrayList<UploadedXMLClaimsDetail>());
         List<String> choReferences = new ArrayList<String>();
 
         if (!isValidBordereauId(bordereauId)) {
@@ -402,7 +405,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             document = DocumentHelper.getDocumentFromStream(inputStream);
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException ex) {
+            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
+            setErrorMessage("Error occurred while processing Bordereau.");
+            return false;
+        } catch (SAXException ex) {
+            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
+            setErrorMessage("Error occurred while processing Bordereau.");
+            return false;
+        } catch (IOException ex) {
             LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
             setErrorMessage("Error occurred while processing Bordereau.");
             return false;
@@ -596,7 +607,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             document = DocumentHelper.getDocumentFromStream(stream);
 
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException ex) {
+            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
+            xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
+            return xmlClaimsDetail;
+        } catch (SAXException ex) {
+            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
+            xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
+            return xmlClaimsDetail;
+        } catch (IOException ex) {
             LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
             xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
             return xmlClaimsDetail;

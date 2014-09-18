@@ -28,6 +28,7 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.web.viewdata.BordereauViewData;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import java.util.Collections;
 
 /**
  *
@@ -285,7 +286,7 @@ public class XmlUploadAction extends BaseAction {
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
             if (userOrgId == bordereauOrgId) {
-                    List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
+                    List<UploadedXMLClaimsDetail> claimsDetails = null;
                     if (bordereau.isProcessed()) {
                         claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                         LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
@@ -295,6 +296,9 @@ public class XmlUploadAction extends BaseAction {
                             if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
                                 claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
                             }
+                        }
+                        if (claimsDetails == null) { // Should not happen!
+                            claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                         }
                         LOG.debug("Finished synchronizing on session");
                     }
