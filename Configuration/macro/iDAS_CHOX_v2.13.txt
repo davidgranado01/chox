@@ -1131,9 +1131,9 @@ Next f
     optStr = "S4ESTA"
     ElseIf (optStr = "dest") Then
     optStr = "S4EST"
-    ElseIf (optStr = "4WPU") Then
+    ElseIf (optStr = "4wpu") Then
     optStr = "CP3"
-    ElseIf (optStr = "4WPUA") Then
+    ElseIf (optStr = "4wpua") Then
     optStr = "CP3A"
     End If
     
