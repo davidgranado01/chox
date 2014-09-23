@@ -1,0 +1,404 @@
+update vehicle_class_price_special_rate
+    set price = 51.48
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP7';
+
+
+update vehicle_class_price_special_rate
+      set price = 51.48
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP7A';
+
+
+update vehicle_class_price_special_rate
+      set price = 92.68
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'F8';
+
+
+update vehicle_class_price_special_rate
+    set price = 92.68
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'F8A';
+
+
+update vehicle_class_price_special_rate
+    set price = 92.68
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'F9';
+
+
+update vehicle_class_price_special_rate
+    set price = 92.68
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'F9A';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P11EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P12EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'P13EST';
+
+
+update vehicle_class_price_special_rate
+      set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP12EST';
+
+
+update vehicle_class_price_special_rate
+      set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP13EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P11ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P12ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P13ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP12ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP13ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'P11';
+
+
+update vehicle_class_price_special_rate
+      set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'P12';
+
+
+update vehicle_class_price_special_rate
+      set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P13';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP12';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP13';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P11A';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P12A';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'S13A';
+
+
+update vehicle_class_price_special_rate
+    set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP12A';
+
+
+update vehicle_class_price_special_rate
+      set price = 102.98
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP13A';
+
+
+update vehicle_class_price_special_rate
+      set price = 57.66
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'F3A';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP4EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP5EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP6EST';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP4ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP5ESTA';
+
+
+update vehicle_class_price_special_rate
+    set price = 77.23
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP6ESTA';
+
+
+update vehicle_class_price_special_rate
+      set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP4';
+
+
+update vehicle_class_price_special_rate
+      set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP5';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP6';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P6A';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P7A';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP4A';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP5A';
+
+
+update vehicle_class_price_special_rate
+    set price = 72.08
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'SP6A';
+
+
+update vehicle_class_price_special_rate
+      set price = 61.78
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+  and vehicle_class_price_special_rate.chorganisation_id = 1007
+  and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+  and vc.name = 'P3A';
+
+
+update vehicle_class_price_special_rate
+      set price = 61.78
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P4A';
+
+
+update vehicle_class_price_special_rate
+    set price = 61.78
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'P5A';
+
+
+update vehicle_class_price_special_rate
+    set price = 61.78
+from vehicle_class vc
+where vc.id = vehicle_class_price_special_rate.vehicle_class_id
+    and vehicle_class_price_special_rate.chorganisation_id = 1007
+    and vehicle_class_price_special_rate.start_date = '2013-12-01 00:00:00'
+    and vc.name = 'SP3A';
+
