@@ -183,16 +183,6 @@
         overflowToDisk="false"
         />
 
-    <!--
-        Claim and invoice removed from 2nd level cache because store procedure updates the claim
-        and invoice every 15 mins and that's not updated in the application as it still uses the
-        cache to retrive the claim (and invoice)
-    -->
-    <cache name ="idas.chox.core.model.Claim"
-        maxElementsInMemory="1"
-        timeToLiveSeconds="1"
-        overflowToDisk="false"
-        />
 
     <cache name="idas.chox.core.model.ClaimType"
         maxElementsInMemory="20"
@@ -318,12 +308,6 @@
         overflowToDisk="false"
         />
     
-   <cache name ="idas.chox.core.model.Invoice"
-        maxElementsInMemory="1"
-        timeToLiveSeconds="1"
-        overflowToDisk="false"
-        />
-     
     <cache name ="idas.chox.core.model.InvoiceOriginal"
         maxElementsInMemory="1000"
         eternal="false"
