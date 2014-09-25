@@ -288,7 +288,7 @@ public class XmlUploadAction extends BaseAction {
             if (userOrgId == bordereauOrgId) {
                     List<UploadedXMLClaimsDetail> claimsDetails = null;
                     if (bordereau.isProcessed()) {
-                        claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
+                        claimsDetails = Collections.synchronizedList(uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId));
                         LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                     } else {
                         LOG.debug("Synchronizing on session");
@@ -298,7 +298,8 @@ public class XmlUploadAction extends BaseAction {
                             }
                         }
                         if (claimsDetails == null) { // Should not happen!
-                            claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
+                            claimsDetails = Collections.synchronizedList(new ArrayList<UploadedXMLClaimsDetail>());
+                            LOG.warn("No claimsDetails in session - empty list created.");
                         }
                         LOG.debug("Finished synchronizing on session");
                     }
