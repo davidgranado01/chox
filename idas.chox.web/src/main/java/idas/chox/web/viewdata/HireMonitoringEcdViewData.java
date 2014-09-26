@@ -1,14 +1,19 @@
 package idas.chox.web.viewdata;
 
-import idas.chox.core.model.HireMonitoringEcd;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.HireMonitoringEcd;
 
 /**
  *
  * @author Emmanuel
  */
 public class HireMonitoringEcdViewData {
+    private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringEcdViewData.class);
 
     private String sequence;
     private String ecdDate;
@@ -17,13 +22,24 @@ public class HireMonitoringEcdViewData {
     private String supportingNote;
 
     public HireMonitoringEcdViewData(HireMonitoringEcd h, int seq) {
-
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        this.ecdDate = dateFormat.format(h.getEcdDate());
-        this.createdDate = dateFormat.format(h.getCreatedDate());
-        this.sequence = String.format("%1d", seq);
-        this.reason = h.getReason();
-        this.supportingNote = h.getSupportingNote();
+        if (h != null) {
+            Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            if (h.getEcdDate() != null) {
+                this.ecdDate = dateFormat.format(h.getEcdDate());
+            } else {
+                LOG.error("ECD date is null");
+            }
+            if (h.getCreatedDate() != null) {
+                this.createdDate = dateFormat.format(h.getCreatedDate());
+            } else {
+                LOG.error("Created date is null");
+            }
+            this.sequence = String.format("%1d", seq);
+            this.reason = h.getReason();
+            this.supportingNote = h.getSupportingNote();
+        } else {
+            LOG.error("No Hire Monitoring ECD to format.");
+        }
     }
 
     public String getSequence() {
