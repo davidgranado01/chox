@@ -52,7 +52,7 @@
             var supplierReferenceField=new Ext.form.TextField({
                 id:"supplierReferenceId",
                 name:"supplierReference",
-                width: 160,
+                width: 110,
                 fieldLabel: 'Supplier Ref',
                 allowBlank:true,
                 value:'<s:property value="supplierReference" escapeJavaScript="true"/>',
@@ -68,7 +68,7 @@
             var claimNumberField=new Ext.form.TextField({
                 id:"claimNumberId",
                 name:"claimNumber",
-                width: 160,
+                width: 110,
                 fieldLabel: 'Claim Number',
                 allowBlank:true,
                 value:'<s:property value="claimNumber" escapeJavaScript="true"/>',
@@ -85,7 +85,7 @@
             var invoiceNumberField=new Ext.form.TextField({
                 id:"invoiceNumberId",
                 name:"invoiceNumber",
-                width: 160,
+                width: 110,
                 fieldLabel: 'Invoice Number',
                 allowBlank:true,
                 value:'<s:property value="invoiceNumber" escapeJavaScript="true"/>',
@@ -101,7 +101,7 @@
             var customerVrnField=new Ext.form.TextField({
                 id:"customerVrnId",
                 name:"customerVrn",
-                width: 160,
+                width: 110,
                 fieldLabel: 'Supplier VRN',
                 allowBlank:true,
                 value:'<s:property value="customerVrn" escapeJavaScript="true"/>',
@@ -117,7 +117,7 @@
             var thirdPartyVrnField=new Ext.form.TextField({
                 id:"thirdPartyVrnId",
                 name:"thirdPartyVrn",
-                width: 160,
+                width: 110,
                 fieldLabel: 'Insurer VRN',
                 allowBlank:true,
                 value:'<s:property value="thirdPartyVrn" escapeJavaScript="true"/>',
@@ -130,13 +130,20 @@
                 }
             });
 
+
+            var emptySpacingLabel = new Ext.form.DisplayField({
+                value: ' '
+            });
+            
+
             var openClaimsCheckBox = new Ext.form.Checkbox({
                 name:'showOpenClaimsOnly',
                 id:'showOpenClaimsOnlyId',
+                autoHeight: true,
                 value:'<s:property value="showOpenClaimsOnly"/>',
                 fieldLabel: 'Show Open Claims Only<img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" />',
                 labelSeparator : '  :',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-10px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.',
                 listeners:{
@@ -158,7 +165,7 @@
                 hidden : !<s:property value="liabilityStatusUpdateNotificationCheckBoxVisible"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Show Claims With Liability Status Update Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -174,7 +181,7 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="supplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -190,7 +197,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -208,7 +215,7 @@
                 hidden : !<s:property value="penaltyChargesToBeAppliedCheckBoxVisible"/>,
                 value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="penaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -226,7 +233,7 @@
                 disabled : !<s:property value="anomaliesCheckBoxVisible"/>,
                 hidden : !<s:property value="anomaliesCheckBoxVisible"/>,
                 fieldLabel: 'Show Claims With Hire Updates Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="anomalies"/>,
                 listeners:{
                     check:function (el, e) {
@@ -244,7 +251,7 @@
                 hidden : !<s:property value="escalatedToSupervisorCheckBoxVisible"/>,
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Show Claims Escalated To Supervisor Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -262,7 +269,7 @@
                 hidden : !<s:property value="interimPaymentMadeCheckBoxVisible"/>,
                 value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Show Claims With Interim Payments Only',
-                labelStyle: 'width:240px',
+                labelStyle: 'width:190px;margin-top:-15px',
                 checked: <s:property value="interimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
@@ -527,7 +534,7 @@
                 var insurerComboNumberOfSelectedRecord = 0;
                 insurerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : insurersStore,
-                    width: 280,
+                    width: 250,
                     valueField : 'text',
                     id : 'searchScreenInsurerComboId',
                     displayField :'value',
@@ -604,7 +611,7 @@
                 var supplierComboNumberOfSelectedRecord = 0;
                 supplierSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : suppliersStore,
-                    width: 280,
+                    width: 250,
                     fieldLabel: 'Supplier Name',
                     disabled : <s:property value="isCHO"/>,
                     hidden : <s:property value="isCHO"/>,
@@ -683,7 +690,7 @@
 //                workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
                 workgroupSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : workgroupSearchScreenStore,
-                    width: 280,
+                    width: 250,
                     fieldLabel: 'Workgroup',
                     disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
                     hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
@@ -774,7 +781,7 @@
 
                 claimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : claimOwnerSearchScreenStore,
-                    width: 280,
+                    width: 250,
                     fieldLabel: (<s:property value="isInsurer"/>) ? 'Claim Owner' : 'Insurer\'s Claim Owner',
                     disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
@@ -871,7 +878,7 @@
 
                 supplierClaimOwnerSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : supplierClaimOwnerSearchScreenStore,
-                    width: 280,
+                    width: 250,
                     fieldLabel: <s:property value="isCHO"/> ? 'Claim Owner' : 'Supplier Claim Owner',
                     disabled : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
                     hidden : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
@@ -963,7 +970,7 @@
             
             statusSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : statusesStore,
-                width: 280,
+                width: 250,
                 fieldLabel: 'Status',
                 valueField : 'text',
                 id : 'statusSearchScreenComboId',
@@ -1038,7 +1045,7 @@
             var liabilityStatusComboNumberOfSelectedRecord = 0;
             liabilityStatusSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : liabilityStatusesStore,
-                width: 280,
+                width: 250,
                 fieldLabel: 'Liability Status',
                 valueField : 'value',
                 id : 'liabilityStatusSearchScreenComboId',
@@ -1156,7 +1163,7 @@
             
             hireAndRepairSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : hireAndRepairSearchParamStore,
-                width: 280,
+                width: 250,
                 labelStyle: 'width:99px',
                 fieldLabel: 'Hire/Repair Status',
                 valueField : 'value',
@@ -1220,7 +1227,7 @@
             
             approvedInvoiceOwnershipSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
                 store : approvedInvoiceOwnershipSearchParamStore,
-                width: 280,
+                width: 250,
                 fieldLabel: 'Approved Invoices Ownership',
                 valueField : 'value',
                 disabled : <s:property value="isCHO || (isInsurer && !insurerPaymentsTeamEnabled)"/>,
@@ -1295,7 +1302,7 @@
             claimTypesComboNumberOfSelectedRecord = 0;
             claimTypesSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                 store : claimTypesStore,
-                width: 280,
+                width: 250,
                 fieldLabel: 'Claim Type',
                 valueField : 'value',
                 id : 'claimTypesSearchScreenComboId',
@@ -1377,19 +1384,20 @@
             });
             
             var leftColumn = {
-                width:270,
+                width:210,
                 height : 'auto',
 //                style: {
 //                    paddingLeft:'10px'
 //                },
                 labelAlign: 'right',
-                labelWidth: 95,
+                labelWidth: 90,
                 layout: 'form',
                 items: [supplierReferenceField, 
                         claimNumberField,
                         invoiceNumberField,
                         customerVrnField, 
                         thirdPartyVrnField,
+                        emptySpacingLabel,
                         openClaimsCheckBox,
                         interimPaymentMadeCheckBox,
                         supplementaryInvoicedClaimsCheckBox,
@@ -1419,7 +1427,8 @@
             };
 
             var rightColumn = {
-                width:400,
+                width:360,
+//                width:'auto',
                 height : 'auto',
                 layout: 'form',
                 labelAlign: 'right',
@@ -1521,7 +1530,7 @@
            
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
-                width : 970,
+                width : 880,
                 frame : true,
                 height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
                 autoScroll : true,
