@@ -1,7 +1,11 @@
 package idas.chox.service.workflow.activities;
 
+
 import java.util.Date;
 import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +15,9 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.core.util.TextHelper;
+import org.jsoup.nodes.Document.OutputSettings;
 
 public class EcdUpdate extends BaseActivity {
-
     static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);
     private HireMonitoringEcdService hireMonitoringEcdService;
     private ReasonOfDelayService reasonOfDelayService;
@@ -28,7 +31,7 @@ public class EcdUpdate extends BaseActivity {
     public void setReasonOfDelayService(ReasonOfDelayService reasonOfDelayService) {
         this.reasonOfDelayService = reasonOfDelayService;
     }
-
+    
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
@@ -100,8 +103,12 @@ public class EcdUpdate extends BaseActivity {
             LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
-        String supportingNoteClean = TextHelper.escapeHtml(supportingNote);
-
+        String supportingNoteClean = Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false));
+//        if (!supportingNote.equals(supportingNoteClean)) {
+//            LOG.warn("Supporting note contains forbidden content - possible XSS attack: [clean] '{}' != '{}'", supportingNoteClean, supportingNote);
+//            throw new Exception("Supporting note contains forbidden content");
+//        }
+        supportingNote = supportingNoteClean;
         // Check there is no existig ECD with same date and reason (bug#2621)
         List<HireMonitoringEcd> existingECDs = hireMonitoringEcdService.getHireMonitoringEcdsByClaimId(claim.getId());
         for (HireMonitoringEcd existingECD : existingECDs) {
@@ -124,5 +131,4 @@ public class EcdUpdate extends BaseActivity {
 
         hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
     }
-
 }

@@ -56,7 +56,7 @@ public class AddNote extends BaseActivity {
     @Override
     @Secured ({"ROLE_INS", "ROLE_CHO"})
     protected void doProcess(Claim claim) {
-        note = Comment.newComment(visibilityType, comment);
+        note = Comment.newComment(visibilityType, comment.replaceAll("\n", "<br />"));
         claim.addComment(note);
         // saving and forcing the transaction to commit is to avoid nullPointerException while accessing the createdBy info at the ActivityEvent class.
         getDataService().save(note);

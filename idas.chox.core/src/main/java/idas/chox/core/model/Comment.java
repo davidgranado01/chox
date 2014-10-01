@@ -1,8 +1,10 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;    
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 public class Comment extends Entity implements Serializable {
 
@@ -21,11 +23,12 @@ public class Comment extends Entity implements Serializable {
     }
 
     public String getComment() {
-        return Jsoup.clean(comment, Whitelist.none());
+        return comment;
     }
 
     public void setComment(String comment) {
-        this.comment = Jsoup.clean(comment, Whitelist.none());
+        this.comment = Jsoup.clean(comment, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false));
+        System.out.println("Added comment: " + comment);
     }
 
     public Claim getClaim() {
