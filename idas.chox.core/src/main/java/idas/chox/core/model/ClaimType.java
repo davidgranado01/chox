@@ -27,7 +27,7 @@ public enum ClaimType {
     FIXED_FEE_SUPPLEMENTARY_INVOICE             (13, "Fixed Fee (Supp. Invoice)"),
     INSURER_CLAIM                               (14, "Insurer Claim"),
     INSURER_ORIGINAL_INVOICE                    (15, "Insurer Claim (Orig. Invoice)"),
-    INSURER_SUPPLEMENTARY_INVOICE               (16, "Insurer Claim  (Orig. Invoice)"),
+    INSURER_SUPPLEMENTARY_INVOICE               (16, "Insurer Claim  (Supp. Invoice)"),
     INSURER_UPLOAD                              (17, "Insurer Upload"),
     COLLABORATION_PROTOCOL                      (18, "Collaboration Protocol"),
     COLLABORATION_PROTOCOL_ORIGINAL_INVOICE     (19, "Collaboration Protocol (Orig. Invoice)"),
