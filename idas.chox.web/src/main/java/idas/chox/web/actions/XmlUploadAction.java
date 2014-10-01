@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,6 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.web.viewdata.BordereauViewData;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
-import java.util.Collections;
 
 /**
  *
@@ -279,8 +279,8 @@ public class XmlUploadAction extends BaseAction {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
             int userOrgId, bordereauOrgId;
             if (getAuthenticatedUser().isAnInsurer()) {
-                userOrgId = getAuthenticatedUser().getInsurer().getId().intValue();
-                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId().intValue();
+                userOrgId = getAuthenticatedUser().getInsurer().getId();
+                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId();
             } else {
                 userOrgId = getAuthenticatedUser().getChorganisation().getId();
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
@@ -288,7 +288,7 @@ public class XmlUploadAction extends BaseAction {
             if (userOrgId == bordereauOrgId) {
                     List<UploadedXMLClaimsDetail> claimsDetails = null;
                     if (bordereau.isProcessed()) {
-                        claimsDetails = Collections.synchronizedList(uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId));
+                        claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                         LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                     } else {
                         LOG.debug("Synchronizing on session");
@@ -298,7 +298,7 @@ public class XmlUploadAction extends BaseAction {
                             }
                         }
                         if (claimsDetails == null) { // Should not happen!
-                            claimsDetails = Collections.synchronizedList(new ArrayList<UploadedXMLClaimsDetail>());
+                            claimsDetails = new CopyOnWriteArrayList<UploadedXMLClaimsDetail>();
                             LOG.warn("No claimsDetails in session - empty list created.");
                         }
                         LOG.debug("Finished synchronizing on session");

@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -361,7 +361,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         int noSuccessfullyProcessed = 0;
         Document document;
         List<ClaimResult> claimResults;
-        List<UploadedXMLClaimsDetail> claimsDetails = Collections.synchronizedList(new ArrayList<UploadedXMLClaimsDetail>());
+        List<UploadedXMLClaimsDetail> claimsDetails = new CopyOnWriteArrayList<UploadedXMLClaimsDetail>();
         List<String> choReferences = new ArrayList<String>();
 
         if (!isValidBordereauId(bordereauId)) {
