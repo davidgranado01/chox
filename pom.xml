@@ -70,7 +70,7 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>1.6</source>
-                    <target>1.6</target>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
