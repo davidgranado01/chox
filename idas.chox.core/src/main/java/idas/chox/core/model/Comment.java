@@ -28,7 +28,6 @@ public class Comment extends Entity implements Serializable {
 
     public void setComment(String comment) {
         this.comment = Jsoup.clean(comment, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false));
-        System.out.println("Added comment: " + comment);
     }
 
     public Claim getClaim() {
