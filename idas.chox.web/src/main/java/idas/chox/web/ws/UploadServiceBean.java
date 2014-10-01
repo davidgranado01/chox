@@ -335,6 +335,7 @@ public class UploadServiceBean {
             result.setMessages(messages);
             
             webBordereau.setClaimStatus(uploadResult.getClaimStatus());
+            webBordereau.setUploadStatus(result.getUploadStatus().toString());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
             webBordereau.setProcessStatus(uploadResult.getProcessStatus());
             webBordereau.setStatus(uploadResult.isValid());
@@ -355,6 +356,7 @@ public class UploadServiceBean {
             result.setMessages(messages);
             
             webBordereau.setClaimStatus("N/A");
+            webBordereau.setUploadStatus(result.getUploadStatus().toString());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
             webBordereau.setProcessStatus("Failed");
             webBordereau.setStatus(false);
@@ -373,6 +375,7 @@ public class UploadServiceBean {
             result.setMessages(messages);
 
             webBordereau.setClaimStatus("N/A");
+            webBordereau.setUploadStatus(result.getUploadStatus().toString());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
             webBordereau.setProcessStatus("Failed");
             webBordereau.setStatus(false);
