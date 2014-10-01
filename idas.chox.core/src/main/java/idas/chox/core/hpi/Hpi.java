@@ -125,6 +125,8 @@ public final class Hpi {
         if (!active) {
             LOG.debug("HPI check functionality has been disabled.");
             throw new HpiException("HPI check functionality has been de-activated.");
+        } else if (vrn == null || vrn.equalsIgnoreCase("NK1")) {
+            throw new HpiException("No HPI check will be made for VRN '" + vrn + "'.");
         } else if (params == null) {
             params = new HashMap<String, String>();
             params.put("forward", "YES");
