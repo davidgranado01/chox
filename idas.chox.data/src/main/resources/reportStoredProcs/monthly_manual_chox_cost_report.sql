@@ -31,6 +31,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -44,6 +45,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -57,6 +59,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -70,6 +73,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -83,6 +87,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -96,6 +101,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -109,6 +115,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
     FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -122,6 +129,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -135,6 +143,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -148,6 +157,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -161,6 +171,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -174,6 +185,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -187,6 +199,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
     FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -208,6 +221,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -220,6 +234,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -232,6 +247,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -244,6 +260,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -256,6 +273,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -268,6 +286,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -280,6 +299,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -292,6 +312,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -304,6 +325,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -316,6 +338,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -328,6 +351,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -340,6 +364,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -352,6 +377,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -374,6 +400,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -386,6 +413,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -398,6 +426,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -410,6 +439,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -422,6 +452,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -434,6 +465,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -446,6 +478,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -458,6 +491,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -470,6 +504,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -482,6 +517,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -494,6 +530,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -506,6 +543,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -518,6 +556,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -537,6 +576,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -548,6 +588,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -559,6 +600,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -570,6 +612,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -581,6 +624,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -592,6 +636,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -603,6 +648,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -614,6 +660,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -625,6 +672,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -636,6 +684,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -647,6 +696,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -658,6 +708,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -669,6 +720,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT avg(i.hire_rate_charged_per_day)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -691,6 +743,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -703,6 +756,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -715,6 +769,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -727,6 +782,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -739,6 +795,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -751,6 +808,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -763,6 +821,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -775,6 +834,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -787,6 +847,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -799,6 +860,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -811,6 +873,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -823,6 +886,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -835,6 +899,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -852,6 +917,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -863,6 +929,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -874,6 +941,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -885,6 +953,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -896,6 +965,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -907,6 +977,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -918,6 +989,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -929,7 +1001,8 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
-    AND c.status = 'ManualInvoicePaid'
+     AND i.hire_net - i.admin_fee > 0
+     AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND cho.insurer_upload_only = TRUE
@@ -940,6 +1013,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -951,6 +1025,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -962,6 +1037,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -973,6 +1049,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -984,6 +1061,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT avg(i.hire_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1003,6 +1081,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1014,6 +1093,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1025,6 +1105,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1036,6 +1117,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1047,6 +1129,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1058,6 +1141,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1069,6 +1153,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1080,6 +1165,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1091,6 +1177,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1102,6 +1189,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1113,6 +1201,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1124,6 +1213,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1135,6 +1225,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1154,6 +1245,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1168,6 +1260,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1182,6 +1275,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1196,6 +1290,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1210,6 +1305,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1224,6 +1320,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1238,6 +1335,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1252,6 +1350,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1266,6 +1365,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1280,6 +1380,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1294,6 +1395,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1308,6 +1410,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1322,6 +1425,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1343,6 +1447,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1356,6 +1461,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1369,6 +1475,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1382,6 +1489,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1395,6 +1503,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1408,6 +1517,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1421,6 +1531,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1434,6 +1545,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1447,6 +1559,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1460,6 +1573,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1473,6 +1587,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1486,6 +1601,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1499,6 +1615,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1520,6 +1637,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1533,6 +1651,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1546,6 +1665,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1559,6 +1679,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1572,6 +1693,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1585,6 +1707,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1598,6 +1721,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1611,6 +1735,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1624,6 +1749,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1637,6 +1763,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1650,6 +1777,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1663,6 +1791,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1676,6 +1805,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1696,6 +1826,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1710,6 +1841,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1724,6 +1856,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1738,6 +1871,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1752,6 +1886,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1766,6 +1901,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1780,6 +1916,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1794,6 +1931,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1808,6 +1946,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1822,6 +1961,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1836,6 +1976,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1850,6 +1991,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -1864,6 +2006,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT avg(vh.days)::numeric(8,2)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2341,6 +2484,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2352,6 +2496,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2363,6 +2508,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2374,6 +2520,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2385,6 +2532,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId  OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2396,6 +2544,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2407,6 +2556,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2418,6 +2568,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2429,6 +2580,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2440,6 +2592,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2451,6 +2604,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2462,6 +2616,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c , invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2473,6 +2628,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -2490,6 +2646,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2500,6 +2657,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2510,6 +2668,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2520,6 +2679,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2530,6 +2690,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2540,6 +2701,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2550,6 +2712,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2560,6 +2723,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2570,6 +2734,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2580,6 +2745,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2590,6 +2756,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2600,6 +2767,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2610,6 +2778,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT avg(i.repair_gross)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2628,6 +2797,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c , invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2638,6 +2808,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2648,6 +2819,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2658,6 +2830,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2668,6 +2841,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2678,6 +2852,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2688,6 +2863,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2698,6 +2874,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2708,6 +2885,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2718,6 +2896,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2728,6 +2907,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2738,6 +2918,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -2748,6 +2929,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id

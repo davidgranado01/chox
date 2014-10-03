@@ -30,6 +30,7 @@ RETURN QUERY
 select 1 as id, 'Average Hire Days Invoiced' as title ,
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) 
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -38,6 +39,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -46,6 +48,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -54,6 +57,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -62,6 +66,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -70,6 +75,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -78,6 +84,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -86,6 +93,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -94,6 +102,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -102,6 +111,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -110,6 +120,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -118,6 +129,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -126,6 +138,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -141,6 +154,7 @@ UNION
 select 2 as id, 'Average Hire Days Paid' as title ,
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -150,6 +164,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -159,6 +174,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) 
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -168,6 +184,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -177,6 +194,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -186,6 +204,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -195,6 +214,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -204,6 +224,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -213,6 +234,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -222,6 +244,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -231,6 +254,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -240,6 +264,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -249,6 +274,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -263,6 +289,7 @@ UNION
 select 3 as id, 'Average Hire Rate Invoiced' as title ,
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -271,6 +298,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -279,6 +307,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -287,6 +316,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -295,6 +325,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -303,6 +334,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -311,6 +343,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -319,6 +352,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -327,6 +361,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -335,6 +370,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -343,6 +379,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -351,6 +388,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -359,6 +397,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title ,
 
 (select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
   where c.invoice_id=i.id and i.invoice_original_id = o.id 
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -373,6 +412,7 @@ UNION
 select 4 as id, 'Average Hire Rate Paid' as title ,
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -382,6 +422,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -391,6 +432,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -400,6 +442,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -409,6 +452,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -418,6 +462,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
                                     
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -427,6 +472,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -437,6 +483,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -446,6 +493,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -455,6 +503,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -464,6 +513,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -473,6 +523,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -482,6 +533,7 @@ select 4 as id, 'Average Hire Rate Paid' as title ,
 
 (select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, chorganisation cho
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
         and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
         and c.status = 'PaymentReceived'
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -498,6 +550,7 @@ UNION
 select 5 as id, 'Average Hire Value Invoiced' as title ,
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
      and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
      and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -507,6 +560,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -515,6 +569,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -524,6 +579,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -532,6 +588,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -540,6 +597,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -548,6 +606,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -556,6 +615,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -565,6 +625,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -573,6 +634,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -581,6 +643,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -589,6 +652,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -597,6 +661,7 @@ select 5 as id, 'Average Hire Value Invoiced' as title ,
 
 (select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -612,6 +677,7 @@ UNION
 
 select 6 as id, 'Average Hire Value Paid (exc pens)' as title , (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -621,6 +687,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title , (select avg(case
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -630,6 +697,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -639,6 +707,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id   
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -648,6 +717,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -657,6 +727,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -666,6 +737,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -675,6 +747,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -684,6 +757,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -693,6 +767,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -702,6 +777,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -711,6 +787,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -720,6 +797,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -733,6 +811,7 @@ UNION
 
 select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as title , (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
    where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -742,6 +821,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -751,6 +831,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -760,6 +841,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id   
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -769,6 +851,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -778,6 +861,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -787,6 +871,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -796,6 +881,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -805,6 +891,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -814,6 +901,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -823,6 +911,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -832,6 +921,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -841,6 +931,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+       and i.hire_net - i.admin_fee > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -855,6 +946,7 @@ UNION
 select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -863,6 +955,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -871,6 +964,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -879,6 +973,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -887,6 +982,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -895,6 +991,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -903,6 +1000,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -911,6 +1009,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -919,6 +1018,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -927,6 +1027,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -935,6 +1036,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -943,6 +1045,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -951,6 +1054,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -966,6 +1070,7 @@ UNION
 select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -975,6 +1080,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -984,6 +1090,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -993,6 +1100,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1002,6 +1110,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1011,6 +1120,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1020,6 +1130,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1029,6 +1140,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1038,6 +1150,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1047,6 +1160,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1056,6 +1170,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1065,6 +1180,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1074,6 +1190,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1089,6 +1206,7 @@ UNION
 select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1097,6 +1215,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1105,6 +1224,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1113,6 +1233,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1121,6 +1242,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1129,6 +1251,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1137,6 +1260,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1145,6 +1269,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1153,6 +1278,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1161,6 +1287,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1169,6 +1296,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1177,6 +1305,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1185,6 +1314,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
 
 (select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -1199,6 +1329,7 @@ UNION
 select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1208,6 +1339,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1217,6 +1349,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1226,6 +1359,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1235,6 +1369,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1244,6 +1379,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1253,6 +1389,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1262,6 +1399,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1271,6 +1409,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1280,6 +1419,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1289,6 +1429,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1298,6 +1439,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -1307,6 +1449,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
+       and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -2140,6 +2283,7 @@ UNION
 select 18 as id, 'Average Repair Value Invoiced' as title ,
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
+     and i.repair_net > 0
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
      and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
      and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2149,6 +2293,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2157,6 +2302,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2166,6 +2312,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2174,6 +2321,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2182,6 +2330,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2190,6 +2339,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2198,6 +2348,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2207,6 +2358,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2215,6 +2367,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2223,6 +2376,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2231,6 +2385,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2239,6 +2394,7 @@ select 18 as id, 'Average Repair Value Invoiced' as title ,
 
 (select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = o.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -2252,6 +2408,7 @@ UNION
 
 select 19 as id, 'Average Repair Value Paid (exc pens)' as title , (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
    where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2261,6 +2418,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title , (select avg(c
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2270,6 +2428,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2279,6 +2438,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id 
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)  
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2288,6 +2448,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2297,6 +2458,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2306,6 +2468,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2315,6 +2478,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2324,6 +2488,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2333,6 +2498,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2342,6 +2508,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2351,6 +2518,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2360,6 +2528,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2374,6 +2543,7 @@ UNION
 
 select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' as title , (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
    where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2383,6 +2553,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2392,6 +2563,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2401,6 +2573,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id   
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2410,6 +2583,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2419,6 +2593,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2428,6 +2603,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2437,6 +2613,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2446,6 +2623,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2455,6 +2633,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2464,6 +2643,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2473,6 +2653,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -2482,6 +2663,7 @@ where c.invoice_id = i.id
 
 (select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i
 where c.invoice_id = i.id
+      and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and c.status = 'PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        

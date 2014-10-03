@@ -36,6 +36,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -55,6 +56,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -74,6 +76,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -93,6 +96,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -112,6 +116,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -131,6 +136,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -150,6 +156,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -169,6 +176,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -188,6 +196,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -207,6 +216,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -226,6 +236,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -245,6 +256,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -264,6 +276,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
      AND (c.insurer_id = params.insurerId
@@ -293,6 +306,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -315,6 +329,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -337,6 +352,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -359,6 +375,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -381,6 +398,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -403,6 +421,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -425,6 +444,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -447,6 +467,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -469,6 +490,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -491,6 +513,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -513,6 +536,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -535,6 +559,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -557,6 +582,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
@@ -587,6 +613,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -604,6 +631,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -621,6 +649,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -638,6 +667,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -655,6 +685,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -672,6 +703,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -689,6 +721,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -706,6 +739,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -723,6 +757,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -740,6 +775,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -757,6 +793,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -774,6 +811,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -791,6 +829,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -816,6 +855,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -836,6 +876,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -856,6 +897,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -876,6 +918,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -896,6 +939,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -916,6 +960,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -936,6 +981,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -956,6 +1002,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -976,6 +1023,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -996,6 +1044,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1016,6 +1065,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1036,6 +1086,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1056,6 +1107,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1085,6 +1137,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1102,6 +1155,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1119,6 +1173,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1136,6 +1191,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1153,6 +1209,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1170,6 +1227,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1187,6 +1245,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1204,6 +1263,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1221,6 +1281,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1238,6 +1299,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1255,6 +1317,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1272,6 +1335,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1289,6 +1353,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -1313,6 +1378,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1333,6 +1399,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1353,6 +1420,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1373,6 +1441,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1393,6 +1462,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1413,6 +1483,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1433,6 +1504,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1453,6 +1525,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1473,6 +1546,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1493,6 +1567,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1513,6 +1588,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1533,6 +1609,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1553,6 +1630,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1582,6 +1660,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1602,6 +1681,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1622,6 +1702,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1642,6 +1723,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1662,6 +1744,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1682,6 +1765,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1702,6 +1786,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1722,6 +1807,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1742,6 +1828,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1762,6 +1849,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1782,6 +1870,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1802,6 +1891,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1822,6 +1912,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.hire_net - i.admin_fee > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -1852,6 +1943,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1873,6 +1965,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1894,6 +1987,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1915,6 +2009,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1936,6 +2031,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1957,6 +2053,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1978,6 +2075,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -1999,6 +2097,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2020,6 +2119,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2041,6 +2141,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2062,6 +2163,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2083,6 +2185,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2104,6 +2207,7 @@ SELECT 8 as id, 'Average Total Loss Hire Days Invoice' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2134,6 +2238,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2159,6 +2264,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2184,6 +2290,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2209,6 +2316,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2234,6 +2342,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2259,6 +2368,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2284,6 +2394,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2309,6 +2420,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2334,6 +2446,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2359,6 +2472,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2383,6 +2497,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2408,6 +2523,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2433,6 +2549,7 @@ SELECT 9 as id, 'Average Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = TRUE
@@ -2465,6 +2582,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2486,6 +2604,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2507,6 +2626,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2528,6 +2648,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2549,6 +2670,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2570,6 +2692,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2591,6 +2714,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2612,6 +2736,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2633,6 +2758,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2654,6 +2780,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2675,6 +2802,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2696,6 +2824,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2717,6 +2846,7 @@ SELECT 10 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2747,6 +2877,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2773,6 +2904,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2799,6 +2931,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2825,6 +2958,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2851,6 +2985,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2877,6 +3012,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2903,6 +3039,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2929,6 +3066,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2955,6 +3093,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -2981,6 +3120,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -3007,6 +3147,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -3033,6 +3174,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -3059,6 +3201,7 @@ SELECT 11 as id, 'Average Non Total Loss Hire Days Paid' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
+     AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
      AND cu.is_total_loss = FALSE
@@ -3781,6 +3924,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3798,6 +3942,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3815,6 +3960,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3832,6 +3978,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3849,6 +3996,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3866,6 +4014,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3883,6 +4032,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3900,6 +4050,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3917,6 +4068,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3934,6 +4086,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3951,6 +4104,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3968,6 +4122,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3985,6 +4140,7 @@ SELECT 15 as id, 'Average Repair Value Invoiced' AS title,
         invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4010,6 +4166,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4030,6 +4187,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4050,6 +4208,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4070,6 +4229,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4090,6 +4250,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4110,6 +4271,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4130,6 +4292,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4150,6 +4313,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4170,6 +4334,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4190,6 +4355,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4210,6 +4376,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4230,6 +4397,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4250,6 +4418,7 @@ SELECT 16 as id, 'Average Repair Value Paid (exc pens)' AS title,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4279,6 +4448,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4299,6 +4469,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4319,6 +4490,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4339,6 +4511,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4359,6 +4532,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4379,6 +4553,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4399,6 +4574,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4419,6 +4595,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4439,6 +4616,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4459,6 +4637,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4479,6 +4658,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4499,6 +4679,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
@@ -4519,6 +4700,7 @@ SELECT 17 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id = i.id
+     AND i.repair_net > 0
      AND a.claim_id = c.id
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
