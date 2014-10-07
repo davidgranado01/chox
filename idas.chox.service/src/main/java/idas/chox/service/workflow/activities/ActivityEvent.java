@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;

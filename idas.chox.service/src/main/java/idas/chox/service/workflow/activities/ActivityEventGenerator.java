@@ -6,7 +6,6 @@ import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.Comment;
 import idas.chox.core.workflow.Activity;
 import idas.chox.data.events.EventGenerator;
 
