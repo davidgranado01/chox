@@ -143,7 +143,7 @@
                 value:'<s:property value="showOpenClaimsOnly"/>',
                 fieldLabel: 'Show Open Claims Only<img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" />',
                 labelSeparator : '  :',
-                labelStyle: 'width:190px;margin-top:-10px',
+                labelStyle: 'width:190px;margin-top:-2px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.',
                 listeners:{
@@ -165,7 +165,7 @@
                 hidden : !<s:property value="liabilityStatusUpdateNotificationCheckBoxVisible"/>,
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Show Claims With Liability Status Update Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
                 listeners:{
                     check:function (el, e) {
@@ -181,7 +181,7 @@
                 id:'supplementaryInvoicedCheckBoxId',
                 value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="supplementaryInvoiceOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -197,7 +197,7 @@
                 id:'penaltyChargesAppliedOnlyCheckBoxId',
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
@@ -215,7 +215,7 @@
                 hidden : !<s:property value="penaltyChargesToBeAppliedCheckBoxVisible"/>,
                 value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="penaltyChargeApplied"/>,
                 listeners:{
                     check:function (el, e) {
@@ -233,7 +233,7 @@
                 disabled : !<s:property value="anomaliesCheckBoxVisible"/>,
                 hidden : !<s:property value="anomaliesCheckBoxVisible"/>,
                 fieldLabel: 'Show Claims With Hire Updates Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="anomalies"/>,
                 listeners:{
                     check:function (el, e) {
@@ -251,7 +251,7 @@
                 hidden : !<s:property value="escalatedToSupervisorCheckBoxVisible"/>,
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Show Claims Escalated To Supervisor Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="escalatedToSupervisor"/>,
                 listeners:{
                     check:function (el, e) {
@@ -269,7 +269,7 @@
                 hidden : !<s:property value="interimPaymentMadeCheckBoxVisible"/>,
                 value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Show Claims With Interim Payments Only',
-                labelStyle: 'width:190px;margin-top:-15px',
+                labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="interimPaymentMade"/>,
                 listeners:{
                     check:function (el, e) {
@@ -1384,7 +1384,7 @@
             });
             
             var leftColumn = {
-                width:210,
+                width:220,
                 height : 'auto',
 //                style: {
 //                    paddingLeft:'10px'
@@ -1530,7 +1530,7 @@
            
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
-                width : 880,
+                width : 890,
                 frame : true,
                 height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
                 autoScroll : true,

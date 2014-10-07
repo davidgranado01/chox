@@ -34,7 +34,7 @@
 
         Ext.onReady(function() {
             // change the header width to 1300px from 1000px(used for claim detail page).
-            $('div.inner').css({"width":"1180px"});
+            $('div.inner').css({"width":"1190px"});
             Ext.QuickTips.init();
             setupDashboardActionName();
             loadDataFromSession();
@@ -200,7 +200,7 @@
                                     }
                                 }
                             },
-                width: 1180,
+                width: 1190,
                 enableColumnMove: false,
                 columns: [
                     batchUpdateSelectionModel,
