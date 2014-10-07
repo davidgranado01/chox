@@ -69,7 +69,7 @@
                 <version>2.3.2</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
+                    <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
             </plugin>
@@ -100,6 +100,7 @@
         <module>idas.chox.service</module>
         <module>idas.chox.web</module>
         <module>idas.chox.jmsClient</module>
+        <module>reportToExcel</module>
     </modules>
 
 </project>
