@@ -2,6 +2,7 @@ package idas.chox.reporttoexcel;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import jxl.CellView;
 
 import org.slf4j.Logger;
@@ -9,7 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import jxl.Workbook;
 import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.Number;
+import jxl.write.NumberFormat;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
@@ -38,6 +44,7 @@ public class ExcelWorkbook {
         WritableCellFormat headerCellFormat = new WritableCellFormat(headerFont);
         try {
             headerCellFormat.setAlignment(Alignment.CENTRE);
+            headerCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
         } catch (WriteException ex) {
             LOG.error("Cannot set cell alignment");
         }
@@ -48,6 +55,25 @@ public class ExcelWorkbook {
         WritableCellFormat bodyCellFormat = new WritableCellFormat(bodyFont);
         try {
             bodyCellFormat.setAlignment(Alignment.CENTRE);
+            bodyCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
+        } catch (WriteException ex) {
+            LOG.error("Cannot set cell alignment");
+        }
+
+        NumberFormat numericFormat = new NumberFormat("##,###,###.#");
+        WritableCellFormat numericCellFormat = new WritableCellFormat(numericFormat);
+        try {
+            numericCellFormat.setAlignment(Alignment.RIGHT);
+            numericCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
+        } catch (WriteException ex) {
+            LOG.error("Cannot set cell alignment");
+        }
+
+        NumberFormat currencyFormat = new NumberFormat("£ ###,###.00", NumberFormat.COMPLEX_FORMAT); 
+        WritableCellFormat currencyCellFormat = new WritableCellFormat(currencyFormat);
+        try {
+            numericCellFormat.setAlignment(Alignment.RIGHT);
+            numericCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
         } catch (WriteException ex) {
             LOG.error("Cannot set cell alignment");
         }
@@ -70,6 +96,9 @@ public class ExcelWorkbook {
 //                    sheet.setColumnView(columnNo++, columnHeader.length() + 4);
                     CellView cv = sheet.getColumnView(columnNo);
                     cv.setAutosize(true);
+                    if (columnHeader.equalsIgnoreCase("id")) {
+                        cv.setHidden(true);
+                    }
                     sheet.setColumnView(columnNo++, cv);
                 } catch (WriteException ex) {
                     LOG.error("Error adding column header cell '{}' at position {}", columnHeader, columnNo - 1);
@@ -84,6 +113,22 @@ public class ExcelWorkbook {
                         Label label = new Label(columnNo++, rowNo, (String) cell, bodyCellFormat);
                         try {
                             sheet.addCell(label);
+                        } catch (WriteException ex) {
+                            LOG.error("Error adding report cell '{}' at position ({},{})",
+                                    new Object[]{cell, row, columnNo - 1});
+                        }
+                    } else if (cell instanceof Money) {
+                        Number number = new Number(columnNo++, rowNo, ((BigDecimal) cell).doubleValue(), currencyCellFormat);
+                        try {
+                            sheet.addCell(number);
+                        } catch (WriteException ex) {
+                            LOG.error("Error adding report cell '{}' at position ({},{})",
+                                    new Object[]{cell, row, columnNo - 1});
+                        }
+                    } else if (cell instanceof BigDecimal) {
+                        Number number = new Number(columnNo++, rowNo, ((BigDecimal) cell).doubleValue(), numericCellFormat);
+                        try {
+                            sheet.addCell(number);
                         } catch (WriteException ex) {
                             LOG.error("Error adding report cell '{}' at position ({},{})",
                                     new Object[]{cell, row, columnNo - 1});

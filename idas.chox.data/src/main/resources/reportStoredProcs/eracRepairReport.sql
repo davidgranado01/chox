@@ -1,7 +1,7 @@
-drop function erac_repair_report(integer[], integer[], text, text, integer[]);
+--drop function erac_repair_report(integer[], integer[], text, text, integer[], varchar[]);
 create or replace function erac_repair_report
 (
-   IN insurerIds integer[], IN choIds integer[], IN startPeriod text, IN endPeriod text, IN claimTypes integer[]
+   IN insurerIds integer[], IN choIds integer[], IN startPeriod text, IN endPeriod text, IN claimTypes integer[], IN claimStatuses varchar[]
 )
 returns table
 (
@@ -77,6 +77,7 @@ where c.invoice_id is null
   and (case when array_length(choIds, 1) > 0 then c.chorganisation_id = ANY(choIds) else true end)
   and c.created_date between startDate and endDate
   and at2.claim_id = c.id and at2.new_status = c.status and at2.reverted = false
+  and (claimStatuses is null or c.status = ANY(claimStatuses))
   and not exists (select * from audit_trail at3 where at3.claim_id=c.id and at3.id != at2.id and at3.new_status = c.status and at3.created_date > at2.created_date)
   and not exists (select * from comment cm2 where cm2.claim_id=c.id and cm2.id != cm.id and cm2.comment like 'Claim Closed:%' and cm2.created_date > cm.created_date)
 UNION
@@ -121,6 +122,7 @@ where c.invoice_id is not null
   and (case when array_length(choIds, 1) > 0 then c.chorganisation_id = ANY(choIds) else true end) 
   and c.created_date between startDate and endDate
   and at2.claim_id = c.id and at2.new_status = c.status and at2.reverted = false
+  and (claimStatuses is null or c.status = ANY(claimStatuses))
   and not exists (select * from audit_trail at3 where at3.claim_id=c.id and at3.id != at2.id and at3.new_status = c.status and at3.created_date > at2.created_date)
   and not exists (select * from comment cm2 where cm2.claim_id=c.id and cm2.id != cm.id and cm2.comment like 'Claim Closed:%' and cm2.created_date > cm.created_date)
 order by "Date Claim Uploaded"
@@ -131,7 +133,7 @@ END
 ;
 $$ LANGUAGE plpgsql
 ;
-GRANT EXECUTE ON FUNCTION erac_repair_report(integer[], integer[], text, text, integer[]) TO chox_user;
-GRANT EXECUTE ON FUNCTION erac_repair_report(integer[], integer[], text, text, integer[]) TO chox_mi;
+GRANT EXECUTE ON FUNCTION erac_repair_report(integer[], integer[], text, text, integer[], varchar[]) TO chox_user;
+GRANT EXECUTE ON FUNCTION erac_repair_report(integer[], integer[], text, text, integer[], varchar[]) TO chox_mi;
 -- e.g.
---     select * from erac_repair_report(array[]::integer[], array[1007], '2012-01-01','2014-07-01',array[]::integer[]) order by "Supplier Reference";
+--     select * from erac_repair_report(array[]::integer[], array[1007], '2012-01-01','2014-07-01',array[]::integer[], null) order by "Supplier Reference";

@@ -1,4 +1,4 @@
--- drop function total_loss_liability_updates(integer[], integer[], text, text);
+drop function total_loss_liability_updates(integer[], integer[], text, text);
 
 -- select * from total_loss_liability_updates(array[]::integer[], array[1007], '2013-01-01', '2014-01-01');
 
@@ -13,8 +13,8 @@ returns table
    "Insurer Name" character varying(32),
    "Date Liability Changed" text,
    "Liability Status" text,
-   "Liability %age For Insurer" numeric(5,2),
-   "Liability %age For CHO" numeric(5,2),
+   "Liability %age For Insurer" numeric(5,1),
+   "Liability %age For CHO" numeric(5,1),
    "Claim Status" character varying(40)
 )
 as $$ DECLARE 
@@ -28,8 +28,8 @@ RETURN QUERY
 select c.cho_reference as "Supplier Reference", i.name as "Insurer Name",
     case when liability_modified_date between startDate and endDate then case when liability_status_modified_date between  startDate and endDate then case when liability_modified_date > liability_status_modified_date then to_char(liability_modified_date, 'dd/mm/yyyy') else to_char(liability_status_modified_date, 'dd/mm/yyyy') end else to_char(liability_modified_date, 'dd/mm/yyyy') end else to_char(liability_status_modified_date, 'dd/mm/yyyy') end as "Date Liability Changed",
     getLiabilityStatus(c.liability_status) as "Liability Status",
-    c.percentage_liability_accepted as "Liability %age For Insurer",
-    c.percentage_liability_cho as "Liability %age For CHO",
+    round(c.percentage_liability_accepted,1) as "Liability %age For Insurer",
+    round(c.percentage_liability_cho,1) as "Liability %age For CHO",
     c.status as "Claim Status"
 from claim c, insurer i, hire_monitoring_detail hmd
 where c.insurer_id = i.id and c.hire_monitoring_detail_id = hmd.id

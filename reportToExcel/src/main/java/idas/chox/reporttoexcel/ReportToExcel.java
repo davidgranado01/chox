@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class ReportToExcel {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportToExcel.class);
     private List<Report> reports = new ArrayList<>();
-    private static final DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy HH:mm");
+    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private static final DateFormat dateFormatInput1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final DateFormat dateFormatInput2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     
@@ -46,16 +46,17 @@ public class ReportToExcel {
 
         // Now read each line until we either reach the rowcount or end-of-file
         line = br.readLine();
+        int rowCount = 0;
         while (line != null) {
             if (line.startsWith("(") && (line.endsWith("rows)") || line.endsWith("row)"))) {
                 break;
             }
 
             String[] bodyLine = parseBody(line);
-
+            rowCount++;
             if (bodyLine.length != headers.length) {
-                LOG.warn("Column count mismatch between header ({}) and body ({}): '{}'",
-                        new Object[]{headers.length, bodyLine.length, bodyLine});
+                LOG.warn("Column count mismatch at row {} between header ({}) and body ({}): '{}'",
+                        new Object[]{rowCount, headers.length, bodyLine.length, bodyLine});
                 continue;
             }
 
@@ -73,8 +74,15 @@ public class ReportToExcel {
 
     public ReportToExcel(String inputFile) {
         // Open input file
-        int i = 1;
         Report report = null;
+        // Get report name from file name
+        String reportName;
+        try {
+            reportName = inputFile.substring(inputFile.indexOf("-")+1, inputFile.lastIndexOf("-")-1);
+        } catch (Exception ex) {
+            LOG.warn("Cannot determine tab name from report file name: {}", inputFile);
+            reportName = "Report";
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             while (true) {
                 try {
@@ -101,13 +109,14 @@ public class ReportToExcel {
                         reports.add(report);
                         break;
                     }
-                } else {
-                    report.setName("Report-" + i++);
+                } else if (report != null) {
+                    report.setName(reportName);
                 }
 
-                reports.add(report);
-
-                LOG.info("File '{}' has been parsed and contains {} rows (excluding header)", inputFile, report.getBody().size());
+                if (report != null) {
+                    reports.add(report);
+                    LOG.info("File '{}' has been parsed and contains {} rows (excluding header)", inputFile, report.getBody().size());
+                }
             }
         } catch (FileNotFoundException ex) {
             LOG.error("Input file '{}' could not be found.", inputFile);
@@ -148,19 +157,21 @@ public class ReportToExcel {
         int i = 0;
         for (String value : bodyLine) {
             if (Util.isMoney(value)) {
-//                returnVals[i] = (new BigDecimal(value)).setScale(2);
-                returnVals[i] = "£" + value;
+                returnVals[i] = (new Money(value)).setScale(2);
+//                returnVals[i] = "£" + value;
 //            } else if (Util.isInteger(value)) {
 //                returnVals[i] = Integer.parseInt(value);
 //            } else if (Util.isNumeric(value)) {
-//                returnVals[i] = (new BigDecimal(value)).setScale(2);
+//                returnVals[i] = new BigDecimal(value);
             } else if (Util.isDateTime(value)) {
                 String dateValue = null;
                 try {
-                   returnVals[i] = dateFormat.format(dateFormatInput1.parse(value));
+                   returnVals[i] = dateFormat.format(dateFormatInput2.parse(value));
+                   LOG.debug("Date {} converted to {} with via {}", new Object[]{value, returnVals[i], dateFormatInput2.parse(value)});
                 } catch (ParseException ex) {
                     try {
-                        returnVals[i] = dateFormat.format(dateFormatInput2.parse(value));
+                        returnVals[i] = dateFormat.format(dateFormatInput1.parse(value));
+                        LOG.debug("Date {} converted to {} with dateFormatInput1", value, returnVals[i]);
                     } catch (ParseException ex1) {
                         LOG.error("Cannot parse date '{}'", value);
                         returnVals[i] = value;
