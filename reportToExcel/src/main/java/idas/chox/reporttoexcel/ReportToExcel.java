@@ -78,7 +78,7 @@ public class ReportToExcel {
         // Get report name from file name
         String reportName;
         try {
-            reportName = inputFile.substring(inputFile.indexOf("-")+1, inputFile.lastIndexOf("-")-1);
+            reportName = inputFile.substring(inputFile.indexOf("-")+1, inputFile.lastIndexOf("-201")-1);
         } catch (Exception ex) {
             LOG.warn("Cannot determine tab name from report file name: {}", inputFile);
             reportName = "Report";
