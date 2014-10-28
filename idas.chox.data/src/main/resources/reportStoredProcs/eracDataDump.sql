@@ -396,6 +396,7 @@ where (insIds is null or c.insurer_id = ANY(insIds))
     and (choIds is null or c.chorganisation_id = ANY(choIds))
     and (claimTypes is null or c.claim_type = ANY(claimTypes))
     and c.created_date >= DATE_FROM and c.created_date < DATE_TO
+    and c.status != 'PaymentReceived'
 order by c.created_date, c.cho_reference;
 
 
