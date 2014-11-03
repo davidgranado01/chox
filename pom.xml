@@ -101,6 +101,7 @@
         <module>idas.chox.web</module>
         <module>idas.chox.jmsClient</module>
         <module>reportToExcel</module>
+        <module>reportToExcelTemplate</module>
     </modules>
 
 </project>
