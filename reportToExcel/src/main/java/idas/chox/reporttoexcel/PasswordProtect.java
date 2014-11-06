@@ -42,6 +42,8 @@ public class PasswordProtect {
             password = "Mot1";
         } else if (filename.startsWith("Helphire")) {
             password = "Help1";
+        } else if (filename.startsWith("ERAC")) {
+            password = "ERACD4t4!";
         } else if (filename.startsWith("AccidentExchange")) {
             password = "AE1";
         }
