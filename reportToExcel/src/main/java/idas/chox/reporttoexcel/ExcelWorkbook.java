@@ -72,8 +72,8 @@ public class ExcelWorkbook {
         NumberFormat currencyFormat = new NumberFormat("£ ###,###.00", NumberFormat.COMPLEX_FORMAT); 
         WritableCellFormat currencyCellFormat = new WritableCellFormat(currencyFormat);
         try {
-            numericCellFormat.setAlignment(Alignment.RIGHT);
-            numericCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
+            currencyCellFormat.setAlignment(Alignment.RIGHT);
+            currencyCellFormat.setBorder(Border.ALL, BorderLineStyle.THIN, Colour.BLACK);
         } catch (WriteException ex) {
             LOG.error("Cannot set cell alignment");
         }
