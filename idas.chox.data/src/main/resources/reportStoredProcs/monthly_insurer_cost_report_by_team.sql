@@ -28,7 +28,7 @@ RETURN QUERY
 
 select 1 as id, 'Average Hire Days Invoiced' as title,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -38,7 +38,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -48,7 +48,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -58,7 +58,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -68,7 +68,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                          and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -78,7 +78,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                          and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -88,7 +88,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -98,7 +98,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -108,7 +108,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -118,7 +118,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -128,7 +128,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -138,7 +138,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -148,7 +148,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -166,7 +166,7 @@ UNION
 
 select 2 as id, 'Average Hire Days Paid' as title,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -177,7 +177,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -188,7 +188,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -199,7 +199,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -210,7 +210,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -221,7 +221,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -232,7 +232,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -243,7 +243,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -254,7 +254,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -265,7 +265,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -276,7 +276,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -287,7 +287,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -298,7 +298,7 @@ select 2 as id, 'Average Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -317,7 +317,7 @@ UNION
 
 select 3 as id, 'Average Hire Rate Invoiced' as title,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -327,7 +327,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -338,7 +338,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -348,7 +348,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -359,7 +359,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -370,7 +370,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -381,7 +381,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -392,7 +392,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_5_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -403,7 +403,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -414,7 +414,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -425,7 +425,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -436,7 +436,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -447,7 +447,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(o.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id 
     and i.invoice_original_id = o.id 
         and i.hire_net - i.admin_fee > 0
@@ -466,7 +466,7 @@ UNION
 
 select 4 as id, 'Average Hire Rate Paid' as title,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -477,7 +477,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -488,7 +488,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -499,7 +499,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -510,7 +510,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as previous_2_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -521,7 +521,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
                                     
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -532,7 +532,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -544,7 +544,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -555,7 +555,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -566,7 +566,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -577,7 +577,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -588,7 +588,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -599,7 +599,7 @@ select 4 as id, 'Average Hire Rate Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(i.hire_rate_charged_per_day)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -617,7 +617,7 @@ UNION
 
 select 5 as id, 'Average Hire Value Invoiced' as title,
 
-(select avg(o.hire_gross)::numeric(8,2)
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2)
 from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
@@ -630,7 +630,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
 
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -641,7 +641,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -653,7 +653,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -664,7 +664,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -675,7 +675,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -686,7 +686,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -697,7 +697,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_5_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -709,7 +709,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -720,7 +720,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -731,7 +731,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -742,7 +742,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -753,7 +753,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(o.hire_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.hire_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -773,7 +773,7 @@ UNION
 
 select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -784,7 +784,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -795,7 +795,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -806,7 +806,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id   
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -817,7 +817,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -828,7 +828,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -839,7 +839,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -850,7 +850,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -861,7 +861,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -872,7 +872,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -883,7 +883,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -894,7 +894,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -905,7 +905,7 @@ select 6 as id, 'Average Hire Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -923,7 +923,7 @@ UNION
 
 select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as title,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -934,7 +934,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -945,7 +945,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -956,7 +956,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id   
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -967,7 +967,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -978,7 +978,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -989,7 +989,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1000,7 +1000,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1011,7 +1011,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1022,7 +1022,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1033,7 +1033,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1044,7 +1044,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1055,7 +1055,7 @@ select 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' as ti
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
         and i.hire_net - i.admin_fee > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1073,7 +1073,7 @@ UNION
 
 select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1083,7 +1083,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1093,7 +1093,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1103,7 +1103,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1113,7 +1113,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                          and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1123,7 +1123,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                          and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1133,7 +1133,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1143,7 +1143,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1153,7 +1153,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1163,7 +1163,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1173,7 +1173,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1183,7 +1183,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1193,7 +1193,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1211,7 +1211,7 @@ UNION
 
 select 9 as id, 'Average Total Loss Hire Days Paid' as title,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1222,7 +1222,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1233,7 +1233,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1244,7 +1244,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1255,7 +1255,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1266,7 +1266,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1277,7 +1277,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1288,7 +1288,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1299,7 +1299,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1310,7 +1310,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1321,7 +1321,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1332,7 +1332,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1343,7 +1343,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1362,7 +1362,7 @@ UNION
 
 select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1372,7 +1372,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1382,7 +1382,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1392,7 +1392,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1402,7 +1402,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                          and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1412,7 +1412,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                          and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1422,7 +1422,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1432,7 +1432,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1442,7 +1442,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1452,7 +1452,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1462,7 +1462,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1472,7 +1472,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1482,7 +1482,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when vh.days_original is not null then vh.days_original else vh.days end)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1500,7 +1500,7 @@ UNION
 
 select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1511,7 +1511,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1522,7 +1522,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1533,7 +1533,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1544,7 +1544,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1555,7 +1555,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1566,7 +1566,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1577,7 +1577,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1588,7 +1588,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1599,7 +1599,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1610,7 +1610,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1621,7 +1621,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1632,7 +1632,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, workgroup w, chorganisation cho
    where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
         and i.hire_net - i.admin_fee > 0
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -1651,7 +1651,7 @@ UNION
 
 select 12 as id, 'Average Penalty Payment Charged' as title,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1662,7 +1662,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1673,7 +1673,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1684,7 +1684,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1695,7 +1695,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1706,7 +1706,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1717,7 +1717,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1728,7 +1728,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1739,7 +1739,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1750,7 +1750,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1761,7 +1761,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1772,7 +1772,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1783,7 +1783,7 @@ select 12 as id, 'Average Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(i.total_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.total_penalty_charge > 0
@@ -1800,7 +1800,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 13 as id, 'Average Penalty Payment Paid' as title,
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1810,7 +1810,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1820,7 +1820,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1830,7 +1830,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1840,7 +1840,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1850,7 +1850,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1860,7 +1860,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1870,7 +1870,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1880,7 +1880,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1890,7 +1890,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1900,7 +1900,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1910,7 +1910,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1920,7 +1920,7 @@ select 13 as id, 'Average Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -1937,7 +1937,7 @@ UNION
 
 select 14 as id, 'Average Hire Penalty Payment Charged' as title,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -1948,7 +1948,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -1959,7 +1959,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -1970,7 +1970,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -1981,7 +1981,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -1992,7 +1992,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2003,7 +2003,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2014,7 +2014,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2025,7 +2025,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2036,7 +2036,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2047,7 +2047,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2058,7 +2058,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2069,7 +2069,7 @@ select 14 as id, 'Average Hire Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(i.hire_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.hire_penalty_charge > 0
@@ -2086,7 +2086,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 15 as id, 'Average Hire Penalty Payment Paid' as title,
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2096,7 +2096,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2106,7 +2106,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2116,7 +2116,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2126,7 +2126,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2136,7 +2136,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2146,7 +2146,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2156,7 +2156,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2166,7 +2166,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2176,7 +2176,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2186,7 +2186,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2196,7 +2196,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2206,7 +2206,7 @@ select 15 as id, 'Average Hire Penalty Payment Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.hire_penalty_charge_paid else i.hire_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2223,7 +2223,7 @@ UNION
 
 select 16 as id, 'Average Repair Penalty Payment Charged' as title,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2234,7 +2234,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2245,7 +2245,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2256,7 +2256,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2267,7 +2267,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2278,7 +2278,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2289,7 +2289,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
         and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2300,7 +2300,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
         and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2311,7 +2311,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
         and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2322,7 +2322,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2333,7 +2333,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
         and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2344,7 +2344,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
         and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2355,7 +2355,7 @@ select 16 as id, 'Average Repair Penalty Payment Charged' as title,
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
         and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(i.repair_penalty_charge)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2) from claim c, invoice i, workgroup w, chorganisation cho
    where c.invoice_id=i.id
         and c.status = 'PaymentReceived'
         and i.repair_penalty_charge > 0
@@ -2373,7 +2373,7 @@ UNION
 
 
  select 17 as id, 'Average Repair Penalty Payment Paid' as title,
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2383,7 +2383,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2393,7 +2393,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2403,7 +2403,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2413,7 +2413,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2423,7 +2423,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2433,7 +2433,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2443,7 +2443,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2453,7 +2453,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2463,7 +2463,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2473,7 +2473,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2483,7 +2483,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2493,7 +2493,7 @@ UNION
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(avg(case when i.final_payment is not null then i.repair_penalty_charge_paid else i.repair_penalty_charge end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -2511,7 +2511,7 @@ UNION
 
 select 18 as id, 'Average Repair Value Invoiced' as title,
 
-(select avg(o.repair_gross)::numeric(8,2)
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2)
 from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
       and i.repair_net > 0
@@ -2524,7 +2524,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
 
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2535,7 +2535,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2547,7 +2547,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2558,7 +2558,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2569,7 +2569,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2580,7 +2580,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2591,7 +2591,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_5_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2603,7 +2603,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2614,7 +2614,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2625,7 +2625,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2636,7 +2636,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2647,7 +2647,7 @@ from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(o.repair_gross)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(o.repair_gross), 0)::numeric(8,2) from claim c, invoice_original o, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2666,7 +2666,7 @@ UNION
 
 select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2677,7 +2677,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2688,7 +2688,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2699,7 +2699,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id   
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2710,7 +2710,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2721,7 +2721,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2732,7 +2732,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2743,7 +2743,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2754,7 +2754,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2765,7 +2765,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2776,7 +2776,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2787,7 +2787,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2798,7 +2798,7 @@ select 19 as id, 'Average Repair Value Paid (exc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2816,7 +2816,7 @@ UNION
 
 select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' as title,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2827,7 +2827,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2838,7 +2838,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2849,7 +2849,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id   
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2860,7 +2860,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2871,7 +2871,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2882,7 +2882,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2893,7 +2893,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2904,7 +2904,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2915,7 +2915,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2926,7 +2926,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2937,7 +2937,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -2948,7 +2948,7 @@ select 20 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c , invoice i, workgroup w, chorganisation cho
  where c.invoice_id = i.id
        and i.repair_net > 0
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3658,7 +3658,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 26 as id, 'Total Hire Paid' as title,
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3667,7 +3667,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3676,7 +3676,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3685,7 +3685,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3694,7 +3694,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3703,7 +3703,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3712,7 +3712,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -3721,7 +3721,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3730,7 +3730,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
       and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3739,7 +3739,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3748,7 +3748,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
       and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3757,7 +3757,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
       and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3766,7 +3766,7 @@ select 26 as id, 'Total Hire Paid' as title,
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
       and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)
     from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
@@ -3780,7 +3780,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 27 as id, 'Total Hire Value Invoiced' as title,
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho    
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho    
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3789,7 +3789,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3798,7 +3798,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3807,7 +3807,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id 
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3816,7 +3816,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3825,7 +3825,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3834,7 +3834,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3843,7 +3843,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3852,7 +3852,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
       and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3861,7 +3861,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3870,7 +3870,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
       and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3879,7 +3879,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
       and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3888,7 +3888,7 @@ select 27 as id, 'Total Hire Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
       and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(io.hire_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -3902,7 +3902,7 @@ from (select dat1 as startDate, choid as chorgId, insid as insurerId, teamName a
 UNION
 
 select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3910,7 +3910,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3918,7 +3918,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3926,7 +3926,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3934,7 +3934,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3942,7 +3942,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3950,7 +3950,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3958,7 +3958,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3966,7 +3966,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
       and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3974,7 +3974,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3982,7 +3982,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
       and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3990,7 +3990,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
       and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -3998,7 +3998,7 @@ select 28 as id, 'Total Hire Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
       and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4012,7 +4012,7 @@ UNION
 
 select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
       and c.status = 'PaymentReceived'
@@ -4023,7 +4023,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
 
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4033,7 +4033,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4044,7 +4044,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4054,7 +4054,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4064,7 +4064,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4074,7 +4074,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4084,7 +4084,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_5_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4095,7 +4095,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4105,7 +4105,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4115,7 +4115,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4125,7 +4125,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4135,7 +4135,7 @@ select 29 as id, 'Total Hire Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4151,7 +4151,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 30 as id, 'Total Repair Value Invoiced' as title,
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho    
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho    
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4160,7 +4160,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4169,7 +4169,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4178,7 +4178,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id 
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4187,7 +4187,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4196,7 +4196,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4205,7 +4205,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4214,7 +4214,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4223,7 +4223,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
       and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4232,7 +4232,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4241,7 +4241,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
       and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4250,7 +4250,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
       and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4259,7 +4259,7 @@ select 30 as id, 'Total Repair Value Invoiced' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
       and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
+(select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w, chorganisation cho
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
@@ -4273,7 +4273,7 @@ from (select dat1 as startDate, choid as chorgId, insid as insurerId, teamName a
 UNION
 
 select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4281,7 +4281,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4289,7 +4289,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4297,7 +4297,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4305,7 +4305,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4313,7 +4313,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4321,7 +4321,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4329,7 +4329,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4337,7 +4337,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
       and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4345,7 +4345,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4353,7 +4353,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
       and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4361,7 +4361,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
       and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4369,7 +4369,7 @@ select 31 as id, 'Total Repair Value Paid (exc pens)' as title,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
       and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
+(select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='PaymentReceived'
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4383,7 +4383,7 @@ UNION
 
 select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c , invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c , invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
       and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
       and c.status = 'PaymentReceived'
@@ -4394,7 +4394,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
 
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4404,7 +4404,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4415,7 +4415,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4425,7 +4425,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4435,7 +4435,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4445,7 +4445,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4455,7 +4455,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_5_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4466,7 +4466,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4476,7 +4476,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4486,7 +4486,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4496,7 +4496,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4506,7 +4506,7 @@ select 32 as id, 'Total Repair Value Paid (inc pens)' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
+(select coalesce(sum(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(12,2) from claim c, invoice i, workgroup w, chorganisation cho
     where c.invoice_id = i.id
        and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
        and c.status = 'PaymentReceived'
@@ -4522,7 +4522,7 @@ from (select dat1 as startDate, choid as chorgId, insId as insurerId, teamName a
 UNION
 
 select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4532,7 +4532,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4542,7 +4542,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4552,7 +4552,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4562,7 +4562,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4572,7 +4572,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4582,7 +4582,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4592,7 +4592,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4602,7 +4602,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4612,7 +4612,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4622,7 +4622,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4632,7 +4632,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
@@ -4642,7 +4642,7 @@ select 33 as id, 'Total Value Of Claims Penalty Payments Paid' as title,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_10_month,
 
-(select sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
+(select coalesce(sum(case when i.final_payment is not null then (i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) else (i.hire_penalty_charge + i.repair_penalty_charge) end), 0)::numeric(8,2) from claim c, invoice i, chorganisation cho, workgroup w
   where c.invoice_id=i.id  
        and c.status = 'PaymentReceived'
        and c.workgroup_id = w.id and w.team like params.team
