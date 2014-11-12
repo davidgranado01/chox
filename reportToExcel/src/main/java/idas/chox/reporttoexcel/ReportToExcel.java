@@ -224,11 +224,10 @@ public class ReportToExcel {
         }
 
         ReportToExcel report = new ReportToExcel(args[0]);
-//        report.exportReports();
         try {
             ExcelWorkbook workbook = new ExcelWorkbook(report, args[1]);
             workbook.write();
-            PasswordProtect.protect(args[1]);
+//            PasswordProtect.protect(args[1]);
         } catch (IOException ex) {
             LOG.error("Esception thrown generating workbook: {}", ex.getMessage(), ex);
         }

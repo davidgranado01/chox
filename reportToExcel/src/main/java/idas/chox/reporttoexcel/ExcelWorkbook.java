@@ -41,6 +41,11 @@ public class ExcelWorkbook {
         // Create a cell format for the header
 //        WritableFont headerFont = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD, true);
         WritableFont headerFont = new WritableFont(calibri, 11, WritableFont.BOLD, true);
+        try {
+            headerFont.setItalic(false);
+        } catch (WriteException ex) {
+            LOG.error("Cannot set header font to be non-italic");
+        }
         WritableCellFormat headerCellFormat = new WritableCellFormat(headerFont);
         try {
             headerCellFormat.setAlignment(Alignment.CENTRE);
@@ -52,6 +57,11 @@ public class ExcelWorkbook {
         // Create a cell format for the body
 //        WritableFont bodyFont = new WritableFont(WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true);
         WritableFont bodyFont = new WritableFont(calibri, 11, WritableFont.NO_BOLD, true);
+        try {
+            bodyFont.setItalic(false);
+        } catch (WriteException ex) {
+            LOG.error("Cannot set body font to be non-italic");
+        }
         WritableCellFormat bodyCellFormat = new WritableCellFormat(bodyFont);
         try {
             bodyCellFormat.setAlignment(Alignment.CENTRE);
@@ -84,7 +94,7 @@ public class ExcelWorkbook {
             if (report.getName() == null) {
                 sheet = workbook.createSheet("Report", sheetNo);
             } else {
-                sheet = workbook.createSheet(report.getName(), sheetNo);
+                sheet = workbook.createSheet(report.getName().replace("_", " ").replace("/", " "), sheetNo);
             }
 
             // Add header
