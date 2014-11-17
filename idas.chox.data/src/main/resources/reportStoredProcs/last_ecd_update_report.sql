@@ -29,12 +29,12 @@ RETURN QUERY
           to_char(c.status_modified_date, 'dd/mm/yyyy'),
           to_char(ecd.created_date, 'dd/mm/yyyy'),
           to_char(ecd.ecd_date, 'dd/mm/yyyy'),
-          greatest(hmd.inspection_booked_date_last_modified, hmd.inspection_date_last_modified,
+          to_char(greatest(hmd.inspection_booked_date_last_modified, hmd.inspection_date_last_modified,
                    hmd.repair_authorised_date_last_modified, hmd.repair_book_in_date_last_modified,
                    hmd.repair_commenced_date_last_modified, hmd.repair_completion_date_last_modified,
                    hmd.total_loss_offer_made_last_modified, hmd.total_loss_offer_accepted_last_modified,
                    hmd.total_loss_check_issued_last_modified, hmd.total_loss_check_received_last_modified      
-          )
+          ), 'dd/mm/yyyy')
     FROM 
           claim c INNER JOIN chorganisation cho ON c.chorganisation_id = cho.id 
           INNER JOIN insurer ins ON c.insurer_id = ins.id
