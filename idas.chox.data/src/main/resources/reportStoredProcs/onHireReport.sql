@@ -26,8 +26,9 @@ select c.cho_reference, c.claim_number, getClaimType(c.claim_type), cho.name, in
     wu1.first_name || ' ' || wu1.last_name as claims_handler,
     wu2.first_name || ' ' || wu2.last_name as cho_claims_handler,
     case when cu.is_total_loss then 'Yes' else 'No' end as total_loss,
-    vc.name, vh.rental_start,
-    extract(day from now() - vh.rental_start)::integer
+    vc.name,
+    case when vh.rental_start::date < '1900-01-01'::date then null else vh.rental_start end as rental_start,
+    case when vh.rental_start::date < '1900-01-01'::date then null else extract(day from now() - vh.rental_start)::integer end
 --    (current_date - rental_start::date)+1
 from claim c
  left outer join workgroup w on (w.id = c.workgroup_id)
