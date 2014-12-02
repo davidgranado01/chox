@@ -5,6 +5,7 @@ RETURNS TABLE (
    "Supplier Reference" character varying(128),
    "Insurer Claim Number" character varying(128),
    "Claim Type" text,
+   "Liability Status" text,
    "CHO Name" varchar(128),
    "Insurer Name" varchar(128),
    "Workgroup" varchar(128),
@@ -22,14 +23,12 @@ BEGIN
 
 RETURN QUERY 
 
-select c.cho_reference, c.claim_number, getClaimType(c.claim_type), cho.name, ins.name, w.name,
+select c.cho_reference, c.claim_number, getClaimType(c.claim_type),
+    getLiabilityStatus(c.liability_status) as "Liability Status", cho.name, ins.name, w.name,
     wu1.first_name || ' ' || wu1.last_name as claims_handler,
     wu2.first_name || ' ' || wu2.last_name as cho_claims_handler,
     case when cu.is_total_loss then 'Yes' else 'No' end as total_loss,
-    vc.name,
-    case when vh.rental_start::date < '1900-01-01'::date then null else vh.rental_start end as rental_start,
-    case when vh.rental_start::date < '1900-01-01'::date then null else extract(day from now() - vh.rental_start)::integer end
---    (current_date - rental_start::date)+1
+    vc.name, vh.rental_start, extract(day from now() - vh.rental_start)::integer
 from claim c
  left outer join workgroup w on (w.id = c.workgroup_id)
  left outer join web_user wu1 on (wu1.id = c.claim_owner_id)
@@ -44,7 +43,7 @@ where c.insurer_id = ins.id and c.chorganisation_id = cho.id
   and c.status in ('ClaimUnacknowledgedUnrouted','ClaimUnacknowledgedRouted','ClaimUnacknowledgedRouted',
                     'ClaimReferredToFNOL','ClaimPending','ClaimReferredToEngineer','ClaimUpdatedByEngineer',
                     'ClaimRejectionContested','AwaitingCarHireInfo')
-  and vh.rental_start is not null
+  and vh.rental_start is not null and vh.rental_start > '1900-01-01'::Date
 order by claims_handler, rental_start asc;
 
 END;
