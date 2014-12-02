@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.data.services.SecureDataService;
 
 public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
 
@@ -32,7 +33,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
         // have only two columns.
         for (Integer row : rowNumbers) {
             // first row is header
-            if (row.intValue() != 0) { // ignore first row - should contain header
+            if (row != 0) { // ignore first row - should contain header
                 List<String> cells = xlsDataMap.get(row);
                 // this excel file should have at least two columns and we
                 // iterate only through those two
@@ -44,6 +45,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
                 String choReference = cells.get(0).trim();
 
                 if (choReference != null && !choReference.isEmpty()) {
+                    ((SecureDataService)penaltyChargeService).setSecurityInfoProvider(((SecureDataService)penaltyChargeService).getSecurityInfoProvider());
                     boolean isUpdateSuccessful = penaltyChargeService.setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
@@ -85,7 +87,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
             // We don't do update on first line and we assume we will always
             // have only two columns.
             for (Integer row : rowNumbers) {
-                if (row.intValue() != 0) {
+                if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 2) { // We expect at least two columns
                         emailMsg.append(cells.get(0).trim()).append("\t\t\t");

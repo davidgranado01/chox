@@ -12,18 +12,12 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateDbSchedulerJob.class);
     public static final String JOB_NAME = "DB_REFERENCE_UPDATE";
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
 
     @Secured({"ROLE_CHO"})
@@ -91,7 +85,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
             // We don't do update on first line and we assume we will always
             // have only two columns.
             for (Integer row : rowNumbers) {
-                if (row.intValue() != 0) {
+                if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
                         emailMsg.append(String.format("%-10s", cells.get(4).trim()));

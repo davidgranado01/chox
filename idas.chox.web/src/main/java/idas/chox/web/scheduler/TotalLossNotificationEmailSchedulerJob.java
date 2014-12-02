@@ -1,9 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +13,6 @@ import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 
@@ -24,11 +20,9 @@ import idas.chox.core.util.FileHelper;
 public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(TotalLossNotificationEmailSchedulerJob.class);
-    private ClaimService claimService;
     private AttachmentService attachmentService;
     private AttachmentTypeService attachmentTypeService;
     
-    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     public static final String JOB_NAME = "TOTALLOSS_NOTIFICATION";
 
     public void setAttachmentService(AttachmentService attachmentService) {
@@ -37,10 +31,6 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
 
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
         this.attachmentTypeService = attachmentTypeService;
-    }
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
     }
 
 
@@ -119,33 +109,6 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
-    }
-
-    private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
-
-        Claim claim = null;
-        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
-            statusString.append(" No Claim Reference Provided.");
-        } else {
-            claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
-
-            if (claim == null) {
-                LOG.debug("No Such Claim Reference {}", referenceNumber);
-                statusString.append(" No Such Claim Reference.");
-            }
-        }
-        return claim;
-    }
-    
-    private boolean regexExpressionChecker(String regex, String dataValue) {
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(dataValue);
-
-        if (!m.find()) {
-            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
-            return false;
-        }
-        return true;
     }
 
     @Override

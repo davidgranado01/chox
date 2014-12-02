@@ -10,18 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
     public static final String JOB_NAME = "REFERENCE_UPDATE";
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     @Secured({"ROLE_CHO"})
     @Override
@@ -33,7 +27,7 @@ public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
         // have only two columns.
         for (Integer row : rowNumbers) {
             // first row is header
-            if (row.intValue() != 0) { // ignore first row - should contain header
+            if (row != 0) { // ignore first row - should contain header
                 List<String> cells = xlsDataMap.get(row);
                 // this excel file should have at least two columns and we
                 // iterate only through those two

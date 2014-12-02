@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.security.access.annotation.Secured;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.model.VehicleClass;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
@@ -30,16 +27,10 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(HireUpdateSchedulerJob.class);
     
     private ActivityFactory activityFactory;
-    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
 //    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     public static final String JOB_NAME = "HIRE_UPDATE";
-    private ClaimService claimService;
     private VehicleClassService vehicleClassService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
@@ -52,7 +43,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
         for (Integer row : rowNumbers) {
             // first row is header
-            if (row.intValue() != 0) { // ignore first row - should contain header
+            if (row != 0) { // ignore first row - should contain header
                 List<String> cells = xlsDataMap.get(row);
 
                 if (cells.size() < 4) {
@@ -153,7 +144,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             Set<Integer> rowNumbers = xlsDataMap.keySet();
 
             for (Integer row : rowNumbers) {
-                if (row.intValue() != 0) {
+                if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 5) { // We expect at least three columns
                         emailMsg.append(String.format("%-22s", cells.get(0).trim()));
@@ -172,21 +163,6 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return emailMsg.toString();
     }
 
-    private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
-
-        Claim claim = null;
-        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
-            statusString.append(" No Claim Reference Provided.");
-        } else {
-            claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
-
-            if (claim == null) {
-                LOG.debug("No Such Claim Reference {}", referenceNumber);
-                statusString.append(" No Such Claim Reference.");
-            }
-        }
-        return claim;
-    }
     
     private Date validateHireStartDate(String hireStartDateString, StringBuilder statusString) {
         Date hireStartDate = null;
@@ -245,17 +221,6 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         this.activityFactory = activityFactory;
     }
     
-    private boolean regexExpressionChecker(String regex, String dataValue) {
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(dataValue);
-
-        if (!m.find()) {
-            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);

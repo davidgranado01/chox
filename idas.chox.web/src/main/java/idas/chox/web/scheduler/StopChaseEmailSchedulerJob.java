@@ -1,5 +1,6 @@
 package idas.chox.web.scheduler;
 
+import idas.chox.core.model.Claim;
 import java.util.List;
 
 import javax.mail.Message;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.ClaimService;
 
 /**
  *
@@ -20,12 +20,6 @@ public class StopChaseEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(StopChaseEmailSchedulerJob.class);
     private static final String JOB_NAME = "TOTALLOSS_STOP_CHASE_TASK";
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-
 
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     private String doJob(Message message, String sender)  throws MessagingException {        
@@ -37,7 +31,15 @@ public class StopChaseEmailSchedulerJob extends EmailSchedulerJob {
         }
         String choRef = message.getSubject().substring(i+8).trim();
         
-        String result = claimService.stopClaimChase(choRef);
+        StringBuilder statusString = new StringBuilder();
+        String result;
+        
+        Claim claim = validateClaimReferenceNumber(choRef, statusString);
+        if (claim != null) {
+            result = claimService.stopClaimChase(choRef);
+        } else {
+            result = statusString.toString();
+        }
         
         return result;
     }

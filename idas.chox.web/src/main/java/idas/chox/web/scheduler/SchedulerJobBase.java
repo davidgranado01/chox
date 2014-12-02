@@ -2,6 +2,8 @@ package idas.chox.web.scheduler;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 
@@ -21,10 +23,13 @@ import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.EmailHelper;
+import idas.chox.data.services.SecureDataService;
 
 /**
  *
@@ -33,6 +38,7 @@ import idas.chox.core.util.EmailHelper;
 public abstract class SchedulerJobBase implements Scheduler, ApplicationContextAware {
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerJobBase.class);
     protected static final String email_date_format = "dd MMMM yyyy";
+    protected final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     protected MailSecurityAthenticator mailSecurityAthenticator;
     protected MailUtil mailUtil;
     private String smtpHostName;
@@ -46,9 +52,15 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private String hostName;
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
+    protected ClaimService claimService;
     
     protected abstract List<SchedulerJob> getSchedulerJobs();
     protected abstract void process(String emailSubject, SchedulerJob schedulerJob) throws MessagingException;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
 
     @Override
     public void execute() throws JobExecutionException {
@@ -58,6 +70,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         String emailSubject;
         
         try {
+//            SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
             handleHibernateTransactionIntricacies();
             List<SchedulerJob> schedulerJobs = getSchedulerJobs();
             if (schedulerJobs.isEmpty()) {
@@ -185,5 +198,34 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         this.applicationContext = ac;
     }
-   
+
+    protected Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
+
+        Claim claim = null;
+        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
+            statusString.append(" No Claim Reference Provided.");
+        } else {
+            LOG.info("Security provider is {} in {}", ((SecureDataService)claimService).getSecurityInfoProvider(), claimService);
+            ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
+            claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
+
+            if (claim == null) {
+                LOG.debug("No Such Claim Reference {}", referenceNumber);
+                statusString.append(" No Such Claim Reference.");
+            }
+        }
+        return claim;
+    }
+    
+    protected boolean regexExpressionChecker(String regex, String dataValue) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(dataValue);
+
+        if (!m.find()) {
+            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
+            return false;
+        }
+        return true;
+    }
+  
 }

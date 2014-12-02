@@ -32,6 +32,7 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
         LOG.info("calling stored proc '{}' with '{}'", storedProcName, baseDataService);
         try {
             handleHibernateTransactionIntricacies();
+//            ((SecureDataService)baseDataService).setSecurityInfoProvider(((SecureDataService)baseDataService).getSecurityInfoProvider());
 
             if ("addInvoicePenaltyTask".equals(storedProcName)) {
                 baseDataService.callAddInvoicePenaltyTask(999);

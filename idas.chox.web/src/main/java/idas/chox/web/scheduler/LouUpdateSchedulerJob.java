@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
@@ -29,14 +26,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(LouUpdateSchedulerJob.class);
     
     private ActivityFactory activityFactory;
-    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     public static final String JOB_NAME = "LOU_UPDATE";
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-
 
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     @Override
@@ -45,7 +35,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
         for (Integer row : rowNumbers) {
             // first row is header
-            if (row.intValue() != 0) { // ignore first row - should contain header
+            if (row != 0) { // ignore first row - should contain header
                 boolean update = false;
                 boolean repairDatesUpdated = false;
                 List<String> cells = xlsDataMap.get(row);
@@ -333,7 +323,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             Set<Integer> rowNumbers = xlsDataMap.keySet();
 
             for (Integer row : rowNumbers) {
-                if (row.intValue() != 0) {
+                if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 24) { // We expect at least twenty four columns
                         emailMsg.append(String.format("%-22s", cells.get(0).trim()));
@@ -352,22 +342,6 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return emailMsg.toString();
     }
 
-    private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
-
-        Claim claim = null;
-        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
-            statusString.append(" No Claim Reference Provided.");
-        } else {
-            claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
-
-            if (claim == null) {
-                LOG.debug("No Such Claim Reference {}", referenceNumber);
-                statusString.append(" No Such Claim Reference.");
-            }
-        }
-        return claim;
-    }
-    
     private Date validateDate(String hireStartDateString, StringBuilder statusString, String columnName) {
         Date hireStartDate = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
@@ -418,21 +392,9 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         this.activityFactory = activityFactory;
     }
     
-    private boolean regexExpressionChecker(String regex, String dataValue) {
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(dataValue);
-
-        if (!m.find()) {
-            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
-
 
 }
