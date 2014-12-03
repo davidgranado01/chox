@@ -1,7 +1,5 @@
 package idas.chox.web.scheduler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +25,6 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(HireUpdateSchedulerJob.class);
     
     private ActivityFactory activityFactory;
-    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
-//    private String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     public static final String JOB_NAME = "HIRE_UPDATE";
     private VehicleClassService vehicleClassService;
 
@@ -73,7 +69,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 if (cells.size() > 2) {
                     hireStartString = cells.get(2).trim();
                 }
-                Date hireStartDate = validateHireStartDate(hireStartString, statusString);
+                Date hireStartDate = validateDate(hireStartString, statusString, "Hire Start (Date)");
 
                 /* Check Hire Start time provided is valid */
                 String hireStartTime = null;
@@ -83,7 +79,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 if (hireStartTime != null && hireStartTime.isEmpty()) {
                     hireStartTime = null;
                 } else if (hireStartTime != null) {
-                    hireStartTime = validateHireStartTime(hireStartTime, statusString);
+                    hireStartTime = validateTime(hireStartTime, statusString);
                 }
 
 
@@ -163,30 +159,8 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return emailMsg.toString();
     }
 
-    
-    private Date validateHireStartDate(String hireStartDateString, StringBuilder statusString) {
-        Date hireStartDate = null;
-        SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
-//        SimpleDateFormat sdf1 = DateHelper.getLocalDateTimeFormat();
-        sdf.setLenient(false);
-        if (hireStartDateString.isEmpty()) {
-            statusString.append(" No Hire Start (Date) Provided.");
-        } else if (hireStartDateString.length() != sdf.toPattern().length()) {
-//                && hireStartDateString.length() != sdf1.toPattern().length()) {
-            statusString.append(" Invalid Format For Hire Start (Date).");
-        } else {
-            try {
-                hireStartDate = sdf.parse(hireStartDateString);
-                LOG.debug("Date parsed - {} as {}", hireStartDateString, hireStartDate);
-            } catch (ParseException ex) {
-                statusString.append(" Invalid Format For Hire Start (Date).");
-                LOG.warn("Parse exception thrown for hire-start date {}", hireStartDateString);
 
-            }
-        }
-        return hireStartDate;
-    }
-    
+
     private VehicleClass validateVehicleClass(String vehicleClassString, StringBuilder statusString) {
         VehicleClass vehicleclass = vehicleClassService.getVehicleClassByName(vehicleClassString);
         if (vehicleclass == null) {
@@ -194,14 +168,6 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         }
         
         return vehicleclass;
-    }
-
-    private String validateHireStartTime(String hireStartTime, StringBuilder statusString) {
-        if (!regexExpressionChecker(REG_TIME, hireStartTime)) {
-            statusString.append("  Invalid Format for Hire Start (Time).");
-        } 
-        
-        return hireStartTime;
     }
 
     private boolean validateUpdateInsurer(String updateInsurerString, StringBuilder statusString) {

@@ -51,7 +51,7 @@ public class ECDUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 
                 /* Check is valid ecdDate provided and parse the string date to java date.*/
                 String ecdDateString = cells.get(1).trim();
-                Date ecdDate = validateEcdDate(ecdDateString, statusString);
+                Date ecdDate = validateDate(ecdDateString, statusString, "ECD Date");
 
                 /* Check is valid ecdDelayReason provided and it has valid length(<=50 character).*/
                 String ecdDelayReason = cells.get(2).trim();
@@ -130,26 +130,6 @@ public class ECDUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
-    }
-
-    
-    private Date validateEcdDate(String ecdDateString, StringBuilder statusString) {
-        Date ecdDate = null;
-        SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
-        sdf.setLenient(false);
-        if (ecdDateString.isEmpty()) {
-            statusString.append(" No ECD Date Provided.");
-        } else if (ecdDateString.length() != sdf.toPattern().length()) {
-            statusString.append(" Invalid Format For ECD Date.");
-        } else {
-            try {
-                ecdDate = sdf.parse(ecdDateString);
-            } catch (ParseException ex) {
-                statusString.append(" Invalid Format For ECD Date.");
-                LOG.warn("parse exception thrown for given date {}", ecdDateString, ex);
-            }
-        }
-        return ecdDate;
     }
     
     private void validateEcdDelayReason(String ecdDelayReason, StringBuilder statusString) {

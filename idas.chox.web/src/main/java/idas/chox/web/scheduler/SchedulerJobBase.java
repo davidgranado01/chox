@@ -4,6 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.mail.MessagingException;
 
@@ -28,6 +32,7 @@ import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.SchedulerJobService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
 
@@ -39,6 +44,8 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerJobBase.class);
     protected static final String email_date_format = "dd MMMM yyyy";
     protected final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
+    private final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
+//    private final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
     protected MailSecurityAthenticator mailSecurityAthenticator;
     protected MailUtil mailUtil;
     private String smtpHostName;
@@ -129,7 +136,21 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                     new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
         }
     }
-    
+
+    protected BigDecimal validateNumeric(String valueString, StringBuilder statusString, String column) {
+        BigDecimal value = null;
+        
+        if (valueString != null && !valueString.isEmpty()) {
+            try {
+                value = new BigDecimal(valueString);
+            } catch (Exception ex) {
+                statusString.append(" Invalid Format For '").append(column).append("'.");
+            }
+        }
+        return value;
+    }
+
+
     public void setMailSecurityAthenticator(
             MailSecurityAthenticator mailSecurityAthenticator) {
         this.mailSecurityAthenticator = mailSecurityAthenticator;
@@ -216,7 +237,35 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         }
         return claim;
     }
+
+    protected Date validateDate(String dateString, StringBuilder statusString, String columnName) {
+        Date hireStartDate = null;
+        SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
+        sdf.setLenient(false);
+        if (dateString.isEmpty()) {
+            statusString.append(" No '").append(columnName).append("' provided.");
+        } else if (dateString.length() != sdf.toPattern().length()) {
+            statusString.append(" Invalid Format For '").append(columnName).append("'.");
+        } else {
+            try {
+                hireStartDate = sdf.parse(dateString);
+            } catch (ParseException ex) {
+                statusString.append(" Invalid Format For '").append(columnName).append("'.");
+                LOG.warn("Parse exception thrown for column {}: {}", columnName, dateString);
+            }
+        }
+        return hireStartDate;
+    }
     
+    protected String validateTime(String timeString, StringBuilder statusString) {
+        if (!regexExpressionChecker(REG_TIME, timeString)) {
+            statusString.append("  Invalid Format for Hire Start (Time).");
+        } 
+        
+        return timeString;
+    }
+
+
     protected boolean regexExpressionChecker(String regex, String dataValue) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(dataValue);

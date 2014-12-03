@@ -1,8 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -342,38 +340,14 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return emailMsg.toString();
     }
 
-    private Date validateDate(String hireStartDateString, StringBuilder statusString, String columnName) {
-        Date hireStartDate = null;
-        SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
-        sdf.setLenient(false);
-        if (hireStartDateString.isEmpty()) {
-            statusString.append(" No '").append(columnName).append("' provided.");
-        } else if (hireStartDateString.length() != sdf.toPattern().length()) {
-            statusString.append(" Invalid Format For '").append(columnName).append("'.");
-        } else {
-            try {
-                hireStartDate = sdf.parse(hireStartDateString);
-            } catch (ParseException ex) {
-                statusString.append(" Invalid Format For '").append(columnName).append("'.");
-                LOG.warn("Parse exception thrown for column {}: {}", columnName, hireStartDateString);
-            }
-        }
-        return hireStartDate;
+    public void setActivityFactory(ActivityFactory activityFactory) {
+        this.activityFactory = activityFactory;
     }
     
-    private BigDecimal validateNumeric(String valueString, StringBuilder statusString, String column) {
-        BigDecimal value = null;
-        
-        if (valueString != null && !valueString.isEmpty()) {
-            try {
-                value = new BigDecimal(valueString);
-            } catch (Exception ex) {
-                statusString.append(" Invalid Format For '").append(column).append("'.");
-            }
-        }
-        return value;
+    @Override
+    protected List<SchedulerJob> getSchedulerJobs() {
+        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
-
 
     private boolean validateYesNoColumn(String updateInsurerString, StringBuilder statusString, String column) {
         boolean updateInsurer = false;
@@ -388,13 +362,5 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         return updateInsurer;
     }
 
-    public void setActivityFactory(ActivityFactory activityFactory) {
-        this.activityFactory = activityFactory;
-    }
-    
-    @Override
-    protected List<SchedulerJob> getSchedulerJobs() {
-        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
-    }
 
 }
