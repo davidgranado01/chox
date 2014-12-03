@@ -912,7 +912,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             LOG.error("mapping failed between old and new claim");
                             claimResult.setValid(false);
                             claimResult.getMessage().add("Unexpected error encountered while mapping this invoice to already existing claim. Please contact CHOX support.");
-                            claim.setChoReference(choReferenceNumber);
+//                            claim.setChoReference(choReferenceNumber);
                         }
                     } else if (oldClaim != null) {
                         LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already have invoice attached.", hireState);

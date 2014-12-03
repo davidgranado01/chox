@@ -66,6 +66,8 @@ public class ClaimObjectService {
             LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         }
 
+        newClaim.setLiability(claim.getLiabilityStatus());
+        newClaim.setLiabilityStatusModifiedDate(claim.getLiabilityStatusModifiedDate());
         newClaim.setHireMonitoringEcds(null);
         newClaim.setPreviousStatus(null);
         newClaim.setStatus(null);
