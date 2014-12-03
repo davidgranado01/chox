@@ -674,16 +674,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
 
-    public boolean getIsClaimNumberDuplicated() {
-        boolean bFlag = false;
+    public int getClaimNumberDuplications() {
+        int duplications = 0;
 
         if (!claim.getClaimNumber().isEmpty()) {
-            if (claimService.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
-                bFlag = true;
-            }
+            duplications = claimService.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId());
         }
 
-        return bFlag;
+        return duplications;
     }
 
     public boolean getIsCustomerClaimNumberDuplicated() {

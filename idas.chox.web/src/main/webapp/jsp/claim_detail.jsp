@@ -527,12 +527,19 @@
 
     <div id="moreActionPanel" class="extra-action-class"></div>
 
-    <s:if test="isClaimNumberDuplicated && notificationAccessibility.claimNumberNotificationAccessibility">
+    <s:if test="claimNumberDuplications > 0 &&  claimNumberDuplications < 20 && notificationAccessibility.claimNumberNotificationAccessibility">
         <s:action name="getDuplicatedClaimAlert" namespace="/prv/p" executeResult="true">
             <s:param name="claimId"><s:property value="id" /></s:param>
             <s:param name="claimNumber"><s:property value="claimNumber" /></s:param>
         </s:action>
     </s:if>
+    <s:elseif test="claimNumberDuplications > 19 && notificationAccessibility.claimNumberNotificationAccessibility">
+        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+            <div class="status-info">
+                This claim shares it's claim number with another <s:property value="claimNumberDuplications" /> claims.
+            </div> 
+        </div>
+    </s:elseif>
 
     <s:if test="isDuplicatedSupplementaryInvoiceExists && notificationAccessibility.duplicatedSupplementaryInvoiceNotificationAccessibility">
         <s:action name="getDuplicatedSupplementaryInvoiceAlert" namespace="/prv/p" executeResult="true">
@@ -540,7 +547,7 @@
             <s:param name="customerClaimRefNum"><s:property value="customer.claimReference" /></s:param>
         </s:action>
     </s:if>
-    
+
     <s:if test="isEscalatedToSupervisor">
         <s:action name="getClaimEscalatedToSupervisorAlert" namespace="/prv/p" executeResult="true"></s:action>
     </s:if>
