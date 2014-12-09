@@ -43,8 +43,26 @@
 
     </broker>
  
+    <bean id="hikariAMQConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">${db.activeMQUrl}</prop>
+                <prop key="user">chox_amq</prop>
+                <prop key="password">ch0xpa33</prop>
+            </props>
+        </property>
+        <property name="poolName" value="hikariAMQCP" />
+        <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
+        <property name="maximumPoolSize" value="${db.maxActiveMQPoolSize}" />
+    </bean>
+
+    <!-- HikariCP configuration -->
+    <bean id="amq_dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariAMQConfig" />
+    </bean>
+
     <!-- JMS Data Source -->
-    <bean id="amq_dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+<!--    <bean id="amq_dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"/>
         <property name="jdbcUrl" value="${db.activeMQUrl}"/>
         <property name="username" value="chox_amq"/>
@@ -66,7 +84,7 @@
         <property name="connectionTimeoutInMs" value="0"/>
         <property name="lazyInit" value="false"/>
         <property name="poolName" value="AMQLocalDataSource"/>
-    </bean>
+    </bean>-->
 
     <!-- JMS ConnectionFactory to use for local bridging -->
     <bean id="localBrokerConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" depends-on="embeddedLocalBroker">
