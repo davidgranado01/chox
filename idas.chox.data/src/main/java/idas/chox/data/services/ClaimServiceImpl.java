@@ -60,6 +60,8 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
+import java.util.Map;
+import org.hibernate.Query;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -507,10 +509,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();
 
-        List claims = new ArrayList<Claim>();
+        List<Claim> claims = new ArrayList<>();
 
         for (HashMap m : resultMap) {
-            claims.add(m.get("this"));
+            claims.add((Claim)m.get("this"));
         }
 
         LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
@@ -555,6 +557,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         List result = findByCriteria(criteria);
 
         Integer totalCount = ((Long) result.get(0)).intValue();
+
+        return totalCount > 0;
+    }
+
+    @Override
+    public Boolean isClaimSupplierReferenceNumberExistForManualCho(String sClaimReferenceNumber, int choId) {
+        if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
+            return false;
+        }
+        Map extParameters = new HashMap();
+        extParameters.put("pChoRef", sClaimReferenceNumber);
+        extParameters.put("pChoId", choId);
+
+        int totalCount = externalQueryCount("select * from claim where cho_reference = :pChoRef and chorganisation_id = :pChoId", extParameters);
 
         return totalCount > 0;
     }
@@ -720,21 +736,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // For filter's ownership check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isOwnerShipCheck() && getCurrentUser().isAnInsurer() & !searchCriteria.isManual()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
-                searchCriteria.setClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
+                searchCriteria.setClaimOwnerIds(new HashSet<>(Arrays.asList(getCurrentUser().getId())));
             }
         }
 
         // For filter's ownership check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isOwnerShipCheck() && getCurrentUser().isAnInsurer() & searchCriteria.isManual()) {
             if (RoleHelper.isManualOwnershipValidationEnabledUser(getCurrentUser())) {
-                searchCriteria.setClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId())));
+                searchCriteria.setClaimOwnerIds(new HashSet<>(Arrays.asList(getCurrentUser().getId())));
             }
         }
         
         // For filter's supplier Owner check, we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
-                searchCriteria.setSupplierClaimOwnerIds(new HashSet<Integer>(Arrays.asList(getCurrentUser().getId(), ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)));
+                searchCriteria.setSupplierClaimOwnerIds(new HashSet<>(Arrays.asList(getCurrentUser().getId(), ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)));
             }
         }
 
@@ -844,7 +860,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getSupplierClaimOwnerIds() != null && !searchCriteria.getSupplierClaimOwnerIds().isEmpty()) {
-            ArrayList<Integer> supplierClaimOwnerIds = new ArrayList<Integer>();
+            ArrayList<Integer> supplierClaimOwnerIds = new ArrayList<>();
 
             if (searchCriteria.getSupplierClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
                 // Remove -9 value from selected supplierClaimOwnerIds as we are adding null restriction.
@@ -872,7 +888,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
             if (searchCriteria.getStatuses().contains(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
-                ArrayList<String> handlersActionStatus = new ArrayList<String>();
+                ArrayList<String> handlersActionStatus = new ArrayList<>();
                 handlersActionStatus.addAll(ClaimStatus.getHandlerOutstandingStatusList());
                 if (searchCriteria.getStatuses().size() > 1) {
                     handlersActionStatus.addAll(searchCriteria.getStatuses());
@@ -1030,7 +1046,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getClaimTypes() != null && !searchCriteria.getClaimTypes().isEmpty()) {
-            ArrayList<ClaimType> ClaimTypes = new ArrayList<ClaimType>();
+            ArrayList<ClaimType> ClaimTypes = new ArrayList<>();
             if (searchCriteria.getClaimTypes().contains(ClaimType.GTA)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,ClaimType.GTA_SUPPLEMENTARY_INVOICE));
             } 
@@ -1486,7 +1502,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return queuedTickets;
         } catch (Exception ex) {
             LOG.error("Exception thrown while getting queuedTickets ", ex);
-            return new ArrayList<QueuedTicket>();
+            return new ArrayList<>();
         }
     }
     
@@ -1603,7 +1619,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
-        return totalCount(criteria).intValue();
+        return totalCount(criteria);
     }
     
     private boolean isClaimInInsurerClosedStatus(Claim claim) {
@@ -1620,7 +1636,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
         Criteria criteria = getSession().createCriteria(Claim.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
-        return totalCount(criteria).intValue();
+        return totalCount(criteria);
     }
 
     @Override
@@ -1724,7 +1740,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void setTotalLoss(Claim claim, boolean isTotalLoss) {
 	if (claim.getCustomer().getIsTotalLoss() != null
-                && claim.getCustomer().getIsTotalLoss().booleanValue() == isTotalLoss) {
+                && claim.getCustomer().getIsTotalLoss() == isTotalLoss) {
             return;
 	}
         HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();

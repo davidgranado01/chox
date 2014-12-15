@@ -40,7 +40,7 @@ import java.text.MessageFormat;
 public class ClaimHeaderReader extends BaseEntityReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
-    private static String sectionName = "Claim Header";
+    private static final String sectionName = "Claim Header";
     // PAGE PARAMETERS
     private Boolean managingRepair;
     private Date firstContactDate;
@@ -51,7 +51,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private String hireState;
     private boolean isUpdateManagingRepair = false;
     private boolean isInsurerUpload = false;
-    Chorganisation chorganisation;
+    private Chorganisation chorganisation;
     private InsurerService insurerService;
 
     public void setInsurerService(InsurerService insurerService) {
@@ -69,7 +69,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         // check the claim status which is needed for further processing
         process(claimResult);
     }
-
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
@@ -91,7 +90,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             choReferenceNumber = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-reference");
         }
-
 
         if (getBordereauReaderContext().getSecurityInfoProvider().getIsINS()) {
             Integer insurerId = getBordereauReaderContext().getSecurityInfoProvider().getCurrentUser().getInsurer().getId();
@@ -123,7 +121,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
         }
 
-
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
 
@@ -148,7 +145,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return claimResult.isValid();
     }
 
-    
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
@@ -157,7 +153,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Claim claim = new Claim();
         try {
             RentalStatus rentalStatus = RentalStatus.fromString(hireState);
-            switch(rentalStatus) {
+            switch (rentalStatus) {
                 case COLLABORATION:
                     if (!isInsurerUpload) {
                         if (!securityInfoProvider.getCurrentUser().getChorganisation().isEnableCollaborationProtocolClaims()) {
@@ -225,7 +221,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         claimResult.setClaim(claim);
                     }
                     break;
-                case FIXEDFEE:                    
+                case FIXEDFEE:
                     if (securityInfoProvider.getCurrentUser().isCHO()
                             && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
                         /*
@@ -271,8 +267,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.debug("TPI Claim found");
                 LOG.debug("TPI is activated for this CHO");
 
-                
-                processTpiInvoice(claimResult, claim);  
+                processTpiInvoice(claimResult, claim);
             } else {
                 LOG.warn("Invalid hire-state found: {}", hireState);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
@@ -298,7 +293,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
     }
 
-    
     private void processInsurerInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -310,7 +304,12 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setValid(false);
             claimResult.getMessage().add("This Invoice already exists.");
             claim.setChoReference(choReferenceNumber);
-
+        } else if (claimService.isClaimSupplierReferenceNumberExistForManualCho(choReferenceNumber, choId)) {
+                LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
+                claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
+                claimResult.setValid(false);
+                claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Valexa support.");
+                claim.setChoReference(choReferenceNumber);
         } else {
             LOG.debug("Valid Insurer invoice found.");
             claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_INVOICE);
@@ -327,14 +326,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setInsurer(insurerService.getInsurer(securityInfoProvider.getCurrentUser().getInsurer().getId()));
             claim.setClaimType(ClaimType.INSURER_INVOICE);
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
-               // Check CHO allows insurer upload
-                if (chorganisation!= null && chorganisation.isInsurerUploadOnly()) {
+                // Check CHO allows insurer upload
+                if (chorganisation != null && chorganisation.isInsurerUploadOnly()) {
                     //Set claim Insurer equal to third party insurer
                     claim.setChorganisation(chorganisation);
                 } else {
                     claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_SCHEMA);
                     claimResult.setValid(false);
-                    claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "' does not allow Insurer uploaded claims. Please contact CHOX Admin.");     
+                    claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "' does not allow Insurer uploaded claims. Please contact CHOX Admin.");
                 }
             } else {
                 LOG.info("SupplierAliasName is null or empty ");
@@ -343,7 +342,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
         claimResult.setClaim(claim);
     }
-
 
     private void processTpiInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
@@ -379,7 +377,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
             message = MessageFormat.format("{0} or ''Insurer vs Insurer''. Alternatively if this is a TPI claim, it must be ''{1}''  against this Insurer.",
                     message, getTPIidentificationStringForInsurer(insurerAliasNames));
-            
+
             claimResult.getMessage().add(message);
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
@@ -406,12 +404,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    
     private void processOffHiredInvoice(ClaimResult claimResult, Claim claim) {
         ClaimService claimService = getBordereauReaderContext().getClaimService();
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
-        
+
         int choId = chorganisation == null ? -1 : chorganisation.getId();
         if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
             LOG.warn("Invalid new claim rental status: '{}' - Insurer does not have Claim upload enabled", hireState);
@@ -419,7 +416,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setValid(false);
             claimResult.getMessage().add("This Insurer does not allow claim upload. Please contact CHOX support..");
             claim.setChoReference(choReferenceNumber);
-        } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) 
+        } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))
                 || (isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
             if (isInsurerUpload) {
                 claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
@@ -480,7 +477,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    
     private void processNormalChoxClaim(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -495,7 +491,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             Element rootElements = claimResult.getElement();
             Element claimElements = XMLUtils.getElement(rootElements, "claim");
             Element elements = XMLUtils.getElement(claimElements, "third-party");
-            insurerAliasNames= XmlHelper.getNodeValue(elements, "name");
+            insurerAliasNames = XmlHelper.getNodeValue(elements, "name");
         }
 
         if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL && !checkCollaborationProtocolActivatedForInsurer(insurerAliasNames)) {
@@ -511,57 +507,57 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         } else if ((isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))
                 || (!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))) {
-          if (isInsurerUpload) {
-              claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
-          } else {
-              claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-          }
-          // Check its the same claim-type
-          if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
-                  || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isCollaborationProtocol(claim.getClaimType()))) {
+            if (isInsurerUpload) {
+                claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
+            } else {
+                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            }
+            // Check its the same claim-type
+            if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
+                    || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isCollaborationProtocol(claim.getClaimType()))) {
                 claimResult.setValid(false);
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
-          } else {
-            if (claim.getInvoice() != null) {
-                if (isInsurerUpload) {
-                    claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_EXIST_INVOICE);
-                } else {
-                    claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
-                }
-                claimResult.setValid(false);
             } else {
-                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                if (claim.getInvoice() != null) {
                     if (isInsurerUpload) {
-                        claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_INVOICE);
+                        claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_EXIST_INVOICE);
                     } else {
-                        claimResult.setClaimParseStatus(ClaimParseStatus.NEW_INVOICE);
+                        claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
                     }
-                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                    claim.setBreBand(choBand);
-                    if (isUpdateManagingRepair && managingRepair != null) {
-                        claim.setManagingRepair(managingRepair);
-                    }
-                } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
-                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
-                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
-                    // NOT EDITABNLE CLAIM
-                    claimResult.setClaimParseStatus(ClaimParseStatus.CLAIM_NOT_EDITABLE);
                     claimResult.setValid(false);
                 } else {
-                    // EDITABLE CLAIM
-                    if (isInsurerUpload) {
-                        claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_INSURER_CLAIM);
-                    } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
-                        claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_COLLABORATION_CLAIM);
+                    if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                        if (isInsurerUpload) {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_INVOICE);
+                        } else {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.NEW_INVOICE);
+                        }
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                        if (isUpdateManagingRepair && managingRepair != null) {
+                            claim.setManagingRepair(managingRepair);
+                        }
+                    } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                            || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
+                            || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
+                        // NOT EDITABNLE CLAIM
+                        claimResult.setClaimParseStatus(ClaimParseStatus.CLAIM_NOT_EDITABLE);
+                        claimResult.setValid(false);
                     } else {
-                        claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_CLAIM);
-                    }
-                    if (isUpdateManagingRepair && managingRepair != null) {
-                        claim.setManagingRepair(managingRepair);
+                        // EDITABLE CLAIM
+                        if (isInsurerUpload) {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_INSURER_CLAIM);
+                        } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_COLLABORATION_CLAIM);
+                        } else {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_CLAIM);
+                        }
+                        if (isUpdateManagingRepair && managingRepair != null) {
+                            claim.setManagingRepair(managingRepair);
+                        }
                     }
                 }
             }
-          }
         } else {
             if (isInsurerUpload) {
                 LOG.debug("New Insurer Claim Found");
@@ -584,8 +580,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     LOG.debug("SupplierAliasName is null or empty ");
                     claimResult.setValid(false);
                 }
-            }
-            else {
+            } else {
                 if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_COLLABORATION_CLAIM);
                 } else {
@@ -609,7 +604,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    
     private void processSubscriberClaim(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -677,7 +671,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         claimResult.setClaim(claim);
     }
-
 
     private void processFixedFeeClaim(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
@@ -803,7 +796,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-
     private void processSupplementaryInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -826,13 +818,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                 }
-                
+
                 List<Claim> claimsWithSameCusClaimRef;
-                
+
                 if (isInsurerUpload) {
-                   claimsWithSameCusClaimRef = claimService.getInsurerClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getInsurer().getId());
+                    claimsWithSameCusClaimRef = claimService.getInsurerClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getInsurer().getId());
                 } else {
-                   claimsWithSameCusClaimRef = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                    claimsWithSameCusClaimRef = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
                 }
                 if (claimsWithSameCusClaimRef.size() > 0) {
 
@@ -840,8 +832,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
                     if (claimsWithSameCusClaimRef.size() > 1) {
                         StringBuilder sb = new StringBuilder("");
-                        List<Claim> duplicateCustomerRefSuppInvClaims = new ArrayList<Claim>();
-                        List<Claim> duplicateCustomerRefClaimsWithInv = new ArrayList<Claim>();
+                        List<Claim> duplicateCustomerRefSuppInvClaims = new ArrayList<>();
+                        List<Claim> duplicateCustomerRefClaimsWithInv = new ArrayList<>();
                         int commaCount = 0;
                         for (Claim c : claimsWithSameCusClaimRef) {
 
@@ -955,11 +947,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.getMessage().add("Customer claim number is not valid: for supplementary invoices, the customer claim number cannot be empty or contain 'NA' or 'N/A'.");
             claim.setChoReference(choReferenceNumber);
         }
-        
+
         claimResult.setClaim(claim);
     }
 
-    
     private void processHireMonitoring(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -1018,7 +1009,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-
     private String getTPIidentificationStringForInsurer(String insurerAliasName) {
         String tpiIdentificationString = null;
 
@@ -1030,7 +1020,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         return tpiIdentificationString;
     }
-
 
     private boolean checkTpiServiceActivatedForInsurerAndRentalStatus(String insurerAliasNames, String rentalStatus) {
         boolean returnValue = false;
@@ -1054,7 +1043,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-
     private boolean checkTpiServiceActivatedForInsurer(String insurerAliasNames) {
         boolean returnValue = false;
 
@@ -1077,7 +1065,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-
     private boolean checkSubscriberActivatedForInsurer(String insurerAliasName) {
         Insurer insurer;
 
@@ -1099,7 +1086,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return insurer.isAllowSubscriberClaims();
     }
 
-
     private boolean checkFixedFeeActivatedForInsurer(String insurerAliasName) {
         Insurer insurer;
 
@@ -1120,6 +1106,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         return insurer.isAllowFixedFeeClaims();
     }
+
     private boolean checkCollaborationProtocolActivatedForInsurer(String insurerAliasName) {
         Insurer insurer;
 
