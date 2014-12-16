@@ -31,7 +31,7 @@ public class ChoxEventRegister implements EventRegister {
     @Override
     public void startEvent(String name, int id, int insurerId, int choId, int claimId, int claimType) throws Exception {
         if (openEvent != null) {
-            throw new Exception("Event already started.");
+            throw new Exception("Event already started");
         }
 
         if (active) {
@@ -50,7 +50,7 @@ public class ChoxEventRegister implements EventRegister {
     public void completeEvent() throws Exception {
         if (active) {
             if (openEvent == null) {
-                throw new Exception("No event has been started.");
+                throw new Exception("No event has been started");
             }
             if (events == null) {
                 events = new ArrayList(3);
@@ -63,6 +63,9 @@ public class ChoxEventRegister implements EventRegister {
 
     @Override
     public void sendEvents() throws Exception {
+        if (openEvent != null) {
+                throw new Exception("There is an event that is currently open");
+        }
         if (active && events != null) {
             for (Event ev : events) {
                 try {
@@ -71,6 +74,8 @@ public class ChoxEventRegister implements EventRegister {
                 } catch (Exception ex) {
                     LOG.error("Error sending CHOX event: {}\n", ex.getMessage(), ex);
                     throw ex;
+                } finally {
+                    events = null; openEvent = null;
                 }
 
             }
