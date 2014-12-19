@@ -6,6 +6,12 @@
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CHOXService"
 		targetNamespace="http://www.idaschox.com/services/CHOX/"
 		xmlns:chx="http://www.idaschox.com/services/CHOX/">
+    <wsdl:documentation>
+        Service: CHOX UploadService
+        Version: 1.5
+        Owner: Valexa Technologies Ltd
+        Contact: John.Dowson@valexa.com
+    </wsdl:documentation>
 
     <wsdl:types>
 
@@ -194,6 +200,14 @@
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Repair Admin"/>
                     <xsd:enumeration value="Repair Acquisition"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="VisibilityString">
+                <xsd:restriction base="xsd:token">
+			<xsd:enumeration value="public"/>
+			<xsd:enumeration value="private"/>
+			<xsd:enumeration value=""/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -1009,6 +1023,13 @@
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
+                    <xsd:element name="BREMessages" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="message" type="xsd:string" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -1021,7 +1042,7 @@
             
             <xsd:complexType name="ECDParam">
                 <xsd:sequence>
-                    <xsd:element name="supplierReference" type="chx:NonEmptyString"/>
+                    <xsd:element name="supplierReference" type="chx:NonEmptyString128"/>
                     <xsd:element name="ecdDate" type="xsd:dateTime"/>
                     <xsd:element name="delayReason" type="chx:NonEmptyString"/>
                     <xsd:element name="supportingNote" type="chx:NonEmptyString"/>
@@ -1030,9 +1051,9 @@
             
             <xsd:complexType name="Note">
                 <xsd:sequence>
-                    <xsd:element name="supplierReference" type="chx:NonEmptyString"/>
+                    <xsd:element name="supplierReference" type="chx:NonEmptyString128"/>
                     <xsd:element name="comment" type="chx:NonEmptyString"/>
-                    <xsd:element name="visibility" type="chx:String8"/>
+                    <xsd:element name="visibility" type="chx:VisibilityString"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -1054,11 +1075,11 @@
     </wsdl:message>
 
     <wsdl:message name="supplierReference1">
-        <wsdl:part element="chx:supplierReference1" name="supplierReference" />
+        <wsdl:part element="chx:supplierReference1" name="supplierReference1" />
     </wsdl:message>
 
     <wsdl:message name="supplierReference2">
-        <wsdl:part element="chx:supplierReference2" name="supplierReference" />
+        <wsdl:part element="chx:supplierReference2" name="supplierReference2" />
     </wsdl:message>
 
     <wsdl:message name="result">
@@ -1074,6 +1095,7 @@
     </wsdl:message>
 
     <wsdl:portType name="UploadService">
+        <wsdl:documentation>Description of the business interface. These are the services provided.</wsdl:documentation>
         <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
             <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
         </jaxws:bindings>
@@ -1089,23 +1111,23 @@
         </wsdl:operation>
 
         <wsdl:operation name="closeClaim">
-            <wsdl:input message="tns:supplierReference1" name="supplierReference"/>
-            <wsdl:output message="tns:result" name="result"/>
+            <wsdl:input message="tns:supplierReference1" name="supplierReference1"/>
+            <wsdl:output message="tns:result" name="result1"/>
         </wsdl:operation>
 
         <wsdl:operation name="reopenClaim">
-            <wsdl:input message="tns:supplierReference2" name="supplierReference"/>
-            <wsdl:output message="tns:result" name="result"/>
+            <wsdl:input message="tns:supplierReference2" name="supplierReference2"/>
+            <wsdl:output message="tns:result" name="result2"/>
         </wsdl:operation>
         
         <wsdl:operation name="updateECD">
             <wsdl:input message="tns:ecdParam" name="ecdParam"/>
-            <wsdl:output message="tns:result" name="result"/>
+            <wsdl:output message="tns:result" name="result3"/>
         </wsdl:operation>
         
         <wsdl:operation name="addNote">
             <wsdl:input message="tns:note" name="note"/>
-            <wsdl:output message="tns:result" name="result"/>
+            <wsdl:output message="tns:result" name="result4"/>
         </wsdl:operation>
 
     </wsdl:portType>

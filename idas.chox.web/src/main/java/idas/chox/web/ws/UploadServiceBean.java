@@ -1,6 +1,7 @@
 package idas.chox.web.ws;
 
 import com.idaschox.services.chox.*;
+import com.idaschox.services.chox.SubmissionResult.BREMessages;
 import com.idaschox.services.chox.SubmissionResult.Messages;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
@@ -101,238 +102,248 @@ public class UploadServiceBean {
             LOG.info("File uploaded status: {}", uploadResult.isValid());
             
             // Convert uploadResult
-            if (uploadResult.getRemark().equals("New Claim")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("New Claim (Subscriber)")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_SUBSCRIBER_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("Claim Already Exists")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS);
-            }
-            else if (uploadResult.getRemark().equals("Claim Already Exists (Subscriber)")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_SUBSCRIBER);
-            }
-            else if (uploadResult.getRemark().equals("Claim Closed or Pending")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_CLOSED_OR_PENDING);
-            }
-            else if (uploadResult.getRemark().equals("New Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("Invoice Already Exists")) {
-                result.setUploadStatus(ClaimUploadStatus.INVOICE_ALREADY_EXISTS);
-            }
-            else if (uploadResult.getRemark().equals("Incorrect XML Structure")) {
-                result.setUploadStatus(ClaimUploadStatus.INCORRECT_XML_STRUCTURE);
-            }
-            else if (uploadResult.getRemark().equals("Incorrect Hire State")) {
-                result.setUploadStatus(ClaimUploadStatus.INCORRECT_HIRE_STATE);
-            }
-            else if (uploadResult.getRemark().equals("Incorrect Value Provided for Hire State")) {
-                result.setUploadStatus(ClaimUploadStatus.INCORRECT_VALUE_PROVIDED_FOR_HIRE_STATE);
-            }
-            else if (uploadResult.getRemark().equals("New TPI Claim")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_TPI_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("Insurer is not accepting TPI invoices")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICES);
-            }
-            else if (uploadResult.getRemark().equals("Insurer is not accepting Subscriber Claims")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_SUBSCRIBER_CLAIMS);
-            }
-            else if (uploadResult.getRemark().equals("Hire Monitoring and New Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.HIRE_MONITORING_AND_NEW_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("Supplementary Invoice Already Exists")) {
-                result.setUploadStatus(ClaimUploadStatus.SUPPLEMENTARY_INVOICE_ALREADY_EXISTS);
-            }
-            else if (uploadResult.getRemark().equals("New Supplementary Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("Hire Monitoring")) {
-                result.setUploadStatus(ClaimUploadStatus.HIRE_MONITORING);
-            }
-            else if (uploadResult.getRemark().equals("Invalid Claim Status")) {
-                result.setUploadStatus(ClaimUploadStatus.INVALID_CLAIM_STATUS);
-            }
-            else if (uploadResult.getRemark().equals("New Invoice (Insurer vs Insurer)")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_INVOICE_INSURER_VS_INSURER);
-            }
-            else if (uploadResult.getRemark().equals("New Insurer Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("New Insurer Claim")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("Insurer Claim Already Exists")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_CLAIM_ALREADY_EXISTS);
-            }
-            else if (uploadResult.getRemark().equals("Insurer Hire Monitoring and New Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("Insurer Hire Monitoring")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING);
-            }
-            else if (uploadResult.getRemark().equals("Insurer Invoice Already Exists")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_INVOICE_ALREADY_EXISTS);
-            }
-            else if (uploadResult.getRemark().equals("New Insurer Supplementary Invoice")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
-            }
-            else if (uploadResult.getRemark().equals("New Claim (Fixed Fee)")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_FIXED_FEE_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("Insurer is not accepting Fixed Fee Claims")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_FIXED_FEE_CLAIMS);
-            }
-            else if (uploadResult.getRemark().equals("Claim Already Exists (Fixed Fee)")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_FIXED_FEE);
-            }
-            else if (uploadResult.getRemark().equals("Claim Already Exists But As A Different Claim Type")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS); // To Be Updated
-            }
-            else if (uploadResult.getRemark().equals("Error")) {
-                result.setUploadStatus(ClaimUploadStatus.ERROR);
-            }
-            else if (uploadResult.getRemark().equals("New Claim (Collaboration Protocol)")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_COLLABORATION_PROTOCOL_CLAIM);
-            }
-            else if (uploadResult.getRemark().equals("Claim Already Exists (Collaboration Protocol)")) {
-                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_COLLABORATION_PROTOCOL);
-            }
-            else if (uploadResult.getRemark().equals("Insurer is not accepting Collaboration Protocol Claims")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_COLLABORATION_PROTOCOL_CLAIMS);
-            }
-            else {
-                LOG.error("Unknown remark found in upload result: '{}'", uploadResult.getRemark());
-                result.setUploadStatus(ClaimUploadStatus.ERROR);
+            switch (uploadResult.getRemark()) {
+                case "New Claim":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_CLAIM);
+                    break;
+                case "New Claim (Subscriber)":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_SUBSCRIBER_CLAIM);
+                    break;
+                case "Claim Already Exists":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS);
+                    break;
+                case "Claim Already Exists (Subscriber)":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_SUBSCRIBER);
+                    break;
+                case "Claim Closed or Pending":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_CLOSED_OR_PENDING);
+                    break;
+                case "New Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_INVOICE);
+                    break;
+                case "Invoice Already Exists":
+                    result.setUploadStatus(ClaimUploadStatus.INVOICE_ALREADY_EXISTS);
+                    break;
+                case "Incorrect XML Structure":
+                    result.setUploadStatus(ClaimUploadStatus.INCORRECT_XML_STRUCTURE);
+                    break;
+                case "Incorrect Hire State":
+                    result.setUploadStatus(ClaimUploadStatus.INCORRECT_HIRE_STATE);
+                    break;
+                case "Incorrect Value Provided for Hire State":
+                    result.setUploadStatus(ClaimUploadStatus.INCORRECT_VALUE_PROVIDED_FOR_HIRE_STATE);
+                    break;
+                case "New TPI Claim":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_TPI_CLAIM);
+                    break;
+                case "Insurer is not accepting TPI invoices":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICES);
+                    break;
+                case "Insurer is not accepting Subscriber Claims":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_SUBSCRIBER_CLAIMS);
+                    break;
+                case "Hire Monitoring and New Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.HIRE_MONITORING_AND_NEW_INVOICE);
+                    break;
+                case "Supplementary Invoice Already Exists":
+                    result.setUploadStatus(ClaimUploadStatus.SUPPLEMENTARY_INVOICE_ALREADY_EXISTS);
+                    break;
+                case "New Supplementary Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
+                    break;
+                case "Hire Monitoring":
+                    result.setUploadStatus(ClaimUploadStatus.HIRE_MONITORING);
+                    break;
+                case "Invalid Claim Status":
+                    result.setUploadStatus(ClaimUploadStatus.INVALID_CLAIM_STATUS);
+                    break;
+                case "New Invoice (Insurer vs Insurer)":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_INVOICE_INSURER_VS_INSURER);
+                    break;
+                case "New Insurer Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_INVOICE);
+                    break;
+                case "New Insurer Claim":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_CLAIM);
+                    break;
+                case "Insurer Claim Already Exists":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_CLAIM_ALREADY_EXISTS);
+                    break;
+                case "Insurer Hire Monitoring and New Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE);
+                    break;
+                case "Insurer Hire Monitoring":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING);
+                    break;
+                case "Insurer Invoice Already Exists":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_INVOICE_ALREADY_EXISTS);
+                    break;
+                case "New Insurer Supplementary Invoice":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
+                    break;
+                case "New Claim (Fixed Fee)":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_FIXED_FEE_CLAIM);
+                    break;
+                case "Insurer is not accepting Fixed Fee Claims":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_FIXED_FEE_CLAIMS);
+                    break;
+                case "Claim Already Exists (Fixed Fee)":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_FIXED_FEE);
+                    break;
+                case "Claim Already Exists But As A Different Claim Type":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS); // To Be Updated
+                    break;
+                case "Error":
+                    result.setUploadStatus(ClaimUploadStatus.ERROR);
+                    break;
+                case "New Claim (Collaboration Protocol)":
+                    result.setUploadStatus(ClaimUploadStatus.NEW_COLLABORATION_PROTOCOL_CLAIM);
+                    break;
+                case "Claim Already Exists (Collaboration Protocol)":
+                    result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_COLLABORATION_PROTOCOL);
+                    break;
+                case "Insurer is not accepting Collaboration Protocol Claims":
+                    result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_COLLABORATION_PROTOCOL_CLAIMS);
+                    break;
+                default:
+                    LOG.error("Unknown remark found in upload result: '{}'", uploadResult.getRemark());
+                    result.setUploadStatus(ClaimUploadStatus.ERROR);
+                    break;
             }
       
-            if (uploadResult.getClaimStatus().equals("N/A")) {
-                result.setClaimStatus(ClaimStatus.N_A);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimUnacknowledgedUnrouted")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimUnacknowledgedRouted")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimRejected")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_REJECTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("SubscriberClaimRejected")) {
-                result.setClaimStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimRejectionAccepted")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimRejectionContested")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("AwaitingCarHireInfo")) {
-                result.setClaimStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-            }
-            else if (uploadResult.getClaimStatus().equals("AwaitingInvoiceData")) {
-                result.setClaimStatus(ClaimStatus.AWAITING_INVOICE_DATA);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceDataCalculationIncorrect")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceApprovedByBRE")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceEscalated")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_ESCALATED);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceEscalatedToHandler")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_ESCALATED_TO_HANDLER);
-            }
-            else if (uploadResult.getClaimStatus().equals("ContestedInvoiceReferredToInsurer")) {
-                result.setClaimStatus(ClaimStatus.CONTESTED_INVOICE_REFERRED_TO_INSURER);
-            }
-            else if (uploadResult.getClaimStatus().equals("ContestedInvoiceReferredToCHO")) {
-                result.setClaimStatus(ClaimStatus.CONTESTED_INVOICE_REFERRED_TO_CHO);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceRejectionAccepted")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_REJECTION_ACCEPTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("AwaitingInvoicePayment")) {
-                result.setClaimStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoicePaymentLogged")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimReferredToEngineer")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_REFERRED_TO_ENGINEER);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimReferredToFNOL")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimClosed")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_CLOSED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimPending")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_PENDING);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceReferredToClaimsHandler")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_REFERRED_TO_CLAIMS_HANDLER);
-            }
-            else if (uploadResult.getClaimStatus().equals("PaymentReceived")) {
-                result.setClaimStatus(ClaimStatus.PAYMENT_RECEIVED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimUpdatedByEngineer")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_UPDATED_BY_ENGINEER);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceReferredToEngineer")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_REFERRED_TO_ENGINEER);
-            }
-            else if (uploadResult.getClaimStatus().equals("ClaimUnacknowledgedUnassigned")) {
-                result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-            }
-            else if (uploadResult.getClaimStatus().equals("AwaitingLiabilityResolution")) {
-                result.setClaimStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-            }
-            else if (uploadResult.getClaimStatus().equals("ManualInvoiceBREApproved")) {
-                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_APPROVED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ManualInvoiceBRERejected")) {
-                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_REJECTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ManualInvoiceContested")) {
-                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-            }
-            else if (uploadResult.getClaimStatus().equals("ManualInvoicePaid")) {
-                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_PAID);
-            }
-            else if (uploadResult.getClaimStatus().equals("InvoiceUnassigned")) {
-                result.setClaimStatus(ClaimStatus.INVOICE_UNASSIGNED);
-            }
-            else if (uploadResult.getClaimStatus().equals("AwaitingLitigationOutcome")) {
-                result.setClaimStatus(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
-            }
-            else {
-                LOG.error("Unknown claim status found in upload result: {}", uploadResult.getClaimStatus());
-                result.setClaimStatus(null);
+            switch (uploadResult.getClaimStatus()) {
+                case "N/A":
+                    result.setClaimStatus(ClaimStatus.N_A);
+                    break;
+                case "ClaimUnacknowledgedUnrouted":
+                    result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+                    break;
+                case "ClaimUnacknowledgedRouted":
+                    result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                    break;
+                case "ClaimRejected":
+                    result.setClaimStatus(ClaimStatus.CLAIM_REJECTED);
+                    break;
+                case "SubscriberClaimRejected":
+                    result.setClaimStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+                    break;
+                case "ClaimRejectionAccepted":
+                    result.setClaimStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+                    break;
+                case "ClaimRejectionContested":
+                    result.setClaimStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+                    break;
+                case "AwaitingCarHireInfo":
+                    result.setClaimStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+                    break;
+                case "AwaitingInvoiceData":
+                    result.setClaimStatus(ClaimStatus.AWAITING_INVOICE_DATA);
+                    break;
+                case "InvoiceDataCalculationIncorrect":
+                    result.setClaimStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+                    break;
+                case "InvoiceApprovedByBRE":
+                    result.setClaimStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+                    break;
+                case "InvoiceEscalated":
+                    result.setClaimStatus(ClaimStatus.INVOICE_ESCALATED);
+                    break;
+                case "InvoiceEscalatedToHandler":
+                    result.setClaimStatus(ClaimStatus.INVOICE_ESCALATED_TO_HANDLER);
+                    break;
+                case "ContestedInvoiceReferredToInsurer":
+                    result.setClaimStatus(ClaimStatus.CONTESTED_INVOICE_REFERRED_TO_INSURER);
+                    break;
+                case "ContestedInvoiceReferredToCHO":
+                    result.setClaimStatus(ClaimStatus.CONTESTED_INVOICE_REFERRED_TO_CHO);
+                    break;
+                case "InvoiceRejectionAccepted":
+                    result.setClaimStatus(ClaimStatus.INVOICE_REJECTION_ACCEPTED);
+                    break;
+                case "AwaitingInvoicePayment":
+                    result.setClaimStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                    break;
+                case "InvoicePaymentLogged":
+                    result.setClaimStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+                    break;
+                case "ClaimReferredToEngineer":
+                    result.setClaimStatus(ClaimStatus.CLAIM_REFERRED_TO_ENGINEER);
+                    break;
+                case "ClaimReferredToFNOL":
+                    result.setClaimStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+                    break;
+                case "ClaimClosed":
+                    result.setClaimStatus(ClaimStatus.CLAIM_CLOSED);
+                    break;
+                case "ClaimPending":
+                    result.setClaimStatus(ClaimStatus.CLAIM_PENDING);
+                    break;
+                case "InvoiceReferredToClaimsHandler":
+                    result.setClaimStatus(ClaimStatus.INVOICE_REFERRED_TO_CLAIMS_HANDLER);
+                    break;
+                case "PaymentReceived":
+                    result.setClaimStatus(ClaimStatus.PAYMENT_RECEIVED);
+                    break;
+                case "ClaimUpdatedByEngineer":
+                    result.setClaimStatus(ClaimStatus.CLAIM_UPDATED_BY_ENGINEER);
+                    break;
+                case "InvoiceReferredToEngineer":
+                    result.setClaimStatus(ClaimStatus.INVOICE_REFERRED_TO_ENGINEER);
+                    break;
+                case "ClaimUnacknowledgedUnassigned":
+                    result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+                    break;
+                case "AwaitingLiabilityResolution":
+                    result.setClaimStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                    break;
+                case "ManualInvoiceBREApproved":
+                    result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_APPROVED);
+                    break;
+                case "ManualInvoiceBRERejected":
+                    result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_REJECTED);
+                    break;
+                case "ManualInvoiceContested":
+                    result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
+                    break;
+                case "ManualInvoicePaid":
+                    result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_PAID);
+                    break;
+                case "InvoiceUnassigned":
+                    result.setClaimStatus(ClaimStatus.INVOICE_UNASSIGNED);
+                    break;
+                case "AwaitingLitigationOutcome":
+                    result.setClaimStatus(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
+                    break;
+                default:
+                    LOG.error("Unknown claim status found in upload result: {}", uploadResult.getClaimStatus());
+                    result.setClaimStatus(null);
+                    break;
             }
             
-            if (uploadResult.getProcessStatus().equals("Failed")) {
-                result.setProcessStatus(ClaimProcessStatus.FAILED);
-            }
-            else if (uploadResult.getProcessStatus().equals("Updated")) {
-                result.setProcessStatus(ClaimProcessStatus.UPDATED);
-            }
-            else if (uploadResult.getProcessStatus().equals("Uploaded")) {
-                result.setProcessStatus(ClaimProcessStatus.UPLOADED);
-            }
-            else {
-                LOG.error("Unknown process status found in upload result: {}", uploadResult.getProcessStatus());
-                result.setProcessStatus(null);
+            switch (uploadResult.getProcessStatus()) {
+                case "Failed":
+                    result.setProcessStatus(ClaimProcessStatus.FAILED);
+                    break;
+                case "Updated":
+                    result.setProcessStatus(ClaimProcessStatus.UPDATED);
+                    break;
+                case "Uploaded":
+                    result.setProcessStatus(ClaimProcessStatus.UPLOADED);
+                    break;
+                default:
+                    LOG.error("Unknown process status found in upload result: {}", uploadResult.getProcessStatus());
+                    result.setProcessStatus(null);
+                    break;
             }
 
             result.setStatus(uploadResult.isValid());
             Messages messages = new Messages();
             messages.getMessages().add(uploadResult.getMessage());
             result.setMessages(messages);
+            
+            BREMessages breMessages = new BREMessages();
+            breMessages.getMessages().add(uploadResult.getBreFailureMessages());
+            result.setBREMessages(breMessages);
             
             webBordereau.setClaimStatus(uploadResult.getClaimStatus());
             webBordereau.setUploadStatus(result.getUploadStatus().toString());
@@ -437,7 +448,7 @@ public class UploadServiceBean {
             }
         } catch (InvalidClaimStatusException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + claim.getStatus());
+            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
@@ -468,7 +479,7 @@ public class UploadServiceBean {
             }
         } catch (InvalidClaimStatusException ex) {
             result.setStatus(false);
-            result.setErrorMessage(new StringBuilder().append("Claim is not in correct status to reopen. Current status is: ").append(claim.getStatus()).toString());
+            result.setErrorMessage(new StringBuilder().append("Claim is not in correct status to reopen. Current status is: ").append(claim == null ? "null" : claim.getStatus()).toString());
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage(new StringBuilder().append("Access Denied processing request: ").append(ex.getMessage()).toString());
@@ -507,7 +518,7 @@ public class UploadServiceBean {
             }
         } catch (InvalidClaimStatusException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
+            result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + (claim == null ? "null" : claim.getStatus()));
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage(new StringBuilder().append("Access Denied processing request: ").append(ex.getMessage()).toString());
@@ -533,6 +544,13 @@ public class UploadServiceBean {
                 result.setErrorMessage("Claim with supplier reference number '" + note.getSupplierReference() + "' does not exist.");
             } else {
                 int visibilityType = 0;
+                if (note.getVisibility() != null && !note.getVisibility().equalsIgnoreCase("private")
+                        && !note.getVisibility().equalsIgnoreCase("public") && !note.getVisibility().isEmpty()) {
+                    throw new Exception("Only 'Public'/'Private'  Are Allowed For " +
+                       "Visibility Type. Empty strings are also allowed " +
+                       "and will be interpreted as 'Public'.");
+                }
+
                 if (securityInfoProvider.getIsINS()) {
                     if (note.getVisibility() != null && note.getVisibility().equalsIgnoreCase("private")) {
                         visibilityType = 1;
@@ -553,7 +571,7 @@ public class UploadServiceBean {
             }
         } catch (InvalidClaimStatusException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + claim.getStatus());
+            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage("Access Denied processing request: " +ex.getMessage());

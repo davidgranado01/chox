@@ -58,18 +58,10 @@ public class AddNote {
                         }
                         
                         String visibilityType = cells.get(2).trim();
-                        if (!visibilityType.isEmpty()) {
-                            if (!regexExpressionChecker(REG_ALPHANUMERIC, visibilityType)) {
-                                statusString.append("Visibility Type Must Start With An Alpha-numeric Character.");
-                            } else if (visibilityType.length() > 10) {
-                                statusString.append(" Visibility Type Exceeds The Maximum Allowed Length of 10 Character.");
-                            } else if (!(visibilityType.equalsIgnoreCase("public") || visibilityType.equalsIgnoreCase("private"))) {
+                        if (!visibilityType.equalsIgnoreCase("public") && !visibilityType.equalsIgnoreCase("private")
+                                && !visibilityType.isEmpty()) {
                                 statusString.append(" Only 'Public'/'Private' Strings Are Allowed For Visibility Type.");
                             }
-                        }
-                        else { // setting visibilityType to public in the client is not necessery because the server anyway add as public note if the visibility not present. 
-                            visibilityType = "public";
-                        } 
 
                         if (statusString.toString().isEmpty()) {
                             try {
