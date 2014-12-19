@@ -95,6 +95,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 orgId = user.getChorganisation().getId();
             }
         }
+        
+        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
+            LOG.info("User '{}' still using IE6.", user.getDisplayName());
+        }
 
         if (orgId >= 0) {
             boolean isValid = false;
