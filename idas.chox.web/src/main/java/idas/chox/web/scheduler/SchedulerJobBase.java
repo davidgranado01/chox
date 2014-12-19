@@ -226,7 +226,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
             statusString.append(" No Claim Reference Provided.");
         } else {
-            LOG.info("Security provider is {} in {}", ((SecureDataService)claimService).getSecurityInfoProvider(), claimService);
             ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
             claim = claimService.getClaimByCHOReferenceNumber(referenceNumber);
 
@@ -239,7 +238,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     }
 
     protected Date validateDate(String dateString, StringBuilder statusString, String columnName) {
-        Date hireStartDate = null;
+        Date date = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
         sdf.setLenient(false);
         if (dateString.isEmpty()) {
@@ -248,13 +247,13 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             statusString.append(" Invalid Format For '").append(columnName).append("'.");
         } else {
             try {
-                hireStartDate = sdf.parse(dateString);
+                date = sdf.parse(dateString);
             } catch (ParseException ex) {
                 statusString.append(" Invalid Format For '").append(columnName).append("'.");
                 LOG.warn("Parse exception thrown for column {}: {}", columnName, dateString);
             }
         }
-        return hireStartDate;
+        return date;
     }
     
     protected String validateTime(String timeString, StringBuilder statusString) {

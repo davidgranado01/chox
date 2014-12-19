@@ -51,6 +51,11 @@ public class ECDUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 
                 /* Check is valid ecdDate provided and parse the string date to java date.*/
                 String ecdDateString = cells.get(1).trim();
+                // if date contains a time component then remove
+                if (ecdDateString.matches("(.*)[0-1][0-9]:[0-5][0-9]")) {
+                    ecdDateString = ecdDateString.substring(0, ecdDateString.length()-6);
+                }
+            
                 Date ecdDate = validateDate(ecdDateString, statusString, "ECD Date");
 
                 /* Check is valid ecdDelayReason provided and it has valid length(<=50 character).*/
