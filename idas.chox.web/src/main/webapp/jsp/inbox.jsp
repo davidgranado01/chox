@@ -21,7 +21,7 @@
         var dashboardActionName;
         var isChoxAdmin = <s:property value="isChoxAdmin"/>;
         var isTaskManagementEnabled = <s:property value="taskManagementEnabled"/>;
-        var taskTabTitle = isChoxAdmin ? 'Tasks<sup>'+' '+'</sup>' : 'Tasks<sup  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</sup>';
+        var taskTabTitle = isChoxAdmin ? 'Tasks' : 'Tasks&nbsp  <div  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</div>';
         var filterName;
         var title;
         var actionMenu;
@@ -273,6 +273,7 @@
             var taskTab = { 
                             contentEl:'taskPanelTab', 
                             id:'taskPanelTabId', 
+                            tabCls : 'noti_Container',
                             title: taskTabTitle, 
                             autoHeight:'true', 
                             listeners: {activate: handleActivate}, 
@@ -281,35 +282,35 @@
             var inboxTab = { 
                             contentEl:'searchPanelTab', 
                             id:'searchPanelTabId', 
-                            title:'Inbox<sup>'+' '+'</sup>',
+                            title:'Inbox',
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action', params : {loadSearchPanelSelectionFromSession : (Ext.state.Manager.get("isClaimSearchMade")) ? true : false}})
             };
             var reportTab = { 
                             contentEl:'reportPanelTab', 
                             id:'reportPanelTabId', 
-                            title:'Reports<sup>'+' '+'</sup>',
+                            title:'Reports',
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})
             };
             var adminTab = { 
                             contentEl:'adminPanelTab', 
                             id:'adminPanelTabId', 
-                            title:'Admin<sup>'+' '+'</sup>', 
+                            title:'Admin', 
                             listeners: {activate: handleActivate}, 
                             autoLoad: choxUpdateEl({url:'/prv/p/adminFunction.action'})
             };
             var dashboardTab = { 
                                 contentEl:'boardPanelTab', 
                                 id:'boardPanelTabId', 
-                                title:'Dashboard<sup>'+' '+'</sup>', 
+                                title:'Dashboard', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
             };
             var xmlUploadTab = { 
                                 contentEl:'xmlUploadTab', 
                                 id:'xmlUploadTabId', 
-                                title:'Claim/Invoice Upload<sup>'+' '+'</sup>', 
+                                title:'Claim/Invoice Upload', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/XmlUpload.action'})
             };
@@ -413,7 +414,17 @@
                 if (taskCount <= 0) { 
                     color = 'black';
                 }
-                taskTabTitle = 'Tasks<sup  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</sup>';
+                var title = 'Tasks'
+                if (taskCount < 10) {
+                    title = title + '&nbsp';
+                } else if (taskCount < 100) {
+                    title = title + '&nbsp&nbsp';
+                } else if (taskCount < 1000) {
+                    title = title + '&nbsp&nbsp&nbsp';
+                } else if (taskCount < 10000) {
+                    title = title + '&nbsp&nbsp&nbsp&nbsp';
+                }
+                taskTabTitle = title + '<div  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</div>';
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
         }

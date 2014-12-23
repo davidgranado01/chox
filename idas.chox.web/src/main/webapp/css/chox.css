@@ -1696,18 +1696,36 @@ br.smallBr
     background:url(../images/paper_clip.png) no-repeat; 
 }
 
-.noti_bubble {
-    top: -6px;
-    right:-6px;
-    padding:1px 2px 1px 2px;
-    color:white;
-    font-weight:normal;
-    font-size:0.75em;
+/**{
+    margin:0;
+    padding:0;
+}*/
 
-    /* The following is CSS3, but isn't crucial for this technique to work. */
-    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
-    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
-    border-radius:30px;
+/* Above, the asterisk selects all elements in the HTML document and rests the margin and padding. This ensures that any of the annoying "default" margin and paddings a browser might have will be reset to zero. */
+
+.noti_Container {
+    position:relative; 
+}
+
+/* Below, set all the non-active Tab size and font */
+.x-tab-strip span.x-tab-strip-text {
+    font: normal 15px tahoma,arial,helvetica !important; 
+}
+
+/* Below, set the active Tab size and font */
+.x-tab-strip-active span.x-tab-strip-text {
+    font: bold 15px tahoma,arial,helvetica !important; 
+}
+
+.noti_bubble {
+    position: absolute;
+    top: -1px;
+    right: 2px;
+    color: white;
+    font-weight: normal;
+    padding:1px 2px 1px 2px;
+    font-size: 0.75em;
+    border-radius: 30px;
 }
 
 .add-task {
