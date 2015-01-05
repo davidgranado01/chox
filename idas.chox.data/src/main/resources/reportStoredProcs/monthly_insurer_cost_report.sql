@@ -28,7 +28,7 @@ BEGIN dat1 = dat::Date
 RETURN QUERY
 
 select 1 as id, 'Average Hire Days Invoiced' as title ,
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) 
@@ -37,7 +37,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -46,7 +46,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -55,7 +55,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -64,7 +64,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -73,7 +73,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -82,7 +82,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -91,7 +91,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -100,7 +100,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -109,7 +109,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -118,7 +118,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -127,7 +127,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -136,7 +136,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -152,7 +152,7 @@ UNION
 
 
 select 2 as id, 'Average Hire Days Paid' as title ,
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -162,7 +162,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -172,7 +172,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) 
@@ -182,7 +182,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -192,7 +192,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -202,7 +202,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -212,7 +212,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -222,7 +222,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -232,7 +232,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -242,7 +242,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -252,7 +252,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -262,7 +262,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -272,7 +272,7 @@ select 2 as id, 'Average Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -946,7 +946,7 @@ from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
 UNION
 
 select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -955,7 +955,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -964,7 +964,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -973,7 +973,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -982,7 +982,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -991,7 +991,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1000,7 +1000,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1009,7 +1009,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1018,7 +1018,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1027,7 +1027,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1036,7 +1036,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1045,7 +1045,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1054,7 +1054,7 @@ select 8 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1070,7 +1070,7 @@ UNION
 
 
 select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1080,7 +1080,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1090,7 +1090,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1100,7 +1100,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1110,7 +1110,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1120,7 +1120,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1130,7 +1130,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1140,7 +1140,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1150,7 +1150,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1160,7 +1160,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1170,7 +1170,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1180,7 +1180,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1190,7 +1190,7 @@ select 9 as id, 'Average Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = true
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1206,7 +1206,7 @@ from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
 UNION
 
 select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1215,7 +1215,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_12_months,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1224,7 +1224,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1233,7 +1233,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1242,7 +1242,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                                         and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1251,7 +1251,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                                         and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1260,7 +1260,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1269,7 +1269,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1278,7 +1278,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1287,7 +1287,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_7_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1296,7 +1296,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_8_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1305,7 +1305,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1314,7 +1314,7 @@ select 10 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1329,7 +1329,7 @@ from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
 UNION
 
 select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1339,7 +1339,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1349,7 +1349,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1359,7 +1359,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
        and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1369,7 +1369,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1379,7 +1379,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1389,7 +1389,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1399,7 +1399,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
        and to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_5_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1409,7 +1409,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
        and to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_6_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1419,7 +1419,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_7_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1429,7 +1429,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
        and to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_8_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1439,7 +1439,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
        and to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_9_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -1449,7 +1449,7 @@ select 11 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
        and to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_10_month,
 
-(select coalesce(avg(vh.days), 0)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
+(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id  and c.customer_id = cu.id and cu.is_total_loss = false
        and i.hire_net - i.admin_fee > 0
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
