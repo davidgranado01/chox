@@ -569,6 +569,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         //Set claim Insurer equal to third party insurer
                         LOG.debug("CHO set for insurer claim: {}", chorganisation.getName());
                         claim.setChorganisation(chorganisation);
+                        if (claimService.isClaimSupplierReferenceNumberExistForManualCho(choReferenceNumber, choId)) {
+                            LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
+                            claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
+                            claimResult.setValid(false);
+                            claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Valexa support.");
+                            claim.setChoReference(choReferenceNumber);
+                        }
                     } else {
                         LOG.debug("CHO not found");
                         claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_SCHEMA);

@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.bre.RulesEngineResponse;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -16,7 +17,12 @@ public class NewSupplementaryInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);
     protected boolean isNewClaim = false;
-    
+    protected RulesEngineResponse breResponse = null;
+
+    public RulesEngineResponse getBreResponse() {
+        return breResponse;
+    }
+
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
@@ -44,6 +50,24 @@ public class NewSupplementaryInvoice extends BaseActivity {
         }
         LOG.debug("Finished NewSupplementaryInvoice activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
     }
+    
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+        getDataService().save(claim);
+        LOG.debug("Claim saved - logging transaction...");
+        logTransaction(claim);
+        LOG.debug("Claim saved & transaction logged.");
+
+        activityEventGenerator.generate(claim, this);
+        if (getChainActivity() != null) {
+            LOG.debug("Processing next chain activity.");
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
+            breResponse = ((NewInvoice)getChainActivity()).getBreResponse();
+        }
+    }
+
 
     @Override
     protected String getCurrentStatus() {

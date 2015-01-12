@@ -21,7 +21,8 @@ public class ClaimResult {
     private boolean checkDataValid;
     private boolean checkForRepairAnomalies;
     private boolean checkForTotalLossAnomalies;
-    private List<String> message = new ArrayList<String>();
+    private List<String> message = new ArrayList<>();
+    private List<String> breMessage = new ArrayList<>();
     private boolean duplicateClaimInSameXmlFile;
     private List<Injury> injuries;
     private List<Solicitor> solicitors;
@@ -112,6 +113,14 @@ public class ClaimResult {
 
     public void setMessage(List<String> message) {
         this.message = message;
+    }
+
+    public List<String> getBreMessage() {
+        return breMessage;
+    }
+
+    public void setBreMessage(List<String> message) {
+        this.breMessage = message;
     }
 
     public ClaimParseStatus getClaimParseStatus() {

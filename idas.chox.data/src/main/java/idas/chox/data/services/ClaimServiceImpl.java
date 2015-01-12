@@ -568,9 +568,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Map extParameters = new HashMap();
         extParameters.put("pChoRef", sClaimReferenceNumber);
         extParameters.put("pChoId", choId);
-
         int totalCount = externalQueryCount("select * from claim where cho_reference = :pChoRef and chorganisation_id = :pChoId", extParameters);
-
         return totalCount > 0;
     }
 
