@@ -342,9 +342,11 @@ public class UploadServiceBean {
             result.setMessages(messages);
             
             BREMessages breMessages = new BREMessages();
-            breMessages.getMessages().add(uploadResult.getBreFailureMessages());
-            result.setBREMessages(breMessages);
-            
+            String breFailureMessages = uploadResult.getBreFailureMessages();
+            if (breFailureMessages != null && !breFailureMessages.isEmpty()) {
+                breMessages.getMessages().add(breFailureMessages);
+                result.setBREMessages(breMessages);
+            }
             webBordereau.setClaimStatus(uploadResult.getClaimStatus());
             webBordereau.setUploadStatus(result.getUploadStatus().toString());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
@@ -546,9 +548,9 @@ public class UploadServiceBean {
                 int visibilityType = 0;
                 if (note.getVisibility() != null && !note.getVisibility().equalsIgnoreCase("private")
                         && !note.getVisibility().equalsIgnoreCase("public") && !note.getVisibility().isEmpty()) {
-                    throw new Exception("Only 'Public'/'Private'  Are Allowed For " +
+                    throw new Exception("Only 'public'/'private'  Are Allowed For " +
                        "Visibility Type. Empty strings are also allowed " +
-                       "and will be interpreted as 'Public'.");
+                       "and will be interpreted as 'public'.");
                 }
 
                 if (securityInfoProvider.getIsINS()) {

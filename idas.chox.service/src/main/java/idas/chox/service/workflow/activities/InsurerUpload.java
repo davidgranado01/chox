@@ -26,6 +26,10 @@ public class InsurerUpload extends BaseActivity {
     protected boolean claimOwnerAssigned = false;
     protected RulesEngineResponse breResponse;
 
+    public RulesEngineResponse getBreResponse() {
+        return breResponse;
+    }
+    
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }

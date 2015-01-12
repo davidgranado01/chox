@@ -27,6 +27,10 @@ public class NewInvoice extends BaseActivity {
     protected boolean claimOwnerAssigned = false;
     protected boolean invoiceAccepted = false;
     protected RulesEngineResponse breResponse = null;
+
+    public RulesEngineResponse getBreResponse() {
+        return breResponse;
+    }
     
     public boolean isAutoRoutedInvoice() {
         return autoRoutedInvoice;

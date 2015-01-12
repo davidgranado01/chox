@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Criteria;
@@ -60,8 +61,6 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
-import java.util.Map;
-import org.hibernate.Query;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -569,9 +568,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Map extParameters = new HashMap();
         extParameters.put("pChoRef", sClaimReferenceNumber);
         extParameters.put("pChoId", choId);
-
         int totalCount = externalQueryCount("select * from claim where cho_reference = :pChoRef and chorganisation_id = :pChoId", extParameters);
-
         return totalCount > 0;
     }
 

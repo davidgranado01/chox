@@ -47,8 +47,8 @@ public class UploadBordereau {
         File dir = new File(".");
         FilenameFilter filter = new MyFilter("splitInput-", "xml");
         File[] filenames = dir.listFiles(filter);
-        for (int i = 0; i < filenames.length; i++) {
-            filenames[i].delete();
+        for (File filename : filenames) {
+            filename.delete();
         }
 
 
@@ -141,6 +141,12 @@ public class UploadBordereau {
                     List<String> messages = result.getMessages().getMessages();
                     for (String m : messages) {
                         LOG.info("    Message: {}", m);
+                    }
+                }
+                if (result.getBREMessages() != null) {
+                    List<String> messages = result.getBREMessages().getMessages();
+                    for (String m : messages) {
+                        LOG.info("    BRE Message: {}", m);
                     }
                 }
             }
