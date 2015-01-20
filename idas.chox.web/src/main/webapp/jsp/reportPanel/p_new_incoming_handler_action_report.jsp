@@ -59,7 +59,7 @@
                      params : {"workgroupId":-1,"insurerId":insurerId},
 		        reader : incmgHnderRepClaimOwnerReader,
 		        listeners: {load: function() {
-		                var  defaultName={'name':'--- ALL ---','id':-1}
+		                var  defaultName={'name':'--- ALL ---','id':-1};
 		                this.insert(0, new Ext.data.Record(defaultName));
 		            }
 		        }
@@ -81,7 +81,7 @@
 		        triggerAction : 'all',
 		        forceSelection : true,
 		        listeners: { blur: function () {
-		                if(this.getRawValue() == "" ) {
+		                if(this.getRawValue() === "" ) {
 		                    this.clearValue(); this.reset();
 		                }
 		            }
@@ -104,7 +104,7 @@
 		            url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
 		            reader :  incmgHnderRepWorkgroupJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','text':-1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1};
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
@@ -126,7 +126,7 @@
 		            forceSelection : true,
 		            listeners: {select: function () {
 		                    var workgroupId = -1;
-		                    if (incmgHnderRepWorkgroupCombo.getValue() != null && incmgHnderRepWorkgroupCombo.getValue() != '--- ALL ---' && incmgHnderRepWorkgroupCombo.getValue() != "") {
+		                    if (incmgHnderRepWorkgroupCombo.getValue() !== null && incmgHnderRepWorkgroupCombo.getValue() !== '--- ALL ---' && incmgHnderRepWorkgroupCombo.getValue() !== "") {
 		                        workgroupId = incmgHnderRepWorkgroupCombo.getValue();
 		                    }
                                     if (isClaimOwnerShipEnabled) {
@@ -137,7 +137,7 @@
                                     }
 		                },
 		                blur: function () {
-		                    if(this.getRawValue() == "" ) {
+		                    if(this.getRawValue() === "" ) {
 		                        this.clearValue(); this.reset();
                                         if (isClaimOwnerShipEnabled) {
                                             incmgHnderRepClaimOwnerCombo.reset();
@@ -165,7 +165,7 @@
 		            data : mysuppliers,
 		            reader : suppliersJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','text':-1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1};
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
@@ -188,7 +188,7 @@
 		            allowBlank : true,
 		            forceSelection : true,
 		            listeners: { blur: function () {
-		                    if(this.getRawValue() == "" ) {
+		                    if(this.getRawValue() === "" ) {
 		                        this.clearValue();
 		                        this.reset();
 		                    }

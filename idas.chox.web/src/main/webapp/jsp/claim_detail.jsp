@@ -318,7 +318,7 @@
         </s:if>
         <s:else >
             Ext.get('claimDetailScreenDiv').mask();
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){loadInbox(true)});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){loadInbox(true);});
         </s:else>
         
     }

@@ -74,7 +74,7 @@
             columns: [
                 {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Add</a>"}}
+                        return "<a href='#' class='high-light-item'>Add</a>";}}
             ],
             height:430,
             width: 360
@@ -92,13 +92,13 @@
                 {header: "Name", width: 180, dataIndex: 'chorganisationName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:430,
             width: 360
         });
 
-        onBreBandPageRefresh()
+        onBreBandPageRefresh();
     });
 
     function onBreBandPageRefresh(){
@@ -108,7 +108,7 @@
 
     function brebandMapping_loadGridViewList(){
         breband_a_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
-        if($("#breBandId").val() != undefined)
+        if($("#breBandId").val() !== undefined)
         	breband_s_gridviewData.load({params:{insurerId:<s:property value="insurerId" />,breBandId:$("#breBandId").val()}});
     }
 
@@ -119,7 +119,7 @@
             return;
         }
 
-        if(columnIndex==1){
+        if(columnIndex===1){
             var gridView = breband_a_gridviewGrid.getStore().getAt(rowIndex);
             var gridViewId = gridView.get("id");
             var url = "/prv/p/doAddNewBandChorganisationMapping.action";
@@ -130,7 +130,7 @@
 
     function breband_recordOnclickRemove(grid, rowIndex, columnIndex, e){
 
-        if(columnIndex==2){
+        if(columnIndex===2){
             var gridView = breband_s_gridviewGrid.getStore().getAt(rowIndex);
             var breBandChorganisationId = gridView.get("id");
             var url = "/prv/p/doRemoveBandChorganisationMapping.action";

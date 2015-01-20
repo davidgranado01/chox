@@ -14,6 +14,6 @@
                 window.location.replace(document.referrer);
             }
         });
-    })
+    });
 
 </script>

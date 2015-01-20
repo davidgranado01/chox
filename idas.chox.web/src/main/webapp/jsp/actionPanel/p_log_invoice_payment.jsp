@@ -21,17 +21,15 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
 
     function doUpdateManualInvoice(action){
     
-        $('form#logInvoicePayment input[id="name"]').val(action)
+        $('form#logInvoicePayment input[id="name"]').val(action);
 
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//        $("form#logInvoicePayment").submit();
         choxJqueryHttpSubmit($("form#logInvoicePayment"));
     
     }
 
     function confirmPaymentLog(action){
     
-//        $('form#logInvoicePayment input[id="name"]').val(action);
         $('form#logInvoicePayment input[id="name"]').remove();
         return confirmPaymentLogAction();
     

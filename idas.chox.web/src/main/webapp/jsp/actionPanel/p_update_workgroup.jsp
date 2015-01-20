@@ -46,10 +46,9 @@ Ext.onReady(function(){
             forceSelection: true,
             listWidth: 200,
             selectOnFocus: true,
-            forceSelection : true,
             listeners: {
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -65,7 +64,7 @@ function validateComboBox(){
     var mesBox = $("#WorkgroupAssignmentMessageBox");
     mesBox.empty();
     var selectedComboValue = Ext.getCmp('workgroupComboId').getValue();
-    if (selectedComboValue == '' && selectedComboValue <= 0) {
+    if (selectedComboValue === '' && selectedComboValue <= 0) {
         mesBox.append("You Must Select A 'Workgroup'.").show();
         return false;
     } else {

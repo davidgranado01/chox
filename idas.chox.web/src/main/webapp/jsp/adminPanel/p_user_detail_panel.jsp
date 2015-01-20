@@ -16,7 +16,7 @@
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
-        isWorkgroupEnabled = isTrue($("#isWorkgroupEnabled").val())
+        isWorkgroupEnabled = isTrue($("#isWorkgroupEnabled").val());
 
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -49,7 +49,7 @@
         });
  <s:if test="isNew">
 
-        if (currentUserOrganisationId==1) {
+        if (currentUserOrganisationId===1) {
             $.validator.addMethod("comboSelection",
                 function(value) {
                     if(value < 0) {
@@ -59,14 +59,14 @@
             }, "Please check your input.");
 
             // We are CHOX Admin, so add validation to Insurer or CHO name field/drop-down
-            if (selectedOrganisationTypeId==2) {
+            if (selectedOrganisationTypeId===2) {
                 // Insurer
                 $("form#formUpdateUserDetail #insurerId").rules("add", {
                     comboSelection: true,
                     messages: {comboSelection: "Please select an 'Insurer Company'"}
                 });
             }
-            else if (selectedOrganisationTypeId==3) {
+            else if (selectedOrganisationTypeId===3) {
                 //CHO
                 $("form#formUpdateUserDetail #supplierId").rules("add", {
                     comboSelection: true,
@@ -83,9 +83,8 @@
             if(response && response.isValid)
             {
 
-                if(response.resultType && response.resultType == 'New'){
+                if(response.resultType && response.resultType === 'New'){
 
-//                     alert("New User has been created");
                     Ext.MessageBox.alert('Status', 'New User has been created', function() {
                             var newObjectId = parseInt(response.result);
                             var target = "#admin_param_panel";
@@ -170,7 +169,7 @@
     }
 
     function getUserDetailTabIndex(){
-        if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
+        if($("#tabIndex").val()!==null && $("#tabIndex").val()!==''){
             userDetailTabIndex = $("#tabIndex").val();
         }
     }
@@ -195,7 +194,7 @@
         var param = {"organisationTypeId":"<s:property value="organisationTypeId" />", "organisationId":orgId};
 
         ajax.loadJson2(url, param, function(data){
-            if(data.resultType=='Message'){ 
+            if(data.resultType==='Message'){ 
                 $(target).html(data.result);
                 var passwordRegex = "^.*(?=.{" + data.result + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
                 $("form#formUpdateUserDetail #password").rules("remove");

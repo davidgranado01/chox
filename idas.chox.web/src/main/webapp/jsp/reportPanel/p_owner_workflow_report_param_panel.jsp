@@ -20,7 +20,6 @@
             format: 'd/m/Y',
             disabledDays: [0,2,3,4,5,6],
             disabledDaysText: 'You must select a Monday',
-//            hideMode: 'offsets',
             value: '03/01/2011',
             showWeekNumber: true,
             validationEvent : false
@@ -56,7 +55,7 @@
                             triggerAction : 'all',
                             forceSelection : true,
                             listeners: { blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                                }
                                }}
@@ -87,23 +86,21 @@
                                 displayField:'value',
                                 width: 250,
                                 typeAhead: true,
-//                                autoWidth: true,
                                 mode: 'local',
                                 emptyText: '--- All ---',
                                 triggerAction : 'all',
                                 forceSelection : true,
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
-                                                        if (ownerWorkflowWorkgroupCombo.getValue() != null) {
+                                                        if (ownerWorkflowWorkgroupCombo.getValue() !== null) {
                                                             workgroupId = ownerWorkflowWorkgroupCombo.getValue();
                                                         }
-//                                                        var insurerId = $("#userInsurerId").val();
                                                         claimOwnerWorkflowCombo.reset();
                                                         claimOwnerWorkflowStore.removeAll();
                                                         claimOwnerWorkflowStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                                                     },
                                             blur: function () {
-                                                    if(this.getRawValue() == "" ) {
+                                                    if(this.getRawValue() === "" ) {
                                                         this.clearValue(); this.reset();
                                                         claimOwnerWorkflowCombo.reset();
                                                         claimOwnerWorkflowStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
@@ -158,15 +155,12 @@
     function openReport()
     {
         if($("form#formReportParam").valid()){
-//            var queryString = $('#formReportParam').formSerialize();
             var queryString = {};
             $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.workgroupId === "") {
                 queryString.workgroupId = -1;
             }
-//            if (queryString.indexOf('workgroupId=&') >= 0)
-//                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
         }
     }

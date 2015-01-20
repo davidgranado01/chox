@@ -39,16 +39,16 @@ Ext.onReady(function() {
 	    viewConfig:{forceFit:true},
 	    columns: [
             {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: true, resizable: true, renderer:function(value,p,r){
-                return  value }},
+                return  value; }},
 	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: true, resizable: true, renderer:function(value,p,r){
-                return  value }},
+                return  value; }},
 	        {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, renderer: booleanLink}
 	    ],
 	    height:510,
 	    width: 760
 	});
 	
-	if(!intelligentNotePopUp || intelligentNotePopUp==null)
+	if(!intelligentNotePopUp || intelligentNotePopUp===null)
     {
 		intelligentNotePopUp =  new Ext.Window({
             applyTo:'iinEditWindow',
@@ -79,7 +79,7 @@ function booleanLink(value,p,r){
     }else{
         value = "No";
     }
-    return "<a href='#' class='high-light-item'>" + value + "</a>"
+    return "<a href='#' class='high-light-item'>" + value + "</a>";
 }
 
 function loadGridViewList(){
@@ -88,12 +88,12 @@ function loadGridViewList(){
 
 function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
     var gridView = iinGridView.getStore().getAt(rowIndex);
-    if(columnIndex==0 || columnIndex==1){
+    if(columnIndex===0 || columnIndex===1){
     	showIntelligentNotePopUp(gridView);
-    } else if(columnIndex==2){
+    } else if(columnIndex===2){
     	 var iinId = gridView.get("id");
     	 var inId = gridView.get("intelligentNoteId");
-    	 var status = gridView.get("status") == "Yes" ? true : false;
+    	 var status = gridView.get("status") === "Yes" ? true : false;
          var url = "/prv/p/updateInsurerInteligentNoteStatus.action";
          var param = {"intelligentNoteId":inId, "status":status, "insurerInteligentNoteId": iinId, "insurerId":<s:property value="insurerId" />};
          ajax.loadHtml2(url, param, onSubmitHandler);
@@ -105,7 +105,7 @@ function showIntelligentNotePopUp(gridView){
 	
 	$("form#iinEditForm label#iinName").html(gridView.get("intelligentNoteName"));
 	$("form#iinEditForm label#iinNote").html(gridView.get("intelligentNote"));
-	$("form#iinEditForm label#iinActive").html(gridView.get("status") == true ? "Yes" : "No");
+	$("form#iinEditForm label#iinActive").html(gridView.get("status") === true ? "Yes" : "No");
 }
 
 function onSubmitHandler(responseText, statusText){

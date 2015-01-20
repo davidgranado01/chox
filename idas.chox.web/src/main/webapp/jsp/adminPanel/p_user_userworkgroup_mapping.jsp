@@ -42,13 +42,13 @@
                 {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 250, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "", width: 110, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:450,
             width: 760
         });
 
-        userworkgroup_loadGridViewList()
+        userworkgroup_loadGridViewList();
 
     });
 
@@ -60,7 +60,7 @@
 
         var workgroupId = $("#workgroupId").val();
 
-        if(workgroupId!=null && workgroupId>0){
+        if(workgroupId!==null && workgroupId>0){
 
             var url = "/prv/p/addUserWorkgroupMapping.action";
             var param = {"workgroupId":workgroupId,"webUserId":<s:property value="webUserId" />};
@@ -76,7 +76,7 @@
 
     function userworkgroup_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = userworkgroup_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==3){
+        if(columnIndex===3){
             workgroup_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -104,14 +104,14 @@
 
                     outputDiv.addClass("chox-form-submit-result");
 
-                    if(response.resultType && response.resultType == 'Message')
+                    if(response.resultType && response.resultType === 'Message')
                     {
                         outputDiv.append("<p>" + response.result + "</p>");
                     }
-                    else if(response.resultType && response.resultType == 'YesNo'){
+                    else if(response.resultType && response.resultType === 'YesNo'){
 
                         Ext.MessageBox.confirm('Confirm', response.result,function(btn){
-                        if(btn=='yes'){
+                        if(btn==='yes'){
                             doRemoveWebUserWorkgroup(workgroupId);
                         }
                         });
@@ -158,7 +158,7 @@
 
                 outputDiv.addClass("chox-form-submit-result");
 
-                if(response.resultType && response.resultType == 'Message')
+                if(response.resultType && response.resultType === 'Message')
                 {
                     userworkgroup_doRefreshPage();
                     Ext.MessageBox.show({

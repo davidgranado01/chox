@@ -21,7 +21,7 @@
                 //begin patch
                 // Store not loaded yet? Set value when it *is* loaded.
                 // Defer the setValue call until after the next load.
-                if (this.store.getCount() == 0) {
+                if (this.store.getCount() === 0) {
                     this.store.on('load', this.setValue.createDelegate(this, [v]), null, {single: true});
                     return;
                 }
@@ -45,7 +45,7 @@
 
         claimId = '<s:property value="id"/>';
         insurerId = '<s:property value="insurer.id"/>';
-        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
+        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' === 'true');
 
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
@@ -80,13 +80,13 @@
             emptyText: '--- Please Select ---',
             listeners: {
                 blur: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         this.clearValue(); this.reset();
                         claimOwnerId = -1;
                     }
                 },
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -100,7 +100,7 @@
             height           :  80,
             allowBlank       :  false,
             renderTo         : 'rejectionDescId',
-            disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
+            disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
         });
         
         if(isWorkgroupEnable) {
@@ -136,12 +136,11 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
-                forceSelection : true,
                 listeners: {select: function() {
                         doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                     },
                     blur: function () {
-                        if(this.getRawValue() == "") {
+                        if(this.getRawValue() === "") {
                             selectedWorkgroupId = '<s:property value="workgroup.id"/>';
                             this.clearValue(); 
                             workgroupCombo.setValue(selectedWorkgroupId);
@@ -155,16 +154,16 @@
         }
      
         // PREPARE RECORDS
-        if ($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
+        if ($("#claimClaimOwnerId").val()!==null && $("#claimClaimOwnerId").val()!==""){
             claimOwnerId = $("#claimClaimOwnerId").val();
         }
 
-        if ($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
-            isWorkgroupEnable = ($("#claimWorkgroupEnable").val() == 'true');
+        if ($("#claimWorkgroupEnable").val()!==null && $("#claimWorkgroupEnable").val()!==""){
+            isWorkgroupEnable = ($("#claimWorkgroupEnable").val() === 'true');
         }
 
         if (isWorkgroupEnable) {
-            if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
+            if($("#claimWorkgroupId").val()!==null && $("#claimWorkgroupId").val()!==""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
                 $("#oasWorkgroupId").val(selectedWorkgroupId);
             }
@@ -180,7 +179,7 @@
 
 
     function doOwnershipAssignmentWorkgroupChange(){
-        if (workgroupCombo.getValue() != null && workgroupCombo.getValue() != '') {
+        if (workgroupCombo.getValue() !== null && workgroupCombo.getValue() !== '') {
             selectedWorkgroupId = workgroupCombo.getValue();
         }
         claimOwnerId = -1;
@@ -199,10 +198,10 @@
     function validateComboBox(){
         var mesBox = $("#OwnershippAssignmentMessageBox");
         mesBox.empty();
-        if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
+        if ($("#claimOwnerComboId").val() === "--- Please Select ---") {
             mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
             return false;
-        } else if ($("#workgroupComboId").val() == "--- Please Select ---") {
+        } else if ($("#workgroupComboId").val() === "--- Please Select ---") {
             mesBox.append("You must supply a value for 'Work Group'\n<br/>").show();
             return false;
         } else {
@@ -215,13 +214,12 @@
     function doAssignOwnershipToFnolSubmit(){
         var coh = $("[name='claimOwnerId']");
         var mesBox = $("#OwnershippAssignmentMessageBox");
-        if (coh.val() == "")
+        if (coh.val() === "")
             coh.val(-1);
         actionPanel.registerAction("referFNOL");
-         if ($("#workgroupComboId").val() != "--- Please Select ---") {
+         if ($("#workgroupComboId").val() !== "--- Please Select ---") {
              mesBox.text("").show();
              Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-//             $("#formOwnershipAssignmentAction").submit();
              choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } else {
              mesBox.text("You must supply a value for 'Work Group'").show();
@@ -232,10 +230,10 @@
     function doAssignOwnershipRejectSubmit(){
         actionPanel.registerAction("rejectClaim");
         $("#OwnershippAssignmentMessageBox").text("");
-            if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
-                 if($("#reasonOfRejectionId").val() == "-1")
+            if($("#reasonOfRejectionId").val() === "-1" || $("#rejecDescId").val() === "" ) {
+                 if($("#reasonOfRejectionId").val() === "-1")
                     $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
-                 if($("#rejecDescId").val() == "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") == -1 )
+                 if($("#rejecDescId").val() === "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") === -1 )
                         $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
             } else {
                 $("#OwnershippAssignmentMessageBox").text("").show();
@@ -244,9 +242,8 @@
     }
     
     function rejectClaim(btn) {
-        if (btn == 'yes')    {
+        if (btn === 'yes')    {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-//            $("form#formOwnershipAssignmentAction").submit();
             choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
     }
@@ -255,7 +252,6 @@
         actionPanel.registerAction("assignOwner");
         if (validateComboBox()) {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            $("#formOwnershipAssignmentAction").submit();
             choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
     }
@@ -271,11 +267,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
 

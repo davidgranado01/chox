@@ -3,22 +3,21 @@
 <script type="text/javascript">
 
    Ext.onReady(function(){
-//    $(function(){
         openTab(6);
         });
         
     function doSubscriberFormSubmit(action){
         var message='Are you sure about this?';
-        if (action=='contestRejectedClaim'){
+        if (action==='contestRejectedClaim'){
             message="Are you sure you want to 'Send Claim Back To Insurer'?";
-        } else if (action=='acceptSubscriberChallenge'){
+        } else if (action==='acceptSubscriberChallenge'){
     <s:if test="subscriberClaimRejected">
             message="Are you sure you 'Agree With The Subscriber Challenge' and want to close the claim?";
     </s:if>
     <s:else>
             message="Are you sure you 'Agree With The Subscriber Challenge' and want to move the claim to 'AwaitingInvoiceData' ready for invoicing?";
     </s:else>
-        } else if (action=='sendClaimGTA'){
+        } else if (action==='sendClaimGTA'){
             message="Are you sure you want to 'Send Claim Down GTA Route'?";
         }
 

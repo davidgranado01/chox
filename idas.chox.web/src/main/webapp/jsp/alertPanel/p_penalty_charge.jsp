@@ -164,11 +164,11 @@
         var repairPenaltyCharge;
         var hirePenaltyCharge;
         var totalPenaltyCharge;
-        var totalAmountToPayBeforeNewPenaltyCharge
+        var totalAmountToPayBeforeNewPenaltyCharge;
         var totalAmountToPayAfterNewPenaltyCharge;
     
         if (!isNaN(repairAmount)) {
-            repairPenaltyCharge = parseFloat(repairAmount) == NaN ? 0 : parseFloat(repairAmount);
+            repairPenaltyCharge = parseFloat(repairAmount) === NaN ? 0 : parseFloat(repairAmount);
             if(isNaN(repairPenaltyCharge)){
                 repairPenaltyCharge = 0;
             }
@@ -178,7 +178,7 @@
         }
 
         if (!isNaN(hireAmount)) {
-            hirePenaltyCharge = parseFloat(hireAmount) == NaN ? 0 : parseFloat(hireAmount);
+            hirePenaltyCharge = parseFloat(hireAmount) === NaN ? 0 : parseFloat(hireAmount);
             if(isNaN(hirePenaltyCharge)){
                 hirePenaltyCharge = 0;
             }
@@ -189,20 +189,15 @@
         totalPenaltyCharge = repairPenaltyCharge + hirePenaltyCharge;
 
 
-        if (hirePenaltyCharge == 0) {
+        if (hirePenaltyCharge === 0) {
             $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("remove");
-            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
-            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});  
         }
         else {
             $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
-            //            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("remove");
         }
 
-        if (repairPenaltyCharge == 0) {
+        if (repairPenaltyCharge === 0) {
             $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("remove");
-            // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
-            // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
         }
         else {
             $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Percentage'"}});
@@ -211,12 +206,7 @@
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
-        
-        //        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
-        //        if (! isNaN(percentageAccepted)){
-        //            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
-        //        }
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));        
     }
 
 </script>

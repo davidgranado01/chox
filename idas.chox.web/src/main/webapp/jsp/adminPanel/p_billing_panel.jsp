@@ -9,7 +9,7 @@
     Ext.onReady(function(){
         Ext.util.Format.gbMoney = function(v){
             v = (Math.round((v-0)*100))/100;
-            v = (v == Math.floor(v)) ? v + ".00" : ((v*10 == Math.floor(v*10)) ? v + "0" : v);
+            v = (v === Math.floor(v)) ? v + ".00" : ((v*10 === Math.floor(v*10)) ? v + "0" : v);
             v = String(v);
             var ps = v.split('.');
             var whole = ps[0];
@@ -19,17 +19,17 @@
                 whole = whole.replace(r, '$1' + ',' + '$2');
             }
             v = whole + sub;
-            if(v.charAt(0) == '-'){
+            if(v.charAt(0) === '-'){
                 return '-£' + v.substr(1);
             }
             return '£' +  v;
-        }
+        };
     	
         var initpage = function(){
             Ext.namespace('Chox','Chox.billing');
             Chox.appname = '<%= request.getContextPath()%>';
             Chox.billing.billingmode = '${billingType}';
-            if ( Chox.billing.billingmode =='insurer' ){
+            if ( Chox.billing.billingmode ==='insurer' ){
                 Chox.billing.billingPageTitle = 'Insurer Billing';
                 Chox.billing.billingHeader1 = 'Insurer';
             }else{
@@ -62,11 +62,10 @@
                 url:Chox.appname + '/prv/p/addBill.action'
             });
             Chox.billing.billingWindowObj = new Chox.billing.billingWindow();
-            billingGrid = new Chox.billing.BillingGrid({btype:'<s:property value="billingType"/>'})
+            billingGrid = new Chox.billing.BillingGrid({btype:'<s:property value="billingType"/>'});
             billingDetailGrid = new Chox.billing.BillingDetailGrid();
             var myPanel = new Ext.Panel({                
                 applyTo: 'billingPanel-div',
-                //title: Chox.billing.billingPageTitle,
                 border: true,
                 items:[
                     billingGrid,
@@ -81,7 +80,7 @@
     
 </script>
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div" style ="width:780" >
+    <div id="chox-admin-col-div" style="width:780px" >
         <div id="billingPanel-div">
         </div>
     </div>

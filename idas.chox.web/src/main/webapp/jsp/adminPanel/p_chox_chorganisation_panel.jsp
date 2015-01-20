@@ -42,11 +42,11 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 150, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "VAT No.", width: 60, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Address", width: 170, dataIndex: 'address', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -67,9 +67,9 @@
         
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         
-        if(columnIndex==0){
+        if(columnIndex===0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==3){
+        }else if(columnIndex===3){
             triggerStatusUpdateRecord(gridView);
         }
         
@@ -108,7 +108,7 @@
             aletMsg = "Are you sure you want to make this Credit Hire Organisation active?";
         }
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
-        if(btn=='yes'){
+        if(btn==='yes'){
             var gridViewId = gridView.get("id");
             var url = "/prv/p/doTriggerCreditHireAccountStatus.action";
             var param = {"objectId":gridViewId};
@@ -120,7 +120,7 @@
 </script>
 
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div" style ="width:780" >
+    <div id="chox-admin-col-div" style ="width:780px" >
         <div id="header-title"><label>Credit Hire Organisation Management</label></div>
         <form id="ChoxChorganisationMgmtPanelForm" name="ChoxChorganisationMgmtPanelForm" class="XXentity-form" action="" method="POST">
             <div class="admin-gridview-header">

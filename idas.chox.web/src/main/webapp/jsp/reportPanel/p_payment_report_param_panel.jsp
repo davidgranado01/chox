@@ -39,7 +39,7 @@
                                 triggerAction : 'all',
                                 forceSelection : true,
                                 listeners: {blur: function () {
-                                                if(this.getRawValue() == "" ) {
+                                                if(this.getRawValue() === "" ) {
                                                     this.clearValue();
                                                 }
                                            }
@@ -99,7 +99,7 @@
             allowBlank : true,
             forceSelection : true,
             listeners: { blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue();
                         this.reset();
                     }
@@ -114,12 +114,11 @@
     function openReport()
     {
     	var msgBox = $('#formReportParamMessageBox');
-    	if(Ext.get('supplierCombo').getValue() == "--- Please Select ---"){
+    	if(Ext.get('supplierCombo').getValue() === "--- Please Select ---"){
             msgBox.empty();
             msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
         }
-        if($("form#formReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
-//            var queryString = $('#formReportParam').formSerialize();
+        if($("form#formReportParam").valid() && Ext.get('supplierCombo').getValue() !== "--- Please Select ---"){
             var queryString = {};
             $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             msgBox.empty();
@@ -127,8 +126,6 @@
             if (queryString.workgroupId === "") {
                 queryString.workgroupId = -1;
             }
-//            if (queryString.indexOf('workgroupId=&') >= 0)
-//                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
         }
         msgBox.show();

@@ -26,9 +26,8 @@
             params : {"workgroupId":-1,"insurerId":insurerId},
             reader : claimOwnerWorkflowReader,
             listeners: {load: function() {
-
-                    var  defaultName={'name':'--- All ---','id':-1}
-                                          this.insert(0, new Ext.data.Record(defaultName));
+                    var  defaultName={'name':'--- All ---','id':-1};
+                    this.insert(0, new Ext.data.Record(defaultName));
                 }
             }
                             
@@ -48,7 +47,7 @@
             triggerAction : 'all',
             forceSelection : true,
             listeners: { blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue(); this.reset();
                     }
                 }
@@ -71,8 +70,8 @@
                 reader :  ownerWorkflowWorkgroupJsonReader,
                 listeners: {load: function() {
 
-                        var  defaultValue={'value':'--- All ---','text':-1}
-                                              this.insert(0, new Ext.data.Record(defaultValue));
+                        var  defaultValue={'value':'--- All ---','text':-1};
+                        this.insert(0, new Ext.data.Record(defaultValue));
                     }
                 }
             });
@@ -93,7 +92,7 @@
                 forceSelection : true,
                 listeners: {select: function () {
                         var workgroupId = -1;
-                        if (ownerWorkflowWorkgroupCombo.getValue() != null && ownerWorkflowWorkgroupCombo.getValue() != '--- All ---' && ownerWorkflowWorkgroupCombo.getValue() != "") {
+                        if (ownerWorkflowWorkgroupCombo.getValue() !== null && ownerWorkflowWorkgroupCombo.getValue() !== '--- All ---' && ownerWorkflowWorkgroupCombo.getValue() !== "") {
                             workgroupId = ownerWorkflowWorkgroupCombo.getValue();
                         }
                         //                                                        var insurerId = $("#userInsurerId").val();
@@ -103,7 +102,7 @@
                         claimOwnerWorkflowStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                     },
                     blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue(); this.reset();
                             claimOwnerWorkflowCombo.reset();
                             claimOwnerWorkflowStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
@@ -154,7 +153,7 @@
                 allowBlank : true,
                 forceSelection : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue();
                         }
                     }
@@ -199,15 +198,12 @@
         function openReport()
         {
 	        if($("form#formReportParam").valid()){
-//	            var queryString = $('#formReportParam').formSerialize();
                     var queryString = {};
                     $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
 	            // If no workgroup selected, insert a '-1' into the query string
                     if (queryString.workgroupId === "") {
                         queryString.workgroupId = -1;
                     }
-//	            if (queryString.indexOf('workgroupId=&') >= 0)
-//	                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
 	            generateReport(queryString);
 	        }
         }

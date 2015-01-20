@@ -35,12 +35,11 @@
     function doInvoiceReferredByEngSubmit(action){
 
         $("#invoiceReferredByEngFormName").val(action);
-//        actionPanel.registerAction(action);
 
         $("form#invoiceReferredByEngForm #rejecDescId").rules("remove");
         $("form#invoiceReferredByEngForm #appContInvEngReasonOfRejectionId").rules("remove");
 
-        if(action=="rejectInvoice"){
+        if(action==="rejectInvoice"){
             $("form#invoiceReferredByEngForm #appContInvEngReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
@@ -58,14 +57,13 @@
 
         if($("#invoiceReferredByEngForm").valid()){
 
-            if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceReferredByEngForm"));}else{return false;}})){
+            if (action==='rejectInvoice') {
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceReferredByEngForm"));}else{return false;}})){
                     return;
                 }
             }
             else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//                $("form#invoiceReferredByEngForm").submit();
                 choxJqueryHttpSubmit($("form#invoiceReferredByEngForm"));
             }
             
@@ -83,11 +81,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
 

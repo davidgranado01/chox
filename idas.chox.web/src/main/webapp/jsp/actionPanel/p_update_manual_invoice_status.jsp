@@ -4,12 +4,10 @@
 
 function doUpdateManualInvoice(action){
     
-    $('form#updateManualInvoicePaymentForm input[id="name"]').val(action)
+    $('form#updateManualInvoicePaymentForm input[id="name"]').val(action);
     
     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//    $("form#updateManualInvoicePaymentForm").submit();
     choxJqueryHttpSubmit($("form#updateManualInvoicePaymentForm"));
-    
 }
 
 </script>

@@ -25,7 +25,7 @@
                   params : {"workgroupId":-1,"insurerId":insurerId},
                   reader : claimOwnerPerformanceReader,
                   listeners: {load: function() {
-                                var  defaultName={'name':'--- All ---','id':-1}
+                                var  defaultName={'name':'--- All ---','id':-1};
                                 this.insert(0, new Ext.data.Record(defaultName));
                 }
             }
@@ -44,7 +44,7 @@
                             emptyText : '--- All ---',
                             forceSelection : true,
                             listeners: { blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                                }
                                }}
@@ -65,7 +65,7 @@
                                 url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                                 reader :  ownerPerformanceWorkgroupJsonReader,
                                 listeners: {load: function() {
-                                          var  defaultValue={'value':'--- All ---','text':-1}
+                                          var  defaultValue={'value':'--- All ---','text':-1};
                                           this.insert(0, new Ext.data.Record(defaultValue));
                 }
             }
@@ -79,23 +79,21 @@
                                 displayField:'value',
                                 width: 250,
                                 typeAhead: true,
-//                                autoWidth: true,
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- All ---',
                                 forceSelection : true,
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
-                                                        if (ownerPerformanceWorkgroupCombo.getValue() != null) {
+                                                        if (ownerPerformanceWorkgroupCombo.getValue() !== null) {
                                                             workgroupId = ownerPerformanceWorkgroupCombo.getValue();
                                                         }
-//                                                        var insurerId = $("#userInsurerId").val();
                                                         claimOwnerPerformanceCombo.reset();
                                                         claimOwnerPerformanceStore.removeAll();
                                                         claimOwnerPerformanceStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                                                     },
                                             blur: function () {
-                                                    if(this.getRawValue() == "" ) {
+                                                    if(this.getRawValue() === "" ) {
                                                         this.clearValue(); this.reset();
                                                         claimOwnerPerformanceCombo.reset();
                                                         claimOwnerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
@@ -142,15 +140,12 @@
     function openReport()
     {
        if($("form#formReportParam").valid()){
-//            var queryString = $('#formReportParam').formSerialize();
             var queryString = {};
             $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.workgroupId === "") {
                 queryString.workgroupId = -1;
             }
-//            if (queryString.indexOf('workgroupId=&') >= 0)
-//                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
        }
     }

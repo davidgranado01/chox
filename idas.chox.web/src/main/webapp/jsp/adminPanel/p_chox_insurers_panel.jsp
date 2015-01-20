@@ -40,11 +40,11 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "VAT No.", width: 120, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Company No.", width: 120, dataIndex: 'companyNo', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Created By", width:100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -63,9 +63,9 @@
     
     function insurer_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = insurer_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==0){
+        if(columnIndex===0){
             insurer_loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==3){
+        }else if(columnIndex===3){
             triggerStatusUpdateInsurerRecord(gridView);
         }
     }
@@ -103,7 +103,7 @@
             aletMsg = "Are you sure you want to activate this insurer?";
         }
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
-        if(btn=='yes'){
+        if(btn==='yes'){
             var gridViewId = gridView.get("id");
             var url = "/prv/p/doTriggerInsurerAccountStatus.action";
             var param = {"objectId":gridViewId};
@@ -117,7 +117,7 @@
 </script>
 
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div" style ="width:780" >
+    <div id="chox-admin-col-div" style ="width:780px" >
         <div id="header-title"><label>Insurer Organisation Management</label></div>
         <form id="ChoxInsurerMgmtPanelForm" name="ChoxInsurerMgmtPanelForm" class="XXentity-form" action="POST">
             <div class="admin-gridview-header">

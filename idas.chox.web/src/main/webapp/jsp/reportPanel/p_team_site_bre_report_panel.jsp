@@ -25,7 +25,7 @@
             params : {"insurerId":insurerId, "site":''},
             reader : teamWorkflowReader,
             listeners: {load: function() {
-                    var  defaultTeam={'team':'--- All ---'}
+                    var  defaultTeam={'team':'--- All ---'};
                     this.insert(0, new Ext.data.Record(defaultTeam));
                 }
             }
@@ -44,7 +44,7 @@
             triggerAction : 'all',
             forceSelection : true,
             listeners: { blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue(); this.reset();
                     }
                 }
@@ -85,7 +85,7 @@
             forceSelection : true,
             listeners: {select: function () { 
                     var site = '';
-                    if (siteWorkflowCombo.getValue() != null && siteWorkflowCombo.getValue() != '--- All ---' && siteWorkflowCombo.getValue() != "") {
+                    if (siteWorkflowCombo.getValue() !== null && siteWorkflowCombo.getValue() !== '--- All ---' && siteWorkflowCombo.getValue() !== "") {
                         site = siteWorkflowCombo.getValue();
                     }
                     //                                                        var insurerId = $("#userInsurerId").val();
@@ -95,7 +95,7 @@
                     teamWorkflowStore.load({ params : {"site":site,"insurerId":insurerId}});
                 },
                 blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue(); this.reset();
                         teamWorkflowCombo.reset();
                         teamWorkflowStore.load({ params : {"site":'',"insurerId":insurerId}});
@@ -143,7 +143,7 @@
             allowBlank : true,
             forceSelection : true,
             listeners: { blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue();
                     }
                 }

@@ -9,25 +9,24 @@
         
     function doFormSubmit(action){
         var message = 'Are you sure about this?';
-        if (action=='contestRejectedClaim'){
+        if (action==='contestRejectedClaim'){
 <s:if test="isFixedFeeClaim">
             message="Are you sure you want to 'Send Claim Back To Insurer'?";
 </s:if>
 <s:else>
             message="Are you sure you want to 'Contest This Claim'?";
 </s:else>
-        } else if (action=='sendClaimGTA'){
+        } else if (action==='sendClaimGTA'){
             message="Are you sure you want to 'Send Claim Down GTA Route'?";
-        } else if (action=='acceptRejectedClaim'){
+        } else if (action==='acceptRejectedClaim'){
             message="Are you sure you want to 'Accept Rejection Decision'?";
         }
 
         Ext.MessageBox.confirm('Confirm', message,
                         function(btn) {
-                            if (btn=='yes') {
+                            if (btn==='yes') {
                                 actionPanel.registerAction(action);
                                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//                                $("form#contestOrAcceptRejectedClaim").submit();
                                 choxJqueryHttpSubmit($("form#contestOrAcceptRejectedClaim"));
                             }
                         }

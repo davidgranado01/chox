@@ -84,7 +84,6 @@ Ext.onReady(function(){
 	                    }
 	                });
 	            }
-//                else console.log("Not valid");
 	        }
 	    },{
 	        text:'Cancel',
@@ -116,24 +115,22 @@ function confirmNotFullPayRec(){
     function doUpdatePaymentReceived(action) {
     	
     	$("#formUpdatePaymentReceivedName").val(action);
-    	if (action=='invoicePaymentReceived') {
-            if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
+    	if (action==='invoicePaymentReceived') {
+            if (partialInterimPayment !== undefined &&  partialInterimPayment > 0){
                 Ext.Msg.show({
                     title:'Please Confirm',
                     msg: 'Please note that there is an interim payment on this claim which has not yet been marked as received. Marking the claim as \u2018Full Payment Received\u2018 will also mark this interim payment as received.',
                     buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
-                    fn: function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));}else{return false;}}
+                    fn: function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));}else{return false;}}
                 });
             }else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            	$("form#formUpdatePaymentReceived").submit();
                 choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
             }
-        } else if (action == 'fullPaymentAmountNotReceived') {
+        } else if (action === 'fullPaymentAmountNotReceived') {
         	confirmNotFullPayRec();
         } else {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//        	$("form#formUpdatePaymentReceived").submit();
                 choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
         }
     }

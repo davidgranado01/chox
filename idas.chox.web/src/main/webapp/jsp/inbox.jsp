@@ -414,7 +414,7 @@
                 if (taskCount <= 0) { 
                     color = 'black';
                 }
-                var title = 'Tasks'
+                var title = 'Tasks';
                 if (taskCount < 10) {
                     title = title + '&nbsp';
                 } else if (taskCount < 100) {

@@ -20,7 +20,6 @@
             format: 'd/m/Y',
             disabledDays: [0,2,3,4,5,6],
             disabledDaysText: 'You must select a Monday',
-//            hideMode: 'offsets',
             value: '03/01/2011',
             showWeekNumber: true,
             validationEvent : false
@@ -45,7 +44,6 @@
                             store : teamWorkflowStore,
                             width: 250,
                             renderTo: 'rptTeamSelectionHolder',
-//                            valueField : 'team',
                             id : 'teamComboId',
                             displayField :'team',
                             hiddenName: 'team',
@@ -55,7 +53,7 @@
                             triggerAction : 'all',
                             forceSelection : true,
                             listeners: { blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                                }
                                }}
@@ -79,7 +77,6 @@
         var  siteWorkflowCombo = new Ext.form.ComboBox({
                                 store:  siteWorkflowStore,
                                 renderTo: 'rptSiteSelectionHolder',
-//                                valueField: 'site',
                                 id: 'siteComboId',
                                 hiddenName: 'site',
                                 displayField:'site',
@@ -90,16 +87,15 @@
                                 forceSelection : true,
                                 listeners: {select: function () {
                                                         var site = '';
-                                                        if (siteWorkflowCombo.getValue() != null && siteWorkflowCombo.getValue() != '--- All ---') {
+                                                        if (siteWorkflowCombo.getValue() !== null && siteWorkflowCombo.getValue() !== '--- All ---') {
                                                             site = siteWorkflowCombo.getValue();
                                                         }
-//                                                        var insurerId = $("#userInsurerId").val();
                                                         teamWorkflowCombo.reset();
                                                         teamWorkflowStore.removeAll();
                                                         teamWorkflowStore.load({ params : {"site":site,"insurerId":insurerId}});
                                                     },
                                             blur: function () {
-                                                    if(this.getRawValue() == "" ) {
+                                                    if(this.getRawValue() === "" ) {
                                                         this.clearValue(); this.reset();
                                                         teamWorkflowCombo.reset();
                                                         teamWorkflowStore.load({ params : {"site":'',"insurerId":insurerId}});
@@ -154,7 +150,6 @@
     function openReport()
     {
     	if($("form#formReportParam").valid()){
-//            var queryString = $('#formReportParam').formSerialize();
             var queryString = {};
             $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
             generateReport(queryString);

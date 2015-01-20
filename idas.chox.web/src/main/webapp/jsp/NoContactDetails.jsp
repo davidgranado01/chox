@@ -6,6 +6,6 @@
         Ext.MessageBox.alert('Information', 'You must add your contact details before you can continue.', function() {
             window.location = "<%= request.getContextPath()%>/prv/openUserAccount.action?redirect=true";
         });
-    })
+    });
 
 </script>

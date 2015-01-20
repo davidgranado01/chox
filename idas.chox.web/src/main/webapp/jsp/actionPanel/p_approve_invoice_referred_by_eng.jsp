@@ -38,7 +38,7 @@
         $("form#invoiceReferredToClaimsHandler #rejecDescId").rules("remove");
         $("form#invoiceReferredToClaimsHandler #appInvRefEngReasonOfRejectionId").rules("remove");
 
-        if(action=="rejectInvoice"){
+        if(action==="rejectInvoice"){
 
             $("form#invoiceReferredToClaimsHandler #appInvRefEngReasonOfRejectionId").rules("add", {
                 required: true,
@@ -58,14 +58,13 @@
 
         if($("form#invoiceReferredToClaimsHandler").valid()){
 
-            if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceReferredToClaimsHandler"));}else{return false;}})){
+            if (action==='rejectInvoice') {
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceReferredToClaimsHandler"));}else{return false;}})){
                     return;
                 }
             }
             else{
                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//               $("form#invoiceReferredToClaimsHandler").submit(); 
                choxJqueryHttpSubmit($("form#invoiceReferredToClaimsHandler"));
             }
         }
@@ -83,11 +82,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
 

@@ -42,7 +42,7 @@
                 allowBlank : true,
                 forceSelection : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue();
                         }
                     }

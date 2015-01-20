@@ -64,7 +64,7 @@
         var title = "Claim Cycle";
         var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate")
             + "<br/><b>Modified By</b>: " + audit.get("modifiedBy")
-            + "<br/><br/><b>Status</b>: " + audit.get("status")
+            + "<br/><br/><b>Status</b>: " + audit.get("status");
 
         propmtMsg(title, msg);
     }

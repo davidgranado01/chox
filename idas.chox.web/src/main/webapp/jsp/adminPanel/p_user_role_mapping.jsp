@@ -44,14 +44,14 @@
                 {header: "Created By", width: 250, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 250, dataIndex: 'createdDate', sortable: false, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             renderTo:'gridviewGrid',
             height:460,
             width: 760
         });
 
-        userrole_loadGridViewList()
+        userrole_loadGridViewList();
 
     });
 
@@ -64,7 +64,7 @@
         var webUserId = <s:property value="webUserId" />;
         var webUserRoleId = $("#userrolesId").val();
 
-        if(webUserRoleId != null && webUserRoleId > 0){
+        if(webUserRoleId !== null && webUserRoleId > 0){
 
             var url = "/prv/p/addNewWebUserRoleMapping.action";
             var param = {"webUserRoleId":webUserRoleId,"webUserId":webUserId};
@@ -79,7 +79,7 @@
 
     function userrole_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = userrole_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==3){
+        if(columnIndex===3){
             userrole_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -108,14 +108,14 @@
 
                     outputDiv.addClass("chox-form-submit-result");
 
-                    if(response.resultType && response.resultType == 'Message')
+                    if(response.resultType && response.resultType === 'Message')
                     {
                         outputDiv.append("<p>" + response.result + "</p>");
                     }
-                    else if(response.resultType && response.resultType == 'YesNo'){
+                    else if(response.resultType && response.resultType === 'YesNo'){
                         
                         Ext.MessageBox.confirm('Confirm', response.result,function(btn){
-                        if(btn=='yes'){
+                        if(btn==='yes'){
                             doRemoveWebUserRoleMapping(webUserUserRoleId);
                         }
                         });
@@ -123,7 +123,7 @@
                     else
                     {
                         Ext.MessageBox.confirm('Confirm', defaultdeleteMsg,function(btn){
-                        if(btn=='yes'){
+                        if(btn==='yes'){
                             doRemoveWebUserRoleMapping(webUserUserRoleId);
                         }
                         });
@@ -172,7 +172,7 @@
 
                 outputDiv.addClass("chox-form-submit-result");
 
-                if(response.resultType && response.resultType == 'Message')
+                if(response.resultType && response.resultType === 'Message')
                 {
                     userrole_doRefreshPage();
                     Ext.MessageBox.show({
@@ -185,7 +185,6 @@
                 else
                 {
                     userrole_doRefreshPage();
-                    //                    alert("Your Changes Have Been Saved");
                 }
             }
             else
@@ -223,7 +222,6 @@
                 userDetailPanelTabs.activate(tabIndex);
             }
         });
-        //        userrole_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
     }
 
 

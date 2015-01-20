@@ -27,7 +27,7 @@
             params : {"insurerId":insurerId, "site":''},
             reader : teamPerformanceReader,
             listeners: {load: function() {
-                        var  defaultTeam={'team':'--- All ---'}
+                        var  defaultTeam={'team':'--- All ---'};
                         this.insert(0, new Ext.data.Record(defaultTeam));
                 }
             }
@@ -51,7 +51,7 @@
             emptyText : '--- All ---',
             forceSelection : true,
             listeners: { blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue(); this.reset();
                     }
                 }}
@@ -96,7 +96,7 @@
             forceSelection : true,
             listeners: {select: function () {
                     var site = '';
-                    if (sitePerformanceCombo.getValue() != null && sitePerformanceCombo.getValue() != '--- All ---') {
+                    if (sitePerformanceCombo.getValue() !== null && sitePerformanceCombo.getValue() !== '--- All ---') {
                         site = sitePerformanceCombo.getValue();
                     }
                     //                                                        var insurerId = $("#userInsurerId").val();
@@ -105,7 +105,7 @@
                     teamPerformanceStore.load({ params : {"site":site,"insurerId":insurerId}});
                 },
                 blur: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue(); this.reset();
                         teamPerformanceCombo.reset();
                         teamPerformanceStore.load({ params : {"site":'',"insurerId":insurerId}});

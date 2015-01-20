@@ -8,9 +8,9 @@
     var insurerIsWorkgroupEnabled = true;
 
     Ext.onReady(function(){
-        insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val())
+        insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val());
 
-        if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
+        if($("#tabIndex").val()!==null && $("#tabIndex").val()!==''){
             insAdminTabIndex = $("#tabIndex").val();
         }
 
@@ -43,7 +43,7 @@
 
 <div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div" style ="width:780">
+    <div id="chox-admin-col-div" style ="width:780px">
         <div id="header-title">
             <label>Insurer Name:
                 <s:property value="CurrentUser.Insurer.name" />

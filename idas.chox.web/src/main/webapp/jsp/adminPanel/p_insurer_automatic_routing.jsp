@@ -125,9 +125,9 @@
                     {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                     {header: "Workgroup", width: 100, dataIndex: 'workgroupName', sortable: true, resizable: true},
                     {header: "Regular Expression", width: 180, dataIndex: 'expression', sortable: true, resizable: true, renderer:function(value,p,r){
-                            return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                            return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                     {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                            return "<a href='#' class='high-light-item'>Remove</a>"}},
+                            return "<a href='#' class='high-light-item'>Remove</a>";}},
                     {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
@@ -137,7 +137,7 @@
 
   
 
-            if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg==null)
+            if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg===null)
             {
                 automaticRoutingEditSelectionDlg =  new Ext.Window({
                     applyTo:'autoRoutingSelectionDlgHolder',
@@ -249,7 +249,7 @@
                     {header: "Workgroup", width: 100, dataIndex: 'workgroupName', sortable: true, resizable: true},
                     {header: "Vehicle Class Price", width: 180, dataIndex: 'price', sortable: true, resizable: true},
                     {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                            return "<a href='#' class='high-light-item'>Remove</a>"}},
+                            return "<a href='#' class='high-light-item'>Remove</a>";}},
                     {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
@@ -279,9 +279,9 @@
         
         var gridView = routing_gridviewGridPrice.getStore().getAt(rowIndex);
 
-        if(columnIndex==3){
+        if(columnIndex===3){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var automaticRoutingId = gridView.get("id");
                 var url = "/prv/p/deleteAutomaticRoutingDetailByPrice.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
@@ -333,16 +333,16 @@
 
         var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
 
-        if(columnIndex==3){
+        if(columnIndex===3){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var automaticRoutingId = gridView.get("id");
                 var url = "/prv/p/deleteAutomaticRoutingDetail.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
                 ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
             }
             });
-        }else if(columnIndex==2){
+        }else if(columnIndex===2){
             showEditAutomaticRouting(gridView);
         }
     }
@@ -384,7 +384,6 @@
         routing_loadGridViewList();
         if(automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg !== null) {
             automaticRoutingEditSelectionDlg.hide();
-//            automaticRoutingEditSelectionDlg = null;
         }
 
     }

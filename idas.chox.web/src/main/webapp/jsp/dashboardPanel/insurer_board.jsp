@@ -43,8 +43,7 @@
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
-                fields:
-                    [
+                fields: [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -71,7 +70,6 @@
                 emptyText : '--- ALL ---',
                 removeValuesFromStore : false,
                 selectOnFocus : true,
-//                allowBlank : true,
                 forceSelection : true,
                 listeners: { 
                     select : function(){ 
@@ -180,7 +178,6 @@
                 emptyText : '--- ALL ---',
                 removeValuesFromStore : false,
                 selectOnFocus : true,
-//                allowBlank : true,
                 forceSelection : true,
                 listeners: { 
                     select : function(){ 
@@ -241,14 +238,14 @@
         ajax.loadHtml2(url,param,function(data){
             $("#resultHolder").html(data);
         });
-
-       // doDashBoardInsurerSearchSelectOnChange();
     }
+
+
     function doUpdate(){
 
         var selectedValue = '-1';
         var selected = $("#dashboardSupplierId option:selected");
-        if(selected.val() != ""){
+        if(selected.val() !== ""){
             selectedValue = selected.val();
         }
 
@@ -257,7 +254,7 @@
     }
 
     function doDashBoardInsurerSearchSelectOnChange(){
-        if (dashBoardWorkgroupStore != -1) {
+        if (dashBoardWorkgroupStore !== -1) {
 
             // ToDo: if workgroups are disabled for insurer, disable workgroup menu
             // ToDo: if claim ownership is disabled for insurer, disable claim-owner menu
@@ -284,7 +281,7 @@
     function doDashBoardShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
 
      
-        if (dashBoardClaimOwnerStore != -1) {
+        if (dashBoardClaimOwnerStore !== -1) {
             dashBoardClaimOwnerStore.removeAll();
             dashBoardClaimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
             dashBoardClaimOwnerCombo.reset();
@@ -305,7 +302,7 @@
     function doInsurerSearchWorkgroupOnChange(){
 
         var workgroupId = -1;
-        if (dashBoardWorkgroupCombo!= -1 && dashBoardWorkgroupCombo.getValue() != null) {
+        if (dashBoardWorkgroupCombo!== -1 && dashBoardWorkgroupCombo.getValue() !== null) {
             workgroupId = dashBoardWorkgroupCombo.getValue().split(",");
         }
         doDashBoardShowClaimHandler(workgroupId, dashBoardInsurerId);

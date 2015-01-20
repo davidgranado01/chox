@@ -50,7 +50,7 @@
                         xmlClaimsStatusGrid.getGridEl().mask('Please wait loading claims ...');
                         loadProcessedClaimDetails(record.get('id'));
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
-                    }else if(record.get('status')=="Processing.."){
+                    }else if(record.get('status')==="Processing.."){
                         uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
@@ -83,8 +83,8 @@
                         
                         if(sm.getSelected()){
 
-                            if((sm.getSelected().get('processed')==false) && (sm.getSelected().get('valid')==true) && (sm.getSelected().get('status')!="Processing..") && (sm.getSelected().get('id')>0)){
-                                if(processStatus==0){
+                            if((sm.getSelected().get('processed')===false) && (sm.getSelected().get('valid')===true) && (sm.getSelected().get('status')!=="Processing..") && (sm.getSelected().get('id')>0)){
+                                if(processStatus===0){
                                     processStatus=1;
                                 }else{
                                     return false;
@@ -104,7 +104,7 @@
                                         if(response.responseText){
                                             var resp = Ext.util.JSON.decode(response.responseText);
                                             if(resp && resp.isValid){
-                                                if(resp.resultType && resp.resultType == 'Message')
+                                                if(resp.resultType && resp.resultType === 'Message')
                                                 {
                                                     //                                                    Ext.MessageBox.show({
                                                     //                                                        title: 'Upload successful',
@@ -156,7 +156,7 @@
                                 intervelId=setInterval(loadLiveClaimData, 1500);
                             }else{
 
-                                if(sm.getSelected().get('valid')==false){
+                                if(sm.getSelected().get('valid')===false){
                                     Ext.MessageBox.show({
                                         title: 'process failure',
                                         msg: 'The selected File is not valid.',
@@ -164,7 +164,7 @@
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR
                                     });
-                                }else if(sm.getSelected().get('status')=="Processing.."){
+                                }else if(sm.getSelected().get('status')==="Processing.."){
                                     Ext.MessageBox.show({
                                         title: 'process failure',
                                         msg: 'The selected file is being processed in the server.',
@@ -180,7 +180,7 @@
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR,
                                         fn : function reloadUploadedFileGridData(btn){
-                                            if(btn=='ok'){
+                                            if(btn==='ok'){
                                                 loadUploadedFiles();
                                             }
                                         }
@@ -214,7 +214,7 @@
                     id : 'fileUploadDeleteButtonId',
                     handler : function() {
                         if(sm.getSelected()){
-                            if(sm.getSelected().get('processed')==true || (sm.getSelected().get('status')=="Processing..")){
+                            if(sm.getSelected().get('processed')===true || (sm.getSelected().get('status')==="Processing..")){
                                 Ext.MessageBox.show({
                                     title: '',
                                     msg: 'Processed files cannot be removed from the system',
@@ -234,7 +234,7 @@
                                         if(response.responseText){
                                             var resp = Ext.util.JSON.decode(response.responseText);
                                             if(resp && resp.isValid){
-                                                if(resp.resultType && resp.resultType == 'Message')
+                                                if(resp.resultType && resp.resultType === 'Message')
                                                 {
                                                     //                                                Ext.MessageBox.show({
                                                     //                                                    title: 'Deletion successful',
@@ -481,7 +481,7 @@
             reader:xmlClaimsStatusJsonReader,
             listeners:  {load: function( store, records, options){
                     totalRecordLoaded = store.getCount();
-                    if(processing==true){
+                    if(processing===true){
                         setGridHeight(totalRecordLoaded);
                         xmlClaimsStatusGrid.setTitle(totalRecordLoaded + ' of '+selectedFileTotalClaims+' Claims have been processed');
                     } }}
@@ -509,7 +509,7 @@
                     // if( (r.data['claimStatus']!=null && r.data['claimStatus']!='' && r.data['claimStatus']!='N/A' ) || r.data['valid'] )
                     renderer:function(value,p,r){ if( r.data['claimId']>0 ){
                             return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>';}
-                        else{return r.data.supplierReferenceNumber}}},
+                        else{return r.data.supplierReferenceNumber;}}},
                 {header: "Claim Status", width:150, dataIndex: 'claimStatus', sortable: true, resizable: true},
                 {header: "Process Status", width:150, dataIndex: 'processStatus', sortable: true, resizable: true},
                 {header: "Remark",  width:180, dataIndex: 'remark', sortable: true, resizable: true},
@@ -578,20 +578,20 @@
             uploadedFileGrid.getGridEl().unmask();
             loadUploadedFiles();
             // check the inbox tab is loaded before loading the inbox queue grid. 
-            if (typeof(loadQueueGrid) != "undefined") {
+            if (typeof(loadQueueGrid) !== "undefined") {
                 loadQueueGrid();
             }
             
         }
     
-    }
+    };
 
     function setGridHeight(columnSize){
-        var heightSize=50
+        var heightSize=50;
         if(columnSize>0){
             heightSize = heightSize + columnSize*28;
             if(heightSize<140){
-                heightSize = 140
+                heightSize = 140;
             }
             if(heightSize>530){
                 heightSize=530;
@@ -623,7 +623,7 @@
     }
 
     function showUploadedClaimsDetailStatusBar(totalamount,received,valid){
-        if(totalamount==0 && valid ){
+        if(totalamount===0 && valid ){
             xmlClaimsStatusGrid.setTitle('No processed information available as this file was processed prior to the XML upload function which stores processed claim details being implemented.');
         }else{
             xmlClaimsStatusGrid.setTitle('Showing '+received+ ' of '+totalamount+' Claims.');
@@ -634,13 +634,13 @@
             var status = record.data.claimStatus;
             if(!record.data.valid){
                 return 'red-row';
-            }else if(status=='InvoiceApproved'|| status=='InvoiceApprovedByBRE' || status=='AwaitingInvoicePayment' ){
+            }else if(status==='InvoiceApproved'|| status==='InvoiceApprovedByBRE' || status==='AwaitingInvoicePayment' ){
                 return 'green-row';
-            }else if(status=='InvoiceDataCalculationIncorrect'||status=='N/A' ){
+            }else if(status==='InvoiceDataCalculationIncorrect'||status==='N/A' ){
                 return 'red-row';
-            }else if(status=='AwaitingPaymentPack' || status=='InvoiceEscalated' || status=='InvoiceUnassigned' || status=='InvoiceEscalatedToHandler'){
+            }else if(status==='AwaitingPaymentPack' || status==='InvoiceEscalated' || status==='InvoiceUnassigned' || status==='InvoiceEscalatedToHandler'){
                 return 'orange-row';
-            }else if(status=='ManualInvoiceBRERejected'){
+            }else if(status==='ManualInvoiceBRERejected'){
                 return 'red-row';
             }else{
                 return 'blue-row';
@@ -649,16 +649,16 @@
 
     function uploadedFileDetailsGridRowColourRenderer(record) {
             var status = record.data.status;
-            if(status=='Waiting to be Processed'){
+            if(status==='Waiting to be Processed'){
                 return 'black-row';
-            }else if(status=='All Uploaded' || status=='ALLUPLOADED'){
+            }else if(status==='All Uploaded' || status==='ALLUPLOADED'){
                 return 'green-row';
-            }else if(status=='Partially Uploaded' || status=='PARTIALUPLOAD'){
+            }else if(status==='Partially Uploaded' || status==='PARTIALUPLOAD'){
                 return 'orange-row';
-            } else if(status=='All Rejected' || status=='ALLREJECTED' || status=='ERROR' || status=='Failed') {
+            } else if(status==='All Rejected' || status==='ALLREJECTED' || status==='ERROR' || status==='Failed') {
                 return 'red-row';
-            }else if(record.data.valid==false || status=='Error'){
-                return 'gray-row'
+            }else if(record.data.valid===false || status==='Error'){
+                return 'gray-row';
             }
     }
 
@@ -696,7 +696,7 @@
 
     function UploadedFileAfterSubmit(responseText, statusText, form, responseType)  {
 
-        if (responseText.indexOf('You have been denied access') !=-1) {
+        if (responseText.indexOf('You have been denied access') !==-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
 //                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
                 logout();
@@ -707,7 +707,7 @@
         {
             var response = eval('(' + responseText.trim() + ')');
             if(response && response.isValid){
-                if(response.resultType && response.resultType == 'Message')
+                if(response.resultType && response.resultType === 'Message')
                 {
                     //                    Ext.MessageBox.show({
                     //                        title: 'Upload successful',
@@ -766,7 +766,7 @@
         //        xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
     }
     function ClaimsOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 6 ||columnIndex == 3 ||columnIndex == 4 ||columnIndex == 5 ||columnIndex == 7) {
+        if (columnIndex === 6 ||columnIndex === 3 ||columnIndex === 4 ||columnIndex === 5 ||columnIndex === 7) {
             var task = xmlClaimsStatusGrid.getStore().getAt(rowIndex);
             var title="Uploaded Claim Status";
             var msg = "<b>Supplier Reference</b>: " + task.get("supplierReferenceNumber");
@@ -784,7 +784,7 @@
 
             
         }
-        if(columnIndex == 1){
+        if(columnIndex === 1){
             var record = grid.getStore().getAt(rowIndex);
             if(record.get('claimId')>0){
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
@@ -794,7 +794,7 @@
     }
 
     function FilesOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 8 ||columnIndex == 5 ||columnIndex == 6 ||columnIndex == 7||columnIndex == 9) {
+        if (columnIndex === 8 ||columnIndex === 5 ||columnIndex === 6 ||columnIndex === 7||columnIndex === 9) {
             var task = uploadedFileGrid.getStore().getAt(rowIndex);
             var title="Uploaded File Details";
             var msg = "<b>File Status</b>: " + task.get("status");

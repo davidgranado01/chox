@@ -21,7 +21,7 @@
 
         insurerId = '<s:property value="insurer.id"/>';
         claimId = '<s:property value="id"/>';
-        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
+        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' === 'true');
 
         // Add claim owner combo box
         claimOwnerReader = new Ext.data.JsonReader({
@@ -54,10 +54,9 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
-            forceSelection : true,
             listeners: {
                 select: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         this.clearValue();
                         this.reset();
                         claimOwnerId = -1;
@@ -68,7 +67,7 @@
                     }
                 },
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -119,10 +118,9 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
-                forceSelection : true,
                 listeners: {
                     select:function() {
-                        if(this.getRawValue() == "") {
+                        if(this.getRawValue() === "") {
                             this.clearValue();
                             this.reset();
                             workgroupId = -1;
@@ -176,11 +174,11 @@
     //XXX 'input drop down' validation does not work as it should - check if this can be reomoved when ExtJs will be upgraded
     function validateComboBox(){
     	var mesBox = $("#OwnershippAssignmentMessageBox");
-    	if ($("#claimOwnerComboId").val() == "--- Please Select ---" || $("#workgroupComboId").val() == "--- Please Select ---") {
+    	if ($("#claimOwnerComboId").val() === "--- Please Select ---" || $("#workgroupComboId").val() === "--- Please Select ---") {
     		mesBox.empty();
-    		if($("#claimOwnerComboId").val() == "--- Please Select ---")
+    		if($("#claimOwnerComboId").val() === "--- Please Select ---")
     			mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
-    		if($("#workgroupComboId").val() == "--- Please Select ---")
+    		if($("#workgroupComboId").val() === "--- Please Select ---")
     			mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
     		return false;
     	} else {
@@ -195,14 +193,13 @@
         var co = $("[name='claimOwnerIdField']");
         var wo = $("[name='workgroupIdField']");
     	var mesBox = $("#OwnershippAssignmentMessageBox");
-    	if (co.val() == "")
+    	if (co.val() === "")
     		co.val(-1);
-    	if (wo.val() == "")
+    	if (wo.val() === "")
     		wo.val(-1);
     	
     	 if (validateComboBox()) {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//         	$("#formOwnershipAssignmentAction").submit();
                 choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } 
         

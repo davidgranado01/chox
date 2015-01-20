@@ -34,12 +34,11 @@
 
     function doInvoiceExcalatedFormSubmit(action){
 
-//        actionPanel.registerAction(action);
         $("#invoiceExcalatedFormName").val(action);
         
         $("form#invoiceExcalatedForm #rejecDescId").rules("remove");
         $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("remove");
-        if(action=="rejectInvoice"){
+        if(action==="rejectInvoice"){
             $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
@@ -55,14 +54,13 @@
 
         if($("#invoiceExcalatedForm").valid()){
 
-            if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceExcalatedForm"));}else{return false;}})){
+            if (action==='rejectInvoice') {
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceExcalatedForm"));}else{return false;}})){
                     return;
                 }
             }
             else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//                $("form#invoiceExcalatedForm").submit();
                 choxJqueryHttpSubmit($("form#invoiceExcalatedForm"));
             }
             
@@ -80,11 +78,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
     

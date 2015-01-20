@@ -55,7 +55,7 @@
         
             
         var userManagementPagingBar = new Ext.PagingToolbar({
-            pageSize: (function(){return ($.browser.mozilla == true ? 22 : 23);}()),
+            pageSize: (function(){return ($.browser.mozilla === true ? 22 : 23);}()),
             store: userManagementgridStore,
             displayInfo: true,
             displayMsg: 'Displaying users {0} - {1} of {2}'
@@ -73,15 +73,15 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Email", width: 130, dataIndex: 'email', sortable: true, resizable: true},
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: false, resizable: true},
                 {header: "Password Expired?", width: 100, dataIndex: 'isExpired', sortable: true, resizable: true,renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
             height:540,
@@ -113,11 +113,11 @@
 
         var gridView = userManagementGrid.getStore().getAt(rowIndex);
         
-        if(columnIndex==0){
+        if(columnIndex===0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==4){
+        }else if(columnIndex===4){
             triggerStatusUpdateRecord(gridView);
-        }else if(columnIndex==6){
+        }else if(columnIndex===6){
             triggerIsExpiredUpdateRecord(gridView);
         }
         
@@ -135,7 +135,7 @@
             params:
                 {
                 start:0, 
-                limit:(function(){return ($.browser.mozilla == true ? 22 : 23);}())
+                limit:(function(){return ($.browser.mozilla === true ? 22 : 23);}())
             }
         });
 
@@ -215,7 +215,7 @@
         }
 
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
             var gridViewId = gridView.get("id");
             var url = "/prv/p/doTriggerUserAccountStatus.action";
             var param = {"objectId":gridViewId};
@@ -229,12 +229,12 @@
         $('div.chox-form-submit-result').html("");
         
         var aletMsg = "Are you sure you want to cancel the password expired status?";
-        if(gridView.get("isExpired") == "No"){
+        if(gridView.get("isExpired") === "No"){
             aletMsg = "Are you sure you want to mark this user's password as expired?";
         }
 
         Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
             var gridViewId = gridView.get("id");
             var url = "/prv/p/doTriggerPasswordExpiredStatus.action";
             var param = {"objectId":gridViewId};
@@ -254,13 +254,13 @@
         {
             if(response.isValid){
                 
-                if(response.resultType && response.resultType == 'New')
+                if(response.resultType && response.resultType === 'New')
                 {
                     var newObjectId =  parseInt(response.result);
                     var hvObjectId = elementToBlock.find("input[name='objectId']");
                     hvObjectId.val(newObjectId);
                 }
-                else if(response.resultType && response.resultType == 'Message')
+                else if(response.resultType && response.resultType === 'Message')
                 {
                     Ext.MessageBox.show({
                         title: '',
@@ -268,7 +268,6 @@
                         width:300,
                         buttons: Ext.MessageBox.OK
                     });
-                    //outputDiv.append("<p>" + response.result + "</p>");
                 }
                 else
                 {
@@ -305,7 +304,7 @@
 </script>
 
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div" style ="width:780">
+    <div id="chox-admin-col-div" style ="width:780px">
 
         <div id="header-title"><label>User Management</label></div>
 

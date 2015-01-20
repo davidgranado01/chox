@@ -80,7 +80,7 @@
                 forceSelection : true,
                 allowBlank : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue();
                         }
                     }
@@ -107,7 +107,7 @@
                 params : {"workgroupId":-1,"insurerId":insurerId},
                 reader : invSumRepClaimOwnerReader,
                 listeners: {load: function() {
-                        var  defaultName={'name':'--- ALL ---','id':-1}
+                        var  defaultName={'name':'--- ALL ---','id':-1};
                         this.insert(0, new Ext.data.Record(defaultName));
                     }
                 }
@@ -128,7 +128,7 @@
                 triggerAction : 'all',
                 forceSelection : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue(); this.reset();
                         }
                     }
@@ -150,7 +150,7 @@
                     url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                     reader :  invSumRepWorkgroupJsonReader,
                     listeners: {load: function() {
-                            var  defaultValue={'value':'--- ALL ---','text':-1}
+                            var  defaultValue={'value':'--- ALL ---','text':-1};
                             this.insert(0, new Ext.data.Record(defaultValue));
                         }
                     }
@@ -172,16 +172,15 @@
                     forceSelection : true,
                     listeners: {select: function () {
                             var workgroupId = -1;
-                            if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
+                            if (invSumRepWorkgroupCombo.getValue() !== null && invSumRepWorkgroupCombo.getValue() !== '--- ALL ---' && invSumRepWorkgroupCombo.getValue() !== "") {
                                 workgroupId = invSumRepWorkgroupCombo.getValue();
                             }
                             invSumRepClaimOwnerCombo.reset();
-//                             invSumRepClaimOwnerCombo.setValue('--- ALL ---');
                             invSumRepClaimOwnerStore.removeAll();
                             invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                         },
                         blur: function () {
-                            if(this.getRawValue() == "" ) {
+                            if(this.getRawValue() === "" ) {
                                 this.clearValue(); this.reset();
                                 invSumRepClaimOwnerCombo.reset();
                                 invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
@@ -208,7 +207,7 @@
                     data : mysuppliers,
                     reader : suppliersJsonReader,
                     listeners: {load: function() {
-                            var  defaultValue={'value':'--- ALL ---','text':-1}
+                            var  defaultValue={'value':'--- ALL ---','text':-1};
                             this.insert(0, new Ext.data.Record(defaultValue));
                         }
                     }
@@ -231,7 +230,7 @@
                     allowBlank : true,
                     forceSelection : true,
                     listeners: { blur: function () {
-                            if(this.getRawValue() == "" ) {
+                            if(this.getRawValue() === "" ) {
                                 this.clearValue();
                                 this.reset();
                             }
@@ -247,7 +246,6 @@
         function openReport()
         {
             if($("form#formReportParam").valid()){
-//                var queryString = $('#formReportParam').formSerialize();
                 var queryString = {};
                 $.each($('#formReportParam').serializeArray(), function() {queryString[this.name] = this.value;});
                 generateReport(queryString);

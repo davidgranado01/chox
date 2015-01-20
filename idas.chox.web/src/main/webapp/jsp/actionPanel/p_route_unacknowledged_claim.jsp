@@ -3,7 +3,6 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
-        //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
 
         var workgroupJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -36,17 +35,14 @@
             triggerAction: 'all',
             forceSelection : true,
             emptyText: '--- Please Select ---',
-            //                                selectOnFocus: true,
-            //                                forceSelection: true,
-            //                                allowBlank: false
             listeners: {
                 blur: function () {
-                        if(this.getRawValue() == "") {
+                        if(this.getRawValue() === "") {
                             this.clearValue(); this.reset();
                         }
                 },
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -62,7 +58,7 @@
             height           :  80,
             allowBlank       :  false,
             renderTo         : 'rejectionDescId',
-            disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
+            disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
         });
 
     });
@@ -70,10 +66,10 @@
     function validateRejectionComboBox(){
         var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
         msgBox.text("");
-        if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
-            if($("#reasonOfRejectionId").val() == "-1")
+        if ($("#reasonOfRejectionId").val() === "-1" || $("#rejecDescId").val() === "" ) {
+            if($("#reasonOfRejectionId").val() === "-1")
                 msgBox.text("You must choose a 'Reason For Rejection'").append('<br/>').show();
-            if($("#rejecDescId").val() == "" && msgBox.text().indexOf("Supporting Rejection Notes") == -1 )
+            if($("#rejecDescId").val() === "" && msgBox.text().indexOf("Supporting Rejection Notes") === -1 )
                 msgBox.append("You must enter 'Supporting Rejection Notes'").show();     
             return false;
         } else {
@@ -84,7 +80,7 @@
     
     function validateWorkgroupComboBox(){
         var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
-        if ($("#workgroupComboId").val() == "--- Please Select ---") {
+        if ($("#workgroupComboId").val() === "--- Please Select ---") {
             msgBox.text("You must select a 'Workgroup'").show();
             return false;
         } else {
@@ -99,15 +95,13 @@
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
         }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            $("form#routeUnacknowledgedUnroutedClaim").submit();
             choxJqueryHttpSubmit($("form#routeUnacknowledgedUnroutedClaim"));
         }
     }
 
     function rejectClaim(btn) {
-        if (btn == 'yes')    {
+        if (btn === 'yes')    {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            $("form#routeUnacknowledgedUnroutedClaim").submit();
             choxJqueryHttpSubmit($("form#routeUnacknowledgedUnroutedClaim"));
         }
         return false;
@@ -124,11 +118,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
 

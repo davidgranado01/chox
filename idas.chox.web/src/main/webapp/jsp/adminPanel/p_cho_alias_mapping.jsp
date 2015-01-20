@@ -39,7 +39,7 @@
                 {header: "CHO", width: 100, dataIndex: 'choName', sortable: true, resizable: true},
                 {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}},
+                        return "<a href='#' class='high-light-item'>Remove</a>";}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -58,7 +58,7 @@
 
     function cho_alias_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = cho_alias_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==2){
+        if(columnIndex===2){
             cho_alias_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -67,7 +67,7 @@
 
         var choAliasName = $("#choAliasName").val();
 
-        if(choAliasName!=null && choAliasName!=""){
+        if(choAliasName!==null && choAliasName!==""){
 
             var url = "/prv/p/addNewChoAlias.action";
             var param = {"choId":<s:property value="choId" />,"choAliasName":choAliasName};
@@ -96,7 +96,7 @@
 
                 outputDiv.addClass("chox-form-submit-result");
 
-                if(response.resultType && response.resultType == 'Message')
+                if(response.resultType && response.resultType === 'Message')
                 {
                     choAlias_doRefreshPage();
                 }
@@ -136,15 +136,12 @@
     <s:if test="isChoxAdmin">
                 choAdminTabs.activate(tabIndex); 
     </s:if>
-    // <s:else >
-     //           InsurerMainPanelTabs.activate(tabIndex);
-    // </s:else>
             });
         }
 
         function cho_alias_triggerStatusRemoveRecord(gridView){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this alias?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var choAliasId = gridView.get("id");
                 var url = "/prv/p/removeChoAlias.action";
                 var param = {"choAliasId" : choAliasId};

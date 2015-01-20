@@ -182,7 +182,6 @@ function assignManualInvoiceSubmit(){
     }
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//        $("#updateManualInvoicePaymentForm").submit();
         return true;
     }
     return false;

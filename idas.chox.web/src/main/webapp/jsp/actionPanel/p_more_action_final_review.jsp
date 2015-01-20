@@ -8,15 +8,14 @@
 
         finalReviewRequiredOrig = $("#finalReviewRequiredOrigId").val();
 
-        if (finalReviewRequiredOrig == 'true') {
-//            $("#finalReviewReasonId").prop('disabled', true);
+        if (finalReviewRequiredOrig === 'true') {
             $("#finalReviewReasonId").attr('disabled', true);
         }
 
 
         // SETUP FORM VALIDATION
         var form = $("form#formUpdateFinalReview");
-        if (finalReviewRequiredOrig != 'true') {
+        if (finalReviewRequiredOrig !== 'true') {
             form.validate(
             {
                 errorLabelContainer: "#UpdateFinalReviewMessageBox",

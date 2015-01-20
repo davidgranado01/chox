@@ -469,7 +469,7 @@
 
         function toggleVisibility() {
 
-            visibilityInternal = $('input[name=visibilityType]:checked', '#claimTaskForm').val() == 1;
+            visibilityInternal = $('input[name=visibilityType]:checked', '#claimTaskForm').val() === 1;
             if (isINS && visibilityInternal) {
                 // Show the visibility role combo
                 Ext.getCmp('claimVisibilityRoleComboId').show();

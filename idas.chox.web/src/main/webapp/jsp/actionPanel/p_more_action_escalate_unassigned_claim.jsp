@@ -38,12 +38,12 @@
                                 selectOnFocus: true,
                                 forceSelection : true,
                                 listeners: {blur: function () {
-                                                if(this.getRawValue() == "") {
+                                                if(this.getRawValue() === "") {
                                                     this.clearValue(); this.reset();
                                                 }
                                             },
                                             specialkey:function (el, e) {
-                                                        if(e.keyCode == e.ENTER) {
+                                                        if(e.keyCode === e.ENTER) {
                                                             e.preventDefault();
                                                         }
                                             }
@@ -52,7 +52,7 @@
             workgroupStore.load({ params : {"claimId":claimId}});
             
             choxJqueryHttpSubmit($("form#formEscalateClaimAction"), function() {
-                if ($("#escalateWorkgroupComboId").val() != "--- Please Select ---") {
+                if ($("#escalateWorkgroupComboId").val() !== "--- Please Select ---") {
                   $("#EscalateClaimMessageBox").text("").show();
                   return true;
                 }

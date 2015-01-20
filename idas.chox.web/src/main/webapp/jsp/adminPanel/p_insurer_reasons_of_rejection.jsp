@@ -122,8 +122,6 @@ Ext.onReady(function() {
                                 timeout: 3000,
                                 error: ui.onSubmitError
                             };
-    
-//                            $("form#rorEditForm").ajaxSubmit(op);
                             choxJqueryAjaxSubmit($("form#rorEditForm"), op);
                         }
                     }
