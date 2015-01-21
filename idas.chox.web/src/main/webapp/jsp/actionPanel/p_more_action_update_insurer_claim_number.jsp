@@ -32,9 +32,9 @@
         };
 
         ajax.loadJson2(url, param, function(data){
-            if(data.result && data.resultType=='YesNo'){
+            if(data.result && data.resultType==='YesNo'){
                 Ext.MessageBox.confirm('Confirm', data.result,function(btn){
-                if(btn=='yes')
+                if(btn==='yes')
                 {
                     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                     choxJqueryHttpSubmit(form);

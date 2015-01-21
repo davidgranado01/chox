@@ -31,7 +31,7 @@
         function openFile(url,name)
         {
             newwindow=window.open(url,name);
-            if (window.focus) {newwindow.focus()}
+            if (window.focus) {newwindow.focus();}
         }
 
         function doCancel(){

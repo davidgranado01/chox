@@ -56,7 +56,7 @@
         var title = "History";
         var msg = "<b>Created Date</b>: " + historyItem.get("createdDate")
             + "<br/><b>Created By</b>: " + historyItem.get("createdBy")
-            + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
+            + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative");
         propmtMsg(title, msg);
     }
     

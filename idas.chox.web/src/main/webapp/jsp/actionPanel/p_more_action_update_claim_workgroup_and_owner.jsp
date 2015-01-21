@@ -10,16 +10,16 @@
     Ext.onReady(function() {
 
         // GET CLAIM INFORMATION
-        if($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
+        if($("#claimClaimOwnerId").val()!==null && $("#claimClaimOwnerId").val()!==""){
             claimOwnerId = $("#claimClaimOwnerId").val();
         }
 
-        if($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
+        if($("#claimWorkgroupEnable").val()!==null && $("#claimWorkgroupEnable").val()!==""){
             isWorkgroupEnable = $("#claimWorkgroupEnable").val();
         }
 
         if(isWorkgroupEnable){
-            if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
+            if($("#claimWorkgroupId").val()!==null && $("#claimWorkgroupId").val()!==""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
 
             }
@@ -47,7 +47,7 @@
     });
 
     function doUpdateOwnershipWorkgroupChange(){
-        if($("#uosWorkgroupId").val()!=null){
+        if($("#uosWorkgroupId").val()!==null){
             selectedWorkgroupId = $("#uosWorkgroupId").val();
         }
         claimOwnerId = -1;

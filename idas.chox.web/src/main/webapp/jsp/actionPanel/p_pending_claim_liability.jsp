@@ -12,7 +12,7 @@ Ext.onReady(function() {
         height           :  80,
         allowBlank       :  false,
         renderTo         : 'rejectionDescJspfId',
-        disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
+        disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
     });
 
 });
@@ -27,11 +27,11 @@ var reasonOfRejectionDescStore = new Ext.data.Store({
 
 function refreshDesc(id){
     reasonOfRejectionDescStore.each(function(rec) {
-        if(id == rec.json.text){
+        if(id === rec.json.text){
             Ext.getCmp('rejecDescJspfId').setValue(rec.json.value);
         }
     });
-    if(id == -1 || id == '')
+    if(id === -1 || id === '')
         Ext.getCmp('rejecDescJspfId').setValue("");
 }
 </script>

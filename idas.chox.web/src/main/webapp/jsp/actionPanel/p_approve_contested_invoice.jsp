@@ -35,13 +35,12 @@
     function docontestedInvoiceRefToInsurerSubmit(action){
 
 
-//        actionPanel.registerAction(action);
         $("#contestedInvoiceRefToInsurernName").val(action);
 
         $("form#contestedInvoiceRefToInsurer #rejecDescId").rules("remove");
         $("form#contestedInvoiceRefToInsurer #appContInvReasonOfRejectionId").rules("remove");
         
-        if(action=="rejectInvoice"){
+        if(action==="rejectInvoice"){
             
             $("form#contestedInvoiceRefToInsurer #appContInvReasonOfRejectionId").rules("add", {
                 required: true,
@@ -61,18 +60,17 @@
 
         if($("form#contestedInvoiceRefToInsurer").valid()){
 
-            if (action=='rejectInvoice') {
+            if (action==='rejectInvoice') {
                 var reasonOfRejection = $("#appContInvReasonOfRejectionId").val();
-                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#contestedInvoiceRefToInsurer"));}else{return false;}})) {
+                if (reasonOfRejection === <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#contestedInvoiceRefToInsurer"));}else{return false;}})) {
                     return;
                 }
-                else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#contestedInvoiceRefToInsurer"));}else{return false;}})){
+                else if(reasonOfRejection !== <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#contestedInvoiceRefToInsurer"));}else{return false;}})){
                     return;
                 }
             }
             else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//                $("form#contestedInvoiceRefToInsurer").submit();
                 choxJqueryHttpSubmit($("form#contestedInvoiceRefToInsurer"));
             }
             
@@ -90,11 +88,11 @@
     
     function refreshDesc(id){
         reasonOfRejectionDescStore.each(function(rec) {
-            if(id == rec.json.text){
+            if(id === rec.json.text){
                 Ext.getCmp('rejecDescId').setValue(rec.json.value);
             }
         });
-        if(id == -1 || id == '')
+        if(id === -1 || id === '')
             Ext.getCmp('rejecDescId').setValue("");
     }
     

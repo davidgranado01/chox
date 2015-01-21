@@ -27,16 +27,14 @@
     });
      
     function updateInterimPaymentAction(action){
-    	if(action == 'updateInterimPaymentFullAndFinal'){
+    	if(action === 'updateInterimPaymentFullAndFinal'){
     		$("#updateInterimPaymentFormNameId").val(action);
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//        	$('#formUpdateInterimPayment').submit();
                 choxJqueryHttpSubmit($("form#formUpdateInterimPayment"));
     	}
     	else if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            $('#formUpdateInterimPayment').submit();
             choxJqueryHttpSubmit($("form#formUpdateInterimPayment"));
         }
     }

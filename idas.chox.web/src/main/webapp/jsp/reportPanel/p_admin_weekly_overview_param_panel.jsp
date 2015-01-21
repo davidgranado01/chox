@@ -96,7 +96,7 @@
                 forceSelection : true,
                 allowBlank : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue();
 
                         }
@@ -140,7 +140,7 @@
                 forceSelection : true,
                 allowBlank : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue();
                         }
                     }

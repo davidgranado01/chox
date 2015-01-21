@@ -31,7 +31,7 @@
 //        $("form#formUpdateCustomerVehicleDamageForm").submit();
         choxJqueryHttpSubmit($("form#formUpdateCustomerVehicleDamageForm"));
         // Update Hire Monitoring Total Loss field
-        if ($('#customerVehicleDamageisTotalLossId').is(':checked') == 1) {
+        if ($('#customerVehicleDamageisTotalLossId').is(':checked') === 1) {
             $("#isTotalLostCheckId").prop('checked', true);
         } else {
             $("#isTotalLostCheckId").prop('checked', false);

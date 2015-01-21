@@ -11,7 +11,6 @@
         
     function doMaskClaimDetailPage() {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//        return true;
     }
 </script>
 

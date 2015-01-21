@@ -14,7 +14,6 @@
 
     Ext.onReady(function(){
 
-        // isNew = isTrue($("#isNew").val());
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
             var re = new RegExp(regexp);
@@ -131,7 +130,6 @@
                 {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: choHandleActivate}},
                 {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getChoAliasPage.action', params:{"choId" : '<s:property value="objectId" />'}})},
                 {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: choHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 3}})}
-                //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: choHandleActivate}, autoLoad: {url:"/prv/p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
 

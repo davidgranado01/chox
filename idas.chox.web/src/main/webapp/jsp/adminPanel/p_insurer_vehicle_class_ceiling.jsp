@@ -56,7 +56,7 @@
                 }
                 return true;
             }
-        )
+        );
 
         // ADD FORM
         var form = $("form#formVehicleClassCeilingDetail");

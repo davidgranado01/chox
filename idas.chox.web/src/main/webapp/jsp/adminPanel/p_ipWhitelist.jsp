@@ -14,9 +14,9 @@
 
     Ext.onReady(function(){
         
-        if ('<s:property value="orgType"/>' == 3) {
+        if ('<s:property value="orgType"/>' === 3) {
             choId = '<s:property value="orgId"/>';
-        } else if ('<s:property value="orgType"/>' == 2) {
+        } else if ('<s:property value="orgType"/>' === 2) {
             insId = '<s:property value="orgId"/>';
         }
         
@@ -98,7 +98,7 @@
                 {header: "Description",  width: 90, dataIndex: 'description', sortable: true, resizable: true,editor: {xtype: 'textfield',allowBlank: false, emptyText  : 'Description is required'}},
                 {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
-                {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
+                {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             renderTo:'ipWhitelist_gridviewGridPanel',
             height:450,
@@ -116,7 +116,7 @@
     function ipWhitelist_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = ipWhitelist_gridviewGrid.getStore().getAt(rowIndex);
         
-        if(columnIndex==4){
+        if(columnIndex===4){
             ipWhitelist_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -127,14 +127,14 @@
         var ipWhitelistIPAddress = $("#ipWhitelistIPAddressId").val().trim();
         var ipWhitelistDescription = $("#ipWhitelistDescriptionId").val().trim();
         
-        if (ipWhitelistIPAddress==null || $.trim(ipWhitelistIPAddress) == "" || ipWhitelistDescription==null || $.trim(ipWhitelistDescription) == "") {
-            if((ipWhitelistIPAddress==null || $.trim(ipWhitelistIPAddress) == "") && (ipWhitelistDescription==null || $.trim(ipWhitelistDescription) == "")){
+        if (ipWhitelistIPAddress===null || $.trim(ipWhitelistIPAddress) === "" || ipWhitelistDescription===null || $.trim(ipWhitelistDescription) === "") {
+            if((ipWhitelistIPAddress===null || $.trim(ipWhitelistIPAddress) === "") && (ipWhitelistDescription===null || $.trim(ipWhitelistDescription) === "")){
                 triggerCss("div#CDInsureripWhitelistMessageBox", true);
                 $("div#CDInsureripWhitelistMessageBox").html("Please enter a 'IP Address',&nbsp;&nbsp;").append("&nbsp;&nbsp;Please enter a 'Description'");
-            } else if (ipWhitelistIPAddress==null || $.trim(ipWhitelistIPAddress) == ""){
+            } else if (ipWhitelistIPAddress===null || $.trim(ipWhitelistIPAddress) === ""){
                 triggerCss("div#CDInsureripWhitelistMessageBox", true);
                 $("div#CDInsureripWhitelistMessageBox").html("Please enter a 'IP Address'");
-            } else if(ipWhitelistDescription==null || $.trim(ipWhitelistDescription) == ""){
+            } else if(ipWhitelistDescription===null || $.trim(ipWhitelistDescription) === ""){
                 triggerCss("div#CDInsureripWhitelistMessageBox", true);
                 $("div#CDInsureripWhitelistMessageBox").html("Please enter a 'Description'");
             }
@@ -174,7 +174,7 @@
             buttons: Ext.MessageBox.OKCANCEL,
             icon : Ext.MessageBox.QUESTION,
             fn: function removeipWhitelist(btn){
-                if(btn=='ok'){
+                if(btn==='ok'){
                     var ipWhitelistId = gridView.get("id");
                     var url = "/prv/p/deleteIPWhitelist.action";
                     var param = {"id": ipWhitelistId};

@@ -51,15 +51,15 @@
             renderTo:'commentsGrid',
             enableHdMenu:false,
             layout:'fit',
-            viewConfig:{forceFit:true},
             columns: [
                 {header: "Created", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Message", width: 540, dataIndex: 'comment', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}}
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}}
             ],
             viewConfig:{
+                forceFit:true,
                 getRowClass: function(record, index) {
                     var c = record.get('visibilityType');
                     if(c>0){
@@ -80,7 +80,7 @@
         var comment = commentsGrid.getStore().getAt(rowIndex);
         var fileId = comment.get("id");
         
-        if(columnIndex == 2){
+        if(columnIndex === 2){
             var title="Notes";
             var msg = "<b>Created Date</b>: " + comment.get("createdDate");
             msg += "<br/><b>Created By</b>: " + comment.get("createdBy");
@@ -92,7 +92,7 @@
             msg += "</b>: <br/>" + comment.get("comment");
             propmtMsg(title, getFormatedMessage(msg));
         }
-        else if(columnIndex == 3 && comment.get("delete")!=""){
+        else if(columnIndex === 3 && comment.get("delete")!==""){
             deleteComment(fileId);
         }
     }
@@ -105,7 +105,7 @@
             width      : 400,
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
-                if(btn=='ok') {
+                if(btn==='ok') {
                     var url = "/prv/p/doDeleteComment.action";
                     var param = {"commentId":a,"claimId":<s:property value="claimId" />};
                     ajax.loadJson2(url, param, function(data){

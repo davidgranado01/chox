@@ -7,7 +7,7 @@
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
 
-        if($("#workgroupHtmlId").val()!=null && $("#workgroupHtmlId").val()!=""){
+        if($("#workgroupHtmlId").val()!==null && $("#workgroupHtmlId").val()!==""){
             selectedWorkgroupId = $("#workgroupHtmlId").val();
         }
 

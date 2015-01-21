@@ -40,7 +40,6 @@
 
         if($("#formClaimReviewByEngAction").valid()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//            $("form#formClaimReviewByEngAction").submit();
             choxJqueryHttpSubmit($("form#formClaimReviewByEngAction"));
         }
     }

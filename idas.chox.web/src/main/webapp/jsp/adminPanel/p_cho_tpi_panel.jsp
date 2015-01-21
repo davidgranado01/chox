@@ -12,48 +12,6 @@
     var TpiInsurerWorkgroupOwnerStore;
 
     Ext.onReady(function(){
-
-
-//        TpiInsurerStore = new Ext.data.Store( {
-//            proxy : new Ext.data.HttpProxy( {
-//                url : ChoxAppname + '/prv/p/listBillingOrgData.action'
-//            }),
-//            reader : new Ext.data.JsonReader( {
-//                fields : [ 'orgId', 'name' ],
-//                root : 'results'
-//            }),
-//            baseParams:{
-//                billingType:Chox.billing.billingmode
-//            }
-//        });
-//
-//
-//        TpiInsurerWorkgroupStore = new Ext.data.Store( {
-//            proxy : new Ext.data.HttpProxy( {
-//                url : ChoxAppname + '/prv/p/listBillingOrgData.action'
-//            }),
-//            reader : new Ext.data.JsonReader( {
-//                fields : [ 'orgId', 'name' ],
-//                root : 'results'
-//            }),
-//            baseParams:{
-//                billingType:Chox.billing.billingmode
-//            }
-//        });
-//
-//        TpiInsurerWorkgroupOwnerStore = new Ext.data.Store( {
-//            proxy : new Ext.data.HttpProxy( {
-//                url : ChoxAppname + '/prv/p/listBillingOrgData.action'
-//            }),
-//            reader : new Ext.data.JsonReader( {
-//                fields : [ 'orgId', 'name' ],
-//                root : 'results'
-//            }),
-//            baseParams:{
-//                billingType:Chox.billing.billingmode
-//            }
-//        });
-
         var sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true});
         var tbar = new Ext.Toolbar({
             items:[{
@@ -61,31 +19,16 @@
                     handler : function() {
 
                         Ext.MessageBox.alert('Status', 'Sorry this function is not yet implemented.' );
-//                        cb.billingFormObj.getForm().reset();
-//                        cb.billingWindowObj.show();
                     }
                 },'-','',{
                     text:'Edit ',
                     handler : function(){
                         Ext.MessageBox.alert('Status', 'Sorry this function is not yet implemented.' );
-                        //Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this schedule?', deleteSchedule );
                     }
                 },'-','',{
                     text:'Delete ',
                     handler : function() {
                         Ext.MessageBox.alert('Status', 'Sorry this function is not yet implemented.' );
-//                        var selected = cb.schSel.getSelected();
-//                        if( selected ){
-//                            var rptName;
-//                            if ( Chox.billing.billingmode =='insurer'){
-//                                rptName = 'BillingInsurerReport-Excel';
-//                            }else{
-//                                rptName = 'BillingChoReport-Excel';
-//                            }
-//                            var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
-//
-//                            location.href = rpthref;
-//                        }
                     }
                 }
             ]
@@ -145,23 +88,11 @@
     });
 
     function insCho_loadGridViewList(){
-        //alert("load method called",'<s:property value="objectId" />');
         insChoTpi_gridviewData.load({params:{chorganisationId:<s:property value="objectId" />}});
     }
 
     function insCho_recordOnclickTpiMapping(grid, rowIndex, columnIndex, e){
-
          Ext.MessageBox.alert('Status', 'Sorry this function is not yet implemented.' );
-
-//        var gridView = insChoTpi_gridviewGrid.getStore().getAt(rowIndex);
-//        if(columnIndex==7){
-//            var chorganisationId = gridView.get("id");
-//            alert(chorganisationId);
-//            var url = "/prv/p/doRemoveTpiMapping.action";
-//            var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
-//            ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);
-//        }
-
     }
 
 </script>

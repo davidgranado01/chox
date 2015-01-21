@@ -61,7 +61,7 @@
                 params : {"workgroupId":-1,"insurerId":insurerId},
                 reader : overviewSumRepClaimOwnerReader,
                 listeners: {load: function() {
-                        var  defaultName={'name':'--- ALL ---','id':-1}
+                        var  defaultName={'name':'--- ALL ---','id':-1};
                         this.insert(0, new Ext.data.Record(defaultName));
                     }
                 }
@@ -82,7 +82,7 @@
                 triggerAction : 'all',
                 forceSelection : true,
                 listeners: { blur: function () {
-                        if(this.getRawValue() == "" ) {
+                        if(this.getRawValue() === "" ) {
                             this.clearValue(); this.reset();
                         }
                     }
@@ -104,7 +104,7 @@
                     url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                     reader :  overviewSumRepWorkgroupJsonReader,
                     listeners: {load: function() {
-                            var  defaultValue={'value':'--- ALL ---','text':-1}
+                            var  defaultValue={'value':'--- ALL ---','text':-1};
                             this.insert(0, new Ext.data.Record(defaultValue));
                         }
                     }
@@ -126,7 +126,7 @@
                     forceSelection : true,
                     listeners: {select: function () {
                             var workgroupId = -1;
-                            if (overviewSumRepWorkgroupCombo.getValue() != null && overviewSumRepWorkgroupCombo.getValue() != '--- ALL ---' && overviewSumRepWorkgroupCombo.getValue() != "") {
+                            if (overviewSumRepWorkgroupCombo.getValue() !== null && overviewSumRepWorkgroupCombo.getValue() !== '--- ALL ---' && overviewSumRepWorkgroupCombo.getValue() !== "") {
                                 workgroupId = overviewSumRepWorkgroupCombo.getValue();
                             }
                             //                                                        var insurerId = $("#userInsurerId").val();
@@ -135,7 +135,7 @@
                             overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                         },
                         blur: function () {
-                            if(this.getRawValue() == "" ) {
+                            if(this.getRawValue() === "" ) {
                                 this.clearValue(); this.reset();
                                 overviewSumRepClaimOwnerCombo.reset();
                                 overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});

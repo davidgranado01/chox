@@ -83,7 +83,7 @@
         var repairBookInDt = $("#repairBookInDatePH :input").val();
         var repairCompletionDt = $("#repairCompletionDatePH :input").val();
             
-        if(repairBookInDt!="" && repairCompletionDt!=""){
+        if(repairBookInDt!=="" && repairCompletionDt!==""){
             var dRepairBookInDt = getDate(repairBookInDt);
             var dRepairCompletionDt = getDate(repairCompletionDt);
             bFlag = (dRepairBookInDt <= dRepairCompletionDt);
@@ -238,30 +238,30 @@
         
         if (customerVehicleTotalLossId) { // In read screen
             var originalValue = $('#customerVehicleTotalLossOriginalId').html();
-            if ($('#isTotalLostCheckId').is(':checked') == 1) {
+            if ($('#isTotalLostCheckId').is(':checked') === 1) {
                 document.getElementById("customerVehicleTotalLossId").innerHTML = 'Yes';
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(No)';
                 }
             }
             else {
                 document.getElementById("customerVehicleTotalLossId").innerHTML = 'No';
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(Yes)';
                 }
             }            
         }
         else { // in write screen
             var originalValue = $('#customerVehicleTotalLossOriginalDescId').html();
-            if ($('#isTotalLostCheckId').is(':checked') == 1) {
+            if ($('#isTotalLostCheckId').is(':checked') === 1) {
                 $("#customerVehicleDamageisTotalLossId").prop('checked', true);
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("customerVehicleTotalLossOriginalDescId").innerHTML = '(No)';
                 }
             }
             else {
                 $("#customerVehicleDamageisTotalLossId").prop('checked', false);
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("customerVehicleTotalLossOriginalDescId").innerHTML = '(Yes)';
                 }
             }
@@ -286,13 +286,13 @@
             var originalValue = $('#managingRepairCheckboxReadScreenOriginalId').html();
             if ($('#managingRepairCheckId').is(':checked') === true) {
                 document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'Yes';
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(No)';
                 }
             }
             else {
                 document.getElementById("managingRepairCheckboxReadScreenId").innerHTML = 'No';
-                if (originalValue.length == 0) {
+                if (originalValue.length === 0) {
                     document.getElementById("managingRepairCheckboxReadScreenOriginalId").innerHTML = '(Yes)';
                 }
             }            

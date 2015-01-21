@@ -13,7 +13,7 @@
 	
     Ext.onReady(function() {
     	
-    	$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />')
+    	$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />');
     	if(interimPayMade){
     		$('#radioBox').show();
     	} else {
@@ -52,7 +52,7 @@
     
     function setPaymentField(){
     	$('#ACKmMakeInterimPaymentMessageBox').empty();
-    	if($('#interimPayAdd').attr('checked') != undefined){
+    	if($('#interimPayAdd').attr('checked') !== undefined){
     		$('#additionalInterim').show();
     		$('#additionalInterimInfo').show();
     		$('#newTotalInterim').hide();
@@ -74,7 +74,7 @@
     }
     
     function submitInterim(action){
-    	if (action == 'additional'){
+    	if (action === 'additional'){
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("add", {
                 required: true,
@@ -87,7 +87,7 @@
                     max : "The 'Additional Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'",
                     number:"The 'Additional Interim Payment Amount' Must Be A Monetary Value"}
             });
-    	} else if (action == 'newTotal' && interimPayMade){
+    	} else if (action === 'newTotal' && interimPayMade){
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
                 required: true,
@@ -100,7 +100,7 @@
                     max : "The 'New Total Interim Payment Amount' Must Be Less Than or Equal To 'Total To Pay'",
                     number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
             });
-    	} else if (action == 'newTotal' && !interimPayMade) {
+    	} else if (action === 'newTotal' && !interimPayMade) {
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
                 required: true,
@@ -116,7 +116,6 @@
         }
     	if($("form#formMakeInterimPayment").valid()) {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-//    	    $('#formMakeInterimPayment').submit();
             choxJqueryHttpSubmit($("form#formMakeInterimPayment"));
         }
     }

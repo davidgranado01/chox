@@ -26,7 +26,7 @@
                 allowBlank       :  false,
                 renderTo         : 'phoneAddressId'
                
-            })
+            });
 
             var EmailField = new Ext.form.TextField({
                 name             : 'iEmail',
@@ -34,7 +34,7 @@
                 width            :  200,
                 allowBlank       :  false,
                 renderTo         : 'EmailAddressId'
-            })
+            });
 
             var SubjectField = new Ext.form.TextField({
                 name             : 'iSubject',
@@ -42,7 +42,7 @@
                 width            :  300,
                 allowBlank       :  false,
                 renderTo         : 'SubjectId'
-            })
+            });
 
             var MessageField = new Ext.form.TextArea({
                 name             : 'iMessage',
@@ -51,7 +51,7 @@
                 height           :  200,
                 allowBlank       :  false,
                 renderTo         :  'MessageAreaId'
-            })
+            });
 
             var op = {
                 beforeSubmit:  onBeforeSubmit,
@@ -131,7 +131,7 @@
         function closeForm(){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close the form?',doClose);
             function doClose(btn){
-                if(btn=='yes') {
+                if(btn==='yes') {
                     window.close();
                 }
                 return false;

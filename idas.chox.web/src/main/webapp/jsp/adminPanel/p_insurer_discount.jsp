@@ -13,7 +13,6 @@
     var insurerDiscountSupplierFilterCombo;
     var insurerDiscountTypeCombo;
     var insurerDiscountRowEditor;
-//    var insurerDiscountDefaultDropdownValue={'value':'--- Please Select ---','text':-1};
     var choId = -1;
     var discountTypeId = -1;
     var insdiscountFromDateEditor;
@@ -35,13 +34,13 @@
                 if(!date){
                     return;
                 }
-                if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
+                if (field.startDateField && (!this.dateRangeMax || (date.getTime() !== this.dateRangeMax.getTime()))) {
                     var start = Ext.getCmp(field.startDateField);
                     start.setMaxValue(date);
                     start.validate();
                     this.dateRangeMax = date;
                 } 
-                else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+                else if (field.endDateField && (!this.dateRangeMin || (date.getTime() !== this.dateRangeMin.getTime()))) {
                     var end = Ext.getCmp(field.endDateField);
                     end.setMinValue(date);
                     end.validate();
@@ -93,7 +92,6 @@
             id:"insurerDiscountPercentageId",
             name:"discountPercentage",
             width:40,
-//            allowBlank:false,
             allowNegative : false,
             maxValue : 100,
             renderTo:'discountPercentageId'
@@ -105,7 +103,6 @@
             name: 'dateFrom',
             renderTo: 'discountDateFromId',
             width: 95,
-//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true,
             vtype: 'daterange',
@@ -117,7 +114,6 @@
             name: 'dateTo',
             renderTo: 'discountDateToId',
             width: 95,
-//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true,
             vtype: 'daterange',
@@ -127,13 +123,11 @@
         var appliedToPenalties = new Ext.form.Checkbox ({
             id : 'applyPenaltiesToInsurerTypeId',
             name : 'applyPenalties',
-//            checked: false,
             renderTo : 'appliedToPenaltiesInsurerDiscountId'
         });
 
         insurerDiscountSupplierFilterCombo = new Ext.form.ComboBox({
             store : insurerDiscountSuppliersStore,
-//            id:'insurerDiscountSupplierId',
             name : 'insurerDiscountSupplierId',
             width: 150,
             listWidth: 150,
@@ -142,11 +136,10 @@
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
-//            valueNotFoundText : '--- Please Select ---',
             renderTo : 'insurerDiscountSuppliers',
             listeners: {
                 select: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue();
                         choId = -1;
                         insurerDiscount_loadGridViewList();
@@ -157,12 +150,10 @@
                 }
             }
         });
-//        insurerDiscountSupplierFilterCombo.setValue('--- Please Select ---');
         
         
         insurerDiscountTypeCombo = new Ext.form.ComboBox({
                 store : insurerDiscountTypeStore,
-//                id:'insurerDiscountTypeComboIdId',
                 name : 'insurerDiscountTypeComboId',
                 width: 95,
                 listWidth: 95,
@@ -175,7 +166,7 @@
                 renderTo : 'discountTypeComboId',
                 listeners: {
                 select: function () {
-                    if(this.getRawValue() == "" ) {
+                    if(this.getRawValue() === "" ) {
                         this.clearValue();
                         discountTypeId = -1;
                     }else{
@@ -189,7 +180,6 @@
         insdiscountFromDateEditor = new Ext.form.DateField({
             id : 'insdisfromdateId',
             name: 'insdateFrom',
-//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true
             ,listeners: {
@@ -208,7 +198,6 @@
         insdiscountToDateEditor = new Ext.form.DateField({
             id : 'insdistodateId',
             name: 'insdateTo',
-//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true
             ,listeners: {change : function(){
@@ -231,7 +220,6 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-//                allowBlank : false,
                 fieldLabel : 'Type',
                 name : ''
         });
@@ -309,11 +297,11 @@
                 {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: false, resizable: false,editor: insdiscountToDateEditor},
                 {header: "Discount", width: 60, dataIndex: 'discount',  sortable: false, resizable: false,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
                 {header: "Discount Type", width: 60, dataIndex: 'insurerDiscountType',  sortable: false, resizable: false, editor: insdiscountTypeEditor},
-                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: false, resizable: false,editor: {xtype: 'checkbox', listeners:{beforeshow:function(){this.setValue(applyToPenaltiesChecked)}}}},
+                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: false, resizable: false,editor: {xtype: 'checkbox', listeners:{beforeshow:function(){this.setValue(applyToPenaltiesChecked);}}}},
                 {header: "CHO Name", width: 170, dataIndex: 'choName', sortable: false, resizable: false,editable : false},
                 {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: false, resizable: false,editable : false},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: false,editable : false},
-                {header: "Action", width: 70, dataIndex: 'Remove', sortable: false, resizable: false,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
+                {header: "Action", width: 70, dataIndex: 'Remove', sortable: false, resizable: false,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             renderTo:'insurerDiscount_gridviewGridPanel',
             height:300,
@@ -326,7 +314,7 @@
         	    "checkCHOId",
         	    function(value, element) {
 //                        var choId = insurerDiscountSupplierFilterCombo.getValue();
-                        if (choId==-1 || choId == null || choId ==  '' || choId == 0) {
+                        if (choId===-1 || choId === null || choId ===  '' || choId === 0) {
                             return false;
                         }
                     return true;
@@ -336,8 +324,7 @@
         $.validator.addMethod(
         	    "checkDiscountType",
         	    function(value, element) {
-//                        var discountTypeId = insurerDiscountTypeCombo.getValue();
-                        if (discountTypeId==-1 || discountTypeId == null || discountTypeId ==  '' || discountTypeId == 0){
+                        if (discountTypeId===-1 || discountTypeId === null || discountTypeId ===  '' || discountTypeId === 0){
                             return false;
                         }
                     return true;
@@ -353,13 +340,11 @@
                 insurerDiscountTypeComboId : {checkDiscountType:true},
                 insurerDiscountSupplierId : { checkCHOId:true },
                 dateFrom :{required:true, dateITA:true, max:function(){
-                	var sd = Ext.get('InsurerDiscountDateFromId').getValue().split("/");
+                    var sd = Ext.get('InsurerDiscountDateFromId').getValue().split("/");
                     var ed = Ext.get('InsurerDiscountDateToId').getValue().split("/");
                     var time = new Date(sd[2],sd[1] - 1 ,sd[0]).getTime() - new Date(ed[2],ed[1] - 1 ,ed[0]).getTime();
-	                if(time > 0)
-                        return true;
-	                }
-                },
+	            if(time > 0)return true;
+	        }},
                 dateTo :{required:true, dateITA:true},
                 discountPercentage : {required:true,number:true, max:100}
                 
@@ -397,12 +382,12 @@
 
     function insurerDiscount_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = insurerDiscount_gridviewGrid.getStore().getAt(rowIndex);
-        if (gridView.get("appliedToPenalties")== 'Yes') {
+        if (gridView.get("appliedToPenalties")=== 'Yes') {
             applyToPenaltiesChecked = true;
         } else {
             applyToPenaltiesChecked = false;
         }
-        if(columnIndex == 8){
+        if(columnIndex === 8){
             insurerDiscount_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -416,7 +401,7 @@
             buttons: Ext.MessageBox.OKCANCEL,
             icon : Ext.MessageBox.QUESTION,
             fn: function removeInsurerDiscount(btn){
-                if(btn=='ok'){
+                if(btn==='ok'){
                     var insurerDiscountId = gridView.get("discountId");
                     var url = "/prv/p/deleteInsurerDiscount.action";
                     var param = {"discountId": insurerDiscountId};

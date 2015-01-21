@@ -13,6 +13,6 @@
             icon : Ext.MessageBox.ERROR,
             fn: logout
         });
-    })
+    });
 
 </script>

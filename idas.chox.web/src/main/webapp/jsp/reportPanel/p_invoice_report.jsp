@@ -28,7 +28,7 @@
                     url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
                     reader : invoiceReportWorkgroupJsonReader,
                     listeners: {load: function() {
-                            var  defaultName={'value':'--- All ---','text':-1}
+                            var  defaultName={'value':'--- All ---','text':-1};
                             this.insert(0, new Ext.data.Record(defaultName));
                             }
                     }
@@ -51,12 +51,12 @@
                     selectOnFocus : true,
                     forceSelection : true,
                     listeners: {blur: function () {
-                            if(this.getRawValue() == "" ) {
+                            if(this.getRawValue() === "" ) {
                                 this.clearValue();
                             }
                         },
                         select: function () {
-                            if (invoiceReportWorkgroupCombo.getValue() == "--- All ---") {
+                            if (invoiceReportWorkgroupCombo.getValue() === "--- All ---") {
                             	invoiceReportWorkgroupCombo.clearValue();
                             	invoiceReportWorkgroupCombo.reset();
                             }                             
@@ -73,7 +73,7 @@
                     	supplierCombo:{
                     		equalTo: "--- Please Select ---",
                             required:function(){
-                            	if(Ext.get('supplierCombo').getValue() != "--- Please Select ---")
+                            	if(Ext.get('supplierCombo').getValue() !== "--- Please Select ---")
                             		return true;
                             	else
                             		return false;
@@ -147,7 +147,7 @@
 	                    allowBlank : true,
 	                    forceSelection : true,
 	                    listeners: { blur: function () {
-	                            if(this.getRawValue() == "" ) {
+	                            if(this.getRawValue() === "" ) {
 	                                this.clearValue();
 	                                this.reset();
 	                            }
@@ -161,11 +161,11 @@
     
     function openInvoiceReport(){
     	var msgBox = $('#errorMsgBox');
-        if(Ext.get('supplierCombo').getValue() == "--- Please Select ---"){
+        if(Ext.get('supplierCombo').getValue() === "--- Please Select ---"){
         	msgBox.empty();
         	msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
         }
-        if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
+        if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() !== "--- Please Select ---"){
 //            var queryString = $('form#formInvoiceReportParam').formSerialize();
             var queryString = {};
             $.each($('form#formInvoiceReportParam').serializeArray(), function() {queryString[this.name] = this.value;});

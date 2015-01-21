@@ -11,7 +11,7 @@
             //begin patch
             // Store not loaded yet? Set value when it *is* loaded.
             // Defer the setValue call until after the next load.
-            if (this.store.getCount() == 0) {
+            if (this.store.getCount() === 0) {
                 this.store.on('load',
                 this.setValue.createDelegate(this, [v]), null, {single: true});
                 return;
@@ -73,12 +73,12 @@
                             emptyText : '--- Please Select ---',
                             listeners: { 
                                 blur: function () {
-                                   if(this.getRawValue() == "" ) {
+                                   if(this.getRawValue() === "" ) {
                                        this.clearValue(); this.reset();
                                        }
                                    },
                                 specialkey:function (el, e) {
-                                            if(e.keyCode == e.ENTER) {
+                                            if(e.keyCode === e.ENTER) {
                                                 e.preventDefault();
                                             }
                                 }
@@ -119,7 +119,7 @@
         });
         
         choxJqueryHttpSubmit($("form#formSupplierOwnershipAction"), function() {
-            if ($("#supplierClaimOwnerComboId").val() != "--- Please Select ---") {
+            if ($("#supplierClaimOwnerComboId").val() !== "--- Please Select ---") {
               $("#supplierOwnershipAssignmentMessageBox").text("").show();
               return true;
             }

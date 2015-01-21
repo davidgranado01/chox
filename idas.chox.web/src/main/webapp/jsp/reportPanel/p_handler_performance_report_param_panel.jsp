@@ -28,7 +28,7 @@
                             reader : claimHandlerPerformanceReader,
                             listeners: {load: function() {
 
-                                          var  defaultName={'name':'--- All ---','id':-1}
+                                          var  defaultName={'name':'--- All ---','id':-1};
                                           this.insert(0, new Ext.data.Record(defaultName));
                 }
             }
@@ -47,7 +47,7 @@
                             emptyText : '--- All ---',
                             forceSelection : true,
                             listeners: { blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                                }
                                }}

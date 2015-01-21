@@ -43,8 +43,7 @@
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
-                fields:
-                    [
+                fields: [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -71,7 +70,6 @@
                 emptyText : '--- ALL ---',
                 removeValuesFromStore : false,
                 selectOnFocus : true,
-//                allowBlank : true,
                 forceSelection : true,
                 listeners: { 
                     select : function(){ 
@@ -127,7 +125,6 @@
                 emptyText : '--- ALL ---',
                 removeValuesFromStore : false,
                 selectOnFocus : true,
-//                allowBlank : true,
                 forceSelection : true,
                 listeners: { 
                     select : function(){ 
@@ -180,7 +177,6 @@
                 emptyText : '--- ALL ---',
                 removeValuesFromStore : false,
                 selectOnFocus : true,
-//                allowBlank : true,
                 forceSelection : true,
                 listeners: { 
                     select : function(){ 
@@ -241,9 +237,9 @@
         ajax.loadHtml2(url,param,function(data){
             $("#resultHolder").html(data);
         });
-
-       // doDashBoardInsurerSearchSelectOnChange();
     }
+
+
     function doUpdate(){
 
         var selectedValue = '-1';
@@ -305,7 +301,7 @@
     function doInsurerSearchWorkgroupOnChange(){
 
         var workgroupId = -1;
-        if (dashBoardWorkgroupCombo !== -1 && dashBoardWorkgroupCombo.getValue() !== null) {
+        if (dashBoardWorkgroupCombo!==-1 && dashBoardWorkgroupCombo.getValue()!==null) {
             workgroupId = dashBoardWorkgroupCombo.getValue().split(",");
         }
         doDashBoardShowClaimHandler(workgroupId, dashBoardInsurerId);

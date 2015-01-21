@@ -53,7 +53,6 @@ Ext.onReady(function(){
             fieldLabel: 'Have penalty charges been paid?',
             columns: [.35, .25],
             width : 150,
-//            allowBlank: !penaltyChargeApplied,
             id : 'penaltyChargesPaidId',
             blankText: 'Please select Yes or No',
             listeners: {
