@@ -204,10 +204,8 @@
             </xsd:simpleType>
 
             <xsd:simpleType name="VisibilityString">
-                <xsd:restriction base="xsd:token">
-                    <xsd:pattern value="((P|p)(U|u)(B|b)(L|l))(I|i))(C|c)) | 
-                          ((P|p)(R|r)(I|i)(V|v)(A|a)(T|t)(W|e)) | 
-                          (^$)"/>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="((P|p)(U|u)(B|b)(L|l)(I|i)(C|c))|((P|p)(R|r)(I|i)(V|v)(A|a)(T|t)(E|e))|(^$)"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
