@@ -21,7 +21,7 @@
     </head>
     <body class="modal login">
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.png"/>
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/Valexa-Logo.gif" style="display: inline; float: center; width: 250px; height: 110px"/>
         </div>
 
         <div class="modal-container">
