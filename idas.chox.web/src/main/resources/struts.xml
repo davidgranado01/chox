@@ -915,6 +915,7 @@
                 <param name="bufferSize">65536</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
+            <result name="error">/jsp/excel_report_generation_error.jsp</result>
         </action>
        <!--End Report-->
        <!--Start Support-->

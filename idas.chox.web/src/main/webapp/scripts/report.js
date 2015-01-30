@@ -92,9 +92,9 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
         callback : function(options,success,response  ){
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
-                if(resp.isExportProcessFinished){
+                if(resp.isExportProcessFinished && !resp.exceptionThrown){
                     Ext.MessageBox.hide();
-                    if (!cancelled){
+                    if (!cancelled && !resp.exportCancelled){
                         window.location = contextPath+"/prv/p/downloadExcelReport.action?";
                     }
                 }else if(resp.exceptionThrown){

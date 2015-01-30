@@ -18,7 +18,6 @@ import org.springframework.security.access.AccessDeniedException;
 import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.LookupService;
@@ -115,16 +114,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
             getSession().put("cancelExportOperation", false);
             getSession().put("reportFileLocation", null);
         }
-        
+
         if ("ClaimFileReport-Excel".equals(reportName) && !getCanExport()) {
             LOG.error("Illegal attempt to generate Claim File Report by user '{}'", getAuthenticatedUser().getDisplayName());
             throw new AccessDeniedException("Illegal attempt to generate Claim File Report.");
-        }
-        
-        if ("ClaimFileReport-Excel".equals(reportName)) {
-            int claimId = Integer.parseInt(((String[]) parametersMap.get("claimId"))[0]);
-            Claim claim = (Claim)baseDataService.get(Claim.class, claimId);
-            this.parametersMap.put("isBrandingReport", isBrandingType(claim));
         }
 
         final Report report = ReportFactory.getReportByName(reportName);
@@ -223,33 +216,35 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
                     LOG.error("exception in generating report {}", ex.getMessage());
-                    createEmptyReport();
+//                    createEmptyReport();
+                    return ERROR;
                 }
                 getSession().put("reportFileLocation", null);
             } else {
                 LOG.error("reportFileLocation not in session");
-                createEmptyReport();
+                return ERROR;
+//                createEmptyReport();
             }
 
             return SUCCESS;
         }
     }
 
-    private void createEmptyReport() {
-        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-        try {
-            File emptyFile = File.createTempFile("emptyReport_", ".xls");
-            emptyFile.deleteOnExit();
-            PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support.");
-            printWriter.close();
-            reportStream = new DeleteOnCloseFileInputStream(emptyFile);
-        } catch (FileNotFoundException ex) {
-            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
-        } catch (IOException ex) {
-            LOG.error("Exception thrown {}", ex.getMessage(), ex);
-        }
-    }
+//    private void createEmptyReport() {
+//        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+//        try {
+//            File emptyFile = File.createTempFile("emptyReport_", ".xls");
+//            emptyFile.deleteOnExit();
+//            try (PrintWriter printWriter = new PrintWriter(emptyFile)) {
+//                printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support.");
+//            }
+//            reportStream = new DeleteOnCloseFileInputStream(emptyFile);
+//        } catch (FileNotFoundException ex) {
+//            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
+//        } catch (IOException ex) {
+//            LOG.error("Exception thrown {}", ex.getMessage(), ex);
+//        }
+//    }
 
     private boolean isExportClaimOperationCancelled() {
         synchronized (getSessionLock()) {
@@ -297,7 +292,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public void setParameters(Map parametersMap) {
         this.parametersMap = parametersMap;
         this.parametersMap.put("CurrentUser", this.getAuthenticatedUser());
-        this.parametersMap.put("isBrandingReport", isBrandingType(null));
     }
 
     public InputStream getReportStream() {
