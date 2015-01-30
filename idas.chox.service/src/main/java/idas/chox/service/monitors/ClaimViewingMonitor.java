@@ -1,5 +1,8 @@
 package idas.chox.service.monitors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,14 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Emmanuel
  */
 public final class ClaimViewingMonitor {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimViewingMonitor.class);
 
-    private static ClaimViewingMonitor instance = new ClaimViewingMonitor();
+    private static final ClaimViewingMonitor instance = new ClaimViewingMonitor();
     private ConcurrentHashMap<String, ClaimViewState> claims = new ConcurrentHashMap<String, ClaimViewState>();
 
     private ClaimViewingMonitor() {
     }
 
     public static ClaimViewingMonitor getInstance() {
+        LOG.debug("Returning monitor instance {} with size {}", instance, instance.claims.size());
         return instance;
     }
 
