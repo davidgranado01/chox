@@ -49,6 +49,7 @@
         <property column="branding" name="branding" type="idas.chox.data.hibernate.BrandMapping"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+        <many-to-one class="idas.chox.core.model.Chorganisation" column="linked_cho" name="linkedCho"/>
         
         <filter condition="id IN (:choIds)" name="cho_filter"/>
 

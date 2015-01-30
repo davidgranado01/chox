@@ -14,7 +14,7 @@ public final class ClaimViewingMonitor {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimViewingMonitor.class);
 
     private static final ClaimViewingMonitor instance = new ClaimViewingMonitor();
-    private ConcurrentHashMap<String, ClaimViewState> claims = new ConcurrentHashMap<String, ClaimViewState>();
+    private ConcurrentHashMap<String, ClaimViewState> claims = new ConcurrentHashMap<>();
 
     private ClaimViewingMonitor() {
     }

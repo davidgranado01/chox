@@ -11,6 +11,7 @@ public interface ChorganisationService {
     Chorganisation getChorganisation(int chorganisationId);
 
     List<Chorganisation> getChorganisations(String order);
+    List<Chorganisation> getNonManualChorganisations(String order);
 
     Chorganisation updateChorganisation(Chorganisation chorganisation);
 

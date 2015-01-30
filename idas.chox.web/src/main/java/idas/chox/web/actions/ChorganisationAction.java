@@ -36,7 +36,15 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     private int tpiWorkgroupId;
     private int tpiClaimOwnerId;
     private String originalName;
+    private int linkedChoId = 0;
 
+    public int getLinkedChoId() {
+        return this.model.getLinkedCho() != null ? this.model.getLinkedCho().getId() : 0;
+    }
+
+    public void setLinkedChoId(int id) {
+        this.linkedChoId = id;
+    }
     public boolean isTpiActivated() {
         return tpiActivated;
     }
@@ -190,8 +198,27 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                 }
             }
             checkVersion(Arrays.asList(model));
-
+            Chorganisation oldLinkedCho = null;
+            if (model.getLinkedCho() != null && model.getLinkedCho().getId() != linkedChoId) {
+                oldLinkedCho = model.getLinkedCho();
+                oldLinkedCho.setLinkedCho(null);
+            }
+            Chorganisation newLinkedCho = null;
+            if (linkedChoId > 0) {
+                newLinkedCho = adminChorganisationService.getChorganisation(linkedChoId);
+                newLinkedCho.setLinkedCho(model);
+                model.setLinkedCho(this.adminChorganisationService.getChorganisation(linkedChoId));
+            } else {
+                model.setLinkedCho(null);
+            }
             model = adminChorganisationService.updateChorganisation(model);
+            if (oldLinkedCho != null) {
+                adminChorganisationService.updateChorganisation(oldLinkedCho);
+            }
+            if (newLinkedCho != null) {
+                adminChorganisationService.updateChorganisation(newLinkedCho);
+            }
+            
             updateModelInSession(Arrays.asList(model));
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
@@ -209,11 +236,18 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public String renderTPIPage(){
         return SUCCESS;
     }
+    
+    public List<Chorganisation> getLinkedChos() {
+        List<Chorganisation> linkedChos = adminChorganisationService.getAllNonManualChorganisations("");
+        linkedChos.remove(model);
+        return linkedChos;
+
+    }
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String getChorganisations() {
         try {
-            credithireorganisation = new ArrayList<ChorganisationViewData>();
+            credithireorganisation = new ArrayList<>();
             List<Chorganisation> choData = this.adminChorganisationService.getAllChorganisations("name");
             for (Chorganisation h : choData) {
                 credithireorganisation.add(new ChorganisationViewData(h));

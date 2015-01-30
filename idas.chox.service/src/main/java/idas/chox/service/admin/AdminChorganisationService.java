@@ -1,5 +1,7 @@
 package idas.chox.service.admin;
 
+import java.util.List;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.core.model.InsurerChorganisation;
@@ -8,7 +10,6 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-import java.util.List;
 
 public class AdminChorganisationService extends SecureDataService {
 
@@ -54,6 +55,10 @@ public class AdminChorganisationService extends SecureDataService {
         return chorganisationService.isChorgNameExist(chorganisationName);
     }
 
+    public List<Chorganisation> getAllNonManualChorganisations(String orderColumn) {
+        return this.chorganisationService.getNonManualChorganisations("name");
+    }
+
     public List<Chorganisation> getAllChorganisations(String orderColumn) {
         return this.chorganisationService.getChorganisations("name");
     }
@@ -91,6 +96,7 @@ public class AdminChorganisationService extends SecureDataService {
         return getActionResponse();
 
     }
+
      // <editor-fold defaultstate="collapsed" desc="CHO ALIAS">
     public ActionResponse addNewChoAlias(int choId, String choAliasName) {
 
@@ -126,14 +132,19 @@ public class AdminChorganisationService extends SecureDataService {
         return this.actionResponse;
     }
 // </editor-fold>
-    public Chorganisation getChorganisation(String ChorganisationId) {
+    
+    public Chorganisation getChorganisation(String chorganisationIdStr) {
 
         Chorganisation chorganisation = null;
 
-        if (!ChorganisationId.equalsIgnoreCase("")) {
-            chorganisation = chorganisationService.getChorganisation(Integer.valueOf(ChorganisationId));
+        if (!chorganisationIdStr.equalsIgnoreCase("")) {
+            chorganisation = chorganisationService.getChorganisation(Integer.valueOf(chorganisationIdStr));
         }
 
         return chorganisation;
+    }
+    
+    public Chorganisation getChorganisation(int chorganisationId) {
+        return chorganisationService.getChorganisation(chorganisationId);
     }
 }

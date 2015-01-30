@@ -42,6 +42,18 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return findByCriteria(criteria);
     }
 
+    @Override
+    public List<Chorganisation> getNonManualChorganisations(String order) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        criteria.add(Restrictions.eq("insurerUploadOnly", false));
+
+        if (!order.equalsIgnoreCase("") && order != null) {
+            criteria.addOrder(Order.asc(order));
+        }
+
+        return findByCriteria(criteria);
+    }
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Chorganisation updateChorganisation(Chorganisation chorganisation) {

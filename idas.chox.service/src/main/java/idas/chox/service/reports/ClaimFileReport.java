@@ -48,7 +48,7 @@ public class ClaimFileReport implements Report {
     public Map<String, Object> getReportParameters() {
         boolean showInsurer = false;
         boolean showCHO = false;
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         int claimId = Integer.parseInt(((String[]) externalParameter.get("claimId"))[0]);
 

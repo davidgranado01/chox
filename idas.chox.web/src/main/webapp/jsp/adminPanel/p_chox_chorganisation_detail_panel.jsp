@@ -275,6 +275,7 @@
              $('form#formUpdateChorganisationDetail #CCDAddress4' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDAddress5' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDPhone' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDLinked' ).attr('disabled', true);
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', true);
@@ -291,6 +292,7 @@
              $('form#formUpdateChorganisationDetail #CCDAddress4' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDAddress5' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDPhone' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDLinked' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#e4e4e4');  
@@ -309,6 +311,8 @@
              $('form#formUpdateChorganisationDetail #CCDPostcode' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDAddress4' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDAddress5' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDPhone' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDLinked' ).attr('disabled', false);
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', false);  
@@ -325,6 +329,7 @@
              $('form#formUpdateChorganisationDetail #CCDAddress4' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDAddress5' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDPhone' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDLinked' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#ffffff');
@@ -425,6 +430,17 @@
                             <label class="chox-form-std-label">Telephone Number</label>
                             <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
                         </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Linked CHO</label>
+                                <s:select name="linkedChoId"
+                                          id="CCDLinked"
+                                          list="linkedChos"
+                                          listKey="id"
+                                          listValue="name"
+                                          headerKey="-1"
+                                          headerValue="--None--">
+                                </s:select>
+                            </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Use Fixed Transactional Fee?</label>
                             <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">

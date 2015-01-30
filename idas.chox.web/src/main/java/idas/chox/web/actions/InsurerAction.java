@@ -127,6 +127,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         this.tabIndex = tabIndex;
     }
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ACTION">
 
     @Secured({"ROLE_CHOX_ADMIN"})
@@ -135,7 +136,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         try {
 
             List<Insurer> insurerData = adminInsurerService.getInsurers();
-            insurer = new ArrayList<InsurerViewData>();
+            insurer = new ArrayList<>();
 
             for (Insurer h : insurerData) {
                 insurer.add(new InsurerViewData(h));
@@ -178,7 +179,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String triggerInsurerStatus() throws Exception {
-        if (getIsInsurer() && model.getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
+        if (getIsInsurer() && model.getId() != getAuthenticatedUser().getInsurer().getId().intValue()) {
             throw new AccessDeniedException("Cannot update other Insurer");
         }
 
@@ -197,8 +198,9 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     }
     // </editor-fold>
+    
+    
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }

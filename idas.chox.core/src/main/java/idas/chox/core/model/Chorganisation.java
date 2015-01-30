@@ -1,8 +1,9 @@
 package idas.chox.core.model;
 
-import idas.chox.core.util.TextHelper;
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import idas.chox.core.util.TextHelper;
 
 public class Chorganisation extends Entity implements Serializable {
 
@@ -72,6 +73,15 @@ public class Chorganisation extends Entity implements Serializable {
     private int maxAllowedSlaExtForSubscriber;
     private int maxAllowedSlaExtForFixedFee;
     private Branding Branding;
+    private Chorganisation linkedCho;
+
+    public Chorganisation getLinkedCho() {
+        return linkedCho;
+    }
+
+    public void setLinkedCho(Chorganisation linkedCho) {
+        this.linkedCho = linkedCho;
+    }
 
     public Branding getBranding() {
         return Branding;
@@ -337,8 +347,8 @@ public class Chorganisation extends Entity implements Serializable {
      *
      * @param isDelegatedAuthority
      */
-    public void setDelegatedAuthority(boolean delegatedAuthority) {
-        this.delegatedAuthority = delegatedAuthority;
+    public void setDelegatedAuthority(boolean isDelegatedAuthority) {
+        this.delegatedAuthority = isDelegatedAuthority;
     }
 
     public boolean isStatus() {
