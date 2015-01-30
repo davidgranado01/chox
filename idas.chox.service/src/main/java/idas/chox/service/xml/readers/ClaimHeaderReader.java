@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.text.MessageFormat;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 
+import static idas.chox.core.xmlValidation.RentalStatus.COLLABORATION;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
@@ -32,14 +34,13 @@ import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.xmlValidation.RentalStatus;
-import static idas.chox.core.xmlValidation.RentalStatus.COLLABORATION;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.util.NodeHelper;
-import java.text.MessageFormat;
 
 public class ClaimHeaderReader extends BaseEntityReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
+    private static String existsLinkedChoErrorMsg = "This supplier reference already exists for linked CHO '%s'.";
     private static final String sectionName = "Claim Header";
     // PAGE PARAMETERS
     private Boolean managingRepair;
@@ -110,6 +111,17 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 chorganisation = alias != null ? alias.getChorganisation() : null;
             }
             isInsurerUpload = true;
+        } else {
+            Chorganisation cho = getBordereauReaderContext().getSecurityInfoProvider().getCurrentUser().getChorganisation();
+            if (cho.getLinkedCho() != null) {
+                // Check CHO Reference does not exist for the linked CHO
+                Boolean claimExists = getBordereauReaderContext().getClaimService().isClaimSupplierReferenceNumberExistForChoExternal(choReferenceNumber, cho.getLinkedCho().getId());
+                if (claimExists) {
+                    claimResult.setValid(false);
+                    claimResult.setDataValid(false);
+                    claimResult.getMessage().add(String.format(existsLinkedChoErrorMsg, choReferenceNumber, cho.getLinkedCho().getName()));
+                }
+            }
         }
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
@@ -304,7 +316,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setValid(false);
             claimResult.getMessage().add("This Invoice already exists.");
             claim.setChoReference(choReferenceNumber);
-        } else if (claimService.isClaimSupplierReferenceNumberExistForManualCho(choReferenceNumber, choId)) {
+        } else if (claimService.isClaimSupplierReferenceNumberExistForChoExternal(choReferenceNumber, choId)) {
                 LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                 claimResult.setValid(false);
@@ -569,7 +581,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         //Set claim Insurer equal to third party insurer
                         LOG.debug("CHO set for insurer claim: {}", chorganisation.getName());
                         claim.setChorganisation(chorganisation);
-                        if (claimService.isClaimSupplierReferenceNumberExistForManualCho(choReferenceNumber, choId)) {
+                        if (claimService.isClaimSupplierReferenceNumberExistForChoExternal(choReferenceNumber, choId)) {
                             LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
                             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                             claimResult.setValid(false);

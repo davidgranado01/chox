@@ -34,5 +34,7 @@ public interface ChorganisationService {
     ChorganisationAlias getChoAliasName(String aliasName);
 
     Chorganisation getChorgByName(String choName);
+    
+    int getClaimCount(int choId, String supplierRef);
 }
 

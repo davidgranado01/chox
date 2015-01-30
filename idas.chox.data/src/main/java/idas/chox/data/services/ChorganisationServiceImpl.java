@@ -35,7 +35,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     public List<Chorganisation> getChorganisations(String order) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
 
-        if (!order.equalsIgnoreCase("") && order != null) {
+        if (order != null && !order.equalsIgnoreCase("")) {
             criteria.addOrder(Order.asc(order));
         }
 
@@ -116,11 +116,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         insurerChorganisationCriteria.add(Property.forName("chorganisation.id").in(breBandOrganisationCirteria));
         insurerChorganisationCriteria.setProjection(Property.forName("chorganisation"));
 
-        if(findByCriteria(insurerChorganisationCriteria).size()<=0){
-            return false;
-        }
-
-        return true;
+        return findByCriteria(insurerChorganisationCriteria).size() > 0;
     }
 
     @Override
@@ -137,19 +133,12 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         // RETURN SEARCH RESULT
         chorganisationCirteria.add(Property.forName("id").in(breBandOrganisationCirteria));
 
-        if(findByCriteria(chorganisationCirteria).size()<=0){
-            return false;
-        }
-
-        return true;
+        return findByCriteria(chorganisationCirteria).size() > 0;
     }
     
     @Override
     public boolean isChorgNameExist(String s) {
-        if (getChoAliasName(s) != null || getChorgByName(s) != null) {
-            return true;
-        }
-        return false;
+        return getChoAliasName(s) != null || getChorgByName(s) != null;
     }
     
     @Override
@@ -186,7 +175,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     @Override
     public List<Chorganisation> getActiveChorganisation() {
 
-        List<Chorganisation> chorganisations = new ArrayList<Chorganisation>();
+        List<Chorganisation> chorganisations = new ArrayList<>();
 
         try {
 
@@ -209,6 +198,11 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     @Override
     public SecurityInfoProvider getSecurityInfoProvider() {
         return securityInfoProvider;
+    }
+
+    @Override
+    public int getClaimCount(int choId, String supplierRef) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

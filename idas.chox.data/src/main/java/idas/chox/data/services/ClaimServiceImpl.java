@@ -63,6 +63,7 @@ import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
+
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
@@ -74,6 +75,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private CommentService commentService;
     private TaskService taskService;
     private UserService userService;
+    private ClaimService claimService;
     private NotificationService notificationService;
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
@@ -87,7 +89,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void setActivityMonitorRequestInterval(int activityMonitorRequestInterval) {
         this.activityMonitorRequestInterval = activityMonitorRequestInterval;
     }
-    
+
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
@@ -146,9 +148,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.debug("Hire monitoring detail anomalies added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
-                        NotificationType.RepairBookedInDateAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
+                NotificationType.RepairBookedInDateAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
         }
-   }
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -159,9 +161,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.debug("Hire total loss anomaly added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
-                        NotificationType.TotalLossAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
+                NotificationType.TotalLossAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
         }
-   }
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     protected void save(Claim object) {
@@ -184,7 +186,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Loaded new claim={} with version={}", claim.getId(), claim.getVersion());
         return claim;
     }
-    
 
     @Override
     public Boolean revertClaim(int id) {
@@ -192,7 +193,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         AuditTrail auditTrail;
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
-
 
             if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {
                 LOG.warn("Cannot revert non-subscriber claim back to 'SubscriberClaimRejected'");
@@ -205,7 +205,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     LOG.debug("claim invoice set to null");
                     delete(oldInvoice);
                     List<History> histories = claim.getHistories();
-                    for(History history : histories) {
+                    for (History history : histories) {
                         delete(history);
                     }
                     histories.clear();
@@ -216,7 +216,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                  */
                 if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
                     claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
-                    
+
                     if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal()) {
                         claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                     }
@@ -242,7 +242,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         || auditTrail.getNewStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED))) {
                     claim.getInvoice().setTotalToPay(auditTrail.getPreviousTotalToPay());
                 }
-                
+
                 auditTrailService.revertAuditEntry(auditTrail.getId());
                 LOG.debug("Audit entry reverted and saved - saving claim");
                 save(claim);
@@ -287,10 +287,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.ne("id", claimId));
 
         List result = findByCriteria(criteria);
-        
+
         return ((Long) result.get(0)).intValue();
     }
-
 
     @Override
     public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
@@ -364,7 +363,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         List result = findByCriteria(criteria);
         return ((Long) result.get(0)).intValue();
 
-
     }
 
     @Override
@@ -375,7 +373,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim = (Claim) getByCriteria(criteria);
         return claim;
     }
-    
+
     @Override
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber) {
         Claim claim;
@@ -429,12 +427,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
-        
+
         Integer start = searchCriteria.getStart();
         Integer limit = searchCriteria.getLimit();
         String sort = searchCriteria.getSort();
         String dir = searchCriteria.getDir();
-            
+
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());
@@ -504,14 +502,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
-        
+
         criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();
 
         List<Claim> claims = new ArrayList<>();
 
         for (HashMap m : resultMap) {
-            claims.add((Claim)m.get("this"));
+            claims.add((Claim) m.get("this"));
         }
 
         LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
@@ -520,7 +518,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
-        if(searchCriteria == null){
+        if (searchCriteria == null) {
             return 0;
         }
 
@@ -533,7 +531,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
             return false;
         }
-        
+
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
@@ -561,7 +559,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public Boolean isClaimSupplierReferenceNumberExistForManualCho(String sClaimReferenceNumber, int choId) {
+    public Boolean isClaimSupplierReferenceNumberExistForChoExternal(String sClaimReferenceNumber, int choId) {
         if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
             return false;
         }
@@ -700,18 +698,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Claim.class)
-            .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
-        
+                .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+
         // For filter's workgroup check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isWorkgroupCheck() && !searchCriteria.isManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
@@ -739,7 +737,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 searchCriteria.setClaimOwnerIds(new HashSet<>(Arrays.asList(getCurrentUser().getId())));
             }
         }
-        
+
         // For filter's supplier Owner check, we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
@@ -769,12 +767,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
 
             /* The SQL Query for the below criteria is:
-                OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = false) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = false))) OR (iv.id is not null AND (iv.hire_net > 0 and iv.repair_net = 0)))
-                OR ((iv.id is null AND hmd.id is not null and hmd.is_repair_only_check = true) OR (iv.id is not null AND (iv.repair_net > 0 and iv.hire_net <= 37)))
-                OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = true) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = true))) OR (iv.id is not null AND (iv.hire_net > 37 and iv.repair_net > 0)))
-                OR (iv.id is not null AND iv.hire_net = 0 AND iv.repair_net = 0)
+             OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = false) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = false))) OR (iv.id is not null AND (iv.hire_net > 0 and iv.repair_net = 0)))
+             OR ((iv.id is null AND hmd.id is not null and hmd.is_repair_only_check = true) OR (iv.id is not null AND (iv.repair_net > 0 and iv.hire_net <= 37)))
+             OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = true) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = true))) OR (iv.id is not null AND (iv.hire_net > 37 and iv.repair_net > 0)))
+             OR (iv.id is not null AND iv.hire_net = 0 AND iv.repair_net = 0)
              */
-
             Criterion hireOnlyClaims = Restrictions.eq("id", -1);
             Criterion repairOnlyClaims = Restrictions.eq("id", -1);
             Criterion hireAndRepairOnlyClaims = Restrictions.eq("id", -1);
@@ -784,61 +781,61 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (restrictionId == 1) {
 
                     hireOnlyClaims = Restrictions.disjunction()
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.isNull("iv.id"))
-                                                .add(Restrictions.disjunction()
-                                                        .add(Restrictions.conjunction()
-                                                                .add(Restrictions.isNull("hmd.id"))
-                                                                .add(Restrictions.eq("this.managingRepair", false)))
-                                                        .add(Restrictions.conjunction()
-                                                                .add(Restrictions.isNotNull("hmd.id"))
-                                                                .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
-                                                                .add(Restrictions.eq("this.managingRepair", false)))))
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.isNotNull("iv.id"))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.gt("iv.hireNet", BigDecimal.ZERO))
-                                                        .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO))));
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNull("iv.id"))
+                                    .add(Restrictions.disjunction()
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.isNull("hmd.id"))
+                                                    .add(Restrictions.eq("this.managingRepair", false)))
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.isNotNull("hmd.id"))
+                                                    .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                    .add(Restrictions.eq("this.managingRepair", false)))))
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNotNull("iv.id"))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.gt("iv.hireNet", BigDecimal.ZERO))
+                                            .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO))));
 
                 } else if (restrictionId == 2) {
-                    
+
                     repairOnlyClaims = Restrictions.disjunction()
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.isNull("iv.id"))
-                                                .add(Restrictions.isNotNull("hmd.id"))
-                                                .add(Restrictions.eq("hmd.isRepairOnlyCheck", true)))
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.isNotNull("iv.id"))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.le("iv.hireNet", new BigDecimal(37)))
-                                                        .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
-                    
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNull("iv.id"))
+                                    .add(Restrictions.isNotNull("hmd.id"))
+                                    .add(Restrictions.eq("hmd.isRepairOnlyCheck", true)))
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNotNull("iv.id"))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.le("iv.hireNet", new BigDecimal(37)))
+                                            .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+
                 } else if (restrictionId == 3) {
-                    
+
                     hireAndRepairOnlyClaims = Restrictions.disjunction()
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNull("iv.id"))
-                                                        .add(Restrictions.disjunction()
-                                                               .add(Restrictions.conjunction()
-                                                                       .add(Restrictions.isNull("hmd.id"))
-                                                                       .add(Restrictions.eq("this.managingRepair", true)))
-                                                               .add(Restrictions.conjunction()
-                                                                       .add(Restrictions.isNotNull("hmd.id"))
-                                                                       .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
-                                                                       .add(Restrictions.eq("this.managingRepair", true)))))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNotNull("iv.id"))
-                                                        .add(Restrictions.conjunction()
-                                                                .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
-                                                                .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
-                    
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNull("iv.id"))
+                                    .add(Restrictions.disjunction()
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.isNull("hmd.id"))
+                                                    .add(Restrictions.eq("this.managingRepair", true)))
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.isNotNull("hmd.id"))
+                                                    .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                    .add(Restrictions.eq("this.managingRepair", true)))))
+                            .add(Restrictions.conjunction()
+                                    .add(Restrictions.isNotNull("iv.id"))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
+                                            .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+
                 } else if (restrictionId == 4) {
-                    
+
                     noHireAndNoRepair = Restrictions.conjunction()
-                                                        .add(Restrictions.isNotNull("iv.id"))
-                                                        .add(Restrictions.eq("iv.hireNet", BigDecimal.ZERO))
-                                                        .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO));
-                    
+                            .add(Restrictions.isNotNull("iv.id"))
+                            .add(Restrictions.eq("iv.hireNet", BigDecimal.ZERO))
+                            .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO));
+
                 }
             }
             criteria.add(Restrictions.disjunction()
@@ -847,7 +844,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     .add(hireAndRepairOnlyClaims)
                     .add(noHireAndNoRepair));
         }
-        
+
         if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
             criteria.add(Restrictions.in("claimOwner.id", searchCriteria.getClaimOwnerIds().toArray()));
         }
@@ -862,7 +859,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 supplierClaimOwnerIds.remove((Integer) ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED);
                 // If multiple SupplierClaimOwner selected with CLAIM_OWNER_NOT_ASSIGNED then use criteria OR condition.
                 if (supplierClaimOwnerIds.size() > 0) {
-                    
+
                     criteria.add(Restrictions.or(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()),
                             Restrictions.isNull("supplierClaimOwner.id")));
                 } else { // If only CLAIM_OWNER_NOT_ASSIGNED selected just add null restriction.
@@ -933,10 +930,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ge("iv.penaltyBand", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_band)"));
             criteria.add(Restrictions.disjunction()
-                                    .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
-                                    .add(Restrictions.conjunction()
-                                        .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
-                                        .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
+                    .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
+                    .add(Restrictions.conjunction()
+                            .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
+                            .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
@@ -950,27 +947,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 // Get the insurers from the BRE Band which don't allow penalty charges to be added
                 DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
                         .add(Restrictions.disjunction()
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowGTAPenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowSubscriberPenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowCollaborationProtocolPenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowInsurervsInsurerPenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
-                            .add(Restrictions.conjunction()
-                                .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
-                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_INVOICE)))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowGTAPenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowSubscriberPenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowCollaborationProtocolPenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowInsurervsInsurerPenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
+                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_INVOICE)))))
                         .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).list()))
                         .setProjection(Projections.property("breband.insurer"));
 
@@ -978,26 +975,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
             }
         }
-        
+
         if (searchCriteria.isEscalatedToSupervisor()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-            
+
             if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null && getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
                 criteria.add(Restrictions.disjunction()
-                    .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-                    .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
-                    "where a.claim_id = {alias}.id " +
-                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
-                    "and a.reverted = false " +
-                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" )));
+                        .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
+                        .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                                        + "where a.claim_id = {alias}.id "
+                                        + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                                        + "and a.reverted = false "
+                                        + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")")));
             } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
                 criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
             } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
-                criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
-                    "where a.claim_id = {alias}.id " +
-                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
-                    "and a.reverted = false " +
-                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" ));
+                criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                        + "where a.claim_id = {alias}.id "
+                        + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                        + "and a.reverted = false "
+                        + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
             } else {
                 // Supervisor activated but no details given - therefore queue should be empty
                 criteria.add(Restrictions.eq("status", "NoSuchStatus"));
@@ -1041,23 +1038,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getClaimTypes() != null && !searchCriteria.getClaimTypes().isEmpty()) {
             ArrayList<ClaimType> ClaimTypes = new ArrayList<>();
             if (searchCriteria.getClaimTypes().contains(ClaimType.GTA)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,ClaimType.GTA_SUPPLEMENTARY_INVOICE));
-            } 
+                ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE));
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_UPLOAD)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_INVOICE, ClaimType.INSURER_CLAIM, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE));
-            } 
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_VS_INSURER)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_VS_INSURER,ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE));
-            } 
+                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE));
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.SUBSCRIBER)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.SUBSCRIBER,ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE));
-            } 
+                ClaimTypes.addAll(Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE));
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.FIXED_FEE)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.FIXED_FEE,ClaimType.FIXED_FEE_ORIGINAL_INVOICE,ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE));
-            } 
+                ClaimTypes.addAll(Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE));
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.COLLABORATION_PROTOCOL)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.COLLABORATION_PROTOCOL,ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE,ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE));
-            } 
+                ClaimTypes.addAll(Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE));
+            }
             if (searchCriteria.getClaimTypes().contains(ClaimType.TPI)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.TPI));
             }
@@ -1103,7 +1100,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             cal.set(Calendar.SECOND, 59);
             criteria.add(Restrictions.le("statusModifiedDate", cal.getTime()));
         }
-
 
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
@@ -1159,7 +1155,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 cal.set(Calendar.SECOND, 0);
                 criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime()));
             }
-            
+
             if (searchCriteria.getRentalEndDate() != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(searchCriteria.getRentalEndDate());
@@ -1189,7 +1185,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.le("lastModifiedDate", cal.getTime()));
             }
         }
-        
+
         if (searchCriteria.getFinalReviewValue() != FinalReviewMapping.CHECK_NOT_REQUIRED.getValue()) {
             if (getCurrentUser().isCHO()) {
                 if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_TRUE.getValue()) {
@@ -1214,8 +1210,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     criteria.add(Restrictions.eq("finalReviewIns", false));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_OR_INS_TRUE.getValue()) {
                     criteria.add(Restrictions.disjunction()
-                                .add(Restrictions.eq("finalReviewCho", true))
-                                .add(Restrictions.eq("finalReviewIns", true)));
+                            .add(Restrictions.eq("finalReviewCho", true))
+                            .add(Restrictions.eq("finalReviewIns", true)));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_FALSE.getValue()) {
                     criteria.add(Restrictions.eq("finalReviewCho", false));
                     criteria.add(Restrictions.eq("finalReviewIns", false));
@@ -1246,7 +1242,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         double days = auditTrailService.getTimeAwaitingLiabilityResolution(id);
         return doubleToTime(days);
     }
-    
+
     private String doubleToTime(double days) {
         String time = "";
 
@@ -1323,7 +1319,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (addComment) {
                 Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1340,9 +1336,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String stopClaimChase(String choRef) {
         StringBuilder result = new StringBuilder();
-        
+
         Claim claim = this.getClaimByCHOReferenceNumber(choRef);
-        
+
         if (claim == null) {
             result.append("Claim with CHO ref ").append(choRef).append(" does not exist");
         } else if (claim.isTotalLossChase()) {
@@ -1354,7 +1350,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         return result.toString();
     }
-
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -1380,7 +1375,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (addComment) {
                 Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Fixed Fee route.");
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1434,10 +1429,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claimAge;
     }
 
-    
     @Override
     public int getSubscriberClaimRejects(int claimId) {
-        
+
         LOG.debug("Getting number of times subscriber claim (with id={}) rejected", claimId);
         int subscriberClaimRejects = auditTrailService.getSubscriberClaimRejectedTimes(claimId);
         LOG.debug("Number of times subscriber claim ({}) rejected: {}", claimId, subscriberClaimRejects);
@@ -1447,7 +1441,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int getClaimRejects(int claimId) {
-        
+
         LOG.debug("Getting number of times claim (with id={}) rejected", claimId);
         int claimRejects = auditTrailService.getClaimRejectedTimes(claimId);
         LOG.debug("Number of times claim ({}) rejected: {}", claimId, claimRejects);
@@ -1455,23 +1449,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claimRejects;
     }
 
-    
     private int updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
         Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
         if (claim != null) {
             Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
             if (newClaim == null) {
-                try {
-                    claim.setChoReference(newReference);
-                    claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
-                    updateClaim(claim);
-                    LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
-                    // Generate Event
-                    eventService.generate(claim, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT, oldReference);
-                    return 0;
-                } catch (Exception ex) {
-                    LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
-                    return 9;
+                // Check for linked CHO
+                boolean exists = false;
+                if (claim.getChorganisation().getLinkedCho() != null) {
+                    exists = isClaimSupplierReferenceNumberExistForChoExternal(newReference, claim.getChorganisation().getLinkedCho().getId());
+                }
+                if (!exists) {
+                    try {
+                        claim.setChoReference(newReference);
+                        claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
+                        updateClaim(claim);
+                        LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
+                        // Generate Event
+                        eventService.generate(claim, ChoxEvent.CHO_REFERENCE_NO_UPDATED_EVENT, oldReference);
+                        return 0;
+                    } catch (Exception ex) {
+                        LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
+                        return 9;
+                    }
+                } else {
+                    return 4;
                 }
             } else {
                 return 1;
@@ -1498,7 +1500,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return new ArrayList<>();
         }
     }
-    
+
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender) {
@@ -1510,7 +1512,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return result;
         }
     }
-    
+
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId) {
@@ -1554,29 +1556,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.error("Exception thrown while deleting QueuedTicket: sender:{} old_cho_ref:{} new_cho_ref:{}", new Object[]{queuedTicket.getSender(), queuedTicket.getOldReference(), queuedTicket.getNewReference()}, ex);
         }
     }
-    
+
     @Override
     public void updateLiabilityPayment(Claim claim) {
 
         Invoice invoice = claim.getInvoice();
-        if (invoice != null) { 
+        if (invoice != null) {
             LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
             ClaimType claimType = claim.getClaimType();
             // When excluding some 'Claim Type' Please exclude it from applyAutoPenaltyCharge Stored Procedure as well.
-            if (!ClaimType.isInsurerVsInsurer(claimType) 
+            if (!ClaimType.isInsurerVsInsurer(claimType)
                     && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType) 
-                    && !ClaimType.isCollaborationProtocol(claimType) 
-                    && liabilityStatus != null 
+                    && !ClaimType.isFixedFee(claimType)
+                    && !ClaimType.isCollaborationProtocol(claimType)
+                    && liabilityStatus != null
                     && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
-                            || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+                    || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated: {}", invoice.getTotalToPay());
-            } else if (!ClaimType.isInsurerVsInsurer(claimType) 
+            } else if (!ClaimType.isInsurerVsInsurer(claimType)
                     && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType) 
+                    && !ClaimType.isFixedFee(claimType)
                     && liabilityStatus != null
                     && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);
@@ -1586,17 +1588,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
     }
-    
+
     @Override
     public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
         Claim claim = (Claim) this.getClaim(claimId);
-        
-        if(isClaimInInsurerClosedStatus(claim)){
+
+        if (isClaimInInsurerClosedStatus(claim)) {
             return 0;
         }
 
         Date createdDate = claim.getInvoice().getCreatedDate();
-        Date currentDate = DateHelper.getCurrentDate();  
+        Date currentDate = DateHelper.getCurrentDate();
         return DateHelper.getNumberOfDaysBetween(createdDate, currentDate) + 1;
     }
 
@@ -1604,17 +1606,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
         Claim claim = this.getClaim(claimId);
 
-        if(isClaimInInsurerClosedStatus(claim)){
+        if (isClaimInInsurerClosedStatus(claim)) {
             return 0;
         }
-        
+
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuditTrail.class);
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
         return totalCount(criteria);
     }
-    
+
     private boolean isClaimInInsurerClosedStatus(Claim claim) {
         for (String status : ClaimStatus.getInsurerClosedStatus(true)) {
             if (claim.getStatus().equalsIgnoreCase(status)) {
@@ -1624,7 +1626,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         return false;
     }
-    
+
     @Override
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Claim.class);
@@ -1638,24 +1640,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          * to the argument claim, otherwise null
          */
         String insurerClaimNumber = null;
-        
-        if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration()!=null
+
+        if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null
                 && claim.getVehicleHire().getVehicleRegistration().length() > 0
                 && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                                .createAlias("this.customer", "cust", CriteriaSpecification.LEFT_JOIN);
+                    .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+                    .createAlias("this.customer", "cust", CriteriaSpecification.LEFT_JOIN);
 
             criteria.add(Restrictions.ne("choReference", claim.getChoReference()));
             // Ignore blank customer claim numbers (i.e. they should not prevent an overlap match) - bug#1887
             if (claim.getCustomer().getClaimReference() != null && claim.getCustomer().getClaimReference().length() > 0) {
-                        criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
+                criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
             }
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
             criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
                     .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
- 
+
             LOG.debug("Overlapping query is: {}", criteria.toString());
             List<Claim> claims = findByCriteria(criteria);
             if (claims.size() > 0) {
@@ -1671,7 +1673,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public int createChaseTask(Claim claim) {
         int returnStatus = 1;
-        
+
         Task task = new Task();
         task.setClaim(claim);
         task.setComplete(Boolean.FALSE);
@@ -1685,9 +1687,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             taskService.createNewTask(task);
         } catch (Exception ex) {
             LOG.debug("Exception thrown creating chase task on claim with choref '{}'", claim.getChoReference());
-            returnStatus=0;
+            returnStatus = 0;
         }
-        
+
         return returnStatus;
     }
 
@@ -1714,7 +1716,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         subQuery.setProjection(Projections.id());
 
         criteria.add(Subqueries.notExists(subQuery));
-        
+
         // Check task hasn't been added in previous 7 days
         DetachedCriteria subQuery2 = DetachedCriteria.forClass(Task.class, "t");
         subQuery2.add(Restrictions.eq("type", "IMS TL Chase Task"))
@@ -1723,19 +1725,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         subQuery2.setProjection(Projections.id());
 
         criteria.add(Subqueries.notExists(subQuery2));
-        
-        
-        
+
         return (List<Claim>) findByCriteria(criteria);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void setTotalLoss(Claim claim, boolean isTotalLoss) {
-	if (claim.getCustomer().getIsTotalLoss() != null
+        if (claim.getCustomer().getIsTotalLoss() != null
                 && claim.getCustomer().getIsTotalLoss() == isTotalLoss) {
             return;
-	}
+        }
         HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
         if (hireMonDetail == null) {
             hireMonDetail = new HireMonitoringDetail();
@@ -1754,7 +1754,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public boolean setLiability(Claim claim, LiabilityStatus liabilityStatus) {
         boolean updated = false;
-        
+
         if (liabilityStatus != null && !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
             String note;
@@ -1770,7 +1770,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             notificationService.addNotification(claim, new LiabilityStatusUpdatedNotification(liabilityStatus));
             updated = true;
         }
-        
+
         return updated;
     }
 }

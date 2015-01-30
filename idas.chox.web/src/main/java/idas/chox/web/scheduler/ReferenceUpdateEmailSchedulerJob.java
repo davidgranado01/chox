@@ -53,6 +53,8 @@ public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
                     }
                     else if (status == 3) {
                         statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
+                    } if (status == 4) {
+                        statusString = "Failed - Ticket number already exists for Linked CHO";
                     }
                     else {
                         statusString = "Failed - an internal error occurred";
