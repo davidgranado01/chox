@@ -153,6 +153,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             getSession().put("exceptionThrown", true);
         } catch (Exception ex) {
+            LOG.error("Exception in generation report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
             if (fos != null) {
                 try {
                     fos.close();
@@ -210,41 +211,39 @@ public class ReportAction extends BaseAction implements ParameterAware {
         }
         synchronized (getSessionLock()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
+                LOG.debug("Request to download report file '{}'", getSession().get("reportFileLocation"));
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
-                    LOG.error("exception in generating report {}", ex.getMessage());
-//                    createEmptyReport();
-                    return ERROR;
+                    LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
+                    createEmptyReport();
                 }
                 getSession().put("reportFileLocation", null);
             } else {
-                LOG.error("reportFileLocation not in session");
-                return ERROR;
-//                createEmptyReport();
+                LOG.error("reportFileLocation not in session or is null: {}", getSession().containsKey("reportFileLocation"));
+                createEmptyReport();
             }
 
             return SUCCESS;
         }
     }
 
-//    private void createEmptyReport() {
-//        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-//        try {
-//            File emptyFile = File.createTempFile("emptyReport_", ".xls");
-//            emptyFile.deleteOnExit();
-//            try (PrintWriter printWriter = new PrintWriter(emptyFile)) {
-//                printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support.");
-//            }
-//            reportStream = new DeleteOnCloseFileInputStream(emptyFile);
-//        } catch (FileNotFoundException ex) {
-//            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
-//        } catch (IOException ex) {
-//            LOG.error("Exception thrown {}", ex.getMessage(), ex);
-//        }
-//    }
+    private void createEmptyReport() {
+        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+        try {
+            File emptyFile = File.createTempFile("emptyReport_", ".xls");
+            emptyFile.deleteOnExit();
+            try (PrintWriter printWriter = new PrintWriter(emptyFile)) {
+                printWriter.print("Unexpected error occurred generating this report. Please contact CHOX support if this problem persists.");
+            }
+            reportStream = new DeleteOnCloseFileInputStream(emptyFile);
+        } catch (FileNotFoundException ex) {
+            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
+        } catch (IOException ex) {
+            LOG.error("Exception thrown {}", ex.getMessage(), ex);
+        }
+    }
 
     private boolean isExportClaimOperationCancelled() {
         synchronized (getSessionLock()) {
@@ -255,7 +254,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public String cancelExportOperation() {
         LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
         synchronized (getSessionLock()) {
-            getSession().put("cancelExportOperation", true);
+            getSession().put("cancelExportOperation", Boolean.TRUE);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 getSession().put("reportFileLocation", null);
             }

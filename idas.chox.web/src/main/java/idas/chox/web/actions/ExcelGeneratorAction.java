@@ -130,18 +130,6 @@ public class ExcelGeneratorAction extends BaseAction {
         return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + ",tooManyRows:" + tooManyRows + "}";
     }
 
-//    public void setTab(int tab) {
-//        LOG.debug("setTab is called with the tab value of   '{}'", tab);
-//        if (tab > 0) {
-//            getSession().put("tabIndex", tab);
-//            LOG.debug("tabindex is put in the session with the value of '{}'", tab);
-//        } else {
-//            getSession().put("tabIndex", 0);
-//            LOG.debug("tabindex is put in the session with the value of 0");
-//        }
-//
-//    }
-
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -181,7 +169,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 List<Claim> claims = searchResult.getResult();
                 LOG.debug("Total No of Claims : '{}'", claims.size());
                 if (claims.size() > 0 && claims.size() <= 10000) {
-                    List claimIds = new ArrayList<Integer>(claims.size());
+                    List<Integer> claimIds = new ArrayList<>(claims.size());
                     for(Claim claim : claims) {
                         claimIds.add(claim.getId());
                     }
