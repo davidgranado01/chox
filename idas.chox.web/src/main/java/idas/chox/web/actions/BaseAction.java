@@ -536,7 +536,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public void addModelToSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (model != null && !getSession().containsKey(model.getClass().getSimpleName())) {
-                LOG.debug("model is not in session and will be added to session");
+                LOG.debug("model '{}' is not in session and will be added to session (id={}, version={})",
+                        new Object[]{model.getClass().getSimpleName(), model.getId(), model.getVersion()});
                 updateModelInSession(Arrays.asList(model));
             } else if (model != null) {
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
