@@ -71,11 +71,17 @@
     <bean id="paymentNotReceived" class="idas.chox.service.workflow.activities.PaymentNotReceived" scope="prototype">
         <property name="breBandService" ref="breBandService" />
     </bean>
+    <bean id="switchCho" class="idas.chox.service.workflow.activities.SwitchCho" scope="prototype">
+        <!--property name="chainActivity" ref="newClaim" /-->
+        <property name="breBandService" ref="breBandService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+    </bean>
     <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" scope="prototype">
         <property name="chainActivity" ref="newClaim" />
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="notificationService" ref="notificationService" />
-    </bean>
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+   </bean>
     <bean id="switchClaimToMulIns" class="idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer" scope="prototype">
         <property name="chainActivity" ref="newClaim" />
         <property name="insurerService" ref="insurerService" />
@@ -83,6 +89,7 @@
         <property name="commentService" ref="commentService" />
         <property name="taskService" ref="taskService" />
         <property name="notificationService" ref="notificationService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
     </bean>
     <bean id="slaExtensionDaysUpdate" class="idas.chox.service.workflow.activities.SlaExtension" scope="prototype">
     </bean>

@@ -15,7 +15,7 @@ import idas.chox.data.events.EventGenerator;
  */
 public class ActivityEventGenerator {
 
-    private static Logger LOG = LoggerFactory.getLogger(ActivityEventGenerator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivityEventGenerator.class);
     private EventGenerator eventGenerator;
 
     public void setEventGenerator(EventGenerator eventGenerator) {
@@ -336,7 +336,10 @@ public class ActivityEventGenerator {
                 LOG.debug("SwitchClaim activity found");
                 ActivityEvent.CLAIM_CLOSED_EVENT.build(this, (SwitchClaim) activity, claim);
                 ActivityEvent.NEW_CLAIM_EVENT.build(this, (SwitchClaim) activity, claim);
-            } else if (activityName.equalsIgnoreCase("SwitchClaimToMultipleInsurer")) {
+            }  else if (activityName.equalsIgnoreCase("SwitchCho")) {
+                LOG.debug("SwitchCho activity found");
+                ActivityEvent.SWITCH_CHO_EVENT.build(this, (SwitchCho) activity, claim);
+            }else if (activityName.equalsIgnoreCase("SwitchClaimToMultipleInsurer")) {
                 LOG.debug("SwitchClaimToMultipleInsurer activity found");
                 ActivityEvent.CLAIM_CLOSED_EVENT.build(this, (SwitchClaimToMultipleInsurer) activity, claim);
                 ActivityEvent.NEW_CLAIM_EVENT.build(this, (SwitchClaimToMultipleInsurer) activity, claim);

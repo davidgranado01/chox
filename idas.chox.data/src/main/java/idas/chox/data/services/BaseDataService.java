@@ -1,7 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Entity;
-import idas.chox.core.services.DataService;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -21,6 +20,9 @@ import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import idas.chox.core.model.Entity;
+import idas.chox.core.services.DataService;
 
 /**
  *
@@ -46,7 +48,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
-            q.setParameter(parameterName, parameters.get(parameterName));
+            if (parameters.get(parameterName) instanceof Collection) {
+                q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
+            } else if (parameters.get(parameterName) instanceof String) {
+                q.setString(parameterName, (String) parameters.get(parameterName));
+            }  else if (parameters.get(parameterName) instanceof Integer) {
+                q.setInteger(parameterName, (int) parameters.get(parameterName));
+            }else {
+                q.setParameter(parameterName, parameters.get(parameterName));
+            }
         }
 
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list().size();
@@ -62,7 +72,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
                 q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
             } else if (parameters.get(parameterName) instanceof String) {
                 q.setString(parameterName, (String) parameters.get(parameterName));
-            } else {
+            }  else if (parameters.get(parameterName) instanceof Integer) {
+                q.setInteger(parameterName, (int) parameters.get(parameterName));
+            }else {
                 q.setParameter(parameterName, parameters.get(parameterName));
             }
         }
@@ -75,7 +87,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
-            q.setParameter(parameterName, parameters.get(parameterName));
+            if (parameters.get(parameterName) instanceof Collection) {
+                q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
+            } else if (parameters.get(parameterName) instanceof String) {
+                q.setString(parameterName, (String) parameters.get(parameterName));
+            }  else if (parameters.get(parameterName) instanceof Integer) {
+                q.setInteger(parameterName, (int) parameters.get(parameterName));
+            }else {
+                q.setParameter(parameterName, parameters.get(parameterName));
+            }
 
         }
 

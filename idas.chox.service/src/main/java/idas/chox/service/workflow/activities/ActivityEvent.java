@@ -179,7 +179,7 @@ public enum ActivityEvent {
             // First generate CHO event for public BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
-            List breResult = new ArrayList<String>();
+            List<String> breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -191,7 +191,7 @@ public enum ActivityEvent {
             // Now generate an Insurer event for all BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
             addInvoiceParameters(generator, claim);
-            breResult = new ArrayList<String>();
+            breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -207,7 +207,7 @@ public enum ActivityEvent {
             // First generate CHO event for public BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
-            List breResult = new ArrayList<String>();
+            List<String> breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -219,7 +219,7 @@ public enum ActivityEvent {
             // Now generate an Insurer event for all BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
             addInvoiceParameters(generator, claim);
-            breResult = new ArrayList<String>();
+            breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -235,7 +235,7 @@ public enum ActivityEvent {
             // First generate CHO event for public BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
-            List breResult = new ArrayList<String>();
+            List<String> breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -247,7 +247,7 @@ public enum ActivityEvent {
             // Now generate an Insurer event for all BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
             addInvoiceParameters(generator, claim);
-            breResult = new ArrayList<String>();
+            breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -257,13 +257,14 @@ public enum ActivityEvent {
             generator.addParameter("breResult", breResult);
             generator.completeEvent(claim);
         }
+
         @Override
         public void build(ActivityEventGenerator generator, InsurerUpload activity, Claim claim) throws Exception {
             LOG.debug("Building BreResultEvent from InsurerUpload activity");
             // First generate CHO event for public BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
-            List breResult = new ArrayList<String>();
+            List<String> breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -275,7 +276,7 @@ public enum ActivityEvent {
             // Now generate an Insurer event for all BRE messages
             generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
             addInvoiceParameters(generator, claim);
-            breResult = new ArrayList<String>();
+            breResult = new ArrayList<>();
             for (History history : History.New(activity.breResponse)) {
                 if (history.getType().equals("ERROR") && !history.getIsOld()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
@@ -884,6 +885,16 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    SWITCH_CHO_EVENT             (42, "SwitchedChoEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, SwitchCho activity, Claim claim)  throws Exception {
+            LOG.debug("Building SwitchedCHOEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("oldCHO", activity.getOldCho().getName());
+            generator.addParameter("newCHO", claim.getChorganisation().getName());
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     // Non-activity based events - should be moved to ChoxEvents in data package TODO
 //    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved
@@ -930,7 +941,7 @@ public enum ActivityEvent {
             this.addClaimHireMonitoringParameters(generator, claim);
             generator.completeEvent(claim);
         }
-    },
+    }
 ;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);
@@ -1236,6 +1247,11 @@ public enum ActivityEvent {
 
     public void build(ActivityEventGenerator generator, WorkgroupRouting activity, Claim claim)  throws Exception {
         LOG.warn("Build with WorkgroupRouting activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, SwitchCho activity, Claim claim)  throws Exception {
+        LOG.warn("Build with SwitchCho activity called and no overiding method - will call generic event builder");
         build(generator, (Activity)activity, claim);
     }
 

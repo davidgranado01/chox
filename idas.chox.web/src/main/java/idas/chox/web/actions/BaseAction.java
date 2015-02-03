@@ -1,7 +1,27 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
+import org.springframework.security.access.AccessDeniedException;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
 import idas.chox.core.model.Branding;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Entity;
@@ -12,22 +32,6 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
-import org.hibernate.StaleObjectStateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
-import org.springframework.security.access.AccessDeniedException;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -574,7 +578,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
     
     public String getBrandingJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>();
+        List<LookupItem> luItems = new ArrayList<>();
         for (Branding branding : Branding.values()) {
             luItems.add(new LookupItem(branding.getDescription(), branding.getbrandingValue().toString()));
         }

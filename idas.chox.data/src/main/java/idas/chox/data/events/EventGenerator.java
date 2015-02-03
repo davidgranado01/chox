@@ -1,9 +1,10 @@
 package idas.chox.data.events;
 
-import idas.chox.core.model.Claim;
-import idas.chox.events.EventRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.events.EventRegister;
 
 /**
  *
@@ -21,15 +22,15 @@ public class EventGenerator {
     public void startEvent(Claim claim, String name, int id, boolean insurerOnly, boolean choOnly) throws Exception {
         int claimId = -1;
         if (claim.getId() != null) {
-            claimId = claim.getId().intValue();
+            claimId = claim.getId();
         }
         int insurerId = 0;
         if (!choOnly) {
-            insurerId = claim.getInsurer().getId().intValue();
+            insurerId = claim.getInsurer().getId();
         }
         int choId = 0;
         if (!insurerOnly) {
-            choId = claim.getChorganisation().getId().intValue();
+            choId = claim.getChorganisation().getId();
         }
         eventRegister.startEvent(name, id, insurerId, choId, claimId, claim.getClaimType().ordinal());
         eventRegister.addParameter("insurerName", claim.getInsurer().getName());

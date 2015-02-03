@@ -12,12 +12,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.apache.commons.lang3.StringEscapeUtils;
 
 import static com.opensymphony.xwork2.Action.SUCCESS;
 
@@ -27,8 +30,8 @@ import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.Branding;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -47,7 +50,6 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.PenaltyCharge;
-import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
@@ -78,9 +80,6 @@ import idas.chox.service.workflow.activities.ActivityEvent;
 import idas.chox.service.workflow.activities.ActivityEventGenerator;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
     public static final String EMPTY = "empty";
@@ -1167,11 +1166,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimButton() {
         boolean canShowButton = false;
-        // Only check accessibility if insurer of claim has a 'related' insurer'
+        // Only check accessibility if insurer of claim has a 'related' insurer
         if (claim.getInsurer().getRelatedInsurer() != null) {
             canShowButton =  applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
                     getAuthenticatedUser(), claim) > 0;
-        }        return canShowButton;
+        }
+        return canShowButton;
     }
 
 
@@ -1180,6 +1180,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS,
                 getAuthenticatedUser(), claim) > 0;
     }
+
+    public boolean getCanShowSwitchChoButton() {
+        boolean canShowButton = false;
+
+        // Only check accessibility if CHO of claim has a 'linked' CHO
+        if (claim.getChorganisation().getLinkedCho() != null) {
+            canShowButton = applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM_CHO,
+                getAuthenticatedUser(), claim) > 0;
+        }
+        
+        return canShowButton;
+   }
 
 
     public boolean getIsFnolPanelVisible() {
@@ -1291,106 +1303,108 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             
             if (accessRight >= 2) {
-                if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
-                    boolean b = true;
-                    try {
-                        // If there is an outstanding interim payment to be received, this action panel
-                        // is already visible so do not display this more action
-                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
-                                || claim.getInvoice().getInterimPaymentReceived() == null
-                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
+                switch (actionName) {
+                    case ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL:
+                        boolean b = true;
+                        try {
+                            // If there is an outstanding interim payment to be received, this action panel
+                            // is already visible so do not display this more action
+                            if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
+                                    || claim.getInvoice().getInterimPaymentReceived() == null
+                                    ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
+                                b = false;
+                            }
+                            
+                        } catch (Exception e) {
                             b = false;
                         }
-
-                    } catch (Exception e) {
-                        b = false;
-                    }
-                    if (!b) {
-                        accessRight = 0;
-                    }
-                } else if (actionName.equals(ExtraAction.UPDATE_PENALTY_CHARGES)) {
-                    // Check invoice was uploaded at least 30 days ago
-                    Invoice invoice = claim.getInvoice();
-                    if (invoice != null) {
-                        int days = invoice.getInvoicedDays();
-                        // Penalty charge has been applied to this claim but penalty charge(for this claim type) switched off in the bre band later.
-                        boolean pcExistsBeforeSwithedOffInBreBand = false;
-                        
-                        // Check Penalty Charges disallowed and no current charges
-                        if (accessRight != 0) {
+                        if (!b) {
+                            accessRight = 0;
+                        }
+                        break;
+                    case ExtraAction.UPDATE_PENALTY_CHARGES:
+                        // Check invoice was uploaded at least 30 days ago
+                        Invoice invoice = claim.getInvoice();
+                        if (invoice != null) {
+                            int days = invoice.getInvoicedDays();
+                            // Penalty charge has been applied to this claim but penalty charge(for this claim type) switched off in the bre band later.
+                            boolean pcExistsBeforeSwithedOffInBreBand = false;
+                            
+                            // Check Penalty Charges disallowed and no current charges
+                            if (accessRight != 0) {
+                                if (claim.getBreBand() == null) {
+                                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                    claim.setBreBand(choBand);
+                                }
+                                
+                                if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && !(invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                                    pcExistsBeforeSwithedOffInBreBand = true;
+                                }
+                                
+                                if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                                    accessRight = 0;
+                                }
+                            }
+                            
+                            /*
+                            * For manual invoices always show 'Adjust Penalty
+                            * Charges' more action.
+                            *  "7.1.2 Insurer Manual Invoice Process Updates" says -
+                            * the age of the invoice does
+                            * not have to be over say 30 days in order to be able
+                            * to apply the penalty charges
+                            */
+                            if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                                accessRight = 0;
+                            }
+                            // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
+                            else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
+                                if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                                        && (!claim.isAutoPenaltyChargeEnabled()
+                                        || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim))))
+                                        && days > invoice.getPenaltyBand()) {
+                                    accessRight = 0;
+                                }
+                            }
+                            
+                            
+                        } else {
+                            // No invoice!
+                            accessRight = 0;
+                        }
+                        break;
+                    case ExtraAction.PENALTY_CHARGE_CONFIGURATION:
+                        if (claim.getInvoice() != null) {
                             if (claim.getBreBand() == null) {
                                 BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                                 claim.setBreBand(choBand);
                             }
                             
-                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && !(invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
-                                pcExistsBeforeSwithedOffInBreBand = true;
-                            }
-                            
-                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
                                 accessRight = 0;
                             }
-                        }
-                        
-                        /*
-                         * For manual invoices always show 'Adjust Penalty
-                         * Charges' more action. 
-                         *  "7.1.2 Insurer Manual Invoice Process Updates" says - 
-                         * the age of the invoice does
-                         * not have to be over say 30 days in order to be able
-                         * to apply the penalty charges
-                         */
-                        if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                        } else { // No invoice! or wrong claim type
                             accessRight = 0;
                         }
-                        // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                        else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
-                            if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                                        && (!claim.isAutoPenaltyChargeEnabled() 
-                                            || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim)))) 
-                                    && days > invoice.getPenaltyBand()) {
-                                accessRight = 0;
-                            }
-                        }
-                        
-                        
-                    } else {
-                        // No invoice!
-                        accessRight = 0;
-                    }
-                } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
-                    if (claim.getInvoice() != null) {
-                        if (claim.getBreBand() == null) {
-                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                            claim.setBreBand(choBand);
-                        }
-
-                        if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
-                            accessRight = 0;
-                        }
-                    } else { // No invoice! or wrong claim type
-                        accessRight = 0;
-                    }
-                } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
-
-                    String customerClaimRef = claim.getCustomer().getClaimReference();
-
-                    if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
-                        List<Claim> claims = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
-                        if (claims.size() > 1) {
-                            for (Claim claim1 : claims) {
-                                if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {
-                                    accessRight = 0;
+                        break;
+                    case ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM:
+                        String customerClaimRef = claim.getCustomer().getClaimReference();
+                        if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
+                            List<Claim> claims = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
+                            if (claims.size() > 1) {
+                                for (Claim claim1 : claims) {
+                                    if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {
+                                        accessRight = 0;
+                                    }
                                 }
+                            } else {
+                                accessRight = 0;
                             }
                         } else {
                             accessRight = 0;
                         }
-                    } else {
-                        accessRight = 0;
-                    }
-
+                        break;
                 }
             }
             LOG.debug("More Action Accessibility for action '{}': {}", actionName, accessRight);
@@ -2434,6 +2448,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getRelatedInsurerName() {
 
         return claim.getInsurer().getRelatedInsurer().getName();
+
+    }
+
+     public String getLinkedChoName() {
+
+        return claim.getChorganisation().getLinkedCho().getName();
 
     }
 

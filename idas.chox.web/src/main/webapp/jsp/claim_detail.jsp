@@ -311,6 +311,43 @@
             });
     }
     
+    /***********************************************************************************
+     * SWITCH CHO
+     ***********************************************************************************/
+
+    function switchCho(){
+
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the CHO of this claim to <s:property value="linkedChoName"/>?', 
+            function changeCho(btn){ 
+                if(btn==='yes') {
+                     choxExtAjaxRequest({
+                     url: '/prv/p/switchCho.action',
+                     params: {
+                                 name  : 'switchCho',
+                                 id    : <s:property value="id" />
+                              },
+                     callback : function(options,success,response){
+                         if(response.responseText){
+                             var resp = Ext.util.JSON.decode(response.responseText);
+                             if(resp && resp.success){
+                                 // if not admin chox then load inbox as the current CHO no longer own the switched claim.
+                                 loadPage(); 
+                              }else if(!resp.success){ 
+                                 Ext.MessageBox.show({
+                                    title: 'Error',
+                                    msg: resp.errors,
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon : Ext.MessageBox.ERROR
+                                  });
+                              }
+                             }
+                            }
+                       });
+                   }
+            });
+    }
+    
 
     function loadPage(result, request){
         <s:if test="isChoxAdmin" >
@@ -436,12 +473,17 @@
                         <td colspan="3" align="right">
                             <s:if test="canShowSwitchClaimButton" >
                         
-                               <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+                               <input id="mb1" value='Switch Claim To <s:property value="relatedInsurerName"/>' type="button" onclick="return claimChangeOver();"/>
 
                             </s:if>
-                            <s:if test="CanShowSwitchClaimToMultipleInsButton" >
+                            <s:if test="canShowSwitchClaimToMultipleInsButton" >
                                         
-                               <input id="mb1" value="Switch Claim" type="button" onclick="return switchClaimToMultipleInsurer();"/>
+                               <input id="mb1" value="Switch Insurer" type="button" onclick="return switchClaimToMultipleInsurer();"/>
+
+                            </s:if>
+                            <s:if test="canShowSwitchChoButton" >
+                                        
+                               <input id="mb1" value='Switch CHO To <s:property value="linkedChoName"/>' type="button" onclick="return switchCho();"/>
 
                             </s:if>
                             <s:if test="canRevertClaimStatus">

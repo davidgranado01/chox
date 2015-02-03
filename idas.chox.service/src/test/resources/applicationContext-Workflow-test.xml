@@ -129,5 +129,10 @@
         <property name="claimService" ref="claimService" />
     </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
-    
+    <bean id="switchCho" class="idas.chox.service.workflow.activities.SwitchCho" scope="prototype">
+        <!--property name="chainActivity" ref="newClaim" /-->
+        <property name="breBandService" ref="breBandService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+    </bean>
+   
 </beans>
