@@ -104,6 +104,7 @@ public class InvoiceResubmit extends BaseActivity {
                 && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
                     || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
                     || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
+                    || (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isInsurerManualPaymentsTeamEnable())
                     || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeePaymentsTeamEnable())
                     || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))
                 && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
