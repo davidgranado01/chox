@@ -157,12 +157,6 @@
             <version>3.12.1.GA</version>
              <scope>test</scope>
         </dependency>
-        <!--  Hibernate Annotations is incorporated into Hibernate Core, so the old hibernate-annotations jar should not be included -->
-<!--        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>${hibernate-annotations.version}</version>
-        </dependency>-->
         <!-- jsoup HTML parser library @ http://jsoup.org/ -->
         <dependency>
             <groupId>org.jsoup</groupId>

@@ -782,7 +782,7 @@
                             
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Enable Supervisor Escalation</label>
-                                <s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
+                                <s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);"/>
                             </div>
                             <div id="supervisorEscalationFields">
                                 <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
