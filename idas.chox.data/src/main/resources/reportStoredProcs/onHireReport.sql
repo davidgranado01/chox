@@ -5,7 +5,13 @@ RETURNS TABLE (
    "Supplier Reference" character varying(128),
    "Insurer Claim Number" character varying(128),
    "Claim Type" text,
+   "Claim Status" varchar(40),
    "Liability Status" text,
+   "Non-Fault Insurer" character varying,
+   "Rejected?" text,
+   "Rejection Reason" varchar(128),
+   "CHO Managing Repair?" text,
+   "Non-Fault Insurer Managing Repair?" text,
    "CHO Name" varchar(128),
    "Insurer Name" varchar(128),
    "Workgroup" varchar(128),
@@ -23,8 +29,18 @@ BEGIN
 
 RETURN QUERY 
 
-select c.cho_reference, c.claim_number, getClaimType(c.claim_type),
-    getLiabilityStatus(c.liability_status) as "Liability Status", cho.name, ins.name, w.name,
+select c.cho_reference, c.claim_number, getClaimType(c.claim_type), c.status,
+    getLiabilityStatus(c.liability_status) as "Liability Status",
+    cu.insurer_name as "Non-Fault Insurer",
+    case when (select count(*) from audit_trail at where claim_id=c.id
+        and at.new_status in ('ClaimRejected','SubscriberClaimRejected')) > 0 then 'Yes' else 'No' end as "Rejected?",
+    (select name from reason_of_rejection ror, audit_trail at where at.claim_reason_of_rejection = ror.id
+            and at.claim_id = c.id and at.new_status in ('ClaimRejected','SubscriberClaimRejected')
+            and not exists (select * from audit_trail at2 where at2.claim_id = c.id and at2.id>at.id
+                            and at2.new_status in ('ClaimRejected','SubscriberClaimRejected') )) as "Rejection Reason",
+    case when c.managing_repair then 'Yes' else 'No' end as "CHO Managing Repair?",
+    case when hmd.is_non_fault_insurer_managing_repair then 'Yes' else 'No' end as "Non-Fault Insurer Managing Repair?",
+    cho.name, ins.name, w.name,
     wu1.first_name || ' ' || wu1.last_name as claims_handler,
     wu2.first_name || ' ' || wu2.last_name as cho_claims_handler,
     case when cu.is_total_loss then 'Yes' else 'No' end as total_loss,
@@ -32,7 +48,8 @@ select c.cho_reference, c.claim_number, getClaimType(c.claim_type),
 from claim c
  left outer join workgroup w on (w.id = c.workgroup_id)
  left outer join web_user wu1 on (wu1.id = c.claim_owner_id)
- left outer join web_user wu2 on (wu2.id = c.cho_claim_owner_id),
+ left outer join web_user wu2 on (wu2.id = c.cho_claim_owner_id)
+ left outer join hire_monitoring_detail hmd on (hmd.id = c.hire_monitoring_detail_id),
  insurer ins, chorganisation cho, customer cu, vehicle_hire vh, vehicle_class vc
 where c.insurer_id = ins.id and c.chorganisation_id = cho.id
   and c.customer_id = cu.id and c.vehicle_hire_id = vh.id
@@ -44,7 +61,8 @@ where c.insurer_id = ins.id and c.chorganisation_id = cho.id
                     'ClaimReferredToFNOL','ClaimPending','ClaimReferredToEngineer','ClaimUpdatedByEngineer',
                     'ClaimRejectionContested','AwaitingCarHireInfo')
   and vh.rental_start is not null and vh.rental_start > '1900-01-01'::Date
-order by claims_handler, rental_start asc;
+  and (hmd is null or hmd.is_repair_only_check is null or hmd.is_repair_only_check != true)
+order by vh.rental_start asc;
 
 END;
 $BODY$

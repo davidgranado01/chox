@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -117,7 +116,7 @@ public class UserRoleAction extends BaseAction {
         LOG.debug("Getting user roles for user: {}", webUserId);
         try {
 
-            userroles = new ArrayList<UserroleViewData>();
+            userroles = new ArrayList<>();
 
             List<WebUserUserRole> userroleData = adminUserService.getMappedUserRole(webUserId);
 
@@ -168,7 +167,7 @@ public class UserRoleAction extends BaseAction {
                 getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin());
           }
 
-        userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
+        userroles = new ArrayList<>(webUserRoles.size());
 
         for (WebUserRole webUserRole : webUserRoles) {
               userroles.add(new UserroleViewData(webUserRole));
@@ -202,7 +201,7 @@ public class UserRoleAction extends BaseAction {
                 getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin(), true);
           }
 
-        userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
+        userroles = new ArrayList<>(webUserRoles.size());
 
         for (WebUserRole webUserRole : webUserRoles) {
               userroles.add(new UserroleViewData(webUserRole));
@@ -218,7 +217,6 @@ public class UserRoleAction extends BaseAction {
       return SUCCESS;
     }
 
-// For some reason the following line causes the add/remove role panel to be displayed empty
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String addNewWebUserRoleMapping() {
         LOG.debug("Adding user role '{}' to user '{}'", webUserRoleId, webUserId);
@@ -226,10 +224,6 @@ public class UserRoleAction extends BaseAction {
         if (webUserId > 0 && webUserRoleId > 0) {
 
             try {
-                // As Spring/ACEGI security is commented out (above), we'll check manually that we are an admin
-//                if (!getIsAdmin()) {
-//                    throw new AccessDeniedException("Non admin role trying to add a new role (POSSIBLE HACK ATTEMPT)");
-//                }
                 // Need to check that that the user we are attaching the role to is one of our users
                 // this is to prevent parameter hacking
                 LOG.debug("Checking access to addNewWebUserRoleMapping for current user");
@@ -262,8 +256,7 @@ public class UserRoleAction extends BaseAction {
         LOG.debug("Is role {} available to this user?", webUserRoleId);
         List<IdLookupItem> availableRoles = adminUserService.getAvailableUserRoles(orgType, webUserId);
         LOG.debug("We have {} roles available:", availableRoles.size());
-        for (Iterator<IdLookupItem> i = availableRoles.iterator(); i.hasNext( ); ) {
-            IdLookupItem lu = i.next();
+        for (IdLookupItem lu : availableRoles) {
             LOG.debug("Role available: {} - '{}'", lu.getId(), lu.getName());
             if (lu.getId() == webUserRoleId) {
                 return true;
@@ -272,7 +265,6 @@ public class UserRoleAction extends BaseAction {
         return false;
     }
 
-// For some reason the following line causes the add/remove role panel to be displayed empty
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String removeWebUserRoleMapping() {
         LOG.debug("Removing user role '{}' to user '{}'", webUserRoleId, webUserId);
@@ -280,10 +272,6 @@ public class UserRoleAction extends BaseAction {
         if (this.webUserUserRoleId > 0) {
 
             try {
-                // As Spring/ACEGI security is commented out (above), we'll check manually that we are an admin
-//                if (!getIsAdmin()) {
-//                    throw new AccessDeniedException("Non admin role trying to remove a new role (POSSIBLE HACK ATTEMPT)");
-//                }
                  // Need to check that that the user we are attaching the role to is one of our users
                  // this is to prevent parameter hacking
                  LOG.debug("Checking access to removeNewWebUserRoleMapping for current user");

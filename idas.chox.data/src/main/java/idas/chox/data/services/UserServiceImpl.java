@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -17,13 +14,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -54,10 +55,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public boolean isUserNameExist(String userName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
-        if (result == null) {
-            return false;
-        }
-        return true;
+        
+        return result != null;
     }
 
     @Override
@@ -68,10 +67,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.add(Restrictions.ne("id", userId));
         }
         WebUser result = (WebUser) getByCriteria(criteria);
-        if (result == null) {
-            return false;
-        }
-        return true;
+        
+        return result != null;
     }
 
     @Override
@@ -121,17 +118,14 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         criteria.add(Restrictions.ne("id", user.getId()));
 
         users = findByCriteria(criteria);
-        if (users.size() > 0) {
-            return true;
-        }
-
-        return false;
+        
+        return users.size() > 0;
     }
 
     @Override
     public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
-        List<WebUser> users = new ArrayList<WebUser>();
+        List<WebUser> users = new ArrayList<>();
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
@@ -158,7 +152,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     @Override
     public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
-        List<WebUser> users = new ArrayList<WebUser>();
+        List<WebUser> users = new ArrayList<>();
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
@@ -183,7 +177,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
-        List<WebUser> users = new ArrayList<WebUser>();
+        List<WebUser> users = new ArrayList<>();
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
@@ -203,7 +197,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
-        List<WebUser> users = new ArrayList<WebUser>();
+        List<WebUser> users = new ArrayList<>();
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class);
         if (activeUsersOnly) {
@@ -389,7 +383,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public List<PasswordHistory> getPasswordHistory(int userId, int count) {
-        List<PasswordHistory> passwordHistory = new ArrayList<PasswordHistory>(count);
+        List<PasswordHistory> passwordHistory = new ArrayList<>(count);
         
         if (count > 0) {
             DetachedCriteria criteria = DetachedCriteria.forClass(PasswordHistory.class);
