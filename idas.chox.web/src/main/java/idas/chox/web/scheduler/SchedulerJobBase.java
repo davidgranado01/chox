@@ -200,6 +200,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
 
     public void releaseHibernateSessionConditionally() {
         TransactionSynchronizationManager.unbindResource(sessionFactory);
+        SessionFactoryUtils.closeSession(session);
         SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
 
