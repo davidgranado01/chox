@@ -7,7 +7,7 @@
     <version>2.0</version>
     <name>idas.chox</name>
     <url>https://www.idaschox.com</url>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <chox.core.version>2.0</chox.core.version>

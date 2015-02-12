@@ -30,7 +30,7 @@
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </layout>
-        <cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTrackerImpl">
+        <cyclicBufferTracker>
       <!-- send just one log entry per email -->
             <bufferSize>1</bufferSize>
         </cyclicBufferTracker>

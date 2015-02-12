@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//import org.slf4j.MDC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -19,7 +20,6 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
-import org.slf4j.MDC;
 
 
 /**
@@ -76,7 +76,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         currentAuthentication = authentication;
         WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
-        MDC.put("userid", user.getDisplayName() + " " + user.getId());
+//        MDC.put("userid", user.getDisplayName() + " " + user.getId());
 
         /*
          * ToDo item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
@@ -191,21 +191,21 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         BrowserType type = BrowserType.UNKNOWN;
 
         if (userAgent != null) {
-            if (userAgent.indexOf("MSIE") != -1) {
-                if (userAgent.indexOf("MSIE 6") != -1 || userAgent.indexOf("MSIE 5") != -1 || userAgent.indexOf("MSIE 4") != -1) {
+            if (userAgent.contains("MSIE")) {
+                if (userAgent.contains("MSIE 6") || userAgent.contains("MSIE 5") || userAgent.contains("MSIE 4")) {
                     type = BrowserType.INTERNET_EXPLORER_PRE7;
                 } else {
                     type = BrowserType.INTERNET_EXPLORER;
                 }
-            } else if (userAgent.indexOf("Netscape") != -1) {
+            } else if (userAgent.contains("Netscape")) {
                 type = BrowserType.NETSCAPE;
-            } else if (userAgent.indexOf("Chrome") != -1) {
+            } else if (userAgent.contains("Chrome")) {
                 type = BrowserType.GOOGLE_CHROME;
-            } else if (userAgent.indexOf("Flock") != -1) {
+            } else if (userAgent.contains("Flock")) {
                 type = BrowserType.FLOCK;
-            } else if (userAgent.indexOf("Safari") != -1) {
+            } else if (userAgent.contains("Safari")) {
                 type = BrowserType.SAFARI;
-            } else if (userAgent.indexOf("Firefox") != -1) {
+            } else if (userAgent.contains("Firefox")) {
                 type = BrowserType.MOZILA_FIREFOX;
             }
         }

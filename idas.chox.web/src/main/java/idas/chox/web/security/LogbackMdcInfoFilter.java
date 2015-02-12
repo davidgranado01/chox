@@ -26,17 +26,21 @@ public class LogbackMdcInfoFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain fc) throws IOException, ServletException {
 
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        if (currentUser != null && currentUser.getPrincipal() instanceof PermissionedUser) {
-            WebUser user = ((PermissionedUser) currentUser.getPrincipal()).getUser();
-            // Set logged in user details to SL4J logger. This user details will be printed on every log message.
-            LOG.trace("adding mdc info to request: {}", ((HttpServletRequest) request).getServletPath());
-            MDC.put("userid", user.getDisplayName() + " " + user.getId());
-        } else {
-            LOG.trace("User information not available to set into the mdc information for request: {}", ((HttpServletRequest) request).getServletPath());
+        try {
+            Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+            if (currentUser != null && currentUser.getPrincipal() instanceof PermissionedUser) {
+                WebUser user = ((PermissionedUser) currentUser.getPrincipal()).getUser();
+                // Set logged in user details to SL4J logger. This user details will be printed on every log message.
+                LOG.trace("adding mdc info to request: {}", ((HttpServletRequest) request).getServletPath());
+                MDC.put("userid", user.getDisplayName() + " " + user.getId());
+            } else {
+                LOG.trace("User information not available to set into the mdc information for request: {}", ((HttpServletRequest) request).getServletPath());
+            }
+            fc.doFilter(request, response);
         }
-        fc.doFilter(request, response);
-        LOG.trace("clearing mdc info from request: {}", ((HttpServletRequest) request).getServletPath());
-        MDC.clear();
+        finally {
+            LOG.trace("Removing MDC userid from request: {}", ((HttpServletRequest) request).getServletPath());
+            MDC.remove("userid");
+        }
     }
 }

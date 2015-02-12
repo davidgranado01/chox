@@ -7,15 +7,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.connector.ClientAbortException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.csrf.CsrfException;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import org.apache.catalina.connector.ClientAbortException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ExceptionHandlingFilter extends OncePerRequestFilter {
 
@@ -32,19 +33,21 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
         try {
             fc.doFilter(request, response);
         } catch (Exception ex) {
-            final HttpServletRequest httpRequest = (HttpServletRequest) request;
-            final HttpServletResponse httpResponse = (HttpServletResponse) response;
-            boolean isAjax = "XMLHttpRequest".equals(httpRequest.getHeader("X-Requested-With"));
+            try {
+                boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-            if (ex instanceof CsrfException) {
-                LOG.warn("Invalid CSRF token found for {}. Exception message {}", UrlUtils.buildFullRequestUrl(httpRequest), ex.getMessage());
-                if (isAjax) {
-                    httpResponse.setStatus(417);
-                } else {
-                    defaultRedirectStrategy.sendRedirect(httpRequest, httpResponse, "/jsp/InvalidCsrfToken.jsp");
+                if (ex instanceof CsrfException) {
+                    LOG.error("Invalid CSRF token found for {}. Exception message {}", UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+                    if (isAjax) {
+                        response.setStatus(417);
+                    } else {
+                        defaultRedirectStrategy.sendRedirect(request, response, "/jsp/InvalidCsrfToken.jsp");
+                    }
+                } else if (!(ex instanceof ClientAbortException)) {
+                    LOG.error("Exception thrown:", ex);
                 }
-            } else if (!(ex instanceof ClientAbortException)) {
-                LOG.error("Exception thrown:", ex);
+            } catch (Exception ex2) {
+                LOG.error("Error dealing with exception {}: {}", ex.getMessage(), ex2.getMessage(), ex);
             }
         }
     }
