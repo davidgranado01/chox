@@ -1,19 +1,20 @@
 package idas.chox.web.scheduler;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import javax.mail.BodyPart;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
-import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.search.SearchTerm;
@@ -37,8 +38,8 @@ public class ImapMailReceiver {
      * Retrieves mail from given mail account. This function retrieves only
      * unseen mail with the given email subject.
      *
-     * @param Strign emailSubject - used as a search criteria for emails.
-     * @return List<Message> - list of mails
+     * @param emailSubject - used as a search criteria for emails.
+     * @return List<> - list of mails
      */
     public List<Message> receiveMailsWithSubject(final String emailSubject) {
 
@@ -74,17 +75,20 @@ public class ImapMailReceiver {
                     if (message != null) {
                         try {
                             //we search for all unseen mails starting with given subject
-                            boolean retrieveBySubject = emailSubject == null ? true : message.getSubject() != null ? message.getSubject().trim().replace(" ", "").toLowerCase().startsWith(emailSubject.trim().replace(" ", "").toLowerCase()) : false;
-                            if (!message.isSet(Flags.Flag.SEEN)
-                                    && retrieveBySubject) {
-                                LOG.debug("Found message with subject='{}', contentType='{}', seen={}", new Object[]{message.getSubject(), message.getContentType(), message.isSet(Flags.Flag.SEEN)});
-                                return true;
+                            if (!message.isSet(Flags.Flag.SEEN)) {
+                                if (emailSubject == null ? true : message.getSubject() != null ? message.getSubject().trim().replace(" ", "").toLowerCase().startsWith(emailSubject.trim().replace(" ", "").toLowerCase()) : false) {
+                                    LOG.debug("Found message with subject='{}'", message.getSubject());
+                                    return true;
+                                } else {
+                                    LOG.trace("Message subject does not match: {} != {}", message.getSubject(), emailSubject);
+                                }
+                            } else {
+                                LOG.trace("Message with subject '{}' has already been read", message.getSubject());
                             }
-                            LOG.trace("Message subject does not match: {}", message.getSubject());
                         } catch (MessagingException ex) {
-                            LOG.warn("Cannot match mails with given search term.", ex);
+                            LOG.warn("Cannot match email with given search term {}: {}", emailSubject, ex.getMessage());
                         } catch (Exception ex) {
-                            LOG.warn("Exception thrown matching email by subject '{}': ", emailSubject, ex);
+                            LOG.warn("Exception thrown matching email by subject '{}': {}", emailSubject, ex.getMessage());
                         }
                     }
                     return false;
@@ -109,25 +113,31 @@ public class ImapMailReceiver {
         return listOfMails == null ? new ArrayList<Message>() : listOfMails;
     }
 
-    /**
-     * Returns the attached attachments per given mail.
-     *
-     * @param Message message
-     * @param String fileFormat - if this is passed in the function will return
-     * only specific attachments with given file format.
-     * @return List<InputStream>
-     */
+    
     public List<EmailAttachment> fetchAttachments(Message message,
             String fileFormat) {
 
-        List<EmailAttachment> listOfAttachements = new ArrayList<EmailAttachment>();
+        List<EmailAttachment> listOfAttachements = new ArrayList<>();
         try {
             if (message.getContent() instanceof Multipart) {
                 Multipart mp = (Multipart) message.getContent();
-                LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
-                        new Object[]{message.getFrom().toString(), mp.getContentType(), mp.getCount()});
+                if (message.getFrom() != null)
+                    LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
+                        new Object[]{message.getFrom()[0].toString(), mp.getContentType(), mp.getCount()});
+                else
+                    LOG.debug("Getting attachment from message with, contentType='{}', count={}",
+                        new Object[]{mp.getContentType(), mp.getCount()});
+
                 for (int i = 0, n = mp.getCount(); i < n; i++) {
-                    Part part = mp.getBodyPart(i);
+                    BodyPart part = mp.getBodyPart(i);
+                    
+                    if (LOG.isDebugEnabled()) {
+                        Enumeration header = part.getAllHeaders();
+                        while (header.hasMoreElements()) {
+                            Header h = (Header)header.nextElement();
+                            LOG.debug("Header: {} = {})", h.getName(), h.getValue());
+                        }
+                    }
 
                     String fileName = part.getFileName();
                     LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
@@ -140,9 +150,11 @@ public class ImapMailReceiver {
         } catch (MessagingException e) {
             LOG.warn("Error fetching attachment - cannot make connection to the given host: {} ",
                     e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", e.getMessage(), e);
         }
+
+        LOG.debug("Found {} attachments of format '{}'", listOfAttachements.size(), fileFormat);
         return listOfAttachements;
     }
 

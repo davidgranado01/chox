@@ -200,11 +200,6 @@
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="com.jolbox" level="WARN" additivity="false">
-        <appender-ref ref="H"/>
-        <appender-ref ref="mail"/>
-        <appender-ref ref="CYCLIC" />
-    </logger>
     <logger name="org.quartz" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
         <appender-ref ref="mail"/>

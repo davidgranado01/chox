@@ -6,6 +6,8 @@ import org.quartz.JobExecutionException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -26,28 +28,30 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     private BaseDataService baseDataService;
     private ApplicationContext applicationContext;
     private Session session;
+    private Transaction hibernateTransaction;
     
     @Override
     public void execute() throws JobExecutionException {
         LOG.info("calling stored proc '{}' with '{}'", storedProcName, baseDataService);
         try {
             handleHibernateTransactionIntricacies();
-//            ((SecureDataService)baseDataService).setSecurityInfoProvider(((SecureDataService)baseDataService).getSecurityInfoProvider());
 
-            if ("addInvoicePenaltyTask".equals(storedProcName)) {
-                baseDataService.callAddInvoicePenaltyTask(999);
-            }
-            else if ("addMissingEcdTask".equals(storedProcName)) {
-                baseDataService.callAddMissingEcdTask(999);
-            }
-            else if ("applyAutoPenaltyCharge".equals(storedProcName)) {
-                baseDataService.callApplyAutoPenaltyCharge(999, -1);
-            }
-            else if ("updateDashboard".equals(storedProcName)) {
-                baseDataService.callUpdateDashboard(999);
-            }
-            else if ("updateWorkflowTables".equals(storedProcName)) {
-                baseDataService.callUpdateWorkflowTables(999);
+            if (null != storedProcName) switch (storedProcName) {
+                case "addInvoicePenaltyTask":
+                    baseDataService.callAddInvoicePenaltyTask(999);
+                    break;
+                case "addMissingEcdTask":
+                    baseDataService.callAddMissingEcdTask(999);
+                    break;
+                case "applyAutoPenaltyCharge":
+                    baseDataService.callApplyAutoPenaltyCharge(999, -1);
+                    break;
+                case "updateDashboard":
+                    baseDataService.callUpdateDashboard(999);
+                    break;
+                case "updateWorkflowTables":
+                    baseDataService.callUpdateWorkflowTables(999);
+                    break;
             }
             LOG.info("stored proc '{}' job finished.", storedProcName);
         } catch (Exception ex) {
@@ -72,10 +76,19 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     public void handleHibernateTransactionIntricacies() {
         session = SessionFactoryUtils.getSession(sessionFactory, true);
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+            hibernateTransaction = session.beginTransaction();
+        }
     }
 
     public void releaseHibernateSessionConditionally() {
+        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted()) {
+            hibernateTransaction.commit();
+            LOG.debug("Transaction committed.");
+        }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
+        session.clear();
+        SessionFactoryUtils.closeSession(session);
         SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
     

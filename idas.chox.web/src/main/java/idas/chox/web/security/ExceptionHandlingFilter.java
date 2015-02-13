@@ -47,7 +47,7 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
                     LOG.error("Exception thrown:", ex);
                 }
             } catch (Exception ex2) {
-                LOG.error("Error dealing with exception {}: {}", ex.getMessage(), ex2.getMessage(), ex);
+                LOG.error("Error dealing with exception {}: {}", new Object[]{ex.getMessage(), ex2.getMessage(), ex});
             }
         }
     }

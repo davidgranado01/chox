@@ -135,6 +135,8 @@
 		class="ch.qos.logback.core.read.CyclicBufferAppender">
         <MaxSize>2048</MaxSize>
     </appender>
+    
+
     <logger name="org.springframework.scheduling" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
         <appender-ref ref="CYCLIC" />
@@ -173,10 +175,6 @@
     </logger>
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
-    </logger>
-    <logger name="com.jolbox" level="WARN" additivity="false">
-        <appender-ref ref="H"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.quartz" level="INFO" additivity="false">

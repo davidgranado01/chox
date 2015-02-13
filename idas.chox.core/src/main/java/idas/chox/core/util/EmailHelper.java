@@ -54,7 +54,7 @@ public class EmailHelper {
         if (recipients == null) {
             LOG.debug("No recipients - not sending email.");
             if (bccRecipients != null) {
-                LOG.warn("Email recipients empty but bcc recipients not: {}", bccRecipients);
+                LOG.warn("Email recipients empty but bcc recipients not: first bcc recipient is '{}'", bccRecipients[0]);
             }
             return;
         }
@@ -78,8 +78,6 @@ public class EmailHelper {
                 session = Session.getInstance(props);
             }
 
-//            session.setDebug(true);
-
             Message msg = new MimeMessage(session);
             InternetAddress addressFrom = new InternetAddress(SmtpEmailUser);
             addressFrom.setPersonal("CHOX Support");
@@ -91,8 +89,8 @@ public class EmailHelper {
             }
             msg.setRecipients(Message.RecipientType.TO, addressTo);
             
-            for (int i = 0; i < bccRecipients.length; i++) {
-                msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(bccRecipients[i]));
+            for (String bccRecipient : bccRecipients) {
+                msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(bccRecipient));
             }
    
             msg.setSubject(emailSubjectPrefix + subject);

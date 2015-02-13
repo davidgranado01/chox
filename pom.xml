@@ -61,9 +61,10 @@
 
         <struts.version>2.3.20</struts.version>
        
-        <quartz-scheduler.version>2.1.7</quartz-scheduler.version>
+        <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
         
         <activeMQ.version>5.8.0</activeMQ.version>
+        <mail.version>1.5.2</mail.version>
     </properties>
 
     <build>

@@ -1,23 +1,24 @@
 package idas.chox.web.scheduler;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import org.quartz.JobExecutionException;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -59,6 +60,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private String hostName;
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
+    private Transaction hibernateTransaction;
     protected ClaimService claimService;
     
     protected abstract List<SchedulerJob> getSchedulerJobs();
@@ -77,7 +79,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         String emailSubject;
         
         try {
-//            SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
             handleHibernateTransactionIntricacies();
             List<SchedulerJob> schedulerJobs = getSchedulerJobs();
             if (schedulerJobs.isEmpty()) {
@@ -196,10 +197,18 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     public void handleHibernateTransactionIntricacies() {
         session = SessionFactoryUtils.getSession(sessionFactory, true);
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+            hibernateTransaction = session.beginTransaction();
+        }
     }
 
     public void releaseHibernateSessionConditionally() {
+        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted()) {
+            hibernateTransaction.commit();
+            LOG.debug("Transaction committed.");
+        }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
+        session.clear();
         SessionFactoryUtils.closeSession(session);
         SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
