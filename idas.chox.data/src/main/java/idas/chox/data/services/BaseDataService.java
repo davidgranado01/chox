@@ -23,6 +23,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
+import java.util.Iterator;
 
 /**
  *
@@ -310,7 +311,10 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     
     @Override
     public void saveCollections(List<? extends Object> objects){
-        getHibernateTemplate().saveOrUpdateAll(objects);
+        for (Iterator it = objects.iterator(); it.hasNext();) {
+            getHibernateTemplate().saveOrUpdate(it.next());
+        }
+//        getHibernateTemplate().saveOrUpdateAll(objects);
     }
     
     @Override
