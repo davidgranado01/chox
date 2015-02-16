@@ -58,7 +58,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return breBandOrganisationService.isBreBandOccupied(breBand.getId());
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void createDefaultRecord(Insurer insurer) {
         BreBand object = getDummyBreBand();
@@ -97,13 +97,13 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return (BreBand) get(BreBand.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveBreBand(BreBand breBand) {
         save(breBand);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteBreBand(BreBand breBand) {
         delete(breBand);

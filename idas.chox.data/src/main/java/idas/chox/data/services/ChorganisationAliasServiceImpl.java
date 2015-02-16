@@ -16,7 +16,7 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
 
     private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAliasServiceImpl.class);
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void createDefaultRecord(Chorganisation chorganisation) {
         ChorganisationAlias object = new ChorganisationAlias();
@@ -48,7 +48,7 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
         return findByCriteria(criteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteChorganisationAlias(ChorganisationAlias chorganisationAlias) {
         delete(chorganisationAlias);
@@ -59,7 +59,7 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
         return (ChorganisationAlias) get(ChorganisationAlias.class, chorganisationAliasId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveChorganisationAlias(ChorganisationAlias chorganisationAlias) {
         save(chorganisationAlias);

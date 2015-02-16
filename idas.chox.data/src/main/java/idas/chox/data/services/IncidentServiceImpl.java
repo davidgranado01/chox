@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class IncidentServiceImpl extends SecureDataService implements IncidentService {
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveIncidentForXMLUploader(final ClaimResult claimResult) {
 
         Incident incident = claimResult.getClaim().getIncident();
@@ -22,7 +22,7 @@ public class IncidentServiceImpl extends SecureDataService implements IncidentSe
         return (Incident) get(Incident.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveIncident(Incident incident) {
         save(incident);
     }

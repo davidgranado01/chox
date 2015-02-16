@@ -105,13 +105,13 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void process(Claim claim) throws Exception {
             processInBatch(claim);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void processInBatch(Claim claim) throws Exception {
 
         if (claim == null) {

@@ -13,13 +13,13 @@ import idas.chox.core.services.InsurerChorganisationService;
 public class InsurerChorganisationServiceImpl extends SecureDataService implements InsurerChorganisationService {
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteInsurerChorganisation(InsurerChorganisation object) {
         delete(object);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInsurerChorganisation(InsurerChorganisation object) {
         save(object);

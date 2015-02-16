@@ -40,13 +40,13 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return (Workgroup) get(Workgroup.class, workgroupId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteWorkgroup(Workgroup workgroup) {
         delete(workgroup);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveWorkgroup(Workgroup workgroup) {
         save(workgroup);
@@ -86,7 +86,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void createDefaultWorkgroup(Insurer insurer) {
         Workgroup object = new Workgroup();

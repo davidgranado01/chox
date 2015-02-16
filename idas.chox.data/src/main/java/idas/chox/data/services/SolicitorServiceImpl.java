@@ -22,7 +22,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         return solicitor;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveSolicitorForXMLUploader(final ClaimResult claimResult) {
 
@@ -40,7 +40,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         return (Solicitor) get(Solicitor.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveSolicitor(Solicitor solicitor) {
         save(solicitor);
     }

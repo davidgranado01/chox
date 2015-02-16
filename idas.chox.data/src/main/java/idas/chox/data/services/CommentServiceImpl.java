@@ -59,7 +59,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return (Comment) get(Comment.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void createNewComment(Comment comment) {
         this.save(comment);
@@ -77,7 +77,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
             this.saveCollections(comments);
         }
     }
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteCommentById(int commentId){
         Comment comment = getComment(commentId);

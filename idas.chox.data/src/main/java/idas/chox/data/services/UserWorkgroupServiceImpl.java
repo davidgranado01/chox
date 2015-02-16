@@ -38,7 +38,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return false;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveUserWorkgroup(WebUserWorkgroup userWorkgroup) {
         save(userWorkgroup);

@@ -25,7 +25,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void addNotification(Claim claim, Notification notification) {
         LOG.debug("Adding notification to claim with id={}", claim.getId(), notification.getType());
@@ -38,7 +38,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void checkForAnomalies(Claim claim, String type) {
         LOG.debug("Adding '{}' notifications to claim with id={}", type, claim.getId());
@@ -70,7 +70,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
 
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void acknowledgeAllInsurerNotifications(Integer claimId) {
         LOG.debug("Acknowledging all insurer notifications on claim with id={}", claimId);
@@ -84,7 +84,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void acknowledgeAllCHONotifications(Integer claimId) {
         LOG.debug("Acknowledging all CHO notifications on claim with id={}", claimId);
@@ -98,7 +98,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void acknowledgeNotificationById(Integer id) {
         LOG.debug("Acknowledging notification by id={}", id);
@@ -118,7 +118,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         LOG.debug("Acknowledge status is now: {}", notification.isAcknowledged());
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void removeAllInsurerNotifications(Integer claimId) {
         LOG.debug("Removing all Insurer notifications on claim with id={}", claimId);
@@ -132,7 +132,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void removeAllCHONotifications(Integer claimId) {
         LOG.debug("Removing all CHO notifications on claim with id={}", claimId);
@@ -146,7 +146,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void removeNotificationById(Integer id) {
         LOG.debug("Removing notification by id={}", id);
@@ -160,7 +160,7 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void removeAllNotifications(Integer claimId) {
         LOG.debug("Marking all notification on claim with id={} as deleted", claimId);

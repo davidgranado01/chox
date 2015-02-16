@@ -54,7 +54,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         this.chorganisationService = chorganisationService;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount) {
         /*
@@ -112,7 +112,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return list;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Map deleteInsurerDiscount(InsurerDiscount insurerDiscount) {
 

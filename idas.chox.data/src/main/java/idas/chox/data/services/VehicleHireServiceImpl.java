@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveVehicleHireForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getVehicleHire()) != null) {
@@ -24,7 +24,7 @@ public class VehicleHireServiceImpl extends SecureDataService implements Vehicle
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveVehicleHire(VehicleHire vehicleHire) {
         save(vehicleHire);
     }

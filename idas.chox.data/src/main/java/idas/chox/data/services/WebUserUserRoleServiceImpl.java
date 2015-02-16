@@ -43,13 +43,13 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return findByCriteria(criteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveWebUserUserRole(WebUserUserRole object) {
         save(object);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void addNewUserRole(int webUserId, int webUserRoleId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
@@ -59,7 +59,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         saveWebUserUserRole(webUserUserRole);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void addBaseNewUserRole(int webUserId, int typeId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
@@ -89,7 +89,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteWebUserUserRole(WebUserUserRole object) {
         delete(object);

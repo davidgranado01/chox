@@ -27,7 +27,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         this.claimService = claimService;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInvoiceForXMLUploader(final ClaimResult claimResult) {
 
@@ -45,7 +45,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         return (Invoice) get(Invoice.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInvoice(Invoice invoice) {
 
@@ -126,7 +126,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, value="transactionManager")
     public void deleteOriginalInvoice(Invoice invoice) {
         try {
             delete(invoice.getInvoiceOriginal());

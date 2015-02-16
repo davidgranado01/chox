@@ -81,7 +81,7 @@ public class UserAccountAction extends BaseAction {
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public String changePassword() {
 
         try {
@@ -113,7 +113,7 @@ public class UserAccountAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public String changeTelephone() {
 
         try {

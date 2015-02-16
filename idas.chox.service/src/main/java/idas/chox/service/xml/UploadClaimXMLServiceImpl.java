@@ -118,7 +118,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
         try {

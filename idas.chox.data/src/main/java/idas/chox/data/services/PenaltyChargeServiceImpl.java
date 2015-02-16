@@ -412,7 +412,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return false;
     }
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     private void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
@@ -435,7 +435,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     }
         
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean setPenaltyStartToDateInvoiced(String choReference) {
         Claim claim = claimService.getClaimByCHOReferenceNumber(choReference);
         if (claim != null && claim.getInvoice() != null) {

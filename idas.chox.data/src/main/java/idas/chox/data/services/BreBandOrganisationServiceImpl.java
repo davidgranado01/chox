@@ -50,7 +50,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
 
@@ -92,7 +92,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
         delete(breBandOrganisation);
@@ -105,7 +105,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
         save(breBandOrganisation);

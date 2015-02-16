@@ -10,7 +10,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPartyService {
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveThirdPartyForXMLUploader(final ClaimResult claimResult) {
 
@@ -26,7 +26,7 @@ public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPar
         return (ThirdParty) get(ThirdParty.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveThirdParty(ThirdParty thirdParty) {
         save(thirdParty);

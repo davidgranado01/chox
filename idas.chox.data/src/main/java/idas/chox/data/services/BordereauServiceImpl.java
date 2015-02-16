@@ -23,7 +23,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
 
     private static final Logger LOG = LoggerFactory.getLogger(BordereauServiceImpl.class);
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveBordereau(Bordereau bordereau) {
         save(bordereau);
@@ -98,7 +98,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean deleteBordereau(Bordereau bordereau) {
         try {
             delete(bordereau);

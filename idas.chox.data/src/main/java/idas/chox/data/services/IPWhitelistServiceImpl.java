@@ -62,13 +62,13 @@ public class IPWhitelistServiceImpl extends SecureDataService implements IPWhite
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveIPWhitelist(IPWhitelist iPWhitelist) {
         save(iPWhitelist);
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void deleteIPWhitelist(IPWhitelist iPWhitelist) {
         delete(iPWhitelist);
     }

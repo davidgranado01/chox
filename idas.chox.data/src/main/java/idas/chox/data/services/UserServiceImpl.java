@@ -309,7 +309,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveUser(WebUser user) {
         LOG.debug("Saving user '{}' (password='{}')", user.getFullName(), user.getPassword());
@@ -320,7 +320,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void persist(WebUser user) {
         user.setUserName(user.getUserName().toLowerCase());
@@ -329,7 +329,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void updateLastLogin(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -341,7 +341,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void block(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -351,7 +351,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void unblock(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -363,7 +363,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public boolean failedLogin(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -405,7 +405,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void savePasswordHistory(PasswordHistory passwordHistory) {
         save(passwordHistory);
     }

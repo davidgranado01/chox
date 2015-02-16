@@ -37,7 +37,7 @@ public class InsurerIntelligentNoteServiceImpl  extends SecureDataService implem
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void updateInsurerIntelligentNote(
             InsurerIntelligentNote insurerIntelligentNote) {
         save(insurerIntelligentNote);
@@ -57,7 +57,7 @@ public class InsurerIntelligentNoteServiceImpl  extends SecureDataService implem
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void createInsurerIntelligentNote(int intelligentNoteId,
             int insurerId, boolean status) {
         InsurerIntelligentNote iin = new InsurerIntelligentNote();

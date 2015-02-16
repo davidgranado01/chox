@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class InsurerAliasServiceImpl extends SecureDataService implements InsurerAliasService {
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void createDefaultRecord(Insurer insurer) {
         InsurerAlias object = new InsurerAlias();
@@ -43,7 +43,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         return findByCriteria(criteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteInsurerAlias(InsurerAlias insurerAlias) {
         delete(insurerAlias);
@@ -54,7 +54,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         return (InsurerAlias) get(InsurerAlias.class, insurerAliasId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInsurerAlias(InsurerAlias insurerAlias) {
         save(insurerAlias);

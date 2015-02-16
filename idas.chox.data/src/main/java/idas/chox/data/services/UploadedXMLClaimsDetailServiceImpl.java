@@ -29,7 +29,7 @@ public class UploadedXMLClaimsDetailServiceImpl extends SecureDataService implem
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveUploadedXMLClaimsDetails(List<UploadedXMLClaimsDetail> objects) {
         saveCollections(objects);
     }

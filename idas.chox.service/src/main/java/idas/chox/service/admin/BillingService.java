@@ -82,7 +82,7 @@ public class BillingService {
 
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void updateBillingDetail(int billingId, String type, List<Map> lm) {
         if (type.equals(INSURER)) {
             updateBillingInsurerDetail(billingId, lm);
@@ -163,7 +163,7 @@ public class BillingService {
         return returnList;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo,
                         boolean excludeSupplmntInv, String triggerPoint) throws Exception {
         Calendar cal = Calendar.getInstance();
@@ -363,7 +363,7 @@ public class BillingService {
         return hm;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public Map deleteBill(String type, int billingId) {
         if (type.equals(INSURER)) {
             return deleteInsurerBill(billingId);
@@ -400,7 +400,7 @@ public class BillingService {
 
     /////////////////////////////////////////////
     //// Reconciliation
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public Map paymentReceived(String type, int billingId, String manual, String reconciled, double amountReceived) {
 
         if (type.equals(INSURER)) {

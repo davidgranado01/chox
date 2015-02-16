@@ -50,13 +50,13 @@ public class ProtocolVehicleClassCeilingServiceImpl extends SecureDataService im
         return findByCriteria(protocolVehicleClassCeilingCirteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveProtocolVehicleClassCeiling(ProtocolVehicleClassCeiling protocolVehicleClassCeiling) {
         save(protocolVehicleClassCeiling);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteProtocolVehicleClassCeiling(ProtocolVehicleClassCeiling protocolVehicleClassCeiling) {
         delete(protocolVehicleClassCeiling);

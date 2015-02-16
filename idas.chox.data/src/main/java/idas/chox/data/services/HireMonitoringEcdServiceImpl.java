@@ -56,7 +56,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return (HireMonitoringEcd) get(HireMonitoringEcd.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveHireMonitoringEcd(HireMonitoringEcd object) {
         save(object);
@@ -80,7 +80,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd) {
         
         claim.addHireMonitoringEcd(ecd);

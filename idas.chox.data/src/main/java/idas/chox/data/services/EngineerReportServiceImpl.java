@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class EngineerReportServiceImpl extends SecureDataService implements EngineerReportService {
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveEngineerReportForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getEngineerReport()) != null) {
@@ -34,7 +34,7 @@ public class EngineerReportServiceImpl extends SecureDataService implements Engi
         return (EngineerReport) get(EngineerReport.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveEngineerReport(EngineerReport engineerReport) {
         save(engineerReport);
     }

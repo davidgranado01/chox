@@ -52,7 +52,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void createDefaultRecord(Insurer insurer) {
         List<ReasonOfRejectionTemplate> listOfRorTemplate = reasonOfRejectionTemplateService.getReasonOfRejectionTemplates();
         for(ReasonOfRejectionTemplate ror : listOfRorTemplate){
@@ -79,13 +79,13 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection) {
         save(reasonOfRejection);
     }
     
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection) {
         delete(reasonOfRejection);
     }

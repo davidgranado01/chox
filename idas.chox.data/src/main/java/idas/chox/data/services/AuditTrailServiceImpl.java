@@ -40,7 +40,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim) {
 
@@ -62,7 +62,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim) {
 
@@ -79,7 +79,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public AuditTrail getLastChange(int claimId) {
         AuditTrail auditTrail = null;
@@ -98,7 +98,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval) {
 
@@ -124,7 +124,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection) {
 
@@ -155,7 +155,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval) {
 
@@ -369,7 +369,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public Boolean revertAuditEntry(int auditTrailId) {
         LOG.debug("Reverting id={}", auditTrailId);
         AuditTrail auditTrail = (AuditTrail) get(AuditTrail.class, auditTrailId);

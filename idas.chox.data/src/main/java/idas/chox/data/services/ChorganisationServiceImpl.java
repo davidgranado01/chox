@@ -54,7 +54,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return findByCriteria(criteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public Chorganisation updateChorganisation(Chorganisation chorganisation) {
         save(chorganisation);

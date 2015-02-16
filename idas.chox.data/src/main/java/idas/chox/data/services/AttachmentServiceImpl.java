@@ -76,7 +76,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         return (Claim) get(Claim.class, claimId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public boolean deleteAtatchment(int webUserId, int attachmentId) {
         LOG.debug("Deleting attachment with id={} for User with id={}", webUserId, attachmentId);

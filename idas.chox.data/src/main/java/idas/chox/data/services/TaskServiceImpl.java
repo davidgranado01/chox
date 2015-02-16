@@ -81,7 +81,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void markTaskAsComplete(int webUserId, int taskId) {
         Task task = (Task) get(Task.class, taskId);
         if (task == null) {
@@ -155,7 +155,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void createNewTask(Task task) {
         if (task.getClaim() != null) {
             // Check task management enabled for Insurer/CHO

@@ -44,13 +44,13 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
         return findByCriteria(vehicleClassCeilingCirteria);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         save(vehicleClassCeiling);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         delete(vehicleClassCeiling);

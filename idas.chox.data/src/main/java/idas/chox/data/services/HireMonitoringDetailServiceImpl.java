@@ -25,14 +25,14 @@ public class HireMonitoringDetailServiceImpl extends SecureDataService implement
         return (HireMonitoringDetail) get(HireMonitoringDetail.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
 
         this.save(hireMonitoringDetail);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveObjectForXMLUploader(final ClaimResult claimResult) {
         if (claimResult.getClaim().getHireMonitoringDetail() != null) {

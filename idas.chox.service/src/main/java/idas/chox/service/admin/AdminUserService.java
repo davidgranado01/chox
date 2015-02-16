@@ -57,7 +57,7 @@ public class AdminUserService extends SecureDataService {
         this.actionResponse = actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserBrowserWarning(int webUserId, boolean showSplash) {
         this.actionResponse = new ActionResponse();
         WebUser webUser = userService.getWebUser(webUserId);
@@ -68,7 +68,7 @@ public class AdminUserService extends SecureDataService {
     }
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUser(WebUser webUser) {
         this.actionResponse = new ActionResponse();
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
@@ -79,7 +79,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserTelephone(int webUserId, String newTelephone) {
         LOG.debug("Updating user telephone number to '{}'", newTelephone);
         this.actionResponse = new ActionResponse();
@@ -92,7 +92,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         int minPasswordLength = 6;
         WebUser webUser = userService.getWebUser(webUserId);
@@ -132,7 +132,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) {
 
         this.actionResponse = new ActionResponse();
@@ -172,7 +172,7 @@ public class AdminUserService extends SecureDataService {
     }
     
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserPassword(WebUser webUser) {
         int minPasswordLength = 6;
 

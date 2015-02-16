@@ -15,7 +15,7 @@ public class WebBordereauServiceImpl extends SecureDataService implements WebBor
 
     private static final Logger LOG = LoggerFactory.getLogger(WebBordereauServiceImpl.class);
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveBordereau(WebBordereau bordereau) {
         save(bordereau);
@@ -29,7 +29,7 @@ public class WebBordereauServiceImpl extends SecureDataService implements WebBor
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean deleteBordereau(WebBordereau bordereau) {
         try {
             delete(bordereau);

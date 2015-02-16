@@ -23,7 +23,7 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
         return (Witness) get(Witness.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveWitness(Witness witness) {
         save(witness);

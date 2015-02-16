@@ -13,13 +13,13 @@ public class CustomerServiceImpl extends SecureDataService implements CustomerSe
         return (Customer) get(Customer.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveCustomer(Customer customer) {
         save(customer);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveCustomerForXMLUploader(final ClaimResult claimResult) {
         Customer customer = claimResult.getClaim().getCustomer();
