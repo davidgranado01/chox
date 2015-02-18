@@ -152,7 +152,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void checkTotalLossAnomaly(Claim claim) {
         try {
@@ -1352,7 +1352,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public int getFixedFeeClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of fixed-fee claim with id={}", id);

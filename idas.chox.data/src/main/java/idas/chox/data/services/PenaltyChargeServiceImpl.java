@@ -62,7 +62,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     public List<PenaltyCharge> getPenaltyCharges(Date hireStart, PenaltyType penaltyType, PenaltyName penaltyName) {
         LOG.debug("Getting penalty charge for hireStart='{}', PenaltyType='{}', PenaltyName='{}'",
                     new Object[]{hireStart, penaltyType, penaltyName});
-        List<PenaltyCharge> penaltyCharges = new ArrayList<PenaltyCharge>();
+        List<PenaltyCharge> penaltyCharges = new ArrayList<>();
 
         // Get all hire penalty charges where penaltyStartDate <= hireStart
         DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class, "pc");
@@ -374,7 +374,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         }
     }
 
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     private boolean updateAutomaticPenaltyCharge(Claim claim) {
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
                 + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}",

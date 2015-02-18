@@ -54,7 +54,7 @@ public class XmlUploadAction extends BaseAction {
     private int totalCount;
     private String jsonData;
     private InputStream excelStream;
-    private List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
+    private List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<>();
     private String errorMessage;
 
     public String getErrorMessage() {
@@ -243,7 +243,7 @@ public class XmlUploadAction extends BaseAction {
         if (days > 1) {
             defaultDays = days;
         }
-        List<BordereauViewData> viewDatas = new ArrayList<BordereauViewData>();
+        List<BordereauViewData> viewDatas = new ArrayList<>();
         SearchResult searchResult = bordereauService.getUploadedFiles(getAuthenticatedUser(), defaultDays, sort, dir, start, limit);
         List<BordereauWithoutFile> uploadedFileList = searchResult.getResult();
         for (BordereauWithoutFile bordereau : uploadedFileList) {
@@ -254,7 +254,7 @@ public class XmlUploadAction extends BaseAction {
         return SUCCESS;
     }
 
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public String processUploadedXmlFile() {
             LOG.info("Process bordereau request for file with id={}", bordereauId);
             if (getSession().get("claimsDetails") != null) {
@@ -298,7 +298,7 @@ public class XmlUploadAction extends BaseAction {
                             }
                         }
                         if (claimsDetails == null) { // Should not happen!
-                            claimsDetails = new CopyOnWriteArrayList<UploadedXMLClaimsDetail>();
+                            claimsDetails = new CopyOnWriteArrayList<>();
                             LOG.warn("No claimsDetails in session - empty list created.");
                         }
                         LOG.debug("Finished synchronizing on session");

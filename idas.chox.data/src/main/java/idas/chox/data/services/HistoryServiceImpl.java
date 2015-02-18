@@ -46,7 +46,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
     }
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void markHistoryAsOldByClaim(Claim claim) {
         List<History> histories = getHistoryByClaim(claim, true, false);

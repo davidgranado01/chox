@@ -52,7 +52,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         save(invoice);
     }
     
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, value="transactionManager")
     @Override
     public InvoiceOriginal saveOriginalInvoice(Invoice inv) {
         try {
@@ -139,7 +139,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     public int getNoOfRejectedInvoices(Integer reasonOfRejectionId) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Invoice.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
-        return countInvoices(criteria).intValue();
+        return countInvoices(criteria);
     }
     
     private Integer countInvoices(Criteria criteria) {
