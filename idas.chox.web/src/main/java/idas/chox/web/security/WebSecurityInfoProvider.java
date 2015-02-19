@@ -1,12 +1,13 @@
 package idas.chox.web.security;
 
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.model.WebUser;
-import idas.chox.service.security.PermissionedUser;
 import java.io.Serializable;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.model.WebUser;
+import idas.chox.service.security.PermissionedUser;
 
 /**
  *
@@ -23,8 +24,6 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider, Serializab
 
         if (authentication != null && authentication.getPrincipal() instanceof PermissionedUser) {
             permissionedUser = (PermissionedUser) authentication.getPrincipal();
-        } else {
-            permissionedUser = null;
         }
 
         return permissionedUser;
