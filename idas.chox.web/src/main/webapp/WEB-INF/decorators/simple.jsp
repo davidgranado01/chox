@@ -16,6 +16,14 @@
             <%@ include file="/includes/scripts-min.jsp"%>
         </s:else>
         <decorator:head />
+	<script type="text/javascript">
+                var contextPath = '<%= request.getContextPath()%>';
+                var brandingType = '<s:property value="brandingType"/>';
+                var isPartialBranding = (brandingType === 'Partial') ? true : false;
+                var isFullBranding = (brandingType === 'Full') ? true : false;
+                var isBrandingClaim = '<s:property value="brandingClaim"/>';
+
+	</script>
 
     </head>
 
