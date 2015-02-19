@@ -525,7 +525,7 @@ public class TeamWorkflowReport implements Report {
 
     @Override
     public boolean isBrandingReportFormat() {
-        return (Boolean) externalParameter.get("isBrandingReport");
+        return externalParameter.get("isBrandingReport")==null ? false : (Boolean)externalParameter.get("isBrandingReport");
     }
 
 }

@@ -104,7 +104,7 @@ public class ClaimFileReport implements Report {
 
     @Override
     public boolean isBrandingReportFormat() {
-        return externalParameter.get("isBrandingReport")==null ? false : (Boolean)externalParameter.get("isBrandingReport")==null;
+        return externalParameter.get("isBrandingReport")==null ? false : (Boolean)externalParameter.get("isBrandingReport");
     }
 
 }
