@@ -67,11 +67,11 @@ function getTodayDate(){
 
 function openChoxPolicyPage(url, name){
     var folderPath = url;
-    if(name=='TermsOfService'){
+    if(name==='TermsOfService'){
         folderPath = folderPath + '/terms_of_service.html';
-    }else if(name=='PrivacyPolicy'){
+    }else if(name==='PrivacyPolicy'){
         folderPath = folderPath + '/chox_privacy_policy.html';
-    }else if(name=='Copyright'){
+    }else if(name==='Copyright'){
         folderPath = folderPath + '/chox_copyright.html';
     }
 

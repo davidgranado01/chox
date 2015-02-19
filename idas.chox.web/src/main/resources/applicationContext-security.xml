@@ -16,6 +16,8 @@
     <http pattern="/scripts/**" security="none"/>
     <http pattern="/services/**" security="none"/>
     <http pattern="/terms_of_service.html" security="none"/>
+    <http pattern="/chox_copyright.html" security="none"/>
+    <http pattern="/chox_privacy_policy.html" security="none"/>
     <http pattern="/download/CHOXCertificate.pdf" security="none"/>
 <!--    <http pattern="/login.action" security="none"/>-->
     
