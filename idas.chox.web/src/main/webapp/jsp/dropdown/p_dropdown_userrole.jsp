@@ -5,7 +5,7 @@
 <s:select
         id="selectedUserRolesId"
         name="selectedUserRolesId"
-        list="userroleList" 
+        list="userRoleList" 
         listKey="id" 
         listValue="name" 
         headerKey="-1"

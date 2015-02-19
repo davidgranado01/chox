@@ -1,14 +1,16 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.services.WebUserUserRoleService;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.services.WebUserUserRoleService;
 
 public class WebUserRoleDropDownAction extends BaseAction {
 
     private String selectedOrganisationTypeId;
-    private List userroleList = null;
+    private List userRoleList = null;
     private WebUserUserRoleService service;
 
     public void setWebUserUserRoleService(WebUserUserRoleService service) {
@@ -23,16 +25,16 @@ public class WebUserRoleDropDownAction extends BaseAction {
         }
 
         if (getSelectedOrganisationTypeId() != null && !getSelectedOrganisationTypeId().equals("")) {
-            getUserRoleList(getSelectedOrganisationTypeId());
+            setupUserRoleList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
             return SUCCESS;
         }
     }
 
-    private void getUserRoleList(String id) {
-        this.userroleList = new ArrayList();
-        this.userroleList = service.getWebUserRolesLookupItem(Integer.valueOf(id), getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+    private void setupUserRoleList(String id) {
+        this.userRoleList = new ArrayList();
+        this.userRoleList = service.getWebUserRolesLookupItem(Integer.valueOf(id), getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
               getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), getInsurerIsSupervisorEnabled(), true);
     }
 
@@ -44,12 +46,12 @@ public class WebUserRoleDropDownAction extends BaseAction {
         this.selectedOrganisationTypeId = SelectedOrganisationTypeId;
     }
 
-    public List getUserroleList() {
-        return userroleList;
+    public List getUserRoleList() {
+        return userRoleList;
     }
 
-    public void setUserroleList(List userroleList) {
-        this.userroleList = userroleList;
+    public void setUserRoleList(List userRoleList) {
+        this.userRoleList = userRoleList;
     }
 }
 
