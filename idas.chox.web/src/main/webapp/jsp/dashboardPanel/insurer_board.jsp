@@ -359,7 +359,7 @@ if (isIE) {
 }
 %>
  <% if (isFirefox){ %>
-=                    <div style="height:1178px; width:1140px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:1178px; width:1140px" id="resultHolder" name="resultHolder"></div>
 <% } else if(isIE && versionIE > 9){ %>
                     <div style="height:1115px; width:1140px" id="resultHolder" name="resultHolder"></div>
 <% } else { %>
