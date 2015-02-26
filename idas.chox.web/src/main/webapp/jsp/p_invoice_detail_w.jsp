@@ -57,6 +57,9 @@
         var form2 = $("#formUpdateHireVehicle");
         var form3 = $("#formEngRptAction");
         var form4 = $("#formSubmitButtons");
+        var form5;
+        if (document.getElementById("formRepairExtras") !== null)
+            form5 = $("#formRepairExtras");
         var fsets = $('legend',form);
         
         fsets.click(function(){
@@ -179,6 +182,37 @@
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
         
+        if (document.getElementById("formRepairExtras") !== null) {
+        var fsets5 =  $('legend', form5);
+        fsets5.click(function(){ $(this).next().toggle();
+
+            if(document.getElementById('hideAndShow').value===1){
+                ashow=true,bshow=true,cshow=true,dshow=true;
+                a=2,b=2,c=2,d=2;
+                document.getElementById('hideAndShow').value=2;
+            }
+
+            if(document.getElementById('hideAndShow').value===0){
+                ashow=false,bshow=false,cshow=false,dshow=false;
+                a=1,b=1,c=1,d=1;
+                document.getElementById('hideAndShow').value=2;
+            }
+            if((++d)%2===0){
+                dshow=true;
+            }else{
+                dshow=false;
+            }
+           
+            if(!bshow&&!cshow&&!ashow)
+            { 
+                
+                $(form4).toggle();
+                    
+                
+            }});
+        fsets5.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets5.mouseout(function(){ $(this).css("cursor","normal");});
+    }
         var rentalStartDatePicker = new Ext.form.DateField({
                 name: 'rentalStart',
                 renderTo: 'rentalStartPH',
