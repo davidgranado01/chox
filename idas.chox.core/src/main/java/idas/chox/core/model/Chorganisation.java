@@ -72,7 +72,7 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean restrictExport;
     private int maxAllowedSlaExtForSubscriber;
     private int maxAllowedSlaExtForFixedFee;
-    private Branding Branding;
+    private Branding branding;
     private Chorganisation linkedCho;
 
     public Chorganisation getLinkedCho() {
@@ -84,11 +84,11 @@ public class Chorganisation extends Entity implements Serializable {
     }
 
     public Branding getBranding() {
-        return Branding;
+        return branding;
     }
 
-    public void setBranding(Branding Branding) {
-        this.Branding = Branding;
+    public void setBranding(Branding branding) {
+        this.branding = branding;
     }
 
     public int getMaxAllowedSlaExtForSubscriber() {
@@ -169,6 +169,7 @@ public class Chorganisation extends Entity implements Serializable {
      *
      */
     public Chorganisation() {
+        branding = Branding.NO_BRANDING;
     }
 
     /**
