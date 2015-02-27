@@ -24,7 +24,8 @@
                 {name:'status'},
                 {name:'statusDesc'},
                 {name:'createdBy'},
-                {name:'createdDate'}
+                {name:'createdDate', type: 'date', dateFormat:'d/m/Y H:i'}
+//                {name:'createdDate', type: 'date', dateFormat:'d/m/Y h:m'}
             ]
         });     
 
@@ -48,7 +49,7 @@
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')}
             ],
             height:585,
             width: 775
