@@ -28,7 +28,7 @@
                 {name:'stpExcludedDesc'},
         </s:if>
                 {name:'createdBy'},
-                {name:'createdDate'}
+                {name:'createdDate', type: 'date', dateFormat:'d/m/Y H:i'}
             ]
         });
 
@@ -56,7 +56,7 @@
         </s:if>
                 {header: "Action", width: 60, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>";}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
+                {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')}
             ],
             renderTo:'workgroup_gridviewGrid',
             height:335,

@@ -46,7 +46,7 @@
                 {name:'ipAddress'},
                 {name:'description'},
                 {name:'createdBy'},
-                {name:'createdDate'}
+                {name:'createdDate', type: 'date', dateFormat:'d/m/Y H:i'}
             ]
         });
 
@@ -97,7 +97,7 @@
                 {header: "IP Address",  width: 90, dataIndex: 'ipAddress', sortable: true, resizable: true,editor: {xtype: 'textfield',allowBlank: false, emptyText  : 'IP Address is required'}},
                 {header: "Description",  width: 90, dataIndex: 'description', sortable: true, resizable: true,editor: {xtype: 'textfield',allowBlank: false, emptyText  : 'Description is required'}},
                 {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
-                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
+                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')},
                 {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             renderTo:'ipWhitelist_gridviewGridPanel',
