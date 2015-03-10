@@ -2,9 +2,9 @@ package idas.chox.service.workflow.activities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.aop.support.AopUtils;
 
-import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Claim;
 import idas.chox.core.workflow.Activity;
 import idas.chox.data.events.EventGenerator;
@@ -53,35 +53,6 @@ public class ActivityEventGenerator {
         }
     }
 
-//    public void generate(final Claim claim, final Comment comment, ActivityEvent event) {
-//        try {
-//            event.build(this, claim, comment);
-//        } catch (Exception ex) {
-//            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
-//            return;
-//        }
-//
-//        try {
-//            eventGenerator.sendEvents();
-//        } catch (Exception ex) {
-//            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
-//        }
-//    }
-
-    public void generate(final Claim claim, final Attachment attachment, ActivityEvent event) {
-        try {
-            event.build(this, claim, attachment);
-        } catch (Exception ex) {
-            LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
-            return;
-        }
-
-        try {
-            eventGenerator.sendEvents();
-        } catch (Exception ex) {
-            LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
-        }
-    }
 
     public void generate(final Claim claim, Activity activity) {
 //        activity.generateEvents(claim);

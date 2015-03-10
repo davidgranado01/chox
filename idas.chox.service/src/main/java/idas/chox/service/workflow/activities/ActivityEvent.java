@@ -1,6 +1,5 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Attachment;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -863,7 +862,7 @@ public enum ActivityEvent {
     CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT             (40, "CustomerClaimNumberAssignedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
-            LOG.warn("Building CustomerClaimNumberAssignedEvent event (not from activity!)...");
+            LOG.debug("Building CustomerClaimNumberAssignedEvent event (not from activity!)");
             generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
             generator.addParameter("customerClaimNumber", claim.getCustomer().getClaimReference());
             generator.completeEvent(claim);
@@ -872,7 +871,7 @@ public enum ActivityEvent {
     HIRE_VEHICLE_UPDATED_EVENT           (41, "HireVehicleUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
-            LOG.debug("Building HireVehicleUpdatedEvent");
+            LOG.debug("Building HireVehicleUpdatedEvent (not from activity!)");
             generator.startEvent(claim, this.getName(), this.getEventId());
             this.addClaimHireVehicleParameters(generator, claim);
             generator.completeEvent(claim);
@@ -896,8 +895,6 @@ public enum ActivityEvent {
         }
     },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
-    // Non-activity based events - should be moved to ChoxEvents in data package TODO
-//    ATTACHMENT_UPLOADED_EVENT               (50, "AttachmentUploadedEvent")  - moved
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, AddNote activity, Claim claim)  throws Exception {
@@ -915,6 +912,7 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    // Non-activity based events - should be moved to ChoxEvents in data package TODO
     CLAIM_UPDATED_EVENT                     (52, "ClaimUpdatedEvent") {
         @Override
         public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
@@ -970,14 +968,6 @@ public enum ActivityEvent {
         LOG.warn("Building generic non-activity based event...");
         generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
         generator.completeEvent(claim);
-    }
-
-//    public void build(ActivityEventGenerator generator, Claim claim, Comment comment) throws Exception {
-//        throw new UnsupportedOperationException("Not implemented yet");
-//    }
-
-    public void build(ActivityEventGenerator generator, Claim claim, Attachment attachment) throws Exception {
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void build(ActivityEventGenerator generator, AddNote activity, Claim claim)  throws Exception {

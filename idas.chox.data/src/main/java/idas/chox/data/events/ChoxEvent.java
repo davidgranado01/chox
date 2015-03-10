@@ -1,9 +1,9 @@
 package idas.chox.data.events;
 
-import idas.chox.core.model.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Task;
 import idas.chox.data.services.EventService;
@@ -25,7 +25,7 @@ public enum ChoxEvent {
             generator.addParameter("taskType", task.getType());
             generator.addParameter("taskVisibility", task.getVisibility()==1 ? "Private" : task.getVisibility()==2 ? "Internal" : "External");
             if (task.getVisibilityRole() != null) {
-                generator.addParameter("taskRole", task.getVisibilityRole().toString());
+                generator.addParameter("taskRole", task.getVisibilityRole());
             } else {
                 generator.addParameter("taskRole", (String)null);
             }
@@ -47,7 +47,7 @@ public enum ChoxEvent {
             generator.addParameter("taskCompletedDate", task.getCompletedDate());
             generator.addParameter("taskVisibility", task.getVisibility()==1 ? "Private" : task.getVisibility()==2 ? "Internal" : "External");
             if (task.getVisibilityRole() != null) {
-                generator.addParameter("taskRole", task.getVisibilityRole().toString());
+                generator.addParameter("taskRole", task.getVisibilityRole());
             } else {
                 generator.addParameter("taskRole", (String)null);
             }
@@ -66,7 +66,7 @@ public enum ChoxEvent {
     ATTACHMENT_UPLOADED_EVENT               (103, "AttachmentUploadedEvent") {
         @Override
         public void build(EventService generator, Claim claim, Attachment attachment)  throws Exception {
-            LOG.debug("Building NoteAddedEvent");
+            LOG.debug("Building AttachmentUploadedEvent");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("attachmentCategory", attachment.getCategory());
             generator.addParameter("attachmentFileName", attachment.getFileName());
