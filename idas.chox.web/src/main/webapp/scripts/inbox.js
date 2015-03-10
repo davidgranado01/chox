@@ -2,6 +2,31 @@ var directExportToExcelStatusIntervelId, exportToExcelIntervelId;
 var directTaskExportToExcelStatusIntervelId, taskExportToExcelIntervelId;
 var cancelled=false;
 
+// Change default sort function to be case insensitive
+Ext.override(Ext.data.Store, {
+// override
+createSortFunction : function(field, direction) {
+    direction = direction || "ASC";
+    var directionModifier = direction.toUpperCase() === "DESC" ? -1 : 1;
+    var sortType = this.fields.get(field).sortType;
+
+    //create a comparison function. Takes 2 records, returns 1 if record 1 is greater,
+    //-1 if record 2 is greater or 0 if they are equal
+    return function(r1, r2) {
+        var v1 = sortType(r1.data[field]),
+            v2 = sortType(r2.data[field]);
+
+        // To perform case insensitive sort
+        if (v1.toLowerCase) {
+            v1 = v1.toLowerCase();
+            v2 = v2.toLowerCase();
+        }
+
+        return directionModifier * (v1 > v2 ? 1 : (v1 < v2 ? -1 : 0));
+    };
+} 
+});
+
 if (!Ext.isDefined(Ext.webKitVersion)) {
     Ext.webKitVersion = Ext.isWebKit ? parseFloat(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)[1], 10) : NaN;
 }

@@ -117,7 +117,8 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
                     || modelName.startsWith("Injury")
                     || modelName.startsWith("Witness")) {
                 activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
-            } else {
+            } else if (!modelName.startsWith("VehicleHire") 
+                    && !modelName.startsWith("HireMonitoringDetail")) {
                 LOG.warn("Claim update but event not generated for model: {}", modelName);
             }
         } catch (Exception ex) {
