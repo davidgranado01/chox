@@ -125,6 +125,17 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SwitchCho.ClaimReferredToEngineer';
 
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+    VALUES ('activity.SwitchCho.AwaitingCarHireInfo',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingCarHireInfo';
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
     VALUES ('activity.SwitchCho.AwaitingInvoiceData',FALSE,FALSE);
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingInvoiceData';
@@ -134,6 +145,7 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingInvoiceData';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SwitchCho.AwaitingInvoiceData';
+
 
 
 ----------------------
