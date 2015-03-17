@@ -369,8 +369,10 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         WebUser user = (WebUser) get(WebUser.class, userId);
 
         if (!user.isBlocked()) {
+            LOG.debug("User '{}' failed login - incrementing failed attempts", user.getDisplayName());
             user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
             if (user.getFailedLoginAttempts() >= user.getMaxFailedLoginAttempts()) {
+                LOG.debug("User '{}' blocked as failed login attemts {} > {}", new Object[]{user.getDisplayName(), user.getFailedLoginAttempts(), user.getMaxFailedLoginAttempts()});
                 user.setBlocked(true);
                 user.setBlockedDate(new Date());
             }

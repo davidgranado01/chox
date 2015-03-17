@@ -8,5 +8,3 @@
 <s:else>
     <link href="<%= request.getContextPath()%>/css/chox_panel_theme-<s:property value="getText('js.aggregator.choxall')" />-min.css" rel="stylesheet" type="text/css" media="all"/>
 </s:else>
-
-

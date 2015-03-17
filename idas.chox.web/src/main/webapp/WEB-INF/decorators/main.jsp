@@ -67,22 +67,18 @@
                                                 <a href="javascript:openFile('<%= request.getContextPath()%>/prv/onlineSupport.action');">Online Support Form</a>
                                             </s:if>
                                             <s:else>
-                                                <a href="#" onclick="javascript:
-                                                   Ext.MessageBox.show({
-                                                   title: '',
-                                                   msg: 'Online support form is not available.',
-                                                   width:300,
-                                                   buttons: Ext.MessageBox.OK,
-                                                   icon : Ext.MessageBox.INFO
-                                                   }); ">Online Support Form</a>
+                                                <a href="#" onclick="javascript:Ext.MessageBox.show({
+                                                                        title: '',
+                                                                        msg: 'Online support form is not available.',
+                                                                        width:300,
+                                                                        buttons: Ext.MessageBox.OK,
+                                                                        icon : Ext.MessageBox.INFO}); ">Online Support Form</a>
                                             </s:else>
                                         </div></li>
-                                    <li><a id="decoratorMainPageAboutChoxId"href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
+                                    <li><a id="decoratorMainPageAboutChoxId" href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
                                     <li><a id="decoratorMainPageLogoffId" href="javascript:logout();" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
                                 </ul>
-
                                 <div style="clear:both"></div>
-
                             </td>
                         </tr>
                     </table>

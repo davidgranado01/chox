@@ -105,6 +105,7 @@
                     {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
                     {name:'insurer'},
                     {name:'cho'},
+                    {name:'choBranding'},
                     {name:'isWorkgroupEditable', type:'boolean'},
                     {name:'isOwnershipEditable', type:'boolean'},
                     {name:'ownerName'},
@@ -237,7 +238,7 @@
                 viewConfig:{
                     forceFit:true
                     ,getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
-                        if (isPartialBranding && record.get('cho').indexOf("Enterprise") > -1) {
+                        if (isPartialBranding && record.get('choBranding').indexOf("Full") > -1) {
                             return 'branding-grid-row';
                         }
                     }

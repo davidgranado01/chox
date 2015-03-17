@@ -596,26 +596,19 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
     
-    public boolean isBrandingType(Claim claim) {
+    public boolean isBrandingTypeClaim(Claim claim) {
         
         if (getAuthenticatedUser().isCHO()) {
-            if (getAuthenticatedUser().getChorganisation().getBranding().getDescription().equalsIgnoreCase(Branding.FULL_BRANDING.getDescription())) {
+            if (getAuthenticatedUser().getChorganisation().getBranding() == Branding.FULL_BRANDING
+                    || getAuthenticatedUser().getChorganisation().getBranding() == Branding.PARTIAL_BRANDING) {
                 return true;
-            } else if (getAuthenticatedUser().getChorganisation().getBranding().getDescription().equalsIgnoreCase(Branding.PARTIAL_BRANDING.getDescription())) {
-                if (claim != null) {
-                    if (claim.getChorganisation().getName().contains("Enterprise")) {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
             }
         } else if (getAuthenticatedUser().isAnInsurer()) {
-            if (getAuthenticatedUser().getInsurer().getBranding().getDescription().equalsIgnoreCase(Branding.FULL_BRANDING.getDescription())) {
+            if (getAuthenticatedUser().getInsurer().getBranding() == Branding.FULL_BRANDING) {
                 return true;
-            } else if (getAuthenticatedUser().getInsurer().getBranding().getDescription().equalsIgnoreCase(Branding.PARTIAL_BRANDING.getDescription())) {
+            } else if (getAuthenticatedUser().getInsurer().getBranding() == Branding.PARTIAL_BRANDING) {
                 if (claim != null) {
-                    if (claim.getChorganisation().getName().contains("Enterprise")) {
+                    if (claim.getChorganisation().getBranding() == Branding.FULL_BRANDING) {
                         return true;
                     }
                 } else {

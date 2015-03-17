@@ -2807,6 +2807,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     public boolean isBrandingClaim() {
-        return isBrandingType(claim);
+        return isBrandingTypeClaim(claim);
     } 
 }

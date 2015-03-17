@@ -7,6 +7,14 @@
     <head>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title><decorator:title default="CHOX"/></title>
+	<script type="text/javascript">
+                var contextPath = '<%= request.getContextPath()%>';
+                var brandingType = '<s:property value="brandingType"/>';
+                var isPartialBranding = (brandingType === 'Partial') ? true : false;
+                var isFullBranding = (brandingType === 'Full') ? true : false;
+                var isBrandingClaim = '<s:property value="brandingClaim"/>';
+
+	</script>
         <s:if test="#parameters.devp || getText('development')">
             <%@ include file="/includes/styles.jsp"%>
             <%@ include file="/includes/scripts.jsp"%>
@@ -16,14 +24,6 @@
             <%@ include file="/includes/scripts-min.jsp"%>
         </s:else>
         <decorator:head />
-	<script type="text/javascript">
-                var contextPath = '<%= request.getContextPath()%>';
-                var brandingType = '<s:property value="brandingType"/>';
-                var isPartialBranding = (brandingType === 'Partial') ? true : false;
-                var isFullBranding = (brandingType === 'Full') ? true : false;
-                var isBrandingClaim = '<s:property value="brandingClaim"/>';
-
-	</script>
 
     </head>
 

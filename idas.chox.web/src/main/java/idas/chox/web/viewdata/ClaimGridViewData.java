@@ -16,26 +16,27 @@ import idas.chox.core.util.AccessibilityHelper;
 
 public class ClaimGridViewData {
 
-    private String supplierReference;
-    private int id;
-    private String claimNumber;
-    private String claimType;
-    private String invoiceAmount;
-    private String createdDate;
-    private String statusModifiedDate;
-    private String status;
-    private String workgroup;
-    private String reviewDate;
-    private String cho;
-    private String insurer;
-    private String createdBy;
-    private String policyNumber;
-    private String invoiceUploadDate;
-    private boolean isOwnershipEditable;
-    private boolean isWorkgroupEditable;
-    private String ownerName;
-    private String choOwnerName;
-    private int noAttachments;
+    private final String supplierReference;
+    private final int id;
+    private final String claimNumber;
+    private final String claimType;
+    private final String invoiceAmount;
+    private final String createdDate;
+    private final String statusModifiedDate;
+    private final String status;
+    private final String workgroup;
+    private final String reviewDate;
+    private final String cho;
+    private final String choBranding;
+    private final String insurer;
+    private final String createdBy;
+    private final String policyNumber;
+    private final String invoiceUploadDate;
+    private final boolean isOwnershipEditable;
+    private final boolean isWorkgroupEditable;
+    private final String ownerName;
+    private final String choOwnerName;
+    private final int noAttachments;
 
     public ClaimGridViewData(Claim claim, WebUser user) {
 
@@ -55,32 +56,25 @@ public class ClaimGridViewData {
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
-        if (claim.getStatusModifiedDate() != null) {
-            this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
-        }
+        this.createdBy = claim.getCreatedBy().getDisplayName();
+        this.statusModifiedDate = claim.getStatusModifiedDate() == null ? null : dateTimeFormat.format(claim.getStatusModifiedDate());
 
         this.status = claim.getStatus();
         this.cho = chorg == null ? "" : chorg.getName();
+        this.choBranding = chorg == null ? "" : chorg.getBranding().getDescription();
         this.insurer = ins == null ? "" : ins.getName();
         this.policyNumber = claim.getThirdParty().getPolicyNumber();
 
         this.invoiceUploadDate = invoice == null ? "" : dateTimeFormat.format(invoice.getCreatedDate());
         
-        if (claim.getHireMonitoringDetail() != null) {
-            if (claim.getHireMonitoringDetail().getNextReviewDate() != null) {
-                this.reviewDate = dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate());
-            }
-        }
+        this.reviewDate = (claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getNextReviewDate() != null)
+                ? dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate()) : null;
 
         this.isWorkgroupEditable = AccessibilityHelper.getIsClaimWorkgroupEditable(claim, user);
         this.isOwnershipEditable = AccessibilityHelper.getIsClaimOwnershipEditable(claim, user);
 
-        if (claim.getClaimOwner() != null) {
-            this.ownerName = claim.getClaimOwner().getDisplayName();
-        }
-        if (claim.getSupplierClaimOwner() != null) {
-            this.choOwnerName = claim.getSupplierClaimOwner().getDisplayName();
-        }
+        this.ownerName = claim.getClaimOwner() == null ? null : claim.getClaimOwner().getDisplayName();
+        this.choOwnerName = claim.getSupplierClaimOwner() == null ? null : claim.getSupplierClaimOwner().getDisplayName();
         
         this.noAttachments = claim.getNoAttachments();
     }
@@ -89,41 +83,23 @@ public class ClaimGridViewData {
         return isOwnershipEditable;
     }
 
-    public void setIsOwnershipEditable(boolean isOwnershipEditable) {
-        this.isOwnershipEditable = isOwnershipEditable;
-    }
-
     public boolean isIsWorkgroupEditable() {
         return isWorkgroupEditable;
     }
 
-    public void setIsWorkgroupEditable(boolean isWorkgroupEditable) {
-        this.isWorkgroupEditable = isWorkgroupEditable;
-    }
 
     public String getOwnerName() {
         return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
     }
 
     public String getchoOwnerName() {
         return choOwnerName;
     }
 
-    public void setChoOwnerName(String choOwnerName) {
-        this.choOwnerName = choOwnerName;
-    }
-
     public String getPolicyNumber() {
         return policyNumber;
     }
 
-    public void setPolicyNumber(String policyNumber) {
-        this.policyNumber = policyNumber;
-    }
 
     public String getSupplierReference() {
         return supplierReference;
@@ -153,12 +129,13 @@ public class ClaimGridViewData {
         return reviewDate;
     }
 
-    public void setReviewDate(String reviewDate) {
-        this.reviewDate = reviewDate;
-    }
 
     public String getCho() {
         return cho;
+    }
+
+    public String getChoBranding() {
+        return choBranding;
     }
 
     public String getInsurer() {
@@ -169,20 +146,12 @@ public class ClaimGridViewData {
         return claimNumber;
     }
 
-    public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }
 
     public String getStatusModifiedDate() {
         return statusModifiedDate;
-    }
-
-    public void setStatusModifiedDate(String statusModifiedDate) {
-        this.statusModifiedDate = statusModifiedDate;
     }
 
     public String getInvoiceUploadDate() {
@@ -193,17 +162,8 @@ public class ClaimGridViewData {
         return claimType;
     }
 
-    public void setClaimType(String claimType) {
-        this.claimType = claimType;
-    }
-
     public int getNoAttachments() {
         return noAttachments;
     }
 
-    public void setNoAttachments(int noAttachments) {
-        this.noAttachments = noAttachments;
-    }
-
 }
-
