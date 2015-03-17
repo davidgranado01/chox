@@ -94,6 +94,9 @@
         <property name="poolName" value="hikariCP" />
         <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
         <property name="maximumPoolSize" value="${db.maxPoolSize}" />
+        <property name="maxLifetime" value="1800000" /> <!-- default 1800000 (30mins) -->
+        <property name="idleTimeout" value="600000" /> <!-- default  600000 (10mins) -->
+        <property name="leakDetectionThreshold" value="0" /> <!-- default  0 (disabled) -->
     </bean>
     
      <bean id="mainDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
