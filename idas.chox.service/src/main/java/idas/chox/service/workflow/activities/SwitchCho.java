@@ -37,13 +37,18 @@ public class SwitchCho extends BaseActivity {
         if (claim.getChorganisation().getLinkedCho()== null) {
             throw new AccessDeniedException("Cannot switch CHO as no linked CHO is defined.");
         }
+        boolean exists = claimService.isClaimSupplierReferenceNumberExistForChoExternal(claim.getChoReference(), claim.getChorganisation().getLinkedCho().getId());
+
+        if (exists) {
+            throw new Exception("Cannot switch CHO as the CHO already has a claim with the same CHO Reference Number.");
+        }
         
         Chorganisation newCho = claim.getChorganisation().getLinkedCho();
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
             if (!newCho.isEnableSubscriberClaims()) {
                 LOG.error("The linked CHO '{}' does not allow Subscriber claims.", newCho.getName());
-                throw new Exception("The linked CHo does not allow Subscriber claims.");
+                throw new Exception("The linked CHO does not allow Subscriber claims.");
             }
         } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
