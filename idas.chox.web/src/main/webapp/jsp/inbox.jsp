@@ -238,7 +238,8 @@
                 viewConfig:{
                     forceFit:true
                     ,getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
-                        if (isPartialBranding && record.get('choBranding').indexOf("Full") > -1) {
+                        if (isPartialBranding && (record.get('choBranding').indexOf("Full") > -1 || <s:property value='isCHO'/>)) {
+//                        if (isPartialBranding && record.get('choBranding').indexOf("Full") > -1) {
                             return 'branding-grid-row';
                         }
                     }
