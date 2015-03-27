@@ -58,43 +58,195 @@ public class SwitchChoTest extends BaseTest {
         SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
         activity.process(claim);
         Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        activity.process(claim);
-        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess2() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        activity.process(claim);
-        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        activity.process(claim);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
         Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        activity.process(claim);
-        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-        activity.process(claim);
-        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_PENDING);
-        activity.process(claim);
-        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-        activity.process(claim);
-        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-        activity.process(claim);
-        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
-        activity.process(claim);
-        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        activity.process(claim);
-        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-        activity.process(claim);
-        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
-        claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
         activity.process(claim);
         Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
     }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess3() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess4() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess5() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess6() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_PENDING);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess7() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess8() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess9() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess10() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess11() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchChoSuccess12() throws Throwable {
+
+        Claim claim = claimService.getClaim(999);
+        Chorganisation linkedCho = chorganisationService.getChorganisation(1007);
+        claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        claim.setClaimType(ClaimType.GTA);
+        claim.getChorganisation().setLinkedCho(linkedCho);
+        linkedCho.setLinkedCho(claim.getChorganisation());
+        
+        Assert.assertEquals("Drive Assist", claim.getChorganisation().getName());
+        SwitchCho activity = (SwitchCho) activityFactory.getActivity("switchCho");
+        activity.process(claim);
+        Assert.assertEquals("Enterprise", claim.getChorganisation().getName());
+    }
+    
     
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Test(expected = Exception.class)
