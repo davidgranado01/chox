@@ -53,7 +53,8 @@ public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
                     }
                     else if (status == 3) {
                         statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
-                    } if (status == 4) {
+                    }
+                    else if (status == 4) {
                         statusString = "Failed - Ticket number already exists for Linked CHO";
                     }
                     else {
@@ -92,7 +93,7 @@ public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
             // We don't do update on first line and we assume we will always
             // have only two columns.
             for (Integer row : rowNumbers) {
-                if (row.intValue() != 0) {
+                if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
                         emailMsg.append(String.format("%-22s", cells.get(0).trim()));
