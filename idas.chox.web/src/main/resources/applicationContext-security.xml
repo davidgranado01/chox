@@ -3,7 +3,7 @@
   xmlns:beans="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.2.xsd"
   default-autowire="byName">
@@ -26,14 +26,14 @@
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
-        <custom-filter after="HEADERS_FILTER" ref="customFilters" />
-        <!--custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" /-->
+        <custom-filter before="CSRF_FILTER" ref="customFilters" />
+        <custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" />
         <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
         <access-denied-handler ref="choxAccessDeniedHandler"/>
-        <!--csrf request-matcher-ref="csrfSecurityRequestMatcher"/-->
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
     
-    <!--beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" /-->
+    <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
     
     <authentication-manager alias="authenticationManager" erase-credentials="true">
         <authentication-provider user-service-ref="userDetailsService">
@@ -61,7 +61,6 @@
          When using a relative URL, you can set the forceHttps property to true, to force the protocol used for the login form to be HTTPS, 
          even if the original intercepted request for a resource used the HTTP protocol
     -->
-    
     <beans:bean id="authenticationEntryPoint"  class="idas.chox.web.security.CustomAuthenticationEntryPoint">
         <beans:property name="loginFormUrl" value="/login.action"/>
         <beans:property name="forceHttps" value="false" />
@@ -76,11 +75,10 @@
     
     <beans:bean id="defaultRedirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy"/>
 
-<!--
     <beans:bean id="httpSessionCsrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
         <beans:property name="headerName" value="X-SECURITY" />
     </beans:bean>
--->
+
     <beans:bean id="logbackMdcInfoFilter" class="idas.chox.web.security.LogbackMdcInfoFilter" />
     
     <beans:bean id="exceptionHandlingFilter" class="idas.chox.web.security.ExceptionHandlingFilter">
@@ -90,13 +88,13 @@
     <beans:bean id="timeoutFilter" class="idas.chox.web.security.TimeoutFilter">
         <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
     </beans:bean>
-<!--
+
     <beans:bean id="csrfTokenChangingFilter" class="idas.chox.web.security.CsrfTokenChangingFilter">
         <beans:constructor-arg>
             <beans:ref bean="httpSessionCsrfTokenRepository"/>
         </beans:constructor-arg>
     </beans:bean>
--->
+    
     <beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
         <beans:property name="authenticationFailureHandler" ref="failureHandler" />
         <beans:property name="authenticationSuccessHandler" ref="successHandler" />
