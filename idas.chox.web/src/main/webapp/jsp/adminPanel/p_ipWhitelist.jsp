@@ -8,15 +8,14 @@
     var ipWhitelist_gridviewGrid;
     var ipWhitelist_gridviewData;
     var ipWhitelistRowEditor;
-    var choId = <s:property value="choId" />;
-    var choId = -1;
-    var insId = -1;
+    var choId=-1;
+    var insId=-1;
 
     Ext.onReady(function(){
         
-        if ('<s:property value="orgType"/>' === 3) {
+        if ('<s:property value="orgType"/>' === '3') {
             choId = '<s:property value="orgId"/>';
-        } else if ('<s:property value="orgType"/>' === 2) {
+        } else if ('<s:property value="orgType"/>' === '2') {
             insId = '<s:property value="orgId"/>';
         }
         
