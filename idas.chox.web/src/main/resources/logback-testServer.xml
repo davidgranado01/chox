@@ -22,7 +22,7 @@
     <!--for documentation-->
         <Subject>CHOX Application Error \(Test\)</Subject>
         <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@SherwoodTS.co.uk</To>
+        <To>John.Dowson@valexa.com</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
