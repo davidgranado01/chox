@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="invoiceSavings.jspf" %>
 
 <script type="text/javascript">
 
@@ -148,7 +149,12 @@
                         <tr>
                             <td colspan="4" class="choice">
                                 <input type="button" id="ACIRejectInvoiceButtonId" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
+<s:if test="invoiceSavingActive">
+                                <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
+</s:if>
+<s:else>
                                 <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
+</s:else>
                                 <s:if test="insurerIsEngineersEnabled">
                                     <input type="button" id="ACIReferToEngineerButtonId" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
                                 </s:if>

@@ -128,4 +128,8 @@
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
     
     <bean id="addNote" class="idas.chox.service.workflow.activities.AddNote" scope="prototype"/>
+    <bean id="invoiceSaving" class="idas.chox.service.workflow.activities.InvoiceSaving" scope="prototype">
+        <property name="chainActivity" ref="acceptInvoice" />
+        <property name="activityFactory" ref="activityFactory" />
+    </bean>
 </beans>

@@ -73,6 +73,15 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal repairAdminFeeOriginal;
     private BigDecimal repairAcquisitionFeeOriginal;
     private boolean paymentTeam;
+    private String invoiceSavingRule;
+
+    public String getInvoiceSavingRule() {
+        return invoiceSavingRule;
+    }
+
+    public void setInvoiceSavingRule(String invoiceSavingRule) {
+        this.invoiceSavingRule = invoiceSavingRule;
+    }
 
     public BigDecimal getRepairAdminFeeOriginal() {
         return repairAdminFeeOriginal;

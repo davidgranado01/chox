@@ -33,6 +33,7 @@ import net.sf.json.JSONObject;
 import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BreRules;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -60,6 +61,7 @@ import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.NotificationService;
@@ -139,6 +141,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String fLiabilityNotes;
     private ClaimObjectService claimObjectService;
     private ClaimService claimService;
+    private HistoryService historyService;
     private NotificationService notificationService;
     private LookupService lookupService;
     private WorkgroupService workgroupService;
@@ -407,6 +410,25 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public boolean getInsurerIsEngineersEnabled() {
         return claim.getInsurer().isEngineersEnable();
+    }
+
+    public boolean isInvoiceSavingActive() {
+        boolean invoiceSavingsActive = false;
+        BreBand choBand;
+        if (claim.getBreBand() == null) {
+            choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        } else
+            choBand = claim.getBreBand();
+        if (choBand.isBreInvoiceSavingActive() && ("ContestedInvoiceReferredToInsurer".equals(claim.getStatus()) || "ManualInvoiceBRERejected".equals(claim.getStatus()))) {
+            BigDecimal totalGross = claim.getInvoice().getTotalGross();
+            BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+            if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
+                invoiceSavingsActive = true;
+            }
+        }
+
+        return invoiceSavingsActive;
     }
 
     public boolean isUpdatedByEng() {
@@ -2808,5 +2830,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     public boolean isBrandingClaim() {
         return isBrandingTypeClaim(claim);
-    } 
+    }
+    
+    public String getInvoiceSavingValue() {
+        BigDecimal totalGross = claim.getInvoice().getTotalGross();
+        BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+
+        return totalGrossOriginal.subtract(totalGross).toPlainString();
+    }
+    
+    public String getJsonBreRuleFailures() {
+        List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
+        this.jObject = JSONArray.fromObject(breRules);
+        
+        return SUCCESS;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
+    }
 }

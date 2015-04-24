@@ -78,6 +78,7 @@
                 <value>hbm/InsurerIntelligentNote.hbm.xml</value>
                 <value>hbm/PenaltyCharge.hbm.xml</value>
                 <value>hbm/AttachmentFile.hbm.xml</value>
+                <value>hbm/BreRules.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>

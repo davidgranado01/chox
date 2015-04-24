@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="invoiceSavings.jspf" %>
 <script type="text/javascript">
 
 function doUpdateManualInvoice(action){
@@ -38,19 +39,25 @@ function doUpdateManualInvoice(action){
                     </s:else>
                     <div class="status-info-submit">
                         <table>
-                            <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                                 <tr>
+                                <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                                     <td colspan="2" class="choice" nowrap="true">
-                                        <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
+                                        <s:if test="invoiceSavingActive">
+                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
+                                        </s:if>
+                                        <s:else>
+                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
+                                        </s:else>   
                                         <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="doUpdateManualInvoice('updateManualInvoiceContested');" />
                                     </td>
-                                </tr>
-                            </s:if>
-                            <s:else>
-                                <tr>
+                                </s:if>
+                                <s:elseif test="invoiceSavingActive">
+                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  /></td>
+                                </s:elseif>
+                                <s:else>
                                     <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" /></td>
+                                </s:else>   
                                 </tr>
-                            </s:else>   
                         </table>
                     </div>
                 </div>

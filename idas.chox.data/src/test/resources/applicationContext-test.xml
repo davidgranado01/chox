@@ -90,6 +90,7 @@
                 <value>hbm/SchedulerJob.hbm.xml</value>
                 <value>hbm/PenaltyCharge.hbm.xml</value>
                 <value>hbm/AttachmentFile.hbm.xml</value>
+                <value>hbm/BreRules.hbm.xml</value>
             </list>
         </property>
     </bean>

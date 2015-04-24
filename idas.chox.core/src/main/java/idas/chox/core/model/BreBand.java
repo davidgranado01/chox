@@ -156,6 +156,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossFeeNetCeilingCheck;
     private boolean totalLossAndStorageFeeCheck;
     private boolean paymentTeamActive;
+    private boolean breInvoiceSavingActive;
     
     public BreBand() {
     }
@@ -1519,5 +1520,13 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setPaymentTeamActive(boolean paymentTeamActive) {
         this.paymentTeamActive = paymentTeamActive;
+    }
+
+    public boolean isBreInvoiceSavingActive() {
+        return breInvoiceSavingActive;
+    }
+
+    public void setBreInvoiceSavingActive(boolean breInvoiceSavingActive) {
+        this.breInvoiceSavingActive = breInvoiceSavingActive;
     }
 }

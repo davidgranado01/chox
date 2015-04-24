@@ -105,6 +105,7 @@
                 <value>hbm/IPWhitelist.hbm.xml</value>
                 <value>hbm/AuditEntry.hbm.xml</value>
                 <value>hbm/AdminFee.hbm.xml</value>
+                <value>hbm/BreRules.hbm.xml</value>
             </list>
         </property>
     </bean>

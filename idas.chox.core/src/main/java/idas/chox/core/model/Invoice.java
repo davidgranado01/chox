@@ -237,6 +237,15 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal collaborationFee;
     private Integer collaborationQty;
     private boolean paymentTeam;
+    private String invoiceSavingRule;
+
+    public String getInvoiceSavingRule() {
+        return invoiceSavingRule;
+    }
+
+    public void setInvoiceSavingRule(String invoiceSavingRule) {
+        this.invoiceSavingRule = invoiceSavingRule;
+    }
 
     public BigDecimal getRepairAdminFee() {
         return repairAdminFee;
@@ -796,8 +805,8 @@ public class Invoice extends Entity implements Serializable {
      *
      * @param fullTotalToPay
      */
-    public void setFullTotalToPay(java.math.BigDecimal totalToPay) {
-        this.fullTotalToPay = totalToPay;
+    public void setFullTotalToPay(java.math.BigDecimal fullTotalToPay) {
+        this.fullTotalToPay = fullTotalToPay;
     }
 
     /**
@@ -837,7 +846,7 @@ public class Invoice extends Entity implements Serializable {
     }
 
     /**
-     * Method 'getCdwFee'
+     * Method 'getMiscellaneousFee'
      *
      * @return java.math.BigDecimal
      */
@@ -846,18 +855,18 @@ public class Invoice extends Entity implements Serializable {
     }
 
     /**
-     * Method 'setCdwFee'
+     * Method 'setMiscellaneousFee'
      *
-     * @param cdwFee
+     * @param miscellaneousFee
      */
     public void setMiscellaneousFee(java.math.BigDecimal miscellaneousFee) {
         this.miscellaneousFee = miscellaneousFee;
     }
 
     /**
-     * Method 'getCdwQty'
+     * Method 'getMiscellaneousQty'
      *
-     * @return java.lang.Integer
+     * @return int
      */
     public int getMiscellaneousQty() {
         if (miscellaneousQty == null) {
@@ -867,9 +876,9 @@ public class Invoice extends Entity implements Serializable {
     }
 
     /**
-     * Method 'setCdwQty'
+     * Method 'setMiscellaneousQty'
      *
-     * @param cdwQty
+     * @param miscellaneousQty
      */
     public void setMiscellaneousQty(java.lang.Integer miscellaneousQty) {
         this.miscellaneousQty = miscellaneousQty;
@@ -1566,7 +1575,7 @@ public class Invoice extends Entity implements Serializable {
         try {
             if (getHirePenaltyPercentageAppliedValue() != null && getHirePenaltyPercentage() != null && getHirePenaltyPercentage().endsWith("%")) {
                 BigDecimal selectedHirePenaltyPercentageValue = new BigDecimal(getHirePenaltyPercentage().trim().replace("%", ""));
-                return getHirePenaltyPercentageAppliedValue().compareTo(selectedHirePenaltyPercentageValue) != 0 ? true : false;
+                return getHirePenaltyPercentageAppliedValue().compareTo(selectedHirePenaltyPercentageValue) != 0;
             } else if (getHirePenaltyPercentage() != null && getHirePenaltyPercentage().equalsIgnoreCase("commercial")) {
                 return true;
             }
@@ -1581,7 +1590,7 @@ public class Invoice extends Entity implements Serializable {
         try {
             if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%")) {
                 BigDecimal selectedRepairPenaltyPercentageValue = new BigDecimal(getRepairPenaltyPercentage().trim().replace("%", ""));
-                return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0 ? true : false;
+                return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0;
             }
         } catch (Exception ex) {
             LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), ex);

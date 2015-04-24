@@ -1,0 +1,144 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<script type="text/javascript">
+
+    var win;
+
+    Ext.onReady(function () {
+        Ext.QuickTips.init();
+        Ext.form.Field.prototype.msgTarget = 'side';
+    });
+
+    function confirmInvoiceSavingsAction() {
+        if (!win) {
+
+            choxExtAjaxRequest({
+                url: '/prv/p/getBreRuleFailures.action',
+                params: {
+                    id: <s:property value="id" />
+                },
+                callback: function (options, success, response) {
+                        createInvoiceSavingDialog(response.responseText);
+                }
+            });
+        } else
+            win.show(document.body);
+    }
+
+    function createInvoiceSavingDialog(dataString) {
+        var data = Ext.decode(dataString);
+
+        var breRulesJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields: [
+                {type: 'integer', name: 'id'},
+                {type: 'string', name: 'ruleName'},
+                {type: 'string', name: 'ruleDescription'}
+            ]
+        });
+
+        var store = new Ext.data.Store({reader: breRulesJsonReader, idProperty: 'ruleName'});
+
+        store.loadData(data);
+
+        var itemsInGroup = [];
+        var checkedValue = true;
+
+        store.each(function (record) {
+            if (checkedValue) {
+                itemsInGroup.push({
+                    boxLabel: record.data.ruleDescription,
+                    name: 'selectedRule',
+                    inputValue: record.data.ruleName,
+                    checked: checkedValue
+                });
+                checkedValue = false;
+            } else {
+                itemsInGroup.push({
+                    boxLabel: record.data.ruleDescription,
+                    name: 'selectedRule',
+                    inputValue: record.data.ruleName
+                });
+            }
+        });
+
+        var checkGroup = {
+            xtype: 'fieldset',
+            title: 'BRE Rule Failures',
+            layout: 'form',
+            collapsible: false,
+            items: [{
+                    xtype: 'radiogroup',
+//            itemCls: 'x-check-group-alt',
+                    hideLabel: true,
+                    columns: 1,
+                    id: 'breFailuresId',
+                    items: itemsInGroup
+                }]
+        };
+
+
+        var invoiceSavingsForm = new choxExtJsFormPanel({
+            id: 'invoiceSavings-form',
+            autoHeight: true,
+            labelWidth: 210,
+            frame: true,
+            title: '<div class="status-info">A saving of £<s:property value="invoiceSavingValue"/> was made on this invoice. Please select from the following failed Business Rules which rule primarily contributed to this saving.</div>',
+            buttonAlign: 'center',
+            items: [
+                checkGroup
+            ],
+            buttons: [{
+                    text: 'Ok',
+                    handler: function () {
+                        if (invoiceSavingsForm.getForm().isValid()) {
+                            win.hide();
+                            invoiceSavingsForm.getForm().submit({
+                                method: 'POST',
+                                url: contextPath + '/prv/p/setInvoiceSavingsRule.action?name=invoiceSaving&ruleId=' + invoiceSavingsForm.getForm().getValues()['selectedRule'],
+                                success: function (f, a) {
+
+                                    if (a.result.success) {
+                                        pageRefresh();
+                                    }
+                                },
+                                failure: function (f, a) {
+                                    Ext.MessageBox.show({
+                                        title: 'Error',
+                                        msg: a.result.errors,
+                                        width: 300,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
+                            });
+
+                        }
+                    }
+                }, {
+                    text: 'Cancel',
+                    handler: function () {
+                        invoiceSavingsForm.getForm().reset();
+                        win.hide();
+                    }
+                }]
+
+        });
+
+
+
+        win = new Ext.Window({
+            layout: 'fit',
+            width: 450,
+            autoHeight: true,
+            closable: false,
+            resizable: false,
+            items: [
+                invoiceSavingsForm
+            ]
+        });
+        win.show(document.body);
+    }
+
+</script>
