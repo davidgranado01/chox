@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="invoiceSavings.jspf" %>
 <script type="text/javascript">
     var noteMessageDiv=null;
     function showNoteMessage(){

@@ -1,28 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
-
     var win;
-
+    
     Ext.onReady(function () {
         Ext.QuickTips.init();
         Ext.form.Field.prototype.msgTarget = 'side';
+        choxExtAjaxRequest({
+            url: '/prv/p/getBreRuleFailures.action',
+            params: {
+                id: <s:property value="claimId" />
+            },
+            callback: function (options, success, response) {
+                    createInvoiceSavingDialog(response.responseText);
+            }
+        });
     });
 
     function confirmInvoiceSavingsAction() {
-        if (!win) {
-
-            choxExtAjaxRequest({
-                url: '/prv/p/getBreRuleFailures.action',
-                params: {
-                    id: <s:property value="id" />
-                },
-                callback: function (options, success, response) {
-                        createInvoiceSavingDialog(response.responseText);
-                }
-            });
-        } else
-            win.show(document.body);
+        win.show(document.body);
     }
 
     function createInvoiceSavingDialog(dataString) {
@@ -73,14 +69,12 @@
 //            itemCls: 'x-check-group-alt',
                     hideLabel: true,
                     columns: 1,
-                    id: 'breFailuresId',
                     items: itemsInGroup
                 }]
         };
 
 
         var invoiceSavingsForm = new choxExtJsFormPanel({
-            id: 'invoiceSavings-form',
             autoHeight: true,
             labelWidth: 210,
             frame: true,
@@ -138,7 +132,6 @@
                 invoiceSavingsForm
             ]
         });
-        win.show(document.body);
     }
 
 </script>

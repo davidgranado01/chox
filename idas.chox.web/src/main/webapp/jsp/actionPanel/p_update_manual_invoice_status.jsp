@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<%@ include file="invoiceSavings.jspf" %>
 <script type="text/javascript">
 
 function doUpdateManualInvoice(action){

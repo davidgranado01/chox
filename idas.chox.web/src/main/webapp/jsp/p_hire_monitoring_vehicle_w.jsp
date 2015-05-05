@@ -33,8 +33,8 @@
 
         var vcHMStore = new choxDataStore({
                 url : "/prv/p/getAvailableVehicleClasses.action",
-                reader : vcHMJsonReader
-                ,listeners: {load: function() {
+                reader : vcHMJsonReader,
+                listeners: {load: function() {
                     vcHMCombo.setValue('<s:property value="vehicleClass.id"/>');    
                 }}
         });

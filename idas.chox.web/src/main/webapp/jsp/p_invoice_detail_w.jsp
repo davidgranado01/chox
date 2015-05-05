@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="invoiceSavings.jspf" %>
 
 <script type="text/javascript">
     var rentalStartTimePicker = -1;
@@ -85,6 +86,7 @@
                 $(form4).toggle();
             }
         });
+        
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
@@ -147,8 +149,8 @@
                 
                 $(form4).toggle();
                     
-                
-            }});
+            }
+        });
         fsets2.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets2.mouseout(function(){ $(this).css("cursor","normal");});
 
@@ -178,41 +180,40 @@
                 $(form4).toggle();
                     
                 
-            }});
+            }
+        });
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
         
         if (document.getElementById("formRepairExtras") !== null) {
-        var fsets5 =  $('legend', form5);
-        fsets5.click(function(){ $(this).next().toggle();
+            var fsets5 =  $('legend', form5);
+            fsets5.click(function(){ $(this).next().toggle();
 
-            if(document.getElementById('hideAndShow').value===1){
-                ashow=true,bshow=true,cshow=true,dshow=true;
-                a=2,b=2,c=2,d=2;
-                document.getElementById('hideAndShow').value=2;
-            }
+                if(document.getElementById('hideAndShow').value===1){
+                    ashow=true,bshow=true,cshow=true,dshow=true;
+                    a=2,b=2,c=2,d=2;
+                    document.getElementById('hideAndShow').value=2;
+                }
 
-            if(document.getElementById('hideAndShow').value===0){
-                ashow=false,bshow=false,cshow=false,dshow=false;
-                a=1,b=1,c=1,d=1;
-                document.getElementById('hideAndShow').value=2;
-            }
-            if((++d)%2===0){
-                dshow=true;
-            }else{
-                dshow=false;
-            }
+                if(document.getElementById('hideAndShow').value===0){
+                    ashow=false,bshow=false,cshow=false,dshow=false;
+                    a=1,b=1,c=1,d=1;
+                    document.getElementById('hideAndShow').value=2;
+                }
+                if((++d)%2===0){
+                    dshow=true;
+                }else{
+                    dshow=false;
+                }
            
-            if(!bshow&&!cshow&&!ashow)
-            { 
-                
-                $(form4).toggle();
-                    
-                
-            }});
-        fsets5.mouseover(function(){ $(this).css("cursor","pointer"); });
-        fsets5.mouseout(function(){ $(this).css("cursor","normal");});
-    }
+                if(!bshow&&!cshow&&!ashow)
+                {
+                    $(form4).toggle();
+                }
+            });
+            fsets5.mouseover(function(){ $(this).css("cursor","pointer"); });
+            fsets5.mouseout(function(){ $(this).css("cursor","normal");});
+        }
         var rentalStartDatePicker = new Ext.form.DateField({
                 name: 'rentalStart',
                 renderTo: 'rentalStartPH',
@@ -222,9 +223,9 @@
                 value: '<s:date format="dd/MM/yyyy" name="rentalStart" />',
                 showWeekNumber: true,
                 validationEvent : false
-            });
+        });
        
-       var rentalEndDatePicker = new Ext.form.DateField({
+        var rentalEndDatePicker = new Ext.form.DateField({
                 name: 'rentalEnd',
                 renderTo: 'rentalEndPH',
                 width: 100,
@@ -233,7 +234,7 @@
                 value: '<s:date format="dd/MM/yyyy" name="rentalEnd" />',
                 showWeekNumber: true,
                 validationEvent : false
-            });
+        });
             
         rentalStartTimePicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
@@ -280,8 +281,8 @@
                         if (document.getElementById("hireMonitorVehicleClassId") !== null && document.getElementById("hireMonitorHireStartId") !== null) {
                             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassText;
                             document.getElementById("hireMonitorHireStartId").innerHTML = time;
-                        } else if (vcHMCombo !== 'undefined' && document.getElementById("rentalStart") !== null && document.getElementById("rentalStartTimePickerHMVId") !== null) {
-                            vcHMCombo.setValue('<s:property value="vehicleClass.id"/>');
+                        } else if (Ext.getCmp("vcHMComboId") !== null && document.getElementById("rentalStart") !== null && document.getElementById("rentalStartTimePickerHMVId") !== null) {
+                            Ext.getCmp("vcHMComboId").setValue('<s:property value="vehicleClass.id"/>');
                             Ext.getCmp("rentalStart").setValue(document.formUpdateInvoiceRecalculationForm.rentalStart.value);
                             Ext.getCmp("rentalStartTimePickerHMVId").setValue(rentalStartTimePicker.getValue());
                         }
@@ -478,7 +479,20 @@
 	refreshPenaltyChargeForm();
 </s:if>
 
-    });
+    // For invoiceSavings functionality, need to update action on 'Agree Invoice' button as
+    // total gross may have been updated (only need to do this on reload by a 'Save' command)
+<s:if test="invoiceSavingActive">
+    if ( $( "#UMIPFormId" ).length ){
+        $("#UMIPFormId").attr("onclick","return confirmInvoiceSavingsAction();");
+    }
+</s:if>
+<s:else>
+    if ( $( "#UMIPFormId" ).length ){
+        $("#UMIPFormId").attr("onclick","doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');");
+    }
+</s:else>
+
+    }); // Ext.onReady
 
     function updateHireMonitoringPanel() {
             ashow=true;
@@ -540,6 +554,7 @@
             Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
             return randomNumber;
         }
+
         function submitForm(){
             if(tpiClaimChk){
                 var settings = $('form#formUpdateInvoiceRecalculationForm').validate().settings;

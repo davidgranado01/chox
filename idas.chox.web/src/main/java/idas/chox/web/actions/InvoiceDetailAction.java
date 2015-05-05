@@ -88,8 +88,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private EngineerReport originalEngineerReport;
     private VehicleHire originalVehicleHire;
     private ActivityEventGenerator activityEventGenerator;
+    private BreBandService breBandService;
     
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
 
     public BigDecimal getHireInsurerDiscountCalculated() {
         return invoice.getHireInsurerDiscountCalculated();
@@ -2242,7 +2247,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     // <editor-fold defaultstate="collapsed" desc="updateModel">
 //    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateModel() {
-
         if (actionSelected == reset) {
             this.setActionResult("Invoice Reset");
             return SUCCESS;
@@ -2400,7 +2404,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     // </editor-fold>
     @Override
     public String execute() {
-
         String tabName = getTabName();
         accessRight = applicationAccessibility.checkTabAccessibilityEditable(tabName,
                 super.getAuthenticatedUser(), claim);
@@ -2729,4 +2732,30 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         claimService.updateLiabilityPayment(claim);
 
     }
+
+    public boolean isInvoiceSavingActive() {
+        boolean invoiceSavingsActive = false;
+        BreBand choBand;
+        if (claim.getBreBand() == null) {
+            choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        } else
+            choBand = claim.getBreBand();
+        if (choBand.isBreInvoiceSavingActive() && ("ContestedInvoiceReferredToInsurer".equals(claim.getStatus()) || "ManualInvoiceBRERejected".equals(claim.getStatus()))) {
+            BigDecimal totalGross = claim.getInvoice().getTotalGross();
+            BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+            if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
+                invoiceSavingsActive = true;
+            }
+        }
+        return invoiceSavingsActive;
+    }
+
+    public String getInvoiceSavingValue() {
+        BigDecimal totalGross = claim.getInvoice().getTotalGross();
+        BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+
+        return totalGrossOriginal.subtract(totalGross).toPlainString();
+    }
+
 }

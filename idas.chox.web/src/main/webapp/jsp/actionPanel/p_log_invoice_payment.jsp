@@ -86,7 +86,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                         <tr>
                             <td>
                                 <s:if test="isInsurerManual">
-                                    <input type="button" id="UMIPFormId" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
+                                    <input type="button" id="UMIPFormId2" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
                                 </s:if>
                                 <s:else>
                                     <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLog('invoicePaymentLogged');"/>

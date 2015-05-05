@@ -420,14 +420,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setBreBand(choBand);
         } else
             choBand = claim.getBreBand();
+
         if (choBand.isBreInvoiceSavingActive() && ("ContestedInvoiceReferredToInsurer".equals(claim.getStatus()) || "ManualInvoiceBRERejected".equals(claim.getStatus()))) {
             BigDecimal totalGross = claim.getInvoice().getTotalGross();
             BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+
             if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
                 invoiceSavingsActive = true;
             }
         }
-
         return invoiceSavingsActive;
     }
 

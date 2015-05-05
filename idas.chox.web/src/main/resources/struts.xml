@@ -798,6 +798,12 @@
 
         <action name="updateInvoiceRecalculation" class="idas.chox.web.actions.InvoiceDetailAction" method="updateModel">
             <result name="success">/jsp/p_invoice_detail_w.jsp</result>
+            <!--result name="success" type="redirectAction">
+                <param name="actionName">getInvoiceRecalculation</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="invoiceSavingsValue">${invoiceSavingValue}</param>
+            </result-->
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirectAction">
                 <param name="actionName">getInvoiceRecalculation</param>
