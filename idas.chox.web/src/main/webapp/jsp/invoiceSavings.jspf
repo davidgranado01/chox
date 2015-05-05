@@ -2,23 +2,33 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
     var win;
-    
+    var formChanged;
+
     Ext.onReady(function () {
         Ext.QuickTips.init();
-        Ext.form.Field.prototype.msgTarget = 'side';
+//        Ext.form.Field.prototype.msgTarget = 'side';
+        formChanged=isFormChanged;
+
         choxExtAjaxRequest({
             url: '/prv/p/getBreRuleFailures.action',
             params: {
                 id: <s:property value="claimId" />
             },
             callback: function (options, success, response) {
-                    createInvoiceSavingDialog(response.responseText);
+                createInvoiceSavingDialog(response.responseText);
             }
         });
+
     });
 
     function confirmInvoiceSavingsAction() {
-        win.show(document.body);
+        if (formChanged) {
+            Ext.MessageBox.alert('Error', 'The invoice has been adjusted. Please save or reset your changes before agreeing quantum.', function () {
+                return false;
+            });
+            return false;
+        } else
+            win.show(document.body);
     }
 
     function createInvoiceSavingDialog(dataString) {
