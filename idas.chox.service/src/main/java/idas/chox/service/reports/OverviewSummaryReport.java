@@ -422,7 +422,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7','S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST','S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -435,7 +435,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7','S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST','S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -448,7 +448,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7','S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST','S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -462,7 +462,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id ")
-                    .append("and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') ")
+                    .append("and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7','S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST','S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -476,7 +476,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A','P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA','P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -490,7 +490,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A','P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA','P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -504,7 +504,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A','P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA','P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -518,7 +518,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+                    .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A','P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA','P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -533,7 +533,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA','M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -546,7 +546,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA','M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -559,7 +559,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id ")
-                    .append("and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') ")
+                    .append("and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA','M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -573,7 +573,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
                     .append(" vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+                    .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA','M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA') and date(r.claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -587,7 +587,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A','F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA','F8ESTA','F9ESTA') and date(r.claim_created_date) ")
                     .append("between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -601,7 +601,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
                     .append(" vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A','F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA','F8ESTA','F9ESTA') and date(r.claim_created_date) ")
                     .append("between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -614,7 +614,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A','F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA','F8ESTA','F9ESTA') and date(r.claim_created_date) ")
                     .append("between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -629,7 +629,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+                    .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A','F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA','F8ESTA','F9ESTA') and date(r.claim_created_date) ")
                     .append("between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -643,7 +643,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A','SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST','SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -657,7 +657,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
                     .append(" vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A','SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST','SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -671,7 +671,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A','SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST','SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -685,7 +685,7 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
                     .append(" vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A','SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST','SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -699,7 +699,18 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13',")
+                    .append("'F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6',")
+                    .append("'SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13',")
+                    .append("'S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST',")
+                    .append("'S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A',")
+                    .append("'P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA',")
+                    .append("'P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A',")
+                    .append("'F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA',")
+                    .append("'F8ESTA','F9ESTA','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA',")
+                    .append("'M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A',")
+                    .append("'SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST',")
+                    .append("'SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -714,7 +725,18 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13',")
+                    .append("'F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6',")
+                    .append("'SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13',")
+                    .append("'S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST',")
+                    .append("'S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A',")
+                    .append("'P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA',")
+                    .append("'P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A',")
+                    .append("'F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA',")
+                    .append("'F8ESTA','F9ESTA','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA',")
+                    .append("'M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A',")
+                    .append("'SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST',")
+                    .append("'SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -728,7 +750,18 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13',")
+                    .append("'F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6',")
+                    .append("'SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13',")
+                    .append("'S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST',")
+                    .append("'S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A',")
+                    .append("'P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA',")
+                    .append("'P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A',")
+                    .append("'F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA',")
+                    .append("'F8ESTA','F9ESTA','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA',")
+                    .append("'M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A',")
+                    .append("'SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST',")
+                    .append("'SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
@@ -742,7 +775,18 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
-                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+                    .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13',")
+                    .append("'F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6',")
+                    .append("'SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13',")
+                    .append("'S1A','S2A','S3A','S4A','S5A','S6A','S7A','S1EST','S2EST','S3EST','S4EST','S5EST','S6EST','S7EST',")
+                    .append("'S1ESTA','S2ESTA','S3ESTA','S4ESTA','S5ESTA','S6ESTA','S7ESTA','P1A','P2A','P3A','P4A','P5A','P6A','P7A','P8A','P9A','P10A','P11A','P12A','P13A',")
+                    .append("'P1EST','P2EST','P3EST','P4EST','P5EST','P6EST','P7EST','P8EST','P9EST','P10EST','P11EST','P12EST','P13EST','P1ESTA','P2ESTA','P3ESTA','P4ESTA','P5ESTA',")
+                    .append("'P6ESTA','P7ESTA','P8ESTA','P9ESTA','P10ESTA','P11ESTA','P12ESTA','P13ESTA','F1A','F2A','F3A','F4A','F5A','F6A','F7A','F8A','F9A',")
+                    .append("'F1EST','F2EST','F3EST','F4EST','F5EST','F6EST','F7EST','F8EST','F9EST','F1ESTA','F2ESTA','F3ESTA','F4ESTA','F5ESTA','F6ESTA','F7ESTA',")
+                    .append("'F8ESTA','F9ESTA','MA','M1A','M2A','M3A','M4A','M5A','M6A','MEST','M1EST','M2EST','M3EST','M4EST','M5EST','M6EST','MESTA',")
+                    .append("'M1ESTA','M2ESTA','M3ESTA','M4ESTA','M5ESTA','M6ESTA','SP1A','SP2A','SP3A','SP4A','SP5A','SP6A','SP7A','SP8A','SP9A','SP10A','SP11A','SP12A','SP13A',")
+                    .append("'SP1EST','SP2EST','SP3EST','SP4EST','SP5EST','SP6EST','SP7EST','SP8EST','SP9EST','SP10EST','SP11EST','SP12EST','SP13EST',")
+                    .append("'SP1ESTA','SP2ESTA','SP3ESTA','SP4ESTA','SP5ESTA','SP6ESTA','SP7ESTA','SP8ESTA','SP9ESTA','SP10ESTA','SP11ESTA','SP12ESTA','SP13ESTA') ")
                     .append("and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
                 sb.append("and workgroup_id = :pWorkgroupId ");
