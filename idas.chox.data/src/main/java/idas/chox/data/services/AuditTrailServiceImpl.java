@@ -582,4 +582,18 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         }
         return auditTrails.get(0);
     }
+
+    @Override
+    public boolean hasBeenContestedInvoiceReferredToInsurer(int claimId) {
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
+        for (AuditTrail trail : auditTrail) {
+            if (!trail.getReverted() && ClaimStatus.CONTESTED_INVOICE_REF_TO_INS.equals(trail.getNewStatus())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

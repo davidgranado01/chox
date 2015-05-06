@@ -51,7 +51,9 @@ public interface AuditTrailService {
     Boolean hasRevertedEntries(int claimId);
     
     boolean isSubscriberClaimRejectedAndAgreed(int claimId);
-        
+    
+    boolean hasBeenContestedInvoiceReferredToInsurer(int claimId);
+
     void deleteAllAuditEntriesByClaimId(int claimId);
     
     void revertAllAuditEntriesByClaimId(int claimId);

@@ -89,8 +89,18 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private VehicleHire originalVehicleHire;
     private ActivityEventGenerator activityEventGenerator;
     private BreBandService breBandService;
+    private HistoryService historyService;
+    private AuditTrailService auditTrailService;
     
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
+    }
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
@@ -2739,13 +2749,20 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (claim.getBreBand() == null) {
             choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
-        } else
+        } else {
             choBand = claim.getBreBand();
-        if (choBand.isBreInvoiceSavingActive() && ("ContestedInvoiceReferredToInsurer".equals(claim.getStatus()) || "ManualInvoiceBRERejected".equals(claim.getStatus()))) {
-            BigDecimal totalGross = claim.getInvoice().getTotalGross();
-            BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
-            if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
-                invoiceSavingsActive = true;
+        }
+
+        if (choBand.isBreInvoiceSavingActive() && (auditTrailService.hasBeenContestedInvoiceReferredToInsurer(claim.getId())
+                                                    || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
+                                                    || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
+            List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
+            if (!breRules.isEmpty()) {
+                BigDecimal totalGross = claim.getInvoice().getTotalGross();
+                BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+                if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
+                    invoiceSavingsActive = true;
+                }
             }
         }
         return invoiceSavingsActive;

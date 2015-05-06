@@ -2,12 +2,14 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
     var win;
-    var formChanged;
+    var formChanged = false;
 
     Ext.onReady(function () {
         Ext.QuickTips.init();
 //        Ext.form.Field.prototype.msgTarget = 'side';
-        formChanged=isFormChanged;
+        if (typeof isFormChanged !== 'undefined'){
+            formChanged=isFormChanged;
+        }
 
         choxExtAjaxRequest({
             url: '/prv/p/getBreRuleFailures.action',
@@ -49,24 +51,13 @@
         store.loadData(data);
 
         var itemsInGroup = [];
-        var checkedValue = true;
 
         store.each(function (record) {
-            if (checkedValue) {
-                itemsInGroup.push({
-                    boxLabel: record.data.ruleDescription,
-                    name: 'selectedRule',
-                    inputValue: record.data.ruleName,
-                    checked: checkedValue
-                });
-                checkedValue = false;
-            } else {
-                itemsInGroup.push({
-                    boxLabel: record.data.ruleDescription,
-                    name: 'selectedRule',
-                    inputValue: record.data.ruleName
-                });
-            }
+            itemsInGroup.push({
+                boxLabel: record.data.ruleDescription,
+                name: 'selectedRule',
+                inputValue: record.data.ruleName
+            });
         });
 
         var checkGroup = {
@@ -79,6 +70,7 @@
 //            itemCls: 'x-check-group-alt',
                     hideLabel: true,
                     columns: 1,
+                    allowBlank: false,
                     items: itemsInGroup
                 }]
         };

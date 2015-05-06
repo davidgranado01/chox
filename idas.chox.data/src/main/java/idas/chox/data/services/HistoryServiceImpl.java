@@ -16,8 +16,10 @@ import idas.chox.core.model.BreRules;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.core.services.HistoryService;
+import java.util.ArrayList;
 
 public class HistoryServiceImpl extends SecureDataService implements HistoryService {
+
     private static final Logger LOG = LoggerFactory.getLogger(HistoryServiceImpl.class);
 
     /*
@@ -56,25 +58,30 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         List<BreRules> breRules;
         List<History> breRuleFailures = getHistoryByClaim(claimId, false, false);
 
-        Set<String> breRuleFailureIds = new HashSet<>(breRuleFailures.size());
-        for (History history : breRuleFailures) {
-            breRuleFailureIds.add(history.getRuleId());
+        if (!breRuleFailures.isEmpty()) {
+            Set<String> breRuleFailureIds = new HashSet<>(breRuleFailures.size());
+            for (History history : breRuleFailures) {
+                breRuleFailureIds.add(history.getRuleId());
+            }
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(BreRules.class);
+            criteria.add(Restrictions.in("ruleName", breRuleFailureIds.toArray()));
+            criteria.addOrder(Order.asc("ruleName"));
+
+            breRules = findByCriteria(criteria);
+        } else {
+            breRules = new ArrayList<>(0);
         }
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(BreRules.class);
-        criteria.add(Restrictions.in("ruleName", breRuleFailureIds.toArray()));
-        criteria.addOrder(Order.asc("ruleName"));
-
-        breRules = findByCriteria(criteria);
         return breRules;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void markHistoryAsOldByClaim(Claim claim) {
         List<History> histories = getHistoryByClaim(claim.getId(), true, false);
-        
-        for(History history : histories) {
+
+        for (History history : histories) {
             if (!history.getIsOld()) {
                 history.setIsOld(true);
                 save(history);

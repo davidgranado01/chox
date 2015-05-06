@@ -418,15 +418,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claim.getBreBand() == null) {
             choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
-        } else
+        } else {
             choBand = claim.getBreBand();
+        }
 
-        if (choBand.isBreInvoiceSavingActive() && ("ContestedInvoiceReferredToInsurer".equals(claim.getStatus()) || "ManualInvoiceBRERejected".equals(claim.getStatus()))) {
-            BigDecimal totalGross = claim.getInvoice().getTotalGross();
-            BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
-
-            if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
-                invoiceSavingsActive = true;
+        if (choBand.isBreInvoiceSavingActive() && (auditTrailService.hasBeenContestedInvoiceReferredToInsurer(claim.getId())
+                                                    || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
+                                                    || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
+            List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
+            if (!breRules.isEmpty()) {
+                BigDecimal totalGross = claim.getInvoice().getTotalGross();
+                BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
+                if (totalGrossOriginal.subtract(totalGross).compareTo(BigDecimal.ZERO) > 0) {
+                    invoiceSavingsActive = true;
+                }
             }
         }
         return invoiceSavingsActive;

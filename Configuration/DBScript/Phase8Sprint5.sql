@@ -16,6 +16,17 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ContestedInvoiceReferredToInsurer';
 
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+    VALUES ('activity.InvoiceSaving.InvoiceReferredToClaimsHandler',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.InvoiceSaving.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.InvoiceReferredToClaimsHandler';
+
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, claim_type)
     VALUES ('activity.InvoiceSaving.ManualInvoiceBRERejected',FALSE,FALSE, 17);
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
@@ -26,6 +37,17 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, claim_type)
+    VALUES ('activity.InvoiceSaving.ManualInvoiceContested',FALSE,FALSE, 17);
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'activity.InvoiceSaving.ManualInvoiceContested';
 
 ----------------------
 -- End of 8.5.1
