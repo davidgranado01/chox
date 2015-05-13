@@ -28,6 +28,7 @@ import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.reports.ClaimsGridExportReport;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -485,6 +486,8 @@ public class ExcelGeneratorAction extends BaseAction {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     excelStream = new DeleteOnCloseFileInputStream(reportFile);
+                    HttpServletResponse response = ServletActionContext.getResponse();
+                    response.setContentLength((int)reportFile.length());
                     result = SUCCESS;
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
