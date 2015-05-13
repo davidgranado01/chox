@@ -47,7 +47,7 @@ public class FixedRepairDaysCheck implements IBusinessRule {
                 success = false;
                 narrative = "The number of hire days billed (" + noDaysTaken
                         + " days) exceeds the allowable number of hire days for '"
-                        + nameOfRepairer + "' repairs (" + noDaysAllowed + " days)";
+                        + nameOfRepairer + "' repairs (" + noDaysAllowed + " days).";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
