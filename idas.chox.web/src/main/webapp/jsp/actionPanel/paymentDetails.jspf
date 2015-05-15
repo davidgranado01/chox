@@ -511,6 +511,7 @@ Ext.onReady(function(){
 
 function confirmPaymentLogAction(){
 	win.show(document.body);
+        return false;
 }
 
 </script>

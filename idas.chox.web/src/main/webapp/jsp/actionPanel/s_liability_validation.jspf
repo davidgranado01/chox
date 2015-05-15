@@ -321,6 +321,7 @@
                 }
             }
         }
+        retun false;
     }
 
     function doFormValidationSetup(action){
