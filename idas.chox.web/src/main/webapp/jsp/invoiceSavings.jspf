@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
-    var win;
+    var invoiceSavingsWindow;
     var formChanged = false;
 
     Ext.onReady(function () {
@@ -30,7 +30,7 @@
             });
             return false;
         } else
-            win.show(document.body);
+            invoiceSavingsWindow.show(document.body);
     }
 
     function createInvoiceSavingDialog(dataString) {
@@ -89,7 +89,7 @@
                     text: 'Ok',
                     handler: function () {
                         if (invoiceSavingsForm.getForm().isValid()) {
-                            win.hide();
+                            invoiceSavingsWindow.hide();
                             invoiceSavingsForm.getForm().submit({
                                 method: 'POST',
                                 url: contextPath + '/prv/p/setInvoiceSavingsRule.action?name=invoiceSaving&ruleId=' + invoiceSavingsForm.getForm().getValues()['selectedRule'],
@@ -116,7 +116,7 @@
                     text: 'Cancel',
                     handler: function () {
                         invoiceSavingsForm.getForm().reset();
-                        win.hide();
+                        invoiceSavingsWindow.hide();
                     }
                 }]
 
@@ -124,7 +124,7 @@
 
 
 
-        win = new Ext.Window({
+        invoiceSavingsWindow = new Ext.Window({
             layout: 'fit',
             width: 450,
             autoHeight: true,
