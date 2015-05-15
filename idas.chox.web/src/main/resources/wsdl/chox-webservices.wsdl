@@ -8,7 +8,7 @@
 		xmlns:chx="http://www.idaschox.com/services/CHOX/">
     <wsdl:documentation>
         Service: CHOX UploadService
-        Version: 1.5.rc2
+        Version: 1.5
         Owner: Valexa Technologies Ltd
         Contact: John.Dowson@valexa.com
     </wsdl:documentation>
