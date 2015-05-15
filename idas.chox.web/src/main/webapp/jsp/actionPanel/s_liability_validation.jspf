@@ -277,6 +277,7 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             choxJqueryHttpSubmit(form);
         }
+        return false;
     }
 
     function doAcknowledgeFormSubmit(action){
@@ -289,7 +290,7 @@
             var reasonOfRejectionDropDown = $("form#formAcknowledgeAction #reasonOfRejectionId");
             //TODO: this is a quick solution for reason of rejeciton validation (in case we press "refer to fnol" and then reject)
             if(action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
-                && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
+                        && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
                 $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
             }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
                     var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
@@ -302,13 +303,11 @@
                         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                         choxJqueryHttpSubmit(form);
                     }
-            }else { 
-                    return false;
-                }})) {
+                    }else { // btn != 'yes'
+                        return false;}})) {
                 return false;
             }
             else{
-               
                 var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
                 var claimId = $("form#formAcknowledgeAction #claimId").val();
                 var form = $("form#formAcknowledgeAction");
@@ -555,7 +554,7 @@
                 choxJqueryHttpSubmit(form);
             }
         });
-
+        return false;
     }
 
     function createHelpNote(){
