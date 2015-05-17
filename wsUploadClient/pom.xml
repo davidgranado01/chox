@@ -6,7 +6,7 @@
     <artifactId>uploadClient</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-
+ 
     <name>wsUploadClient</name>
     <url>http://maven.apache.org</url>
 
