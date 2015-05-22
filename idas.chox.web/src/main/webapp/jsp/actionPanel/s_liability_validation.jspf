@@ -320,7 +320,7 @@
                 }
             }
         }
-        retun false;
+        return false;
     }
 
     function doFormValidationSetup(action){
