@@ -145,7 +145,7 @@
                 labelSeparator : '  :',
                 labelStyle: 'width:190px;margin-top:-2px',
                 checked: <s:property value="showOpenClaimsOnly"/>,
-                tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.',
+                tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed, PaymentReceived or ManualInvoicePaid will be excluded from the list of search results.',
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
