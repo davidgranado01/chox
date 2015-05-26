@@ -20,6 +20,7 @@ create or replace function attachment_report
 returns table
 (
    "Supplier Reference" character varying(128),
+   "Insurer Claim Number" character varying(128),
    "Attachment Type" character varying(28),
    "Description" text,
    "Date Attachment Uploaded" text,
@@ -40,6 +41,7 @@ BEGIN
 RETURN QUERY
 
 select  c.cho_reference as "Supplier Reference",
+        c.claim_number as "Insurer Claim Number",
         a.category as "Attachment Type",
         substring(remarks from 0 for 40) as "Description",
         to_char(a.created_date, 'dd/mm/yyyy') as "Date Attachment Uploaded",
