@@ -90,7 +90,7 @@ public class Insurer extends Entity implements Serializable {
     private Branding branding;
 
     public Branding getBranding() {
-        return branding;
+        return branding == null ? Branding.NO_BRANDING : branding;
     }
 
     public void setBranding(Branding branding) {
