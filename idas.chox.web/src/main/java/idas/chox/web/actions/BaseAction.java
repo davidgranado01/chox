@@ -239,9 +239,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
-    public boolean getInsurerIsSupervisorEnabled() {
+    public boolean getIsSupervisorEnabled() {
         if (getIsCHO()) {
-            return false;
+            return getAuthenticatedUser().getChorganisation().isSupervisorEnable();
         } else if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isSupervisorEnable();
         } else {

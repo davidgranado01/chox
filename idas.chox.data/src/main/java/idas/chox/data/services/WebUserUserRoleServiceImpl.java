@@ -134,8 +134,11 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         if (!isInsurerUploadEnabled) {
             criteria.add(Restrictions.ne("showInsurerUploadDisabled", false));
         }
-        if (!isSupervisorEnabled) {
+        if (!isSupervisorEnabled && orgTypeId == 2) {
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS_SUP));
+        }
+        else if (!isSupervisorEnabled && orgTypeId == 3) {
+            criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO_SUP));
         }
         if (!isAdmin) {
             criteria.add(Restrictions.ne("showAdminOnly", true));

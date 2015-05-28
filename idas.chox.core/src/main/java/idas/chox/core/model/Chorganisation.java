@@ -74,6 +74,33 @@ public class Chorganisation extends Entity implements Serializable {
     private int maxAllowedSlaExtForFixedFee;
     private Branding branding;
     private Chorganisation linkedCho;
+    private Integer timesInStatusContested;
+    private Integer daysBeforeEscalated;
+    private boolean supervisorEnable;
+
+    public Integer getTimesInStatusContested() {
+        return timesInStatusContested;
+    }
+
+    public void setTimesInStatusContested(Integer timesInStatusContested) {
+        this.timesInStatusContested = timesInStatusContested;
+    }
+
+    public Integer getDaysBeforeEscalated() {
+        return daysBeforeEscalated;
+    }
+
+    public void setDaysBeforeEscalated(Integer daysBeforeEscalated) {
+        this.daysBeforeEscalated = daysBeforeEscalated;
+    }
+
+    public boolean isSupervisorEnable() {
+        return supervisorEnable;
+    }
+
+    public void setSupervisorEnable(boolean supervisorEnable) {
+        this.supervisorEnable = supervisorEnable;
+    }
 
     public Chorganisation getLinkedCho() {
         return linkedCho;

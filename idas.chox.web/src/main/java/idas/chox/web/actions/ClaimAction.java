@@ -2737,8 +2737,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsEscalatedToSupervisor() {
-        if (getAuthenticatedUser().isCHO()) {
-            return false;
+        if (getAuthenticatedUser().isCHO()&& getAuthenticatedUser().getChorganisation().isSupervisorEnable()
+                && isChoAllowedForSupervisorQueue()
+                && isEscalatedToSupervisor(getAuthenticatedUser().getChorganisation().getDaysBeforeEscalated(), getAuthenticatedUser().getChorganisation().getTimesInStatusContested())) {
+            LOG.debug("Claim escalated to supervisor and visible to cho.");
+            return true;
         } else if (getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isSupervisorEnable()
                 && isInsurerAllowedForSupervisorQueue()
                 && isEscalatedToSupervisor(getAuthenticatedUser().getInsurer().getDaysBeforeEscalated(), getAuthenticatedUser().getInsurer().getTimesInStatusContested())) {
@@ -2815,9 +2818,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    private boolean isEscalatedToSupervisor(Integer daysBeforeEscaltedRestriction, Integer timesInStatusContestedRestionction) {
+    private boolean isChoAllowedForSupervisorQueue() {
+        for (Object userRole : getAuthenticatedUser().getRoles()) {
+            WebUserRole role = (WebUserRole) userRole;
+            if (role.getName().contains(WebUserRole.ROLE_CHO_MNG)
+                    || role.getName().contains(WebUserRole.ROLE_CHO_SUP)
+                    || role.getName().contains(WebUserRole.ROLE_CHO_MI)) {
+                LOG.debug("User role allows for supervisor");
+                return true;
+            }
+        }
+        LOG.debug("User role does not allow for supervisor");
+        return false;
+    }
+
+    private boolean isEscalatedToSupervisor(Integer daysBeforeEscaltedRestriction, Integer timesInStatusContestedRestriction) {
         if ((daysBeforeEscaltedRestriction != null && claimService.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction)
-                || (timesInStatusContestedRestionction != null && claimService.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction)) {
+                || (timesInStatusContestedRestriction != null && claimService.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestriction)) {
             LOG.debug("Claim has been escalated to supervisor");
             return true;
         }

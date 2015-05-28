@@ -132,14 +132,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return (Claim) get(Claim.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void updateClaim(Claim claim) {
         save(claim);
         LOG.debug("Claim updated and saved.");
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void checkRepairBookedInDateAnomaly(Claim claim) {
         try {
@@ -152,7 +152,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void checkTotalLossAnomaly(Claim claim) {
         try {
@@ -165,7 +165,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     protected void save(Claim object) {
         updateLiabilityPayment(object);
         super.save(object);
@@ -979,25 +979,48 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.isEscalatedToSupervisor()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
 
-            if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null && getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
-                criteria.add(Restrictions.disjunction()
-                        .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-                        .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
-                                        + "where a.claim_id = {alias}.id "
-                                        + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
-                                        + "and a.reverted = false "
-                                        + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")")));
-            } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
-                criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
-            } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
-                criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
-                        + "where a.claim_id = {alias}.id "
-                        + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
-                        + "and a.reverted = false "
-                        + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
-            } else {
-                // Supervisor activated but no details given - therefore queue should be empty
-                criteria.add(Restrictions.eq("status", "NoSuchStatus"));
+            if (getCurrentUser().isAnInsurer()) {
+                if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null && getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
+                    criteria.add(Restrictions.disjunction()
+                            .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
+                            .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                                            + "where a.claim_id = {alias}.id "
+                                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                                            + "and a.reverted = false "
+                                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")")));
+                } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
+                    criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
+                } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
+                    criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                            + "where a.claim_id = {alias}.id "
+                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                            + "and a.reverted = false "
+                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
+                } else {
+                    // Supervisor activated but no details given - therefore queue should be empty
+                    criteria.add(Restrictions.eq("status", "NoSuchStatus"));
+                }
+            } else if (getCurrentUser().isCHO()) {
+                if (getCurrentUser().getChorganisation().getDaysBeforeEscalated() != null && getCurrentUser().getChorganisation().getTimesInStatusContested() != null) {
+                    criteria.add(Restrictions.disjunction()
+                            .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getChorganisation().getDaysBeforeEscalated()))
+                            .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                                            + "where a.claim_id = {alias}.id "
+                                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                                            + "and a.reverted = false "
+                                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getChorganisation().getTimesInStatusContested() + ")")));
+                } else if (getCurrentUser().getChorganisation().getDaysBeforeEscalated() != null) {
+                    criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getChorganisation().getDaysBeforeEscalated()));
+                } else if (getCurrentUser().getChorganisation().getTimesInStatusContested() != null) {
+                    criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
+                            + "where a.claim_id = {alias}.id "
+                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                            + "and a.reverted = false "
+                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getChorganisation().getTimesInStatusContested() + ")"));
+                } else {
+                    // Supervisor activated but no details given - therefore queue should be empty
+                    criteria.add(Restrictions.eq("status", "NoSuchStatus"));
+                }
             }
         }
 
@@ -1269,7 +1292,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
         super.save(claim);
     }
@@ -1296,7 +1319,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int getSubscriberClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of subscriber claim with id={}", id);
@@ -1333,7 +1356,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String stopClaimChase(String choRef) {
         StringBuilder result = new StringBuilder();
 
@@ -1352,7 +1375,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int getFixedFeeClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of fixed-fee claim with id={}", id);
@@ -1502,7 +1525,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender) {
         int result = updateChoReferenceNumber(oldReference, newReference, choId);
         if (result == 2) {
@@ -1514,7 +1537,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId) {
 
         int result = updateChoReferenceNumber(queuedTicket.getOldReference(), queuedTicket.getNewReference(), choId);
@@ -1730,7 +1753,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void setTotalLoss(Claim claim, boolean isTotalLoss) {
         if (claim.getCustomer().getIsTotalLoss() != null
                 && claim.getCustomer().getIsTotalLoss() == isTotalLoss) {

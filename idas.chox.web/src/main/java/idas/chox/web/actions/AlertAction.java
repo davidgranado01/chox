@@ -51,12 +51,19 @@ public class AlertAction extends BaseAction {
     public String getClaimEscalatedToSupervisorAlert() {
         Map<String, Object> sessionClaim =  (Map<String, Object>) getSession().get(Claim.class.getSimpleName());
         int sessionClaimId =  (Integer) sessionClaim.get("id");
-        Insurer insurer = claimService.getClaim(sessionClaimId).getInsurer();
-        if (insurer.isSupervisorEnable()){
-            Integer daysBeforeEscalatedRetriction = insurer.getDaysBeforeEscalated();
-            Integer timesInStatusContestedRetriction = insurer.getTimesInStatusContested();
+        if ((getIsInsurer() && claimService.getClaim(sessionClaimId).getInsurer().isSupervisorEnable())
+                || (getIsCHO() && claimService.getClaim(sessionClaimId).getChorganisation().isSupervisorEnable())) {
+
+            Integer daysBeforeEscalatedRetriction;
+            Integer timesInStatusContestedRetriction;
             
-            
+            if (getIsInsurer()) {
+                daysBeforeEscalatedRetriction = getAuthenticatedUser().getInsurer().getDaysBeforeEscalated();
+                timesInStatusContestedRetriction = getAuthenticatedUser().getInsurer().getTimesInStatusContested();
+            } else {
+                daysBeforeEscalatedRetriction = getAuthenticatedUser().getChorganisation().getDaysBeforeEscalated();
+                timesInStatusContestedRetriction = getAuthenticatedUser().getChorganisation().getTimesInStatusContested();
+            }
             
             if (daysBeforeEscalatedRetriction != null) {
                 daysSinceInvoiceUploadToEscalate = claimService.getDaysSinceInvoiceUploadToEscalate(sessionClaimId);

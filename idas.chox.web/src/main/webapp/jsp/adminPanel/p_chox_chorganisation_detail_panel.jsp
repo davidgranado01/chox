@@ -176,8 +176,11 @@
                 }
             });
             
-            if($('#CCDName').val() !== "")
+            if($('#CCDName').val() !== ""){
                 $('#nameField').hide();
+            }
+            
+            doChoSupervisorEscalationCheck();
             
         });
         
@@ -364,6 +367,20 @@
              markFieldEditable();
           }
        }
+
+    function doChoSupervisorEscalationCheck(){
+        var supervisorEscalationFlag = false;
+        if($('form#formUpdateChorganisationDetail input[name="supervisorEnable"]:checked').val()){
+            supervisorEscalationFlag = true;
+             $("#nrOfDaysInvoiceUploadedChoDiv").slideDown();
+             $("#timeEnteredToContestedInvChoDiv").slideDown();
+         }else{
+             $("#nrOfDaysInvoiceUploadedChoDiv").hide();
+             $("#timeEnteredToContestedInvChoDiv").hide();
+        }
+        return supervisorEscalationFlag;
+    }
+
 </script>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
 <div id="chox-admin-holder">
@@ -495,7 +512,8 @@
                             <textarea id="CCDBlockedMessage" name="blockedMessage" cols="30"  rows="3"><s:property value="blockedMessage" /></textarea>
                         </div>
 
-                        <table><tr>
+                        <table>
+                            <tr>
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Delegated Authority</label>
@@ -597,13 +615,45 @@
                                         <div id="subscriberSlaExtWgComboDiv"></div>
                                     </div>
                                 </td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Max allowed SLA extension<br/> for Fixed-Fee claims</label>
                                         <div id="fixedFeeSlaExtWgComboDiv"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Supervisor Escalation</label>
+                                        <s:checkbox name="supervisorEnable" id="choSupervisorEnableId" value="supervisorEnable" onclick="doChoSupervisorEscalationCheck();"/>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <div class="chox-form-item" id="nrOfDaysInvoiceUploadedChoDiv">
+                                    <label class="chox-form-std-label">
+                                        Days Since Invoice Upload to Escalate
+                                    </label>
+                                    <input type="text" class="chox-ttxt"
+                                           id="nrOfDaysUploadedChoId" name="daysBeforeEscalated"
+                                           value="<s:property value="daysBeforeEscalated" />" />
+                                </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item" id="timeEnteredToContestedInvChoDiv">
+                                        <label class="chox-form-std-label" style="margin-top : -7px;">
+                                            Number of Times Contested<br/> With CHO to Escalate 
+                                        </label>
+                                        <input type="text"
+                                               class="chox-ttxt" id="timeEnteredToContChoId"
+                                               name="timesInStatusContested"
+                                               value="<s:property value="timesInStatusContested" />" />
                                     </div>
                                 </td>
                                 <td></td>
