@@ -481,18 +481,39 @@
 
     // For invoiceSavings functionality, need to update action on 'Agree Invoice' button as
     // total gross may have been updated (only need to do this on reload by a 'Save' command)
+    var ieVersion = get_MSIE_version();
 <s:if test="invoiceSavingActive">
     if ( $( "#UMIPFormId" ).length ){
-        $("#UMIPFormId").attr("onclick","return confirmInvoiceSavingsAction();");
+        if (ieVersion==9 || ieVersion==8){
+            $("#UMIPFormId").unbind('click');
+            $("#UMIPFormId").click(function(){return confirmInvoiceSavingsAction();});
+        }else{
+            $("#UMIPFormId").attr("onclick","return confirmInvoiceSavingsAction();");
+        }
     }
 </s:if>
 <s:else>
     if ( $( "#UMIPFormId" ).length ){
-        $("#UMIPFormId").attr("onclick","doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');");
+        if (ieVersion==9 || ieVersion==8){
+            $("#UMIPFormId").unbind('click');
+            $("#UMIPFormId").click(function(){return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');});
+        }else{
+            $("#UMIPFormId").attr("onclick","doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');");
+        }
     }
 </s:else>
 
     }); // Ext.onReady
+
+        function get_MSIE_version(){
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf ( "MSIE " );
+
+            if ( msie > 0 )      // If Internet Explorer, return version number
+                return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
+            else                 // If another browser, return 0
+                return 0;
+	}
 
     function updateHireMonitoringPanel() {
             ashow=true;

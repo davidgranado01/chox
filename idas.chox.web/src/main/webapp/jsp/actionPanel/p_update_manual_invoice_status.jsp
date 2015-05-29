@@ -8,6 +8,7 @@ function doUpdateManualInvoice(action){
     
     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
     choxJqueryHttpSubmit($("form#updateManualInvoicePaymentForm"));
+    return false;
 }
 
 </script>
