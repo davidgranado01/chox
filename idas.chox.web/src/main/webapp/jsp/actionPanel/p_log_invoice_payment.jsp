@@ -25,7 +25,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
 
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         choxJqueryHttpSubmit($("form#logInvoicePayment"));
-    
+        return false;
     }
 
     function confirmPaymentLog(action){

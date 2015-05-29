@@ -28,9 +28,9 @@
             Ext.MessageBox.alert('Error', 'The invoice has been adjusted. Please save or reset your changes before agreeing quantum.', function () {
                 return false;
             });
-            return false;
         } else
             invoiceSavingsWindow.show(document.body);
+        return false;
     }
 
     function createInvoiceSavingDialog(dataString) {
