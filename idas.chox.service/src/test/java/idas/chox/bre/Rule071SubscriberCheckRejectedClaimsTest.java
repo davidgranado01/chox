@@ -1,19 +1,21 @@
 package idas.chox.bre;
 
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import org.springframework.transaction.annotation.Transactional;
-import idas.chox.core.model.ClaimType;
-import idas.chox.service.bre.rules.SubscriberCheckRejectedClaims;
-import idas.chox.test.BaseTest;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.io.IOException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import idas.chox.core.model.ClaimType;
+import idas.chox.service.bre.rules.SubscriberCheckRejectedClaims;
+import idas.chox.test.BaseTest;
 
 /**
  *
@@ -36,7 +38,9 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     @Transactional
     private Claim getTestClaim() {
         Claim claim = new Claim();
-
+        claim.setChorganisation(chorganisationService.getChorganisation(1006));
+        claim.setInsurer(insurerService.getInsurer(3));
+        testClaim.getTestBreBand().setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
         claim.setVehicleHire(testClaim.getTestHireDetail());
         claim.getVehicleHire().setVehicleClass(null);
@@ -45,7 +49,6 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setClaimNumber("0123456789");
         claimService.save(claim);
-//        claimService.flush();
 
         return claim;
     }
@@ -119,6 +122,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         
 
     @Test
+    @Transactional
     public void testPassed_1() throws IOException {
         Claim claim = getTestClaim();
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
@@ -143,6 +147,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testFailed() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);

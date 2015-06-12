@@ -30,7 +30,7 @@ public interface AuditTrailService {
 
     int getSubscriberClaimDays(int claimId);
 
-    int getSubscriberClaimRejectedDays(int claimId);
+    int getSubscriberClaimRejectedDays(int claimId, String cutOffTime);
 
     int getSubscriberClaimRejectedTimes(int claimId);
     

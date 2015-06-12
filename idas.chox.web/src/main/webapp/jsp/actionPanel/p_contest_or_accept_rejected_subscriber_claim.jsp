@@ -45,10 +45,10 @@
             <legend>Rejected Subscriber Claim - Action Required</legend>
             <div>
                 <div class="status-info">
-                  <s:if test="subscriberClaimRejectedMoreThanOnce">
+                  <s:if test="claimRejectedMaxAllowed">
                      <s:if test="subscriberClaimRejected">
                         Please review the Insurer's notes for the reason for the rejection.
-                        This is the second time the claim has been rejected, as per the agreement
+                        This is the <s:property value="rejectionCount" /> time the claim has been rejected, as per the agreement
                         this claim can no longer continue down the Subscriber process route.
                         If the rejection is valid and is agreed then click on the 'Agree
                         With Subscriber Challenge' button, this will move the status of the
@@ -60,7 +60,7 @@
                     </s:if>
                     <s:else>
                         Please review the Insurer’s notes for the reason for the rejection.
-                        This is the second time the claim has been rejected, as per the agreement
+                        This is the <s:property value="rejectionCount" /> time the claim has been rejected, as per the agreement
                         this claim can no longer continue down the Subscriber process route.
                         If the rejection is valid and is agreed then click on the ‘Agree
                         With Subscriber Challenge’ button, this will move the status of the claim
@@ -100,7 +100,7 @@
                         </tr>
                         <tr>
                             <td>
-                              <s:if test="!subscriberClaimRejectedMoreThanOnce">
+                              <s:if test="!claimRejectedMaxAllowed">
                                 <input type="button" id="COARSCContestThisClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doSubscriberFormSubmit('contestRejectedClaim')" />
                               </s:if>
                                 <input type="button" id="COARSCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doSubscriberFormSubmit('acceptSubscriberChallenge')"  />

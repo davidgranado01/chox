@@ -332,7 +332,7 @@ public class ActivityEventGenerator {
                 LOG.debug("SwitchFromPaymentsTeam activity found");
                 ActivityEvent.INVOICE_SWITCHED_FROM_PAYMENTS_TEAM_EVENT.build(this, claim);
             } else {
-                LOG.error("No events to generate for activity '{}'", activityName);
+                LOG.warn("No events to generate for activity '{}'", activityName);
             }
         } catch (Exception ex) {
             LOG.error("Error generating events for activity '{}' : {}\n", new Object[]{activityName, ex.getMessage(), ex});

@@ -79,10 +79,10 @@ function refreshDesc(id){
                         </s:elseif>
                         <s:elseif test="isSubscriberClaim">
                             <s:if test="slaExtDays > 0">
-                                This claim cannot be rejected as the Subscriber notification 5 day SLA + <s:property value="slaExtDays"/> day extension has passed.
+                                This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA + <s:property value="slaExtDays"/> day extension has passed.
                             </s:if>
                             <s:else>
-                                This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
+                                This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA has passed.
                             </s:else>
                         </s:elseif>
                     </div>

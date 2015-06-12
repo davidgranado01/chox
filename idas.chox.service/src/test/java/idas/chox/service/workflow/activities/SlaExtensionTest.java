@@ -1,21 +1,23 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Chorganisation;
+import idas.chox.bre.mock.MockObjects;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
-import org.springframework.security.access.AccessDeniedException;
 
 public class SlaExtensionTest extends BaseTest {
+    MockObjects testClaim = new MockObjects();
 
     @Test(expected = AccessDeniedException.class)
     public void testSlaExtensionWithInvalidStatus() throws Exception {
@@ -34,7 +36,8 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.FIXED_FEE);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(14);
@@ -42,10 +45,10 @@ public class SlaExtensionTest extends BaseTest {
 
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "14 days extension granted.");
+                Assert.assertEquals("14 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 14);
+        Assert.assertEquals(14, claim.getSlaExtDays());
     }
 
     @Test
@@ -56,17 +59,18 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.FIXED_FEE);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(10);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "10 days extension granted.");
+                Assert.assertEquals("10 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 10);
+        Assert.assertEquals(10, claim.getSlaExtDays());
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -77,7 +81,8 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.FIXED_FEE);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(15);
@@ -92,17 +97,18 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(5);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "5 days extension granted.");
+                Assert.assertEquals("5 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 5);
+        Assert.assertEquals(5, claim.getSlaExtDays());
     }
 
     @Test
@@ -113,17 +119,18 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(4);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "4 days extension granted.");
+                Assert.assertEquals("4 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 4);
+        Assert.assertEquals(4, claim.getSlaExtDays());
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -134,7 +141,8 @@ public class SlaExtensionTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(6);
@@ -152,18 +160,18 @@ public class SlaExtensionTest extends BaseTest {
         Chorganisation cho =  chorganisationService.getChorganisation(1006);
         cho.setMaxAllowedSlaExtForFixedFee(5);
         claim.setChorganisation(cho);
-        
-
+        claim.setInsurer(insurerService.getInsurer(3));        
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(19);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "19 days extension granted.");
+                Assert.assertEquals("19 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 19);
+        Assert.assertEquals(19, claim.getSlaExtDays());
     }
     
     @Test
@@ -176,17 +184,18 @@ public class SlaExtensionTest extends BaseTest {
         Chorganisation cho =  chorganisationService.getChorganisation(1006);
         cho.setMaxAllowedSlaExtForSubscriber(5);
         claim.setChorganisation(cho);
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(10);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("days extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "10 days extension granted.");
+                Assert.assertEquals("10 days extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 10);
+        Assert.assertEquals(10, claim.getSlaExtDays());
     }
     
     @Test
@@ -198,17 +207,18 @@ public class SlaExtensionTest extends BaseTest {
         claim.setClaimType(ClaimType.SUBSCRIBER);
         Chorganisation cho =  chorganisationService.getChorganisation(1006);
         claim.setChorganisation(cho);
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(1);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("day extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "1 day extension granted.");
+                Assert.assertEquals("1 day extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 1);
+        Assert.assertEquals(1, claim.getSlaExtDays());
     }
     
     @Test
@@ -220,16 +230,17 @@ public class SlaExtensionTest extends BaseTest {
         claim.setClaimType(ClaimType.FIXED_FEE);
         Chorganisation cho =  chorganisationService.getChorganisation(1006);
         claim.setChorganisation(cho);
-
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setBreBand(testClaim.getTestBreBand());
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(1);
         activity.process(claim);
         for (Comment comment : claim.getComments()) {
             if (comment.getComment().contains("day extension granted.")) {
-                Assert.assertEquals(comment.getComment(), "1 day extension granted.");
+                Assert.assertEquals("1 day extension granted.", comment.getComment());
             }
         }
-        Assert.assertEquals(claim.getSlaExtDays(), 1);
+        Assert.assertEquals(1, claim.getSlaExtDays());
     }
 }

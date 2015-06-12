@@ -17,12 +17,94 @@
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
         new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
 
+        var subscriberTimeCutOffTimePicker = new Ext.form.TimeField({
+            name: 'subscriberTimeCutOff',
+            id : 'subscriberTimeCutOffPickerHMVId',
+            width: 100,
+            allowBlank: true,
+            validationEvent : false,
+            minValue: '00:15',
+            maxValue: '23:45',
+            increment: 15,
+            format:'H:i',
+            value: '<s:property value="subscriberTimeCutOff" />',
+            renderTo:'subscriberTimeCutOffPH'
+        });
+
+        var subscriberResubmissionAllowedCombo = new Ext.form.ComboBox({
+            width: 80,
+            renderTo: 'subscriberResubmissionAllowedPH',
+            id: 'subscriberResubmissionAllowedComboId',
+            hiddenName: 'subscriberResubmissionAllowed',
+            mode: 'local',
+            triggerAction: 'all',
+            selectOnFocus: true,
+            forceSelection : true,
+            editable : false,
+            store: new Ext.data.ArrayStore({
+                id: 0,
+                fields: [
+                    'value',
+                    'text'
+                ],
+                data: [[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [-1, 'Unlimited']]
+            }),
+            valueField: 'value',
+            displayField: 'text',
+            value : '<s:property value="subscriberResubmissionAllowed"/>'
+        });
+
+        var fixedFeeTimeCutOffTimePicker = new Ext.form.TimeField({
+            name: 'fixedFeeTimeCutOff',
+            id : 'fixedFeeTimeCutOffPickerHMVId',
+            width: 100,
+            allowBlank: true,
+            validationEvent : false,
+            minValue: '00:15',
+            maxValue: '23:45',
+            increment: 15,
+            format:'H:i',
+            value: '<s:property value="fixedFeeTimeCutOff" />',
+            renderTo:'fixedFeeTimeCutOffPH'
+        });
+
+        var fixedFeeResubmissionAllowedCombo = new Ext.form.ComboBox({
+            width: 80,
+            renderTo: 'fixedFeeResubmissionAllowedPH',
+            id: 'fixedFeeResubmissionAllowedComboId',
+            hiddenName: 'fixedFeeResubmissionAllowed',
+            mode: 'local',
+            triggerAction: 'all',
+            selectOnFocus: true,
+            forceSelection : true,
+            editable : false,
+            store: new Ext.data.ArrayStore({
+                id: 0,
+                fields: [
+                    'value',
+                    'text'
+                ],
+                data: [[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [-1, 'Unlimited']]
+            }),
+            valueField: 'value',
+            displayField: 'text',
+            value : '<s:property value="fixedFeeResubmissionAllowed"/>'
+        });
+
         var form = $("form#formUpdateInsurerBreBandDetail");
 
         form.validate(
         {
             errorLabelContainer: "#CDInsurerBreBandmessageBox",
             rules: {
+<s:if test="isSubscriberEnabled">                         
+                subsctiberTimeCutOff:{required:true, time:true},
+                subscriberSlaDays:{required:true, number:true, min:1},
+</s:if>
+<s:if test="isFixedFeeEnabled">                         
+                fixedFeeTimeCutOff:{required:true, time:true},
+                fixedFeeSlaDays:{required:true, number:true, min:0},
+</s:if>
                 name:{required:true},
                 isMobileDayAllowance:{required:true, number:true, min:0},
                 isNotMobileDayAllowance:{required:true, number:true, min:0},
@@ -48,6 +130,14 @@
                 maxAllowedTotalLossNetFee:{required:true, number:true, min:0}
             },
             messages: {
+<s:if test="isSubscriberEnabled">                         
+                rentalStartTime: {required:"You must supply a value for 'Subsctiber Time Cut-Off'" , time:"Invalid time format for 'Subsctiber Time Cut-Off'"},
+                subscriberSlaDays: {required:"You must supply a value for 'Subscriber SLA Days'", number:"'Subscriber SLA Days' must be numeric", min:"'Subscriber SLA Days' cannot be less than one" },
+</s:if>
+<s:if test="isFixedFeeEnabled">                         
+                rentalStartTime: {required:"You must supply a value for 'Fixed Fee Time Cut-Off'" , time:"Invalid time format for 'Fixed Fee Time Cut-Off'"},
+                subscriberSlaDays: {required:"You must supply a value for 'Fixed Fee SLA Days'", number:"'Fixed Fee SLA Days' must be numeric", min:"'Fixed Fee SLA Days' cannot be less than zero" },
+</s:if>
                 name: {required:"You must supply a value for 'Name'" },
                 isMobileDayAllowance: {required:"You must supply a value for 'Mobile Day Allowance'", number:"'Mobile Day Allowance' must be numeric", min:"'Mobile Day Allowance' cannot be less than zero"},
                 isNotMobileDayAllowance: {required:"You must supply a value for 'Not Mobile Day Allowance'", number:"'Not Mobile Day Allowance' must be numeric", min:"'>Not Mobile Day Allowance' cannot be less than zero"},
@@ -734,6 +824,40 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="paymentTeamActive" value="paymentTeamActive" /></div><label class="chox-form-std-label"><b>Use Payments Team</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable use of offshore 'Payments Team'</div>
+                        </div>
+                    </div>
+</s:if>     
+<s:if test="subscriberClaimsEnabled">                         
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Subscriber Workflow Parameters</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Subscriber SLA Days<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDSubscriberSlaDays" name="subscriberSlaDays" value="<s:property value="subscriberSlaDays" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Subscriber Time Cut-Off<span class="mandatory">*</span></label>
+                            <span id="subscriberTimeCutOffPH"></span>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Subscriber Resubmission Allowed<span class="mandatory">*</span></label>
+                            <span id="subscriberResubmissionAllowedPH"></span>
+                        </div>
+                    </div>
+</s:if>     
+<s:if test="fixedFeeClaimsEnabled">                         
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Fixed Fee Workflow Parameters</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Fixed Fee SLA Days<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDFixedFeeSlaDays" name="fixedFeeSlaDays" value="<s:property value="fixedFeeSlaDays" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Fixed Fee Time Cut-Off<span class="mandatory">*</span></label>
+                            <span id="fixedFeeTimeCutOffPH"></span>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Fixed Fee Resubmission Allowed<span class="mandatory">*</span></label>
+                            <span id="fixedFeeResubmissionAllowedPH"></span>
                         </div>
                     </div>
 </s:if>     

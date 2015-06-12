@@ -51,6 +51,7 @@ import idas.chox.core.model.Task;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.NotificationService;
@@ -80,6 +81,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
     private EventService eventService;
+    private BreBandService breBandService;
 
     @Override
     public int getActivityMonitorRequestInterval() {
@@ -92,6 +94,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     @Override
@@ -1324,12 +1330,19 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         int claimAge = -1;
         LOG.debug("Getting days of subscriber claim with id={}", id);
         Claim claim = (Claim) get(Claim.class, id);
+        if (claim == null) {
+            LOG.error("Cannot get Subscriber days for claim with id={}: no such claim", id);
+            return claimAge;
+        }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        int subscriberSlaDays = breBand.getSubscriberSlaDays();
+        String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
 
-        if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
 
-        if (claim != null && (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm()))) {
+        if (subscriberSlaDays!= 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1340,9 +1353,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA, claim taken down Subscriber route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1380,12 +1393,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         int claimAge = -1;
         LOG.debug("Getting days of fixed-fee claim with id={}", id);
         Claim claim = (Claim) get(Claim.class, id);
+        if (claim == null) {
+            LOG.error("Cannot get Fixed Fee days for claim with id={}: no such claim", id);
+            return claimAge;
+        }
 
-        if (claim != null && ClaimType.isFixedFee(claim.getClaimType())) {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
+        String fixedFeeCutOffTime = breBand.getFixedFeeTimeCutOff();
+
+        if (ClaimType.isFixedFee(claim.getClaimType())) {
             claimAge = auditTrailService.getFixedFeeClaimDays(id);
         }
 
-        if (claim != null && (claimAge > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm()))) {
+        if (fixedFeeSlaDays != 0 && (claimAge > (fixedFeeSlaDays + claim.getSlaExtDays()) || (claimAge == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1396,9 +1417,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
+                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA, claim taken down Fixed Fee route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Fixed Fee route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Fixed Fee route.");
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1427,9 +1448,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         int claimAge = -1;
         LOG.debug("Getting days until subscriber claim rejected with id={}", claimId);
         Claim claim = (Claim) get(Claim.class, claimId);
+        if (claim == null) {
+            LOG.error("Cannot get Subscriber Claim Rejected days for claim with id={}: no such claim", claimId);
+            return claimAge;
+        }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
 
-        if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
-            claimAge = auditTrailService.getSubscriberClaimRejectedDays(claimId);
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            claimAge = auditTrailService.getSubscriberClaimRejectedDays(claimId, subscriberCutOffTime);
         }
 
         LOG.debug("Days until subscriber claim ({}) rejected: {}", claimId, claimAge);

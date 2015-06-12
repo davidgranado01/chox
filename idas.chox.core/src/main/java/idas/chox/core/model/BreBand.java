@@ -117,6 +117,12 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
     private int numberOfDays = 4;
+    private int subscriberSlaDays = 5;
+    private int subscriberResubmissionAllowed = 2;
+    private String subscriberTimeCutOff = "15:00";
+    private int fixedFeeSlaDays = 14;
+    private int fixedFeeResubmissionAllowed = 2;
+    private String fixedFeeTimeCutOff = "15:00";
     private BigDecimal adminFeeCeilingSubscriberManagingRepair = new BigDecimal("50.00");
     private BigDecimal adminFeeCeilingSubscriber = new BigDecimal("50.00");
     private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
@@ -159,6 +165,54 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean breInvoiceSavingActive;
     
     public BreBand() {
+    }
+
+    public int getSubscriberSlaDays() {
+        return subscriberSlaDays;
+    }
+
+    public void setSubscriberSlaDays(int subscriberSlaDays) {
+        this.subscriberSlaDays = subscriberSlaDays;
+    }
+
+    public int getSubscriberResubmissionAllowed() {
+        return subscriberResubmissionAllowed;
+    }
+
+    public void setSubscriberResubmissionAllowed(int subscriberResubmissionAllowed) {
+        this.subscriberResubmissionAllowed = subscriberResubmissionAllowed;
+    }
+
+    public String getSubscriberTimeCutOff() {
+        return subscriberTimeCutOff;
+    }
+
+    public void setSubscriberTimeCutOff(String subscriberTimeCutOff) {
+        this.subscriberTimeCutOff = subscriberTimeCutOff;
+    }
+
+    public int getFixedFeeSlaDays() {
+        return fixedFeeSlaDays;
+    }
+
+    public void setFixedFeeSlaDays(int fixedFeeSlaDays) {
+        this.fixedFeeSlaDays = fixedFeeSlaDays;
+    }
+
+    public int getFixedFeeResubmissionAllowed() {
+        return fixedFeeResubmissionAllowed;
+    }
+
+    public void setFixedFeeResubmissionAllowed(int fixedFeeResubmissionAllowed) {
+        this.fixedFeeResubmissionAllowed = fixedFeeResubmissionAllowed;
+    }
+
+    public String getFixedFeeTimeCutOff() {
+        return fixedFeeTimeCutOff;
+    }
+
+    public void setFixedFeeTimeCutOff(String fixedFeeTimeCutOff) {
+        this.fixedFeeTimeCutOff = fixedFeeTimeCutOff;
     }
 
 

@@ -46,8 +46,8 @@
             <div>
                 <div class="status-info">
                     <s:if test="isFixedFeeClaim">
-                        <s:if test="subscriberClaimRejectedMoreThanOnce">
-                            Please review the Insurer's notes for the reason for the rejection. This is the second time
+                        <s:if test="claimRejectedMaxAllowed">
+                            Please review the Insurer's notes for the reason for the rejection. This is the <s:property value="rejectionCount" /> time
                             the claim has been rejected, as per the agreement this claim can no longer continue down the
                             Fixed Fee process route. If the rejection is valid and is agreed then click on the 'Accept
                             Rejection Decision' button, this will move the status of the claim to 'ClaimRejectionAccepted'
@@ -82,7 +82,7 @@
                         <tr>
                             <td>
                                 <s:if test="isFixedFeeClaim">
-                                    <s:if test="!subscriberClaimRejectedMoreThanOnce">
+                                    <s:if test="!claimRejectedMaxAllowed">
                                         <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim')" />
                                     </s:if>
                                     <input type="button" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
