@@ -516,31 +516,31 @@
                             </td>
                         </tr>
                     </s:if>
-                    <s:if test="subscriberClaimUnder5Days">
+                    <s:if test="subscriberClaimUnderSlaDays">
                         <tr>
                             <td colspan="3">
                                 <div class="status-info"><s:property value="subscriberTimeLeft" /> before this claim will become a Subscriber claim by default.</div>
                             </td>
                         </tr>
                     </s:if>
-                    <s:elseif test="subscriberClaimAt5Days">
+                    <s:elseif test="subscriberClaimAtSlaDays">
                         <tr>
                             <td colspan="3">
-                                <div class="status-info">This claim will become a Subscriber claim by default at 15:00 today.</div>
+                                <div class="status-info">This claim will become a Subscriber claim by default at <s:property value="subscriberCutOffTime" /> today.</div>
                             </td>
                         </tr>
                     </s:elseif>
-                    <s:elseif test="fixedFeeClaimUnder14Days">
+                    <s:elseif test="fixedFeeClaimUnderSlaDays">
                         <tr>
                             <td colspan="3">
                                 <div class="status-info"><s:property value="fixedFeeTimeLeft" /> before this claim will become a Fixed Fee claim by default.</div>
                             </td>
                         </tr>
                     </s:elseif>
-                    <s:elseif test="fixedFeeClaimAt14Days">
+                    <s:elseif test="fixedFeeClaimAtSlaDays">
                         <tr>
                             <td colspan="3">
-                                <div class="status-info">This claim will become a Fixed Fee claim by default at 15:00 today.</div>
+                                <div class="status-info">This claim will become a Fixed Fee claim by default at <s:property value="fixedFeeCutOffTime" /> today.</div>
                             </td>
                         </tr>
                     </s:elseif>

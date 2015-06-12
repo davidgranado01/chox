@@ -18,6 +18,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
 public class ClaimRejection extends BaseActivity {
+
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejection.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
@@ -69,13 +70,13 @@ public class ClaimRejection extends BaseActivity {
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+
     /**
      * @param percentageLiabilityCho the percentageLiabilityCho to set
      */
     public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
-
 
     /**
      * @param liabilityAgreedDate the liabilityAgreedDate to set
@@ -84,8 +85,6 @@ public class ClaimRejection extends BaseActivity {
         this.liabilityAgreedDate = liabilityAgreedDate;
     }
 
-
-
     /**
      * @param liabilityStatus the liabilityStatus to set
      */
@@ -93,7 +92,7 @@ public class ClaimRejection extends BaseActivity {
         this.liabilityStatus = liabilityStatus;
     }
 
-   // </editor-fold>
+    // </editor-fold>
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -151,14 +150,13 @@ public class ClaimRejection extends BaseActivity {
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
-        }
-        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        } else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
-                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+                || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
-        
+
         reasonOfRejection = getReasonOfRejection();
         if (reasonOfRejection == null) {
             throw new Exception("No Reason of Rejection provided");
@@ -167,24 +165,26 @@ public class ClaimRejection extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Verify Rejected with the 5 day SLA with 5 minute leeway
             int subscriberClaimDays = claimService.getSubscriberClaimDays(claim.getId());
-            if (subscriberClaimDays > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (subscriberClaimDays == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm(5))) {
+            if (subscriberClaimDays > (claim.getBreBand().getSubscriberSlaDays() + claim.getSlaExtDays()) || (subscriberClaimDays == (claim.getBreBand().getSubscriberSlaDays() + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(claim.getBreBand().getSubscriberTimeCutOff(), 5))) {
                 if (claim.getSlaExtDays() > 0) {
-                    throw new Exception("Cannot reject subscriber claim as the 5 day SLA + "+claim.getSlaExtDays()+" day extension limit has now been reached.");
+                    throw new Exception("Cannot reject subscriber claim as the " + claim.getBreBand().getSubscriberSlaDays() + " day SLA + " + claim.getSlaExtDays() + " day extension limit has now been reached.");
                 } else {
-                    throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
+                    throw new Exception("Cannot reject subscriber claim as the " + claim.getBreBand().getSubscriberSlaDays() + " day SLA limit has now been reached.");
                 }
             }
             // Validate Liability Status
             // TODO
-        }
-        else if (ClaimType.isFixedFee(claim.getClaimType())) {
-            // Verify Rejected with the 14 day SLA with 5 minute leeway
-            int fixedFeeClaimDays = claimService.getFixedFeeClaimDays(claim.getId());
-            if (fixedFeeClaimDays > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (fixedFeeClaimDays == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm(5))) {
-                if (claim.getSlaExtDays() > 0) {
-                    throw new Exception("Cannot reject fixed fee claim as the 14 day SLA + "+claim.getSlaExtDays()+" day extension limit has now been reached.");
-                } else {
-                    throw new Exception("Cannot reject fixed fee claim as the 14 day SLA limit has now been reached.");
+        } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            int fixedFeeSlaDays = claim.getBreBand().getFixedFeeSlaDays();
+            if (fixedFeeSlaDays != 0) {
+                // Verify Rejected with the SLA day/time limit with 5 minute leeway
+                int fixedFeeClaimDays = claimService.getFixedFeeClaimDays(claim.getId());
+                if (fixedFeeClaimDays > (fixedFeeSlaDays + claim.getSlaExtDays()) || (fixedFeeClaimDays == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(claim.getBreBand().getFixedFeeTimeCutOff(), 5))) {
+                    if (claim.getSlaExtDays() > 0) {
+                        throw new Exception("Cannot reject fixed fee claim as the " + fixedFeeSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension limit has now been reached.");
+                    } else {
+                        throw new Exception("Cannot reject fixed fee claim as the " + fixedFeeSlaDays + " day SLA limit has now been reached.");
+                    }
                 }
             }
             // Validate Liability Status
@@ -192,7 +192,6 @@ public class ClaimRejection extends BaseActivity {
         }
 
     }
-
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -212,7 +211,7 @@ public class ClaimRejection extends BaseActivity {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
         }
 
-        if (claimNumber!= null && !claimNumber.isEmpty() && !claimNumber.equals(claim.getClaimNumber())) {
+        if (claimNumber != null && !claimNumber.isEmpty() && !claimNumber.equals(claim.getClaimNumber())) {
             claim.setClaimNumber(claimNumber);
             claimNumberUpdated = true;
         }
@@ -222,7 +221,7 @@ public class ClaimRejection extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-    	
+
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
         }
@@ -230,21 +229,19 @@ public class ClaimRejection extends BaseActivity {
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
-        
+
         if (reasonOfRejection != null) {
             claim.addComment(Comment.newComment(0, "Reason For Rejection: " + reasonOfRejection.getRorName()));
-            if(rejectionDescription != null && !rejectionDescription.equals("")) {
+            if (rejectionDescription != null && !rejectionDescription.equals("")) {
                 claim.addComment(Comment.newComment(0, "Supporting Rejection Notes: " + rejectionDescription));
             }
-        }
-        else {
+        } else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
         }
 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-        }
-        else {
+        } else {
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         }
     }
@@ -284,11 +281,11 @@ public class ClaimRejection extends BaseActivity {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 
-	public String getRejectionDescription() {
-		return rejectionDescription;
-	}
+    public String getRejectionDescription() {
+        return rejectionDescription;
+    }
 
-	public void setRejectionDescription(String rejectionDescription) {
-		this.rejectionDescription = rejectionDescription;
-	}
+    public void setRejectionDescription(String rejectionDescription) {
+        this.rejectionDescription = rejectionDescription;
+    }
 }

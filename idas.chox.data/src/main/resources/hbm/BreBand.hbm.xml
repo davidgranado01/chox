@@ -159,6 +159,12 @@
         <property column="max_allowed_total_loss_net" name="maxAllowedTotalLossNetFee" not-null="true"/>
         <property column="payment_team_active" name="paymentTeamActive" not-null="true"/>
         <property column="bre_invoice_saving_active" name="breInvoiceSavingActive" not-null="true"/>
+        <property column="subscriber_sla_days" name="subscriberSlaDays" not-null="true"/>
+        <property column="subscriber_resubmission_allowed" name="subscriberResubmissionAllowed" not-null="true"/>
+        <property column="subscriber_time_cut_off" name="subscriberTimeCutOff" not-null="true"/>
+        <property column="fixedfee_sla_days" name="fixedFeeSlaDays" not-null="true"/>
+        <property column="fixedfee_resubmission_allowed" name="fixedFeeResubmissionAllowed" not-null="true"/>
+        <property column="fixedfee_time_cut_off" name="fixedFeeTimeCutOff" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

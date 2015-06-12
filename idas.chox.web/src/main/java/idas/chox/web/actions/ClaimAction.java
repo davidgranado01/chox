@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1738,20 +1737,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         // If we have a subscriber or fixed-fee claim, we need to check the age of the claim
         if (rejectEnabled && ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
             int maxDays = 0;
-
+            BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            String cutOffTime = null;
+            
             if (ClaimType.isSubscriber(claim.getClaimType())) {
-                maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
+                maxDays = breBand.getSubscriberSlaDays() + claim.getSlaExtDays();
+                cutOffTime = breBand.getSubscriberTimeCutOff();
                 if (claimDays == null) {
-                    getSubscriberClaimDays();
+                    claimDays = getSubscriberClaimDays();
                 }
             } else if (ClaimType.isFixedFee(claim.getClaimType())) {
-                if (claimDays == null) {
-                    getFixedFeeClaimDays();
+                int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
+                if (fixedFeeSlaDays == 0) {
+                    return true;
                 }
-                maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
+                maxDays = fixedFeeSlaDays + claim.getSlaExtDays();
+                cutOffTime = breBand.getFixedFeeTimeCutOff();
+                if (claimDays == null) {
+                    claimDays = getFixedFeeClaimDays();
+                }
             }
 
-            rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm()));
+            rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBeforeCutOffTime(cutOffTime)));
         }
 
         return rejectEnabled;
@@ -1765,23 +1772,31 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         int maxDays = 0;
         int maxAllowedSlaExtDays = 0;
-
-        if (slaExtensionEnabled && !isSubscriberClaimRejectedMoreThanOnce()) {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        String cutOffTime = null;
+        
+        if (slaExtensionEnabled && !isClaimRejectedMaxAllowed()) {
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
-                maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
+                maxDays = breBand.getSubscriberSlaDays() + claim.getSlaExtDays();
+                cutOffTime = breBand.getSubscriberTimeCutOff();
                 if (claimDays == null) {
-                    getSubscriberClaimDays();
+                    claimDays = getSubscriberClaimDays();
                 }
             } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
+                if (fixedFeeSlaDays == 0) {
+                    return false;
+                }
                 maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForFixedFee();
-                maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
+                maxDays = fixedFeeSlaDays + claim.getSlaExtDays();
+                cutOffTime = breBand.getFixedFeeTimeCutOff();
                 if (claimDays == null) {
-                    getFixedFeeClaimDays();
+                    claimDays = getFixedFeeClaimDays();
                 }
             }
         }
-        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBefore3pm() && (claim.getSlaExtDays() < maxAllowedSlaExtDays)));
+        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBeforeCutOffTime(cutOffTime) && (claim.getSlaExtDays() < maxAllowedSlaExtDays)));
     }
     
     public int getAvailableSlaExtensionDays() {
@@ -1802,17 +1817,47 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return availableDays;
     }
 
-    public boolean isSubscriberClaimRejectedMoreThanOnce() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())) {
+    public boolean isClaimRejectedMaxAllowed() {
+        int maxAllowed;
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            maxAllowed = breBand.getSubscriberResubmissionAllowed();
+        } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            maxAllowed = breBand.getFixedFeeResubmissionAllowed();
+        } else {
             return false;
         }
         
+        if (maxAllowed == -1) {
+            return false;
+        }
+
         int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? claimService.getSubscriberClaimRejects(claim.getId())
                 : claimService.getClaimRejects(claim.getId());
         
-        return noTimesRejected > 1;
+        return noTimesRejected >= maxAllowed;
     }
  
+    public String getRejectionCount() {
+        int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? claimService.getSubscriberClaimRejects(claim.getId())
+                : claimService.getClaimRejects(claim.getId());
+        
+        switch(noTimesRejected) {
+            case 1:
+                return "first";
+            case 2:
+                return "second";
+            case 3:
+                return "third";
+            case 4:
+                return "fourth";
+            case 5:
+                return "fith";
+            default:
+                return "last";
+        }
+    }
+   
     /*
      * Returns true if subscriber claim rejected reason is one of
      *     'Subscriber - Indemnity Issues' or 'Subscriber - Fraud Issues' 
@@ -1823,7 +1868,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection());
     }
  
-    public boolean isSubscriberClaimUnder5Days() {
+    public boolean isSubscriberClaimUnderSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
         }
@@ -1840,13 +1885,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getSubscriberClaimDays();
+            claimDays = getSubscriberClaimDays();
+        }
+        int subscriberSlaDays = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()).getSubscriberSlaDays();
+        if (subscriberSlaDays == 0) {
+            return false; // do not want to display time-left message
         }
 
-        return claimDays < (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays());
+        return claimDays < (subscriberSlaDays + claim.getSlaExtDays());
     }
     
-    public boolean isSubscriberClaimAt5Days() {
+    public boolean isSubscriberClaimAtSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
         }
@@ -1863,31 +1912,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getSubscriberClaimDays();
+            claimDays = getSubscriberClaimDays();
         }
-        if (claimDays == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
-                return true;
-            }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        int subscriberSlaDays = breBand.getSubscriberSlaDays();
+        if (subscriberSlaDays == 0) {
+            return false; // do not want to display time-left message
         }
 
-        return false;
+        return claimDays == (subscriberSlaDays + claim.getSlaExtDays()) && DateHelper.isBeforeCutOffTime(breBand.getSubscriberTimeCutOff());
     }
 
 
     /* This function not only gets SubscriberClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
-    private void getSubscriberClaimDays() {
+    private int getSubscriberClaimDays() {
         claimDays = claimService.getSubscriberClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
+        return claimDays;
     }
     // </editor-fold>
 
 
     // <editor-fold defaultstate="collapsed" desc="Fixed Fee Process Utility Functions">
-    public boolean isFixedFeeClaimUnder14Days() {
+    public boolean isFixedFeeClaimUnderSlaDays() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
             return false;
         }
@@ -1902,15 +1950,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
             return false;
         }
-
+        
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
         }
 
-        return claimDays < (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays());
+        int fixedFeeSlaDays = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()).getFixedFeeSlaDays();
+        if (fixedFeeSlaDays == 0) {
+            return false; // do not want to display time-left message
+        }
+
+        return claimDays < (fixedFeeSlaDays + claim.getSlaExtDays());
     }
 
-    public boolean isFixedFeeClaimAt14Days() {
+    public boolean isFixedFeeClaimAtSlaDays() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
             return false;
         }
@@ -1927,18 +1980,36 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
+        }
+        
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
+        if (fixedFeeSlaDays == 0) {
+            return false; // do not want to display time-left message
         }
 
-        if (claimDays == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
-                return true;
-            }
-        }
+        return claimDays == (fixedFeeSlaDays + claim.getSlaExtDays()) && DateHelper.isBeforeCutOffTime(breBand.getFixedFeeTimeCutOff());
+    }
+    
+    public int getSubscriberSlaDays() {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        return breBand.getSubscriberSlaDays();
+    }
 
-        return false;
+    public int getFixedFeeSlaDays() {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        return breBand.getFixedFeeSlaDays();
+    }
+
+    public String getSubscriberCutOffTime() {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        return breBand.getSubscriberTimeCutOff();
+    }
+
+    public String getFixedFeeCutOffTime() {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        return breBand.getFixedFeeTimeCutOff();
     }
 
     public String getSubscriberTimeLeft() {
@@ -1947,13 +2018,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getSubscriberClaimDays();
+            claimDays = getSubscriberClaimDays();
         }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
 
-        if (claimDays == ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
+        if (claimDays == ((breBand.getSubscriberSlaDays() + claim.getSlaExtDays()) - 1)) {
             return "1 day remains";
         }
-        return "" + ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
+        return "" + ((breBand.getSubscriberSlaDays() + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
 
     public String getFixedFeeTimeLeft() {
@@ -1962,20 +2034,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
         }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
 
-        if (claimDays == ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
+        if (claimDays == ((breBand.getFixedFeeSlaDays() + claim.getSlaExtDays()) - 1)) {
             return "1 day remains";
         }
-        return "" + ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
+        return "" + ((breBand.getFixedFeeSlaDays() + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
     
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
-    private void getFixedFeeClaimDays() {
+    private int getFixedFeeClaimDays() {
         claimDays = claimService.getFixedFeeClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
+        return claimDays;
     }
     // </editor-fold>
 

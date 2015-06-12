@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +12,6 @@ import org.slf4j.LoggerFactory;
 public class DateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
-    public static final int SUBSCRIBER_SLA_DAYS = 5;
-    public static final int FIXED_FEE_SLA_DAYS = 14;
 
     public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
@@ -77,21 +76,25 @@ public class DateHelper {
         return sdf.format(cal.getTime());
     }
 
-    public static boolean isBefore3pm() {
-        return isBefore3pm(new Date(), 0);
+    public static boolean isBeforeCutOffTime(String cutOffTime) {
+        return isBeforeCutOffTime(new Date(), cutOffTime, 0);
     }
 
-    public static boolean isBefore3pm(int leeway) {
-        return isBefore3pm(new Date(), leeway);
+    public static boolean isBeforeCutOffTime(String cutOffTime, int leeway) {
+        return isBeforeCutOffTime(new Date(), cutOffTime, leeway);
     }
 
-    public static boolean isBefore3pm(Date date, int leeway) {
+    public static boolean isBeforeCutOffTime(Date date, String cutOffTime, int leeway) {
+        Scanner in = new Scanner(cutOffTime).useDelimiter(":");
+        int cutOffHour = in.nextInt();
+        int cutOffMinute = in.nextInt();
+        
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         if (leeway != 0) {
             cal.add(Calendar.MINUTE, -leeway);
         }
-        return cal.get(Calendar.HOUR_OF_DAY) < 15 ? true : false;
+        return cal.get(Calendar.HOUR_OF_DAY) < cutOffHour || (cal.get(Calendar.HOUR_OF_DAY) == cutOffHour && cal.get(Calendar.MINUTE) < cutOffMinute);
     }
 
     public static String getTwoDigitValueInString(int iValue) {

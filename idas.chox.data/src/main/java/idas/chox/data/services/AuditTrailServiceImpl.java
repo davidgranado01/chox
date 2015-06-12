@@ -25,6 +25,7 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
+import java.util.Scanner;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
@@ -428,7 +429,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Override
-    public int getSubscriberClaimRejectedDays(int claimId) {
+    public int getSubscriberClaimRejectedDays(int claimId, String cutOffTime) {
         int days = daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
@@ -440,7 +441,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         
         // Now if the claim was rejected AFTER 3pm and it
         // was uploaded on a different day then we need to add another day
-        if (isSubscriberClaimRejectedAfter3pm(claimId)) {
+        if (isSubscriberClaimRejectedAfterCutOff(claimId, cutOffTime)) {
             days += 1;
         }
         return days;
@@ -491,7 +492,11 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return noTimesRejected;
     }
 
-    private boolean isSubscriberClaimRejectedAfter3pm(int claimId) {
+    private boolean isSubscriberClaimRejectedAfterCutOff(int claimId, String cutOffTime) {
+        Scanner in = new Scanner(cutOffTime).useDelimiter(":");
+        int cutOffHour = in.nextInt();
+        int cutOffMinute = in.nextInt();
+        
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -503,12 +508,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 cal2.setTime(trail.getUpdateDate());
             }
             if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getNewStatus())
-                && cal.get(Calendar.HOUR_OF_DAY) >= 15) {
-                if (DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
-                        && cal2.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    return false;
-                }
-                return true;
+                && (cal.get(Calendar.HOUR_OF_DAY) > cutOffHour || (cal.get(Calendar.HOUR_OF_DAY) == cutOffHour && cal.get(Calendar.MINUTE) >= cutOffMinute))) {
+                return !(DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
+                        && (cal2.get(Calendar.HOUR_OF_DAY) > cutOffHour || (cal2.get(Calendar.HOUR_OF_DAY) == cutOffHour && cal2.get(Calendar.MINUTE) >= cutOffMinute)));
             }
         }
         
