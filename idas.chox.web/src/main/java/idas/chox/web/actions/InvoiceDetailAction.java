@@ -1592,7 +1592,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     public String getDaysAwaitingLiabilityResolution() {
-        LOG.debug("Getting number of days claim was with Insurer for review");
+        LOG.debug("Getting number of days claim AwaitingLiabilityResolution");
         if (daysAwaitingLiabilityResolution == null) {
             daysAwaitingLiabilityResolution = claimService.getDaysAwaitingLiabilityResolution(claim.getId());
         }
@@ -2257,19 +2257,21 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     // <editor-fold defaultstate="collapsed" desc="updateModel">
 //    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateModel() {
+        LOG.debug("Updating invoice detail...");
         if (actionSelected == reset) {
             this.setActionResult("Invoice Reset");
-            return SUCCESS;
         } else if (actionSelected == recalculate) {
+            LOG.debug("Recalculating the invoice...");
             try {
                 recalculate(claim);
+                LOG.debug("Invoice has been re-calculated.");
             } catch (Exception ex) {
                 handleException(ex);
                 LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
                 return ERROR;
             }
-            return SUCCESS;
         } else if (actionSelected == submit) {
+            LOG.debug("Saving....");
             try {
                 checkVersion(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 claim.setEngineerReport(engineerReport);
@@ -2299,15 +2301,17 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 modelSaved = true;
                 this.setActionResult("Your Changes Have Been Saved");
                 activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
-                return SUCCESS;
             } catch (Exception ex) {
                 LOG.warn("Exception is thrown and passing to baseAction ", ex);
                 handleException(ex);
                 return ERROR;
             }
         } else {
+            LOG.debug("No action defined!");
             return ERROR;
         }
+        LOG.debug("Done in updateModel");
+        return SUCCESS;
     }
     
     public boolean isPenaltyChargesAppled() {
