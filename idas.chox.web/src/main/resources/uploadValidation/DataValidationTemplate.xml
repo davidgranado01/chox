@@ -236,7 +236,7 @@
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
         <data-length>16</data-length>
-        <reg-exp>^\w.*$</reg-exp>
+        <reg-exp>^(([\d]|[a-z]|[A-Z])+ ?([\d]|[a-z]|[A-Z])*)?$</reg-exp>
         <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-vehicle-registration>
 
@@ -395,7 +395,7 @@
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
         <data-length>16</data-length>
-        <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <reg-exp>^(([\d]|[a-z]|[A-Z])+ ?([\d]|[a-z]|[A-Z])*)?$</reg-exp>
         <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </thirdpartydetails-vehicle-registration>
 
@@ -814,7 +814,7 @@
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
         <data-length>16</data-length>
-        <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <reg-exp>^(([\d]|[a-z]|[A-Z])+ ?([\d]|[a-z]|[A-Z])*)?$</reg-exp>
     </vehiclehiredetails-vehicle-registration>
 
     <vehiclehiredetails-vehicle-manufacturer>
