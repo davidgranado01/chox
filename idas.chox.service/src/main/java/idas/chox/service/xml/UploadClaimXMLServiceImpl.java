@@ -29,13 +29,18 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
+import idas.chox.core.model.Task;
+import idas.chox.core.model.TaskType;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.workflow.Activity;
@@ -53,6 +58,7 @@ import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
+
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
     private static final Object LOCK = new Object();
     private static final String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
@@ -66,10 +72,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private String successMessage;
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
     private ClaimService claimService;
+    private UserService userService;
+    private TaskService taskService;
     private BordereauSchemaValidation bordereauSchemaValidation;
     protected ActivityEventGenerator activityEventGenerator;
 
-        
     @Override
     public String getErrorMessage() {
         return errorMessage;
@@ -91,7 +98,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public void setBordereauService(BordereauService bordereauService) {
         this.bordereauService = bordereauService;
     }
-    
+
     public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
         this.activityEventGenerator = activityEventGenerator;
     }
@@ -102,6 +109,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
+    }
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setUploadedXMLClaimsDetailService(UploadedXMLClaimsDetailService claimsDetailService) {
@@ -116,9 +131,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         this.claimService = claimService;
     }
 
-
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
         try {
@@ -132,7 +146,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         validate(claimResult, choReferences);
 
         if (claimResult.isValid() && claimResult.isDataValid()) {
-            LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
+            Claim claim = claimResult.getClaim();
+            LOG.debug("Processing claim '{}'.", claim.getChoReference());
             //CALL WORKFLOW LOGIC
             try {
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
@@ -144,8 +159,27 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)) {
                     LOG.debug("Processing '{}' activity.", claimResult.getClaimParseStatus());
                     Activity activity = activityFactory.getActivity("newClaim");
-                    activity.processInBatch(claimResult.getClaim());
+                    activity.processInBatch(claim);
                     LOG.debug("newClaim activity completed.");
+
+                    if (claim.isManagingRepair() && claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair()
+                            && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                        // Add Task to prompt for Engineers Inspection [requirement 8.6.4]
+                        Task task = new Task();
+                        task.setComplete(Boolean.FALSE);
+                        task.setDescription("The details of the claim indicate that neither the CHO nor the Non-Fault Insurer are managing the repair. Please contact the TPI if an Engineers Inspection is required.");
+                        task.setDueDate(DateHelper.getCurrentDateTime());
+                        task.setType(TaskType.ENG_INSPECTION.getDescription());
+                        task.setVisibility(2);
+                        task.setInsurer(Boolean.FALSE);
+                        task.setRaisedBy(userService.findByUserName("system"));
+                        task.setClaim(claim);
+                        try {
+                            taskService.createNewTask(task);
+                        } catch (Exception ex) {
+                            LOG.error("Exception creating Engineer Inspection task (nobody Managing Repair)) for CHO on claim '{}': {}", claim.getChoReference(), ex);
+                        }
+                    }
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
@@ -154,10 +188,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
                     LOG.debug("Processing newInvoice activity.");
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    claim.setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
-                    activity.processInBatch(claimResult.getClaim());
-                    RulesEngineResponse breResponse = ((NewInvoice)activity).getBreResponse();
+                    activity.processInBatch(claim);
+                    RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
@@ -166,14 +200,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
-                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                    if (breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()) == null) {
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
                     LOG.debug("Processing supplementaryInvoice (activities NewSupplementaryInvoice followed by NewInvoice).");
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    claim.setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
-                    activity.processInBatch(claimResult.getClaim());
-                    RulesEngineResponse breResponse = ((NewSupplementaryInvoice)activity).getBreResponse();
+                    activity.processInBatch(claim);
+                    RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
@@ -182,15 +216,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
-                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                    if (breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()) == null) {
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
                     LOG.debug("Processing supplementaryInsurerInvoice (activities NewSupplementaryInvoice followed by InsurerUpload).");
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    claim.setInvoice(claimResult.getInvoice());
                     LOG.debug("Invoice set for claim '{}': {}", claimResult.getClaim().getChoReference(), claimResult.getClaim().getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInsurerInvoice");
-                    activity.processInBatch(claimResult.getClaim());
-                    RulesEngineResponse breResponse = ((NewSupplementaryInvoice)activity).getBreResponse();
+                    activity.processInBatch(claim);
+                    RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
@@ -200,12 +234,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
                     // Check we have a BRE band
-                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                    if (breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()) == null) {
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
                     LOG.debug("Processing hire monitoring and newInvoice activity.");
-
-                    Claim claim = claimResult.getClaim();
 
                     // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
                     // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
@@ -222,7 +254,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)) {
                         activity = activityFactory.getActivity("newInvoice");
                         activity.processInBatch(claim);
-                        RulesEngineResponse breResponse = ((NewInvoice)activity).getBreResponse();
+                        RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
                         for (History history : History.New(breResponse)) {
                             if (history.getType().equals("ERROR") && history.getIsPublic()) {
                                 claimResult.getBreMessage().add(history.getNarrative());
@@ -230,11 +262,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         }
                         LOG.debug("NewInvoice activity completed.");
                     } else {
-                        checkECD(claimResult.getClaim());
+                        checkECD(claim);
                         activity = activityFactory.getActivity("insurerUpload");
                         activity.setXmlActivityProcessing(true);
-                        activity.processInBatch(claimResult.getClaim());
-                        RulesEngineResponse breResponse = ((InsurerUpload)activity).getBreResponse();
+                        activity.processInBatch(claim);
+                        RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
                         for (History history : History.New(breResponse)) {
                             if (history.getType().equals("ERROR")) {
                                 claimResult.getBreMessage().add(history.getNarrative());
@@ -242,7 +274,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         }
 
                         LOG.debug("Insurer upload activity completed.");
-                        
+
                     }
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING)) {
@@ -250,32 +282,31 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
                     // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
-                    checkECD(claimResult.getClaim());
+                    checkECD(claim);
 
                     Activity activity = activityFactory.getActivity("awaitingCarHireInfo");
                     /*
                      *  this is set to true to identify the activity process is called from xml upload stage not from ui ( proceed button in ui).
                      */
                     activity.setXmlActivityProcessing(true);
-                    activity.processInBatch(claimResult.getClaim());
+                    activity.processInBatch(claim);
                     LOG.debug("hire monitering activity completed.");
 
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)) {
                     // Check we have a BRE band
-                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                    if (breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()) == null) {
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
                     LOG.debug("Processing insurer upload activity.");
 
-
                     // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
-                    checkECD(claimResult.getClaim());
+                    claim.setInvoice(claimResult.getInvoice());
+                    checkECD(claim);
 
                     Activity activity = activityFactory.getActivity("insurerUpload");
                     activity.setXmlActivityProcessing(true);
                     activity.processInBatch(claimResult.getClaim());
-                    RulesEngineResponse breResponse = ((InsurerUpload)activity).getBreResponse();
+                    RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
                         if (history.getType().equals("ERROR")) {
                             claimResult.getBreMessage().add(history.getNarrative());
@@ -288,25 +319,24 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     // If Claim has been updated but no activity has been called, we need to generate  a Claimupdate Event
                     if (claimResult.getProcessStatus().equals("Updated")) {
                         LOG.debug("Processed bordereau and no activity ran but claim updated: generatung ClaimUpdatedEvent");
-                        activityEventGenerator.generate(claimResult.getClaim(), ActivityEvent.CLAIM_UPDATED_EVENT);
+                        activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
                     }
                 }
-                
+
                 if (claimResult.isCheckForRepairAnomalies()) {
                     LOG.debug("Checking for repair anomalies.");
-                    claimService.checkRepairBookedInDateAnomaly(claimResult.getClaim());
+                    claimService.checkRepairBookedInDateAnomaly(claim);
                 }
 
                 if (claimResult.isCheckForTotalLossAnomalies()) {
                     LOG.debug("Checking for repair anomalies.");
-                    claimService.checkTotalLossAnomaly(claimResult.getClaim());
+                    claimService.checkTotalLossAnomaly(claim);
                 }
-                                
+
             } catch (Exception ex) {
                 if (claimResult.getClaim() != null) {
                     LOG.error("Exception caught processing claim '{}': ", claimResult.getClaim().getChoReference(), ex);
-                }
-                else {
+                } else {
                     LOG.error("Exception caught processing claim (no claim in claimResult): {}", ex.getMessage());
                 }
                 if (ex.getCause() != null) {
@@ -332,10 +362,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
             return false;
         }
-        
+
         return true;
     }
-
 
     @Override
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
@@ -359,22 +388,18 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return claimElements;
     }
 
-
     public void setBordereauReader(BordereauReader bordereauReader) {
         this.bordereauReader = bordereauReader;
     }
-
 
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
     }
 
-
     @Override
     public boolean validateFile(File uploadedFile) {
         return false;
     }
-
 
     private Object getSessionLock(Map session) {
         Object result = session.get("SESSION_LOCK");
@@ -391,9 +416,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
         LOG.debug("Returning session lock '{}'", result);
         return result;
-        
+
     }
-    
+
     @Override
     public boolean processFile(int bordereauId, Map session) {
         int noClaims = 0;
@@ -414,8 +439,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         Integer orgId;
         if (user.isAnInsurer()) {
             orgId = user.getInsurer().getId();
-        }
-        else {
+        } else {
             orgId = user.getChorganisation().getId();
         }
 
@@ -487,7 +511,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     xmlClaimsDetail.setValid(false);
                 }
                 noProcessed++;
-                setXmlClaimDetailsProperties(xmlClaimsDetail,bordereau,claimResult);
+                setXmlClaimDetailsProperties(xmlClaimsDetail, bordereau, claimResult);
                 claimsDetails.add(0, xmlClaimsDetail);
                 LOG.debug("Synchronizing on session");
                 synchronized (getSessionLock(session)) {
@@ -511,7 +535,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
          * end of processing claim.
          */
         LOG.debug("Finished processing bordereau.");
-        
+
         try {
             setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
             setSuccessMessage("The Bordereau has been processed successfully.");
@@ -528,7 +552,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
              * only hack which i found. This need to be investigated throughly
              * and implemented the correct functionality.
              */
-            
+
             getCurrentSession().clear();
             bordereau = (Bordereau) getSessionFactory().getCurrentSession().load(Bordereau.class, bordereau.getId());
             setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
@@ -538,7 +562,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
     }
-
 
     @Override
     public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName) {
@@ -626,14 +649,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     }
 
-
     @Override
     public void evictClaim(Claim claim) {
         getHibernateTemplate().flush();
         getHibernateTemplate().evict(claim);
         LOG.debug("Claim evicted.");
     }
-
 
     @Override
     public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
@@ -720,7 +741,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
 
-
     private void setBordereauProperties(int noSuccessfullyProcessed, int noClaims, Bordereau bordereau) {
         if (noSuccessfullyProcessed >= noClaims) {
             bordereau.setStatus(BordereauParseStatus.ALL_UPLOADED.getDescription());
@@ -735,7 +755,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setProcessed(true);
         bordereau.setBeingProcessed(false);
     }
-    
 
     private void setXmlClaimDetailsProperties(UploadedXMLClaimsDetail xmlClaimsDetail, Bordereau bordereau, ClaimResult claimResult) {
         xmlClaimsDetail.setBordereauId(bordereau.getId());
@@ -786,7 +805,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
 
-
     private void saveBordereau(Bordereau bordereau, File uploadedFile, String uploadedFileFileName, byte fileContent[]) {
         bordereau.setFileSize((Long) uploadedFile.length());
         bordereau.setFileName(uploadedFileFileName);
@@ -795,11 +813,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereauService.saveBordereau(bordereau);
     }
 
-
     private Bordereau getBordereauFromId(int bordereauId) {
         return bordereauService.getBordereauById(bordereauId);
     }
-
 
     private boolean isValidBordereauId(int bordereauId) {
         if (bordereauId <= 0) {
@@ -810,18 +826,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return true;
     }
 
-
     private boolean isAutherisedUser(int orgId, String fileName) {
 
-        if ((getCurrentUser().isAnInsurer() && !getCurrentUser().getInsurer().getId().equals(orgId)) ||
-                (!getCurrentUser().isAnInsurer() && !getCurrentUser().getChorganisation().getId().equals(orgId))) {
+        if ((getCurrentUser().isAnInsurer() && !getCurrentUser().getInsurer().getId().equals(orgId))
+                || (!getCurrentUser().isAnInsurer() && !getCurrentUser().getChorganisation().getId().equals(orgId))) {
             LOG.error("Un authOrised user trying to process the file : file name :{}, user name : {}", fileName, getCurrentUser().getUserName());
             setErrorMessage("You do not have permission to process this file. Please contact CHOX support.");
             return false;
         }
         return true;
     }
-
 
     private void setBordereauProcessingStatus(Bordereau bordereau) {
         bordereau.setStatus("Processing..");
@@ -830,7 +844,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereauService.saveBordereau(bordereau);
     }
 
-
     private void setBordreauProcessFilureStatus(Bordereau bordereau) {
         bordereau.setStatus("Error");
         bordereau.setBeingProcessed(false);
@@ -838,7 +851,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setDescription("Error");
         bordereauService.saveBordereau(bordereau);
     }
-
 
     private void validate(ClaimResult claimResult, List<String> choReferences) {
         LOG.debug("Validating CHO references are unique");
@@ -861,7 +873,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
 
-
     private void checkECD(Claim claim) {
         LOG.debug("Checking ECD is present...");
         // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
@@ -882,8 +893,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             ecd.setSequence(1);
             ecd.setSupportingNote("No original ECD supplied so hire end date used as first ECD supplied.");
             hireMonitoringEcds.add(ecd);
-        }
-        else {
+        } else {
             LOG.debug("No ECD added.");
         }
     }

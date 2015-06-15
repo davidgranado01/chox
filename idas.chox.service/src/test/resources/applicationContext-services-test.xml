@@ -169,6 +169,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService"/>
         <property name="breBandService" ref="breBandService"/>
+        <property name="userService" ref="userService"/>
+        <property name="taskService" ref="taskService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>
