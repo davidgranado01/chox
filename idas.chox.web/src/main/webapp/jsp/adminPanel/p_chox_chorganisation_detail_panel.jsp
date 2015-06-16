@@ -516,14 +516,14 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Delegated Authority</label>
-                                        <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
+                                        <label class="chox-form-std-label">Active</label>
+                                        <s:checkbox name="status" value="status" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Claim Ownership</label>
-                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
+                                        <label class="chox-form-std-label">Enable Delegated Authority</label>
+                                        <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
                                     </div>
                                 </td>
                             </tr>
@@ -536,8 +536,8 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Active</label>
-                                        <s:checkbox name="status" value="status" />
+                                        <label class="chox-form-std-label">Enable Claim Ownership</label>
+                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
                                     </div>
                                 </td>
                             </tr>
