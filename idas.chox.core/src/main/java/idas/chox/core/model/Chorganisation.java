@@ -65,6 +65,7 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean enableCollaborationProtocolClaims;
     private boolean autoPenaltyChargeEnabled;
     private boolean enableIPWhitelist;
+    private boolean allowEngineersInspectionTask = false;
     private int maxLoginAttempts;
     private int blockTime;
     private boolean disablePrivateNotes;
@@ -549,5 +550,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setRestrictExport(boolean restrictExport) {
         this.restrictExport = restrictExport;
+    }
+
+    public boolean isAllowEngineersInspectionTask() {
+        return allowEngineersInspectionTask;
+    }
+
+    public void setAllowEngineersInspectionTask(boolean allowEngineersInspectionTask) {
+        this.allowEngineersInspectionTask = allowEngineersInspectionTask;
     }
 }

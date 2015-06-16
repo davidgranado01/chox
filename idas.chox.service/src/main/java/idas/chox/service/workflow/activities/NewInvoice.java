@@ -238,7 +238,7 @@ public class NewInvoice extends BaseActivity {
                 return false;
             }
         } else {
-            return false;
+            return true;
         }
     }
 
