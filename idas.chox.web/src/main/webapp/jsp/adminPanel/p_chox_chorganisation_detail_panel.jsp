@@ -529,7 +529,6 @@
                             </tr>
                             <tr>
                                 <td>
-
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
                                         <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
@@ -545,8 +544,8 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
-                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" />
+                                        <label class="chox-form-std-label">Allow Engineers Inspection Prompt Task</label>
+                                        <s:checkbox name="allowEngineersInspectionTask" value="allowEngineersInspectionTask" />
                                     </div>
                                 </td>
                                 <td>
@@ -578,6 +577,10 @@
                                     </div>
                                 </td>
                                 <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
+                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" />
+                                    </div>
                                 </td>
                             </tr>
                             <tr>

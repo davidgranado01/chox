@@ -41,3 +41,11 @@ ALTER TABLE bre_band ADD COLUMN fixedfee_resubmission_allowed integer not null D
 ----------------------
 -- End of 8.6.2
 ----------------------
+
+--------------------------------------------------------------------------------
+-- 8.6.4 Task to prompt engineers inspection
+--------------------------------------------------------------------------------
+ALTER TABLE chorganisation ADD COLUMN allow_engineers_inspection_task boolean not null DEFAULT false;
+----------------------
+-- End of 8.6.4
+----------------------

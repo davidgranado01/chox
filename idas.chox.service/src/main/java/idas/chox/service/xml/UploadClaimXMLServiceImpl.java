@@ -162,8 +162,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claim);
                     LOG.debug("newClaim activity completed.");
 
-                    if (claim.isManagingRepair() && claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair()
-                            && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                    if (claim.getChorganisation().isTaskManagementEnable()
+                            && claim.getChorganisation().isAllowEngineersInspectionTask()
+                            && !ClaimType.isInsurerUpload(claim.getClaimType())
+                            && claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair()
+                            && claim.isManagingRepair()) {
                         // Add Task to prompt for Engineers Inspection [requirement 8.6.4]
                         Task task = new Task();
                         task.setComplete(Boolean.FALSE);
