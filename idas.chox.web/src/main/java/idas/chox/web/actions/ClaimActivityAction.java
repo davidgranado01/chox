@@ -33,7 +33,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String name;
     private List<Integer> selectedClaimIdList;
     private String jsonData;
-    
+    private int executeCount = 0;
     
     private ApplicationAccessibility applicationAccessibility;
     
@@ -130,6 +130,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 }
 
             } catch (AccessDeniedException ex) {
+                LOG.error("AccessDenied exception thrown in batch update with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",
+                        new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
                 throw (ex);
             } catch (Exception ex) {
                 LOG.error("Error processing batch update. Error on cho-ref: {} : ", claim.getChoReference(), ex);
@@ -144,8 +146,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     @Override
     public String execute() {
+        executeCount++;
         JSONObject jsonObject = new JSONObject();
-        LOG.debug("Activity " + name + " class " + activity.getClass().getSimpleName());
+        LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'. Execute count={}",
+                new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference(), executeCount});
         if (activity != null) {
             try {
                 checkVersion(Arrays.asList(claim));
@@ -153,7 +157,17 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateModelInSession(Arrays.asList(claim));
                 setMessage(activity.getMessage());
             } catch (AccessDeniedException ex) {
-                throw (ex);
+                LOG.error("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {} [executeCount={}]: {}",
+                        new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), executeCount, ex.getMessage()});
+// Lets return an error for now rather than re-throwing the exception
+// Once the reason for this happening so often is determined, the code should be reverted to re-throw the exception
+//                throw (ex);
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", ex.getMessage());
+                setJsonData(jsonObject.toString());
+                handleException(ex);
+                updateRedirectionParamInSession();
+                return ERROR;
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity: {}", ex.getMessage());
                 jsonObject.put("success", Boolean.FALSE);
@@ -173,7 +187,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             updateRedirectionParamInSession();
             return SUCCESS;
         } else {
-            LOG.warn("Cannot process activity: activity is empty (null)");
+            LOG.error("Cannot process activity: activity is empty (null)");
             jsonObject.put("success", Boolean.FALSE);
             jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
             setJsonData(jsonObject.toString());
