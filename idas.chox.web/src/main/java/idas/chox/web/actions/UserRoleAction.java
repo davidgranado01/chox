@@ -13,6 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import net.sf.json.JSONArray;
 
 import idas.chox.core.common.OrganisationType;
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
@@ -24,6 +25,7 @@ import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserroleViewData;
 
 public class UserRoleAction extends BaseAction {
+
     private static final Logger LOG = LoggerFactory.getLogger(UserRoleAction.class);
 
     private List<UserroleViewData> userroles;
@@ -36,7 +38,7 @@ public class UserRoleAction extends BaseAction {
     private AdminUserService adminUserService;
     private WebUserUserRoleService webUserUserRoleService;
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String doRenderActionPage() {
         LOG.debug("doRenderActionPage() called for user: {}", webUserId);
         return SUCCESS;
@@ -104,7 +106,7 @@ public class UserRoleAction extends BaseAction {
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
-    
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
@@ -122,7 +124,7 @@ public class UserRoleAction extends BaseAction {
 
             for (WebUserUserRole h : userroleData) {
                 if (!h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_INS) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
-                        userroles.add(new UserroleViewData(h));
+                    userroles.add(new UserroleViewData(h));
                 }
             }
 
@@ -135,89 +137,105 @@ public class UserRoleAction extends BaseAction {
     }
 
     public List<IdLookupItem> getAvailableUserRoles() {
-      LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
-      LOG.debug("ObjectId = {}", objectId);
-      Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-      if (insurer != null) {
+        LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
+        LOG.debug("ObjectId = {}", objectId);
+        Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+        if (insurer != null) {
             return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
-                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+                    insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                    insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
         }
 
-      return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
-              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin());
+        Chorganisation cho = adminUserService.getUser(webUserId).getChorganisation();
+
+        if (cho != null) {
+            return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
+                    getInsurerIsWorkgroupEnabled(), getChoIsClaimOwnershipEnabled(),
+                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), cho.isSupervisorEnable(), getIsChoxAdmin());
+        }
+
+        return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
+                getInsurerIsWorkgroupEnabled(), getChoIsClaimOwnershipEnabled(),
+                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), this.getIsSupervisorEnabled(), getIsChoxAdmin());
     }
 
     public String getAllAvailableUserRoles() {
-      LOG.debug("Getting all available user roles...");
-      Set<WebUserRole>  webUserRoles;
-      LOG.debug("Getting available user roles for user {}", webUserId);
-      LOG.debug("ObjectId = {}", objectId);
-      try {
-        Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-        if (insurer != null) {
-              webUserRoles = adminUserService.getAllAvailableUserRoles(2,
-                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
-          }
-        else {
-              webUserRoles = adminUserService.getAllAvailableUserRoles(3,
-                getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), getIsSupervisorEnabled(), getIsChoxAdmin());
-          }
+        LOG.debug("Getting all available user roles...");
+        Set<WebUserRole> webUserRoles;
+        LOG.debug("Getting available user roles for user {}", webUserId);
+        LOG.debug("ObjectId = {}", objectId);
+        try {
+            Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+            Chorganisation cho = adminUserService.getUser(webUserId).getChorganisation();
+            if (insurer != null) {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(2,
+                        insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                        insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+            } else if (cho != null) {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+                        getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                        getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), cho.isSupervisorEnable(), getIsChoxAdmin());
+            } else {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(1,
+                        getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                        getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, true);
+            }
 
-        userroles = new ArrayList<>(webUserRoles.size());
+            userroles = new ArrayList<>(webUserRoles.size());
 
-        for (WebUserRole webUserRole : webUserRoles) {
-              userroles.add(new UserroleViewData(webUserRole));
-          }
-      } catch (Exception ex) {
+            for (WebUserRole webUserRole : webUserRoles) {
+                userroles.add(new UserroleViewData(webUserRole));
+            }
+        } catch (Exception ex) {
             handleException(ex);
             LOG.debug("Error getting all available user roles: {}", ex.getMessage());
             return ERROR;
-      }
+        }
 
-      LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
+        LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
 
-      return SUCCESS;
+        return SUCCESS;
     }
 
     public String getAvailableUserRolesForTask() {
-      LOG.trace("Getting all available user roles for task assignment...");
-      Set<WebUserRole>  webUserRoles;
-      LOG.trace("Getting available user roles for user {}", webUserId);
-      LOG.trace("ObjectId = {}", objectId);
-      try {
-        Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-        if (insurer != null) {
-              webUserRoles = adminUserService.getAllAvailableUserRoles(2,
-                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
-          }
-        else {
-              webUserRoles = adminUserService.getAllAvailableUserRoles(3,
-                getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), getIsSupervisorEnabled(), getIsChoxAdmin(), true);
-          }
+        LOG.trace("Getting all available user roles for task assignment...");
+        Set<WebUserRole> webUserRoles;
+        LOG.trace("Getting available user roles for user {}", webUserId);
+        LOG.trace("ObjectId = {}", objectId);
+        try {
+            Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+            Chorganisation cho = adminUserService.getUser(webUserId).getChorganisation();
+            if (insurer != null) {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(2,
+                        insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                        insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
+            } else if (cho != null) {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+                        getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                        getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), cho.isSupervisorEnable(), getIsChoxAdmin(), true);
+            } else {
+                webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+                        getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                        getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, true, true);
+            }
 
-        userroles = new ArrayList<>(webUserRoles.size());
+            userroles = new ArrayList<>(webUserRoles.size());
 
-        for (WebUserRole webUserRole : webUserRoles) {
-              userroles.add(new UserroleViewData(webUserRole));
-          }
-      } catch (Exception ex) {
+            for (WebUserRole webUserRole : webUserRoles) {
+                userroles.add(new UserroleViewData(webUserRole));
+            }
+        } catch (Exception ex) {
             handleException(ex);
             LOG.debug("Error getting all available user roles for user with id= {}: {}", webUserId, ex.getMessage());
             return ERROR;
-      }
+        }
 
-      LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
+        LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
 
-      return SUCCESS;
+        return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String addNewWebUserRoleMapping() {
         LOG.debug("Adding user role '{}' to user '{}'", webUserRoleId, webUserId);
 
@@ -230,14 +248,14 @@ public class UserRoleAction extends BaseAction {
                 WebUser user = adminUserService.getUser(webUserId);
                 LOG.debug("User who me are adding roles to is: {} ('{}')", webUserId, user.getDisplayName());
                 if ((getUserOrganisationType() == 2 && (user.getInsurer() == null || getUserOrganisationId() != user.getInsurer().getId()))
-                         || (getUserOrganisationType() == 3 && (user.getChorganisation() == null || getUserOrganisationId() != user.getChorganisation().getId()))) {
+                        || (getUserOrganisationType() == 3 && (user.getChorganisation() == null || getUserOrganisationId() != user.getChorganisation().getId()))) {
                     throw new AccessDeniedException("Trying to add a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                 }
                 // Check that the role is one we can add
                 if (!isRoleAvailable(webUserRoleId, OrganisationType.getOrganisationTypeId(user.getOrganisationType()))) {
 //                    throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
                     throw new Exception("Record was updated by another transaction/user, please try again.",
-                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
+                            new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
                 }
                 ActionResponse response = adminUserService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
                 setActionResponse(response);
@@ -265,7 +283,7 @@ public class UserRoleAction extends BaseAction {
         return false;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String removeWebUserRoleMapping() {
         LOG.debug("Removing user role '{}' to user '{}'", webUserRoleId, webUserId);
 
@@ -273,23 +291,22 @@ public class UserRoleAction extends BaseAction {
 
             try {
                  // Need to check that that the user we are attaching the role to is one of our users
-                 // this is to prevent parameter hacking
-                 LOG.debug("Checking access to removeNewWebUserRoleMapping for current user");
-                 WebUser user = adminUserService.getUser(webUserId);
-                 LOG.debug("User who me are removing roles from is: {} ('{}')", webUserId, user.getDisplayName());
-                 if ((getUserOrganisationType() == 2 && (user.getInsurer() == null || getUserOrganisationId() != user.getInsurer().getId()))
-                         || (getUserOrganisationType() == 3 && (user.getChorganisation() == null || getUserOrganisationId() != user.getChorganisation().getId()))) {
-                     LOG.debug("Throwing AccessDeniedException");
-                     throw new AccessDeniedException("Trying to remove a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
-                 }
-                 WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
-                 if (webUserUserRole != null) {
-                    webUserUserRoleService.deleteWebUserUserRole(webUserUserRole);
+                // this is to prevent parameter hacking
+                LOG.debug("Checking access to removeNewWebUserRoleMapping for current user");
+                WebUser user = adminUserService.getUser(webUserId);
+                LOG.debug("User who me are removing roles from is: {} ('{}')", webUserId, user.getDisplayName());
+                if ((getUserOrganisationType() == 2 && (user.getInsurer() == null || getUserOrganisationId() != user.getInsurer().getId()))
+                        || (getUserOrganisationType() == 3 && (user.getChorganisation() == null || getUserOrganisationId() != user.getChorganisation().getId()))) {
+                    LOG.debug("Throwing AccessDeniedException");
+                    throw new AccessDeniedException("Trying to remove a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                 }
-                 else {
+                WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
+                if (webUserUserRole != null) {
+                    webUserUserRoleService.deleteWebUserUserRole(webUserUserRole);
+                } else {
                     throw new Exception("Record was updated by another transaction/user, please try again.",
-                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
-                } 
+                            new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
+                }
             } catch (Exception ex) {
                 LOG.debug("Handling exception: '{}'", ex.getMessage());
                 handleException(ex);
@@ -318,8 +335,10 @@ public class UserRoleAction extends BaseAction {
         return SUCCESS;
 
     }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
+
     public void setAdminUserService(AdminUserService adminUserService) {
         this.adminUserService = adminUserService;
     }
