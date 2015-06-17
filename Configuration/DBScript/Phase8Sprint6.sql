@@ -2,7 +2,7 @@
 -- 8.6.1 CHO Supervisor Escalation Queue
 --------------------------------------------------------------------------------
 insert into web_user_role (name, created_by, last_modified_by, description,type_id, is_workgroup_related, is_ownership_related, version )
-    values ('ROLE_CHO_SUP',999, 999, 'Supervisor',2, true, false, 0);
+    values ('ROLE_CHO_SUP',999, 999, 'Supervisor',3, true, false, 0);
 
 ALTER TABLE chorganisation ADD COLUMN is_supervisor_enable boolean DEFAULT false;
 ALTER TABLE chorganisation ADD COLUMN days_before_escalated integer;
