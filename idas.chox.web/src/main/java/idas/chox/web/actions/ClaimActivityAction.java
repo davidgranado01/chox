@@ -86,7 +86,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             claim.setBreBand(choBand);
         }
 
-        LOG.debug("Claim Activity Action " + name);
+        LOG.trace("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
     }
@@ -177,7 +177,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateRedirectionParamInSession();
                 return ERROR;
             }
-            LOG.debug("claim activity returning success");
+            LOG.trace("claim activity returning success");
             jsonObject.put("success", Boolean.TRUE);
             if (getMessage() != null) {
                 jsonObject.put("message", getMessage());
@@ -228,7 +228,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             Integer selectedId = Integer.parseInt(s.trim());
             selectedClaimIdList.add(selectedId);
         }
-        LOG.debug("selectedClaimIdList set: '{}'", ids);
+        LOG.trace("selectedClaimIdList set: '{}'", ids);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 LOG.error("ClaimActivityAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
-            LOG.debug("ClaimActivityAction validate success");
+            LOG.trace("ClaimActivityAction validate success");
         } else {
             LOG.debug(" ClaimActivityAction validation is not done as claim is null");
         }
