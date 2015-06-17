@@ -25,7 +25,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
 
-
 public class UserServiceImpl extends BaseDataService implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -55,7 +54,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public boolean isUserNameExist(String userName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
-        
+
         return result != null;
     }
 
@@ -67,7 +66,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.add(Restrictions.ne("id", userId));
         }
         WebUser result = (WebUser) getByCriteria(criteria);
-        
+
         return result != null;
     }
 
@@ -118,7 +117,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         criteria.add(Restrictions.ne("id", user.getId()));
 
         users = findByCriteria(criteria);
-        
+
         return users.size() > 0;
     }
 
@@ -208,38 +207,27 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             if (organisationTypeId == 2) {
                 if (organisationId > 0) {
                     criteria.add(Restrictions.eq("insurer.id", organisationId));
-                    if (userRoleId > 0) {
-                        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                        criteria.add(Restrictions.eq("role.id", userRoleId));
-                    }
                 } else {
-
                     criteria.add(Restrictions.isNotNull("insurer.id"));
                 }
-
             } else if (organisationTypeId == 3) {
                 if (organisationId > 0) {
                     criteria.add(Restrictions.eq("chorganisation.id", organisationId));
-                    if (userRoleId > 0) {
-                        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                        criteria.add(Restrictions.eq("role.id", userRoleId));
-                    }
                 } else {
                     criteria.add(Restrictions.isNotNull("chorganisation.id"));
                 }
-
             } else if (organisationTypeId == 1) {
                 criteria.add(Restrictions.isNull("insurer.id"));
                 criteria.add(Restrictions.isNull("chorganisation.id"));
-                if (userRoleId > 0) {
-                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                    criteria.add(Restrictions.eq("role.id", userRoleId));
-                }
+            }
+
+            if (userRoleId > 0) {
+                criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+                criteria.add(Restrictions.eq("role.id", userRoleId));
             }
         }
 
         Integer totalCount = totalCount(criteria);
-
 
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
@@ -294,22 +282,19 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return new SearchResult(users, totalCount, null);
     }
 
-    
     @Override
     public List<WebUser> getUsers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
         return findByCriteria(criteria);
     }
 
-    
     @Override
     public WebUser getWebUser(int id) {
         WebUser user = (WebUser) get(WebUser.class, id);
         return user;
     }
 
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void saveUser(WebUser user) {
         LOG.debug("Saving user '{}' (password='{}')", user.getFullName(), user.getPassword());
@@ -319,8 +304,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         LOG.debug("User '{}' saved (password='{}')", user.getFullName(), user.getPassword());
     }
 
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void persist(WebUser user) {
         user.setUserName(user.getUserName().toLowerCase());
@@ -328,8 +312,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);
     }
 
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void updateLastLogin(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -340,18 +323,16 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);
     }
 
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void block(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
         user.setBlocked(true);
         user.setBlockedDate(new Date());
-        save(user);        
+        save(user);
     }
 
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void unblock(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
@@ -359,18 +340,17 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         user.setBlockedDate(null);
         user.setFailedLoginAttempts(0);
         user.setLastModifiedBy(user);
-        save(user);        
+        save(user);
     }
 
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public boolean failedLogin(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
 
         if (!user.isBlocked()) {
             LOG.debug("User '{}' failed login - incrementing failed attempts", user.getDisplayName());
-            user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
+            user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
             if (user.getFailedLoginAttempts() >= user.getMaxFailedLoginAttempts()) {
                 LOG.debug("User '{}' blocked as failed login attemts {} > {}", new Object[]{user.getDisplayName(), user.getFailedLoginAttempts(), user.getMaxFailedLoginAttempts()});
                 user.setBlocked(true);
@@ -382,11 +362,10 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return user.isBlocked();
     }
 
-
     @Override
     public List<PasswordHistory> getPasswordHistory(int userId, int count) {
         List<PasswordHistory> passwordHistory = new ArrayList<>(count);
-        
+
         if (count > 0) {
             DetachedCriteria criteria = DetachedCriteria.forClass(PasswordHistory.class);
             WebUser user = (WebUser) get(WebUser.class, userId);
@@ -394,9 +373,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.addOrder(Order.desc("createdDate"));
 
             List<PasswordHistory> results = findByCriteria(criteria);
-        
+
             if (results != null && !results.isEmpty()) {
-                for (int i=0; i<count && i<results.size(); i++) {
+                for (int i = 0; i < count && i < results.size(); i++) {
                     passwordHistory.add(results.get(i));
                 }
             }
@@ -405,9 +384,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return passwordHistory;
     }
 
-
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void savePasswordHistory(PasswordHistory passwordHistory) {
         save(passwordHistory);
     }
