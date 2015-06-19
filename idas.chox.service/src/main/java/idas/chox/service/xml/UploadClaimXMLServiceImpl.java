@@ -165,12 +165,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     if (claim.getChorganisation().isTaskManagementEnable()
                             && claim.getChorganisation().isAllowEngineersInspectionTask()
                             && !ClaimType.isInsurerUpload(claim.getClaimType())
-                            && claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair()
-                            && claim.isManagingRepair()) {
+                            && !claim.isManagingRepair()) {
                         // Add Task to prompt for Engineers Inspection [requirement 8.6.4]
                         Task task = new Task();
                         task.setComplete(Boolean.FALSE);
-                        task.setDescription("The details of the claim indicate that neither the CHO nor the Non-Fault Insurer are managing the repair. Please contact the TPI if an Engineers Inspection is required.");
+                        task.setDescription("The details of the claim indicate that the CHO is not managing the repair. Please contact the TPI if an Engineers Inspection is required.");
                         task.setDueDate(DateHelper.getCurrentDateTime());
                         task.setType(TaskType.ENG_INSPECTION.getDescription());
                         task.setVisibility(2);
