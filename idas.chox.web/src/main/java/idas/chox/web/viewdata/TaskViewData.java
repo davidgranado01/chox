@@ -63,32 +63,46 @@ public class TaskViewData {
                 toBeCompletedBy = task.getVisibilityRole();
                 // ToDo : This is a hack - we should get these descriptions from the database (or, alternatively,
                 // also store this in the Task
-                if (toBeCompletedBy.equals("ROLE_INS_CH")) {
-                    toBeCompletedBy = "Claim Handler";
-                } else if (toBeCompletedBy.equals("ROLE_INS_COM")) {
-                    toBeCompletedBy = "Claim Ownership Manager";
-                } else if (toBeCompletedBy.equals("ROLE_INS_FNOL")) {
-                    toBeCompletedBy = "FNOL Handler";
-                } else if (toBeCompletedBy.equals("ROLE_INS_PC")) {
-                    toBeCompletedBy = "Payments Clerk";
-                } else if (toBeCompletedBy.equals("ROLE_INS_CR")) {
-                    toBeCompletedBy = "Claim Router";
-                } else if (toBeCompletedBy.equals("ROLE_INS_SCR")) {
-                    toBeCompletedBy = "Engineer";
-                } else if (toBeCompletedBy.equals("ROLE_INS_SUP")) {
-                    toBeCompletedBy = "Supervisor";
-                } else if (toBeCompletedBy.equals("ROLE_CHO_MI")) {
-                    toBeCompletedBy = "MI User";
-                } else if (toBeCompletedBy.equals("ROLE_INS_ADMIN")) {
-                    toBeCompletedBy = "Admin Manager";
-                } else if (toBeCompletedBy.equals("ROLE_INS_USER")) {
-                    toBeCompletedBy = "User Manager";
-                } else if (toBeCompletedBy.equals("ROLE_INS_MNG")) {
-                    toBeCompletedBy = "Manager";
-                } else if (toBeCompletedBy.equals("ROLE_INS_UPLOAD")) {
-                    toBeCompletedBy = "Insurer Claims Uploader";
-                } else if (toBeCompletedBy.equals("ROLE_INS")) {
-                    toBeCompletedBy = "User";
+                switch (toBeCompletedBy) {
+                    case "ROLE_INS_CH":
+                        toBeCompletedBy = "Claim Handler";
+                        break;
+                    case "ROLE_INS_COM":
+                        toBeCompletedBy = "Claim Ownership Manager";
+                        break;
+                    case "ROLE_INS_FNOL":
+                        toBeCompletedBy = "FNOL Handler";
+                        break;
+                    case "ROLE_INS_PC":
+                        toBeCompletedBy = "Payments Clerk";
+                        break;
+                    case "ROLE_INS_CR":
+                        toBeCompletedBy = "Claim Router";
+                        break;
+                    case "ROLE_INS_SCR":
+                        toBeCompletedBy = "Engineer";
+                        break;
+                    case "ROLE_INS_SUP":
+                        toBeCompletedBy = "Supervisor";
+                        break;
+                    case "ROLE_CHO_MI":
+                        toBeCompletedBy = "MI User";
+                        break;
+                    case "ROLE_INS_ADMIN":
+                        toBeCompletedBy = "Admin Manager";
+                        break;
+                    case "ROLE_INS_USER":
+                        toBeCompletedBy = "User Manager";
+                        break;
+                    case "ROLE_INS_MNG":
+                        toBeCompletedBy = "Manager";
+                        break;
+                    case "ROLE_INS_UPLOAD":
+                        toBeCompletedBy = "Insurer Claims Uploader";
+                        break;
+                    case "ROLE_INS":
+                        toBeCompletedBy = "User";
+                        break;
                 }
             } else {
                 toBeCompletedBy = "Insurer";

@@ -164,9 +164,10 @@ public class Upload {
     private static boolean isXmlBordereau(String filename) {
         // Read first line to see if XML file
         try {
-            BufferedReader input =  new BufferedReader(new FileReader(new File(filename)));
-            String line = input.readLine();
-            input.close();
+            String line;
+            try (BufferedReader input = new BufferedReader(new FileReader(new File(filename)))) {
+                line = input.readLine();
+            }
 
             if (line != null && line.startsWith("<?xml")) {
                 return true;

@@ -1,10 +1,13 @@
 package idas.chox.service;
 
-import idas.chox.test.BaseTest;
 import java.util.List;
 import java.util.Set;
+
 import junit.framework.Assert;
+
 import org.junit.Test;
+
+import idas.chox.test.BaseTest;
 
 /**
  *

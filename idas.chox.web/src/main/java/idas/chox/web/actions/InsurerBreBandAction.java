@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
 
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.ProtocolVehicleClassCeiling;
@@ -23,9 +26,6 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
 import org.apache.commons.lang3.SerializationUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
 
@@ -60,11 +60,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
 
     public boolean getIsNew() {
-
-        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
-            return true;
-        }
-        return false;
+        return objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0;
     }
 
     @Override
@@ -121,7 +117,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         try {
 
             List<BreBand> insurerBreBandData = adminInsurerService.getInsurerBreBands(this.insurerId);
-            insurerBreBands = new ArrayList<InsurerBreBandViewData>();
+            insurerBreBands = new ArrayList<>();
             for (BreBand h : insurerBreBandData) {
                 insurerBreBands.add(new InsurerBreBandViewData(h));
             }
@@ -201,7 +197,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String deleteInsurerBreBand() {
         try {
-            if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
+            if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to delete an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             if (model != null) {

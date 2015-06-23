@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.ActionResponse;
 

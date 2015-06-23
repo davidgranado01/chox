@@ -371,7 +371,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     @Override
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
         Element root = document.getDocumentElement();
-        List<ClaimResult> claimElements = new ArrayList<ClaimResult>();
+        List<ClaimResult> claimElements = new ArrayList<>();
 
         List<Element> rentals = XMLUtils.getElements(document, root, "rental");
 
@@ -404,16 +404,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     private Object getSessionLock(Map session) {
-        Object result = session.get("SESSION_LOCK");
-        if (result == null) {
-            // only if there is no session-lock object in the session we apply the global lock
-            synchronized (LOCK) {
-                // as it can be that another thread has updated the session-lock object in the meantime, we have to read it again from the session and create it only if it is not there yet!
-                result = session.get("SESSION_LOCK");
-                if (result == null) {
-                    result = new Object();
-                    session.put("SESSION_LOCK", result);
-                }
+        Object result;
+        // only if there is no session-lock object in the session we apply the global lock
+        synchronized (LOCK) {
+            // as it can be that another thread has updated the session-lock object in the meantime, we have to read it again from the session and create it only if it is not there yet!
+            result = session.get("SESSION_LOCK");
+            if (result == null) {
+                result = new Object();
+                session.put("SESSION_LOCK", result);
             }
         }
         LOG.debug("Returning session lock '{}'", result);
@@ -423,13 +421,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     @Override
     public boolean processFile(int bordereauId, Map session) {
-        int noClaims = 0;
+        int noClaims;
         int noProcessed = 0;
         int noSuccessfullyProcessed = 0;
         Document document;
         List<ClaimResult> claimResults;
-        List<UploadedXMLClaimsDetail> claimsDetails = new CopyOnWriteArrayList<UploadedXMLClaimsDetail>();
-        List<String> choReferences = new ArrayList<String>();
+        List<UploadedXMLClaimsDetail> claimsDetails = new CopyOnWriteArrayList<>();
+        List<String> choReferences = new ArrayList<>();
 
         if (!isValidBordereauId(bordereauId)) {
             return false;
@@ -471,15 +469,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             document = DocumentHelper.getDocumentFromStream(inputStream);
-        } catch (ParserConfigurationException ex) {
-            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
-            setErrorMessage("Error occurred while processing Bordereau.");
-            return false;
-        } catch (SAXException ex) {
-            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
-            setErrorMessage("Error occurred while processing Bordereau.");
-            return false;
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
             setErrorMessage("Error occurred while processing Bordereau.");
             return false;
@@ -602,7 +592,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
              */
             throw new AccessDeniedException("Illegal content found in XML file");
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | IOException ex) {
             LOG.error("Exception thrown in saving file while writing to document : {}", ex.getMessage());
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");
@@ -663,22 +653,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         Document document;
         List<ClaimResult> claimResults;
-        List<String> choReferences = new ArrayList<String>();
+        List<String> choReferences = new ArrayList<>();
         UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
 
         try {
 
             document = DocumentHelper.getDocumentFromStream(stream);
 
-        } catch (ParserConfigurationException ex) {
-            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
-            xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
-            return xmlClaimsDetail;
-        } catch (SAXException ex) {
-            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
-            xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
-            return xmlClaimsDetail;
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
             xmlClaimsDetail.setMessage("Error occurred while creating document from webservice inputStream.");
             return xmlClaimsDetail;
@@ -885,7 +867,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
             if (hireMonitoringEcds == null) {
-                hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+                hireMonitoringEcds = new ArrayList<>();
                 claim.setHireMonitoringEcds(hireMonitoringEcds);
             }
             HireMonitoringEcd ecd = new HireMonitoringEcd();

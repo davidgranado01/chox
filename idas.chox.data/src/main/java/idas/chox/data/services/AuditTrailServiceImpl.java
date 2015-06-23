@@ -203,7 +203,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     private List<AuditTrail> getReconstructedAuditTrailByClaim(int claimId) {
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
-        List<AuditTrail> results = new ArrayList<AuditTrail>();
+        List<AuditTrail> results = new ArrayList<>();
         
         for (AuditTrail trail : auditTrail) {
             results.add(trail);
@@ -387,7 +387,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         criteria.add(Restrictions.eq("reverted", true));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         List<Object> entries = findByCriteria(criteria);
-        return (entries == null ? false : (entries.size() > 0 ? true : false));
+        return (entries == null ? false : (entries.size() > 0));
     }
 
 
@@ -531,11 +531,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             }
             if (!trail.getReverted() && ClaimStatus.CLAIM_REJECTED.equals(trail.getNewStatus())
                 && cal.get(Calendar.HOUR_OF_DAY) >= 15) {
-                if (DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
-                        && cal2.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    return false;
-                }
-                return true;
+                return !(DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
+                        && cal2.get(Calendar.HOUR_OF_DAY) >= 15);
             }
         }
         

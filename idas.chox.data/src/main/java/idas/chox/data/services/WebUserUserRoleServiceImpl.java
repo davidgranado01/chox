@@ -1,19 +1,20 @@
 package idas.chox.data.services;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class WebUserUserRoleServiceImpl extends SecureDataService implements WebUserUserRoleService {
 
@@ -113,7 +114,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                                 boolean isClaimownershipEnabled, boolean isFnolEnabled,
                                 boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
                                 boolean isSupervisorEnabled, boolean isAdmin, boolean canBeAssignedTasksOnly) {
-        Set<WebUserRole> webUserRoles = new HashSet<WebUserRole>();
+        Set<WebUserRole> webUserRoles = new HashSet<>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("typeId", orgTypeId));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
@@ -157,11 +158,9 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                                 boolean isSupervisorEnabled, boolean isAdmin) {
 
         Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
-        List<IdLookupItem> items = new ArrayList<IdLookupItem>();
+        List<IdLookupItem> items = new ArrayList<>();
 
-        Iterator itr = webUserroles.iterator();
-        while (itr.hasNext()) {
-            WebUserRole s = (WebUserRole) itr.next();
+        for (WebUserRole s : webUserroles) {
             items.add(new IdLookupItem(s.getId(), s.getDescription()));
         }
 
@@ -175,19 +174,17 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                                 boolean isInsurerUploadEnabled, boolean isSupervisorEnabled,
                                 boolean isAdmin) {
 
-        List<IdLookupItem> items = new ArrayList<IdLookupItem>();
+        List<IdLookupItem> items = new ArrayList<>();
         Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
 
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
-        List<Integer> selectedList = new ArrayList<Integer>();
+        List<Integer> selectedList = new ArrayList<>();
 
         for (WebUserUserRole o : selectedWebUserroles) {
             selectedList.add(o.getWebUserRole().getId());
         }
 
-        Iterator itr = webUserroles.iterator();
-        while (itr.hasNext()) {
-            WebUserRole s = (WebUserRole) itr.next();
+        for (WebUserRole s : webUserroles) {
             if (!selectedList.contains(s.getId())) {
                 items.add(new IdLookupItem(s.getId(), s.getDescription()));
             }
@@ -202,10 +199,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.eq("id", roleId));
         criteria.add(Restrictions.eq("workgroupRelated", true));
         WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
-        if (webUserRole != null) {
-            return true;
-        }
-        return false;
+        return webUserRole != null;
     }
 
     @Override
@@ -214,10 +208,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.eq("id", roleId));
         criteria.add(Restrictions.eq("ownershipRelated", true));
         WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
-        if (webUserRole != null) {
-            return true;
-        }
-        return false;
+        return webUserRole != null;
     }
 
     @Override
@@ -226,10 +217,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.eq("name", roleCode));
         criteria.add(Restrictions.eq("workgroupRelated", true));
         WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
-        if (webUserRole != null) {
-            return true;
-        }
-        return false;
+        return webUserRole != null;
     }
 
     @Override
@@ -238,9 +226,6 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.eq("name", roleCode));
         criteria.add(Restrictions.eq("ownershipRelated", true));
         WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
-        if (webUserRole != null) {
-            return true;
-        }
-        return false;
+        return webUserRole != null;
     }
 }

@@ -47,7 +47,7 @@ public class AdminUserService extends SecureDataService {
     private ClaimService claimService;
     private WorkgroupService workgroupService;
     private UserWorkgroupService userWorkgroupService;
-    private String passwordPatternString = "^.*(?=.{<minPasswordLength>,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
+    private final String passwordPatternString = "^.*(?=.{<minPasswordLength>,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -401,9 +401,9 @@ public class AdminUserService extends SecureDataService {
         return userWorkgroupService.getUserWorkgroupsByUser(webUserId);
     }
 
-    public List getWorkgroups(int webUserId) {
+    public List<IdLookupItem> getWorkgroups(int webUserId) {
 
-        List items = new ArrayList<IdLookupItem>();
+        List<IdLookupItem> items = new ArrayList<>();
         WebUser webUser = userService.getWebUser(webUserId);
         List<Workgroup> availableWorkgroups = workgroupService.getAvailableUserWorkgroupsByInsurer(webUser.getInsurer().getId(), webUserId);
 
@@ -418,7 +418,7 @@ public class AdminUserService extends SecureDataService {
 
         this.actionResponse = new ActionResponse();
 
-        List<String> userRolesWithError = new ArrayList<String>();
+        List<String> userRolesWithError = new ArrayList<>();
 
         WebUserWorkgroup webUserWorkgroup = userWorkgroupService.getUserWorkgroup(userWorkgroupId);
 

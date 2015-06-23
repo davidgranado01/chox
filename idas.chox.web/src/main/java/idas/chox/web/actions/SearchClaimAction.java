@@ -3,14 +3,15 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.*;
 import idas.chox.core.search.ClaimSearchCriteria;
@@ -19,7 +20,6 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.ClaimGridViewData;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
 
@@ -123,7 +123,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getInsurersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+        List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
@@ -131,7 +131,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getSuppliersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+        List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
@@ -213,17 +213,17 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return isVisible;
     }
     
-    public List getInsurers() {
+    public List<Insurer> getInsurers() {
         if (insurers == null) {
             if (getIsInsurer()) {
-                return new ArrayList<Insurer>();
+                return new ArrayList<>();
             }
             insurers = this.lookupService.getInsurers();
         }
         return insurers;
     }
 
-    public List getSuppliers() {
+    public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
             suppliers = this.lookupService.getAllSuppliers();
         }
@@ -242,7 +242,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         try {
             LOG.debug("Converting results to view data");
-            List<ClaimGridViewData> viewData = new ArrayList<ClaimGridViewData>();
+            List<ClaimGridViewData> viewData = new ArrayList<>();
 
             for (Object obj : results) {
                 Claim c = (Claim) obj;
@@ -292,7 +292,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                  * there is no workaround at the moment to inform user about invalid search criteria as Extjs store do not listen to custom json response in dataStore.
                  * anyway the search result will be empty and no error or exception is thrown. 
                  */
-                results = new ArrayList<Object>();
+                results = new ArrayList<>();
                 return SUCCESS;
             }
             
@@ -312,7 +312,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             LOG.debug("Calling search claim service");
             if (claimSearchCriteria == null) {
                 LOG.debug("Claim search criteria is null.");
-                results = new ArrayList<Object>();
+                results = new ArrayList<>();
                 return SUCCESS;
             }
             SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria);
@@ -324,7 +324,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             return SUCCESS;
         } else {
             getSession().put("searchCriteria", null);
-            results = new ArrayList<Object>();
+            results = new ArrayList<>();
             return SUCCESS;
         }
     }

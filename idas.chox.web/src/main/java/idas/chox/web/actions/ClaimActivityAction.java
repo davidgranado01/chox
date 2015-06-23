@@ -116,8 +116,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                             claim.setBreBand(choBand);
                         }
 
-                        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                        if ((getIsInsurer() && claim.getInsurer().getId() != getAuthenticatedUser().getInsurer().getId().intValue())
+                                || (getIsCHO() && claim.getChorganisation().getId() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                             throw new AccessDeniedException("Attempt to access a claim that you do not own.");
                         }
                         activity.process(claim);
