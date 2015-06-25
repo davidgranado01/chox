@@ -124,24 +124,24 @@ public class ExcelWorkbook {
                         try {
                             sheet.addCell(label);
                         } catch (WriteException ex) {
-                            LOG.error("Error adding report cell '{}' at position ({},{})",
-                                    new Object[]{cell, row, columnNo - 1});
+                            LOG.error("Error adding String report cell at position ({},{}) - cell='{}': {}",
+                                    new Object[]{rowNo, columnNo - 1, (String)cell, ex.getMessage()});
                         }
                     } else if (cell instanceof Money) {
                         Number number = new Number(columnNo++, rowNo, ((BigDecimal) cell).doubleValue(), currencyCellFormat);
                         try {
                             sheet.addCell(number);
                         } catch (WriteException ex) {
-                            LOG.error("Error adding report cell '{}' at position ({},{})",
-                                    new Object[]{cell, row, columnNo - 1});
+                            LOG.error("Error adding Money report cell at position ({},{}) - cell='{}': {}",
+                                    new Object[]{rowNo, columnNo - 1, ((BigDecimal) cell).doubleValue(), ex.getMessage()});
                         }
                     } else if (cell instanceof BigDecimal) {
                         Number number = new Number(columnNo++, rowNo, ((BigDecimal) cell).doubleValue(), numericCellFormat);
                         try {
                             sheet.addCell(number);
                         } catch (WriteException ex) {
-                            LOG.error("Error adding report cell '{}' at position ({},{})",
-                                    new Object[]{cell, row, columnNo - 1});
+                            LOG.error("Error adding BigDecimal report cell at position ({},{}) - cell='{}': {}",
+                                    new Object[]{rowNo, columnNo - 1, ((BigDecimal) cell).doubleValue(), ex.getMessage()});
                         }
                     }
                 }
