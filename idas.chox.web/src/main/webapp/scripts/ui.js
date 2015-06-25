@@ -155,7 +155,7 @@ var ui = function(){
 
     // refer the below link to know how the jquery ajax form submit callback handler works 
     // http://api.jquery.com/submit/
-    function ajaxForm(form, successCallBack, responseType){
+    function ajaxForm(form, successCallBack, responseType, errorCallback){
 
         function onAfterSubmit(responseText, statusText){
             onSubmitCompleted(responseText, statusText,form,responseType);
@@ -164,14 +164,21 @@ var ui = function(){
             }
         }
 
+        function onError(responseText, statusText){
+            onSubmitError(responseText, statusText,form,responseType);
+            if(errorCallback){
+                errorCallback(responseText, statusText,form,responseType);
+            }
+        }
+        
         form.submit(function(event){
             
             if(form.valid()){
                 var options = {
                     beforeSubmit: onBeforeSubmit,  // pre-submit callback
                     success: onAfterSubmit,  // post-submit callback
-                    timeout: 3000,
-                    error: onSubmitError,
+                    timeout: 8000,
+                    error: onError,
                     data: csrfParam,
                     type : 'POST'
                 };

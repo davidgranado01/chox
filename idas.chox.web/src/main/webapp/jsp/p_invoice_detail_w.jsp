@@ -469,7 +469,8 @@
                 days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
             }
         });
-        ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
+        ui.ajaxForm(form0,updateHireMonitoringPanel,'html',unmaskRecalculationForm);
+        
         $("#IDsuccessBox").fadeOut(10000);
 <s:if test="penaltyChargesAppled">
 	refreshPenaltyChargeForm();
@@ -576,6 +577,10 @@
             return randomNumber;
         }
 
+        function unmaskRecalculationForm() {
+            Ext.get('formUpdateInvoiceRecalculationForm').unmask();
+            ui.promptErrorMsg("An unexpected error occurred. Please try again. If this problem persists, please contact CHOX support.");
+        }
         function submitForm(){
             if(tpiClaimChk){
                 var settings = $('form#formUpdateInvoiceRecalculationForm').validate().settings;
@@ -596,7 +601,8 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
 //                $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-           
+
+//            return false;
         }
 
         function recalculateForm(){
@@ -621,9 +627,9 @@
             document.getElementById('invoiceSubmitAction').value=20;
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
-//                $("form#formUpdateInvoiceRecalculationForm").submit();
+                $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-//            return randomNumber;
+            return false;
         }
 
         function refreshPenaltyChargeForm(){
@@ -2237,7 +2243,7 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="submit" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm();"/>
+                        <input type="submit" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="return recalculateForm();"/>
                     </td>
                     <td>
                         <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitForm();"/>
