@@ -445,7 +445,7 @@
                 {header: "Error Message", width:150, dataIndex: 'message', sortable: true, resizable: true}
 
             ],
-            width:1200,
+            width:1190,
             height:320
         });
 
