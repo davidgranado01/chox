@@ -39,7 +39,7 @@ ALTER TABLE bre_band ADD COLUMN fixedfee_sla_days integer not null DEFAULT 14;
 ALTER TABLE bre_band ADD COLUMN fixedfee_time_cut_off character varying(5) not null DEFAULT '15:00';
 ALTER TABLE bre_band ADD COLUMN fixedfee_resubmission_allowed integer not null DEFAULT 2;
 ----------------------
--- End of 8.6.2
+-- End of 8.6.3
 ----------------------
 
 --------------------------------------------------------------------------------
