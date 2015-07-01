@@ -207,7 +207,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         
         for (AuditTrail trail : auditTrail) {
             results.add(trail);
-            if (trail.getReverted()) {
+            if (trail.getReverted() && !trail.getOriginalStatus().isEmpty()) {
                 AuditTrail newEntry = new AuditTrail();
                 newEntry.setOriginalStatus(trail.getNewStatus());
                 newEntry.setNewStatus(trail.getOriginalStatus());

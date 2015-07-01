@@ -1340,27 +1340,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
-        }
 
-        if (subscriberSlaDays!= 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
-            boolean addComment = true;
-            List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
-            for (Comment comment : comments) {
-                if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
-                    addComment = false;
-                    LOG.debug("Comment already added - skipping");
-                    break;
+            if (subscriberSlaDays != 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
+                boolean addComment = true;
+                List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
+                for (Comment comment : comments) {
+                    if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
+                        addComment = false;
+                        LOG.debug("Comment already added - skipping");
+                        break;
+                    }
                 }
-            }
-            if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA, claim taken down Subscriber route.");
-                if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
+                if (addComment) {
+                    Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA, claim taken down Subscriber route.");
+                    if (claim.getSlaExtDays() > 0) {
+                        comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the " + subscriberSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
+                    }
                 }
-                comment.setRaisedBy(userService.getWebUser(999));
-                claim.addComment(comment);
-                save(claim);
-                LOG.debug("Comment added and claim saved.");
             }
         }
 
