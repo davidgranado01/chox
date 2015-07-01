@@ -132,14 +132,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return (Claim) get(Claim.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void updateClaim(Claim claim) {
         save(claim);
         LOG.debug("Claim updated and saved.");
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void checkRepairBookedInDateAnomaly(Claim claim) {
         try {
@@ -152,7 +152,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void checkTotalLossAnomaly(Claim claim) {
         try {
@@ -165,7 +165,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     protected void save(Claim object) {
         updateLiabilityPayment(object);
         super.save(object);
@@ -1269,7 +1269,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
         super.save(claim);
     }
@@ -1296,7 +1296,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int getSubscriberClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of subscriber claim with id={}", id);
@@ -1304,27 +1304,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
-        }
 
-        if (claim != null && (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm()))) {
-            boolean addComment = true;
-            List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
-            for (Comment comment : comments) {
-                if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
-                    addComment = false;
-                    LOG.debug("Comment already added - skipping");
-                    break;
+            if (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm())) {
+                boolean addComment = true;
+                List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
+                for (Comment comment : comments) {
+                    if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
+                        addComment = false;
+                        LOG.debug("Comment already added - skipping");
+                        break;
+                    }
                 }
-            }
-            if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
-                if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
+                if (addComment) {
+                    Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                    if (claim.getSlaExtDays() > 0) {
+                        comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Subscriber route.");
+                    }
+                    comment.setRaisedBy(userService.getWebUser(999));
+                    claim.addComment(comment);
+                    save(claim);
+                    LOG.debug("Comment added and claim saved.");
                 }
-                comment.setRaisedBy(userService.getWebUser(999));
-                claim.addComment(comment);
-                save(claim);
-                LOG.debug("Comment added and claim saved.");
             }
         }
 
@@ -1333,7 +1333,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String stopClaimChase(String choRef) {
         StringBuilder result = new StringBuilder();
 
@@ -1352,7 +1352,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int getFixedFeeClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of fixed-fee claim with id={}", id);
@@ -1502,7 +1502,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender) {
         int result = updateChoReferenceNumber(oldReference, newReference, choId);
         if (result == 2) {
@@ -1514,7 +1514,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId) {
 
         int result = updateChoReferenceNumber(queuedTicket.getOldReference(), queuedTicket.getNewReference(), choId);
@@ -1730,7 +1730,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void setTotalLoss(Claim claim, boolean isTotalLoss) {
         if (claim.getCustomer().getIsTotalLoss() != null
                 && claim.getCustomer().getIsTotalLoss() == isTotalLoss) {
