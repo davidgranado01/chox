@@ -1309,7 +1309,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 boolean addComment = true;
                 List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
                 for (Comment comment : comments) {
-                    if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
+                    if (comment.getComment().endsWith("claim taken down Subscriber route.") && !comment.isReverted()) {
                         addComment = false;
                         LOG.debug("Comment already added - skipping");
                         break;
