@@ -61,18 +61,18 @@ function refreshDesc(id){
                         </s:if>
                         <s:elseif test="isSubscriberClaim">
                             <s:if test="slaExtDays > 0">
-                                This claim cannot be rejected as the Subscriber notification 5 day SLA + <s:property value="slaExtDays"/> day extension has passed.
+                                This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA + <s:property value="slaExtDays"/> day extension has passed.
                             </s:if>
                             <s:else>
-                                This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
+                                This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA has passed.
                             </s:else>
                         </s:elseif>
                         <s:elseif test="isFixedFeeClaim">
                             <s:if test="slaExtDays > 0">
-                                This claim cannot be rejected as the Fixed Fee notification 14 day SLA + <s:property value="slaExtDays"/> day extension has passed.
+                                This claim cannot be rejected as the Fixed Fee notification <s:property value="fixedFeeSlaDays"/> day SLA + <s:property value="slaExtDays"/> day extension has passed.
                             </s:if>
                             <s:else>
-                                This claim cannot be rejected as the Fixed Fee notification 14 day SLA has passed.
+                                This claim cannot be rejected as the Fixed Fee notification <s:property value="fixedFeeSlaDays"/> day SLA has passed.
                             </s:else>
                         </s:elseif>
                         <br/><br/>This claim has been pending for <s:property value="daysInStatus" /> day(s).
