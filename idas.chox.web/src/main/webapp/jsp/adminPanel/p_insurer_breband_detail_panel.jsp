@@ -839,7 +839,7 @@
                             <span id="subscriberTimeCutOffPH"></span>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Subscriber Resubmission Allowed<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">No. Times Subscriber Claims Can Be Rejected<span class="mandatory">*</span></label>
                             <span id="subscriberResubmissionAllowedPH"></span>
                         </div>
                     </div>
@@ -856,7 +856,7 @@
                             <span id="fixedFeeTimeCutOffPH"></span>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Fixed Fee Resubmission Allowed<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">No. Times Fixed Fee Claims Can Be Rejected<span class="mandatory">*</span></label>
                             <span id="fixedFeeResubmissionAllowedPH"></span>
                         </div>
                     </div>
