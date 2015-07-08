@@ -1732,9 +1732,9 @@
                             <label class="chox-form-check-label">Subscriber Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not billing for hire days over the allowed amount.
-                                This rule is for Subscriber claims to ensure that rejections made by 3pm are recorded
-                                and are counted as 1 days hire and that a maximum of 5 days hire is billed if the
-                                Subscriber rejection was accepted.
+                                This rule is for Subscriber claims to ensure that Insurer rejections are recorded
+                                correctly and that the maximum number of hire days the CHO can bill for is adhered
+                                to based on the Insurer's rejection time.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
