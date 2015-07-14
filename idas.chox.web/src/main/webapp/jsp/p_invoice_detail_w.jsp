@@ -486,7 +486,7 @@
 <s:if test="invoiceSavingActive">
     if ( $( "#UMIPFormId" ).length ){
         if (ieVersion==9 || ieVersion==8){
-            $("#UMIPFormId").unbind('click');
+            $("#UMIPFormId").removeAttr("onclick").unbind('click');
             $("#UMIPFormId").click(function(){return confirmInvoiceSavingsAction();});
         }else{
             $("#UMIPFormId").attr("onclick","return confirmInvoiceSavingsAction();");
@@ -496,7 +496,7 @@
 <s:else>
     if ( $( "#UMIPFormId" ).length ){
         if (ieVersion==9 || ieVersion==8){
-            $("#UMIPFormId").unbind('click');
+            $("#UMIPFormId").removeAttr("onclick").unbind('click');
             $("#UMIPFormId").click(function(){return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');});
         }else{
             $("#UMIPFormId").attr("onclick","doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');");
