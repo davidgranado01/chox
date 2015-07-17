@@ -71,6 +71,13 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
     }
 
     @Override
+    public Result addAttachment(Attachment attachment) {
+
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.addAttachment(attachment);
+    }
+
+    @Override
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         this.ctx = ac;
     }

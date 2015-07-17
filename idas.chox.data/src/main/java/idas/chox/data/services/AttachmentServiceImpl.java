@@ -127,6 +127,23 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
 
     @Override
     public boolean addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
+        boolean result = false;
+
+        byte fileContent[];
+        try {
+            fileContent = new byte[safeLongToInt(length)];
+            streamIn.read(fileContent);
+            streamIn.close();
+            addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
+        } catch (Exception ex) {
+            LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean addAttachment(Claim claim, byte[] fileContent, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
 
         boolean bFlag = false;
 
@@ -135,12 +152,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         String fileType = FileHelper.getFileExtension(oldFileName);
         String newFileName = FileHelper.getNewFileName(oldFileName, false);
         LOG.debug("Processing file {} of type {}", oldFileName, fileType);
-        byte fileContent[];
         try {
-            fileContent = new byte[safeLongToInt(length)];
-            streamIn.read(fileContent);
-            streamIn.close();
-            LOG.debug("Saving attachment {} for claimId {}", newFileName);
             saveAttachement(claim, category, newFileName, remark, fileType, fileContent);
             bFlag = true;
             LOG.debug("Attachment saved.");

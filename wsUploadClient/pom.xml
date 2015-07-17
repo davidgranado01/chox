@@ -54,8 +54,11 @@
                             </wsdlFiles -->
                             <wsdlUrls>
                                 <wsdlUrl>https://www.idaschox.com/services/UploadService?wsdl</wsdlUrl>
+<!--                                <wsdlUrl>https://localhost:8443/services/UploadService?wsdl</wsdlUrl>-->
+<!--                                <wsdlUrl>https://test.idaschox.com:8443/services/UploadService?wsdl</wsdlUrl>-->
                             </wsdlUrls>
                            <wsdlLocation>https://www.idaschox.com/services/UploadService?wsdl</wsdlLocation>
+<!--                           <wsdlLocation>https://localhost:8443/services/UploadService?wsdl</wsdlLocation>-->
 <!--                       <wsdlLocation>https://test.idaschox.com:8443/services/UploadService?wsdl</wsdlLocation> -->
                             <staleFile>${project.build.directory}/jaxws/stale/UploadService.stale</staleFile>
                         </configuration>
@@ -187,7 +190,12 @@
             <version>3.7</version>
             <type>jar</type>
         </dependency>
-<!--        <dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!--        <dependency>
             <groupId>org.swinglabs</groupId>
             <artifactId>swing-layout</artifactId>
             <version>1.0.3</version>

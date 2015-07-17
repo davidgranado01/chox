@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.uploadclient;
 
 import java.util.ArrayList;
@@ -33,6 +29,14 @@ public class Options {
     private boolean paymentReceived;
     @Option(name = "-addnote", usage = "Add Note")
     private boolean addNote;
+    @Option(name = "-addAttachment", usage = "Add Attachment")
+    private boolean addAttachment;
+    @Option(name = "-choRef", usage = "CHO Reference for attachment")
+    private String choRef;
+    @Option(name = "-category", usage = "Attachment Category")
+    private String category;
+    @Option(name = "-notify", usage = "Attachment Notification")
+    private boolean attachmentNotification;
     
     public List<String> getArguments() {
         return arguments;
@@ -104,5 +108,37 @@ public class Options {
 
     public void setAddNote(boolean addNote) {
         this.addNote = addNote;
+    }
+    
+    public boolean isAddAttachment() {
+        return addAttachment;
+    }
+
+    public void setAddAttachment(boolean addAttachment) {
+        this.addAttachment = addAttachment;
+    }
+
+    public String getChoRef() {
+        return choRef;
+    }
+
+    public void setChoRef(String choRef) {
+        this.choRef = choRef;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isAttachmentNotification() {
+        return attachmentNotification;
+    }
+
+    public void setAttachmentNotification(boolean attachmentNotification) {
+        this.attachmentNotification = attachmentNotification;
     }
 }
