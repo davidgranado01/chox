@@ -6,7 +6,7 @@
     var protocolVehicleClassCeiling_gridviewStore;
     var protocolVehicleClassCeiling_gridviewGrid;
     var protocolVehicleCeilingEditSelectionDlg;
-    
+
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -16,6 +16,8 @@
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
         new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
+
+<s:if test="subscriberClaimsEnabled">                         
 
         var subscriberTimeCutOffTimePicker = new Ext.form.TimeField({
             name: 'subscriberTimeCutOff',
@@ -54,6 +56,9 @@
             value : '<s:property value="subscriberResubmissionAllowed"/>'
         });
 
+</s:if>
+<s:if test="fixedFeeClaimsEnabled">                         
+
         var fixedFeeTimeCutOffTimePicker = new Ext.form.TimeField({
             name: 'fixedFeeTimeCutOff',
             id : 'fixedFeeTimeCutOffPickerHMVId',
@@ -90,6 +95,7 @@
             displayField: 'text',
             value : '<s:property value="fixedFeeResubmissionAllowed"/>'
         });
+</s:if>
 
         var form = $("form#formUpdateInsurerBreBandDetail");
 
@@ -97,11 +103,11 @@
         {
             errorLabelContainer: "#CDInsurerBreBandmessageBox",
             rules: {
-<s:if test="isSubscriberEnabled">                         
+<s:if test="subscriberClaimsEnabled">                         
                 subsctiberTimeCutOff:{required:true, time:true},
                 subscriberSlaDays:{required:true, number:true, min:1},
 </s:if>
-<s:if test="isFixedFeeEnabled">                         
+<s:if test="fixedFeeClaimsEnabled">                         
                 fixedFeeTimeCutOff:{required:true, time:true},
                 fixedFeeSlaDays:{required:true, number:true, min:0},
 </s:if>
