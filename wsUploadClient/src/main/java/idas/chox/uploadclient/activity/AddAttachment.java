@@ -15,7 +15,7 @@ public class AddAttachment {
 
     private static final Logger LOG = LoggerFactory.getLogger(AddAttachment.class);
 
-    public static void process(UploadService uploadService, String choRef, String file, String category, Boolean notify) {
+    public static void process(UploadService uploadService, String choRef, String file, String category, Boolean notify, String remark) {
 
         // Argument is a file containing CHO reference numbers
         LOG.info("Processing file '{}'", file);
@@ -27,7 +27,7 @@ public class AddAttachment {
             attachment.setFileType(FilenameUtils.getExtension(file));
             attachment.setFilename(FilenameUtils.getBaseName(file));
             attachment.setNotify(notify);
-            attachment.setRemark("Attachment added by web service call.");
+            attachment.setRemark((remark == null) ? "Attachment added by web service call." : remark);
             attachment.setSupplierReference(choRef);
             LOG.info("Adding attachment: choRef={}, category={}, fileType={}, fileName={}, remark={}, notify={}",
                     new Object[]{attachment.getSupplierReference(), attachment.getCategory(), attachment.getFileType(),

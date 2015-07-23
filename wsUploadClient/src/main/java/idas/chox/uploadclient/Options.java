@@ -37,7 +37,9 @@ public class Options {
     private String category;
     @Option(name = "-notify", usage = "Attachment Notification")
     private boolean attachmentNotification;
-    
+    @Option(name = "-remark", usage = "Attachment Remark")
+    private String remark;
+  
     public List<String> getArguments() {
         return arguments;
     }
@@ -132,6 +134,14 @@ public class Options {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public boolean isAttachmentNotification() {
