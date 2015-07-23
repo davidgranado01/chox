@@ -32,12 +32,13 @@ DECLARE
    result CHARACTER VARYING(3);
 BEGIN
 
-select into result t.rule_id from (select rule_id, count(*) as ruleFailurers from history h, claim c, chorganisation cho, invoice i
-                                              where type='ERROR' and c.invoice_id = i.id and h.claim_id = c.id
+select into result t.rule_id from (select rule_id, count(*) as ruleFailurers from invoice i, chorganisation cho, claim c
+                                                join (select distinct h2.claim_id, h2.rule_id from history h2, claim c2, invoice i2
+                                                  where c2.id=h2.claim_id and c2.invoice_id=i2.id and (c2.chorganisation_id = chorgId or chorgId = -1) and (c2.insurer_id = insId or insId = -1) and (case when array_length(claimType, 1) > 0 then c2.claim_type = ANY(claimType) else true end) and i2.created_date >= startDate and i2.created_date < endDate and h2.type='ERROR') as h on c.id = h.claim_id
+                                              where c.invoice_id = i.id and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
                                                 and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
                                                 and (c.insurer_id = insId or insId = -1)
-                                                and c.chorganisation_id = cho.id and cho.insurer_upload_only = false
-                                                and (chorgId = -1 or c.chorganisation_id = chorgId)
+                                                and (c.chorganisation_id = chorgId or chorgId = -1)
                                                 and i.created_date >= startDate and i.created_date < endDate
                                               group by rule_id order by ruleFailurers desc limit 1 offset ruleNo-1) as t;
 

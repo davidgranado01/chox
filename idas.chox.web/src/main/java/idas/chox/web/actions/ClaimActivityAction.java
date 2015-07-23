@@ -33,7 +33,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String name;
     private List<Integer> selectedClaimIdList;
     private String jsonData;
-    private int executeCount = 0;
     
     private ApplicationAccessibility applicationAccessibility;
     
@@ -146,10 +145,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     @Override
     public String execute() {
-        executeCount++;
         JSONObject jsonObject = new JSONObject();
-        LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'. Execute count={}",
-                new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference(), executeCount});
+        LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'",
+                new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference()});
         if (activity != null) {
             try {
                 checkVersion(Arrays.asList(claim));
@@ -157,8 +155,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateModelInSession(Arrays.asList(claim));
                 setMessage(activity.getMessage());
             } catch (AccessDeniedException ex) {
-                LOG.error("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {} [executeCount={}]: {}",
-                        new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), executeCount, ex.getMessage()});
+                LOG.error("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",
+                        new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
 // Lets return an error for now rather than re-throwing the exception
 // Once the reason for this happening so often is determined, the code should be reverted to re-throw the exception
 //                throw (ex);
@@ -223,7 +221,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public void setSelectedClaimIds(String ids) {
         String[] list = ids.split(",");
-        selectedClaimIdList = new ArrayList<Integer>();
+        selectedClaimIdList = new ArrayList<>();
         for (String s : list) {
             Integer selectedId = Integer.parseInt(s.trim());
             selectedClaimIdList.add(selectedId);
@@ -234,8 +232,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public void validate() {
         if (claim != null) {
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            if ((getIsInsurer() && claim.getInsurer().getId() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                 LOG.error("ClaimActivityAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
