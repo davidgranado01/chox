@@ -107,12 +107,19 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean insurancePremiumTaxCheck;
     private boolean mobileVehicleTotalLossCheck;
     private boolean allowGTAPenaltyCharges = true;
+    private boolean allowGTAAutoPenaltyCharges = true;
     private boolean allowSubscriberPenaltyCharges = true;
+    private boolean allowSubscriberAutoPenaltyCharges = true;
     private boolean allowFixedFeePenaltyCharges = true;
+    private boolean allowFixedFeeAutoPenaltyCharges = true;
     private boolean allowCollaborationProtocolPenaltyCharges = true;
+    private boolean allowCollaborationProtocolAutoPenaltyCharges = true;
     private boolean allowTPIPenaltyCharges = true;
+    private boolean allowTPIAutoPenaltyCharges = false;
     private boolean allowInsurervsInsurerPenaltyCharges = true;
+    private boolean allowInsurervsInsurerAutoPenaltyCharges = false;
     private boolean allowManualInvoicePenaltyCharges = true;
+    private boolean allowManualInvoiceAutoPenaltyCharges = false;
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
@@ -154,6 +161,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
     private List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings;
+    private List<BrePenaltyBand> brePenaltyBands;
     private boolean compoundAutomaticChargeCheckHpiLookup;
     private boolean compoundEstateChargeCheckHpiLookup;
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
@@ -1481,11 +1489,32 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         }
         
         if (protocolVehicleClassCeilings == null) {
-            setProtocolVehicleClassCeilings(new ArrayList<ProtocolVehicleClassCeiling>());
+            protocolVehicleClassCeilings = new ArrayList<>();
         } 
         
         protocolVehicleClassCeiling.setBreBand(this);
         protocolVehicleClassCeilings.add(protocolVehicleClassCeiling);
+    }
+
+    public List<BrePenaltyBand> getBrePenaltyBands() {
+        return brePenaltyBands;
+    }
+
+    public void setBrePenaltyBands(List<BrePenaltyBand> brePenaltyBands) {
+        this.brePenaltyBands = brePenaltyBands;
+    }
+
+    public void addBrePenaltyBand(BrePenaltyBand brePenaltyBand) {
+        if (brePenaltyBand == null) {
+            return;
+        }
+        
+        if (brePenaltyBands == null) {
+            brePenaltyBands = new ArrayList<>();
+        } 
+        brePenaltyBand.setBreBand(this);
+
+        brePenaltyBands.add(brePenaltyBand);
     }
 
     public boolean isHireNetDoesNotExceedProtocolVehicleClassHireNetCeiling() {
@@ -1582,5 +1611,61 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setBreInvoiceSavingActive(boolean breInvoiceSavingActive) {
         this.breInvoiceSavingActive = breInvoiceSavingActive;
+    }
+
+    public boolean isAllowGTAAutoPenaltyCharges() {
+        return allowGTAAutoPenaltyCharges;
+    }
+
+    public void setAllowGTAAutoPenaltyCharges(boolean allowGTAAutoPenaltyCharges) {
+        this.allowGTAAutoPenaltyCharges = allowGTAAutoPenaltyCharges;
+    }
+
+    public boolean isAllowSubscriberAutoPenaltyCharges() {
+        return allowSubscriberAutoPenaltyCharges;
+    }
+
+    public void setAllowSubscriberAutoPenaltyCharges(boolean allowSubscriberAutoPenaltyCharges) {
+        this.allowSubscriberAutoPenaltyCharges = allowSubscriberAutoPenaltyCharges;
+    }
+
+    public boolean isAllowFixedFeeAutoPenaltyCharges() {
+        return allowFixedFeeAutoPenaltyCharges;
+    }
+
+    public void setAllowFixedFeeAutoPenaltyCharges(boolean allowFixedFeeAutoPenaltyCharges) {
+        this.allowFixedFeeAutoPenaltyCharges = allowFixedFeeAutoPenaltyCharges;
+    }
+
+    public boolean isAllowCollaborationProtocolAutoPenaltyCharges() {
+        return allowCollaborationProtocolAutoPenaltyCharges;
+    }
+
+    public void setAllowCollaborationProtocolAutoPenaltyCharges(boolean allowCollaborationProtocolAutoPenaltyCharges) {
+        this.allowCollaborationProtocolAutoPenaltyCharges = allowCollaborationProtocolAutoPenaltyCharges;
+    }
+
+    public boolean isAllowTPIAutoPenaltyCharges() {
+        return allowTPIAutoPenaltyCharges;
+    }
+
+    public void setAllowTPIAutoPenaltyCharges(boolean allowTPIAutoPenaltyCharges) {
+        this.allowTPIAutoPenaltyCharges = allowTPIAutoPenaltyCharges;
+    }
+
+    public boolean isAllowInsurervsInsurerAutoPenaltyCharges() {
+        return allowInsurervsInsurerAutoPenaltyCharges;
+    }
+
+    public void setAllowInsurervsInsurerAutoPenaltyCharges(boolean allowInsurervsInsurerAutoPenaltyCharges) {
+        this.allowInsurervsInsurerAutoPenaltyCharges = allowInsurervsInsurerAutoPenaltyCharges;
+    }
+
+    public boolean isAllowManualInvoiceAutoPenaltyCharges() {
+        return allowManualInvoiceAutoPenaltyCharges;
+    }
+
+    public void setAllowManualInvoiceAutoPenaltyCharges(boolean allowManualInvoiceAutoPenaltyCharges) {
+        this.allowManualInvoiceAutoPenaltyCharges = allowManualInvoiceAutoPenaltyCharges;
     }
 }

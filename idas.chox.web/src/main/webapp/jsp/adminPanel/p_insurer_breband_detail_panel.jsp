@@ -757,7 +757,82 @@
                }
            }
        }
+    function doGTAPenaltyChargeCheck(){
+        var gtaPenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowGTAPenaltyCharges"]:checked').val()){
+            gtaPenaltiesEnable = true;
+            $("#gtaPenaltyIdentifierId").slideDown();
+        }else{
+            $("#gtaPenaltyIdentifierId").hide();
+        }
+        return gtaPenaltiesEnable;
+    }
 
+    function doSubscriberPenaltyChargeCheck(){
+        var subscriberPenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowSubscriberPenaltyCharges"]:checked').val()){
+            subscriberPenaltiesEnable = true;
+            $("#subscriberPenaltyIdentifierId").slideDown();
+        }else{
+            $("#subscriberPenaltyIdentifierId").hide();
+        }
+        return subscriberPenaltiesEnable;
+    }
+
+    function doFixedFeePenaltyChargeCheck(){
+        var fixedFeePenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowFixedFeePenaltyCharges"]:checked').val()){
+            fixedFeePenaltiesEnable = true;
+            $("#fixedFeePenaltyIdentifierId").slideDown();
+        }else{
+            $("#fixedFeePenaltyIdentifierId").hide();
+        }
+        return fixedFeePenaltiesEnable;
+    }
+
+    function doCollaborationFeePenaltyChargeCheck(){
+        var collaborationPenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowCollaborationPenaltyCharges"]:checked').val()){
+            collaborationPenaltiesEnable = true;
+            $("#collaborationPenaltyIdentifierId").slideDown();
+        }else{
+            $("#collaborationPenaltyIdentifierId").hide();
+        }
+        return collaborationPenaltiesEnable;
+    }
+
+    function doTpiPenaltyChargeCheck(){
+        var tpiPenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowTPIPenaltyCharges"]:checked').val()){
+            tpiPenaltiesEnable = true;
+            $("#tpiPenaltyIdentifierId").slideDown();
+        }else{
+            $("#tpiPenaltyIdentifierId").hide();
+        }
+        return tpiPenaltiesEnable;
+    }
+
+    function doInsurervsInsurerPenaltyChargeCheck(){
+        var insurerVsInsurerPenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowInsurervsInsurerPenaltyCharges"]:checked').val()){
+            insurerVsInsurerPenaltiesEnable = true;
+            $("#insurervsInsurerPenaltyIdentifierId").slideDown();
+        }else{
+            $("#insurervsInsurerPenaltyIdentifierId").hide();
+        }
+        return insurerVsInsurerPenaltiesEnable;
+    }
+
+    function doManualInvoicePenaltyChargeCheck(){
+        var manualInvoicePenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowManualInvoicePenaltyCharges"]:checked').val()){
+            manualInvoicePenaltiesEnable = true;
+            $("#manualInvoicePenaltyIdentifierId").slideDown();
+        }else{
+            $("#manualInvoicePenaltyIdentifierId").hide();
+        }
+        return manualInvoicePenaltiesEnable;
+    }
 </script>
 
 <div class="sub-admin-tab-css">
@@ -870,29 +945,71 @@
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Penalty Charges</div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="allowGTAPenaltyCharges" value="allowGTAPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on GTA Invoices</b></label>
+                            <div class="chox-form-checkbox"><s:checkbox name="allowGTAPenaltyCharges" value="allowGTAPenaltyCharges" onclick="doGTAPenaltyChargeCheck()"/></div>
+                            <label class="chox-form-std-label"><b>Allow Penalty Charges on GTA Invoices</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue GTA invoices.</div>
+                            <div class="chox-form-checkboxitem" id="gtaPenaltyIdentifierId">
+                                <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowGTAAutoPenaltyCharges" value="allowGTAAutoPenaltyCharges"/></div>
+                                <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on GTA Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                            </div>
                             <s:if test="subscriberClaimsEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowSubscriberPenaltyCharges" value="allowSubscriberPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Subscriber Invoices</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowSubscriberPenaltyCharges" value="allowSubscriberPenaltyCharges" onclick="doSubscriberPenaltyChargeCheck()"/></div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on Subscriber Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Subscriber invoices.</div>
+                                <div class="chox-form-checkboxitem" id="subscriberPenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowSubscriberAutoPenaltyCharges" value="allowSubscriberAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Subscriber Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
                             <s:if test="fixedFeeClaimsEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowFixedFeePenaltyCharges" value="allowFixedFeePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Fixed Fee Invoices</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowFixedFeePenaltyCharges" value="allowFixedFeePenaltyCharges" onclick="doFixedFeePenaltyChargeCheck()" /></div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on Fixed Fee Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Fixed Fee invoices.</div>
+                                <div class="chox-form-checkboxitem" id="fixedFeePenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowFixedFeeAutoPenaltyCharges" value="allowFixedFeeAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Fixed Fee Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
                             <s:if test="collaborationProtocolClaimsEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowCollaborationProtocolPenaltyCharges" value="allowCollaborationProtocolPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowCollaborationProtocolPenaltyCharges" value="allowCollaborationProtocolPenaltyCharges" onclick="doCollaborationPenaltyChargeCheck()" /></div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Collaboration Protocol invoices.</div>
+                                <div class="chox-form-checkboxitem" id="collaborationPenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowCollaborationAutoPenaltyCharges" value="allowCollaborationAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Collaboration Protocol Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
                             <s:if test="tpiClaimsEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowTPIPenaltyCharges" value="allowTPIPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices (Automatic Penalty Charges Do Not Apply)</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowTPIPenaltyCharges" value="allowTPIPenaltyCharges" onclick="doTpiPenaltyChargeCheck()" /></div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue TPI invoices.</div>
+                                <div class="chox-form-checkboxitem" id="tpiPenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowTpiAutoPenaltyCharges" value="allowTpiAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on TPI Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
-                            <div class="chox-form-checkbox"><s:checkbox name="allowInsurervsInsurerPenaltyCharges" value="allowInsurervsInsurerPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer vs Insurer Invoices (Automatic Penalty Charges Do Not Apply)</b></label>
+                            <div class="chox-form-checkbox"><s:checkbox name="allowInsurervsInsurerPenaltyCharges" value="allowInsurervsInsurerPenaltyCharges" onclick="doInsurervsInsurerPenaltyChargeCheck()" /></div>
+                            <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer vs Insurer Invoices</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer vs Insurer invoices.</div>
+                            <div class="chox-form-checkboxitem" id="insurervsInsurerPenaltyIdentifierId">
+                                <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowInsurervsInsurerAutoPenaltyCharges" value="allowInsurervsInsurerAutoPenaltyCharges"/></div>
+                                <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer vs Insurer Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                            </div>
                             <s:if test="insurerUploadEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer Upload Invoices (Automatic Penalty Charges Do Not Apply)</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" onclick="doManualInvoicePenaltyChargeCheck()" /></div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer Upload Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer Upload invoices.</div>
+                                <div class="chox-form-checkboxitem" id="manualInvoicePenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowManualInvoiceAutoPenaltyCharges" value="allowManualInvoiceAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer Upload Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
                         </div>
                     </div>

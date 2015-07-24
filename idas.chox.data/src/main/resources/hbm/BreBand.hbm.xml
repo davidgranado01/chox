@@ -133,6 +133,13 @@
         <property column="allow_ins_vs_ins_penalty_charges" name="allowInsurervsInsurerPenaltyCharges"/>
         <property column="allow_manual_inv_penalty_charges" name="allowManualInvoicePenaltyCharges"/>
         <property column="allow_collaboration_penalty_charges" name="allowCollaborationProtocolPenaltyCharges"/>
+        <property column="allow_gta_penalty_charges_auto" name="allowGTAAutoPenaltyCharges"/>
+        <property column="allow_subscriber_penalty_charges_auto" name="allowSubscriberAutoPenaltyCharges"/>
+        <property column="allow_fixed_fee_penalty_charges_auto" name="allowFixedFeeAutoPenaltyCharges"/>
+        <property column="allow_tpi_penalty_charges_auto" name="allowTPIAutoPenaltyCharges"/>
+        <property column="allow_ins_vs_ins_penalty_charges_auto" name="allowInsurervsInsurerAutoPenaltyCharges"/>
+        <property column="allow_manual_inv_penalty_charges_auto" name="allowManualInvoiceAutoPenaltyCharges"/>
+        <property column="allow_collaboration_penalty_charges_auto" name="allowCollaborationProtocolAutoPenaltyCharges"/>
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.BrePenaltyBand" table="bre_penalty_band">
+    <cache usage="read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">bre_penalty_band_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <many-to-one class="idas.chox.core.model.BreBand" column="bre_band_id" name="breBand"/>
+    <property column="claim_type" name="claimType" not-null="true"/>
+    <property column="start_date" name="startDate" not-null="true"/>
+    <property column="hire_30_day" name="hire30Day" not-null="true"/>
+    <property column="hire_60_day" name="hire60Day" not-null="true"/>
+    <property column="hire_90_day" name="hire90Day" not-null="true"/>
+    <property column="hire_apply_90_day_rate" name="hireApply90DayRate" not-null="true"/>
+    <property column="hire_use_commercial" name="hireUseCommercial" not-null="true"/>
+    <property column="repair_30_day" name="repair30Day" not-null="true"/>
+    <property column="repair_60_day" name="repair60Day" not-null="true"/>
+    <property column="repair_90_day" name="repair90Day" not-null="true"/>
+    <property column="repair_apply_90_day_rate" name="repairApply90DayRate" not-null="true"/>
+    <property column="repair_use_commercial" name="repairUseCommercial" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
+</hibernate-mapping>

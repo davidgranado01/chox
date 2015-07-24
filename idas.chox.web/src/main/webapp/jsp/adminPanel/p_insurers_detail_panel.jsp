@@ -879,11 +879,11 @@
                                 </td>
                             </tr>
                         </table>
-                             <div class="chox-form-item" id="tpiIdentifierId">
-                                    <label class="chox-form-std-label1">Invoice Identification String (TPI)</label>
-                                    <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
-                                </div>
-                                <br/>
+                            <div class="chox-form-item" id="tpiIdentifierId">
+                                <label class="chox-form-std-label1">Invoice Identification String (TPI)</label>
+                                <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
+                            </div>
+                            <br/>
                         <fieldset class="x-fieldset">
                             <legend>Straight Through Invoice Processing (STP)</legend>
                             <table>

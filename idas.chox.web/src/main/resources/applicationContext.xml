@@ -79,6 +79,7 @@
                 <value>hbm/PenaltyCharge.hbm.xml</value>
                 <value>hbm/AttachmentFile.hbm.xml</value>
                 <value>hbm/BreRules.hbm.xml</value>
+                <value>hbm/BrePenaltyBand.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>
