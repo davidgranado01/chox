@@ -1214,6 +1214,9 @@
         <action name="getSelectedBreBandProtocolVehicleClassCeiling" class="idas.chox.web.actions.BreBandProtocolVehicleClassCeilingAction" method="getSelectedBreBandProtocolVehicleClassCeiling">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getSelectedBreBandPenaltyBand" class="idas.chox.web.actions.BreBandPenaltyBandAction" method="getSelectedBreBandPenaltyBand">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         
         <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="addNewVehicleClassCeiling">
             <result>/jsp/p_action_response_json_data.jsp</result>

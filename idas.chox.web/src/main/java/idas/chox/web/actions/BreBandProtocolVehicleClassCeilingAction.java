@@ -3,13 +3,15 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.annotation.Secured;
-
-
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.ProtocolVehicleClassCeiling;
 import idas.chox.core.model.VehicleClassCeiling;
@@ -17,8 +19,6 @@ import idas.chox.core.services.ProtocolVehicleClassCeilingService;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BreBandProtocolVehicleClassCeilingAction extends BaseAction implements ModelDriven<ProtocolVehicleClassCeiling>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(BreBandProtocolVehicleClassCeilingAction.class);

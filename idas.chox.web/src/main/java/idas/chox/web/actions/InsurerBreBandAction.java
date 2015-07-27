@@ -3,6 +3,7 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,13 +19,23 @@ import org.springframework.security.access.annotation.Secured;
 
 
 import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BrePenaltyBand;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.ProtocolVehicleClassCeiling;
+import idas.chox.core.services.BrePenaltyBandService;
+import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ProtocolVehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.BrePenaltyBandViewData;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 import org.apache.commons.lang3.SerializationUtils;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
@@ -36,9 +47,16 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private List<InsurerBreBandViewData> insurerBreBands;
     private AdminInsurerService adminInsurerService;
     private String protocolVehicleClassCeilingRecords;
+    private String penaltyBandRecords;
     private VehicleClassService vehicleClassService;
     private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
+    private BrePenaltyBandService brePenaltyBandService;
     private boolean asCopy;
+    private LookupService lookupService;
+
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
+    }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
@@ -52,6 +70,14 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setProtocolVehicleClassCeilingRecords(String protocolVehicleClassCeilingRecords) {
         this.protocolVehicleClassCeilingRecords = protocolVehicleClassCeilingRecords;
+    }
+
+    public String getPenaltyBandRecords() {
+        return penaltyBandRecords;
+    }
+
+    public void setPenaltyBandRecords(String penaltyBandRecords) {
+        this.penaltyBandRecords = penaltyBandRecords;
     }
 
     public String getJsonData() {
@@ -146,6 +172,11 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 for (ProtocolVehicleClassCeiling protocolVehicleClassCeiling : protocolVehicleClassCeilings) {
                     adminInsurerService.evict(protocolVehicleClassCeiling);
                 }
+                newModel.setBrePenaltyBands(null);
+                List<BrePenaltyBand> brePenaltyBands = model.getBrePenaltyBands();
+                for (BrePenaltyBand brePenaltyBand : brePenaltyBands) {
+                    adminInsurerService.evict(brePenaltyBand);
+                }
                 adminInsurerService.evict(model);
                 model = newModel;
             } else {
@@ -154,6 +185,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             ActionResponse response;
             if (asCopy || !protocolVehicleClassCeilingRecords.isEmpty()) {
                 updateProtocolVehicleClassCeiling(asCopy);
+            }
+            if (asCopy || !penaltyBandRecords.isEmpty()) {
+                updatePenaltyBands(asCopy);
             }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(Arrays.asList(model));
@@ -194,6 +228,49 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         }
     }
 
+    private void updatePenaltyBands(boolean asCopy) throws Exception {
+        List<BrePenaltyBandViewData> penalyBandViewDatas =
+                ((List<BrePenaltyBandViewData>) new Gson().fromJson(penaltyBandRecords, new TypeToken<List<BrePenaltyBandViewData>>() {}.getType()));
+        if (penalyBandViewDatas != null) {
+            for (BrePenaltyBandViewData penaltyBandViewData : penalyBandViewDatas) {
+                BrePenaltyBand bpb;
+                if (!asCopy && penaltyBandViewData.getId() > 0) {
+                    bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId());
+                } else if (asCopy || model.getId() == null || (bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId())) == null) {
+                    bpb = new BrePenaltyBand();
+                }
+                if (bpb != null) {
+                    if (penaltyBandViewData.isRemoved()) {
+                        if (model.getBrePenaltyBands()!= null) {
+                            model.getBrePenaltyBands().remove(bpb);
+                        }
+                    } else {
+                        bpb.setClaimType(ClaimType.values()[penaltyBandViewData.getClaimTypeId()]);
+                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            bpb.setStartDate(formatter.parse(penaltyBandViewData.getPenaltyBandStartDate()));
+                        } catch (ParseException ex) {
+                            LOG.error("Exception converting string date to date with '{}': {}", penaltyBandViewData.getPenaltyBandStartDate(), ex.getMessage());
+                            throw new Exception("Error converting Penalty Band Start Date");
+                        }
+                        bpb.setHire30Day(penaltyBandViewData.getHire30DayRate());
+                        bpb.setHire60Day(penaltyBandViewData.getHire60DayRate());
+                        bpb.setHire90Day(penaltyBandViewData.getHire90DayRate());
+                        bpb.setHireApply90DayRate(penaltyBandViewData.isHireApply90DayRate());
+                        bpb.setHireUseCommercial(penaltyBandViewData.isHireUseCommercial());
+                        bpb.setRepair30Day(penaltyBandViewData.getRepair30DayRate());
+                        bpb.setRepair60Day(penaltyBandViewData.getRepair60DayRate());
+                        bpb.setRepair90Day(penaltyBandViewData.getRepair90DayRate());
+                        bpb.setRepairApply90DayRate(penaltyBandViewData.isRepairApply90DayRate());
+                        bpb.setRepairUseCommercial(penaltyBandViewData.isRepairUseCommercial());
+                        bpb.setBreBand(model);
+                        model.addBrePenaltyBand(bpb);
+                    }
+                }
+            }
+        }
+    }
+
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String deleteInsurerBreBand() {
         try {
@@ -218,8 +295,15 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
+    public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
+        this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
+    }
+
+    public void setBrePenaltyBandService(BrePenaltyBandService brePenaltyBandService) {
+        this.brePenaltyBandService = brePenaltyBandService;
+    }
     // </editor-fold>
-    
+
     public boolean isSubscriberClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isAllowSubscriberClaims();
     }
@@ -246,9 +330,6 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         this.vehicleClassService = vehicleClassService;
     }
 
-    public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
-        this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
-    }
 
     public boolean getAsCopy() {
         return asCopy;
@@ -256,6 +337,11 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setAsCopy(boolean asCopy) {
         this.asCopy = asCopy;
+    }
+    public String getClaimTypesJsonString() {
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
+        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
+        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
     }
 }
 

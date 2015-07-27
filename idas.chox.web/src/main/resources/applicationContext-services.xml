@@ -326,6 +326,11 @@
     <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    
+    <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 
     <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>

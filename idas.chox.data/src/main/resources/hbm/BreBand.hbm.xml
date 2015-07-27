@@ -179,6 +179,10 @@
             <key column="bre_band_id"/>
             <one-to-many class="idas.chox.core.model.ProtocolVehicleClassCeiling"/>
         </bag>
+        <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="brePenaltyBands">
+            <key column="bre_band_id"/>
+            <one-to-many class="idas.chox.core.model.BrePenaltyBand"/>
+        </bag>
     
         <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
         

@@ -10,7 +10,8 @@
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <many-to-one class="idas.chox.core.model.BreBand" column="bre_band_id" name="breBand"/>
-    <property column="claim_type" name="claimType" not-null="true"/>
+    <property column="claim_type" name="claimType"
+        type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
     <property column="start_date" name="startDate" not-null="true"/>
     <property column="hire_30_day" name="hire30Day" not-null="true"/>
     <property column="hire_60_day" name="hire60Day" not-null="true"/>

@@ -4,9 +4,13 @@
 <script type="text/javascript">
 
     var protocolVehicleClassCeiling_gridviewStore;
+    var penaltyBand_gridviewStore;
     var protocolVehicleClassCeiling_gridviewGrid;
+    var penaltyBand_gridviewGrid;
     var protocolVehicleCeilingEditSelectionDlg;
-
+    var penaltyStartDateDatePicker;
+    var penaltyClaimTypesCombo;
+    
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -248,8 +252,146 @@
         });
 
         onProtocolVehicleClassPageRefresh();
+        
+        penaltyStartDateDatePicker = ui.unvalidatedDateField('startDate',getTodayDate(),'penaltyStartDateDiv');
 
+        // Add claim type drop-down menu
+        var penaltyClaimTypesJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
 
+        var penaltyClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+        var penaltyClaimTypesStore = new Ext.data.Store({
+            data : penaltyClaimTypes,
+            reader : penaltyClaimTypesJsonReader
+        });
+        penaltyClaimTypesCombo = new Ext.form.ComboBox({
+                store: penaltyClaimTypesStore,
+                renderTo: penaltyChargeClaimTypeDropDownDiv,
+                valueField : 'value',
+                id : 'penaltyClaimTypesComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '-- Please Select --',
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    blur: function () {
+                        if(this.getRawValue() === "") {
+                            this.clearValue(); this.reset();
+                        }
+                    },
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            e.preventDefault();
+                        }
+                }
+            }
+            });
+
+        var penaltyBand_JsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'claimTypeId'},
+                {name:'claimTypeName'},
+                {name:'penaltyBandStartDate'},
+                {name:'hire30DayRate'},
+                {name:'hire60DayRate'},
+                {name:'hire90DayRate'},
+                {name:'hireApply90DayRate'},
+                {name:'hireApply90DayRateDesc'},
+                {name:'hireUseCommercial'},
+                {name:'hireUseCommercialDesc'},
+                {name:'repair30DayRate'},
+                {name:'repair60DayRate'},
+                {name:'repair90DayRate'},
+                {name:'repairApply90DayRate'},
+                {name:'repairApply90DayRateDesc'},
+                {name:'repairUseCommercial'},
+                {name:'repairUseCommercialDesc'},
+                {name:'createdBy'},
+                {name:'createdDate'},
+                {name:'removed'}
+            ]
+        });
+
+        penaltyBand_gridviewStore = new choxDataStore({
+            removedList: [],
+            listeners: {
+                remove: function(store, record, index) {
+                    if(record.get("id")) { 
+                        // add removed record to an array if this is existing record.
+                        store.removedList.push(record);
+                    }
+                }, 
+                load : function(store, records, index){
+                            // if it is new bre band then mark all the PVCC recods as dirty(red flag).
+                            <s:if test="id == null">
+                                // Dirty flag can not be set to all fields to an existing record, so need to 
+                                // create and add new array of records and remove all the old records. 
+                                var addList = [];
+                                Ext.each(records,function(item){
+                                    item.set('id',null); 
+                                    item.markDirty(); 
+                                    addList.push(item);
+                                 });
+                                store.removeAll(true); 
+                                store.add(addList);
+                            </s:if>
+                }
+            },
+            pruneModifiedRecords : true, // to avoid sending newly added and removed record.
+            url: '/prv/p/getSelectedBreBandPenaltyBand.action', 
+            reader:penaltyBand_JsonReader
+        });
+
+        penaltyBand_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:penaltyBand_recordOnclickRemovePenaltyBand},
+            store: penaltyBand_gridviewStore,
+            renderTo:'penaltyBandViewGrid',
+            enableHdMenu:false,
+            enableColumnMove: false,
+            layout:'fit',
+            loadMask : true,
+            viewConfig:{forceFit:true},
+            columns: [
+                {header: "Claim Type", width: 200, dataIndex: 'claimTypeName', sortable: true, resizable: true,
+                    renderer:function(value,p,r){return "<b>"+value+"</b>"; }},
+                {header: "Start Date", width: 160, dataIndex: 'penaltyBandStartDate', sortable: true, resizable: true},
+                {header: "Hire 30 Day Rate", width: 100, dataIndex: 'hire30DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Hire 60 Day Rate", width: 100, dataIndex: 'hire60DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Hire 90 Day Rate", width: 100, dataIndex: 'hire90DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Hire Apply 90 Day Rate", width: 100, dataIndex: 'hireApply90DayRateDesc', sortable: true, resizable: true},
+                {header: "Hire Use commercial", width: 100, dataIndex: 'hireUseCommercialDesc', sortable: true, resizable: true},
+                {header: "Repair 30 Day Rate", width: 100, dataIndex: 'repair30DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Repair 60 Day Rate", width: 100, dataIndex: 'repair60DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Repair 90 Day Rate", width: 100, dataIndex: 'repair90DayRate', sortable: true, resizable: true,
+                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                {header: "Repair Apply 90 Day Rate", width: 100, dataIndex: 'repairApply90DayRateDesc', sortable: true, resizable: true},
+                {header: "Repair Use commercial", width: 100, dataIndex: 'repairUseCommercialDesc', sortable: true, resizable: true},
+                {header: "", width: 160, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
+            ],
+            height:200,
+            width: 670
+        });
+        onPenaltyChargeBandPageRefresh();
     });
     
     function createProtocolVehicleCeilingEditWindow() {
@@ -491,6 +633,7 @@
 
                     } else { // if this is existing bre band detail then
                         onProtocolVehicleClassPageRefresh();
+                        onPenaltyChargeBandPageRefresh();
                     }
 
                 } else {
@@ -518,6 +661,7 @@
     
         function submitBreBandDetailForm(asCopy){
                 var protocolVehicleClassCeilingRecords = [];
+                var penaltyBandRecords = [];
                 var i = 0;
                 $("#asCopy").val(asCopy);
 
@@ -527,16 +671,28 @@
                         protocolVehicleClassCeilingRecords[i] = item.data;
                         i++;
                     });
+                    this.penaltyBand_gridviewStore.each(function(item){
+                        penaltyBandRecords[i] = item.data;
+                        i++;
+                    });
                 } else {
                     // now add the removed records to the protocolVehicleClassCeilingRecords
                     Ext.each(this.protocolVehicleClassCeiling_gridviewStore.removedList,function(item){
                         protocolVehicleClassCeilingRecords[i] = item.data;
                         i++;
                     });
+                    Ext.each(this.penaltyBand_gridviewStore.removedList,function(item){
+                        penaltyBandRecords[i] = item.data;
+                        i++;
+                    });
                 
                     // add the updated/new records to the protocolVehicleClassCeilingRecords
                     Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(),function(item){
                         protocolVehicleClassCeilingRecords[i] = item.data;
+                        i++;
+                    });
+                    Ext.each(this.penaltyBand_gridviewStore.getModifiedRecords(),function(item){
+                        penaltyBandRecords[i] = item.data;
                         i++;
                     });
                 }
@@ -548,6 +704,14 @@
                    $('input[name=protocolVehicleClassCeilingRecords]').val(Ext.util.JSON.encode(protocolVehicleClassCeilingRecords));
                 } else { // If the input tag does not exists then create, set the value and append the element to the form.
                     var input = $("<input>").attr("name", "protocolVehicleClassCeilingRecords").attr('type', "hidden").val(Ext.util.JSON.encode(protocolVehicleClassCeilingRecords));
+                    $("form#formUpdateInsurerBreBandDetail").append($(input));
+                }
+                this.penaltyBand_gridviewStore.removedList = [];
+                // add the penalty grid records to the form dynamically. 
+                if ($('input[name=penaltyBandRecords]').length > 0 ) { // If the input tag already exists then just add the value. 
+                   $('input[name=penaltyBandRecords]').val(Ext.util.JSON.encode(penaltyBandRecords));
+                } else { // If the input tag does not exists then create, set the value and append the element to the form.
+                    var input = $("<input>").attr("name", "penaltyBandRecords").attr('type', "hidden").val(Ext.util.JSON.encode(penaltyBandRecords));
                     $("form#formUpdateInsurerBreBandDetail").append($(input));
                 }
                 
@@ -579,6 +743,16 @@
             </s:if>
             <s:else > // if it is new bre band then use insurer id to get the grid records from the insurer vehicle class ceiling.
                 protocolVehicleClassCeiling_gridviewStore.load({params: {"breBandId":-1, "insurerId":'<s:property value="insurerId" />'}});
+            </s:else>
+            
+        }
+
+        function penaltyBand_loadGridViewList() {
+            <s:if test="id != null">  // if it is existing bre band then use breband id to get the grid records.
+                penaltyBand_gridviewStore.load({params: {breBandId:'<s:property value="id" />'}});
+            </s:if>
+            <s:else > // if it is new bre band then use insurer id to get the grid records from the insurer vehicle class ceiling.
+                penaltyBand_gridviewStore.load({params: {"breBandId":-1, "insurerId":'<s:property value="insurerId" />'}});
             </s:else>
             
         }
@@ -651,6 +825,44 @@
             }
         }
         
+        function addPenaltyChargeBand() {
+            if (validatePenaltyBandForm()) {
+                // get the values from the form.
+                var claimTypeName = penaltyClaimTypesCombo.getRawValue();
+                var claimTypeId = penaltyClaimTypesCombo.getValue();
+                var startDate = $("#startDate").val();
+                var hire30DayRate = parseFloat($("#hire30Day").val()).toFixed(2);
+                var hire60DayRate = parseFloat($("#hire60Day").val()).toFixed(2);
+                var hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(2);
+                var hireApply90DayRate = $("#hireApply90DayRate").is(":checked");
+                var hireApply90DayRateDesc = hireApply90DayRate ? 'Yes' : 'No';
+                var hireUseCommercial =  $("#hireUseCommercial").is(":checked");
+                var hireUseCommercialDesc =  hireUseCommercial ? 'Yes' : 'No';
+                var repair30DayRate = parseFloat($("#repair30Day").val()).toFixed(2);
+                var repair60DayRate = parseFloat($("#repair60Day").val()).toFixed(2);
+                var repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(2);
+                var repairApply90DayRate = $("#repairApply90DayRate").is(":checked");
+                var repairApply90DayRateDesc = repairApply90DayRate ? 'Yes' : 'No';
+                var repairUseCommercial = $("#repairUseCommercial").is(":checked");
+                var repairUseCommercialDesc =  repairUseCommercial ? 'Yes' : 'No';
+                // create new record type, mark dirty and add it to the grid store.
+                var recordType = penaltyBand_gridviewGrid.getStore().recordType;
+                var newRecord = new recordType({'claimTypeId':claimTypeId, 'claimTypeName':claimTypeName, 'penaltyBandStartDate':startDate,
+                    'hire30DayRate':hire30DayRate, 'hire60DayRate':hire60DayRate, 'hire90DayRate':hire90DayRate, 'hireApply90DayRate':hireApply90DayRate, 'hireApply90DayRateDesc':hireApply90DayRateDesc, 'hireUseCommercial':hireUseCommercial, 'hireUseCommercialDesc':hireUseCommercialDesc,
+                    'repair30DayRate':repair30DayRate, 'repair60DayRate':repair60DayRate, 'repair90DayRate':repair90DayRate, 'repairApply90DayRate':repairApply90DayRate, 'repairApply90DayRateDesc':repairApply90DayRateDesc, 'repairUseCommercial':repairUseCommercial, 'repairUseCommercialDesc':repairUseCommercialDesc});
+                newRecord.markDirty();
+                newRecord.set('removed', 'false');
+                penaltyBand_gridviewGrid.getStore().insert(0,newRecord);
+                // reset the form details.
+                $("#hire30Day").val('');
+                $("#hire60Day").val('');
+                $("#hire90Day").val('');
+                $("#repair30Day").val('');
+                $("#repair60Day").val('');
+                $("#repair90Day").val('');
+            }
+        }
+        
         function validateProtocolVehicleClassCeilingForm(){
             var mesBox = $("#CDProtocolVehicleClassCeilingMessageBox");
             mesBox.empty();
@@ -659,7 +871,7 @@
             if ($("#vehicleClassId :selected").text() === "-- Please Select --") {
                 mesBox.append("You must select a 'Vehicle Class'\n<br/>").show();
                 validForm = false;
-            } 
+            }
             if ($.isNumeric($("#protocolHireNetCeiling").val())) {
                 if (parseFloat($("#protocolHireNetCeiling").val()).toFixed(2) < 0) {
                     mesBox.append("You must supply a value for 'Hire Net Ceiling'\n<br/>").show();
@@ -688,6 +900,95 @@
 
          }
         
+        function validatePenaltyBandForm(){
+            var mesBox = $("#CDPenaltyChargeMessageBox");
+            mesBox.empty();
+            var validForm = true;
+            
+            if ($("#penaltyClaimTypesComboId").val() === "-- Please Select --") {
+                mesBox.append("You must select a 'Claim Type'\n<br/>").show();
+                validForm = false;
+            }
+            
+            var startDate = $('#startDate').val();
+            if ( startDate == "" ){
+                mesBox.append("You must select a 'Penalty Start Date'\n<br/>").show();
+                validForm = false;
+            }else {
+                var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(startDate);
+                if(matches == null || matches.length != 4){
+                    mesBox.append("You must select a valid 'Penalty Start Date'\n<br/>").show();
+                    validForm = false;
+                }
+            }
+
+            if ($.isNumeric($("#hire30Day").val())) {
+                if (parseFloat($("#hire30Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Hire 30 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Hire 30 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if ($.isNumeric($("#hire60Day").val())) {
+                if (parseFloat($("#hire60Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Hire 60 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Hire 60 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if ($.isNumeric($("#hire90Day").val())) {
+                if (parseFloat($("#hire90Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Hire 90 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Hire 90 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if ($.isNumeric($("#repair30Day").val())) {
+                if (parseFloat($("#repair30Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Repair 30 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Repair 30 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if ($.isNumeric($("#repair60Day").val())) {
+                if (parseFloat($("#repair60Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Repair 60 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Repair 60 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if ($.isNumeric($("#repair90Day").val())) {
+                if (parseFloat($("#repair90Day").val()).toFixed(2) < 0) {
+                    mesBox.append("You must supply a value for 'Repair 90 Day Rate'\n<br/>").show();
+                    validForm = false;
+                }
+            } else {
+                mesBox.append("You must supply a numeric value for 'Repair 90 Day Rate'\n<br/>").show();
+                validForm = false;
+            }
+                        
+            if (validForm){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function validateEditProtocolVehicleClassCeilingForm(){
             var mesBox = $("#pvccMessageBox");
             mesBox.empty();
@@ -757,6 +1058,7 @@
                }
            }
        }
+
     function doGTAPenaltyChargeCheck(){
         var gtaPenaltiesEnable = false;
         if($('form#formUpdateInsurerBreBandDetail input[name="allowGTAPenaltyCharges"]:checked').val()){
@@ -833,6 +1135,36 @@
         }
         return manualInvoicePenaltiesEnable;
     }
+            
+    function onPenaltyChargeBandPageRefresh(){
+        // hide the edit form
+//        protocolVehicleCeilingEditSelectionDlg.hide();
+        // load the grid.
+        penaltyBand_loadGridViewList();
+        // reset the form.
+//        resetPVCCForm();
+    }
+        
+        function penaltyBand_recordOnclickRemovePenaltyBand(grid, rowIndex, columnIndex, e) {
+
+            var gridRecord = penaltyBand_gridviewGrid.getStore().getAt(rowIndex);
+
+            if (columnIndex === 12) {
+                
+                var penaltyBandId = gridRecord.get("id");
+                
+                if (penaltyBandId) {
+                    gridRecord.set('removed', 'true');
+                    gridRecord.markDirty();
+                } 
+                penaltyBand_gridviewGrid.getStore().remove(gridRecord);
+
+            } else if (columnIndex === 0) {
+//                showEditPenaltyBand(gridRecord);
+            }
+
+        }
+
 </script>
 
 <div class="sub-admin-tab-css">
@@ -1011,6 +1343,90 @@
                                     <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
                                 </div>
                             </s:if>
+                        </div>
+                        <div class="status-info">
+                            Penalty Charge Rate Bands for all claim types are managed here.
+                        </div>
+                        <div id="penaltyChargeGrid">
+                            <div class="grid-view-header">
+                                <div class="admin-bre-band-detail-section">
+                                                <div class="chox-form-item" >
+                                                    <label class="chox-form-std-label2">Claim Type<span class="mandatory">*</span></label>
+                                                    <div id="penaltyChargeClaimTypeDropDownDiv"></div>
+                                                </div>
+                                                <div class="chox-form-item" >
+                                                    <label class="chox-form-std-label2">Penalty Start Date<span class="mandatory">*</span></label>
+                                                    <div id="penaltyStartDateDiv"></div>
+                                                </div>
+                                     <table width="672px">
+                                       <tr>
+                                            <td align="right">
+                                                <label class="chox-form-std-label">Hire 30 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="hire30Day" style="width:50px"/>
+                                            </td>
+                                           <td align="right">
+                                                <label class="chox-form-std-label">Hire 60 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="hire60Day" style="width:50px"/>
+                                            </td>
+                                           <td align="right">
+                                                <label class="chox-form-std-label">Hire 90 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="hire90Day" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-checkboxitem">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="hireApply90DayRate"/></div>
+                                                    <label class="chox-form-std-label">Apply 90 Day Rate on Hire</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-checkboxitem">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="hireUseCommercial"/></div>
+                                                    <label class="chox-form-std-label">Use Commercial for 90 day Hire</label>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <label class="chox-form-std-label">Repair 30 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="repair30Day" style="width:50px"/>
+                                            </td>
+                                           <td align="right">
+                                                <label class="chox-form-std-label">Repair 60 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="repair60Day" style="width:50px"/>
+                                            </td>
+                                           <td align="right"
+                                                <label class="chox-form-std-label">Repair 90 Day Rate<span class="mandatory">*</span></label>
+                                                <input id="repair90Day" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-checkboxitem">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="repairApply90DayRate"/></div>
+                                                    <label class="chox-form-std-label">Apply 90 Day Rate on Repair</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-checkboxitem">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="repairUseCommercial"/></div>
+                                                    <label class="chox-form-std-label">Use Commercial for 90 day Repair</label>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan ="3" align="center">
+                                                <input type="button" value="Add New Penalty Charge Rate Band" onclick="addPenaltyChargeBand();"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div id="CDPenaltyChargeMessageBox" class="action-error-msg"></div>
+                                    <div id="penaltyBandViewGrid"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                             
