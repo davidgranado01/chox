@@ -7,7 +7,6 @@ ALTER TABLE bre_band ADD COLUMN allow_fixed_fee_penalty_charges_auto boolean not
 ALTER TABLE bre_band ADD COLUMN allow_collaboration_penalty_charges_auto boolean not null DEFAULT  true;
 ALTER TABLE bre_band ADD COLUMN allow_ins_vs_ins_penalty_charges_auto boolean not null DEFAULT  false;
 ALTER TABLE bre_band ADD COLUMN allow_tpi_penalty_charges_auto boolean not null DEFAULT  false;
-ALTER TABLE bre_band ADD COLUMN allow_manual_inv_penalty_charges_auto boolean not null DEFAULT  false;
 
 CREATE TABLE bre_penalty_band (
     id serial NOT NULL,
@@ -62,7 +61,7 @@ from bre_band;
 INSERT INTO bre_penalty_band(version, bre_band_id, start_date, claim_type, hire_30_day, hire_60_day, hire_90_day, hire_apply_90_day_rate,
                              hire_use_commercial, repair_30_day, repair_60_day, repair_90_day, repair_apply_90_day_rate,
                              repair_use_commercial, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, '1950-01-01', 7, 4.00, 8.00, 12.00, true, false, 4.00, 8.00, 12.00, true, false, 999, now(), 999, now()
+select 0, id, '1950-01-01', 7, 4.00, 8.00, 12.00, true, false, 0.00, 0.00, 0.00, true, false, 999, now(), 999, now()
 from bre_band;
 
 -- Fixed-Fee Rates
@@ -110,16 +109,16 @@ from bre_band;
 
 
 -- Manual Rates
-INSERT INTO bre_penalty_band(version, bre_band_id, start_date, claim_type, hire_30_day, hire_60_day, hire_90_day, hire_apply_90_day_rate,
-                             hire_use_commercial, repair_30_day, repair_60_day, repair_90_day, repair_apply_90_day_rate,
-                             repair_use_commercial, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, '1950-01-01', 10, 7.50, 15.00, 0.00, true, true, 2.50, 5.00, 0.00, false, false, 999, now(), 999, now()
-from bre_band;
-INSERT INTO bre_penalty_band(version, bre_band_id, start_date, claim_type, hire_30_day, hire_60_day, hire_90_day, hire_apply_90_day_rate,
-                             hire_use_commercial, repair_30_day, repair_60_day, repair_90_day, repair_apply_90_day_rate,
-                             repair_use_commercial, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, '2012-06-15', 10, 12.50, 20.00, 0.00, true, true, 2.50, 5.00, 0.00, false, false, 999, now(), 999, now()
-from bre_band;
+--INSERT INTO bre_penalty_band(version, bre_band_id, start_date, claim_type, hire_30_day, hire_60_day, hire_90_day, hire_apply_90_day_rate,
+--                             hire_use_commercial, repair_30_day, repair_60_day, repair_90_day, repair_apply_90_day_rate,
+--                             repair_use_commercial, created_by, created_date, last_modified_by, last_modified_date)
+--select 0, id, '1950-01-01', 10, 7.50, 15.00, 0.00, true, true, 2.50, 5.00, 0.00, false, false, 999, now(), 999, now()
+--from bre_band;
+--INSERT INTO bre_penalty_band(version, bre_band_id, start_date, claim_type, hire_30_day, hire_60_day, hire_90_day, hire_apply_90_day_rate,
+--                             hire_use_commercial, repair_30_day, repair_60_day, repair_90_day, repair_apply_90_day_rate,
+--                             repair_use_commercial, created_by, created_date, last_modified_by, last_modified_date)
+--select 0, id, '2012-06-15', 10, 12.50, 20.00, 0.00, true, true, 2.50, 5.00, 0.00, false, false, 999, now(), 999, now()
+--from bre_band;
 
 ----------------------
 -- End of 8.7.1

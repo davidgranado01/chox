@@ -2,7 +2,11 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -127,5 +131,168 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         this.repairUseCommercial = repairUseCommercial;
     }
 
+    public static List<BrePenaltyBand> getDefaults() {
+        List<BrePenaltyBand> result = new ArrayList<>(10);
     
+        // Create GTA Defaults
+        BrePenaltyBand band = new BrePenaltyBand();
+        band.claimType = ClaimType.GTA;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("7.50");
+        band.hire60Day = new BigDecimal("15.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.GTA;
+        band.startDate = DateHelper.parse("15/06/2012");
+        band.hire30Day = new BigDecimal("12.50");
+        band.hire60Day = new BigDecimal("20.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        // Create Subscriber Defaults
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.SUBSCRIBER;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("4.00");
+        band.hire60Day = new BigDecimal("8.00");
+        band.hire90Day = new BigDecimal("12.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = false;
+        band.repair30Day = new BigDecimal("0.00");
+        band.repair60Day = new BigDecimal("0.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = true;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        // Create Fixed-Fee Results
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.FIXED_FEE;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("5.00");
+        band.hire60Day = new BigDecimal("10.00");
+        band.hire90Day = new BigDecimal("15.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = false;
+        band.repair30Day = new BigDecimal("5.00");
+        band.repair60Day = new BigDecimal("10.00");
+        band.repair90Day = new BigDecimal("15.00");
+        band.repairApply90DayRate = true;
+        band.repairUseCommercial = false;
+        result.add(band);
+    
+        // Create Collaboration Protocol Defaults
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.COLLABORATION_PROTOCOL;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("7.50");
+        band.hire60Day = new BigDecimal("15.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.COLLABORATION_PROTOCOL;
+        band.startDate = DateHelper.parse("15/06/2012");
+        band.hire30Day = new BigDecimal("12.50");
+        band.hire60Day = new BigDecimal("20.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        // Create Insurer vs Insurer Defaults
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.INSURER_VS_INSURER;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("7.50");
+        band.hire60Day = new BigDecimal("15.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.INSURER_VS_INSURER;
+        band.startDate = DateHelper.parse("15/06/2012");
+        band.hire30Day = new BigDecimal("12.50");
+        band.hire60Day = new BigDecimal("20.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        // Create TPI Defaults
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.TPI;
+        band.startDate = DateHelper.parse("01/01/1950");
+        band.hire30Day = new BigDecimal("7.50");
+        band.hire60Day = new BigDecimal("15.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        band = new BrePenaltyBand();
+        band.claimType = ClaimType.TPI;
+        band.startDate = DateHelper.parse("15/06/2012");
+        band.hire30Day = new BigDecimal("12.50");
+        band.hire60Day = new BigDecimal("20.00");
+        band.hire90Day = new BigDecimal("0.00");
+        band.hireApply90DayRate = true;
+        band.hireUseCommercial = true;
+        band.repair30Day = new BigDecimal("2.50");
+        band.repair60Day = new BigDecimal("5.00");
+        band.repair90Day = new BigDecimal("0.00");
+        band.repairApply90DayRate = false;
+        band.repairUseCommercial = false;
+        result.add(band);
+        
+        // Create Manual Defaults
+        // - no defaults for manual invoices
+
+        return result;
+    }
 }

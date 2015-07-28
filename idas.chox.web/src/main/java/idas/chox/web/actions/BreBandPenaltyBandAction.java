@@ -13,7 +13,6 @@ import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BrePenaltyBandViewData;
 import idas.chox.core.model.BrePenaltyBand;
 import idas.chox.core.services.BrePenaltyBandService;
@@ -27,8 +26,7 @@ public class BreBandPenaltyBandAction extends BaseAction implements ModelDriven<
     private int penaltyBandId = -1;
     private String objectId;
     private BrePenaltyBand model;
-    private List<BrePenaltyBandViewData> brePenaltyBandViewData = new ArrayList<>();
-    private AdminInsurerService adminInsurerService;
+    private List<BrePenaltyBandViewData> brePenaltyBandViewData;;
     private BrePenaltyBandService brePenaltyBandService;
 
     public boolean getIsNew() {
@@ -85,6 +83,10 @@ public class BreBandPenaltyBandAction extends BaseAction implements ModelDriven<
         this.penaltyBandId = penaltyBandId;
     }
 
+    public void setBrePenaltyBandService(BrePenaltyBandService brePenaltyBandService) {
+        this.brePenaltyBandService = brePenaltyBandService;
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
@@ -92,17 +94,24 @@ public class BreBandPenaltyBandAction extends BaseAction implements ModelDriven<
 
         try {
             // get penalty Bands for the existing breband.
+            List<BrePenaltyBand> brePenaltyBands;
             if (breBandId != -1) {
-                List<BrePenaltyBand> brePenaltyBands = brePenaltyBandService.getBrePenaltyBands(breBandId);
-                for (BrePenaltyBand bpb : brePenaltyBands) {
-                    brePenaltyBandViewData.add(new BrePenaltyBandViewData(bpb));
-                }
+                brePenaltyBands = brePenaltyBandService.getBrePenaltyBands(breBandId);
             } else if (breBandId == -1 && insurerId > 0) { // if it is new breband?
-//                List<VehicleClassCeiling> vehicleClassCeilings = adminInsurerService.getVehicleClassCeilingByInsurer(this.insurerId);
-
-//                for (VehicleClassCeiling vcc : vehicleClassCeilings) {
-//                    vehicleClassCeilingViewData.add(new VehicleClassCeilingViewData(vcc));
-//                }
+                brePenaltyBands = BrePenaltyBand.getDefaults();
+            } else {
+                brePenaltyBands = new ArrayList<>(0);
+            }
+            brePenaltyBandViewData = new ArrayList<>(brePenaltyBands.size());
+            int id=0;
+            for (BrePenaltyBand bpb : brePenaltyBands) {
+                BrePenaltyBandViewData viewData = new BrePenaltyBandViewData(bpb);
+                if (breBandId == -1) {
+                    // We need unique ids when we have a new BRE Band, otherwise only one will be displayed in the grid
+                    // This id will null when the actual BrePenaltyBand is created for persistance
+                    viewData.setId(id++);
+                }
+                brePenaltyBandViewData.add(viewData);
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -110,17 +119,6 @@ public class BreBandPenaltyBandAction extends BaseAction implements ModelDriven<
         }
 
         return SUCCESS;
-    }
-
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
-
-    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
-        this.adminInsurerService = adminInsurerService;
-    }
-
-    public void setBrePenaltyBandService(BrePenaltyBandService brePenaltyBandService) {
-        this.brePenaltyBandService = brePenaltyBandService;
     }
 
     // </editor-fold>

@@ -35,7 +35,9 @@ public class BrePenaltyBandViewData {
     public BrePenaltyBandViewData(){}
 
     public BrePenaltyBandViewData(BrePenaltyBand object) {
-        this.id = object.getId();
+        if (object.getId() != null) {
+            this.id = object.getId();
+        }
         this.claimTypeId = object.getClaimType().getClaimTypeValue();
         this.claimTypeName = object.getClaimType().toString();
         this.penaltyBandStartDate = DateHelper.getLocalDateFormat().format(object.getStartDate());
@@ -53,8 +55,12 @@ public class BrePenaltyBandViewData {
         this.repairApply90DayRateDesc = repairApply90DayRate ? "Yes" : "No";
         this.repairUseCommercial = object.isRepairUseCommercial();
         this.repairUseCommercialDesc = repairUseCommercial ? "Yes" : "No";
-        this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
+        if (object.getCreatedBy() != null) {
+            this.createdBy = object.getCreatedBy().getDisplayName();
+        }
+        if (object.getCreatedDate() != null) {
+            this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
+        }
     }
 
     public int getId() {

@@ -333,10 +333,11 @@
                     if(record.get("id")) { 
                         // add removed record to an array if this is existing record.
                         store.removedList.push(record);
+                    }else{
                     }
                 }, 
                 load : function(store, records, index){
-                            // if it is new bre band then mark all the PVCC recods as dirty(red flag).
+                            // if it is new bre band then mark all the recods as dirty (shows red flag).
                             <s:if test="id == null">
                                 // Dirty flag can not be set to all fields to an existing record, so need to 
                                 // create and add new array of records and remove all the old records. 
@@ -346,7 +347,7 @@
                                     item.markDirty(); 
                                     addList.push(item);
                                  });
-                                store.removeAll(true); 
+                                store.removeAll(true);
                                 store.add(addList);
                             </s:if>
                 }
@@ -1124,17 +1125,6 @@
         }
         return insurerVsInsurerPenaltiesEnable;
     }
-
-    function doManualInvoicePenaltyChargeCheck(){
-        var manualInvoicePenaltiesEnable = false;
-        if($('form#formUpdateInsurerBreBandDetail input[name="allowManualInvoicePenaltyCharges"]:checked').val()){
-            manualInvoicePenaltiesEnable = true;
-            $("#manualInvoicePenaltyIdentifierId").slideDown();
-        }else{
-            $("#manualInvoicePenaltyIdentifierId").hide();
-        }
-        return manualInvoicePenaltiesEnable;
-    }
             
     function onPenaltyChargeBandPageRefresh(){
         // hide the edit form
@@ -1334,14 +1324,9 @@
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
                             </div>
                             <s:if test="insurerUploadEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" onclick="doManualInvoicePenaltyChargeCheck()" /></div>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" /></div>
                                 <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer Upload Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer Upload invoices.</div>
-                                <div class="chox-form-checkboxitem" id="manualInvoicePenaltyIdentifierId">
-                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowManualInvoiceAutoPenaltyCharges" value="allowManualInvoiceAutoPenaltyCharges"/></div>
-                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer Upload Invoices</b></label>
-                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
-                                </div>
                             </s:if>
                         </div>
                         <div class="status-info">
