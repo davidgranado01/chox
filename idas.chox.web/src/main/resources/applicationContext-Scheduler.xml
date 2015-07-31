@@ -107,7 +107,6 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
-        <property name="penaltyChargeService" ref="penaltyChargeService" />
     </bean>
     
     <bean id="ecdUpdateEmailJob" class="idas.chox.web.scheduler.ECDUpdateSchedulerJob">

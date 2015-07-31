@@ -475,7 +475,7 @@ public class Claim extends Entity implements Serializable {
 
     public void addComment(Comment comment) {
         if (comments == null) {
-            comments = new ArrayList<Comment>();
+            comments = new ArrayList<>();
         }
 
         comment.setClaim(this);
@@ -590,7 +590,6 @@ public class Claim extends Entity implements Serializable {
     protected void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
-    // </editor-fold>
 
     public ClaimType getClaimType() {
         return claimType;
@@ -684,4 +683,5 @@ public class Claim extends Entity implements Serializable {
             return managingRepairOriginal ? "(Yes)" : "(No)";
         }
     }
+    // </editor-fold>
 }

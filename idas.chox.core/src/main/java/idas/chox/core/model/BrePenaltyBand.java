@@ -56,7 +56,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHire30Day(BigDecimal hire30Day) {
-        this.hire30Day = hire30Day;
+        this.hire30Day = hire30Day.setScale(1);
     }
 
     public BigDecimal getHire60Day() {
@@ -64,7 +64,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHire60Day(BigDecimal hire60Day) {
-        this.hire60Day = hire60Day;
+        this.hire60Day = hire60Day.setScale(1);
     }
 
     public BigDecimal getHire90Day() {
@@ -72,7 +72,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHire90Day(BigDecimal hire90Day) {
-        this.hire90Day = hire90Day;
+        this.hire90Day = hire90Day.setScale(1);
     }
 
     public boolean isHireApply90DayRate() {
@@ -96,7 +96,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepair30Day(BigDecimal repair30Day) {
-        this.repair30Day = repair30Day;
+        this.repair30Day = repair30Day.setScale(1);
     }
 
     public BigDecimal getRepair60Day() {
@@ -104,7 +104,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepair60Day(BigDecimal repair60Day) {
-        this.repair60Day = repair60Day;
+        this.repair60Day = repair60Day.setScale(1);
     }
 
     public BigDecimal getRepair90Day() {
@@ -112,7 +112,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepair90Day(BigDecimal repair90Day) {
-        this.repair90Day = repair90Day;
+        this.repair90Day = repair90Day.setScale(1);
     }
 
     public boolean isRepairApply90DayRate() {
@@ -138,14 +138,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         BrePenaltyBand band = new BrePenaltyBand();
         band.claimType = ClaimType.GTA;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.50");
-        band.hire60Day = new BigDecimal("15.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("7.5");
+        band.hire60Day = new BigDecimal("15.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -153,14 +153,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.GTA;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.50");
-        band.hire60Day = new BigDecimal("20.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("12.5");
+        band.hire60Day = new BigDecimal("20.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -169,14 +169,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.SUBSCRIBER;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("4.00");
-        band.hire60Day = new BigDecimal("8.00");
-        band.hire90Day = new BigDecimal("12.00");
+        band.hire30Day = new BigDecimal("4.0");
+        band.hire60Day = new BigDecimal("8.0");
+        band.hire90Day = new BigDecimal("12.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = false;
-        band.repair30Day = new BigDecimal("0.00");
-        band.repair60Day = new BigDecimal("0.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("0.0");
+        band.repair60Day = new BigDecimal("0.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = true;
         band.repairUseCommercial = false;
         result.add(band);
@@ -185,14 +185,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.FIXED_FEE;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("5.00");
-        band.hire60Day = new BigDecimal("10.00");
-        band.hire90Day = new BigDecimal("15.00");
+        band.hire30Day = new BigDecimal("5.0");
+        band.hire60Day = new BigDecimal("10.0");
+        band.hire90Day = new BigDecimal("15.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = false;
-        band.repair30Day = new BigDecimal("5.00");
-        band.repair60Day = new BigDecimal("10.00");
-        band.repair90Day = new BigDecimal("15.00");
+        band.repair30Day = new BigDecimal("5.0");
+        band.repair60Day = new BigDecimal("10.0");
+        band.repair90Day = new BigDecimal("15.0");
         band.repairApply90DayRate = true;
         band.repairUseCommercial = false;
         result.add(band);
@@ -201,14 +201,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.COLLABORATION_PROTOCOL;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.50");
-        band.hire60Day = new BigDecimal("15.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("7.5");
+        band.hire60Day = new BigDecimal("15.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -216,14 +216,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.COLLABORATION_PROTOCOL;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.50");
-        band.hire60Day = new BigDecimal("20.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("12.5");
+        band.hire60Day = new BigDecimal("20.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -232,14 +232,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.INSURER_VS_INSURER;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.50");
-        band.hire60Day = new BigDecimal("15.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("7.5");
+        band.hire60Day = new BigDecimal("15.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -247,14 +247,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.INSURER_VS_INSURER;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.50");
-        band.hire60Day = new BigDecimal("20.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("12.5");
+        band.hire60Day = new BigDecimal("20.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -263,14 +263,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.TPI;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.50");
-        band.hire60Day = new BigDecimal("15.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("7.5");
+        band.hire60Day = new BigDecimal("15.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.0");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);
@@ -278,14 +278,14 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band = new BrePenaltyBand();
         band.claimType = ClaimType.TPI;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.50");
-        band.hire60Day = new BigDecimal("20.00");
-        band.hire90Day = new BigDecimal("0.00");
+        band.hire30Day = new BigDecimal("12.5");
+        band.hire60Day = new BigDecimal("20.0");
+        band.hire90Day = new BigDecimal("0.0");
         band.hireApply90DayRate = true;
         band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.50");
-        band.repair60Day = new BigDecimal("5.00");
-        band.repair90Day = new BigDecimal("0.00");
+        band.repair30Day = new BigDecimal("2.5");
+        band.repair60Day = new BigDecimal("5.0");
+        band.repair90Day = new BigDecimal("0.0");
         band.repairApply90DayRate = false;
         band.repairUseCommercial = false;
         result.add(band);

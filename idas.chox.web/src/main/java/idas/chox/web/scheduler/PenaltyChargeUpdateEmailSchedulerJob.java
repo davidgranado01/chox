@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.SecureDataService;
 
@@ -17,11 +16,6 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
     public static final String JOB_NAME = "PENALTY_UPDATE";
-    private PenaltyChargeService penaltyChargeService;
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
@@ -45,8 +39,8 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
                 String choReference = cells.get(0).trim();
 
                 if (choReference != null && !choReference.isEmpty()) {
-                    ((SecureDataService)penaltyChargeService).setSecurityInfoProvider(((SecureDataService)penaltyChargeService).getSecurityInfoProvider());
-                    boolean isUpdateSuccessful = penaltyChargeService.setPenaltyStartToDateInvoiced(choReference);
+                    ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
+                    boolean isUpdateSuccessful = claimService.setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
                         if (xlsDataMap.get(row).size() == 1) {

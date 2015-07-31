@@ -1,7 +1,5 @@
 package idas.chox.core.model;
 
-import static idas.chox.core.model.PenaltyCharge.PenaltyType;
-
 /**
  *
  * @author John
@@ -50,6 +48,48 @@ public enum ClaimType {
         return description;
     }
 
+    public static ClaimType getResolvedClaimType(ClaimType claimType) {
+        switch (claimType) {
+            case GTA:
+            case GTA_ORIGINAL_INVOICE:
+            case GTA_SUPPLEMENTARY_INVOICE:
+                return GTA;
+                
+            case TPI:
+                return TPI;
+            case INSURER_VS_INSURER:
+            case INSURER_VS_INSURER_ORIGINAL_INVOICE:
+            case INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE:
+                return INSURER_VS_INSURER;
+                
+            case SUBSCRIBER:
+            case SUBSCRIBER_ORIGINAL_INVOICE:
+            case SUBSCRIBER_SUPPLEMENTARY_INVOICE:
+                return SUBSCRIBER;
+                
+            case FIXED_FEE:
+            case FIXED_FEE_ORIGINAL_INVOICE:
+            case FIXED_FEE_SUPPLEMENTARY_INVOICE:
+                return FIXED_FEE;
+                
+            case INSURER_INVOICE:
+            case INSURER_CLAIM:
+            case INSURER_ORIGINAL_INVOICE:
+            case INSURER_SUPPLEMENTARY_INVOICE:
+            case INSURER_UPLOAD:
+                return INSURER_UPLOAD;
+                
+            case COLLABORATION_PROTOCOL:
+            case COLLABORATION_PROTOCOL_ORIGINAL_INVOICE:
+            case COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE:
+                return COLLABORATION_PROTOCOL;
+                
+            default:
+                return null;
+        }
+        
+    }
+
     public static boolean isGTA(ClaimType claimType) {
         return claimType == ClaimType.GTA
                 ||  claimType == ClaimType.GTA_ORIGINAL_INVOICE
@@ -58,10 +98,6 @@ public enum ClaimType {
 
     public static boolean isTPI(ClaimType claimType) {
         return claimType == ClaimType.TPI;
-    }
-
-    public static boolean allowAutomaticPenaltyCharges(ClaimType claimType) {
-        return isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType) || isCollaborationProtocol(claimType);
     }
 
     public static boolean isInsurerVsInsurer(ClaimType claimType) {
@@ -166,10 +202,4 @@ public enum ClaimType {
                 ||  claimType == ClaimType.INSURER_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE;
     }
-    
-    public static PenaltyType getPenaltyType(ClaimType claimType) {
-        return isSubscriber(claimType) ? PenaltyType.SUBSCRIBER : 
-                isFixedFee(claimType) ? PenaltyType.FIXEDFEE : PenaltyType.DEFAULT;
-    }
-
 }

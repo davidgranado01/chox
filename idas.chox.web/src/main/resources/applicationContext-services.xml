@@ -14,7 +14,9 @@
         <property name="userService" ref="userService"/>
         <property name="taskService" ref="taskService"/>
         <property name="breBandService" ref="breBandService"/>
+        <property name="brePenaltyBandService" ref="brePenaltyBandService"/>
         <property name="notificationService" ref="notificationService"/>
+        <property name="insurerDiscountService" ref="insurerDiscountService"/>
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
         <property name="eventService" ref="eventService" />
@@ -311,10 +313,6 @@
         <property name="insurerService" ref="insurerService"/>
     </bean>
     
-    <bean id="penaltyChargeService" class="idas.chox.data.services.PenaltyChargeServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
     <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

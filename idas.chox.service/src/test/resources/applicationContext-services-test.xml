@@ -305,10 +305,6 @@
         <property name="insurerService" ref="insurerService"/>
     </bean>
     
-    <bean id="penaltyChargeService" class="idas.chox.data.services.PenaltyChargeServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
     <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

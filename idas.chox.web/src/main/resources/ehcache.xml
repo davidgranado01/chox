@@ -347,9 +347,11 @@
         memoryStoreEvictionPolicy="LRU"
         />
     
-   <cache name ="idas.chox.core.model.PenaltyCharge"
-        maxElementsInMemory="15"
-        eternal="true"
+   <cache name ="idas.chox.core.model.BrePenaltyBand"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
         overflowToDisk="false"
         />
      

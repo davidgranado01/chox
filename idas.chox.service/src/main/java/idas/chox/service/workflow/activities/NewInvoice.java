@@ -95,6 +95,7 @@ public class NewInvoice extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+        claimService.updateLiabilityPayment(claim);
 
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {

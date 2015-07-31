@@ -76,7 +76,6 @@
                 <value>hbm/AdminFee.hbm.xml</value>
                 <value>hbm/SchedulerJob.hbm.xml</value>
                 <value>hbm/InsurerIntelligentNote.hbm.xml</value>
-                <value>hbm/PenaltyCharge.hbm.xml</value>
                 <value>hbm/AttachmentFile.hbm.xml</value>
                 <value>hbm/BreRules.hbm.xml</value>
                 <value>hbm/BrePenaltyBand.hbm.xml</value>

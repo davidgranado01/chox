@@ -305,7 +305,7 @@
                 {name:'id'},
                 {name:'claimTypeId'},
                 {name:'claimTypeName'},
-                {name:'penaltyBandStartDate'},
+                {name:'penaltyBandStartDate', type: 'date', dateFormat:'d/m/Y'},
                 {name:'hire30DayRate'},
                 {name:'hire60DayRate'},
                 {name:'hire90DayRate'},
@@ -321,7 +321,7 @@
                 {name:'repairUseCommercial'},
                 {name:'repairUseCommercialDesc'},
                 {name:'createdBy'},
-                {name:'createdDate'},
+                {name:'createdDate', type: 'date', dateFormat:'d/m/Y'},
                 {name:'removed'}
             ]
         });
@@ -369,21 +369,21 @@
             columns: [
                 {header: "Claim Type", width: 200, dataIndex: 'claimTypeName', sortable: true, resizable: true,
                     renderer:function(value,p,r){return "<b>"+value+"</b>"; }},
-                {header: "Start Date", width: 160, dataIndex: 'penaltyBandStartDate', sortable: true, resizable: true},
+                {header: "Start Date", width: 160, dataIndex: 'penaltyBandStartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y')},
                 {header: "Hire 30 Day Rate", width: 100, dataIndex: 'hire30DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Hire 60 Day Rate", width: 100, dataIndex: 'hire60DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Hire 90 Day Rate", width: 100, dataIndex: 'hire90DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Hire Apply 90 Day Rate", width: 100, dataIndex: 'hireApply90DayRateDesc', sortable: true, resizable: true},
                 {header: "Hire Use commercial", width: 100, dataIndex: 'hireUseCommercialDesc', sortable: true, resizable: true},
                 {header: "Repair 30 Day Rate", width: 100, dataIndex: 'repair30DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Repair 60 Day Rate", width: 100, dataIndex: 'repair60DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Repair 90 Day Rate", width: 100, dataIndex: 'repair90DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return '£' + (parseFloat(value).toFixed(2));}},
+                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
                 {header: "Repair Apply 90 Day Rate", width: 100, dataIndex: 'repairApply90DayRateDesc', sortable: true, resizable: true},
                 {header: "Repair Use commercial", width: 100, dataIndex: 'repairUseCommercialDesc', sortable: true, resizable: true},
                 {header: "", width: 160, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
@@ -831,17 +831,17 @@
                 // get the values from the form.
                 var claimTypeName = penaltyClaimTypesCombo.getRawValue();
                 var claimTypeId = penaltyClaimTypesCombo.getValue();
-                var startDate = $("#startDate").val();
-                var hire30DayRate = parseFloat($("#hire30Day").val()).toFixed(2);
-                var hire60DayRate = parseFloat($("#hire60Day").val()).toFixed(2);
-                var hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(2);
+                var startDate = penaltyStartDateDatePicker.getValue();
+                var hire30DayRate = parseFloat($("#hire30Day").val()).toFixed(1);
+                var hire60DayRate = parseFloat($("#hire60Day").val()).toFixed(1);
+                var hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(1);
                 var hireApply90DayRate = $("#hireApply90DayRate").is(":checked");
                 var hireApply90DayRateDesc = hireApply90DayRate ? 'Yes' : 'No';
                 var hireUseCommercial =  $("#hireUseCommercial").is(":checked");
                 var hireUseCommercialDesc =  hireUseCommercial ? 'Yes' : 'No';
-                var repair30DayRate = parseFloat($("#repair30Day").val()).toFixed(2);
-                var repair60DayRate = parseFloat($("#repair60Day").val()).toFixed(2);
-                var repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(2);
+                var repair30DayRate = parseFloat($("#repair30Day").val()).toFixed(1);
+                var repair60DayRate = parseFloat($("#repair60Day").val()).toFixed(1);
+                var repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(1);
                 var repairApply90DayRate = $("#repairApply90DayRate").is(":checked");
                 var repairApply90DayRateDesc = repairApply90DayRate ? 'Yes' : 'No';
                 var repairUseCommercial = $("#repairUseCommercial").is(":checked");
@@ -924,7 +924,7 @@
             }
 
             if ($.isNumeric($("#hire30Day").val())) {
-                if (parseFloat($("#hire30Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#hire30Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Hire 30 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
@@ -934,7 +934,7 @@
             }
                         
             if ($.isNumeric($("#hire60Day").val())) {
-                if (parseFloat($("#hire60Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#hire60Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Hire 60 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
@@ -944,7 +944,7 @@
             }
                         
             if ($.isNumeric($("#hire90Day").val())) {
-                if (parseFloat($("#hire90Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#hire90Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Hire 90 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
@@ -954,7 +954,7 @@
             }
                         
             if ($.isNumeric($("#repair30Day").val())) {
-                if (parseFloat($("#repair30Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#repair30Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Repair 30 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
@@ -964,7 +964,7 @@
             }
                         
             if ($.isNumeric($("#repair60Day").val())) {
-                if (parseFloat($("#repair60Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#repair60Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Repair 60 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
@@ -974,7 +974,7 @@
             }
                         
             if ($.isNumeric($("#repair90Day").val())) {
-                if (parseFloat($("#repair90Day").val()).toFixed(2) < 0) {
+                if (parseFloat($("#repair90Day").val()).toFixed(1) < 0) {
                     mesBox.append("You must supply a value for 'Repair 90 Day Rate'\n<br/>").show();
                     validForm = false;
                 }

@@ -11,7 +11,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.util.DateHelper;
 
@@ -20,14 +19,9 @@ public class RevertClaim extends BaseActivity {
     private BigDecimal amountReceived = null;
     private TaskService taskService;
     private BreBandService breBandService;
-    private PenaltyChargeService penaltyChargeService;
 
     public BigDecimal getAmountReceived() {
         return amountReceived;
-    }
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
     }
 
     public void setBreBandService(BreBandService breBandService) {
@@ -111,7 +105,7 @@ public class RevertClaim extends BaseActivity {
             }
 
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())
-                    && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+                    && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (

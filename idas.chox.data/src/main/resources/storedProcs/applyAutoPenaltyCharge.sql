@@ -10,10 +10,11 @@ DECLARE
 
     claimRecord RECORD;
     hireStartDate DATE;
-    hirepenalPerDsc VARCHAR;
     hirepenalPerVal NUMERIC(8,4);
-    repairpenalPerDsc VARCHAR;
     repairpenalPerVal NUMERIC(8,4);
+    penaltyAge INTEGER;
+    currentPenaltyBand INTEGER;
+    nextPenaltyBand INTEGER;
 
 BEGIN
 
@@ -25,16 +26,23 @@ FROM
      claim c,
      invoice i, 
      bre_band bre, 
-     bre_band_organisation breorg, 
+     bre_band_organisation breorg,
+     bre_penalty_band bpb,
      insurer ins, 
      chorganisation cho,
-     penalty_charge pc,
-     claim_type ct,
      vehicle_hire vc
 WHERE 
      c.invoice_id = i.id 
      AND (c.id = $2 OR $2 = -1)
-     AND c.claim_type NOT IN (3,4,5,6,10,14,15,16,17)
+     AND ( (c.claim_type in (0,1,2) and bre.allow_gta_penalty_charges =  true and  bre.allow_gta_penalty_charges_auto = true)
+        or (c.claim_type = 3 and bre.allow_tpi_penalty_charges =  true and bre.allow_tpi_penalty_charges_auto =  true)
+        or (c.claim_type in (4,5,6) and bre.allow_ins_vs_ins_penalty_charges =  true and bre.allow_ins_vs_ins_penalty_charges_auto =  true)
+        or (c.claim_type in (7,8,9) and bre.allow_subscriber_penalty_charges =  true and bre.allow_subscriber_penalty_charges_auto =  true)
+        or (c.claim_type in (11,12,13) and bre.allow_fixed_fee_penalty_charges =  true and bre.allow_fixed_fee_penalty_charges_auto =  true)
+        or (c.claim_type in (18,19,20) and bre.allow_collaboration_penalty_charges =  true and bre.allow_collaboration_penalty_charges_auto =  true)
+      )
+     AND bpb.bre_band_id = bre.id
+     AND bpb.claim_type = getMainClaimType(c.claim_type)
      AND c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
      AND c.insurer_id = ins.id 
      AND c.chorganisation_id = cho.id
@@ -42,62 +50,44 @@ WHERE
      AND breorg.chorganisation_id = cho.id
      AND breorg.band_id = bre.id
      AND vc.id = c.vehicle_hire_id
-     AND ((bre.allow_gta_penalty_charges = TRUE AND c.claim_type in (0,1,2))
-        OR (bre.allow_subscriber_penalty_charges = TRUE AND c.claim_type in (7,8,9))
-        OR (bre.allow_fixed_fee_penalty_charges = TRUE AND c.claim_type in (11,12,13))
-        OR (bre.allow_collaboration_penalty_charges = TRUE AND c.claim_type in (18,19,20)))
      AND c.auto_penalty_charges = TRUE
      AND cho.auto_penalty_charges = TRUE
-     AND ct.claim_type = c.claim_type
-     AND pc.penalty_type = ct.penalty_type
-     AND (pc.hire_penalty_percentage_dsc IS NOT NULL OR pc.repair_penalty_percentage_dsc IS NOT NULL)
-     AND (((vc.rental_start IS NULL) AND (pc.penalty_start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (pc.penalty_start_date <= vc.rental_start)))
-     AND i.penalty_band <= pc.penalty_start_age
+     AND (((vc.rental_start IS NULL) AND (bpb.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb.start_date <= vc.rental_start)))
      AND i.penalty_band > -1
-     AND (current_date - i.auto_penalty_start::DATE) >= pc.penalty_start_age 
-     -- Subquery to exclude the old entries
+     AND (current_date - i.auto_penalty_start::DATE) >= i.penalty_band
+     AND ((i.penalty_band = 90 and (bpb.hire_apply_90_day_rate=true or bpb.repair_apply_90_day_rate=true) and hire_use_commercial=false and repair_use_commercial=false) or  i.penalty_band != 90)
+     -- Subquery to exclude the older penalty band entries
      AND NOT EXISTS (SELECT 
-                          pc1.id 
+                          bpb1.id 
                      FROM 
-                          penalty_charge pc1
+                          bre_penalty_band bpb1
                      WHERE 
-                          pc1.penalty_type = pc.penalty_type
-                          AND (pc1.hire_penalty_percentage_dsc IS NOT NULL OR pc1.repair_penalty_percentage_dsc IS NOT NULL)
-                          AND pc1.penalty_start_age = pc.penalty_start_age 
-                          AND i.penalty_band <= pc1.penalty_start_age
-                          AND (((vc.rental_start IS NULL) AND (pc1.penalty_start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (pc1.penalty_start_date <= vc.rental_start)))
-                          AND pc1.penalty_start_date > pc.penalty_start_date)
-     -- SUBQUERY-2 to get 'Penalty Charge' using 'Penalty Age' 
-     AND NOT EXISTS (SELECT 
-                          pc2.id 
-                     FROM 
-                          penalty_charge pc2 
-                     WHERE 
-                          pc2.penalty_type = pc.penalty_type
-                          AND (pc2.hire_penalty_percentage_dsc IS NOT NULL OR pc2.repair_penalty_percentage_dsc IS NOT NULL)
-                          AND i.penalty_band <= pc2.penalty_start_age
-                          AND pc2.penalty_start_age > pc.penalty_start_age 
-                          AND pc2.penalty_start_age <= (CURRENT_DATE - i.auto_penalty_start::DATE))
-    ORDER BY pc.penalty_start_age ASC
-
+                          bpb1.claim_type = bpb.claim_type
+                          AND bpb1.bre_band_id = bpb.bre_band_id
+                          AND (((vc.rental_start IS NULL) AND (bpb1.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb1.start_date <= vc.rental_start)))
+                          AND bpb1.start_date > bpb.start_date)
 LOOP
 
+penaltyAge = current_date - claimRecord.auto_penalty_start::DATE;
+currentPenaltyBand = CASE WHEN penaltyAge >= 30 and penaltyAge < 60 then 30 ELSE
+                    CASE WHEN penaltyAge >= 60 and penaltyAge < 90 then 60 ELSE 90 END END;
+nextPenaltyBand = CASE WHEN penaltyAge >= 30 and penaltyAge < 60 then 60 ELSE
+                    CASE WHEN penaltyAge >= 60 and penaltyAge < 90 then 90 ELSE -1 END END;
 hireStartDate = CASE WHEN claimRecord.rental_start is not null then claimRecord.rental_start else claimRecord.date_invoiced END;
-hirepenalPerDsc = claimRecord.hire_penalty_percentage_dsc;
-hirepenalPerVal = claimRecord.hire_penalty_percentage_val/100;
+hirepenalPerVal = CASE WHEN currentPenaltyBand = 30 then claimRecord.hire_30_day/100.0 ELSE
+                    CASE WHEN currentPenaltyBand = 60 then claimRecord.hire_60_day/100.0 ELSE
+                        CASE WHEN currentPenaltyBand = 90 then claimRecord.hire_90_day/100.0 ELSE 0.0 END END END;
+repairpenalPerVal = CASE WHEN currentPenaltyBand = 30 then claimRecord.repair_30_day/100.0 ELSE
+                    CASE WHEN currentPenaltyBand = 60 then claimRecord.repair_60_day/100.0 ELSE
+                        CASE WHEN currentPenaltyBand = 90 then claimRecord.repair_90_day/100.0 ELSE 0.0 END END END;
 
-repairpenalPerDsc = claimRecord.repair_penalty_percentage_dsc;
-repairpenalPerVal = claimRecord.repair_penalty_percentage_val/100;
-
-IF ((claimRecord.penalty_start_age < 90) OR (claimRecord.penalty_type = 'SUBSCRIBER') OR (claimRecord.penalty_type = 'FIXEDFEE')) THEN
-
-    RAISE NOTICE 'invoice > % days : choRef %    hireStartDate=%    hirepenalPer=%    repairpenalPer=%',claimRecord.penalty_start_age, claimRecord.cho_reference, hireStartDate, hirepenalPerDsc, repairpenalPerDsc;
+RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepenalPer=%    repairpenalPer=%', penaltyAge, currentPenaltyBand, claimRecord.cho_reference, hireStartDate, hirepenalPerVal*100.0::numeric(4,1), repairpenalPerVal*100.0::numeric(4,1);
     
 
     UPDATE 
       invoice  
     SET 
-      penalty_band = (CASE WHEN (pc1.penalty_start_age = claimRecord.penalty_start_age AND ((claimRecord.penalty_type = 'SUBSCRIBER') OR (claimRecord.penalty_type = 'FIXEDFEE'))) THEN -1 ELSE pc1.penalty_start_age END),
+      penalty_band = nextPenaltyBand,
       hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
       repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
       full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
@@ -109,28 +99,14 @@ IF ((claimRecord.penalty_start_age < 90) OR (claimRecord.penalty_type = 'SUBSCRI
                            END),
       hire_penalty_charge = (hire_gross * hirepenalPerVal)::NUMERIC(8,2),
       repair_penalty_charge = (repair_gross * repairpenalPerVal)::NUMERIC(8,2),
-      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPerDsc ELSE null END),
-      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPerDsc ELSE null END),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPerVal*100::numeric(4,1) || '%' ELSE null END),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPerVal*100::numeric(4,1) || '%' ELSE null END),
       total_penalty_charge = ((hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
       last_modified_by = $1,
       last_modified_date = now(),
       version = version + 1
-   FROM
-      penalty_charge pc1, 
-      penalty_charge pc2
    WHERE
-     pc1.penalty_type = claimRecord.penalty_type
-     AND pc2.penalty_type = claimRecord.penalty_type
-     AND pc1.hire_penalty_percentage_dsc IS NOT NULL
-     AND pc2.hire_penalty_percentage_dsc IS NOT NULL
-     AND pc1.penalty_start_date <= hireStartDate
-     AND pc2.penalty_start_date <= hireStartDate
-     AND (pc1.penalty_start_age > claimRecord.penalty_start_age OR pc1.id = pc2.id) 
-     AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_date <= hireStartDate AND pc3.penalty_start_age = pc1.penalty_start_age AND pc3.penalty_start_date > pc1.penalty_start_date)
-     AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_date <= hireStartDate AND pc3.penalty_start_age = pc2.penalty_start_age AND pc3.penalty_start_date > pc2.penalty_start_date)
-     AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND (pc3.penalty_start_age > claimRecord.penalty_start_age OR pc3.id = pc2.id) AND pc3.penalty_start_age < pc1.penalty_start_age)
-     AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_age > pc2.penalty_start_age)
-     AND claimRecord.invoice_id = invoice.id;
+     claimRecord.invoice_id = invoice.id;
 
  -- Insurer Discount will be applied to the claim
 
@@ -195,7 +171,7 @@ IF ((claimRecord.penalty_start_age < 90) OR (claimRecord.penalty_type = 'SUBSCRI
       now() + interval '0.1 sec',
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPerVal) + (i.repair_gross * repairpenalPerVal))::NUMERIC(10,2) 
-                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' || claimRecord.penalty_start_age || ' days.', 
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' || currentPenaltyBand || ' days.', 
      0
    FROM 
      invoice i
@@ -288,46 +264,6 @@ IF ((claimRecord.penalty_start_age < 90) OR (claimRecord.penalty_type = 'SUBSCRI
    WHERE
       claimRecord.id = c.id;
  
-ELSE -- Invoice aged more than 90 days and not one of (SUBSCRIBER, FIXEDFEE) 'PenaltyType'.
-
-  RAISE NOTICE 'invoice > % days : choRef %    hireStartDate=%    hirepenalPer=%    repairpenalPer=%',claimRecord.penalty_start_age, claimRecord.cho_reference, hireStartDate, hirepenalPerDsc, repairpenalPerDsc;
-   
-   UPDATE 
-      invoice  
-   SET 
-      penalty_band = pc1.penalty_start_age,
-      last_modified_by = $1,
-      last_modified_date = now(),
-      version = version + 1
-   FROM
-      penalty_charge pc1, 
-      penalty_charge pc2
-   WHERE
-      pc1.penalty_type = claimRecord.penalty_type
-      AND pc2.penalty_type = claimRecord.penalty_type
-      AND pc1.hire_penalty_percentage_dsc IS NOT NULL
-      AND pc2.hire_penalty_percentage_dsc IS NOT NULL
-      AND pc1.penalty_start_date <= hireStartDate
-      AND pc2.penalty_start_date <= hireStartDate
-      AND (pc1.penalty_start_age > claimRecord.penalty_start_age OR pc1.id = pc2.id) 
-      AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_date <= hireStartDate AND pc3.penalty_start_age = pc1.penalty_start_age AND pc3.penalty_start_date > pc1.penalty_start_date)
-      AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_date <= hireStartDate AND pc3.penalty_start_age = pc2.penalty_start_age AND pc3.penalty_start_date > pc2.penalty_start_date)
-      AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND (pc3.penalty_start_age > claimRecord.penalty_start_age OR pc3.id = pc2.id) AND pc3.penalty_start_age < pc1.penalty_start_age)
-      AND NOT EXISTS (SELECT pc3.id FROM penalty_charge pc3 WHERE pc3.penalty_type = claimRecord.penalty_type AND pc3.hire_penalty_percentage_dsc IS NOT NULL AND pc3.penalty_start_age > pc2.penalty_start_age)
-      AND claimRecord.invoice_id = invoice.id;
-
-
-    UPDATE claim  
-    SET 
-      auto_penalty_charges = false,
-      last_modified_by = $1,
-      last_modified_date = now(),
-      version = version + 1
-    WHERE
-      claimRecord.id = claim.id; 
-
-END IF;
-
 END LOOP;
 
 RETURN TRUE;
@@ -335,4 +271,5 @@ RETURN TRUE;
 END;
 $BODY$
   LANGUAGE plpgsql;
-  GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
+
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;

@@ -11,18 +11,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 
 public class PaymentNotReceived extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(PaymentNotReceived.class);
     private BigDecimal amountReceived = null;
     private BreBandService breBandService;
-    private PenaltyChargeService penaltyChargeService;
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
@@ -70,7 +64,7 @@ public class PaymentNotReceived extends BaseActivity {
             }
 
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())
-                    && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+                    && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (

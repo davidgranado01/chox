@@ -26,7 +26,6 @@ import idas.chox.core.model.InsurerDiscountType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.util.DateHelper;
@@ -40,11 +39,6 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDiscountServiceImpl.class);
     private ChorganisationService chorganisationService;
     private InsurerService insurerService;
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
@@ -95,7 +89,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     @Override
     public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId) {
 
-        List<InsurerDiscount> list = new ArrayList<InsurerDiscount>();
+        List<InsurerDiscount> list = new ArrayList<>();
 
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(InsurerDiscount.class);
@@ -388,7 +382,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 
                 if (canAddComment && user != null && totalGrossInsurerDiscountAmount.compareTo(inv.getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1))) != 0 
                         && totalGrossInsurerDiscountAmount.compareTo(BigDecimal.ZERO) == 1) {
-                    addInsurerDiscountComment(claim, totalGrossInsurerDiscountAmount, totalGrossInsurerDiscountPercentage, InsurerDiscountType.TOTAL.toString().toString(), user);
+                    addInsurerDiscountComment(claim, totalGrossInsurerDiscountAmount, totalGrossInsurerDiscountPercentage, InsurerDiscountType.TOTAL.toString(), user);
                 } else {
                     LOG.debug("Comment have not been added to totalGrossInsurerDiscountAmount");
                 }
@@ -408,7 +402,6 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             LOG.debug("full total to pay before insurer discount is {}.", inv.getFullTotalToPay());
             LOG.debug("total to pay before insurer discount is {}.", inv.getTotalToPay());
             inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getInsurerDiscount()).subtract(insurerDiscountAmount));
-            claimService.updateLiabilityPayment(claim);
             inv.setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
             LOG.debug("full total to pay after insurer discount applied is {}.", inv.getFullTotalToPay());
             LOG.debug("total to pay after insurer discount is {}.", inv.getTotalToPay());

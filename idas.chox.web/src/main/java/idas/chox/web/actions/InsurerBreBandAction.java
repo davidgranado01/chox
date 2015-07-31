@@ -244,9 +244,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                         }
                     } else {
                         bpb.setClaimType(ClaimType.values()[penaltyBandViewData.getClaimTypeId()]);
-                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                         try {
-                            bpb.setStartDate(formatter.parse(penaltyBandViewData.getPenaltyBandStartDate()));
+                            bpb.setStartDate(formatter.parse((penaltyBandViewData.getPenaltyBandStartDate()).replace('T', ' ')));
                         } catch (ParseException ex) {
                             LOG.error("Exception converting string date to date with '{}': {}", penaltyBandViewData.getPenaltyBandStartDate(), ex.getMessage());
                             throw new Exception("Error converting Penalty Band Start Date");

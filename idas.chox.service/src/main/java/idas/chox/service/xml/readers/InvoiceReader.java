@@ -98,7 +98,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getDateFromNode(element, "date-invoiced"));
-        invoice.setPenaltyBand(getBordereauReaderContext().getPenaltyChargeService().getFirstPenaltyBand(claimResult.getClaim()));
+        invoice.setPenaltyBand(30);
         invoice.setHirePenaltyCharge(BigDecimal.ZERO);
         invoice.setRepairPenaltyCharge(BigDecimal.ZERO);
         invoice.setTotalPenaltyCharge(BigDecimal.ZERO);

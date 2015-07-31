@@ -7,23 +7,17 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 
 public class ReopenClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ReopenClaim.class);
     private TaskService taskService;
-    private PenaltyChargeService penaltyChargeService;
     private BreBandService breBandService;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }
     
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
-
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
@@ -46,7 +40,7 @@ public class ReopenClaim extends BaseActivity {
             }
                         
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) 
-                    && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+                    && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
                             claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
                             || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO) || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS)

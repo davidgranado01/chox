@@ -29,9 +29,9 @@ import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BrePenaltyBand;
 import idas.chox.core.model.BreRules;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -49,7 +49,6 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
-import idas.chox.core.model.PenaltyCharge;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
@@ -59,12 +58,12 @@ import idas.chox.core.model.Witness;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.BrePenaltyBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.NotificationService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
@@ -149,7 +148,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private UserService userService;
     private AuditTrailService auditTrailService;
     private ReasonOfRejectionService reasonOfRejectionService;
-    private PenaltyChargeService penaltyChargeService;
     private String hirePenaltyPercentage;
     private String repairPenaltyPercentage;
     private BigDecimal interimPaymentMade;
@@ -167,15 +165,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String finalReviewReason;
     private ActivityEventGenerator activityEventGenerator;
     private String customerClaimNumber;
+    private BrePenaltyBandService brePenaltyBandService;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
-    }
-    
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
     }
     
     public void setNotificationService(NotificationService notificationService) {
@@ -200,6 +194,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
+    }
+
+    public void setBrePenaltyBandService(BrePenaltyBandService brePenaltyBandService) {
+        this.brePenaltyBandService = brePenaltyBandService;
     }
 
     public void setClaimService(ClaimService claimService) {
@@ -508,6 +506,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (getModelIdFromSession(Claim.class) != null) {
                 claim = claimService.getClaim(getModelIdFromSession(Claim.class));
                 id = claim.getId();
+                claimVersion = claim.getVersion();
                 LOG.debug("No claim id provided - retrieved from session: {}", id);
             } else if (LOG.isDebugEnabled()) {
                 LOG.debug("No claim id provided and no claim in session.");
@@ -519,6 +518,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.error("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
+        // Make sure we have a BRE Band
+        if (claim.getBreBand() == null) {
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        }
+
         LOG.trace("Claim retrieved in prepare() with id={}", id);
         addModelToSession(Arrays.asList(claim));
     }
@@ -689,7 +694,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String doApplyPenaltyCharge() {
 
-        Map resultMap = penaltyChargeService.applyPenaltyCharge(claim, isRemovePenaltyAlert, hirePenaltyChargeAmount,
+        Map resultMap = claimService.applyPenaltyCharge(claim, isRemovePenaltyAlert, hirePenaltyChargeAmount,
                 hirePenaltyPercentage, repairPenaltyChargeAmount, repairPenaltyPercentage);
 
         if (resultMap.containsKey("error")) {
@@ -1129,7 +1134,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CONTROL">
     public boolean getIsShowPenaltyChargeAlert() {
-        return penaltyChargeService.canShowPenaltyChargeAlert(claim, getIsCHO());
+        return claimService.canShowPenaltyChargeAlert(claim, getIsCHO());
     }
 
     public TabAccessibility getTabAccessibility() {
@@ -1382,7 +1387,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             * not have to be over say 30 days in order to be able
                             * to apply the penalty charges
                             */
-                            if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                            if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= 30 && !ClaimType.isInsurerUpload(claim.getClaimType())) {
                                 accessRight = 0;
                             }
                             // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
@@ -1390,7 +1395,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         && (!claim.isAutoPenaltyChargeEnabled()
-                                        || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim))))
+                                        || claimService.calculateCurrentPenaltyBand(claim) >= 90)))
                                         && days > invoice.getPenaltyBand()) {
                                     accessRight = 0;
                                 }
@@ -2642,16 +2647,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getRepairPenaltyPercentageJsonString() {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
-        List<PenaltyCharge> repairPenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.REPAIR);
-        List<LookupItem> luItems = new ArrayList<>(repairPenaltyCharges.size());
-        for (PenaltyCharge repairPenaltyPercentageEnum : repairPenaltyCharges) {
-            // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
-            String perdec = new StringBuilder()
-                    .append(repairPenaltyPercentageEnum.getPenaltyStartAge())
-                    .append(" days - ")
-                    .append(repairPenaltyPercentageEnum.getRepairPenaltyPercentageDsc())
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        List<LookupItem> luItems = new ArrayList<>(3);
+        // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
+        String perdec = new StringBuilder()
+                    .append("30 days - ")
+                    .append(brePenaltyBand.getRepair30Day().toString()).append("%")
                     .toString();
-            luItems.add(new LookupItem(perdec, repairPenaltyPercentageEnum.getRepairPenaltyPercentageDsc()));
+        luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair30Day().toString()));
+        perdec = new StringBuilder()
+                    .append("60 days - ")
+                    .append(brePenaltyBand.getRepair60Day().toString()).append("%")
+                    .toString();
+        luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair60Day().toString()));
+        if (brePenaltyBand.isRepairApply90DayRate()) {
+            if (brePenaltyBand.isRepairUseCommercial()) {
+                luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
+            } else {
+                perdec = new StringBuilder()
+                    .append("90 days - ")
+                    .append(brePenaltyBand.getRepair90Day().toString()).append("%")
+                    .toString();
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair90Day().toString()));
+            }
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
@@ -2659,16 +2677,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getHirePenaltyPercentageJsonString() {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
-        List<PenaltyCharge> hirePenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.HIRE);
-        List<LookupItem> luItems = new ArrayList<>(hirePenaltyCharges.size());
-        for (PenaltyCharge hirePenaltyPercentageEnum : hirePenaltyCharges) {
-            // Append Age to Hire Penalty Percentage Desc eg. (30 days - 7.5%) 
-            String perdec = new StringBuilder()
-                    .append(hirePenaltyPercentageEnum.getPenaltyStartAge())
-                    .append(" days - ")
-                    .append(hirePenaltyPercentageEnum.getHirePenaltyPercentageDsc())
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        List<LookupItem> luItems = new ArrayList<>(3);
+        // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
+        String perdec = new StringBuilder()
+                    .append("30 days - ")
+                    .append(brePenaltyBand.getHire30Day().toString()).append("%")
                     .toString();
-            luItems.add(new LookupItem(perdec, hirePenaltyPercentageEnum.getHirePenaltyPercentageDsc()));
+        luItems.add(new LookupItem(perdec, brePenaltyBand.getHire30Day().toString()));
+        perdec = new StringBuilder()
+                    .append("60 days - ")
+                    .append(brePenaltyBand.getHire60Day().toString()).append("%")
+                    .toString();
+        luItems.add(new LookupItem(perdec, brePenaltyBand.getHire60Day().toString()));
+        if (brePenaltyBand.isHireApply90DayRate()) {
+            if (brePenaltyBand.isHireUseCommercial()) {
+                luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
+            } else {
+                perdec = new StringBuilder()
+                    .append("90 days - ")
+                    .append(brePenaltyBand.getHire90Day().toString()).append("%")
+                    .toString();
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getHire90Day().toString()));
+            }
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
@@ -2676,37 +2707,78 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getCalculatedHirePenaltyPercentage() {
         if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getHirePenaltyPercentage();
-            return (percentage != null && !percentage.isEmpty()) ? percentage : "0%";
+            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
         }
-        return penaltyChargeService.getPenaltyPercentageDsc(claim, PenaltyName.HIRE);
+        Invoice inv = claim.getInvoice();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        
+        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+            int dateDiff = inv.getInvoicedDays();
+            
+            if (dateDiff <= 30) {
+                return "0.0";
+            } else if (dateDiff <=60) {
+                return brePenaltyBand.getHire30Day().toString();
+            } else if (dateDiff <=90) {
+                return brePenaltyBand.getHire60Day().toString();
+            } else if (dateDiff > 90 && brePenaltyBand.isHireApply90DayRate() && !brePenaltyBand.isHireUseCommercial()) {
+                return brePenaltyBand.getHire90Day().toString();
+            } else if (dateDiff > 90 && brePenaltyBand.isHireApply90DayRate() && brePenaltyBand.isHireUseCommercial()) {
+                return "Commercial";
+            }
+        }
+        return "0.0";
     }
+
 
     public String getCalculatedRepairPenaltyPercentage() {
         if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getRepairPenaltyPercentage();
-            return (percentage != null && !percentage.isEmpty()) ? percentage : "0%";
+            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
         }
-        return penaltyChargeService.getPenaltyPercentageDsc(claim, PenaltyName.REPAIR);
+        Invoice inv = claim.getInvoice();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        
+        if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+            int dateDiff = inv.getInvoicedDays();
+            
+            if (dateDiff <= 30) {
+                return "0.0";
+            } else if (dateDiff <=60) {
+                return brePenaltyBand.getRepair30Day().toString();
+            } else if (dateDiff <=90) {
+                return brePenaltyBand.getRepair60Day().toString();
+            } else if (dateDiff > 90 && brePenaltyBand.isRepairApply90DayRate() && !brePenaltyBand.isRepairUseCommercial()) {
+                return brePenaltyBand.getHire90Day().toString();
+            } else if (dateDiff > 90 && brePenaltyBand.isRepairApply90DayRate() && brePenaltyBand.isRepairUseCommercial()) {
+                return "Commercial";
+            }
+        }
+        return "0.0";
     }
 
     public BigDecimal getCalculatedHirePenaltyChargeAmount() {
         if (isInsurerClaim()) {
-            return penaltyChargeService.calculatePenaltyChargeVal(claim, getCalculatedHirePenaltyPercentage(), PenaltyName.HIRE);
+            return claimService.calculateHirePenaltyChargeVal(claim, getCalculatedHirePenaltyPercentage());
         }
-        return penaltyChargeService.calculatePenaltyChargeVal(claim, PenaltyName.HIRE);
+        return claimService.calculateHirePenaltyChargeVal(claim);
     }
 
     public BigDecimal getCalculatedRepairPenaltyChargeAmount() {
         if (isInsurerClaim()) {
-            return penaltyChargeService.calculatePenaltyChargeVal(claim, getCalculatedRepairPenaltyPercentage(), PenaltyName.REPAIR);
+            return claimService.calculateRepairPenaltyChargeVal(claim, getCalculatedRepairPenaltyPercentage());
         }
-        return penaltyChargeService.calculatePenaltyChargeVal(claim, PenaltyName.REPAIR);
+        return claimService.calculateRepairPenaltyChargeVal(claim);
     }
 
     public String getRepairPenaltyAmount() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("repairPenaltyAmount", penaltyChargeService.calculatePenaltyChargeVal(claim, repairPenaltyPercentage, PenaltyName.REPAIR));
+        jsonObject.put("repairPenaltyAmount", claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage));
         setJsonData(jsonObject.toString());
         return SUCCESS;
     }
@@ -2714,22 +2786,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getHirePenaltyAmount() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("hirePenaltyAmount", penaltyChargeService.calculatePenaltyChargeVal(claim, hirePenaltyPercentage, PenaltyName.HIRE));
+        jsonObject.put("hirePenaltyAmount", claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage));
         setJsonData(jsonObject.toString());
         return SUCCESS;
     }
 
     public boolean getShowAutoPenaltyCheckbox() {
 
-        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                && penaltyChargeService.calculateCurrentPenaltyBand(claim) < penaltyChargeService.getLastPenaltyBand(claim)
-                && ClaimType.allowAutomaticPenaltyCharges(claim.getClaimType()));
+        if (!claim.getChorganisation().isAutoPenaltyChargeEnabled() || ClaimType.isInsurerUpload(claim.getClaimType())) {
+            return false;
+        }
+        
+        if ((ClaimType.isCollaborationProtocol(claim.getClaimType()) && (!claim.getBreBand().isAllowCollaborationProtocolAutoPenaltyCharges() || !claim.getBreBand().isAllowCollaborationProtocolPenaltyCharges()))
+                || (ClaimType.isFixedFee(claim.getClaimType()) && (!claim.getBreBand().isAllowFixedFeeAutoPenaltyCharges() || !claim.getBreBand().isAllowFixedFeePenaltyCharges()))
+                || (ClaimType.isSubscriber(claim.getClaimType()) && (!claim.getBreBand().isAllowSubscriberAutoPenaltyCharges() || !claim.getBreBand().isAllowSubscriberPenaltyCharges()))
+                || (ClaimType.isTPI(claim.getClaimType()) && (!claim.getBreBand().isAllowTPIAutoPenaltyCharges() || !claim.getBreBand().isAllowTPIPenaltyCharges()))
+                || (ClaimType.isGTA(claim.getClaimType()) && (!claim.getBreBand().isAllowGTAAutoPenaltyCharges() || !claim.getBreBand().isAllowGTAPenaltyCharges()))
+                || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges()))
+                ) {
+            return false;
+        }
+        
+        return claimService.calculateCurrentPenaltyBand(claim) < 90;
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
-        Map resultMap = penaltyChargeService.adjustAutoPenaltyCharge(claim, autoPenaltyStart, getIsCHO());
+        Map resultMap = claimService.adjustAutoPenaltyCharge(claim, autoPenaltyStart, getIsCHO());
 
         if (resultMap.containsKey("error")) {
             this.setActionError((String) resultMap.get("error"));
