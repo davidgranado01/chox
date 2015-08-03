@@ -4,11 +4,12 @@
 		xmlns:xformat="http://cxf.apache.org/bindings/xformat" 
                 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CHOXService"
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
 		targetNamespace="http://www.idaschox.com/services/CHOX/"
 		xmlns:chx="http://www.idaschox.com/services/CHOX/">
     <wsdl:documentation>
         Service: CHOX UploadService
-        Version: 1.5.1
+        Version: 1.6
         Owner: Valexa Technologies Ltd
         Contact: John.Dowson@valexa.com
     </wsdl:documentation>
@@ -43,6 +44,7 @@
             <xsd:element name="result" type="chx:Result"/>
             <xsd:element name="ecdParam" type="chx:ECDParam"/>
             <xsd:element name="note" type="chx:Note"/>
+            <xsd:element name="attachment" type="chx:Attachment"/>
 
     <!-- Type Definitions -->
             <!-- Non-empty string -->
@@ -104,6 +106,14 @@
             <xsd:simpleType name="String160">
                 <xsd:restriction base="xsd:string">
                     <xsd:maxLength value="160"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="NonEmptyString4">
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:pattern value="[^\s].*" />
+                    <xsd:maxLength value="4"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -1053,6 +1063,37 @@
                 </xsd:sequence>
             </xsd:complexType>
 
+            <xsd:simpleType name="AttachmentCategory">
+                <xsd:restriction base="xsd:token">
+                    <xsd:enumeration value="Payment Pack"/>
+                    <xsd:enumeration value="Total Loss Inspection Check"/>
+                    <xsd:enumeration value="CHO's Client Allegations"/>
+                    <xsd:enumeration value="Insurer's Client Allegations"/>
+                    <xsd:enumeration value="Engineer's Reports"/>
+                    <xsd:enumeration value="Investigator Reports"/>
+                    <xsd:enumeration value="Repair Documents"/>
+                    <xsd:enumeration value="Total Loss Pack"/>
+                    <xsd:enumeration value="Total Loss Notification"/>
+                    <xsd:enumeration value="Witness Statement"/>
+                    <xsd:enumeration value="Other"/>
+                    <xsd:enumeration value="Mitigation Statement"/>
+                    <xsd:enumeration value="Intervention Letter"/>
+                    <xsd:enumeration value="Video Footage"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Attachment">
+                <xsd:sequence>
+                    <xsd:element name="supplierReference" type="chx:NonEmptyString128"/>
+                    <xsd:element name="attachment" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+                    <xsd:element name="filename" type="chx:NonEmptyString"/>
+                    <xsd:element name="fileType" type="chx:NonEmptyString4"/>
+                    <xsd:element name="category" type="chx:AttachmentCategory"/>
+                    <xsd:element name="remark" type="chx:NonEmptyString"/>
+                    <xsd:element name="notify" type="xsd:boolean"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
         </xsd:schema>
 
     </wsdl:types>
@@ -1090,6 +1131,10 @@
         <wsdl:part element="chx:note" name="note" />
     </wsdl:message>
 
+    <wsdl:message name="attachment">
+        <wsdl:part element="chx:attachment" name="attachment" />
+    </wsdl:message>
+
     <wsdl:portType name="UploadService">
         <wsdl:documentation>Description of the business interface. These are the services provided.</wsdl:documentation>
         <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
@@ -1124,6 +1169,11 @@
         <wsdl:operation name="addNote">
             <wsdl:input message="tns:note" name="note"/>
             <wsdl:output message="tns:result" name="result4"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="addAttachment">
+            <wsdl:input message="tns:attachment" name="attachment"/>
+            <wsdl:output message="tns:result" name="result5"/>
         </wsdl:operation>
 
     </wsdl:portType>
@@ -1199,14 +1249,25 @@
             </wsdl:output>
         </wsdl:operation>
         
+        <wsdl:operation name="addAttachment">
+            <soap:operation soapAction="http://www.idaschox.com/services/UploadService/addAttachment" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
     </wsdl:binding>
 
 
     <wsdl:service name="UploadService">
         <wsdl:port binding="tns:UploadServiceSOAP" name="UploadServiceSOAP">
-            <!--soap:address location="http://localhost:8443/services/UploadService" /-->
+            <soap:address location="http://localhost:8443/services/UploadService" />
             <!--soap:address location="https://test.idaschox.com:8443/services/UploadService" /-->
-            <soap:address location="https://www.idaschox.com:8443/services/UploadService" />
+            <!--soap:address location="https://www.idaschox.com:8443/services/UploadService" />-->
         </wsdl:port>
     </wsdl:service>
 

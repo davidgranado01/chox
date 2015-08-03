@@ -26,6 +26,7 @@
             </entry>
             <!-- Configure Timestamp validator -->
             <entry key="ws-security.timestamp.futureTimeToLive" value="60"/>
+            <entry key="mtom-enabled" value="true"/>
         </jaxws:properties> 
 
         <jaxws:inInterceptors>

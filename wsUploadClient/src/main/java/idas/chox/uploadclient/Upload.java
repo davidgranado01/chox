@@ -25,6 +25,7 @@ import com.idaschox.services.chox.UploadService;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import idas.chox.uploadclient.activity.AddAttachment;
 
 import idas.chox.uploadclient.activity.CloseClaim;
 import idas.chox.uploadclient.activity.ECDUpdate;
@@ -45,7 +46,8 @@ public class Upload {
     private static final String DEFAULT_PASSWORD = "C0mpliance";
 
     private static void printUsageAndExit() {
-        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentreceived|ecdupdate|addnote] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File> | <Notes Excel File>)...");
+        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentreceived|ecdupdate|addnote|addAttachment] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File> | <Notes Excel File>) | -choref <choReference>  -category <Attachment Category> [-notify] [-remark <Attachment Remark>] <AttachmentFile>...");
+        System.out.println("       Valid attachment categories are: PAYMENT_PACK, TOTAL_LOSS_INSPECTION_CHECK, CHO_S_CLIENT_ALLEGATIONS, INSURER_S_CLIENT_ALLEGATIONS, ENGINEER_S_REPORTS, INVESTIGATOR_REPORTS, REPAIR_DOCUMENTS, TOTAL_LOSS_PACK, TOTAL_LOSS_NOTIFICATION, WITNESS_STATEMENT, OTHER, MITIGATION_STATEMENT, INTERVENTION_LETTER, VIDEO_FOOTAGE");
         System.exit(-1);
     }
 
@@ -62,7 +64,6 @@ public class Upload {
             parser.parseArgument(args);
         } catch (CmdLineException ex) {
             LOG.error("Error processing command-line arguments: ", ex.getMessage());
-//            parser.printUsage(System.err);
             printUsageAndExit();
         }
 
@@ -144,6 +145,8 @@ public class Upload {
                     ECDUpdate.process(uploadService, fileName);
                 } else if (optionsBean.isAddNote() && fileName.endsWith("xls")) {
                     AddNote.process(uploadService, fileName);
+                } else if (optionsBean.isAddAttachment()) {
+                    AddAttachment.process(uploadService, optionsBean.getChoRef(), fileName, optionsBean.getCategory(), optionsBean.isAttachmentNotification(), optionsBean.getRemark());
                 } else if (optionsBean.isReopen()) {
                     ReopenClaim.process(uploadService, fileName);
                 }

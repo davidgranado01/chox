@@ -3,22 +3,31 @@ package idas.chox.web.ws;
 import com.idaschox.services.chox.*;
 import com.idaschox.services.chox.SubmissionResult.BREMessages;
 import com.idaschox.services.chox.SubmissionResult.Messages;
+import idas.chox.core.model.Attachment;
+import idas.chox.core.model.AttachmentFile;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.AttachmentService;
+import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
+import idas.chox.core.util.FileHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.AddNote;
 import idas.chox.service.workflow.activities.EcdUpdate;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
+import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -26,14 +35,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
-
 public class UploadServiceBean {
-    
+
     static final Logger LOG = LoggerFactory.getLogger(UploadServiceBean.class);
     static final String ENCODING = "ISO-8859-1";
-    
-    
+
     private UploadClaimXMLService uploadClaimXMLService;
+    private AttachmentTypeService attachmentTypeService;
+    private AttachmentService attachmentService;
     private ClaimService claimService;
     private WebBordereauService webBordereauService;
     private ActivityFactory activityFactory;
@@ -42,9 +51,17 @@ public class UploadServiceBean {
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
-    
+
     public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
         this.uploadClaimXMLService = uploadClaimXMLService;
+    }
+
+    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
+        this.attachmentTypeService = attachmentTypeService;
+    }
+
+    public void setAttachmentService(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
     }
 
     public void setWebBordereauService(WebBordereauService webBordereauService) {
@@ -58,11 +75,11 @@ public class UploadServiceBean {
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
-    
+
     public SubmissionResult uploadBordereau(Chox chox) {
         SubmissionResult result = new SubmissionResult();
         WebBordereau webBordereau = new WebBordereau();
-        
+
         LOG.info("uploadBordereau called in {} with chox: {}", this, chox);
         LOG.info("uploadClaimXMLService is : {}", uploadClaimXMLService);
         JAXBContext context;
@@ -74,20 +91,19 @@ public class UploadServiceBean {
             LOG.debug("Marshaller created.");
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-
             StringBuilderOutputStream st = new StringBuilderOutputStream();
-            
+
             LOG.debug("Marshalling...");
             m.marshal(chox, st);
 
             // If no @XmlRootElement is generated in java code, we'll need to wrap in a JAXBElement
 //            m.marshal(new JAXBElement<Chox>(new QName("uri","local"), Chox.class, chox), st);
             LOG.info("Received file for upload :\n{}", st.toString());
-            
+
             byte[] byteArray = st.toString().getBytes(ENCODING); // choose a charset
             webBordereau.setFileBuffer(byteArray);
-            webBordereau.setFileSize((long)byteArray.length);
-            ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);                        
+            webBordereau.setFileSize((long) byteArray.length);
+            ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
             UploadedXMLClaimsDetail uploadResult = uploadClaimXMLService.processWebServiceClaim(bais);
             try {
                 bais.close();
@@ -100,7 +116,7 @@ public class UploadServiceBean {
                 LOG.error("Exception thrown closing web-service bordereau stringbuilder output stream: {}", ex.getMessage(), ex);
             }
             LOG.info("File uploaded status: {}", uploadResult.isValid());
-            
+
             // Convert uploadResult
             switch (uploadResult.getRemark()) {
                 case "New Claim":
@@ -210,7 +226,7 @@ public class UploadServiceBean {
                     result.setUploadStatus(ClaimUploadStatus.ERROR);
                     break;
             }
-      
+
             switch (uploadResult.getClaimStatus()) {
                 case "N/A":
                     result.setClaimStatus(ClaimStatus.N_A);
@@ -319,7 +335,7 @@ public class UploadServiceBean {
                     result.setClaimStatus(null);
                     break;
             }
-            
+
             switch (uploadResult.getProcessStatus()) {
                 case "Failed":
                     result.setProcessStatus(ClaimProcessStatus.FAILED);
@@ -340,7 +356,7 @@ public class UploadServiceBean {
             Messages messages = new Messages();
             messages.getMessages().add(uploadResult.getMessage());
             result.setMessages(messages);
-            
+
             BREMessages breMessages = new BREMessages();
             String breFailureMessages = uploadResult.getBreFailureMessages();
             if (breFailureMessages != null && !breFailureMessages.isEmpty()) {
@@ -354,8 +370,7 @@ public class UploadServiceBean {
             webBordereau.setStatus(uploadResult.isValid());
             webBordereau.setChoReference(uploadResult.getChoReference());
             webBordereau.setMessage(uploadResult.getMessage());
-        }
-        catch (JAXBException ex) {
+        } catch (JAXBException ex) {
             LOG.error("Error creating JAXB context: {}", ex.getMessage());
             if (ex.getLinkedException() != null) {
                 LOG.error("Linked exception: {}", ex.getLinkedException().getMessage());
@@ -367,7 +382,7 @@ public class UploadServiceBean {
             Messages messages = new Messages();
             messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
             result.setMessages(messages);
-            
+
             webBordereau.setClaimStatus("N/A");
             webBordereau.setUploadStatus(result.getUploadStatus().toString());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
@@ -376,8 +391,7 @@ public class UploadServiceBean {
             webBordereau.setChoReference(null);
             webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
-        }
-        catch (UnsupportedEncodingException ex) {
+        } catch (UnsupportedEncodingException ex) {
             LOG.error("UnsupportedEncodingException: {}", ex.getMessage());
             result.setUploadStatus(ClaimUploadStatus.ERROR);
             result.setClaimStatus(ClaimStatus.N_A);
@@ -395,20 +409,19 @@ public class UploadServiceBean {
             webBordereau.setChoReference(null);
             webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
-        }
-        finally {
+        } finally {
             webBordereauService.saveBordereau(webBordereau);
         }
 
         return result;
 
     }
-    
+
     public Result paymentReceived(String supplierReference) {
         Result result = new Result();
-        
+
         Activity activity = activityFactory.getActivity("invoicePaymentReceived");
-        
+
         // Get the claim
         try {
             Claim claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
@@ -419,8 +432,7 @@ public class UploadServiceBean {
                 result.setStatus(false);
                 result.setErrorMessage("Claim is not in correct status to move into 'Payment Received' (should be '"
                         + ClaimStatus.INVOICE_PAYMENT_LOGGED.value() + "' but is '" + claim.getStatus() + "')");
-            }
-            else {
+            } else {
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -430,21 +442,20 @@ public class UploadServiceBean {
         }
         return result;
     }
-    
+
     public Result closeClaim(String supplierReference) {
         Result result = new Result();
 
         Activity activity = activityFactory.getActivity("closeClaim");
         Claim claim = null;
-        
+
         // Get the claim
         try {
             claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
             if (claim == null) {
                 result.setStatus(false);
                 result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
-            } 
-            else {
+            } else {
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -453,10 +464,10 @@ public class UploadServiceBean {
             result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+            result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
         } catch (Exception ex) {
             result.setStatus(false);
-            result.setErrorMessage("Error processing request: " +ex.getMessage());
+            result.setErrorMessage("Error processing request: " + ex.getMessage());
         }
 
         return result;
@@ -474,8 +485,7 @@ public class UploadServiceBean {
             if (claim == null) {
                 result.setStatus(false);
                 result.setErrorMessage(new StringBuilder().append("Claim with supplier reference number '").append(supplierReference).append("' does not exist.").toString());
-            } 
-            else {
+            } else {
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -492,7 +502,7 @@ public class UploadServiceBean {
 
         return result;
     }
-    
+
     public Result updateECD(EcdParam ecdParam) {
 
         Activity activity = activityFactory.getActivity("ecdUpdate");
@@ -511,10 +521,10 @@ public class UploadServiceBean {
                 result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
             } else {
                 LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecdDate.toString(), delayReason, supportingNote});
-                ((EcdUpdate)activity).setEcdDate(ecdDate);
-                ((EcdUpdate)activity).setReason(delayReason);
-                ((EcdUpdate)activity).setSupportingNote(supportingNote);
-                ((EcdUpdate)activity).setUpdateInsurer(true);
+                ((EcdUpdate) activity).setEcdDate(ecdDate);
+                ((EcdUpdate) activity).setReason(delayReason);
+                ((EcdUpdate) activity).setSupportingNote(supportingNote);
+                ((EcdUpdate) activity).setUpdateInsurer(true);
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -531,7 +541,7 @@ public class UploadServiceBean {
 
         return result;
     }
-    
+
     public Result addNote(Note note) {
         Result result = new Result();
 
@@ -548,9 +558,9 @@ public class UploadServiceBean {
                 int visibilityType = 0;
                 if (note.getVisibility() != null && !note.getVisibility().equalsIgnoreCase("private")
                         && !note.getVisibility().equalsIgnoreCase("public") && !note.getVisibility().isEmpty()) {
-                    throw new Exception("Only 'public'/'private'  Are Allowed For " +
-                       "Visibility Type. Empty strings are also allowed " +
-                       "and will be interpreted as 'public'.");
+                    throw new Exception("Only 'public'/'private'  Are Allowed For "
+                            + "Visibility Type. Empty strings are also allowed "
+                            + "and will be interpreted as 'public'.");
                 }
 
                 if (securityInfoProvider.getIsINS()) {
@@ -576,12 +586,87 @@ public class UploadServiceBean {
             result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+            result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
         } catch (Exception ex) {
             result.setStatus(false);
-            result.setErrorMessage("Error processing request: " +ex.getMessage());
+            result.setErrorMessage("Error processing request: " + ex.getMessage());
         }
 
         return result;
+    }
+
+    public Result addAttachment(com.idaschox.services.chox.Attachment attachment) {
+        Result result = new Result();
+//        Activity activity = activityFactory.getActivity("addAttachment");
+        Claim claim = null;
+
+        // Get the claim
+        try {
+            claim = claimService.getClaimByCHOReferenceNumber(attachment.getSupplierReference());
+            if (claim == null) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + attachment.getSupplierReference() + "' does not exist.");
+            } else {
+                byte[] b;
+                LOG.info("Attachment name is {} with category '{}'", attachment.getFilename(), attachment.getCategory());
+//                activity.process(claim);
+                DataHandler handler = attachment.getAttachment();
+                try {
+                    InputStream is = handler.getInputStream();
+                    b = readFully(is);
+                } catch (IOException e) {
+                    LOG.error("Exception thrown converting stream to byte array: {}", e.getMessage(), e);
+                    throw e;
+                }
+                LOG.debug("Attachment read - size={}", b.length);
+                // Check size and extension
+                String fileName = attachment.getFilename() + "." + attachment.getFileType();
+                List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
+                if (!FileHelper.isFileTypeAllow(fileName, attTypes)) {
+                    throw new Exception("Invalid File type");
+                }
+                LOG.debug("Filetype is ok: {}", fileName);
+                if (b.length > FileHelper.MAX_FILE_SIZE_ALLOW) {
+                    throw new Exception("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
+                }
+                LOG.debug("Length is Ok: {}", b.length);
+                String whoCreated = "Insurer";
+                if (securityInfoProvider.getIsCHO()) {
+                    whoCreated = "CHO";
+                }
+                // Add attachment
+                LOG.debug("Adding attachment....");
+                if (!attachmentService.addAttachment(claim, b, fileName, b.length,
+                        attachment.getCategory().value(), attachment.getRemark(), attachment.isNotify(),
+                        securityInfoProvider.getIsINS(), whoCreated)) {
+                    LOG.error("Error adding attachment received through web-service: claim={}", claim.getChoReference());
+                    throw new Exception("Unknown Error occurred, please try again.");
+                } else {
+                    result.setStatus(true);
+                }
+            }
+//        } catch (InvalidClaimStatusException ex) {
+//            result.setStatus(false);
+//            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
+        } catch (AccessDeniedException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
+            LOG.error("Access Denied processing request: {}", ex.getMessage());
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Error processing request: " + ex.getMessage());
+            LOG.error("Error processing request: {}", ex.getMessage());
+       }
+        return result;
+    }
+
+    private static byte[] readFully(InputStream input) throws IOException {
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        while ((bytesRead = input.read(buffer)) != -1) {
+            output.write(buffer, 0, bytesRead);
+        }
+        return output.toByteArray();
     }
 }
