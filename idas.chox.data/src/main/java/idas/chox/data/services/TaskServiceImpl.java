@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.Transformers;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.*;
 import idas.chox.core.search.SearchResult;
@@ -19,8 +22,6 @@ import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.events.ChoxEvent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -104,8 +105,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         
         // Check that if the task is on a claim, then the webuser belongs to the same org as that of the claim
         if (task.getClaim() != null) {
-            if ((webUser.isCHO() && webUser.getChorganisation().getId().intValue() != task.getClaim().getChorganisation().getId().intValue())
-                    || (webUser.isAnInsurer() && webUser.getInsurer().getId().intValue() != task.getClaim().getInsurer().getId().intValue())) {
+            if ((webUser.isCHO() && webUser.getChorganisation().getId().intValue() != task.getClaim().getChorganisation().getId())
+                    || (webUser.isAnInsurer() && webUser.getInsurer().getId().intValue() != task.getClaim().getInsurer().getId())) {
                 LOG.error("User trying to complete a task from a different organisation: webUserId={}, taskId={}", webUserId, taskId);
                 throw new IllegalArgumentException("You are not authorised to mark this task as complete.");
             }
@@ -119,7 +120,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         //       false otherwise
         boolean canComplete = false;
 
-        if (task.getCreatedBy().getId().intValue() == webUser.getId().intValue()) {
+        if (task.getCreatedBy().getId().intValue() == webUser.getId()) {
             canComplete = true;
         } else if ((task.getVisibilityRole() == null || task.getVisibilityRole().length() == 0) && task.getVisibility()!= 1) {
             canComplete = true;
@@ -180,101 +181,139 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("Claim number must be present for external tasks");
             }
             String claimStatus = task.getClaim().getStatus();
-            if (claimStatus.equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_PC);
-                //Also create a new task visible by CH
-                Task taskCH = new Task();
-                taskCH.setComplete(Boolean.FALSE);
-                taskCH.setDescription(task.getDescription());
-                taskCH.setDueDate(task.getDueDate());
-                taskCH.setType(task.getType());
-                taskCH.setVisibility(task.getVisibility());
-                taskCH.setInsurer(task.getInsurer());
-                taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                taskCH.setRelatedTask(task);
-                taskCH.setClaim(task.getClaim());
-                taskCH.setRaisedBy(task.getRaisedBy());
-                task.setRelatedTask(taskCH);
-                this.save(taskCH);
-            } else if (claimStatus.equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_CLOSED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_PENDING)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_REF_TO_ENG)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED) || claimStatus.equals(ClaimStatus.INVOICE_UNASSIGNED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CR);
-                //Also create a new task visible by CH
-                Task taskCH = new Task();
-                taskCH.setComplete(Boolean.FALSE);
-                taskCH.setDescription(task.getDescription());
-                taskCH.setDueDate(task.getDueDate());
-                taskCH.setType(task.getType());
-                taskCH.setVisibility(task.getVisibility());
-                taskCH.setInsurer(task.getInsurer());
-                taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                taskCH.setRelatedTask(task);
-                taskCH.setClaim(task.getClaim());
-                taskCH.setRaisedBy(task.getRaisedBy());
-                task.setRelatedTask(taskCH);
-                this.save(taskCH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_ESCALATED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_REF_TO_CH)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_REF_TO_ENG)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
-            } else if (claimStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_FNOL);
-            } else if (claimStatus.equals(ClaimStatus.AWAITING_LITIGATION_OUTCOME)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.MANUAL_INVOICE_APPROVED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.MANUAL_INVOICE_CONTESTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else if (claimStatus.equals(ClaimStatus.MANUAL_INVOICE_REJECTED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            }  else if (claimStatus.equals(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-            } else {
-                LOG.error("Cannot raise a task on a claim in status '{}'", claimStatus);
-                throw new IllegalArgumentException("Sorry, cannot raise a task on a claim when the status is '" + claimStatus + "'");
+            switch (claimStatus) {
+                case ClaimStatus.AWAITING_INVOICE_PAYMENT:
+                    {
+                        task.setVisibilityRole(WebUserRole.ROLE_INS_PC);
+                        //Also create a new task visible by CH
+                        Task taskCH = new Task();
+                        taskCH.setComplete(Boolean.FALSE);
+                        taskCH.setDescription(task.getDescription());
+                        taskCH.setDueDate(task.getDueDate());
+                        taskCH.setType(task.getType());
+                        taskCH.setVisibility(task.getVisibility());
+                        taskCH.setInsurer(task.getInsurer());
+                        taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                        taskCH.setRelatedTask(task);
+                        taskCH.setClaim(task.getClaim());
+                        taskCH.setRaisedBy(task.getRaisedBy());
+                        task.setRelatedTask(taskCH);
+                        this.save(taskCH);
+                        break;
+                    }
+                case ClaimStatus.AWAITING_LIABILITY_RESOLUTION:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_AWAITING_INVOICE_DATA:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_CLOSED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_PENDING:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_REF_TO_ENG:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
+                    break;
+                case ClaimStatus.CLAIM_REJECTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.SUBSCRIBER_CLAIM_REJECTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_REJECTION_ACCEPTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_REJECTION_CONTESTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED:
+                case ClaimStatus.INVOICE_UNASSIGNED:
+                    {
+                        task.setVisibilityRole(WebUserRole.ROLE_INS_CR);
+                        //Also create a new task visible by CH
+                        Task taskCH = new Task();
+                        taskCH.setComplete(Boolean.FALSE);
+                        taskCH.setDescription(task.getDescription());
+                        taskCH.setDueDate(task.getDueDate());
+                        taskCH.setType(task.getType());
+                        taskCH.setVisibility(task.getVisibility());
+                        taskCH.setInsurer(task.getInsurer());
+                        taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                        taskCH.setRelatedTask(task);
+                        taskCH.setClaim(task.getClaim());
+                        taskCH.setRaisedBy(task.getRaisedBy());
+                        task.setRelatedTask(taskCH);
+                        this.save(taskCH);
+                        break;
+                    }
+                case ClaimStatus.CLAIM_UPDATE_BY_ENG:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CONTESTED_INVOICE_REF_TO_INS:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_APPROVED_BY_BRE:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_ESCALATED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
+                    break;
+                case ClaimStatus.INVOICE_ESCALATED_TO_CH:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_PAYMENT_LOGGED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_PAYMENT_RECEIVED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_REF_TO_CH:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.INVOICE_REF_TO_ENG:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
+                    break;
+                case ClaimStatus.INVOICE_REJECTED_ACCEPTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.CLAIM_REFERRED_TO_FNOL:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_FNOL);
+                    break;
+                case ClaimStatus.AWAITING_LITIGATION_OUTCOME:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.MANUAL_INVOICE_APPROVED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.MANUAL_INVOICE_CONTESTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.MANUAL_INVOICE_REJECTED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                case ClaimStatus.MANUAL_INVOICE_UNASSIGNED:
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    break;
+                default:
+                    LOG.error("Cannot raise a task on a claim in status '{}'", claimStatus);
+                    throw new IllegalArgumentException("Sorry, cannot raise a task on a claim when the status is '" + claimStatus + "'");
             }
         } else if (task.getInsurer() && task.getVisibility() == 3) { // Insurer external task
             // No visibility role needed for CHOs so make sure its not defined
@@ -289,15 +328,15 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
 
         boolean isCHO = false;
-        List<Task> results = new ArrayList<Task>();
+        List<Task> results = new ArrayList<>();
         String colorCode = null;
 
         // select insurer task depends upon the visibility role. 
-        ArrayList<String> visibilityRole = new ArrayList<String>();
-        ArrayList<String> visibilityRole1 = new ArrayList<String>();
-        ArrayList<String> visibilityRole2 = new ArrayList<String>();
-        ArrayList<String> visibilityRole3 = new ArrayList<String>();
-        ArrayList<String> visibilityRole4 = new ArrayList<String>();
+        ArrayList<String> visibilityRole = new ArrayList<>();
+        ArrayList<String> visibilityRole1 = new ArrayList<>();
+        ArrayList<String> visibilityRole2 = new ArrayList<>();
+        ArrayList<String> visibilityRole3 = new ArrayList<>();
+        ArrayList<String> visibilityRole4 = new ArrayList<>();
 
         List<HashMap> resultMap;
         Integer totalCount = 0;
@@ -422,7 +461,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 } else { // user is an Insurer user
 
                     List<WebUserUserRole> webUserUserRoles = webUserUserRoleService.getMappedUserRole(user.getId());
-                    List<Integer> userWorkgroups = new ArrayList<Integer>();
+                    List<Integer> userWorkgroups = new ArrayList<>();
                     boolean ownershipEnabled = false;
                     boolean workgroupEnabled = false;
                     boolean ownershipAndWorkgroupDisabled = false;
@@ -713,7 +752,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     
     private List<Integer> getUserWorkgroupIds(WebUser user) {
         // return a list of roles allocated to the user
-        List<Integer> userWorkgroupIds = new ArrayList<Integer>();
+        List<Integer> userWorkgroupIds = new ArrayList<>();
         DetachedCriteria workgroupCriteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         workgroupCriteria.createCriteria("user").add(Restrictions.eq("id", user.getId()));
         List<WebUserWorkgroup> webUserWorkgroups = findByCriteria(workgroupCriteria);

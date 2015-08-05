@@ -148,6 +148,7 @@
         <property column="allow_manag_repair_auto_tasks" name="allowManagingRepairAutomatedTasks" not-null="true"/>
         <property column="allow_notmanag_repair_auto_tasks" name="allowNotManagingRepairAutomatedTasks" not-null="true"/>
         <property column="allow_missing_ecd_auto_tasks" name="allowMissingECDAutomatedTasks" not-null="true"/>
+        <property column="allow_on_hire_auto_tasks" name="allowOnHireAutomatedTasks" not-null="true"/>
         <property column="maximum_labour_rate_check" name="maximumLabourRateCheck" not-null="true"/>
         <property column="maximum_labour_rate_standard_check" name="maximumLabourRateStandardCheck" not-null="true"/>
         <property column="maximum_labour_rate_prestige_check" name="maximumLabourRatePrestigeCheck" not-null="true"/>

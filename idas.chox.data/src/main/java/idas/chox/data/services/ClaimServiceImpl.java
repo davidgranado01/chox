@@ -2,6 +2,7 @@ package idas.chox.data.services;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -49,6 +50,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.model.Task;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -65,7 +67,6 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
-import java.math.RoundingMode;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -389,6 +390,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Claim claim;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        claim = (Claim) getByCriteria(criteria);
+        return claim;
+    }
+
+    private Claim getClaimByVehicleHireId(Integer vehicleHireId) {
+        Claim claim;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("vehicleHire.id", vehicleHireId));
         claim = (Claim) getByCriteria(criteria);
         return claim;
     }
@@ -2187,4 +2196,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return BigDecimal.ZERO.setScale(2);
     }
 
+    @Override
+    public boolean addOnHireTask(Claim claim) {
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        if (breBand.isAllowOnHireAutomatedTasks() && claim.getInsurer().isTaskManagementEnable()) {
+            Task onHireTask = new Task();
+            onHireTask.setClaim(claim);
+            onHireTask.setComplete(Boolean.FALSE);
+            onHireTask.setDescription("The Hire Start date has been added to this claim, please review.");
+            onHireTask.setDueDate(DateHelper.addDay(new Date(), 1));
+            onHireTask.setInsurer(Boolean.TRUE);
+            onHireTask.setRaisedBy(userService.findByUserName("system"));
+            onHireTask.setType("On Hire");
+            onHireTask.setVisibility(2);
+            onHireTask.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+
+            try {
+                taskService.createNewTask(onHireTask);
+            } catch (IllegalArgumentException ex) {
+                LOG.error("IllegalArgumentException thrown creating On Hire Task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+                return false;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown creating On Hire Task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
 }

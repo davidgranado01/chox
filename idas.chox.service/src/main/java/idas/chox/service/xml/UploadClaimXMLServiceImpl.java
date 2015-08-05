@@ -335,6 +335,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     claimService.checkTotalLossAnomaly(claim);
                 }
 
+                if (claimResult.isCheckForOnHireTask()) {
+                    LOG.debug("Checking for On Hire Task.");
+                    claimService.addOnHireTask(claim);
+                }
+
             } catch (Exception ex) {
                 if (claimResult.getClaim() != null) {
                     LOG.error("Exception caught processing claim '{}': ", claimResult.getClaim().getChoReference(), ex);

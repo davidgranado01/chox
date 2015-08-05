@@ -1,9 +1,9 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Task;
 import idas.chox.data.events.ChoxEvent;

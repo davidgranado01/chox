@@ -21,6 +21,7 @@ public class ClaimResult {
     private boolean checkDataValid;
     private boolean checkForRepairAnomalies;
     private boolean checkForTotalLossAnomalies;
+    private boolean checkForOnHireTask;
     private List<String> message = new ArrayList<>();
     private List<String> breMessage = new ArrayList<>();
     private boolean duplicateClaimInSameXmlFile;
@@ -178,5 +179,13 @@ public class ClaimResult {
         }
         
         return this.claimParseStatus.getDescription();
+    }
+
+    public boolean isCheckForOnHireTask() {
+        return checkForOnHireTask;
+    }
+
+    public void setCheckForOnHireTask(boolean checkForOnHireTask) {
+        this.checkForOnHireTask = checkForOnHireTask;
     }
 }

@@ -5,8 +5,10 @@ import java.util.Date;
 
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -313,7 +315,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         break;
                 }
             }
-        }
+        } // End of entity instanceof HireMonitoringDetail
 
         return true;
     }
@@ -704,8 +706,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 }
             }
 
-        }
-
+        } // End of entity instanceof HireMonitoringDetail
+        
         LOG.debug("**** Finished onFlushDirty() for entity class '{}' ****", entity.getClass());
         return true;
     }

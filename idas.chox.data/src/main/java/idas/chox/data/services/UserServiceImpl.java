@@ -24,6 +24,7 @@ import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
+import java.util.Map;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -49,7 +50,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         WebUser result = (WebUser) getByCriteria(criteria);
         return result;
     }
-
+    
     @Override
     public boolean isUserNameExist(String userName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());

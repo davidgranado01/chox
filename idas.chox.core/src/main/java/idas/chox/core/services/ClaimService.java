@@ -1,6 +1,9 @@
 package idas.chox.core.services;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import idas.chox.core.model.Claim;
@@ -8,9 +11,6 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
 
 public interface ClaimService extends DataService {
 
@@ -144,5 +144,7 @@ public interface ClaimService extends DataService {
 
     BigDecimal getHirePenaltyPercentageVal(Claim claim);
     BigDecimal getRepairPenaltyPercentageVal(Claim claim);
+    
+    boolean addOnHireTask(Claim claim);
 
 }

@@ -18,6 +18,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.sf.json.JSONArray;
 import net.sf.jxls.transformer.XLSTransformer;
 
@@ -35,9 +38,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -191,7 +191,7 @@ public class TasksAction extends BaseAction {
             showInsurerRole = true;
         }
 
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted) {
             SearchResult searchResult = taskService.getIncompleteTasks(start, limit, sort, dir);
@@ -219,7 +219,7 @@ public class TasksAction extends BaseAction {
             showInsurerRole = true;
         }
 
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all visible tasks");
         if (hideCompleted) {
             if (this.getIsCHO()) {
@@ -264,7 +264,7 @@ public class TasksAction extends BaseAction {
         }
 
 
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
             tasks = taskService.getIncompleteTasksByClaim(claimId);
@@ -291,7 +291,7 @@ public class TasksAction extends BaseAction {
             showInsurerRole = true;
         }
 
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
             tasks = taskService.getIncompleteTasksByClaim(this.getAuthenticatedUser().getId(), claimId);
@@ -499,7 +499,7 @@ public class TasksAction extends BaseAction {
 
         LOG.info("Exporting to excel with {} tasks.", tasks.size());
 
-        List<ExcelTask> excelTasks = new ArrayList<ExcelTask>();
+        List<ExcelTask> excelTasks = new ArrayList<>();
         
         for (Task task : tasks) {
 

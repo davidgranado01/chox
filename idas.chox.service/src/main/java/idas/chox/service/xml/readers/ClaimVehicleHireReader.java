@@ -1,5 +1,7 @@
 package idas.chox.service.xml.readers;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -12,14 +14,14 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.TextHelper;
+import idas.chox.core.util.XmlHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
-import idas.chox.core.util.XmlHelper;
 
 public class ClaimVehicleHireReader extends BaseEntityReader {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimCustomerReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimVehicleHireReader.class);
 
     protected static String sectionName = "Vehicle Hire Details";
 
@@ -73,7 +75,9 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
-
+        boolean isNewVehicleHire = false;
+        boolean isNewClaim = false;
+        
         Element rootElement = claimResult.getElement();
         Element element = XMLUtils.getElement(rootElement, "rental-vehicle");
         VehicleClassService vehicleClassService = this.getBordereauReaderContext().getVehicleClassService();
@@ -82,8 +86,17 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
             if (claimResult.getClaim().getVehicleHire() == null) {
                 claimResult.getClaim().setVehicleHire(new VehicleHire());
+                isNewVehicleHire = true;
             }
-
+            if (claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_CLAIM
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_SUBSCRIBER_CLAIM
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_FIXEDFEE_CLAIM
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_COLLABORATION_CLAIM
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.TPI_INTERVENTION
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.INSURER_CLAIM
+                        || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) {
+                isNewClaim = true;
+            }
             String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
                 VehicleClass vehicleClass;
@@ -119,7 +132,15 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             }
             claimResult.getClaim().getVehicleHire().setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
             claimResult.getClaim().getVehicleHire().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
-            claimResult.getClaim().getVehicleHire().setRentalStart(XmlHelper.getDateFromNode(element, "rental-start"));
+            Date rentalStart = XmlHelper.getDateFromNode(element, "rental-start");
+            LOG.debug("isNewVehicleHire={}, isNewClaim={}, rentalStart={}", new Object[]{isNewVehicleHire, isNewClaim, rentalStart});
+            if ((isNewVehicleHire && !isNewClaim && rentalStart != null) ||
+                    (!isNewVehicleHire && !isNewClaim && claimResult.getClaim().getVehicleHire().getRentalStart() == null
+                        && rentalStart != null)) {
+                LOG.debug("Raise on hire task? Setting flag in claim result");
+                claimResult.setCheckForOnHireTask(true);
+            }
+            claimResult.getClaim().getVehicleHire().setRentalStart(rentalStart);
             claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getDateFromNode(element, "rental-end"));
 
             if ( ClaimType.isTPI(claimResult.getClaim().getClaimType())
@@ -133,7 +154,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             int rentalDays = 0;
 
             if (XmlHelper.getIntegerFromNode(element, "rental-days") != null) {
-                rentalDays = XmlHelper.getIntegerFromNode(element, "rental-days").intValue();
+                rentalDays = XmlHelper.getIntegerFromNode(element, "rental-days");
             }
 
             claimResult.getClaim().getVehicleHire().setDays(rentalDays);

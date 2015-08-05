@@ -52,6 +52,7 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
     @Override
     public String updateModel() {
+        boolean isHireStartUpdate = false;
         try {
             VehicleClass vehicleClass = this.model.getVehicleClass();
             if (vehicleClassMonitoringId > 0 && (vehicleClass == null || vehicleClass.getId() != vehicleClassMonitoringId)) {
@@ -64,6 +65,10 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
                 }
                 model.setVehicleClass(vehicleClass);
             }
+            if ((claim.getVehicleHire() == null && model.getRentalStart() != null)
+                || (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() == null && model.getRentalStart() != null)) {
+                isHireStartUpdate = true;
+            }
             claim.setVehicleHire(model);
             String result = super.updateModel();
 
@@ -71,6 +76,9 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
             if (updateInsurer) {
                 notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
+            }
+            if (isHireStartUpdate) {
+                claimService.addOnHireTask(claim);
             }
 
             return result;

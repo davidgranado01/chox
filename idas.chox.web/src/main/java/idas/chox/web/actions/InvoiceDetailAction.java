@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-import org.springframework.security.access.AccessDeniedException;
+import com.opensymphony.xwork2.Preparable;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-
 import org.hibernate.proxy.HibernateProxy;
 
-import com.opensymphony.xwork2.Preparable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
@@ -29,8 +31,6 @@ import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InvoiceDetailAction extends BaseAction implements Preparable {
 
@@ -388,13 +388,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public boolean getCanShowPaymentDetails() {
         LOG.debug("Claim is {}, claimId={}", claim, claimId);
-        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+        return (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED))
-                && claim.getInvoice().getFinalPayment() != null) {
-            return true;
-        }
-        return false;
+                && claim.getInvoice().getFinalPayment() != null;
     }
     
     public BigDecimal getFinalPayment() {
@@ -423,6 +420,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
 
     public java.util.Date getDateInvoicedOriginal() {
@@ -682,6 +680,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Invoice">
     public java.util.Date getInvoiceCreatedDate() {
         return invoice.getCreatedDate();
@@ -1040,16 +1039,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    /**
-     * public Integer getMiscellaneousQty() { return
-     * invoice.getMiscellaneousQty(); }
-     *
-     * public void setMiscellaneousQty(Integer miscellaneousQty) { if
-     * (actionSelected != reset) {
-     * setMiscellaneousQtyOriginal(invoice.getMiscellaneousQty());
-     * invoice.setMiscellaneousQty(miscellaneousQty); } }
-     *
-     */
     public Integer getAutomaticQty() {
         return invoice.getAutomaticQty();
     }
@@ -1570,6 +1559,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="InvoiceAction">
     String getTabName() {
         return TabAccessibility.TAB_INVOICE_DETAIL;
@@ -1600,6 +1590,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="VehicleHireAction">
     private void updateHpi() {
         if (!oldVRN.equalsIgnoreCase(vehicleHire.getVehicleRegistration())) {
@@ -1849,6 +1840,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="VehicleHire">
     public boolean isTpiClaim() {
         return ClaimType.isTPI(claim.getClaimType());
@@ -2092,9 +2084,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="EngineerReportAction">
-    // Nothing to be added ( no getter and setter for this perticular action class)
-    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="EngineerReport">
     public java.lang.Integer getEstimatedDays() {
         return engineerReport.getDays();
@@ -2254,9 +2244,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="updateModel">
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateModel() {
+        boolean isHireStartUpdate = false;
         LOG.debug("Updating invoice detail...");
         if (actionSelected == reset) {
             this.setActionResult("Invoice Reset");
@@ -2275,7 +2266,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             try {
                 checkVersion(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 claim.setEngineerReport(engineerReport);
-//                claim.setInvoiceOriginal(invoiceOriginal);
+                if ((claim.getVehicleHire() == null && vehicleHire != null && vehicleHire.getRentalStart() != null)
+                    || (claim.getVehicleHire() != null && claim.getVehicleHire().getRentalStart() == null && vehicleHire.getRentalStart() != null)) {
+                    isHireStartUpdate = true;
+                }
                 claim.setVehicleHire(vehicleHire);
                 claim.setInvoice(invoice);
                 claimService.updateLiabilityPayment(claim);
@@ -2299,6 +2293,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 claimService.updateClaim(claim);
                 updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 modelSaved = true;
+                
+                if (isHireStartUpdate) {
+                    LOG.debug ("Rental Start Added checking to raise On Hire task...");
+                    claimService.addOnHireTask(claim);
+                }
                 this.setActionResult("Your Changes Have Been Saved");
                 activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
             } catch (Exception ex) {
@@ -2315,17 +2314,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
     
     public boolean isPenaltyChargesAppled() {
-        if (modelSaved && claim.getInvoice().getTotalPenaltyCharge() != null
-                && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) != 0) {
-            return true;
-        }
-
-        return false;
+        return modelSaved && claim.getInvoice().getTotalPenaltyCharge() != null
+                && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) != 0;
     }
 
     private void addModifiedFieldsComment() {
         try {
-            Map<String, String> fieldNames = new LinkedHashMap<String, String>();
+            Map<String, String> fieldNames = new LinkedHashMap<>();
             StringBuilder sb = new StringBuilder();
             boolean isSubscriberClaim = false;
             boolean isCollaborationProtocolClaim = false;
@@ -2408,14 +2403,12 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
     
     public boolean isPenaltyChargeDateModified() {
-        if (DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0) {
-            return true;
-        }
-
-        return false;
+        return DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0;
     }
 
     // </editor-fold>
+    
+    
     @Override
     public String execute() {
         String tabName = getTabName();

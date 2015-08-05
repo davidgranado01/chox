@@ -17,10 +17,10 @@
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
-    <filter condition="insurer_id IN (:insurerId)" name="insurer_user_filter"/>
+    <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
   </class>
   
-  <filter-def name="insurer_user_filter">
-      <filter-param name="insurerId" type="integer"/>
+  <filter-def name="insurer_filter">
+      <filter-param name="insurerIds" type="integer"/>
   </filter-def>
 </hibernate-mapping>

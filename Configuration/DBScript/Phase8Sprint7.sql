@@ -509,3 +509,11 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 ----------------------
 -- End of 8.7.1
 ----------------------
+
+--------------------------------------------------------------------------------
+-- 8.7.4 Automated On Hire Task
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN allow_on_hire_auto_tasks boolean not null DEFAULT false;
+----------------------
+-- End of 8.7.4
+----------------------
