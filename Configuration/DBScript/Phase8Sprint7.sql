@@ -1,6 +1,7 @@
 --------------------------------------------------------------------------------
 -- 8.7.1 Ability To Change Penalty Charge Percentages By CHO/Insurer
 --------------------------------------------------------------------------------
+
 ALTER TABLE bre_band ADD COLUMN allow_gta_penalty_charges_auto boolean not null DEFAULT  true;
 ALTER TABLE bre_band ADD COLUMN allow_subscriber_penalty_charges_auto boolean not null DEFAULT  true;
 ALTER TABLE bre_band ADD COLUMN allow_fixed_fee_penalty_charges_auto boolean not null DEFAULT  true;
@@ -510,10 +511,32 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 -- End of 8.7.1
 ----------------------
 
+
+--------------------------------------------------------------------------------
+-- 8.7.3 Additional Repair Invoice Fields
+--------------------------------------------------------------------------------
+
+ALTER TABLE invoice ADD COLUMN repair_parts numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_labour numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_materials numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_specialist numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+ALTER TABLE invoice_original ADD COLUMN repair_parts numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_labour numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_materials numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_specialist numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+----------------------
+-- End of 8.7.3
+----------------------
+
+
 --------------------------------------------------------------------------------
 -- 8.7.4 Automated On Hire Task
 --------------------------------------------------------------------------------
+
 ALTER TABLE bre_band ADD COLUMN allow_on_hire_auto_tasks boolean not null DEFAULT false;
+
 ----------------------
 -- End of 8.7.4
 ----------------------

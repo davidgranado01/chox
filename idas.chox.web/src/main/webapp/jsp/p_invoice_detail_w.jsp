@@ -2223,6 +2223,70 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Repair Parts<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairParts" value="<s:property value="repairParts" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <s:if test="repairParts!=repairPartsOriginal&&(repairPartsOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairPartsOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Repair Labour<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairLabour" value="<s:property value="repairLabour" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <s:if test="repairLabour!=repairLabourOriginal&&(repairLabourOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairLabourOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Repair Materials<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairMaterials" value="<s:property value="repairMaterials" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <s:if test="repairMaterials!=repairMaterialsOriginal&&(repairMaterialsOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairMaterialsOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Repair Specialist<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairSpecialist" value="<s:property value="repairSpecialist" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <s:if test="repairSpecialist!=repairSpecialistOriginal&&(repairSpecialistOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairSpecialistOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
                             </fieldset>

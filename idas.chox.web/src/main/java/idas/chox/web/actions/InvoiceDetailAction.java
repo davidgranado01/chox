@@ -7,12 +7,9 @@ import java.util.*;
 import com.opensymphony.xwork2.Preparable;
 
 import org.apache.commons.lang3.SerializationUtils;
-
 import org.hibernate.proxy.HibernateProxy;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.hpi.Hpi;
@@ -1192,6 +1189,22 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getRepairAcquisitionFee();
     }
     
+    public java.math.BigDecimal getRepairParts() {
+        return invoice.getRepairParts();
+    }
+    
+    public java.math.BigDecimal getRepairLabour() {
+        return invoice.getRepairLabour();
+    }
+    
+    public java.math.BigDecimal getRepairMaterials() {
+        return invoice.getRepairMaterials();
+    }
+    
+    public java.math.BigDecimal getRepairSpecialist() {
+        return invoice.getRepairSpecialist();
+    }
+    
     public void setAdminFee(java.math.BigDecimal adminFee) {
         if (actionSelected != reset && invoice != null) {
             invoice.setAdminFee(adminFee);
@@ -1207,6 +1220,26 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setRepairAcquisitionFee(java.math.BigDecimal adminFee) {
         if (actionSelected != reset && invoice != null) {
             invoice.setRepairAcquisitionFee(adminFee);
+        }
+    }
+    public void setRepairParts(java.math.BigDecimal fee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairParts(fee);
+        }
+    }
+    public void setRepairLabour(java.math.BigDecimal fee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairLabour(fee);
+        }
+    }
+    public void setRepairMaterials(java.math.BigDecimal fee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairMaterials(fee);
+        }
+    }
+    public void setRepairSpecialist(java.math.BigDecimal fee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairSpecialist(fee);
         }
     }
 
@@ -2474,7 +2507,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public List<VehicleClassPriceMapper> getAllVehicleClassPriceMapper() {
-        List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();
+        List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<>();
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
@@ -2528,8 +2561,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void validate() {
         if (claim != null) {
             LOG.debug("inside attachment action validate method, claim is present and validation started");
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId())) {
                 LOG.error("InvoiceDetailAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }

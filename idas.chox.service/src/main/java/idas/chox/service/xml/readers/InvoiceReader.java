@@ -56,9 +56,7 @@ public class InvoiceReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
-
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
-
 
         Invoice invoice = new Invoice();
         LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
@@ -90,7 +88,10 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTowBarsQty(0);
         invoice.setRepairAdminFee(BigDecimal.ZERO);
         invoice.setRepairAcquisitionFee(BigDecimal.ZERO);
-
+        invoice.setRepairParts(BigDecimal.ZERO);
+        invoice.setRepairLabour(BigDecimal.ZERO);
+        invoice.setRepairMaterials(BigDecimal.ZERO);
+        invoice.setRepairSpecialist(BigDecimal.ZERO);
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));

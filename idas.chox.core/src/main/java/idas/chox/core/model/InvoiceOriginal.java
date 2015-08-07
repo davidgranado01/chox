@@ -72,6 +72,10 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal interimPaymentOriginal;
     private BigDecimal repairAdminFeeOriginal;
     private BigDecimal repairAcquisitionFeeOriginal;
+    private BigDecimal repairPartsOriginal;
+    private BigDecimal repairLabourOriginal;
+    private BigDecimal repairMaterialsOriginal;
+    private BigDecimal repairSpecialistOriginal;
     private boolean paymentTeam;
     private String invoiceSavingRule;
 
@@ -600,5 +604,37 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     public void setPaymentTeam(boolean paymentTeam) {
         this.paymentTeam = paymentTeam;
+    }
+
+    public BigDecimal getRepairPartsOriginal() {
+        return repairPartsOriginal;
+    }
+
+    public void setRepairPartsOriginal(BigDecimal repairPartsOriginal) {
+        this.repairPartsOriginal = repairPartsOriginal;
+    }
+
+    public BigDecimal getRepairLabourOriginal() {
+        return repairLabourOriginal;
+    }
+
+    public void setRepairLabourOriginal(BigDecimal repairLabourOriginal) {
+        this.repairLabourOriginal = repairLabourOriginal;
+    }
+
+    public BigDecimal getRepairMaterialsOriginal() {
+        return repairMaterialsOriginal;
+    }
+
+    public void setRepairMaterialsOriginal(BigDecimal repairMaterialsOriginal) {
+        this.repairMaterialsOriginal = repairMaterialsOriginal;
+    }
+
+    public BigDecimal getRepairSpecialistOriginal() {
+        return repairSpecialistOriginal;
+    }
+
+    public void setRepairSpecialistOriginal(BigDecimal repairSpecialistOriginal) {
+        this.repairSpecialistOriginal = repairSpecialistOriginal;
     }
 }

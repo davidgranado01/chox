@@ -94,6 +94,14 @@ public class InvoiceRepairExtrasReader extends BaseEntityReader {
             invoice.setRepairAdminFee(dIntemCost);
         } else if (nodeName.equalsIgnoreCase("Repair Acquisition")) {
             invoice.setRepairAcquisitionFee(dIntemCost);
+        } else if (nodeName.equalsIgnoreCase("Repair Parts")) {
+            invoice.setRepairParts(dIntemCost);
+        } else if (nodeName.equalsIgnoreCase("Repair Labour")) {
+            invoice.setRepairLabour(dIntemCost);
+        } else if (nodeName.equalsIgnoreCase("Repair Materials")) {
+            invoice.setRepairMaterials(dIntemCost);
+        } else if (nodeName.equalsIgnoreCase("Repair Specialist")) {
+            invoice.setRepairSpecialist(dIntemCost);
         }
     }
 }

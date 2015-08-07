@@ -61,7 +61,7 @@ public class ClaimsGridExportReport {
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got claim cycle details - building data objects");
 
-        List<ExcelClaimCycle> results = new ArrayList<ExcelClaimCycle>(result.size());
+        List<ExcelClaimCycle> results = new ArrayList<>(result.size());
         for(Object obj : result) {
             results.add(new ExcelClaimCycle((Map)obj));
         }
@@ -105,7 +105,7 @@ public class ClaimsGridExportReport {
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
-        List<ExcelComment> results = new ArrayList<ExcelComment>(result.size());
+        List<ExcelComment> results = new ArrayList<>(result.size());
         for(Object obj : result) {
             ExcelComment comment = new ExcelComment((Map)obj);
             if ((dataService.getCurrentUser().isCHO() && comment.getVisibilityType() == 1)
@@ -152,7 +152,7 @@ public class ClaimsGridExportReport {
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
-        List<ExcelHistory> results = new ArrayList<ExcelHistory>(result.size());
+        List<ExcelHistory> results = new ArrayList<>(result.size());
         for(Object obj : result) {
             ExcelHistory history = new ExcelHistory((Map)obj);
             if (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO()) {
@@ -164,7 +164,7 @@ public class ClaimsGridExportReport {
     }
     
     public List<ExcelInvoice> getExcelInvoices(List<Integer> ids) {
-        List<ExcelInvoice> results = new ArrayList<ExcelInvoice>(ids.size());
+        List<ExcelInvoice> results = new ArrayList<>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
             .append(" c.status as claimstatus, c.cho_reference as choreference, c.claim_number as claimnumber,")
@@ -196,7 +196,10 @@ public class ClaimsGridExportReport {
             .append(" i.repair_penalty_charge_paid as repairpenaltychargepaid, i.claim_handler_charge_paid as claimhandlerchargepaid,")
             .append(" i.deduction_claim_handler_fee_paid as deductionclaimhandlerfeepaid, i.cho_discount_fee_paid as chodiscountfeepaid,")
             .append(" i.insurer_discount_fee_paid as insurerdiscountfeepaid, i.final_payment as finalpayment,")
-            .append(" i.repair_admin_fee as repairadminfee, i.repair_acquisition_fee as repairacquisitionfee, i.payment_team as paymentsteam")
+            .append(" i.repair_admin_fee as repairadminfee, i.repair_acquisition_fee as repairacquisitionfee,")
+            .append(" i.repair_parts as repairparts, i.repair_labour as repairlabour,")
+            .append(" i.repair_materials as repairmaterials, i.repair_specialist as repairspecialist,")
+            .append(" i.payment_team as paymentsteam")
             .append(" from claim c")
             .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
             .append(" join invoice i on (c.invoice_id = i.id)")
@@ -230,7 +233,7 @@ public class ClaimsGridExportReport {
     }
     
     public List<ExcelClaim> getExcelClaims(List<Integer> ids, Boolean isIns) {
-        List<ExcelClaim> results = new ArrayList<ExcelClaim>(ids.size());
+        List<ExcelClaim> results = new ArrayList<>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select")
             .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.status_modified_date, c.indeminty_amount,")

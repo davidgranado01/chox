@@ -234,6 +234,10 @@ public class Invoice extends Entity implements Serializable {
     private int penaltyBand;
     private BigDecimal repairAdminFee;
     private BigDecimal repairAcquisitionFee;
+    private BigDecimal repairParts;
+    private BigDecimal repairLabour;
+    private BigDecimal repairMaterials;
+    private BigDecimal repairSpecialist;
     private BigDecimal collaborationFee;
     private Integer collaborationQty;
     private boolean paymentTeam;
@@ -261,6 +265,38 @@ public class Invoice extends Entity implements Serializable {
 
     public void setRepairAcquisitionFee(BigDecimal repairAcquisitionFee) {
         this.repairAcquisitionFee = repairAcquisitionFee;
+    }
+
+    public BigDecimal getRepairParts() {
+        return repairParts;
+    }
+
+    public void setRepairParts(BigDecimal repairParts) {
+        this.repairParts = repairParts;
+    }
+
+    public BigDecimal getRepairLabour() {
+        return repairLabour;
+    }
+
+    public void setRepairLabour(BigDecimal repairLabour) {
+        this.repairLabour = repairLabour;
+    }
+
+    public BigDecimal getRepairMaterials() {
+        return repairMaterials;
+    }
+
+    public void setRepairMaterials(BigDecimal repairMaterials) {
+        this.repairMaterials = repairMaterials;
+    }
+
+    public BigDecimal getRepairSpecialist() {
+        return repairSpecialist;
+    }
+
+    public void setRepairSpecialist(BigDecimal repairSpecialist) {
+        this.repairSpecialist = repairSpecialist;
     }
 
     public int getPenaltyBand() {
