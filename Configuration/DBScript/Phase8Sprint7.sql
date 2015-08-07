@@ -509,3 +509,19 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 ----------------------
 -- End of 8.7.1
 ----------------------
+--------------------------------------------------------------------------------
+-- 8.7.3 Additional Repair Invoice Fields
+--------------------------------------------------------------------------------
+ALTER TABLE invoice ADD COLUMN repair_parts numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_labour numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_materials numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_specialist numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+ALTER TABLE invoice_original ADD COLUMN repair_parts numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_labour numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_materials numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_specialist numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+----------------------
+-- End of 8.7.3
+----------------------

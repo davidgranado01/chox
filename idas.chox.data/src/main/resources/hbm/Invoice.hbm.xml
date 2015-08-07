@@ -100,6 +100,10 @@
         <property column="final_payment" name="finalPayment"/>
         <property column="repair_admin_fee" name="repairAdminFee"/>
         <property column="repair_acquisition_fee" name="repairAcquisitionFee"/>
+        <property column="repair_parts" name="repairPartsFee"/>
+        <property column="repair_labour" name="repairLabour"/>
+        <property column="repair_materials" name="repairMaterials"/>
+        <property column="repair_specialist" name="repairSpecialist"/>
         <property column="payment_team" name="paymentTeam" not-null="true"/>
         <property column="invoice_saving_rule" name="invoiceSavingRule" not-null="false"/>
         <many-to-one cascade="save-update,delete" class="idas.chox.core.model.InvoiceOriginal" column="invoice_original_id" name="invoiceOriginal"/>

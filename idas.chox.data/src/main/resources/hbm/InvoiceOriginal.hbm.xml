@@ -73,6 +73,10 @@
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         <property column="repair_admin_fee" name="repairAdminFeeOriginal"/>
         <property column="repair_acquisition_fee" name="repairAcquisitionFeeOriginal"/>
+        <property column="repair_parts" name="repairPartsFeeOriginal"/>
+        <property column="repair_labour" name="repairLabourOriginal"/>
+        <property column="repair_materials" name="repairMaterialsOriginal"/>
+        <property column="repair_specialist" name="repairSpecialistOriginal"/>
         <property column="payment_team" name="paymentTeam" not-null="true"/>
         <property column="invoice_saving_rule" name="invoiceSavingRule" not-null="false"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
