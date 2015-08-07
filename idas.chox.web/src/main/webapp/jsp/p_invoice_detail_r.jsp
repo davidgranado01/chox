@@ -1017,6 +1017,52 @@
                                     </s:if>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><label class="std-label-ro">Repair Parts</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairParts" /></label></td>
+                                <td>
+                                    <s:if test="repairParts.compareTo(repairPartsOriginal)!=0&&(repairPartsOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairPartsOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="std-label-ro">Repair Labour</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairLabour" /></label></td>
+                                <td>
+                                    <s:if test="repairLabour.compareTo(repairLabourOriginal)!=0&&(repairLabourOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairLabourOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="std-label-ro">
+                                        Repair Materials</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairMaterials" /></label></td>
+                                <td>
+                                    <s:if test="repairMaterials.compareTo(repairMaterialsOriginal)!=0&&(repairMaterialsOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairMaterialsOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="std-label-ro">
+                                        Repair Specialist</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairSpecialist" /></label></td>
+                                <td>
+                                    <s:if test="repairSpecialist.compareTo(repairSpecialistOriginal)!=0&&(repairSpecialistOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairSpecialistOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </fieldset>
