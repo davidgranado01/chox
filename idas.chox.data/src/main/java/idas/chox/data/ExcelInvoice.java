@@ -101,6 +101,10 @@ public class ExcelInvoice {
     private BigDecimal finalPayment;
     private BigDecimal repairAdminFee;
     private BigDecimal repairAcquisitionFee;
+    private BigDecimal repairParts;
+    private BigDecimal repairLabour;
+    private BigDecimal repairMaterials;
+    private BigDecimal repairSpecialist;
     private Boolean paymentsTeam;
 
     public ExcelInvoice(Map data, boolean isCHO) {
@@ -135,6 +139,10 @@ public class ExcelInvoice {
         }
         repairAdminFee = (BigDecimal) data.get("repairadminfee");
         repairAcquisitionFee = (BigDecimal) data.get("repairacquisitionfee");
+        repairParts = (BigDecimal) data.get("repairparts");
+        repairLabour = (BigDecimal) data.get("repairlabour");
+        repairMaterials = (BigDecimal) data.get("repairmaterials");
+        repairSpecialist = (BigDecimal) data.get("repairspecialist");
         adminFee = (BigDecimal) data.get("adminfee");
         adminQty = (Short) data.get("adminqty");
         roofRackFee = (BigDecimal) data.get("roofrackfee");
@@ -559,6 +567,22 @@ public class ExcelInvoice {
 
     public BigDecimal getRepairAcquisitionFee() {
         return repairAcquisitionFee;
+    }
+
+    public BigDecimal getRepairParts() {
+        return repairParts;
+    }
+
+    public BigDecimal getRepairLabour() {
+        return repairLabour;
+    }
+
+    public BigDecimal getRepairMaterials() {
+        return repairMaterials;
+    }
+
+    public BigDecimal getRepairSpecialist() {
+        return repairSpecialist;
     }
 
     public Boolean getPaymentsTeam() {

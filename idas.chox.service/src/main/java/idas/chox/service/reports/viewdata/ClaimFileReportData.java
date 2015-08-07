@@ -282,6 +282,10 @@ public class ClaimFileReportData {
     private String finalReview;
     private BigDecimal extrasRepairAdminFee;
     private BigDecimal extrasRepairAcquisitionFee;
+    private BigDecimal extrasRepairParts;
+    private BigDecimal extrasRepairLabour;
+    private BigDecimal extrasRepairMaterials;
+    private BigDecimal extrasRepairSpecialist;
     private boolean subscriberClaim;
     private boolean collaborationClaim;
     private String  invoicePaymentsTeam;
@@ -692,6 +696,10 @@ public class ClaimFileReportData {
 
             extrasRepairAdminFee = invoice.getRepairAdminFee();
             extrasRepairAcquisitionFee = invoice.getRepairAcquisitionFee();
+            extrasRepairParts = invoice.getRepairParts();
+            extrasRepairLabour = invoice.getRepairLabour();
+            extrasRepairMaterials = invoice.getRepairMaterials();
+            extrasRepairSpecialist = invoice.getRepairSpecialist();
             
             paymentDetailsHirePaid = invoice.getHireGrossPaid();
             paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
@@ -2753,6 +2761,38 @@ public class ClaimFileReportData {
 
     public void setExtrasRepairAcquisitionFee(BigDecimal extrasRepairAcquisitionFee) {
         this.extrasRepairAcquisitionFee = extrasRepairAcquisitionFee;
+    }
+
+    public BigDecimal getExtrasRepairParts() {
+        return extrasRepairParts;
+    }
+
+    public void setExtrasRepairParts(BigDecimal extrasRepairParts) {
+        this.extrasRepairParts = extrasRepairParts;
+    }
+
+    public BigDecimal getExtrasRepairLabour() {
+        return extrasRepairLabour;
+    }
+
+    public void setExtrasRepairLabour(BigDecimal extrasRepairLabour) {
+        this.extrasRepairLabour = extrasRepairLabour;
+    }
+
+    public BigDecimal getExtrasRepairMaterials() {
+        return extrasRepairMaterials;
+    }
+
+    public void setExtrasRepairMaterials(BigDecimal extrasRepairMaterials) {
+        this.extrasRepairMaterials = extrasRepairMaterials;
+    }
+
+    public BigDecimal getExtrasRepairSpecialist() {
+        return extrasRepairSpecialist;
+    }
+
+    public void setExtrasRepairSpecialist(BigDecimal extrasRepairSpecialist) {
+        this.extrasRepairSpecialist = extrasRepairSpecialist;
     }
 
     public boolean isSubscriberClaim() {
