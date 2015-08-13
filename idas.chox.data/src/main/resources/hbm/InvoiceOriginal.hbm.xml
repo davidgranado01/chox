@@ -73,7 +73,7 @@
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         <property column="repair_admin_fee" name="repairAdminFeeOriginal"/>
         <property column="repair_acquisition_fee" name="repairAcquisitionFeeOriginal"/>
-        <property column="repair_parts" name="repairPartsFeeOriginal"/>
+        <property column="repair_parts" name="repairPartsOriginal"/>
         <property column="repair_labour" name="repairLabourOriginal"/>
         <property column="repair_materials" name="repairMaterialsOriginal"/>
         <property column="repair_specialist" name="repairSpecialistOriginal"/>
