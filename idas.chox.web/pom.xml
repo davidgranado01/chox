@@ -523,7 +523,11 @@
             <version>3.2.1.Final</version>
             <scope>runtime</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>3.4</version>
+        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
