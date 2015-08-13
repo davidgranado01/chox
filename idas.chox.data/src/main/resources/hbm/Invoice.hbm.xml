@@ -100,7 +100,7 @@
         <property column="final_payment" name="finalPayment"/>
         <property column="repair_admin_fee" name="repairAdminFee"/>
         <property column="repair_acquisition_fee" name="repairAcquisitionFee"/>
-        <property column="repair_parts" name="repairPartsFee"/>
+        <property column="repair_parts" name="repairParts"/>
         <property column="repair_labour" name="repairLabour"/>
         <property column="repair_materials" name="repairMaterials"/>
         <property column="repair_specialist" name="repairSpecialist"/>
