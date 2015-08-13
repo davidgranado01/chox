@@ -200,6 +200,23 @@
         <property name="attachmentService" ref="attachmentService" />
     </bean>
     
+    <bean id="tlTaskEmailJob" class="idas.chox.web.scheduler.TlTaskCsvEmailSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="claimService" ref="claimService" />
+        <property name="activityFactory" ref="activityFactory" />
+    </bean>
+    
     <!--  Stored Procedure call: addMissingEcdTask -->
     <bean id="addMissingEcdTaskJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
         <property name="baseDataService" ref="baseDataService" />
@@ -285,6 +302,12 @@
 
     <bean id="totalLossPackMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="totalLossPackEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="tlTaskEmailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="tlTaskEmailJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
@@ -405,7 +428,15 @@
     </bean> 
     <bean id="cronTotalLossPackTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="totalLossPackMailJobDetail" /> 
-        <property name="cronExpression" value="0 5/30 8-14 ? * 1,7" /> 
+        <property name="cronExpression" value="0 5/30 8-14 ? ** 1,7" /> 
+    </bean> 
+    <bean id="cronTlTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="tlTaskEmailJobDetail" /> 
+        <property name="cronExpression" value="0 3/30 7-19 ? * 2-6" /> 
+    </bean> 
+    <bean id="cronTlTaskTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="tlTaskEmailJobDetail" /> 
+        <property name="cronExpression" value="0 3/30 8-14 ? * 1,7" /> 
     </bean> 
     <bean id="updateWorkflowTablesTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateWorkflowTablesJobDetail" /> 
@@ -440,6 +471,7 @@
                 <ref bean="totalLossNotificationMailJobDetail" />
                 <ref bean="totalLossPackMailJobDetail" />
                 <ref bean="updateWorkflowTablesJobDetail" />
+                <ref bean="tlTaskEmailJobDetail" />
             </list>
         </property>
         <property name="triggers">
@@ -465,6 +497,8 @@
                 <ref bean="cronTotalLossPackTriggerWeek" />
                 <ref bean="cronTotalLossPackTriggerWeekend" />
                 <ref bean="updateWorkflowTablesTriggerDaily" />
+                <ref bean="cronTlTaskTriggerWeek" />
+                <ref bean="cronTlTaskTriggerWeekend" />
             </list>
         </property>
     </bean>
