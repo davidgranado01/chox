@@ -1,0 +1,1166 @@
+Option Explicit
+
+Global UserCanc As Boolean
+Global MacTitle As String
+Global XMLFile As String
+Private Type HireExtraType
+    Desc As String
+    Cost As Double
+    Units As Long
+End Type
+Private Type RepairExtraType
+    Desc As String
+    Cost As Double
+End Type
+Private HireExtras() As HireExtraType
+Private RepairExtras() As RepairExtraType
+Private RepairExtrasCount As Long
+Private HireExtrasCount As Long
+
+Private NoDaysHire As Long
+
+
+
+'Copyright Sherwood Technology Solution Ltd
+'All rights reserved
+
+'REMEMBER TO UPDATE VERSION IN MACRO!!!
+
+Sub CHOX()
+
+Dim XMLFileNum As Long
+Dim CurrRowCounter As Long
+Dim tmpCurrDate As String
+Dim tmpHireExtras As HireExtraType
+Dim tmpRepairExtras As RepairExtraType
+Dim f As Long
+Dim tmpTotNet As Double
+Dim tmpTotVat As Double
+Dim MacVersion As String
+Dim XMLVersion As String
+Dim ItemCount As Long
+Dim choInsFinder As String
+
+
+MacVersion = "2.11"
+XMLVersion = "2.11"
+
+MacTitle = "CHOX"
+
+If RemoveIllegals(UCase(Range("A1").Text)) <> UCase("CHOX Bordereau") Then
+    MsgBox "The current spreadsheet does not appear to be an iDAS CHOX bordereau - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+End If
+
+If Trim(Range("A7").Text & Range("B7").Text & Range("C7").Text & Range("D7").Text & Range("E7").Text & Range("F7").Text & _
+Range("G7").Text & Range("H7").Text & Range("I7").Text) <> "" Then
+    MsgBox "Unexpected data found in Row 7 - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+End If
+
+If Trim(Range("A8").Text & Range("B8").Text & Range("C8").Text & Range("D8").Text) = "" Then
+    MsgBox "No data found in Row 8 - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+End If
+
+frmInput.Show (vbModal)
+
+If UserCanc Then Exit Sub
+
+Application.ScreenUpdating = False
+
+XMLFileNum = FreeFile
+
+Open XMLFile For Output As XMLFileNum
+Print #XMLFileNum, "<?xml version=""1.0"" encoding=""UTF-8""?>"
+Print #XMLFileNum, "<chox xmlns=""http://www.idaschox.com/services/CHOX/"">"
+Print #XMLFileNum, "    <macroversion>" & MacVersion & "</macroversion>"
+Print #XMLFileNum, "    <xmlversion>" & XMLVersion & "</xmlversion>"
+
+CurrRowCounter = 8
+
+ItemCount = 0
+
+choInsFinder = UCase(RemoveIllegals(Range("C6")))
+
+tmpCurrDate = Range("A" & CStr(CurrRowCounter))
+
+If UCase(RemoveIllegals(Range("A3"))) = "CHO" Then
+
+ If Trim(choInsFinder) = "MANAGING REPAIR?" Then
+ 
+  Do Until RemoveIllegals(tmpCurrDate) = ""
+            
+    If Trim(Range("EC" & CStr(CurrRowCounter)).Value) = "" Then
+        NoDaysHire = 0
+    Else
+        If Not IsNumeric(Range("EC" & CStr(CurrRowCounter)).Value) Then
+            NoDaysHire = 0
+        Else
+            NoDaysHire = CLng(Range("EC" & CStr(CurrRowCounter)).Value)
+        End If
+    End If
+    
+    Print #XMLFileNum, "    <rental>"
+    Print #XMLFileNum, "        <first-contact><![CDATA[" & ReturnDate(RemoveIllegals(Range("D" & CStr(CurrRowCounter)))) & "]]></first-contact>"
+'    Print #XMLFileNum, "        <notes>"
+'    Print #XMLFileNum, "            <note></note>"
+'    Print #XMLFileNum, "        </notes>"
+    ' Print #XMLFileNum, "        <supplier>"
+    ' Print #XMLFileNum, "            <supplier-name><![CDATA[" & CStr(RemoveIllegals(Range("B3"))) & "]]></supplier-name>"
+    Print #XMLFileNum, "        <supplier-reference><![CDATA[" & CStr(RemoveIllegals(Range("B" & CStr(CurrRowCounter)))) & "]]></supplier-reference>"
+    ' Print #XMLFileNum, "        </supplier>"
+    Print #XMLFileNum, "        <managing-repair><![CDATA[" & CStr(RemoveIllegals(Range("C" & CStr(CurrRowCounter)))) & "]]></managing-repair>"
+    Print #XMLFileNum, "        <agreement-signed><![CDATA[" & ReturnDate(RemoveIllegals(Range("E" & CStr(CurrRowCounter)).Value)) & "]]></agreement-signed>"
+    Print #XMLFileNum, "        <gta-notice><![CDATA[" & ReturnDate(RemoveIllegals(Range("F" & CStr(CurrRowCounter)))) & "]]></gta-notice>"
+    
+    HireExtrasCount = 0
+    ReDim HireExtras(HireExtrasCount)
+    
+    tmpHireExtras = GetHireExtras("ED", "EE", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EF", "EG", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EH", "EI", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EJ", "EK", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EL", "EM", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EN", "EO", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EP", "EQ", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("ER", "ES", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EU", "EV", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EW", "EX", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EY", "EZ", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    tmpHireExtras = GetHireExtras("FA", "FB", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+    
+    RepairExtrasCount = 0
+    ReDim RepairExtras(RepairExtrasCount)
+    
+    If Trim(UCase(RemoveIllegals(Range("GE5")))) <> "" Then
+        If UCase(RemoveIllegals(Range("GE5"))) = "HIRE EXTRAS" Then
+            If Trim(UCase(RemoveIllegals(Range("GE6")))) <> "" Then
+                tmpHireExtras = GetHireExtras("GE", "GF", CurrRowCounter)
+                HireExtrasCount = HireExtrasCount + 1
+                ReDim Preserve HireExtras(HireExtrasCount)
+                HireExtras(HireExtrasCount) = tmpHireExtras
+            End If
+        ElseIf UCase(RemoveIllegals(Range("GE5"))) = "REPAIR EXTRAS" Then
+            If Trim(UCase(RemoveIllegals(Range("GE6")))) <> "" Then
+                tmpRepairExtras = GetRepairExtras("GE", CurrRowCounter)
+                RepairExtrasCount = RepairExtrasCount + 1
+                ReDim Preserve RepairExtras(RepairExtrasCount)
+                RepairExtras(RepairExtrasCount) = tmpRepairExtras
+
+                tmpRepairExtras = GetRepairExtras("GF", CurrRowCounter)
+                RepairExtrasCount = RepairExtrasCount + 1
+                ReDim Preserve RepairExtras(RepairExtrasCount)
+                RepairExtras(RepairExtrasCount) = tmpRepairExtras
+                
+                If Trim(UCase(RemoveIllegals(Range("GG6")))) <> "" Then
+                
+                    tmpRepairExtras = GetRepairExtras("GG", CurrRowCounter)
+                    RepairExtrasCount = RepairExtrasCount + 1
+                    ReDim Preserve RepairExtras(RepairExtrasCount)
+                    RepairExtras(RepairExtrasCount) = tmpRepairExtras
+                    
+                    tmpRepairExtras = GetRepairExtras("GH", CurrRowCounter)
+                    RepairExtrasCount = RepairExtrasCount + 1
+                    ReDim Preserve RepairExtras(RepairExtrasCount)
+                    RepairExtras(RepairExtrasCount) = tmpRepairExtras
+                    
+                    tmpRepairExtras = GetRepairExtras("GI", CurrRowCounter)
+                    RepairExtrasCount = RepairExtrasCount + 1
+                    ReDim Preserve RepairExtras(RepairExtrasCount)
+                    RepairExtras(RepairExtrasCount) = tmpRepairExtras
+                    
+                    tmpRepairExtras = GetRepairExtras("GJ", CurrRowCounter)
+                    RepairExtrasCount = RepairExtrasCount + 1
+                    ReDim Preserve RepairExtras(RepairExtrasCount)
+                    RepairExtras(RepairExtrasCount) = tmpRepairExtras
+                    
+                End If
+            End If
+        End If
+    End If
+        
+    Print #XMLFileNum, "        <invoice>"
+        
+    Print #XMLFileNum, "            <less-handling-fee><![CDATA[" & CStr(Format(RemoveIllegals(Range("FX" & CStr(CurrRowCounter))), "#.00")) & "]]></less-handling-fee>"
+    Print #XMLFileNum, "            <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FY" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "            <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FZ" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "            <gross><![CDATA[" & CStr(Format(Range("GA" & CStr(CurrRowCounter)), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            <less-discount><![CDATA[" & CStr(Format(RemoveIllegals(Range("GB" & CStr(CurrRowCounter))), "#.00")) & "]]></less-discount>"
+    Print #XMLFileNum, "            <total-to-pay><![CDATA[" & CStr(Format(RemoveIllegals(Range("GC" & CStr(CurrRowCounter))), "#.00")) & "]]></total-to-pay>"
+    Print #XMLFileNum, "            <date-invoiced><![CDATA[" & ReturnDate(RemoveIllegals(Range("GD" & CStr(CurrRowCounter)))) & "]]></date-invoiced>"
+    
+    Print #XMLFileNum, "            <vehicles>"
+    Print #XMLFileNum, "                <day-rate><![CDATA[" & CStr(Format(RemoveIllegals(Range("FH" & CStr(CurrRowCounter))), "#.00")) & "]]></day-rate>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FI" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FJ" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FK" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </vehicles>"
+            
+    If HireExtrasCount > 0 Then
+        Print #XMLFileNum, "            <extras>"
+        Print #XMLFileNum, "                <cover-note-required><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("ET" & CStr(CurrRowCounter)))), 1)) & "]]></cover-note-required>"
+        
+        For f = 1 To HireExtrasCount
+            Print #XMLFileNum, "                <extra>"
+            Print #XMLFileNum, "                    <name><![CDATA[" & HireExtras(f).Desc & "]]></name>"
+            Print #XMLFileNum, "                    <quantity><![CDATA[" & CStr(HireExtras(f).Units) & "]]></quantity>"
+            Print #XMLFileNum, "                    <item-cost><![CDATA[" & CStr(Format(HireExtras(f).Cost, "#.00")) & "]]></item-cost>"
+            Print #XMLFileNum, "                </extra>"
+        Next f
+        Print #XMLFileNum, "            </extras>"
+    End If
+        
+    If RepairExtrasCount > 0 Then
+        Print #XMLFileNum, "            <repairExtras>"
+
+        For f = 1 To RepairExtrasCount
+            Print #XMLFileNum, "                <extra>"
+            Print #XMLFileNum, "                    <name><![CDATA[" & RepairExtras(f).Desc & "]]></name>"
+            Print #XMLFileNum, "                    <item-cost><![CDATA[" & CStr(Format(RepairExtras(f).Cost, "#.00")) & "]]></item-cost>"
+            Print #XMLFileNum, "                </extra>"
+        Next f
+        Print #XMLFileNum, "            </repairExtras>"
+    End If
+    
+    Print #XMLFileNum, "            <supplier>"
+    Print #XMLFileNum, "                <excess-collected><![CDATA[" & CStr(Format(RemoveIllegals(Range("FC" & CStr(CurrRowCounter))), "#.00")) & "]]></excess-collected>"
+    Print #XMLFileNum, "                <vat-collected><![CDATA[" & CStr(Format(RemoveIllegals(Range("FD" & CStr(CurrRowCounter))), "#.00")) & "]]></vat-collected>"
+    Print #XMLFileNum, "                <handling-invoice-no><![CDATA[" & CStr(RemoveIllegals(Range("FE" & CStr(CurrRowCounter)))) & "]]></handling-invoice-no>"
+    Print #XMLFileNum, "                <handling-invoice-amount><![CDATA[" & CStr(Format(RemoveIllegals(Range("FF" & CStr(CurrRowCounter))), "#.00")) & "]]></handling-invoice-amount>"
+    Print #XMLFileNum, "                <claim-invoice-no><![CDATA[" & CStr(RemoveIllegals(Range("FG" & CStr(CurrRowCounter)))) & "]]></claim-invoice-no>"
+    Print #XMLFileNum, "            </supplier>"
+    
+    Print #XMLFileNum, "            <repair>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FL" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FM" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FN" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </repair>"
+            
+    Print #XMLFileNum, "            <storage-recovery>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FU" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FV" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FW" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </storage-recovery>"
+        
+    Print #XMLFileNum, "            <engineer-fee>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FO" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FP" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FQ" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </engineer-fee>"
+        
+    Print #XMLFileNum, "            <total-loss>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FR" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FS" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FT" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </total-loss>"
+        
+    Print #XMLFileNum, "        </invoice>"
+
+    Print #XMLFileNum, "        <hire-state><![CDATA[" & CStr(RemoveIllegals(Range("A" & CStr(CurrRowCounter)))) & "]]></hire-state>"
+    
+    ' Print #XMLFileNum, "        <rental-vehicles>"
+    Print #XMLFileNum, "         <rental-vehicle>"
+    Print #XMLFileNum, "             <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("DX" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "             <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("DV" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "             <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("DW" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "             <vehicle-class><![CDATA[" & CStr(ConvertERACSubscriberVehicleClass(Range("DY" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "             <rental-start><![CDATA[" & ReturnDate(RemoveIllegals(Range("DZ" & CStr(CurrRowCounter)))) & "]]></rental-start>"
+    Print #XMLFileNum, "             <rental-end><![CDATA[" & ReturnDate(RemoveIllegals(Range("EA" & CStr(CurrRowCounter)))) & "]]></rental-end>"
+    Print #XMLFileNum, "             <collection-reason><![CDATA[" & CStr(RemoveIllegals(Range("EB" & CStr(CurrRowCounter)))) & "]]></collection-reason>"
+    Print #XMLFileNum, "             <rental-days><![CDATA[" & CStr(RemoveIllegals(Range("EC" & CStr(CurrRowCounter)))) & "]]></rental-days>"
+    Print #XMLFileNum, "         </rental-vehicle>"
+    ' Print #XMLFileNum, "        </rental-vehicles>"
+    
+    ' Print #XMLFileNum, "        <drivers>"
+    Print #XMLFileNum, "         <driver>"
+    Print #XMLFileNum, "             <title><![CDATA[" & CStr(RemoveIllegals(Range("G" & CStr(CurrRowCounter)))) & "]]></title>"
+    Print #XMLFileNum, "             <firstnames><![CDATA[" & CStr(RemoveIllegals(Range("H" & CStr(CurrRowCounter)))) & "]]></firstnames>"
+    Print #XMLFileNum, "             <lastname><![CDATA[" & CStr(RemoveIllegals(Range("I" & CStr(CurrRowCounter)))) & "]]></lastname>"
+    Print #XMLFileNum, "             <address1><![CDATA[" & CStr(RemoveIllegals(Range("J" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "             <address2><![CDATA[" & CStr(RemoveIllegals(Range("K" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "             <address3><![CDATA[" & CStr(RemoveIllegals(Range("L" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "             <address4><![CDATA[" & CStr(RemoveIllegals(Range("M" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "             <address5><![CDATA[" & CStr(RemoveIllegals(Range("N" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "             <postcode><![CDATA[" & CStr(RemoveIllegals(Range("O" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "             <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("P" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "             <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("Q" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "             <email><![CDATA[" & CStr(RemoveIllegals(Range("R" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "             <age><![CDATA[" & CStr(RemoveIllegals(Range("S" & CStr(CurrRowCounter)))) & "]]></age>"
+    Print #XMLFileNum, "             <occupation><![CDATA[" & CStr(RemoveIllegals(Range("T" & CStr(CurrRowCounter)))) & "]]></occupation>"
+    Print #XMLFileNum, "             <policy-usage><![CDATA[" & CStr(RemoveIllegals(Range("U" & CStr(CurrRowCounter)))) & "]]></policy-usage>"
+    ' Print #XMLFileNum, "             <primary-driver></primary-driver>"
+    Print #XMLFileNum, "         </driver>"
+    ' Print #XMLFileNum, "        </drivers>"
+        
+    Print #XMLFileNum, "        <claim>"
+    Print #XMLFileNum, "            <customer>"
+    Print #XMLFileNum, "                <insurer>"
+    Print #XMLFileNum, "                    <name><![CDATA[" & CStr(RemoveIllegals(Range("AE" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                    <policy-number><![CDATA[" & CStr(RemoveIllegals(Range("AF" & CStr(CurrRowCounter)))) & "]]></policy-number>"
+    Print #XMLFileNum, "                    <claim-number><![CDATA[" & CStr(RemoveIllegals(Range("AG" & CStr(CurrRowCounter)))) & "]]></claim-number>"
+    Print #XMLFileNum, "                    <comprehensive><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("AH" & CStr(CurrRowCounter)))), 1)) & "]]></comprehensive>"
+    Print #XMLFileNum, "                </insurer>"
+    Print #XMLFileNum, "                <vehicle>"
+    Print #XMLFileNum, "                    <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("AK" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "                    <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("AI" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "                    <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("AJ" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "                    <year-of-manufacture><![CDATA[" & CStr(RemoveIllegals(Range("AL" & CStr(CurrRowCounter)))) & "]]></year-of-manufacture>"
+    Print #XMLFileNum, "                    <vehicle-class><![CDATA[" & CStr(RemoveIllegalsVehicleClass(Range("AM" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "                    <location><![CDATA[" & CStr(RemoveIllegals(Range("AN" & CStr(CurrRowCounter)))) & "]]></location>"
+    Print #XMLFileNum, "                    <damage><![CDATA[" & CStr(RemoveIllegals(Range("BH" & CStr(CurrRowCounter)))) & "]]></damage>"
+    Print #XMLFileNum, "                    <usable><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BI" & CStr(CurrRowCounter)))), 1)) & "]]></usable>"
+    Print #XMLFileNum, "                    <total-loss><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BJ" & CStr(CurrRowCounter)))), 1)) & "]]></total-loss>"
+    Print #XMLFileNum, "                    <initial-ecd><![CDATA[" & ReturnDate(RemoveIllegals(Range("BK" & CStr(CurrRowCounter)))) & "]]></initial-ecd>"
+    Print #XMLFileNum, "                </vehicle>"
+    Print #XMLFileNum, "                <mitigation>"
+    Print #XMLFileNum, "                    <access-another-vehicle><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("V" & CStr(CurrRowCounter)))), 1)) & "]]></access-another-vehicle>"
+    Print #XMLFileNum, "                    <other-vehicle><![CDATA[" & CStr(RemoveIllegals(Range("X" & CStr(CurrRowCounter)))) & "]]></other-vehicle>"
+    Print #XMLFileNum, "                    <other-vehicle-regular-user><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("W" & CStr(CurrRowCounter)))), 1)) & "]]></other-vehicle-regular-user>"
+    Print #XMLFileNum, "                    <entitled-courtesy-car><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("Y" & CStr(CurrRowCounter)))), 1)) & "]]></entitled-courtesy-car>"
+    Print #XMLFileNum, "                    <specific-required><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("Z" & CStr(CurrRowCounter)))), 1)) & "]]></specific-required>"
+    Print #XMLFileNum, "                    <why-specific><![CDATA[" & CStr(RemoveIllegals(Range("AA" & CStr(CurrRowCounter)))) & "]]></why-specific>"
+    Print #XMLFileNum, "                    <type-required><![CDATA[" & CStr(RemoveIllegals(Range("AB" & CStr(CurrRowCounter)))) & "]]></type-required>"
+    Print #XMLFileNum, "                    <special-requirements><![CDATA[" & CStr(RemoveIllegals(Range("AC" & CStr(CurrRowCounter)))) & "]]></special-requirements>"
+    Print #XMLFileNum, "                    <ave-daily-mileage><![CDATA[" & CStr(RemoveIllegals(Range("AD" & CStr(CurrRowCounter)))) & "]]></ave-daily-mileage>"
+    Print #XMLFileNum, "                </mitigation>"
+    Print #XMLFileNum, "            </customer>"
+
+    Print #XMLFileNum, "            <third-party>"
+    Print #XMLFileNum, "                <insurer>"
+    Print #XMLFileNum, "                    <name><![CDATA[" & CStr(RemoveIllegals(Range("BA" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                    <policy-number><![CDATA[" & CStr(RemoveIllegals(Range("BB" & CStr(CurrRowCounter)))) & "]]></policy-number>"
+    Print #XMLFileNum, "                    <claim-number><![CDATA[" & CStr(RemoveIllegals(Range("BC" & CStr(CurrRowCounter)))) & "]]></claim-number>"
+    Print #XMLFileNum, "                </insurer>"
+    Print #XMLFileNum, "                <vehicle>"
+    Print #XMLFileNum, "                    <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("BF" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "                    <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("BD" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "                    <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("BE" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "                    <vehicle-class><![CDATA[" & CStr(RemoveIllegalsVehicleClass(Range("BG" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "                </vehicle>"
+    Print #XMLFileNum, "                <driver>"
+    Print #XMLFileNum, "                    <title><![CDATA[" & CStr(RemoveIllegals(Range("AO" & CStr(CurrRowCounter)))) & "]]></title>"
+    Print #XMLFileNum, "                    <firstnames><![CDATA[" & CStr(RemoveIllegals(Range("AP" & CStr(CurrRowCounter)))) & "]]></firstnames>"
+    Print #XMLFileNum, "                    <lastname><![CDATA[" & CStr(RemoveIllegals(Range("AQ" & CStr(CurrRowCounter)))) & "]]></lastname>"
+    Print #XMLFileNum, "                    <address1><![CDATA[" & CStr(RemoveIllegals(Range("AR" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                    <address2><![CDATA[" & CStr(RemoveIllegals(Range("AS" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                    <address3><![CDATA[" & CStr(RemoveIllegals(Range("AT" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                    <address4><![CDATA[" & CStr(RemoveIllegals(Range("AU" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                    <address5><![CDATA[" & CStr(RemoveIllegals(Range("AV" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                    <postcode><![CDATA[" & CStr(RemoveIllegals(Range("AW" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                    <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("AX" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                    <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("AY" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                    <email><![CDATA[" & CStr(RemoveIllegals(Range("AZ" & CStr(CurrRowCounter)))) & "]]></email>"
+'    Print #XMLFileNum, "                    <primary-driver></primary-driver>"
+    Print #XMLFileNum, "                </driver>"
+    Print #XMLFileNum, "            </third-party>"
+        
+    Print #XMLFileNum, "            <incident>"
+    Print #XMLFileNum, "                <date><![CDATA[" & ReturnDate(RemoveIllegals(Range("BL" & CStr(CurrRowCounter)))) & "]]></date>"
+    Print #XMLFileNum, "                <location><![CDATA[" & CStr(RemoveIllegals(Range("BM" & CStr(CurrRowCounter)))) & "]]></location>"
+    Print #XMLFileNum, "                <police-involved><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BN" & CStr(CurrRowCounter)))), 1)) & "]]></police-involved>"
+    Print #XMLFileNum, "                <description><![CDATA[" & CStr(RemoveIllegals(Range("BO" & CStr(CurrRowCounter)))) & "]]></description>"
+    
+    ' Print #XMLFileNum, "                <witnesses>"
+    Print #XMLFileNum, "                 <witness>"
+    Print #XMLFileNum, "                     <name><![CDATA[" & CStr(RemoveIllegals(Range("BP" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                     <address1><![CDATA[" & CStr(RemoveIllegals(Range("BQ" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                     <address2><![CDATA[" & CStr(RemoveIllegals(Range("BR" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                     <address3><![CDATA[" & CStr(RemoveIllegals(Range("BS" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                     <address4><![CDATA[" & CStr(RemoveIllegals(Range("BT" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                     <address5><![CDATA[" & CStr(RemoveIllegals(Range("BU" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                     <postcode><![CDATA[" & CStr(RemoveIllegals(Range("BV" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                     <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("BW" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                     <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("BX" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                     <email><![CDATA[" & CStr(RemoveIllegals(Range("BY" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "                 </witness>"
+    ' Print #XMLFileNum, "                </witnesses>"
+        
+    ' Print #XMLFileNum, "                <injuries>"
+    Print #XMLFileNum, "                <injury>"
+        
+    Print #XMLFileNum, "                     <name><![CDATA[" & CStr(RemoveIllegals(Range("BZ" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                     <address1><![CDATA[" & CStr(RemoveIllegals(Range("CA" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                     <address2><![CDATA[" & CStr(RemoveIllegals(Range("CB" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                     <address3><![CDATA[" & CStr(RemoveIllegals(Range("CC" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                     <address4><![CDATA[" & CStr(RemoveIllegals(Range("CD" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                     <address5><![CDATA[" & CStr(RemoveIllegals(Range("CE" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                     <postcode><![CDATA[" & CStr(RemoveIllegals(Range("CF" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                     <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("CG" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                     <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("CH" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                     <email><![CDATA[" & CStr(RemoveIllegals(Range("CI" & CStr(CurrRowCounter)))) & "]]></email>"
+        
+    Print #XMLFileNum, "                     <solicitor>"
+    Print #XMLFileNum, "                         <name><![CDATA[" & CStr(RemoveIllegals(Range("CJ" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                         <address1><![CDATA[" & CStr(RemoveIllegals(Range("CK" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                         <address2><![CDATA[" & CStr(RemoveIllegals(Range("CL" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                         <address3><![CDATA[" & CStr(RemoveIllegals(Range("CM" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                         <address4><![CDATA[" & CStr(RemoveIllegals(Range("CN" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                         <address5><![CDATA[" & CStr(RemoveIllegals(Range("CO" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                         <postcode><![CDATA[" & CStr(RemoveIllegals(Range("CP" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                         <telephone><![CDATA[" & CStr(RemoveIllegals(Range("CQ" & CStr(CurrRowCounter)))) & "]]></telephone>"
+    Print #XMLFileNum, "                         <email><![CDATA[" & CStr(RemoveIllegals(Range("CR" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "                     </solicitor>"
+        
+    Print #XMLFileNum, "                 </injury>"
+    ' Print #XMLFileNum, "                </injuries>"
+        
+    Print #XMLFileNum, "            </incident>"
+    Print #XMLFileNum, "        </claim>"
+    
+    Print #XMLFileNum, "        <repair>"
+    Print #XMLFileNum, "            <engineer-report>"
+        
+    Print #XMLFileNum, "                <labour-amount><![CDATA[" & CStr(RemoveIllegals(Range("CS" & CStr(CurrRowCounter)))) & "]]></labour-amount>"
+    Print #XMLFileNum, "                <total-amount><![CDATA[" & CStr(RemoveIllegals(Range("CT" & CStr(CurrRowCounter)))) & "]]></total-amount>"
+    Print #XMLFileNum, "                <days><![CDATA[" & CStr(RemoveIllegals(Range("CU" & CStr(CurrRowCounter)))) & "]]></days>"
+    Print #XMLFileNum, "                <usable><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("CV" & CStr(CurrRowCounter)))), 1)) & "]]></usable>"
+            
+    Print #XMLFileNum, "                <name><![CDATA[" & CStr(RemoveIllegals(Range("CW" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                <company><![CDATA[" & CStr(RemoveIllegals(Range("CX" & CStr(CurrRowCounter)))) & "]]></company>"
+    Print #XMLFileNum, "                <address1><![CDATA[" & CStr(RemoveIllegals(Range("CY" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                <address2><![CDATA[" & CStr(RemoveIllegals(Range("CZ" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                <address3><![CDATA[" & CStr(RemoveIllegals(Range("DA" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                <address4><![CDATA[" & CStr(RemoveIllegals(Range("DB" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                <address5><![CDATA[" & CStr(RemoveIllegals(Range("DC" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                <postcode><![CDATA[" & CStr(RemoveIllegals(Range("DD" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                <telephone><![CDATA[" & CStr(RemoveIllegals(Range("DE" & CStr(CurrRowCounter)))) & "]]></telephone>"
+    Print #XMLFileNum, "                <email><![CDATA[" & CStr(RemoveIllegals(Range("DF" & CStr(CurrRowCounter)))) & "]]></email>"
+        
+    Print #XMLFileNum, "            </engineer-report>"
+    
+    Print #XMLFileNum, "            <repair-details>"
+        
+    Print #XMLFileNum, "                <repairer><![CDATA[" & CStr(RemoveIllegals(Range("DG" & CStr(CurrRowCounter)))) & "]]></repairer>"
+    Print #XMLFileNum, "                <inspection-booked-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DH" & CStr(CurrRowCounter)))) & "]]></inspection-booked-date>"
+    Print #XMLFileNum, "                <inspection-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DI" & CStr(CurrRowCounter)))) & "]]></inspection-date>"
+    Print #XMLFileNum, "                <repair-book-in-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DJ" & CStr(CurrRowCounter)))) & "]]></repair-book-in-date>"
+    Print #XMLFileNum, "                <repair-authorised-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DK" & CStr(CurrRowCounter)))) & "]]></repair-authorised-date>"
+    Print #XMLFileNum, "                <repair-started-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DL" & CStr(CurrRowCounter)))) & "]]></repair-started-date>"
+    Print #XMLFileNum, "                <repair-complete-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DM" & CStr(CurrRowCounter)))) & "]]></repair-complete-date>"
+    Print #XMLFileNum, "                <name-ime><![CDATA[" & CStr(RemoveIllegals(Range("DN" & CStr(CurrRowCounter)))) & "]]></name-ime>"
+    Print #XMLFileNum, "                <labour-rate><![CDATA[" & CStr(Format(RemoveIllegals(Range("DO" & CStr(CurrRowCounter))), "#.00")) & "]]></labour-rate>"
+    Print #XMLFileNum, "                <labour-hours><![CDATA[" & CStr(RemoveIllegals(Range("DP" & CStr(CurrRowCounter)))) & "]]></labour-hours>"
+    Print #XMLFileNum, "                <labour-cost><![CDATA[" & CStr(Format(RemoveIllegals(Range("DQ" & CStr(CurrRowCounter))), "#.00")) & "]]></labour-cost>"
+    Print #XMLFileNum, "                <tl-offer-made-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DR" & CStr(CurrRowCounter)))) & "]]></tl-offer-made-date>"
+    Print #XMLFileNum, "                <tl-offer-accepted-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DS" & CStr(CurrRowCounter)))) & "]]></tl-offer-accepted-date>"
+    Print #XMLFileNum, "                <tl-cheque-issued><![CDATA[" & ReturnDate(RemoveIllegals(Range("DT" & CStr(CurrRowCounter)))) & "]]></tl-cheque-issued>"
+    Print #XMLFileNum, "                <tl-cheque-received><![CDATA[" & ReturnDate(RemoveIllegals(Range("DU" & CStr(CurrRowCounter)))) & "]]></tl-cheque-received>"
+            
+    Print #XMLFileNum, "            </repair-details>"
+    
+    
+    Print #XMLFileNum, "        </repair>"
+            
+    Print #XMLFileNum, "    </rental>"
+    
+    CurrRowCounter = CurrRowCounter + 1
+    ItemCount = ItemCount + 1
+    tmpCurrDate = Range("A" & CStr(CurrRowCounter))
+   
+  Loop
+ 
+ Else
+    MsgBox "The current spreadsheet does not have expected value in C6 column - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+ End If
+ 
+ElseIf UCase(RemoveIllegals(Range("A3"))) = "INSURER" Then
+
+ If Trim(choInsFinder) = "SUPPLIER NAME" Then
+ 
+  Do Until RemoveIllegals(tmpCurrDate) = ""
+ 
+    If Trim(Range("ED" & CStr(CurrRowCounter)).Value) = "" Then
+        NoDaysHire = 0
+    Else
+        If Not IsNumeric(Range("ED" & CStr(CurrRowCounter)).Value) Then
+            NoDaysHire = 0
+        Else
+            NoDaysHire = CLng(Range("ED" & CStr(CurrRowCounter)).Value)
+        End If
+    End If
+    
+    Print #XMLFileNum, "    <rental>"
+    Print #XMLFileNum, "        <first-contact><![CDATA[" & ReturnDate(RemoveIllegals(Range("E" & CStr(CurrRowCounter)))) & "]]></first-contact>"
+'    Print #XMLFileNum, "        <notes>"
+'    Print #XMLFileNum, "            <note></note>"
+'    Print #XMLFileNum, "        </notes>"
+    ' Print #XMLFileNum, "        <supplier>"
+    Print #XMLFileNum, "        <supplier-name><![CDATA[" & CStr(RemoveIllegals(Range("C" & CStr(CurrRowCounter)))) & "]]></supplier-name>"
+    Print #XMLFileNum, "        <supplier-reference><![CDATA[" & CStr(RemoveIllegals(Range("B" & CStr(CurrRowCounter)))) & "]]></supplier-reference>"
+    ' Print #XMLFileNum, "        </supplier>"
+    Print #XMLFileNum, "        <managing-repair><![CDATA[" & CStr(RemoveIllegals(Range("D" & CStr(CurrRowCounter)))) & "]]></managing-repair>"
+    Print #XMLFileNum, "        <agreement-signed><![CDATA[" & ReturnDate(RemoveIllegals(Range("F" & CStr(CurrRowCounter)).Value)) & "]]></agreement-signed>"
+    Print #XMLFileNum, "        <gta-notice><![CDATA[" & ReturnDate(RemoveIllegals(Range("G" & CStr(CurrRowCounter)))) & "]]></gta-notice>"
+    
+    HireExtrasCount = 0
+    ReDim HireExtras(HireExtrasCount)
+    
+    tmpHireExtras = GetHireExtras("EE", "EF", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EG", "EH", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EI", "EJ", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EK", "EL", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EM", "EN", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EO", "EP", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EQ", "ER", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("ES", "ET", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EV", "EW", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EX", "EY", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    
+    tmpHireExtras = GetHireExtras("EZ", "FA", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+
+    tmpHireExtras = GetHireExtras("FB", "FC", CurrRowCounter)
+    HireExtrasCount = HireExtrasCount + 1
+    ReDim Preserve HireExtras(HireExtrasCount)
+    HireExtras(HireExtrasCount) = tmpHireExtras
+    
+    Print #XMLFileNum, "        <invoice>"
+        
+    Print #XMLFileNum, "            <less-handling-fee><![CDATA[" & CStr(Format(RemoveIllegals(Range("FY" & CStr(CurrRowCounter))), "#.00")) & "]]></less-handling-fee>"
+    Print #XMLFileNum, "            <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FZ" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "            <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("GA" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "            <gross><![CDATA[" & CStr(Format(Range("GB" & CStr(CurrRowCounter)), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            <less-discount><![CDATA[" & CStr(Format(RemoveIllegals(Range("GC" & CStr(CurrRowCounter))), "#.00")) & "]]></less-discount>"
+    Print #XMLFileNum, "            <total-to-pay><![CDATA[" & CStr(Format(RemoveIllegals(Range("GD" & CStr(CurrRowCounter))), "#.00")) & "]]></total-to-pay>"
+    Print #XMLFileNum, "            <date-invoiced><![CDATA[" & ReturnDate(RemoveIllegals(Range("GE" & CStr(CurrRowCounter)))) & "]]></date-invoiced>"
+    
+    Print #XMLFileNum, "            <vehicles>"
+    Print #XMLFileNum, "                <day-rate><![CDATA[" & CStr(Format(RemoveIllegals(Range("FI" & CStr(CurrRowCounter))), "#.00")) & "]]></day-rate>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FJ" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FK" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FL" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </vehicles>"
+            
+    If HireExtrasCount > 0 Then
+        Print #XMLFileNum, "            <extras>"
+        Print #XMLFileNum, "                <cover-note-required><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("EU" & CStr(CurrRowCounter)))), 1)) & "]]></cover-note-required>"
+        
+        For f = 1 To HireExtrasCount
+            Print #XMLFileNum, "                <extra>"
+            Print #XMLFileNum, "                    <name><![CDATA[" & HireExtras(f).Desc & "]]></name>"
+            Print #XMLFileNum, "                    <quantity><![CDATA[" & CStr(HireExtras(f).Units) & "]]></quantity>"
+            Print #XMLFileNum, "                    <item-cost><![CDATA[" & CStr(Format(HireExtras(f).Cost, "#.00")) & "]]></item-cost>"
+            Print #XMLFileNum, "                </extra>"
+        Next f
+        Print #XMLFileNum, "            </extras>"
+    End If
+        
+    Print #XMLFileNum, "            <supplier>"
+    Print #XMLFileNum, "                <excess-collected><![CDATA[" & CStr(Format(RemoveIllegals(Range("FD" & CStr(CurrRowCounter))), "#.00")) & "]]></excess-collected>"
+    Print #XMLFileNum, "                <vat-collected><![CDATA[" & CStr(Format(RemoveIllegals(Range("FE" & CStr(CurrRowCounter))), "#.00")) & "]]></vat-collected>"
+    Print #XMLFileNum, "                <handling-invoice-no><![CDATA[" & CStr(RemoveIllegals(Range("FF" & CStr(CurrRowCounter)))) & "]]></handling-invoice-no>"
+    Print #XMLFileNum, "                <handling-invoice-amount><![CDATA[" & CStr(Format(RemoveIllegals(Range("FG" & CStr(CurrRowCounter))), "#.00")) & "]]></handling-invoice-amount>"
+    Print #XMLFileNum, "                <claim-invoice-no><![CDATA[" & CStr(RemoveIllegals(Range("FH" & CStr(CurrRowCounter)))) & "]]></claim-invoice-no>"
+    Print #XMLFileNum, "            </supplier>"
+    
+    Print #XMLFileNum, "            <repair>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FM" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FN" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FO" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </repair>"
+            
+    Print #XMLFileNum, "            <storage-recovery>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FV" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FW" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FX" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </storage-recovery>"
+        
+    Print #XMLFileNum, "            <engineer-fee>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FP" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FQ" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FR" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </engineer-fee>"
+        
+    Print #XMLFileNum, "            <total-loss>"
+    Print #XMLFileNum, "                <net><![CDATA[" & CStr(Format(RemoveIllegals(Range("FS" & CStr(CurrRowCounter))), "#.00")) & "]]></net>"
+    Print #XMLFileNum, "                <vat><![CDATA[" & CStr(Format(RemoveIllegals(Range("FT" & CStr(CurrRowCounter))), "#.00")) & "]]></vat>"
+    Print #XMLFileNum, "                <gross><![CDATA[" & CStr(Format(RemoveIllegals(Range("FU" & CStr(CurrRowCounter))), "#.00")) & "]]></gross>"
+    Print #XMLFileNum, "            </total-loss>"
+        
+    Print #XMLFileNum, "        </invoice>"
+
+    Print #XMLFileNum, "        <hire-state><![CDATA[" & CStr(RemoveIllegals(Range("A" & CStr(CurrRowCounter)))) & "]]></hire-state>"
+    
+    ' Print #XMLFileNum, "        <rental-vehicles>"
+    Print #XMLFileNum, "         <rental-vehicle>"
+    Print #XMLFileNum, "             <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("DY" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "             <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("DW" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "             <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("DX" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "             <vehicle-class><![CDATA[" & CStr(RemoveIllegalsVehicleClass(Range("DZ" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "             <rental-start><![CDATA[" & ReturnDate(RemoveIllegals(Range("EA" & CStr(CurrRowCounter)))) & "]]></rental-start>"
+    Print #XMLFileNum, "             <rental-end><![CDATA[" & ReturnDate(RemoveIllegals(Range("EB" & CStr(CurrRowCounter)))) & "]]></rental-end>"
+    Print #XMLFileNum, "             <collection-reason><![CDATA[" & CStr(RemoveIllegals(Range("EC" & CStr(CurrRowCounter)))) & "]]></collection-reason>"
+    Print #XMLFileNum, "             <rental-days><![CDATA[" & CStr(RemoveIllegals(Range("ED" & CStr(CurrRowCounter)))) & "]]></rental-days>"
+    Print #XMLFileNum, "         </rental-vehicle>"
+    ' Print #XMLFileNum, "        </rental-vehicles>"
+    
+    ' Print #XMLFileNum, "        <drivers>"
+    Print #XMLFileNum, "         <driver>"
+    Print #XMLFileNum, "             <title><![CDATA[" & CStr(RemoveIllegals(Range("H" & CStr(CurrRowCounter)))) & "]]></title>"
+    Print #XMLFileNum, "             <firstnames><![CDATA[" & CStr(RemoveIllegals(Range("I" & CStr(CurrRowCounter)))) & "]]></firstnames>"
+    Print #XMLFileNum, "             <lastname><![CDATA[" & CStr(RemoveIllegals(Range("J" & CStr(CurrRowCounter)))) & "]]></lastname>"
+    Print #XMLFileNum, "             <address1><![CDATA[" & CStr(RemoveIllegals(Range("K" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "             <address2><![CDATA[" & CStr(RemoveIllegals(Range("L" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "             <address3><![CDATA[" & CStr(RemoveIllegals(Range("M" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "             <address4><![CDATA[" & CStr(RemoveIllegals(Range("N" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "             <address5><![CDATA[" & CStr(RemoveIllegals(Range("O" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "             <postcode><![CDATA[" & CStr(RemoveIllegals(Range("P" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "             <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("Q" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "             <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("R" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "             <email><![CDATA[" & CStr(RemoveIllegals(Range("S" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "             <age><![CDATA[" & CStr(RemoveIllegals(Range("T" & CStr(CurrRowCounter)))) & "]]></age>"
+    Print #XMLFileNum, "             <occupation><![CDATA[" & CStr(RemoveIllegals(Range("U" & CStr(CurrRowCounter)))) & "]]></occupation>"
+    Print #XMLFileNum, "             <policy-usage><![CDATA[" & CStr(RemoveIllegals(Range("V" & CStr(CurrRowCounter)))) & "]]></policy-usage>"
+    ' Print #XMLFileNum, "             <primary-driver></primary-driver>"
+    Print #XMLFileNum, "         </driver>"
+    ' Print #XMLFileNum, "        </drivers>"
+        
+    Print #XMLFileNum, "        <claim>"
+    Print #XMLFileNum, "            <customer>"
+    Print #XMLFileNum, "                <insurer>"
+    Print #XMLFileNum, "                    <name><![CDATA[" & CStr(RemoveIllegals(Range("AF" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                    <policy-number><![CDATA[" & CStr(RemoveIllegals(Range("AG" & CStr(CurrRowCounter)))) & "]]></policy-number>"
+    Print #XMLFileNum, "                    <claim-number><![CDATA[" & CStr(RemoveIllegals(Range("AH" & CStr(CurrRowCounter)))) & "]]></claim-number>"
+    Print #XMLFileNum, "                    <comprehensive><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("AI" & CStr(CurrRowCounter)))), 1)) & "]]></comprehensive>"
+    Print #XMLFileNum, "                </insurer>"
+    Print #XMLFileNum, "                <vehicle>"
+    Print #XMLFileNum, "                    <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("AL" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "                    <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("AJ" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "                    <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("AK" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "                    <year-of-manufacture><![CDATA[" & CStr(RemoveIllegals(Range("AM" & CStr(CurrRowCounter)))) & "]]></year-of-manufacture>"
+    Print #XMLFileNum, "                    <vehicle-class><![CDATA[" & CStr(RemoveIllegalsVehicleClass(Range("AN" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "                    <location><![CDATA[" & CStr(RemoveIllegals(Range("AO" & CStr(CurrRowCounter)))) & "]]></location>"
+    Print #XMLFileNum, "                    <damage><![CDATA[" & CStr(RemoveIllegals(Range("BI" & CStr(CurrRowCounter)))) & "]]></damage>"
+    Print #XMLFileNum, "                    <usable><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BJ" & CStr(CurrRowCounter)))), 1)) & "]]></usable>"
+    Print #XMLFileNum, "                    <total-loss><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BK" & CStr(CurrRowCounter)))), 1)) & "]]></total-loss>"
+    Print #XMLFileNum, "                    <initial-ecd><![CDATA[" & ReturnDate(RemoveIllegals(Range("BL" & CStr(CurrRowCounter)))) & "]]></initial-ecd>"
+    Print #XMLFileNum, "                </vehicle>"
+    Print #XMLFileNum, "                <mitigation>"
+    Print #XMLFileNum, "                    <access-another-vehicle><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("W" & CStr(CurrRowCounter)))), 1)) & "]]></access-another-vehicle>"
+    Print #XMLFileNum, "                    <other-vehicle><![CDATA[" & CStr(RemoveIllegals(Range("Y" & CStr(CurrRowCounter)))) & "]]></other-vehicle>"
+    Print #XMLFileNum, "                    <other-vehicle-regular-user><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("X" & CStr(CurrRowCounter)))), 1)) & "]]></other-vehicle-regular-user>"
+    Print #XMLFileNum, "                    <entitled-courtesy-car><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("Z" & CStr(CurrRowCounter)))), 1)) & "]]></entitled-courtesy-car>"
+    Print #XMLFileNum, "                    <specific-required><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("AA" & CStr(CurrRowCounter)))), 1)) & "]]></specific-required>"
+    Print #XMLFileNum, "                    <why-specific><![CDATA[" & CStr(RemoveIllegals(Range("AB" & CStr(CurrRowCounter)))) & "]]></why-specific>"
+    Print #XMLFileNum, "                    <type-required><![CDATA[" & CStr(RemoveIllegals(Range("AC" & CStr(CurrRowCounter)))) & "]]></type-required>"
+    Print #XMLFileNum, "                    <special-requirements><![CDATA[" & CStr(RemoveIllegals(Range("AD" & CStr(CurrRowCounter)))) & "]]></special-requirements>"
+    Print #XMLFileNum, "                    <ave-daily-mileage><![CDATA[" & CStr(RemoveIllegals(Range("AE" & CStr(CurrRowCounter)))) & "]]></ave-daily-mileage>"
+    Print #XMLFileNum, "                </mitigation>"
+    Print #XMLFileNum, "            </customer>"
+
+    Print #XMLFileNum, "            <third-party>"
+    Print #XMLFileNum, "                <insurer>"
+    Print #XMLFileNum, "                    <name><![CDATA[" & CStr(RemoveIllegals(Range("BB" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                    <policy-number><![CDATA[" & CStr(RemoveIllegals(Range("BC" & CStr(CurrRowCounter)))) & "]]></policy-number>"
+    Print #XMLFileNum, "                    <claim-number><![CDATA[" & CStr(RemoveIllegals(Range("BD" & CStr(CurrRowCounter)))) & "]]></claim-number>"
+    Print #XMLFileNum, "                </insurer>"
+    Print #XMLFileNum, "                <vehicle>"
+    Print #XMLFileNum, "                    <vehicle-registration><![CDATA[" & CStr(RemoveIllegals(Range("BG" & CStr(CurrRowCounter)))) & "]]></vehicle-registration>"
+    Print #XMLFileNum, "                    <vehicle-manufacturer><![CDATA[" & CStr(RemoveIllegals(Range("BE" & CStr(CurrRowCounter)))) & "]]></vehicle-manufacturer>"
+    Print #XMLFileNum, "                    <vehicle-model><![CDATA[" & CStr(RemoveIllegals(Range("BF" & CStr(CurrRowCounter)))) & "]]></vehicle-model>"
+    Print #XMLFileNum, "                    <vehicle-class><![CDATA[" & CStr(RemoveIllegalsVehicleClass(Range("BH" & CStr(CurrRowCounter)))) & "]]></vehicle-class>"
+    Print #XMLFileNum, "                </vehicle>"
+    Print #XMLFileNum, "                <driver>"
+    Print #XMLFileNum, "                    <title><![CDATA[" & CStr(RemoveIllegals(Range("AP" & CStr(CurrRowCounter)))) & "]]></title>"
+    Print #XMLFileNum, "                    <firstnames><![CDATA[" & CStr(RemoveIllegals(Range("AQ" & CStr(CurrRowCounter)))) & "]]></firstnames>"
+    Print #XMLFileNum, "                    <lastname><![CDATA[" & CStr(RemoveIllegals(Range("AR" & CStr(CurrRowCounter)))) & "]]></lastname>"
+    Print #XMLFileNum, "                    <address1><![CDATA[" & CStr(RemoveIllegals(Range("AS" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                    <address2><![CDATA[" & CStr(RemoveIllegals(Range("AT" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                    <address3><![CDATA[" & CStr(RemoveIllegals(Range("AU" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                    <address4><![CDATA[" & CStr(RemoveIllegals(Range("AV" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                    <address5><![CDATA[" & CStr(RemoveIllegals(Range("AW" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                    <postcode><![CDATA[" & CStr(RemoveIllegals(Range("AX" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                    <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("AY" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                    <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("AZ" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                    <email><![CDATA[" & CStr(RemoveIllegals(Range("BA" & CStr(CurrRowCounter)))) & "]]></email>"
+'    Print #XMLFileNum, "                    <primary-driver></primary-driver>"
+    Print #XMLFileNum, "                </driver>"
+    Print #XMLFileNum, "            </third-party>"
+        
+    Print #XMLFileNum, "            <incident>"
+    Print #XMLFileNum, "                <date><![CDATA[" & ReturnDate(RemoveIllegals(Range("BM" & CStr(CurrRowCounter)))) & "]]></date>"
+    Print #XMLFileNum, "                <location><![CDATA[" & CStr(RemoveIllegals(Range("BN" & CStr(CurrRowCounter)))) & "]]></location>"
+    Print #XMLFileNum, "                <police-involved><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("BO" & CStr(CurrRowCounter)))), 1)) & "]]></police-involved>"
+    Print #XMLFileNum, "                <description><![CDATA[" & CStr(RemoveIllegals(Range("BP" & CStr(CurrRowCounter)))) & "]]></description>"
+    
+    ' Print #XMLFileNum, "                <witnesses>"
+    Print #XMLFileNum, "                 <witness>"
+    Print #XMLFileNum, "                     <name><![CDATA[" & CStr(RemoveIllegals(Range("BQ" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                     <address1><![CDATA[" & CStr(RemoveIllegals(Range("BR" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                     <address2><![CDATA[" & CStr(RemoveIllegals(Range("BS" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                     <address3><![CDATA[" & CStr(RemoveIllegals(Range("BT" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                     <address4><![CDATA[" & CStr(RemoveIllegals(Range("BU" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                     <address5><![CDATA[" & CStr(RemoveIllegals(Range("BV" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                     <postcode><![CDATA[" & CStr(RemoveIllegals(Range("BW" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                     <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("BX" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                     <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("BY" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                     <email><![CDATA[" & CStr(RemoveIllegals(Range("BZ" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "                 </witness>"
+    ' Print #XMLFileNum, "                </witnesses>"
+        
+    ' Print #XMLFileNum, "                <injuries>"
+    Print #XMLFileNum, "                <injury>"
+        
+    Print #XMLFileNum, "                     <name><![CDATA[" & CStr(RemoveIllegals(Range("CA" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                     <address1><![CDATA[" & CStr(RemoveIllegals(Range("CB" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                     <address2><![CDATA[" & CStr(RemoveIllegals(Range("CC" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                     <address3><![CDATA[" & CStr(RemoveIllegals(Range("CD" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                     <address4><![CDATA[" & CStr(RemoveIllegals(Range("CE" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                     <address5><![CDATA[" & CStr(RemoveIllegals(Range("CF" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                     <postcode><![CDATA[" & CStr(RemoveIllegals(Range("CG" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                     <telephone-day><![CDATA[" & CStr(RemoveIllegals(Range("CH" & CStr(CurrRowCounter)))) & "]]></telephone-day>"
+    Print #XMLFileNum, "                     <telephone-evening><![CDATA[" & CStr(RemoveIllegals(Range("CI" & CStr(CurrRowCounter)))) & "]]></telephone-evening>"
+    Print #XMLFileNum, "                     <email><![CDATA[" & CStr(RemoveIllegals(Range("CJ" & CStr(CurrRowCounter)))) & "]]></email>"
+        
+    Print #XMLFileNum, "                     <solicitor>"
+    Print #XMLFileNum, "                         <name><![CDATA[" & CStr(RemoveIllegals(Range("CK" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                         <address1><![CDATA[" & CStr(RemoveIllegals(Range("CL" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                         <address2><![CDATA[" & CStr(RemoveIllegals(Range("CM" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                         <address3><![CDATA[" & CStr(RemoveIllegals(Range("CN" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                         <address4><![CDATA[" & CStr(RemoveIllegals(Range("CO" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                         <address5><![CDATA[" & CStr(RemoveIllegals(Range("CP" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                         <postcode><![CDATA[" & CStr(RemoveIllegals(Range("CQ" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                         <telephone><![CDATA[" & CStr(RemoveIllegals(Range("CR" & CStr(CurrRowCounter)))) & "]]></telephone>"
+    Print #XMLFileNum, "                         <email><![CDATA[" & CStr(RemoveIllegals(Range("CS" & CStr(CurrRowCounter)))) & "]]></email>"
+    Print #XMLFileNum, "                     </solicitor>"
+        
+    Print #XMLFileNum, "                 </injury>"
+    ' Print #XMLFileNum, "                </injuries>"
+        
+    Print #XMLFileNum, "            </incident>"
+    Print #XMLFileNum, "        </claim>"
+    
+    Print #XMLFileNum, "        <repair>"
+    Print #XMLFileNum, "            <engineer-report>"
+        
+    Print #XMLFileNum, "                <labour-amount><![CDATA[" & CStr(RemoveIllegals(Range("CT" & CStr(CurrRowCounter)))) & "]]></labour-amount>"
+    Print #XMLFileNum, "                <total-amount><![CDATA[" & CStr(RemoveIllegals(Range("CU" & CStr(CurrRowCounter)))) & "]]></total-amount>"
+    Print #XMLFileNum, "                <days><![CDATA[" & CStr(RemoveIllegals(Range("CV" & CStr(CurrRowCounter)))) & "]]></days>"
+    Print #XMLFileNum, "                <usable><![CDATA[" & LCase(Left(CStr(RemoveIllegals(Range("CW" & CStr(CurrRowCounter)))), 1)) & "]]></usable>"
+            
+    Print #XMLFileNum, "                <name><![CDATA[" & CStr(RemoveIllegals(Range("CX" & CStr(CurrRowCounter)))) & "]]></name>"
+    Print #XMLFileNum, "                <company><![CDATA[" & CStr(RemoveIllegals(Range("CY" & CStr(CurrRowCounter)))) & "]]></company>"
+    Print #XMLFileNum, "                <address1><![CDATA[" & CStr(RemoveIllegals(Range("CZ" & CStr(CurrRowCounter)))) & "]]></address1>"
+    Print #XMLFileNum, "                <address2><![CDATA[" & CStr(RemoveIllegals(Range("DA" & CStr(CurrRowCounter)))) & "]]></address2>"
+    Print #XMLFileNum, "                <address3><![CDATA[" & CStr(RemoveIllegals(Range("DB" & CStr(CurrRowCounter)))) & "]]></address3>"
+    Print #XMLFileNum, "                <address4><![CDATA[" & CStr(RemoveIllegals(Range("DC" & CStr(CurrRowCounter)))) & "]]></address4>"
+    Print #XMLFileNum, "                <address5><![CDATA[" & CStr(RemoveIllegals(Range("DD" & CStr(CurrRowCounter)))) & "]]></address5>"
+    Print #XMLFileNum, "                <postcode><![CDATA[" & CStr(RemoveIllegals(Range("DE" & CStr(CurrRowCounter)))) & "]]></postcode>"
+    Print #XMLFileNum, "                <telephone><![CDATA[" & CStr(RemoveIllegals(Range("DF" & CStr(CurrRowCounter)))) & "]]></telephone>"
+    Print #XMLFileNum, "                <email><![CDATA[" & CStr(RemoveIllegals(Range("DG" & CStr(CurrRowCounter)))) & "]]></email>"
+        
+    Print #XMLFileNum, "            </engineer-report>"
+    
+    Print #XMLFileNum, "            <repair-details>"
+        
+    Print #XMLFileNum, "                <repairer><![CDATA[" & CStr(RemoveIllegals(Range("DH" & CStr(CurrRowCounter)))) & "]]></repairer>"
+    Print #XMLFileNum, "                <inspection-booked-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DI" & CStr(CurrRowCounter)))) & "]]></inspection-booked-date>"
+    Print #XMLFileNum, "                <inspection-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DJ" & CStr(CurrRowCounter)))) & "]]></inspection-date>"
+    Print #XMLFileNum, "                <repair-book-in-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DK" & CStr(CurrRowCounter)))) & "]]></repair-book-in-date>"
+    Print #XMLFileNum, "                <repair-authorised-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DL" & CStr(CurrRowCounter)))) & "]]></repair-authorised-date>"
+    Print #XMLFileNum, "                <repair-started-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DM" & CStr(CurrRowCounter)))) & "]]></repair-started-date>"
+    Print #XMLFileNum, "                <repair-complete-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DN" & CStr(CurrRowCounter)))) & "]]></repair-complete-date>"
+    Print #XMLFileNum, "                <name-ime><![CDATA[" & CStr(RemoveIllegals(Range("DO" & CStr(CurrRowCounter)))) & "]]></name-ime>"
+    Print #XMLFileNum, "                <labour-rate><![CDATA[" & CStr(Format(RemoveIllegals(Range("DP" & CStr(CurrRowCounter))), "#.00")) & "]]></labour-rate>"
+    Print #XMLFileNum, "                <labour-hours><![CDATA[" & CStr(RemoveIllegals(Range("DQ" & CStr(CurrRowCounter)))) & "]]></labour-hours>"
+    Print #XMLFileNum, "                <labour-cost><![CDATA[" & CStr(Format(RemoveIllegals(Range("DR" & CStr(CurrRowCounter))), "#.00")) & "]]></labour-cost>"
+    Print #XMLFileNum, "                <tl-offer-made-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DS" & CStr(CurrRowCounter)))) & "]]></tl-offer-made-date>"
+    Print #XMLFileNum, "                <tl-offer-accepted-date><![CDATA[" & ReturnDate(RemoveIllegals(Range("DT" & CStr(CurrRowCounter)))) & "]]></tl-offer-accepted-date>"
+    Print #XMLFileNum, "                <tl-cheque-issued><![CDATA[" & ReturnDate(RemoveIllegals(Range("DU" & CStr(CurrRowCounter)))) & "]]></tl-cheque-issued>"
+    Print #XMLFileNum, "                <tl-cheque-received><![CDATA[" & ReturnDate(RemoveIllegals(Range("DV" & CStr(CurrRowCounter)))) & "]]></tl-cheque-received>"
+            
+    Print #XMLFileNum, "            </repair-details>"
+    
+    
+    Print #XMLFileNum, "        </repair>"
+            
+    Print #XMLFileNum, "    </rental>"
+    
+    CurrRowCounter = CurrRowCounter + 1
+    ItemCount = ItemCount + 1
+    tmpCurrDate = Range("A" & CStr(CurrRowCounter))
+    
+  Loop
+ 
+ Else
+    MsgBox "The current spreadsheet does not have expected value in C6 column - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+ End If
+ 
+Else
+ MsgBox "The current spreadsheet does not have expected value in A3 column - terminating.", vbCritical + vbOKOnly
+    Exit Sub
+End If
+    
+Print #XMLFileNum, "</chox>"
+    
+Close #XMLFileNum
+
+Application.ScreenUpdating = True
+
+Dim ItemWord As String
+If ItemCount = 1 Then
+    ItemWord = " item."
+Else
+    ItemWord = " items."
+End If
+    
+MsgBox "XML file created, with " & CStr(ItemCount) & ItemWord & vbCr & vbLf & vbCr & vbLf & _
+"Please check this number against the bordereau.", vbInformation
+
+Exit Sub
+
+exitpoint:
+On Error Resume Next
+Close #XMLFileNum
+Application.ScreenUpdating = True
+On Error GoTo 0
+
+End Sub
+
+Private Function GetHireExtras(Col1 As String, Col2 As String, RowCount As Long) As HireExtraType
+Dim tmpReturn As HireExtraType
+
+tmpReturn.Desc = ""
+tmpReturn.Cost = 0
+
+tmpReturn.Desc = RemoveIllegals(Replace(Range(Col1 & "6").Value, " Fee", ""))
+tmpReturn.Cost = CDbl(Range(Col1 & CStr(RowCount)).Value)
+
+If CLng(Range(Col2 & CStr(RowCount)).Value) = 0 Then
+    tmpReturn.Units = NoDaysHire
+    If UCase(Replace(tmpReturn.Desc, " Fee", "")) = "ADMIN" Or _
+    UCase(Replace(tmpReturn.Desc, " Fee", "")) = "DELIVERY COLLECTION" Or _
+    UCase(Replace(tmpReturn.Desc, " Fee", "")) = "REPAIR ADMIN" Or _
+    UCase(Replace(tmpReturn.Desc, " Fee", "")) = "REPAIR ACQUISITION" Or _
+    UCase(Replace(tmpReturn.Desc, " Fee", "")) = "NON-STANDARD RISK INSURANCE PREMIUM" Or _
+    UCase(Replace(tmpReturn.Desc, " Fee", "")) = "COLLABORATION PROTOCOL" Then
+        tmpReturn.Units = 1
+    End If
+Else
+    tmpReturn.Units = CLng(Range(Col2 & CStr(RowCount)).Value)
+End If
+
+
+
+GetHireExtras = tmpReturn
+
+End Function
+
+Private Function GetRepairExtras(Col1 As String, RowCount As Long) As RepairExtraType
+Dim tmpReturn As RepairExtraType
+
+tmpReturn.Desc = ""
+tmpReturn.Cost = 0
+
+tmpReturn.Desc = RemoveIllegals(Replace(Range(Col1 & "6").Value, " Fee", ""))
+tmpReturn.Cost = CDbl(Range(Col1 & CStr(RowCount)).Value)
+
+GetRepairExtras = tmpReturn
+
+End Function
+
+Private Function RemoveIllegals(inpStr As String) As String
+Dim f As Long
+Dim tmpStr As String
+Dim opStr As String
+tmpStr = Trim(inpStr)
+opStr = ""
+For f = 1 To Len(tmpStr)
+
+    DoEvents
+    
+    If (Asc(Mid(tmpStr, f, 1)) > 31 And Asc(Mid(tmpStr, f, 1)) < 127) Or Asc(Mid(tmpStr, f, 1)) = 128 Then
+        opStr = opStr & Mid(tmpStr, f, 1)
+    End If
+    
+Next f
+
+RemoveIllegals = opStr
+End Function
+
+Private Function ReturnDate(tmpData As String) As String
+ReturnDate = CStr(Format(tmpData, "yyyy-mm-ddThh:mm:ss"))
+
+If ReturnDate = "00/01/1900 00:00:00" Or ReturnDate = "1899-12-30T00:00:00" Then
+    ReturnDate = ""
+End If
+End Function
+
+Private Function RemoveIllegalsVehicleClass(inpStr As String) As String
+Dim f As Long
+Dim tmpStr As String
+Dim opStr As String
+tmpStr = Trim(inpStr)
+opStr = ""
+For f = 1 To Len(tmpStr)
+
+    DoEvents
+    
+    If (Asc(Mid(tmpStr, f, 1)) > 31 And Asc(Mid(tmpStr, f, 1)) < 127) Or Asc(Mid(tmpStr, f, 1)) = 128 Then
+        opStr = opStr & Mid(tmpStr, f, 1)
+    End If
+    
+Next f
+
+If UCase(opStr) = "OTHER" Then
+    
+    opStr = "UNATTACHED"
+    
+End If
+
+RemoveIllegalsVehicleClass = opStr
+End Function
+
+Private Function ConvertERACSubscriberVehicleClass(inpStr As String) As String
+
+
+Dim f As Long
+Dim tmpStr As String
+Dim optStr As String
+tmpStr = LCase(Trim(inpStr))
+optStr = ""
+
+For f = 1 To Len(tmpStr)
+
+    DoEvents
+    
+    If (Asc(Mid(tmpStr, f, 1)) > 31 And Asc(Mid(tmpStr, f, 1)) < 127) Or Asc(Mid(tmpStr, f, 1)) = 128 Then
+        optStr = optStr & Mid(tmpStr, f, 1)
+    End If
+    
+Next f
+    
+    If (optStr = "other") Then
+    optStr = "UNATTACHED"
+    ElseIf (optStr = "s4x4") Then
+    optStr = "F2"
+    ElseIf (optStr = "s4x4a") Then
+    optStr = "F2A"
+    ElseIf (optStr = "l4x4") Then
+    optStr = "F5"
+    ElseIf (optStr = "l4x4a") Then
+    optStr = "F5A"
+    ElseIf (optStr = "e4x4") Then
+    optStr = "F9"
+    ElseIf (optStr = "e4x4a") Then
+    optStr = "F9A"
+    ElseIf (optStr = "mmpv") Then
+    optStr = "M2"
+    ElseIf (optStr = "mmpva") Then
+    optStr = "M2A"
+    ElseIf (optStr = "mpv") Then
+    optStr = "M6"
+    ElseIf (optStr = "mpva") Then
+    optStr = "M6A"
+    ElseIf (optStr = "e") Then
+    optStr = "S5"
+    ElseIf (optStr = "ea") Then
+    optStr = "S5A"
+    ElseIf (optStr = "eesta") Then
+    optStr = "P1ESTA"
+    ElseIf (optStr = "eest") Then
+    optStr = "P1EST"
+    ElseIf (optStr = "f") Then
+    optStr = "P2"
+    ElseIf (optStr = "fa") Then
+    optStr = "P2A"
+    ElseIf (optStr = "festa") Then
+    optStr = "P2ESTA"
+    ElseIf (optStr = "fest") Then
+    optStr = "P2EST "
+    ElseIf (optStr = "cprem") Then
+    optStr = "SP7"
+    ElseIf (optStr = "cprema") Then
+    optStr = "SP7A"
+    ElseIf (optStr = "cpree") Then
+    optStr = "P3EST"
+    ElseIf (optStr = "cpreea") Then
+    optStr = "P3ESTA"
+    ElseIf (optStr = "sprem") Then
+    optStr = "P5"
+    ElseIf (optStr = "sprema") Then
+    optStr = "P5A"
+    ElseIf (optStr = "spree") Then
+    optStr = "P5EST"
+    ElseIf (optStr = "spreea") Then
+    optStr = "P5ESTA"
+    ElseIf (optStr = "mprem") Then
+    optStr = "P7"
+    ElseIf (optStr = "mprema") Then
+    optStr = "P7A"
+    ElseIf (optStr = "mpreea") Then
+    optStr = "P7ESTA"
+    ElseIf (optStr = "mpree") Then
+    optStr = "P7EST"
+    ElseIf (optStr = "eprem") Then
+    optStr = "P10"
+    ElseIf (optStr = "eprema") Then
+    optStr = "P10A"
+    ElseIf (optStr = "epreea") Then
+    optStr = "P10ESTA"
+    ElseIf (optStr = "epree") Then
+    optStr = "P10EST"
+    ElseIf (optStr = "v1") Then
+    optStr = "PV1"
+    ElseIf (optStr = "v1a") Then
+    optStr = "PV1A"
+    ElseIf (optStr = "v2") Then
+    optStr = "PV3"
+    ElseIf (optStr = "v2a") Then
+    optStr = "PV3A"
+    ElseIf (optStr = "v3") Then
+    optStr = "PV6"
+    ElseIf (optStr = "v3a") Then
+    optStr = "PV6A"
+    ElseIf (optStr = "a") Then
+    optStr = "S1"
+    ElseIf (optStr = "aa") Then
+    optStr = "S1A"
+    ElseIf (optStr = "aesta") Then
+    optStr = "S1ESTA"
+    ElseIf (optStr = "aest") Then
+    optStr = "S1EST"
+    ElseIf (optStr = "b") Then
+    optStr = "S2"
+    ElseIf (optStr = "ba") Then
+    optStr = "S2A"
+    ElseIf (optStr = "besta") Then
+    optStr = "S2ESTA"
+    ElseIf (optStr = "best") Then
+    optStr = "S2EST"
+    ElseIf (optStr = "c") Then
+    optStr = "S3"
+    ElseIf (optStr = "ca") Then
+    optStr = "S3A"
+    ElseIf (optStr = "cesta") Then
+    optStr = "S3ESTA"
+    ElseIf (optStr = "cest") Then
+    optStr = "S3EST"
+    ElseIf (optStr = "d") Then
+    optStr = "S4"
+    ElseIf (optStr = "da") Then
+    optStr = "S4A"
+    ElseIf (optStr = "desta") Then
+    optStr = "S4ESTA"
+    ElseIf (optStr = "dest") Then
+    optStr = "S4EST"
+    ElseIf (optStr = "4wpu") Then
+    optStr = "CP3"
+    ElseIf (optStr = "4wpua") Then
+    optStr = "CP3A"
+    End If
+    
+ConvertERACSubscriberVehicleClass = optStr
+End Function
+
