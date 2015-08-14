@@ -515,19 +515,20 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 --------------------------------------------------------------------------------
 -- 8.7.2 TL Bordereau Task Creation - CHOX Automation
 --------------------------------------------------------------------------------
---insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver,
---                           error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version)
---       select 'erac_scheduler', 'Ch0xAdm1n1', 'TL_TASK', 'IMS TL Task Creation',
---       'chox@imsolutionslimited.co.uk,totallossteam@imsolutionslimited.co.uk,totalloss@imsolutionslimited.co.uk,elliot.roberts@valexa.com,ben.richmond@valexa.com',
---       'john.dowson@valexa.com',
---       'john.dowson@valexa.com', 999, now(), 999, now(), 0;
-
 insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver,
                            error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version)
-       select 'erac_scheduler', 'C0mpliance', 'TL_TASK', 'IMS TL Task Creation',
-       'jldowson@gmail.com',
+       select 'erac_scheduler', 'Ch0xAdm1n1', 'TL_TASK', 'IMS TL Payment Task',
+       'chox@imsolutionslimited.co.uk,totallossteam@imsolutionslimited.co.uk,totalloss@imsolutionslimited.co.uk,elliot.roberts@valexa.com,ben.richmond@valexa.com',
        'john.dowson@valexa.com',
        'john.dowson@valexa.com', 999, now(), 999, now(), 0;
+
+-- For test
+--insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver,
+--                           error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version)
+--       select 'erac_scheduler', 'C0mpliance', 'TL_TASK', 'IMS TL Payment Task',
+--       'john.dowson@valexa.com,elliot.roberts@valexa.com,ben.richmond@valexa.com,bula.raghavan@valexa.com,robert.hon@valexa.com',
+--       'john.dowson@valexa.com',
+--       'john.dowson@valexa.com', 999, now(), 999, now(), 0;
 
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.TlTaskCreation.ClaimUnacknowledgedUnrouted', false, false;
@@ -553,31 +554,38 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.TlTaskCreation.SubscriberClaimRejected', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.TlTaskCreation.ClaimPending', false, false;
-
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.AwaitingLitigationOutcome', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceDataCalculationIncorrect', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.ContestedInvoiceReferredToCHO', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.AwaitingInvoicePayment', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceReferredToEngineer', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.ContestedInvoiceReferredToInsurer', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.AwaitingLiabilityResolution', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceApprovedByBRE', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceReferredToClaimsHandler', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceEscalated', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoiceEscalatedToHandler', false, false;
---INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
---    SELECT 'activity.TlTaskCreation.InvoicePaymentLogged', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.AwaitingLitigationOutcome', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceDataCalculationIncorrect', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.ContestedInvoiceReferredToCHO', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.AwaitingInvoicePayment', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceReferredToEngineer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.ContestedInvoiceReferredToInsurer', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.AwaitingLiabilityResolution', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceApprovedByBRE', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceReferredToClaimsHandler', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceEscalated', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceEscalatedToHandler', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoicePaymentLogged', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.PaymentReceived', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.Claimclosed', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.ClaimRejectionAccepted', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.TlTaskCreation.InvoiceRejectionAccepted', false, false;
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
