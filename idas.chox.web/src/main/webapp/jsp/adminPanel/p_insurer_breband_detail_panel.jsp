@@ -253,6 +253,7 @@
 
         onProtocolVehicleClassPageRefresh();
         
+<s:if test="isChoxAdmin">
         penaltyStartDateDatePicker = ui.unvalidatedDateField('startDate',getTodayDate(),'penaltyStartDateDiv');
 
         // Add claim type drop-down menu
@@ -296,7 +297,7 @@
                 }
             }
             });
-
+</s:if>
         var penaltyBand_JsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -358,9 +359,11 @@
         });
 
         penaltyBand_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:penaltyBand_recordOnclickRemovePenaltyBand},
             store: penaltyBand_gridviewStore,
+<s:if test="isChoxAdmin">
+            listeners:  {cellclick:penaltyBand_recordOnclickRemovePenaltyBand},
             renderTo:'penaltyBandViewGrid',
+</s:if>
             enableHdMenu:false,
             enableColumnMove: false,
             layout:'fit',
@@ -825,7 +828,8 @@
                 $("#protocolRepairNetCeiling").val('0.00');
             }
         }
-        
+
+<s:if test="isChoxAdmin">
         function addPenaltyChargeBand() {
             if (validatePenaltyBandForm()) {
                 // get the values from the form.
@@ -863,7 +867,8 @@
                 $("#repair90Day").val('');
             }
         }
-        
+</s:if>
+
         function validateProtocolVehicleClassCeilingForm(){
             var mesBox = $("#CDProtocolVehicleClassCeilingMessageBox");
             mesBox.empty();
@@ -901,6 +906,7 @@
 
          }
         
+<s:if test="isChoxAdmin">
         function validatePenaltyBandForm(){
             var mesBox = $("#CDPenaltyChargeMessageBox");
             mesBox.empty();
@@ -989,7 +995,7 @@
                 return false;
             }
         }
-
+</s:if>
         function validateEditProtocolVehicleClassCeilingForm(){
             var mesBox = $("#pvccMessageBox");
             mesBox.empty();
@@ -1127,14 +1133,13 @@
     }
             
     function onPenaltyChargeBandPageRefresh(){
-        // hide the edit form
-//        protocolVehicleCeilingEditSelectionDlg.hide();
         // load the grid.
         penaltyBand_loadGridViewList();
         // reset the form.
 //        resetPVCCForm();
     }
-        
+
+<s:if test="isChoxAdmin">
         function penaltyBand_recordOnclickRemovePenaltyBand(grid, rowIndex, columnIndex, e) {
 
             var gridRecord = penaltyBand_gridviewGrid.getStore().getAt(rowIndex);
@@ -1154,7 +1159,7 @@
             }
 
         }
-
+</s:if>
 </script>
 
 <div class="sub-admin-tab-css">
@@ -1264,6 +1269,7 @@
                         </div>
                     </div>
 </s:if>     
+<s:if test="isChoxAdmin">
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Penalty Charges</div>
                         <div class="chox-form-checkboxitem">
@@ -1414,7 +1420,7 @@
                             </div>
                         </div>
                     </div>
-                            
+</s:if>                            
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Automated Tasks</div>
                         <div class="chox-form-checkboxitem">
