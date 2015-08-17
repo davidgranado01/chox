@@ -1,8 +1,17 @@
 package idas.chox.service.admin;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
@@ -14,7 +23,6 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.InsurerIntelligentNote;
-import idas.chox.core.model.ProtocolVehicleClassCeiling;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.WebUser;
@@ -34,11 +42,9 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
+import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AdminInsurerService extends SecureDataService {
 
@@ -53,13 +59,27 @@ public class AdminInsurerService extends SecureDataService {
     private BreBandOrganisationService breBandOrganisationService;
     private InsurerChorganisationService insurerChorganisationService;
     private VehicleClassCeilingService vehicleClassCeilingService;
-//    private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
     private VehicleClassService vehicleClassService;
     private UserService userService;
     private ClaimService claimService;
     private InvoiceService invoiceService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private InsurerIntelligentNoteService insurerIntelligentNoteService;
+    private boolean emailOnBreBandCreation;
+    private String  emailReceivers;
+    private String hostName;
+
+    public void setEmailOnBreBandCreation(boolean emailOnBreBandCreation) {
+        this.emailOnBreBandCreation = emailOnBreBandCreation;
+    }
+
+    public void setEmailReceivers(String emailReceivers) {
+        this.emailReceivers = emailReceivers;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -193,7 +213,7 @@ public class AdminInsurerService extends SecureDataService {
 
     public List getAvailableWorkgroups(int insurerId, boolean isActiveOnly) {
 
-        List items = new ArrayList<IdLookupItem>();
+        List<IdLookupItem> items = new ArrayList<>();
         List<Workgroup> availableWorkgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId, isActiveOnly);
 
         for (Workgroup s : availableWorkgroups) {
@@ -300,6 +320,35 @@ public class AdminInsurerService extends SecureDataService {
 
             if (isNew) {
                 this.actionResponse.AssignNewIdResult(breBand.getId());
+                if (emailOnBreBandCreation && !getSecurityInfoProvider().getIsCHOXAdmin()) {
+                    // Email Valexa Staff of new BRE Band Creation
+                    LOG.debug("Sending email to '{}' from {}", emailReceivers, hostName);
+                    try {
+                        Resource resource = new ClassPathResource("/application.properties");
+                        Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+                        String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
+                        String smtpHostName = props.getProperty("smtpHostName");
+                        String smtpPort = props.getProperty("smtpPort");
+                        String smtpEmailUser = props.getProperty("smtpEmailUser");
+                        String smtpEmailUserPassword = props.getProperty("smtpEmailPassword");
+
+                        String[] recipients = emailReceivers.split(",");
+
+                        String emailSubject;
+                        if ("PRODUCTION".equals(hostName)) {
+                            emailSubject = "New BRE Band Created";
+                        } else {
+                            emailSubject = "New BRE Band Created (" + hostName + ")";
+                        }
+                        EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword);
+                        String emailMessage = "Insurer " + breBand.getInsurer().getName() + ", User " + breBand.getCreatedBy().getFullName() + " Has Added A New BRE Band Called " + breBand.getName() + " On " + breBand.getCreatedDate().toString() + ".";
+                        emailHelper.postMail(emailSubject, emailMessage, recipients);
+
+                    } catch (IOException | MessagingException ex) {
+                        LOG.error("Error sending email for new RE Band '{}' Creation: {}", breBand.getName(), ex.getMessage());
+                    }
+                }
             }
 
         }

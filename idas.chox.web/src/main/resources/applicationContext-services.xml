@@ -215,6 +215,9 @@
         <property name="insurerIntelligentNoteService" ref="insurerIntelligentNoteService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="emailOnBreBandCreation" value="${emailOnBreBandCreation}"/>
+        <property name="emailReceivers" value="${emailReceivers}"/>
+        <property name="hostName" value="${HOSTNAME}"/>
     </bean>
 
     <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl" scope="prototype">
