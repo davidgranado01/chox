@@ -47,6 +47,7 @@ public class ReportToExcel {
         // Now read each line until we either reach the rowcount or end-of-file
         line = br.readLine();
         int rowCount = 0;
+        Object[] values;
         while (line != null) {
             if (line.startsWith("(") && (line.endsWith("rows)") || line.endsWith("row)"))) {
                 break;
@@ -57,12 +58,10 @@ public class ReportToExcel {
             if (bodyLine.length != headers.length) {
                 LOG.warn("Column count mismatch at row {} between header ({}) and body ({}): '{}'",
                         new Object[]{rowCount, headers.length, bodyLine.length, bodyLine});
-                continue;
+            } else {
+                values = convertBody(bodyLine);
+                body.add(values);
             }
-
-            Object[] values = convertBody(bodyLine);
-            body.add(values);
-
             line = br.readLine();
         }
         Report report = new Report();
