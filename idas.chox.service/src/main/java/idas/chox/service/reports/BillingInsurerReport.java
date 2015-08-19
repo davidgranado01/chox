@@ -49,7 +49,7 @@ public class BillingInsurerReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         try {
             String billingStatus="PaymentReceived";
             
@@ -67,14 +67,17 @@ public class BillingInsurerReport implements Report {
                 throw new Exception("End date (" + bi.getDateTo().toString() + ") is before start date (" + bi.getDateFrom().toString() +  ") ");
             }
 
-            List<BillingInsurerReportViewData> reportRows = new ArrayList<BillingInsurerReportViewData>();
+            List<BillingInsurerReportViewData> reportRows = new ArrayList<>();
 
             StringBuilder sb = new StringBuilder();
 
-            if (bi.getTriggerPoint().equals("Manual Invoice Paid")) {
-                billingStatus = "ManualInvoicePaid";
-            } else if (bi.getTriggerPoint().equals("Invoice Payment Logged")) {
-                billingStatus = "InvoicePaymentLogged";
+            switch (bi.getTriggerPoint()) {
+                case "Manual Invoice Paid":
+                    billingStatus = "ManualInvoicePaid";
+                    break;
+                case "Invoice Payment Logged":
+                    billingStatus = "InvoicePaymentLogged";
+                    break;
             }
             
             sb.append("select ")
@@ -103,10 +106,10 @@ public class BillingInsurerReport implements Report {
                 .append("and cr.id = cm.customer_id ")
                 .append("and tp.id = cm.third_party_id ")
                 .append("and cm.id = at.claim_id ")
-                .append("and at.reverted=false and at.new_status='").append(billingStatus)
+                .append("and at.new_status='").append(billingStatus)
                 .append("' and cm.chorganisation_id = cho.id ")
                 .append("and bid.billing_insurer_id =  :p_billing_insurer_id ")
-                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date < at.update_date)");
+                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date > at.update_date)");
 
             
 
