@@ -459,7 +459,6 @@ Ext.onReady(function(){
     	Ext.getCmp('paymentDetailsClaimHandInvAmtId').disable();
     	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').disable();
     	Ext.getCmp('paymentDetailsCHODiscountId').disable();
-    	Ext.getCmp('paymentDetailsCHODiscountId').disable();
     	Ext.getCmp('paymentDetailsInsurerDiscountId').disable();
     	Ext.getCmp('totalToPayId').disable();
     	Ext.getCmp('finalPayId').disable();
@@ -479,7 +478,6 @@ Ext.onReady(function(){
     	Ext.getCmp('paymentDetailsClaimHandInvAmtId').enable();
     	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').enable();
     	Ext.getCmp('paymentDetailsCHODiscountId').enable();
-    	Ext.getCmp('paymentDetailsCHODiscountId').enable();
     	Ext.getCmp('paymentDetailsInsurerDiscountId').enable();
     	Ext.getCmp('totalToPayId').enable();
     	Ext.getCmp('finalPayId').enable();
@@ -497,7 +495,6 @@ Ext.onReady(function(){
     	Ext.getCmp('repairPenaltyId').getValue() +
     	Ext.getCmp('paymentDetailsClaimHandInvAmtId').getValue() +
     	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').getValue() +
-    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
     	Ext.getCmp('paymentDetailsCHODiscountId').getValue() -
         Ext.getCmp('interimPayId').getValue() +
     	Ext.getCmp('paymentDetailsInsurerDiscountId').getValue();

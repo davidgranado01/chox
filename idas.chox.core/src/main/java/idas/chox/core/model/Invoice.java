@@ -800,7 +800,7 @@ public class Invoice extends Entity implements Serializable {
      * @param discount
      */
     public void setDiscount(java.math.BigDecimal discount) {
-        this.discount = discount;
+        this.discount = discount.abs().negate();
     }
 
     public BigDecimal getInsurerDiscount() {
