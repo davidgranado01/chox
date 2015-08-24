@@ -48,9 +48,9 @@ WHERE ins.id IN (insurerids[i]::int) -- restricted to insurers
   AND c.claim_owner_id = wu.id
   AND a1.new_status = 'AwaitingCarHireInfo' 
   AND a1.reverted = FALSE
-  AND ((c.claim_type in (11,12,13) AND co.comment ILIKE ('%failed to respond to the Fixed Fee notification within the 14 day SLA%'))
+  AND ((c.claim_type in (11,12,13) AND co.comment ILIKE ('%failed to respond to the Fixed Fee notification within the % day SLA%') and co.reverted = false)
             OR
-            (c.claim_type in (7,8,9) AND co.comment ILIKE ('%failed to respond to the Subscriber notification within the 5 day SLA%')));
+            (c.claim_type in (7,8,9) AND co.comment ILIKE ('%failed to respond to the Subscriber notification within the % day SLA%') and co.reverted = false));
 END LOOP;
 END
 ;
