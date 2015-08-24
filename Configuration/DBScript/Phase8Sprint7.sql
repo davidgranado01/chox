@@ -581,7 +581,7 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.TlTaskCreation.PaymentReceived', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
-    SELECT 'activity.TlTaskCreation.Claimclosed', false, false;
+    SELECT 'activity.TlTaskCreation.ClaimClosed', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.TlTaskCreation.ClaimRejectionAccepted', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
