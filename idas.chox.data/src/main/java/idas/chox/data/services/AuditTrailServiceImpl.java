@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -25,7 +26,6 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
-import java.util.Scanner;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
