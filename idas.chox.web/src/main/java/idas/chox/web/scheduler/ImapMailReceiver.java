@@ -77,18 +77,13 @@ public class ImapMailReceiver {
                             //we search for all unseen mails starting with given subject
                             if (!message.isSet(Flags.Flag.SEEN)) {
                                 if (emailSubject == null ? true : message.getSubject() != null ? message.getSubject().trim().replace(" ", "").toLowerCase().startsWith(emailSubject.trim().replace(" ", "").toLowerCase()) : false) {
-                                    LOG.debug("Found message with subject='{}'", message.getSubject());
                                     return true;
-                                } else {
-                                    LOG.trace("Message subject does not match: {} != {}", message.getSubject(), emailSubject);
                                 }
-                            } else {
-                                LOG.trace("Message with subject '{}' has already been read", message.getSubject());
                             }
                         } catch (MessagingException ex) {
-                            LOG.warn("Cannot match email with given search term {}: {}", emailSubject, ex.getMessage());
+                            ex.printStackTrace();
                         } catch (Exception ex) {
-                            LOG.warn("Exception thrown matching email by subject '{}': {}", emailSubject, ex.getMessage());
+                            ex.printStackTrace();
                         }
                     }
                     return false;
