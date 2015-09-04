@@ -1,16 +1,15 @@
 package idas.chox.web.scheduler;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import javax.mail.BodyPart;
 
+import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
-import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -35,8 +34,7 @@ public class ImapMailReceiver {
     private String emailAccountPassword;
 
     /**
-     * Retrieves mail from given mail account. This function retrieves only
-     * unseen mail with the given email subject.
+     * Retrieves mail from given mail account. This function retrieves only unseen mail with the given email subject.
      *
      * @param emailSubject - used as a search criteria for emails.
      * @return List<> - list of mails
@@ -90,13 +88,11 @@ public class ImapMailReceiver {
                 }
             };
 
-
             LOG.debug("Searching for messages....");
             Message[] messages = folder.search(searchTerm);
             LOG.debug("Found {} unseen messages with subject '{}'", messages.length, emailSubject);
 
             listOfMails = Arrays.asList(messages);
-
 
         } catch (NoSuchProviderException e) {
             LOG.warn("Given mail properties are not correct: {}\n", e.getMessage(), e);
@@ -108,48 +104,43 @@ public class ImapMailReceiver {
         return listOfMails == null ? new ArrayList<Message>() : listOfMails;
     }
 
-    
-    public List<EmailAttachment> fetchAttachments(Message message,
+    public List<EmailAttachment> fetchAttachments(Object content,
             String fileFormat) {
 
         List<EmailAttachment> listOfAttachements = new ArrayList<>();
         try {
-            if (message.getContent() instanceof Multipart) {
-                Multipart mp = (Multipart) message.getContent();
-                if (message.getFrom() != null)
-                    LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
-                        new Object[]{message.getFrom()[0].toString(), mp.getContentType(), mp.getCount()});
-                else
-                    LOG.debug("Getting attachment from message with, contentType='{}', count={}",
-                        new Object[]{mp.getContentType(), mp.getCount()});
-
+            if (content instanceof Multipart) {
+                Multipart mp = (Multipart) content;
+//                MimeBodyPart mp2 = (MimeBodyPart) content;
+                
                 for (int i = 0, n = mp.getCount(); i < n; i++) {
                     BodyPart part = mp.getBodyPart(i);
+                    LOG.debug("Disposition is {}", part.getDisposition());
                     
-                    if (LOG.isDebugEnabled()) {
-                        Enumeration header = part.getAllHeaders();
-                        while (header.hasMoreElements()) {
-                            Header h = (Header)header.nextElement();
-                            LOG.debug("Header: {} = {})", h.getName(), h.getValue());
+                    if (part.getContent() instanceof Multipart) {
+                        // part-within-a-part - recurse
+                        LOG.trace("Found part-within-a-part - recursing.....");
+                        listOfAttachements.addAll(fetchAttachments(part.getContent(), fileFormat));
+                    } else {
+                        String fileName = part.getFileName();
+                        LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
+                                new Object[]{fileName, mp.getContentType(), fileFormat});
+                        if (fileName != null && fileName.endsWith(fileFormat)) {
+                            LOG.debug("Adding attachment {}", fileName);
+                            listOfAttachements.add(new EmailAttachment(fileName, (InputStream) part.getInputStream(), part.getSize()));
                         }
-                    }
-
-                    String fileName = part.getFileName();
-                    LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
-                            new Object[]{fileName, mp.getContentType(), fileFormat});
-                    if (fileName != null && fileName.endsWith(fileFormat)) {
-                        listOfAttachements.add(new EmailAttachment(fileName, (InputStream) part.getInputStream(), part.getSize()));
                     }
                 }
             }
         } catch (MessagingException e) {
             LOG.warn("Error fetching attachment - cannot make connection to the given host: {} ",
                     e.getMessage(), e);
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", e.getMessage(), e);
         }
 
         LOG.debug("Found {} attachments of format '{}'", listOfAttachements.size(), fileFormat);
+
         return listOfAttachements;
     }
 

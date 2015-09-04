@@ -1,5 +1,6 @@
 package idas.chox.web.scheduler;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,13 @@ public abstract class ExcelEmailSchedulerJob extends EmailSchedulerJob {
 
     @Override
     public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
-        List<EmailAttachment> attachmentStreams = imapMailReceiver.fetchAttachments(message, "xls");
+        List<EmailAttachment> attachmentStreams;
+        try {
+            attachmentStreams = imapMailReceiver.fetchAttachments(message.getContent(), "xls");
+        } catch (IOException ex) {
+            LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", ex.getMessage(), ex);
+            return;
+        }
         Map<Integer, List<String>> xlsDataMap;
         if (attachmentStreams.size() > 0) {
             for (EmailAttachment attachment : attachmentStreams) {

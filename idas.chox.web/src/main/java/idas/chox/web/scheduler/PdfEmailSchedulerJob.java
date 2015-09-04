@@ -1,5 +1,6 @@
 package idas.chox.web.scheduler;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,13 @@ public abstract class PdfEmailSchedulerJob extends EmailSchedulerJob {
 
     @Override
     public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
-        List<EmailAttachment> attachmentStreams = imapMailReceiver.fetchAttachments(message, "pdf");
+        List<EmailAttachment> attachmentStreams;
+        try {
+            attachmentStreams = imapMailReceiver.fetchAttachments(message.getContent(), "pdf");
+        } catch (IOException ex) {
+            LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", ex.getMessage(), ex);
+            return;
+        }
         if (attachmentStreams.size() > 0) {
             String[] statusMessages = new String[attachmentStreams.size()];
             int i = 0;

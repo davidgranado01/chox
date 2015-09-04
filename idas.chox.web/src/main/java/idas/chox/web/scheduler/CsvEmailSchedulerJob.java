@@ -1,6 +1,7 @@
 package idas.chox.web.scheduler;
 
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +30,15 @@ public abstract class CsvEmailSchedulerJob extends EmailSchedulerJob {
     @Override
     public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
         CSVReader reader;
-LOG.info("Getting attachment streams....");
-        List<EmailAttachment> attachmentStreams = imapMailReceiver.fetchAttachments(message, "csv");
-LOG.info("Found {} csv attachment streams", attachmentStreams.size());
+        LOG.debug("Getting attachment streams....");
+        List<EmailAttachment> attachmentStreams;
+        try {
+            attachmentStreams = imapMailReceiver.fetchAttachments(message.getContent(), "csv");
+        } catch (IOException ex) {
+            LOG.warn("Error fetching attachment - cannot retrive attachment: {} ", ex.getMessage(), ex);
+            return;
+        }
+        LOG.debug("Found {} csv attachment streams", attachmentStreams.size());
         Map<Integer, List<String>> xlsDataMap;
         if (attachmentStreams.size() > 0) {
             for (EmailAttachment attachment : attachmentStreams) {
