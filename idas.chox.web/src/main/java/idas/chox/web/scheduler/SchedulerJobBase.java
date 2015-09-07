@@ -36,6 +36,7 @@ import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
+import org.springframework.security.core.AuthenticationException;
 
 /**
  *
@@ -109,7 +110,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                 LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
             }
 
-        } catch (AccessDeniedException e) {
+        } catch (AccessDeniedException | AuthenticationException e) {
             LOG.error("The user is not authorized to update {} for given user name {} and password {} \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
         } catch (Exception e) {
             LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
