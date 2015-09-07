@@ -250,6 +250,8 @@ BEGIN
      RAISE NOTICE 'Neither Workgroup nor Claim Ownership Enabled - report cannot be generated.';
 
      END IF;
+
+     RETURN queryString;
 END;
 $BODY$
  LANGUAGE plpgsql;
