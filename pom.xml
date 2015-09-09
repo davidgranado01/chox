@@ -63,7 +63,7 @@
         <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
         
         <activeMQ.version>5.8.0</activeMQ.version>
-        <mail.version>1.5.2</mail.version>
+        <mail.version>1.5.4</mail.version>
     </properties>
 
     <build>
