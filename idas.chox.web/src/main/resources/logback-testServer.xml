@@ -144,6 +144,24 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="RD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-requestDump.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump.log.%i.zip</fileNamePattern>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                     <!-- or whenever the file size reaches 50MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
@@ -221,6 +239,11 @@
     <logger name="org.quartz" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
         <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
+    <!-- Set following to DEBUG to log POST requests, to TRACE to log all requests and the POST response-->
+    <logger name="idas.chox.web.RequestDumpFilter" level="INFO" additivity="false">
+        <appender-ref ref="RD"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
