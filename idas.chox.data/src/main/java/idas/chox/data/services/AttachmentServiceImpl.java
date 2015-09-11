@@ -134,7 +134,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             fileContent = new byte[safeLongToInt(length)];
             streamIn.read(fileContent);
             streamIn.close();
-            addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
+            result = addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
         } catch (Exception ex) {
             LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
         }
