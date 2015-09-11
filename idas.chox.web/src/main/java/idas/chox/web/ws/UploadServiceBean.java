@@ -1,10 +1,26 @@
 package idas.chox.web.ws;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.List;
+
+import javax.activation.DataHandler;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import com.idaschox.services.chox.*;
 import com.idaschox.services.chox.SubmissionResult.BREMessages;
 import com.idaschox.services.chox.SubmissionResult.Messages;
-import idas.chox.core.model.Attachment;
-import idas.chox.core.model.AttachmentFile;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
@@ -20,20 +36,6 @@ import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.AddNote;
 import idas.chox.service.workflow.activities.EcdUpdate;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
-import javax.activation.DataHandler;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 public class UploadServiceBean {
 
@@ -80,8 +82,6 @@ public class UploadServiceBean {
         SubmissionResult result = new SubmissionResult();
         WebBordereau webBordereau = new WebBordereau();
 
-        LOG.info("uploadBordereau called in {} with chox: {}", this, chox);
-        LOG.info("uploadClaimXMLService is : {}", uploadClaimXMLService);
         JAXBContext context;
         try {
 //            context = JAXBContext.newInstance(GetSubmissionRequest.class);
@@ -597,57 +597,52 @@ public class UploadServiceBean {
 
     public Result addAttachment(com.idaschox.services.chox.Attachment attachment) {
         Result result = new Result();
-//        Activity activity = activityFactory.getActivity("addAttachment");
-        Claim claim = null;
 
-        // Get the claim
         try {
-            claim = claimService.getClaimByCHOReferenceNumber(attachment.getSupplierReference());
+            // Get the claim
+            Claim claim = claimService.getClaimByCHOReferenceNumber(attachment.getSupplierReference());
             if (claim == null) {
                 result.setStatus(false);
                 result.setErrorMessage("Claim with supplier reference number '" + attachment.getSupplierReference() + "' does not exist.");
-            } else {
-                byte[] b;
-                LOG.info("Attachment name is {} with category '{}'", attachment.getFilename(), attachment.getCategory());
-//                activity.process(claim);
-                DataHandler handler = attachment.getAttachment();
-                try {
-                    InputStream is = handler.getInputStream();
-                    b = readFully(is);
-                } catch (IOException e) {
-                    LOG.error("Exception thrown converting stream to byte array: {}", e.getMessage(), e);
-                    throw e;
-                }
-                LOG.debug("Attachment read - size={}", b.length);
-                // Check size and extension
-                String fileName = attachment.getFilename() + "." + attachment.getFileType();
-                List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
-                if (!FileHelper.isFileTypeAllow(fileName, attTypes)) {
-                    throw new Exception("Invalid File type");
-                }
-                LOG.debug("Filetype is ok: {}", fileName);
-                if (b.length > FileHelper.MAX_FILE_SIZE_ALLOW) {
-                    throw new Exception("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
-                }
-                LOG.debug("Length is Ok: {}", b.length);
-                String whoCreated = "Insurer";
-                if (securityInfoProvider.getIsCHO()) {
-                    whoCreated = "CHO";
-                }
-                // Add attachment
-                LOG.debug("Adding attachment....");
-                if (!attachmentService.addAttachment(claim, b, fileName, b.length,
-                        attachment.getCategory().value(), attachment.getRemark(), attachment.isNotify(),
-                        securityInfoProvider.getIsINS(), whoCreated)) {
-                    LOG.error("Error adding attachment received through web-service: claim={}", claim.getChoReference());
-                    throw new Exception("Unknown Error occurred, please try again.");
-                } else {
-                    result.setStatus(true);
-                }
+                return result;
             }
-//        } catch (InvalidClaimStatusException ex) {
-//            result.setStatus(false);
-//            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + (claim == null ? "null" : claim.getStatus()));
+            byte[] b;
+            LOG.debug("Attachment name is {} with category '{}'", attachment.getFilename(), attachment.getCategory());
+
+            DataHandler handler = attachment.getAttachment();
+            try {
+                InputStream is = handler.getInputStream();
+                b = readFully(is);
+            } catch (IOException e) {
+                LOG.error("Exception thrown converting stream to byte array: {}", e.getMessage(), e);
+                throw e;
+            }
+            LOG.debug("Attachment read - size={}", b.length);
+            // Check size and extension
+            String fileName = attachment.getFilename() + "." + attachment.getFileType();
+            List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
+            if (!FileHelper.isFileTypeAllow(fileName, attTypes)) {
+                throw new Exception("Invalid File type");
+            }
+            LOG.debug("Filetype is ok: {}", fileName);
+            if (b.length > FileHelper.MAX_FILE_SIZE_ALLOW) {
+                throw new Exception("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
+            }
+            LOG.debug("Length is Ok: {}", b.length);
+            String whoCreated = "Insurer";
+            if (securityInfoProvider.getIsCHO()) {
+                whoCreated = "CHO";
+            }
+            // Add attachment
+            LOG.debug("Adding attachment....");
+            if (!attachmentService.addAttachment(claim, b, fileName, b.length,
+                    attachment.getCategory().value(), attachment.getRemark(), attachment.isNotify(),
+                    securityInfoProvider.getIsINS(), whoCreated)) {
+                LOG.error("Error adding attachment received through web-service: claim={}", claim.getChoReference());
+                throw new Exception("Unknown Error occurred, please try again.");
+            } else {
+                result.setStatus(true);
+            }
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
@@ -656,7 +651,7 @@ public class UploadServiceBean {
             result.setStatus(false);
             result.setErrorMessage("Error processing request: " + ex.getMessage());
             LOG.error("Error processing request: {}", ex.getMessage());
-       }
+        }
         return result;
     }
 

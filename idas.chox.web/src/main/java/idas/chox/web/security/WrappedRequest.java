@@ -30,7 +30,7 @@ public class WrappedRequest extends HttpServletRequestWrapper
                                                     final Map<String, String[]> additionalParams)
     {
         super(request);
-        modifiableParameters = new TreeMap<String, String[]>();
+        modifiableParameters = new TreeMap<>();
         modifiableParameters.putAll(additionalParams);
     }
  

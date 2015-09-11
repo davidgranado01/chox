@@ -31,25 +31,25 @@ public class ServerPasswordCallback implements CallbackHandler {
                 break;
             }
         }
-//        WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
-        LOG.debug("PasswordCallbackHandler: identifier is '{}'", pc.getIdentifier());
-        LOG.debug("PasswordCallbackHandler: password is '{}'", pc.getPassword());
+        if (pc != null) {
+            LOG.debug("PasswordCallbackHandler: identifier is '{}'", pc.getIdentifier());
+            LOG.debug("PasswordCallbackHandler: password is '{}'", pc.getPassword());
 
-        LOG.info("Service is :{}", userDetailsService);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(pc.getIdentifier());
-        LOG.debug("Password retrieved for user '{}': {}", pc.getIdentifier(), userDetails.getPassword());
+            LOG.trace("Service is :{}", userDetailsService);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(pc.getIdentifier());
+            LOG.debug("Password retrieved for user '{}': {}", pc.getIdentifier(), userDetails.getPassword());
         // this seems ridiculous, but is necessary for passing authentication on
-        // to Spring-Security. We're essentially bypassing CXF's WSS4JInterceptor
-        // by ensuring that the password callback always matches the client password.
-        String pass = userDetails.getPassword();
-        if (pass != null) {
-            LOG.debug("Password set: '{}'", pass);
-            pc.setPassword(pass);
-            return;
+            // to Spring-Security. We're essentially bypassing CXF's WSS4JInterceptor
+            // by ensuring that the password callback always matches the client password.
+            String pass = userDetails.getPassword();
+            if (pass != null) {
+                LOG.debug("Password set: '{}'", pass);
+                pc.setPassword(pass);
+                return;
+            }
+
+            pc.setPassword(userDetails.getPassword());
         }
-
-        pc.setPassword(userDetails.getPassword());
-
     }
 
     public void setUserDetailsService(WebUserService userDetailsService) {
