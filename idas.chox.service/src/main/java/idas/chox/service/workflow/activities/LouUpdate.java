@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -229,21 +230,24 @@ public class LouUpdate extends BaseActivity {
             String repairerNameClean = Jsoup.clean(repairerName, Whitelist.basic());
             if (!repairerNameClean.equals(repairerName)) {
                 LOG.warn("Repairer name contains forbidden content - possible XSS attack: {}", repairerName);
-                throw new Exception("Repairer name contains forbidden content");
+                repairerName = repairerNameClean;
+//                throw new Exception("Repairer name contains forbidden content");
             }
         }
         if (imeName != null) {
             String imeNameClean = Jsoup.clean(imeName, Whitelist.basic());
             if (!imeNameClean.equals(imeName)) {
                 LOG.warn("IME Name contains forbidden content - possible XSS attack: {}", imeName);
-                throw new Exception("Name of IME contains forbidden content");
+                imeName = imeNameClean;
+//                throw new Exception("Name of IME contains forbidden content");
             }
         }
         if (nonProvisionReason != null) {
             String nonProvisionReasonClean = Jsoup.clean(nonProvisionReason, Whitelist.basic());
             if (!nonProvisionReasonClean.equals(nonProvisionReason)) {
                 LOG.warn("Non-provision reason contains forbidden content - possible XSS attack: {}", nonProvisionReason);
-                throw new Exception("Non-Provision Reason contains forbidden content");
+                nonProvisionReason = nonProvisionReasonClean;
+//                throw new Exception("Non-Provision Reason contains forbidden content");
             }
         }
 
@@ -296,7 +300,7 @@ public class LouUpdate extends BaseActivity {
             hmd.setRepairCompletionDate(repairCompletionDate);
             hmd.setRepairCompletionDateLastModified(new Date());
         }
-        if (totalLoss != null && hmd.isIsTotalLostCheck() != totalLoss.booleanValue()) {
+        if (totalLoss != null && hmd.isIsTotalLostCheck() != totalLoss) {
             hmd.setIsTotalLostCheck(totalLoss);
             hmd.setIsTotalLostCheckLastModified(new Date());
         }
@@ -347,11 +351,11 @@ public class LouUpdate extends BaseActivity {
                 claim.setManagingRepairLastModified(new Date());
             }
         }
-        if (insurerManagingRepair != null && insurerManagingRepair.booleanValue() != hmd.isIsNFInsurerManagingRepair()) {
+        if (insurerManagingRepair != null && insurerManagingRepair != hmd.isIsNFInsurerManagingRepair()) {
             hmd.setIsNFInsurerManagingRepair(insurerManagingRepair);
             hmd.setIsNFInsurerManagingRepairLastModified(new Date());
         }
-        if (vatRegistered != null && vatRegistered != hmd.getClientVatRegistered()) {
+        if (vatRegistered != null && !Objects.equals(vatRegistered, hmd.getClientVatRegistered())) {
             hmd.setClientVatRegistered(vatRegistered);
             hmd.setClientVatRegisteredLastModified(new Date());
         }
