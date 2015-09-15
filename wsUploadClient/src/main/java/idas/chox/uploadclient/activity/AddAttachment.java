@@ -1,15 +1,16 @@
 package idas.chox.uploadclient.activity;
 
+import java.io.FileInputStream;
+import javax.activation.DataHandler;
+
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.idaschox.services.chox.Attachment;
 import com.idaschox.services.chox.AttachmentCategory;
 import com.idaschox.services.chox.Result;
 import com.idaschox.services.chox.UploadService;
-import java.io.File;
-import java.io.FileInputStream;
-import javax.activation.DataHandler;
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AddAttachment {
 
@@ -44,7 +45,7 @@ public class AddAttachment {
     }
 
     public static void addAttachment(UploadService uploadService, Attachment attachment) {
-        Result result = null;
+        Result result;
 
         LOG.debug("Calling Add Attachment Web Service for claim with CHO reference '{}'...", attachment.getSupplierReference());
         try {

@@ -2,6 +2,7 @@ package idas.chox.uploadclient;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
@@ -11,23 +12,15 @@ import org.kohsuke.args4j.Option;
  */
 public class Options {
 
-    @Option(name = "-u")
-    private String userName;
-    @Option(name = "-p")
-    private String password;
-    @Argument
-    private List<String> arguments = new ArrayList<String>();
-    @Option(name = "-v", usage = "verbose messages")
-    private boolean verbose;
     @Option(name = "-close", usage = "Close claim(s)")
     private boolean close;
     @Option(name = "-reopen", usage = "Re-open claim(s)")
     private boolean reopen;
-    @Option(name = "-ecdupdate", usage = "update ECD")
+    @Option(name = "-ecdUpdate", usage = "update ECD")
     private boolean updateECD;
-    @Option(name = "-paymentreceived", usage = "Payment Received")
+    @Option(name = "-paymentReceived", usage = "Payment Received")
     private boolean paymentReceived;
-    @Option(name = "-addnote", usage = "Add Note")
+    @Option(name = "-addNote", usage = "Add Note")
     private boolean addNote;
     @Option(name = "-addAttachment", usage = "Add Attachment")
     private boolean addAttachment;
@@ -39,6 +32,14 @@ public class Options {
     private boolean attachmentNotification;
     @Option(name = "-remark", usage = "Attachment Remark")
     private String remark;
+    @Option(name = "-u")
+    private String userName;
+    @Option(name = "-p")
+    private String password;
+    @Option(name = "-v", usage = "verbose messages")
+    private boolean verbose;
+    @Argument
+    private List<String> arguments = new ArrayList<>();
   
     public List<String> getArguments() {
         return arguments;

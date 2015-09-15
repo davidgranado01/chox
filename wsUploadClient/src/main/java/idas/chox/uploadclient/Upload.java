@@ -25,8 +25,8 @@ import com.idaschox.services.chox.UploadService;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import idas.chox.uploadclient.activity.AddAttachment;
 
+import idas.chox.uploadclient.activity.AddAttachment;
 import idas.chox.uploadclient.activity.CloseClaim;
 import idas.chox.uploadclient.activity.ECDUpdate;
 import idas.chox.uploadclient.activity.PaymentReceived;
@@ -46,7 +46,7 @@ public class Upload {
     private static final String DEFAULT_PASSWORD = "C0mpliance";
 
     private static void printUsageAndExit() {
-        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentreceived|ecdupdate|addnote|addAttachment] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File> | <Notes Excel File>) | -choref <choReference>  -category <Attachment Category> [-notify] [-remark <Attachment Remark>] <AttachmentFile>...");
+        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentReceived|ecdUpdate|addNote|addAttachment] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File> | <Notes Excel File>) | -choRef <choReference>  -category <Attachment Category> [-notify] [-remark <Attachment Remark>] <AttachmentFile>...");
         System.out.println("       Valid attachment categories are: PAYMENT_PACK, TOTAL_LOSS_INSPECTION_CHECK, CHO_S_CLIENT_ALLEGATIONS, INSURER_S_CLIENT_ALLEGATIONS, ENGINEER_S_REPORTS, INVESTIGATOR_REPORTS, REPAIR_DOCUMENTS, TOTAL_LOSS_PACK, TOTAL_LOSS_NOTIFICATION, WITNESS_STATEMENT, OTHER, MITIGATION_STATEMENT, INTERVENTION_LETTER, VIDEO_FOOTAGE");
         System.exit(-1);
     }
@@ -71,7 +71,7 @@ public class Upload {
         String username = optionsBean.getUserName();
         String password = optionsBean.getPassword();
         List<String> fileNames = optionsBean.getArguments();
-
+        
         if (optionsBean.isVerbose()) {
 
             LOG.info("Verbose messaging has been activated.");
@@ -102,7 +102,7 @@ public class Upload {
         }
 
         if (fileNames == null || fileNames.isEmpty()) {
-            LOG.error("No filename has been provided - exiting.");
+            LOG.error("No filename or CHO reference has been provided - exiting.");
             printUsageAndExit();
         }
 
@@ -118,6 +118,7 @@ public class Upload {
 
         if (optionsBean.isVerbose()) {
             // Add Logging Interceptors for verbose messaging
+            LOG.info("Add Logging Interceptors for verbose messaging");
             Client client = ClientProxy.getClient(uploadService);
             client.getInInterceptors().add(new LoggingInInterceptor());
             client.getOutInterceptors().add(new LoggingOutInterceptor());
@@ -125,16 +126,19 @@ public class Upload {
 
 
         for (String fileName : fileNames) {
-
+            LOG.debug("Processing file {}", fileName);
             if (!(new File(fileName)).exists()) {
                 // Treat as CHO reference 
                 if (optionsBean.isClose()) {
+                    LOG.debug("Calling CloseClaim...");
                     CloseClaim.process(uploadService, fileName);
                 }
                 else if (optionsBean.isReopen()) {
+                    LOG.debug("Calling ReopenClaim...");
                     ReopenClaim.process(uploadService, fileName);
                 }
                 else if(optionsBean.isPaymentReceived()) {
+                    LOG.debug("Calling PaymentReceived...");
                     PaymentReceived.process(uploadService, fileName);
                 } else {
                     printUsageAndExit();
@@ -142,21 +146,25 @@ public class Upload {
                 
             } else {
                 if (optionsBean.isUpdateECD() && fileName.endsWith("xls")) {
+                    LOG.debug("Calling ECDUpdate...");
                     ECDUpdate.process(uploadService, fileName);
                 } else if (optionsBean.isAddNote() && fileName.endsWith("xls")) {
+                    LOG.debug("Calling AddNote...");
                     AddNote.process(uploadService, fileName);
                 } else if (optionsBean.isAddAttachment()) {
+                    LOG.debug("Calling AddAttachment...");
                     AddAttachment.process(uploadService, optionsBean.getChoRef(), fileName, optionsBean.getCategory(), optionsBean.isAttachmentNotification(), optionsBean.getRemark());
                 } else if (optionsBean.isReopen()) {
+                    LOG.debug("Calling Reopen Claim...");
                     ReopenClaim.process(uploadService, fileName);
-                }
-                else if (optionsBean.isClose()) {
+                } else if (optionsBean.isClose()) {
+                    LOG.debug("Calling CloseClaim...");
                     CloseClaim.process(uploadService, fileName);
-                }
-                else if(optionsBean.isPaymentReceived()) {
+                } else if(optionsBean.isPaymentReceived()) {
+                    LOG.debug("Calling PaymentReceived...");
                     PaymentReceived.process(uploadService, fileName);
-                }
-                else if (isXmlBordereau(fileName)) {
+                } else if (isXmlBordereau(fileName)) {
+                    LOG.debug("Calling UploadBordereau...");
                     UploadBordereau.process(uploadService, fileName);
                 }
             }
