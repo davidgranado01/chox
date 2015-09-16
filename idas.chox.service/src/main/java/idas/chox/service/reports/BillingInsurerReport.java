@@ -109,9 +109,8 @@ public class BillingInsurerReport implements Report {
                 .append("and at.new_status='").append(billingStatus)
                 .append("' and cm.chorganisation_id = cho.id ")
                 .append("and bid.billing_insurer_id =  :p_billing_insurer_id ")
-                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date > at.update_date)");
-
-            
+                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and a.new_status='")
+                .append(billingStatus).append("' and a.update_date > at.update_date)");
 
             String query = sb.toString();
 
