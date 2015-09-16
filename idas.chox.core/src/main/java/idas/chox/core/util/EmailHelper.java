@@ -22,15 +22,15 @@ public class EmailHelper {
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final boolean SMTP_authetication = true;
     private String SmtpHostName;
-    String SmtpPort;
-    String SmtpEmailUser;
-    String SmtpEmailUserPassword;
+    String smtpPort;
+    String smtpEmailUser;
+    String smtpEmailUserPassword;
 
     public EmailHelper(String smtpHostName, String smtpPort, String smtpEmailUser, String smtpEmailUserPassword) {
         this.SmtpHostName = smtpHostName;
-        this.SmtpPort = smtpPort;
-        this.SmtpEmailUser = smtpEmailUser;
-        this.SmtpEmailUserPassword = smtpEmailUserPassword;
+        this.smtpPort = smtpPort;
+        this.smtpEmailUser = smtpEmailUser;
+        this.smtpEmailUserPassword = smtpEmailUserPassword;
     }
 
     private Authenticator getAuthenticator(final String userName, final String password) {
@@ -58,28 +58,29 @@ public class EmailHelper {
             }
             return;
         }
+        
         try {
 
             Properties props = new Properties();
             props.put("mail.smtp.host", SmtpHostName);
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "false");
-            props.put("mail.smtp.port", SmtpPort);
-            props.put("mail.smtp.socketFactory.port", SmtpPort);
+            props.put("mail.smtp.port", smtpPort);
+            props.put("mail.smtp.socketFactory.port", smtpPort);
             props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
             props.put("mail.smtp.socketFactory.fallback", "false");
 
             Session session;
 
             if (SMTP_authetication) {
-                Authenticator authenticator = getAuthenticator(SmtpEmailUser, SmtpEmailUserPassword);
+                Authenticator authenticator = getAuthenticator(smtpEmailUser, smtpEmailUserPassword);
                 session = Session.getInstance(props, authenticator);
             } else {
                 session = Session.getInstance(props);
             }
 
             Message msg = new MimeMessage(session);
-            InternetAddress addressFrom = new InternetAddress(SmtpEmailUser);
+            InternetAddress addressFrom = new InternetAddress(smtpEmailUser);
             addressFrom.setPersonal("CHOX Support");
             msg.setFrom(addressFrom);
 
@@ -97,17 +98,18 @@ public class EmailHelper {
             msg.setContent(message, "text/plain");
             Transport.send(msg);
 
-        } catch (Exception ex) {
-            LOG.error("Error posting email with subject '{}': \n", subject, ex);
+        } catch (UnsupportedEncodingException | MessagingException ex) {
+            LOG.warn("Error posting email with subject '{}': \n", subject, ex);
+            throw ex;
         }
     }
 
     public void setSmtpEmailUser(String SmtpEmailUser) {
-        this.SmtpEmailUser = SmtpEmailUser;
+        this.smtpEmailUser = SmtpEmailUser;
     }
 
     public void setSmtpEmailUserPassword(String SmtpEmailUserPassword) {
-        this.SmtpEmailUserPassword = SmtpEmailUserPassword;
+        this.smtpEmailUserPassword = SmtpEmailUserPassword;
     }
 
     public void setSmtpHostName(String SmtpHostName) {
@@ -115,6 +117,6 @@ public class EmailHelper {
     }
 
     public void setSmtpPort(String SmtpPort) {
-        this.SmtpPort = SmtpPort;
+        this.smtpPort = SmtpPort;
     }
 }

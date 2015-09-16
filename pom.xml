@@ -66,7 +66,8 @@
         <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
         
         <activeMQ.version>5.8.0</activeMQ.version>
-        <mail.version>1.5.4</mail.version>
+        <!-- NB. Cannot send emails with version 1.5.4: MessagingException Could not connect to SMTP host: smtp.gmail.com, port: 465, response: -1 -->
+        <mail.version>1.5.2</mail.version>
     </properties>
 
     <build>

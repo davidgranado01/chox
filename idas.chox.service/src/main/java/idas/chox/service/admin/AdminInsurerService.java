@@ -1,8 +1,6 @@
 package idas.chox.service.admin;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -45,6 +43,8 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
+import java.io.IOException;
+import javax.mail.MessagingException;
 
 public class AdminInsurerService extends SecureDataService {
 
@@ -109,17 +109,17 @@ public class AdminInsurerService extends SecureDataService {
 
     public ActionResponse updateInsurer(Insurer insurer, boolean isNew, String originalName) {
 
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         boolean isAllowUpdate = true;
 
         if (isNew) {
-            if (this.insurerService.isInsurerNameExist(insurer.getName())) {
-                this.actionResponse.AddError("Insurer name already exists!");
+            if (insurerService.isInsurerNameExist(insurer.getName())) {
+                actionResponse.AddError("Insurer name already exists!");
                 isAllowUpdate = false;
             }
         } else {
             if (insurer.isWorkgroupEnable() && !workgroupService.isInsurerWithWorkgroup(insurer.getId())) {
-                this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is at least one active workgroup exist in order to enable workgroup function");
+                actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is at least one active workgroup exist in order to enable workgroup function");
             }
             
             if(!originalName.equals(insurer.getName())) {
@@ -144,12 +144,12 @@ public class AdminInsurerService extends SecureDataService {
                 breBandService.createDefaultRecord(insurer);
                 reasonOfRejectionService.createDefaultRecord(insurer);
 
-                this.actionResponse.AssignNewIdResult(insurer.getId());
+                actionResponse.AssignNewIdResult(insurer.getId());
             }
 
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public List<Insurer> getInsurers() {
@@ -170,7 +170,7 @@ public class AdminInsurerService extends SecureDataService {
 
     public ActionResponse addNewInsurerAlias(int insurerId, String insurerAliasName) {
 
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         if (!insurerAliasService.isInsurerAliasExist(insurerId, insurerAliasName)) {
 
             InsurerAlias insurerAlias = new InsurerAlias();
@@ -184,14 +184,14 @@ public class AdminInsurerService extends SecureDataService {
             getActionResponse().AddError("Alias '" + insurerAliasName + "' already exists");
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse removeInsurerAlias(InsurerAlias insurerAlias) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         insurerAliasService.deleteInsurerAlias(insurerAlias);
         getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + insurerAlias.getAliasName() + "' has been removed");
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public AutomaticRouting getInsurerAutomaticRouting(int automaticRoutingId) {
@@ -224,7 +224,7 @@ public class AdminInsurerService extends SecureDataService {
     }
 
     public ActionResponse addNewAutomaticRouting(Integer insurerId, Integer workgroupId, String regExpression) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
 
         if (insurerId > 0 && workgroupId > 0 && !regExpression.equalsIgnoreCase("")) {
             AutomaticRouting automaticRouting = new AutomaticRouting();
@@ -233,14 +233,14 @@ public class AdminInsurerService extends SecureDataService {
             automaticRouting.setWorkgroup(workgroupService.getWorkgroup(workgroupId));
             automaticRoutingService.saveAutomaticRouting(automaticRouting);
         } else {
-            this.actionResponse.AddError("Incorrect Insurer and Workgroup");
+            actionResponse.AddError("Incorrect Insurer and Workgroup");
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse addNewAutomaticRoutingByPrice(Integer insurerId, Integer workgroupId, BigDecimal price) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
 
         if (insurerId > 0 && workgroupId > 0 && price != null) {
             AutomaticRoutingPrice automaticRouting = new AutomaticRoutingPrice();
@@ -249,41 +249,41 @@ public class AdminInsurerService extends SecureDataService {
             automaticRouting.setWorkgroup(workgroupService.getWorkgroup(workgroupId));
             automaticRoutingService.saveAutomaticRoutingByPrice(automaticRouting);
         } else {
-            this.actionResponse.AddError("Incorrect Insurer and Workgroup");
+            actionResponse.AddError("Incorrect Insurer and Workgroup");
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse updateAutomaticRouting(AutomaticRouting automaticRouting) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         automaticRoutingService.saveAutomaticRouting(automaticRouting);
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse deleteAutomaticRouting(Integer automaticRoutingId) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
 
         if (automaticRoutingId > 0 && automaticRoutingId != null) {
             AutomaticRouting automaticRouting = automaticRoutingService.getAutomaticRouting(automaticRoutingId);
             automaticRoutingService.deleteAutomaticRouting(automaticRouting);
         } else {
-            this.actionResponse.AddError("Incorrect Automatic Routing Record");
+            actionResponse.AddError("Incorrect Automatic Routing Record");
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse deleteAutomaticRoutingByPrice(Integer automaticRoutingId) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         if (automaticRoutingId > 0 && automaticRoutingId != null) {
             AutomaticRoutingPrice automaticRouting = automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
             automaticRoutingService.deleteAutomaticRoutingByPrice(automaticRouting);
         } else {
-            this.actionResponse.AddError("Incorrect Automatic Routing Record");
+            actionResponse.AddError("Incorrect Automatic Routing Record");
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     // </editor-fold>
@@ -297,23 +297,23 @@ public class AdminInsurerService extends SecureDataService {
     }
 
     public ActionResponse deleteInsurerBreBand(BreBand breBand) {
-        this.actionResponse = new ActionResponse();
+       actionResponse = new ActionResponse();
         if (breBandService.isBreBandOccupied(breBand)) {
-            this.actionResponse.AddError("You cannot delete '" + breBand.getName() + "' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again");
+            actionResponse.AddError("You cannot delete '" + breBand.getName() + "' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again");
         } else {
-            this.breBandService.deleteBreBand(breBand);
+            breBandService.deleteBreBand(breBand);
         }
 
-        return this.actionResponse;
+        return actionResponse;
     }
 
     public ActionResponse updateInsurerBreBand(BreBand breBand, int insurerId, boolean isNew) {
-        this.actionResponse = new ActionResponse();
+        actionResponse = new ActionResponse();
         
         breBand.setInsurer(insurerService.getInsurer(insurerId));
 
         if (breBandService.isBreBandNameExist(breBand)) {
-            this.actionResponse.AddError("Selected Band Name already exists");
+            actionResponse.AddError("Selected Band Name already exists");
         } else {
 
             breBandService.saveBreBand(breBand);
@@ -327,7 +327,6 @@ public class AdminInsurerService extends SecureDataService {
                         Resource resource = new ClassPathResource("/application.properties");
                         Properties props = PropertiesLoaderUtils.loadProperties(resource);
 
-                        String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
                         String smtpHostName = props.getProperty("smtpHostName");
                         String smtpPort = props.getProperty("smtpPort");
                         String smtpEmailUser = props.getProperty("smtpEmailUser");
@@ -341,10 +340,12 @@ public class AdminInsurerService extends SecureDataService {
                         } else {
                             emailSubject = "New BRE Band Created (" + hostName + ")";
                         }
+                        LOG.debug("Initialising emailHelper with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailUserPassword={}",
+                                new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword});
                         EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword);
                         String emailMessage = "Insurer " + breBand.getInsurer().getName() + ", User " + breBand.getCreatedBy().getFullName() + " Has Added A New BRE Band Called " + breBand.getName() + " On " + breBand.getCreatedDate().toString() + ".";
                         emailHelper.postMail(emailSubject, emailMessage, recipients);
-
+                        LOG.debug("Email sent: {}", emailSubject);
                     } catch (IOException | MessagingException ex) {
                         LOG.error("Error sending email for new RE Band '{}' Creation: {}", breBand.getName(), ex.getMessage());
                     }
@@ -352,8 +353,7 @@ public class AdminInsurerService extends SecureDataService {
             }
 
         }
-
-        return this.actionResponse;
+        return actionResponse;
     }
     // </editor-fold>
 
