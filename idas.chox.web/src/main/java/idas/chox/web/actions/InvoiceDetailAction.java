@@ -601,6 +601,22 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getRepairAcquisitionFeeOriginal();
     }
 
+    public java.math.BigDecimal getRepairPartsOriginal() {
+        return invoiceOriginal.getRepairPartsOriginal();
+    }
+
+    public java.math.BigDecimal getRepairLabourOriginal() {
+        return invoiceOriginal.getRepairLabourOriginal();
+    }
+
+    public java.math.BigDecimal getRepairMaterialsOriginal() {
+        return invoiceOriginal.getRepairMaterialsOriginal();
+    }
+
+    public java.math.BigDecimal getRepairSpecialistOriginal() {
+        return invoiceOriginal.getRepairSpecialistOriginal();
+    }
+
     public java.math.BigDecimal getRoofRackFeeOriginal() {
         return invoiceOriginal.getRoofRackFeeOriginal();
     }
