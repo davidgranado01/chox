@@ -23,6 +23,7 @@ public class HireUpdate extends BaseActivity {
     private Date hireStartDateTime;
     private String hireStartTime;
     private boolean updateInsurer;
+    private boolean isHireStartUpdate = false;
 
     
     public VehicleClass getVehicleClass() {
@@ -103,7 +104,11 @@ public class HireUpdate extends BaseActivity {
         if (vh == null) {
             vh = new VehicleHire();
             claim.setVehicleHire(vh);
+            isHireStartUpdate = true;
         }else {
+            if (vh.getRentalStart() == null) {
+                isHireStartUpdate = true;
+            }
             // If no original values then save current ones
             if (vh.getHireStartOriginal() == null && vh.getHireStart() != null) {
                 vh.setHireStartOriginal(vh.getHireStart());
@@ -123,6 +128,9 @@ public class HireUpdate extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) {
         activityEventGenerator.generate(claim, this);
+        if (isHireStartUpdate) {
+            claimService.addOnHireTask(claim);
+        }
         if (updateInsurer) {
                 notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
         }

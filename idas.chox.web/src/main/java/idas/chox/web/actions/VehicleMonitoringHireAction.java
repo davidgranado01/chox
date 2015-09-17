@@ -26,6 +26,7 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
     private NotificationService notificationService;
     private int vehicleClassMonitoringId;
     boolean updateInsurer;
+    private Date currentHireStart;
     
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -44,6 +45,7 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
         VehicleHire vehicleHire = claim.getVehicleHire();
         if (vehicleHire != null) {
+            currentHireStart = vehicleHire.getHireStart();
             return vehicleHire;
         }
         return new VehicleHire();
@@ -66,9 +68,10 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
                 model.setVehicleClass(vehicleClass);
             }
             if ((claim.getVehicleHire() == null && model.getRentalStart() != null)
-                || (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() == null && model.getRentalStart() != null)) {
+                || (claim.getVehicleHire() != null && currentHireStart == null && model.getRentalStart() != null)) {
                 isHireStartUpdate = true;
             }
+            
             claim.setVehicleHire(model);
             String result = super.updateModel();
 
