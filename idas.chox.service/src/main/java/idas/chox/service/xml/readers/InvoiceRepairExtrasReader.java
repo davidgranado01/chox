@@ -35,6 +35,12 @@ public class InvoiceRepairExtrasReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE))
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE))
                 && element != null && XMLUtils.getElement(element, "extra") != null
                 && ((XMLUtils.getElement(element, "extra").getTextContent()).trim().length() > 0)) {
