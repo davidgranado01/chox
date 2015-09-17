@@ -47,7 +47,7 @@ public class Upload {
 
     private static void printUsageAndExit() {
         System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentReceived|ecdUpdate|addNote|addAttachment] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File> | <Notes Excel File>) | -choRef <choReference>  -category <Attachment Category> [-notify] [-remark <Attachment Remark>] <AttachmentFile>...");
-        System.out.println("       Valid attachment categories are: PAYMENT_PACK, TOTAL_LOSS_INSPECTION_CHECK, CHO_S_CLIENT_ALLEGATIONS, INSURER_S_CLIENT_ALLEGATIONS, ENGINEER_S_REPORTS, INVESTIGATOR_REPORTS, REPAIR_DOCUMENTS, TOTAL_LOSS_PACK, TOTAL_LOSS_NOTIFICATION, WITNESS_STATEMENT, OTHER, MITIGATION_STATEMENT, INTERVENTION_LETTER, VIDEO_FOOTAGE");
+        System.out.println("       Valid attachment categories are: PAYMENT_PACK, TOTAL_LOSS_INSPECTION_CHECK, CHO_S_CLIENT_ALLEGATIONS, INSURER_S_CLIENT_ALLEGATIONS, ENGINEER_S_REPORTS, INVESTIGATOR_REPORTS, REPAIR_DOCUMENTS, REPAIRER_STATEMENT, TOTAL_LOSS_PACK, TOTAL_LOSS_NOTIFICATION, WITNESS_STATEMENT, OTHER, MITIGATION_STATEMENT, INTERVENTION_LETTER, VIDEO_FOOTAGE");
         System.exit(-1);
     }
 
