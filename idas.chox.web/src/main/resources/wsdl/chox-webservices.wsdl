@@ -1072,13 +1072,14 @@
                     <xsd:enumeration value="Engineer's Reports"/>
                     <xsd:enumeration value="Investigator Reports"/>
                     <xsd:enumeration value="Repair Documents"/>
+                    <xsd:enumeration value="Repairer Statement"/>
                     <xsd:enumeration value="Total Loss Pack"/>
                     <xsd:enumeration value="Total Loss Notification"/>
                     <xsd:enumeration value="Witness Statement"/>
-                    <xsd:enumeration value="Other"/>
                     <xsd:enumeration value="Mitigation Statement"/>
                     <xsd:enumeration value="Intervention Letter"/>
                     <xsd:enumeration value="Video Footage"/>
+                    <xsd:enumeration value="Other"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
