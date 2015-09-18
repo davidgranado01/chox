@@ -635,3 +635,33 @@ ALTER TABLE bre_band ADD COLUMN allow_on_hire_auto_tasks boolean not null DEFAUL
 ----------------------
 -- End of 8.7.4
 ----------------------
+
+--------------------------------------------------------------------------------
+-- bug#3009 Production - InvoicePaymentLogged activity should not be accessible
+--                       for Manual claims
+--------------------------------------------------------------------------------
+update accessibility set claim_type=0 where name='activity.InvoicePaymentLogged.AwaitingInvoicePayment';
+insert into accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+  select 'activity.InvoicePaymentLogged.AwaitingInvoicePayment', true, true, 3;
+insert into accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+  select 'activity.InvoicePaymentLogged.AwaitingInvoicePayment', true, true, 4;
+insert into accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+  select 'activity.InvoicePaymentLogged.AwaitingInvoicePayment', true, true, 7;
+insert into accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+  select 'activity.InvoicePaymentLogged.AwaitingInvoicePayment', true, true, 11;
+insert into accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+  select 'activity.InvoicePaymentLogged.AwaitingInvoicePayment', true, true, 18;
+
+insert into accessibility_item(accessibility_id, role, access_right)
+  select id, 'ROLE_INS_CH', 2 from accessibility where name='activity.InvoicePaymentLogged.AwaitingInvoicePayment' and claim_type != 0;
+insert into accessibility_item(accessibility_id, role, access_right)
+  select id, 'ROLE_INS_MNG', 2 from accessibility where name='activity.InvoicePaymentLogged.AwaitingInvoicePayment' and claim_type != 0;
+insert into accessibility_item(accessibility_id, role, access_right)
+  select id, 'ROLE_CHOX_ADMIN', 2 from accessibility where name='activity.InvoicePaymentLogged.AwaitingInvoicePayment' and claim_type != 0;
+insert into accessibility_item(accessibility_id, role, access_right)
+  select id, 'ROLE_INS_PC', 2 from accessibility where name='activity.InvoicePaymentLogged.AwaitingInvoicePayment' and claim_type != 0;
+
+----------------------
+-- End of bug#3009
+----------------------
+
