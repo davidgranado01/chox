@@ -22,7 +22,7 @@ and history.claim_id = claim.id
 
       count(distinct(c.id)) as NumberOfUniqueCases,
 
-      (select avg(coalesce(invoice_original.total_to_pay, invoice.original_total_to_pay, invoice.total_to_pay ))::numeric(8,2) 
+      (select avg(coalesce(invoice_original.total_to_pay, invoice.total_to_pay ))::numeric(8,2) 
        from invoice_original, claim
        inner join invoice on claim.invoice_id = invoice.id
        where invoice.invoice_original_id = invoice_original.id and claim.id in (select distinct(c.id)
