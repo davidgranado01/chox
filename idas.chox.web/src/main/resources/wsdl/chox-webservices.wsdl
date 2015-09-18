@@ -208,6 +208,10 @@
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Repair Admin"/>
                     <xsd:enumeration value="Repair Acquisition"/>
+                    <xsd:enumeration value="Repair Parts"/>
+                    <xsd:enumeration value="Repair Labour"/>
+                    <xsd:enumeration value="Repair Materials"/>
+                    <xsd:enumeration value="Repair Specialist"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -871,7 +875,7 @@
             
             <xsd:complexType name="RepairExtras">
                 <xsd:sequence>
-                    <xsd:element name="extra" minOccurs="1" maxOccurs="2" type="chx:RepairExtra"/>
+                    <xsd:element name="extra" minOccurs="1" maxOccurs="6" type="chx:RepairExtra"/>
                 </xsd:sequence>
             </xsd:complexType>
 
