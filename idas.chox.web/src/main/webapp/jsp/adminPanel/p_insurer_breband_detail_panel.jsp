@@ -1099,9 +1099,9 @@
         return fixedFeePenaltiesEnable;
     }
 
-    function doCollaborationFeePenaltyChargeCheck(){
+    function doCollaborationPenaltyChargeCheck(){
         var collaborationPenaltiesEnable = false;
-        if($('form#formUpdateInsurerBreBandDetail input[name="allowCollaborationPenaltyCharges"]:checked').val()){
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowCollaborationProtocolPenaltyCharges"]:checked').val()){
             collaborationPenaltiesEnable = true;
             $("#collaborationPenaltyIdentifierId").slideDown();
         }else{
