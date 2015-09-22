@@ -485,6 +485,7 @@
             <result name="error">/jsp/p_jsonArrayData.jsp</result>
         </action>
 
+
        <!-- ACTION PANEL VALIDATION !-->
         <action name="getActionPanel" class="idas.chox.web.actions.ClaimAction" method="getActionPanel">
             <result name="AssignWorkgroup">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
@@ -500,6 +501,7 @@
             <result name="InvoiceReferToCH">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
             <result name="InvoicePaymentLogged">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
+            <result name="UpdateManualInvoicePaid">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
             <result name="ClaimReviewByEng">/jsp/actionPanel/p_review_by_engineer_liability.jsp</result>
             <result name="approveBREPassedByClaimHandler">/jsp/actionPanel/p_approve_bre_passed_by_claim_handler.jsp</result>
             <result name="ClaimRegisterByFnol">/jsp/actionPanel/p_registered_claim_by_fnol.jsp</result>
