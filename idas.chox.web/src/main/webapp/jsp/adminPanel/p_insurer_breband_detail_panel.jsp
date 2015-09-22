@@ -467,6 +467,10 @@
         doTtlLossAllowableTtlDuration();
         doRepairDurationRuleforMobileVehicleWithoutECD();
         doRepairDurationRuleforNonMobileVehicleWithoutECD();
+<s:if test="isChoxAdmin">
+        doHireApply90DayRate();
+        doRepairApply90DayRate();
+</s:if>
     }
 
     function doTtlLossAllowableTtlDuration(){
@@ -838,18 +842,29 @@
                 var startDate = penaltyStartDateDatePicker.getValue();
                 var hire30DayRate = parseFloat($("#hire30Day").val()).toFixed(1);
                 var hire60DayRate = parseFloat($("#hire60Day").val()).toFixed(1);
-                var hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(1);
                 var hireApply90DayRate = $("#hireApply90DayRate").is(":checked");
                 var hireApply90DayRateDesc = hireApply90DayRate ? 'Yes' : 'No';
                 var hireUseCommercial =  $("#hireUseCommercial").is(":checked");
                 var hireUseCommercialDesc =  hireUseCommercial ? 'Yes' : 'No';
+                var hire90DayRate;
+                if (hireApply90DayRate && !hireUseCommercial){
+                    hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(1);
+                }else{
+                    hire90DayRate = 0.0;
+                }
+
                 var repair30DayRate = parseFloat($("#repair30Day").val()).toFixed(1);
                 var repair60DayRate = parseFloat($("#repair60Day").val()).toFixed(1);
-                var repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(1);
                 var repairApply90DayRate = $("#repairApply90DayRate").is(":checked");
                 var repairApply90DayRateDesc = repairApply90DayRate ? 'Yes' : 'No';
                 var repairUseCommercial = $("#repairUseCommercial").is(":checked");
                 var repairUseCommercialDesc =  repairUseCommercial ? 'Yes' : 'No';
+                var repair90DayRate;
+                if (repairApply90DayRate && !repairUseCommercial){
+                    repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(1);
+                }else{
+                    repair90DayRate = 0.0;
+                }
                 // create new record type, mark dirty and add it to the grid store.
                 var recordType = penaltyBand_gridviewGrid.getStore().recordType;
                 var newRecord = new recordType({'claimTypeId':claimTypeId, 'claimTypeName':claimTypeName, 'penaltyBandStartDate':startDate,
@@ -949,14 +964,17 @@
                 validForm = false;
             }
                         
-            if ($.isNumeric($("#hire90Day").val())) {
-                if (parseFloat($("#hire90Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Hire 90 Day Rate'\n<br/>").show();
+            if($('form#formUpdateInsurerBreBandDetail input[name="hireApply90DayRate"]:checked').val()
+                && !$('form#formUpdateInsurerBreBandDetail input[name="hireUseCommercial"]:checked').val()){
+                if ($.isNumeric($("#hire90Day").val())) {
+                    if (parseFloat($("#hire90Day").val()).toFixed(1) < 0) {
+                        mesBox.append("You must supply a value for 'Hire 90 Day Rate'\n<br/>").show();
+                        validForm = false;
+                    }
+                } else {
+                    mesBox.append("You must supply a numeric value for 'Hire 90 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Hire 90 Day Rate'\n<br/>").show();
-                validForm = false;
             }
                         
             if ($.isNumeric($("#repair30Day").val())) {
@@ -979,22 +997,27 @@
                 validForm = false;
             }
                         
-            if ($.isNumeric($("#repair90Day").val())) {
-                if (parseFloat($("#repair90Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Repair 90 Day Rate'\n<br/>").show();
+            if($('form#formUpdateInsurerBreBandDetail input[name="repairApply90DayRate"]:checked').val()
+                && !$('form#formUpdateInsurerBreBandDetail input[name="repairUseCommercial"]:checked').val()){
+                if ($.isNumeric($("#repair90Day").val())) {
+                    if (parseFloat($("#repair90Day").val()).toFixed(1) < 0) {
+                        mesBox.append("You must supply a value for 'Repair 90 Day Rate'\n<br/>").show();
+                        validForm = false;
+                    }
+                } else {
+                    mesBox.append("You must supply a numeric value for 'Repair 90 Day Rate'\n<br/>").show();
                     validForm = false;
                 }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Repair 90 Day Rate'\n<br/>").show();
-                validForm = false;
             }
-                        
+            
             if (validForm){
                 return true;
             } else {
                 return false;
             }
         }
+
+
 </s:if>
         function validateEditProtocolVehicleClassCeilingForm(){
             var mesBox = $("#pvccMessageBox");
@@ -1131,7 +1154,7 @@
         }
         return insurerVsInsurerPenaltiesEnable;
     }
-            
+        
     function onPenaltyChargeBandPageRefresh(){
         // load the grid.
         penaltyBand_loadGridViewList();
@@ -1140,7 +1163,35 @@
     }
 
 <s:if test="isChoxAdmin">
-        function penaltyBand_recordOnclickRemovePenaltyBand(grid, rowIndex, columnIndex, e) {
+    function doHireApply90DayRate(){
+        if($('form#formUpdateInsurerBreBandDetail input[name="hireApply90DayRate"]:checked').val()){
+            $("#hireUseCommercialDivId").slideDown();
+            if($('form#formUpdateInsurerBreBandDetail input[name="hireUseCommercial"]:checked').val()){
+                $("#hire90DayRateDivId").hide();
+            }else{
+                $("#hire90DayRateDivId").slideDown();
+            }
+        }else{
+            $("#hireUseCommercialDivId").hide();
+            $("#hire90DayRateDivId").hide();
+        }
+    }
+
+    function doRepairApply90DayRate(){
+        if($('form#formUpdateInsurerBreBandDetail input[name="repairApply90DayRate"]:checked').val()){
+            $("#repairUseCommercialDivId").slideDown();
+            if($('form#formUpdateInsurerBreBandDetail input[name="repairUseCommercial"]:checked').val()){
+                $("#repair90DayRateDivId").hide();
+            }else{
+                $("#repair90DayRateDivId").slideDown();
+            }
+        }else{
+            $("#repairUseCommercialDivId").hide();
+            $("#repair90DayRateDivId").hide();
+        }
+    }
+
+    function penaltyBand_recordOnclickRemovePenaltyBand(grid, rowIndex, columnIndex, e) {
 
             var gridRecord = penaltyBand_gridviewGrid.getStore().getAt(rowIndex);
 
@@ -1360,20 +1411,22 @@
                                                 <input id="hire60Day" style="width:50px"/>
                                             </td>
                                            <td align="right">
-                                                <label class="chox-form-std-label">Hire 90 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="hire90Day" style="width:50px"/>
+                                               <div id="hire90DayRateDivId">
+                                                    <label class="chox-form-std-label" >Hire 90 Day Rate<span class="mandatory">*</span></label>
+                                                    <input id="hire90Day" style="width:50px"/>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="hireApply90DayRate"/></div>
+                                                    <div class="chox-form-checkbox"><s:checkbox name="hireApply90DayRate" value="true" onclick="doHireApply90DayRate()"/></div>
                                                     <label class="chox-form-std-label">Apply 90 Day Rate on Hire</label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="hireUseCommercial"/></div>
+                                                <div class="chox-form-checkboxitem" name="hireUseCommercialDiv" id="hireUseCommercialDivId">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="hireUseCommercial" onclick="doHireApply90DayRate()"/></div>
                                                     <label class="chox-form-std-label">Use Commercial for 90 day Hire</label>
                                                 </div>
                                             </td>
@@ -1389,20 +1442,22 @@
                                                 <input id="repair60Day" style="width:50px"/>
                                             </td>
                                            <td align="right"
-                                                <label class="chox-form-std-label">Repair 90 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="repair90Day" style="width:50px"/>
+                                               <div id="repair90DayRateDivId">
+                                                    <label class="chox-form-std-label" >Repair 90 Day Rate<span class="mandatory">*</span></label>
+                                                    <input id="repair90Day" style="width:50px"/>
+                                               </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="repairApply90DayRate"/></div>
+                                                    <div class="chox-form-checkbox"><s:checkbox name="repairApply90DayRate" value="true" onclick="doRepairApply90DayRate()"/></div>
                                                     <label class="chox-form-std-label">Apply 90 Day Rate on Repair</label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="repairUseCommercial"/></div>
+                                                <div class="chox-form-checkboxitem" name="repairUseCommercialDiv" id="repairUseCommercialDivId">
+                                                    <div class="chox-form-checkbox"><s:checkbox name="repairUseCommercial" onclick="doRepairApply90DayRate()"/></div>
                                                     <label class="chox-form-std-label">Use Commercial for 90 day Repair</label>
                                                 </div>
                                             </td>
