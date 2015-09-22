@@ -70,30 +70,33 @@ public class BillingChoReport implements Report {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("select ");
-                sb.append("cm.cho_reference, ");
-                sb.append("cm.claim_number, ");
-                sb.append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ");
-                sb.append("cr.first_name || ' ' || cr.last_name as name, ");
-                sb.append("at.update_date as received_date, ");
-                sb.append("inv.total_to_pay, ");
-                sb.append("bcd.net_claim_cost, ");
-                sb.append("bcd.vat_net_claim_cost, ");
-                sb.append("bcd.gross_claim_cost ");
-            sb.append("from ");
-                sb.append("claim as cm, ");
-                sb.append("billing_cho_detail as bcd, ");
-                sb.append("customer as cr, ");
-                sb.append("audit_trail as at, ");
-                sb.append("invoice as inv ");
-            sb.append("where ");
-                sb.append("cm.id=bcd.claim_reference_id ");
-                sb.append("and cr.id = cm.customer_id ");
-                sb.append("and inv.id = cm.invoice_id ");
-                sb.append("and cm.id = at.claim_id ");
-                sb.append("and at.new_status='PaymentReceived' ");
-                sb.append("and bcd.billing_cho_id =  :p_billing_cho_id ");
-                sb.append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.reverted=false and a.new_status='PaymentReceived' and a.update_date > at.update_date)");
+            sb.append("select ")
+                .append("cm.cho_reference, ")
+                .append("cm.claim_number, ")
+                .append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ")
+                .append("cr.first_name || ' ' || cr.last_name as name, ")
+                .append("at.update_date as received_date, ")
+                .append("inv.total_to_pay, ")
+                .append("bcd.net_claim_cost, ")
+                .append("bcd.vat_net_claim_cost, ")
+                .append("bcd.gross_claim_cost ");
+            sb.append("from ")
+                .append("claim as cm, ")
+                .append("billing_cho as bc, ")
+                .append("billing_cho_detail as bcd, ")
+                .append("customer as cr, ")
+                .append("audit_trail as at, ")
+                .append("invoice as inv ");
+            sb.append("where ")
+                .append("cm.id=bcd.claim_reference_id ")
+                .append("and cr.id = cm.customer_id ")
+                .append("and inv.id = cm.invoice_id ")
+                .append("and cm.id = at.claim_id ")
+                .append("and at.new_status='PaymentReceived' ")
+                .append("and at.created_date < bc.created_date ")
+                .append("and bc.id =  :p_billing_cho_id ")
+                .append("and bcd.billing_cho_id =  :p_billing_cho_id ")
+                .append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date > at.update_date and a.update_date < bc.created_date)");
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());

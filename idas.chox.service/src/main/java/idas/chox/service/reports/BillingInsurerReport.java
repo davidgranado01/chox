@@ -95,6 +95,7 @@ public class BillingInsurerReport implements Report {
                 //sb.append("inv.total_to_pay ");
             sb.append("from ")
                 .append("claim as cm, ")
+                .append("billing_insurer as bi, ")
                 .append("billing_insurer_detail as bid, ")
                 .append("audit_trail as at, ")
                 .append("customer as cr, ")
@@ -106,11 +107,15 @@ public class BillingInsurerReport implements Report {
                 .append("and cr.id = cm.customer_id ")
                 .append("and tp.id = cm.third_party_id ")
                 .append("and cm.id = at.claim_id ")
-                .append("and at.new_status='").append(billingStatus)
-                .append("' and cm.chorganisation_id = cho.id ")
+                .append("and at.new_status='")
+                .append(billingStatus)
+                .append("' and at.created_date < bi.created_date ")
+                .append("and cm.chorganisation_id = cho.id ")
+                .append("and bi.id =  :p_billing_insurer_id ")
                 .append("and bid.billing_insurer_id =  :p_billing_insurer_id ")
-                .append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and a.new_status='")
-                .append(billingStatus).append("' and a.update_date > at.update_date)");
+                .append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='")
+                .append(billingStatus)
+                .append("' and a.update_date > at.update_date and a.update_date < bi.created_date)");
 
             String query = sb.toString();
 
