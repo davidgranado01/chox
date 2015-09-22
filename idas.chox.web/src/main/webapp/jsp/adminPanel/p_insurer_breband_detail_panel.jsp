@@ -789,6 +789,7 @@
 
         }
 
+
         function showEditProtocolVehicleClassCeiling(gridRecord) {
             $("#pvccMessageBox").html('');
             protocolVehicleCeilingEditSelectionDlg.show();
@@ -1402,15 +1403,15 @@
                                                 </div>
                                      <table width="672px">
                                        <tr>
-                                            <td align="right">
+                                            <td align="right" style="width:33%">
                                                 <label class="chox-form-std-label">Hire 30 Day Rate<span class="mandatory">*</span></label>
                                                 <input id="hire30Day" style="width:50px"/>
                                             </td>
-                                           <td align="right">
+                                           <td align="right" style="width:33%">
                                                 <label class="chox-form-std-label">Hire 60 Day Rate<span class="mandatory">*</span></label>
                                                 <input id="hire60Day" style="width:50px"/>
                                             </td>
-                                           <td align="right">
+                                           <td align="right" style="width:34%">
                                                <div id="hire90DayRateDivId">
                                                     <label class="chox-form-std-label" >Hire 90 Day Rate<span class="mandatory">*</span></label>
                                                     <input id="hire90Day" style="width:50px"/>
