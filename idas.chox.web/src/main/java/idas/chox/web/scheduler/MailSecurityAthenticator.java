@@ -53,6 +53,7 @@ public class MailSecurityAthenticator {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (SecurityException se) {
             LOG.error("Exception authenticating sender '{}': ", userName, se);
+            throw se;
         }
     }
 

@@ -75,8 +75,8 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     @Override
     public void execute() throws JobExecutionException {
         LOG.info("Calling Scheduler Job : '{}'.", getClass().getSimpleName());
-        String loginUsername = null;
-        String loginPassword = null;
+        String loginUsername;
+        String loginPassword;
         String emailSubject;
         
         try {
@@ -103,17 +103,20 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                 LOG.info("{} with subject '{}' job started.", getClass().getSimpleName(), emailSubject);
                 loginUsername = schedulerJob.getLoginUserName();
                 loginPassword = schedulerJob.getLoginPassword();
-                mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
-                LOG.debug("Mapped login user {} is authenticated.", loginUsername);
+                try {
+                    mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
+                    LOG.debug("Mapped login user {} is authenticated.", loginUsername);
 
-                process(emailSubject, schedulerJob);
-                LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
+                    process(emailSubject, schedulerJob);
+                } catch (AccessDeniedException | AuthenticationException e) {
+                    LOG.error("The user for scheduler job {} is not authenticated: username='{}', password='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
+                } catch (Exception e) {
+                    LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
+                } finally {
+                    LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
+                }
             }
 
-        } catch (AccessDeniedException | AuthenticationException e) {
-            LOG.error("The user is not authorized to update {} for given user name {} and password {} \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
-        } catch (Exception e) {
-            LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
         } finally {
             releaseHibernateSessionConditionally();
         }
