@@ -24,7 +24,6 @@ import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
-import java.util.Map;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -201,8 +200,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class);
         if (activeUsersOnly) {
-            criteria.add(Restrictions.eq("status", true))
-                    .add(Restrictions.eq("blocked", false));
+            criteria.add(Restrictions.eq("status", true));
         }
         if (organisationTypeId > 0) {
             if (organisationTypeId == 2) {
