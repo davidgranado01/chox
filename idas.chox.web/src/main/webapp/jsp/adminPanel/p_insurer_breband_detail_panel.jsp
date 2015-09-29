@@ -1358,7 +1358,7 @@
                                 <label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Collaboration Protocol invoices.</div>
                                 <div class="chox-form-checkboxitem" id="collaborationPenaltyIdentifierId">
-                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowCollaborationAutoPenaltyCharges" value="allowCollaborationAutoPenaltyCharges"/></div>
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowCollaborationProtocolAutoPenaltyCharges" value="allowCollaborationProtocolAutoPenaltyCharges"/></div>
                                     <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Collaboration Protocol Invoices</b></label>
                                     <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
                                 </div>
@@ -1368,7 +1368,7 @@
                                 <label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue TPI invoices.</div>
                                 <div class="chox-form-checkboxitem" id="tpiPenaltyIdentifierId">
-                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowTpiAutoPenaltyCharges" value="allowTpiAutoPenaltyCharges"/></div>
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowTPIAutoPenaltyCharges" value="allowTPIAutoPenaltyCharges"/></div>
                                     <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on TPI Invoices</b></label>
                                     <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
                                 </div>
