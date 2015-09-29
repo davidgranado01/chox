@@ -1159,6 +1159,14 @@
     function onPenaltyChargeBandPageRefresh(){
         // load the grid.
         penaltyBand_loadGridViewList();
+<s:if test="isChoxAdmin">
+        doGTAPenaltyChargeCheck();
+        doSubscriberPenaltyChargeCheck();
+        doFixedFeePenaltyChargeCheck();
+        doCollaborationPenaltyChargeCheck();
+        doTpiPenaltyChargeCheck();
+        doInsurervsInsurerPenaltyChargeCheck();
+</s:if>
         // reset the form.
 //        resetPVCCForm();
     }
