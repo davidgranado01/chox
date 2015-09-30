@@ -37,13 +37,18 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
                 boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
                 if (ex instanceof CsrfException) {
-                    LOG.error("Invalid CSRF token found for {}. Exception message {}", UrlUtils.buildFullRequestUrl(request), ex.getMessage());
                     if (isAjax) {
+                        LOG.error("Invalid CSRF token found for AJAX request '{}'. Exception message: {}",
+                                UrlUtils.buildFullRequestUrl(request), ex.getMessage());
                         response.setStatus(417);
                     } else {
+                        LOG.error("Invalid CSRF token found for HTTP request '{}'. Exception message: {}",
+                                UrlUtils.buildFullRequestUrl(request), ex.getMessage());
                         defaultRedirectStrategy.sendRedirect(request, response, "/jsp/InvalidCsrfToken.jsp");
                     }
-                } else if (!(ex instanceof ClientAbortException)) {
+                } else if (ex instanceof ClientAbortException || ex instanceof IllegalStateException) {
+                    LOG.warn("Exception thrown:", ex);
+                } else {
                     LOG.error("Exception thrown:", ex);
                 }
             } catch (Exception ex2) {
