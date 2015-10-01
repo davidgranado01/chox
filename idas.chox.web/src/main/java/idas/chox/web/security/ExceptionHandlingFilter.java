@@ -38,11 +38,11 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
 
                 if (ex instanceof CsrfException) {
                     if (isAjax) {
-                        LOG.error("Invalid CSRF token found for AJAX request '{}'. Exception message: {}",
+                        LOG.warn("Invalid CSRF token found for AJAX request '{}'. Exception message: {}",
                                 UrlUtils.buildFullRequestUrl(request), ex.getMessage());
                         response.setStatus(417);
                     } else {
-                        LOG.error("Invalid CSRF token found for HTTP request '{}'. Exception message: {}",
+                        LOG.warn("Invalid CSRF token found for HTTP request '{}'. Exception message: {}",
                                 UrlUtils.buildFullRequestUrl(request), ex.getMessage());
                         defaultRedirectStrategy.sendRedirect(request, response, "/jsp/InvalidCsrfToken.jsp");
                     }
