@@ -235,7 +235,6 @@
                 <ref bean="ClaimReferredToEngineer" />
                 <ref bean="ClaimUpdatedByEngineer" />
                 <ref bean="HireUpdateAnomalies" />
-                <ref bean="EscalatedInvoices" />
                 <ref bean="InvoiceEscalatedToHandler" />
                 <ref bean="InvoicesReferredToEngineer" />
                 <ref bean="InvoiceReferredToClaimsHandler" />

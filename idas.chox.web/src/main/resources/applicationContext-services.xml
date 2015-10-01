@@ -245,7 +245,6 @@
                 <ref bean="IncorrectInvoiceDataCalculations" />
                 <ref bean="ContestedInvoicesReferredToCHO" />
                 <ref bean="PenaltyChargesApplied" />
-                <ref bean="EscalatedInvoices" />
                 <ref bean="InvoiceEscalatedToHandler" />
                 <ref bean="InvoicesReferredToEngineer" />
                 <ref bean="InvoiceReferredToClaimsHandler" />
