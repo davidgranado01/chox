@@ -18,10 +18,37 @@ as $BODY$
 BEGIN 
 
 RETURN QUERY
-select remaining_sla_days."Supplier Reference", remaining_sla_days."Insurer Claim Number", remaining_sla_days."Current Status", remaining_sla_days."Workgroup", remaining_sla_days."Insurer Claim Owner", remaining_sla_days."CHO Name", remaining_sla_days."Claim Type", remaining_sla_days."Insurer Name",
-        case when remaining_sla_days."SLA Days Remaining" = 0 then remaining_sla_days."SLA Cut-Off Time" else remaining_sla_days."SLA Days Remaining"::character varying(5) end as "SLA Days Remaining"
-from remaining_sla_days(insurerids)
-where remaining_sla_days."SLA Days Remaining" >= 0
+
+SELECT c.cho_reference as "Supplier Reference",
+       c.claim_number as "Insurer Claim Number",
+       c.status as "Current Status",
+       w.name as "Workgroup",
+       wu.first_name || ' ' || wu.last_name AS "Insurer Claim Owner",
+       ch.name as "CHO Name",
+       (CASE WHEN c.claim_type IN (7,8,9) THEN 'Subscriber'
+             ELSE 'Fixed Fee' END) as "Claim Type",
+       ins.name as "Insurer Name",
+       c.remaining_sla_days_str as "SLA Days Remaining"
+FROM claim c LEFT OUTER JOIN workgroup w ON c.workgroup_id = w.id,
+     web_user wu,
+     chorganisation ch,
+     insurer ins,
+     bre_band bre,
+     bre_band_organisation bbo
+WHERE (insurerids is null or ins.id = ANY(insurerids)) -- restricted to insurers
+  AND c.chorganisation_id = ch.id
+  AND c.insurer_id = ins.id
+  AND c.claim_owner_id = wu.id
+  AND bbo.chorganisation_id = ch.id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = ins.id
+  AND c.status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted', 'ClaimPending', 'ClaimReferredToEngineer',
+                    'ClaimUpdatedByEngineer', 'ClaimReferredToFNOL', 'SubscriberClaimRejected', 'ClaimRejected',
+                    'ClaimRejectionContested', 'ClaimUnacknowledgedUnassigned')
+  AND c.claim_type in (7,8,9,11,12,13)
+  AND c.remaining_sla_days_str is not null
+--  AND NOT EXISTS (select * from comment co where co.claim_id=c.id and co.comment ilike '%failed to respond to the % notification within the % day SLA%' and co.reverted = false)
+ORDER BY "SLA Days Remaining"
 ;
 
 END;

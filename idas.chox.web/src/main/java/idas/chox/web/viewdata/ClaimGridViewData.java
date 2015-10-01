@@ -30,7 +30,7 @@ public class ClaimGridViewData {
     private final String choBranding;
     private final String insurer;
     private final String createdBy;
-    private final String policyNumber;
+    private final String remainingSlaDays;
     private final String invoiceUploadDate;
     private final boolean isOwnershipEditable;
     private final boolean isWorkgroupEditable;
@@ -63,7 +63,7 @@ public class ClaimGridViewData {
         this.cho = chorg == null ? "" : chorg.getName();
         this.choBranding = chorg == null ? "" : chorg.getBranding().getDescription();
         this.insurer = ins == null ? "" : ins.getName();
-        this.policyNumber = claim.getThirdParty().getPolicyNumber();
+        this.remainingSlaDays = claim.getRemainingSlaDays();
 
         this.invoiceUploadDate = invoice == null ? "" : dateTimeFormat.format(invoice.getCreatedDate());
         
@@ -96,8 +96,8 @@ public class ClaimGridViewData {
         return choOwnerName;
     }
 
-    public String getPolicyNumber() {
-        return policyNumber;
+    public String getRemainingSlaDays() {
+        return remainingSlaDays;
     }
 
 

@@ -25,15 +25,15 @@ BEGIN
 --            RAISE NOTICE 'Status % start at %', auditTrailRecord.new_status, auditTrailRecord.update_date;
         ELSEIF (statusStart is not null and not statuses @> ARRAY[auditTrailRecord.new_status]) THEN
             -- Determine time in status
-            dayInStatus = date_part('day', statusStart);
-            dayOutStatus = date_part('day', auditTrailRecord.update_date);
+            dayInStatus = date_part('doy', statusStart);
+            dayOutStatus = date_part('doy', auditTrailRecord.update_date);
             IF (not (lastDayCounted = dayInStatus and dayInStatus = dayOutStatus)) THEN
-                days = days + date_part('day', auditTrailRecord.update_date - statusStart) + 1;
---                RAISE NOTICE 'In status for %', date_part('day', auditTrailRecord.update_date - statusStart) + 1;
+                days = days + (auditTrailRecord.update_date::date - statusStart::date) + 1;
+--                RAISE NOTICE 'In status for %', date_part('doy', auditTrailRecord.update_date) - dayInStatus + 1;
             END IF;
             lastDayCounted = dayOutStatus;
             statusStart = null;
---        ELSE
+        ELSE
 --            RAISE NOTICE 'Nothing to do for status % (statusStart=%)', auditTrailRecord.new_status,statusStart;
         END IF;
 --        RAISE NOTICE 'Total Days: %', days;
@@ -41,13 +41,14 @@ BEGIN
 
     IF (statusStart is not null) THEN
         -- We must currently be in the status, so count days until now()
-        dayInStatus = date_part('day', statusStart);
+        dayInStatus = date_part('doy', statusStart);
+--        RAISE NOTICE 'dayInStatus=%, statusStart=%, ', dayInStatus, statusStart;
         IF (lastDayCounted != dayInStatus) THEN
-            days = days + date_part('day', now() - statusStart) + 1;
---            RAISE NOTICE 'In final status for %', date_part('day', now() - statusStart) + 1;
+            days = days + (now()::date - statusStart::date) + 1;
+--            RAISE NOTICE 'In final status for % (1 day added)', date_part('doy', now()) - dayInStatus + 1;
         ELSE
-            days = days + date_part('day', now() - statusStart);
---            RAISE NOTICE 'In final status for %', date_part('day', now() - statusStart);
+            days = days + date_part('doy', now()) - dayInStatus;
+--            RAISE NOTICE 'In final status for %', date_part('doy', now()) - dayInStatus;
         END IF;
     END IF;
 

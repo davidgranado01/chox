@@ -24,7 +24,10 @@ public class SlaExtension extends BaseActivity {
             LOG.error("The applied SLA extension days are not valid.");
             throw new Exception("Given SLA extension days are not correct");
         } else {
+            int diff = slaExtDays - claim.getSlaExtDays();
             claim.setSlaExtDays(slaExtDays);
+            claim.setRemainingSlaDaysInt(claim.getRemainingSlaDaysInt() + diff);
+            claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
 
             String newComment = claim.getSlaExtDays() + " day extension granted.";
             if (claim.getSlaExtDays() > 1) {

@@ -34,6 +34,8 @@
     <property column="liability_modified_date" name="liabilityModifiedDate"/>
     <property column="sla_ext_days" name="slaExtDays" not-null="true"/>
     <property column="no_attachments" name="noAttachments" not-null="true"/>
+    <property column="remaining_sla_days_str" name="remainingSlaDays" />
+    <property column="remaining_sla_days" name="remainingSlaDaysInt" />
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>

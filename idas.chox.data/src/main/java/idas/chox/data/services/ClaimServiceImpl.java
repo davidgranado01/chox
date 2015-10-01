@@ -477,8 +477,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("claimType")) {
                 addSort(criteria, "claimType", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("policyNumber")) {
-                addSort(criteria, "tp.policyNumber", dir);
+            } else if (sort.equalsIgnoreCase("remainingSlaDays")) {
+                addSort(criteria, "remainingSlaDaysInt", dir);
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.totalToPay", dir);
@@ -1383,9 +1383,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         int subscriberSlaDays = breBand.getSubscriberSlaDays();
         String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
-
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
+            LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
+                    new Object[]{ claimAge, subscriberSlaDays,subscriberCutOffTime,claim.getSlaExtDays()});
 
             if (subscriberSlaDays != 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
                 boolean addComment = true;

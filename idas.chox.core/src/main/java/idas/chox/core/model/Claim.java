@@ -14,6 +14,7 @@ import idas.chox.core.util.DateHelper;
 public class Claim extends Entity implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
+    private Boolean managingRepairOriginal;
     private boolean managingRepair;
     private boolean manualInvoiceApproved;
     private boolean finalReviewCho;
@@ -23,6 +24,9 @@ public class Claim extends Entity implements Serializable {
     private boolean isFnolReviewed;
     private boolean autoPenaltyChargeEnabled;
     private boolean totalLossChase;
+    private int slaExtDays;
+    private int noAttachments;
+    private Integer remainingSlaDaysInt;
     private Date policyHolderContactDate;
     private Date creditAgreementDate;
     private Date gtaNoticeDate;
@@ -32,11 +36,13 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private Date liabilityStatusModifiedDate;
     private Date liabilityModifiedDate;
+    private Date managingRepairLastModified;
     private String choReference;
     private String status;
     private String claimNumber;
     private String tpiClaimStatus;
     private String previousStatus;
+    private String remainingSlaDays;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private BigDecimal percentageLiabilityCho;
@@ -64,10 +70,6 @@ public class Claim extends Entity implements Serializable {
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
-    private int slaExtDays;
-    private int noAttachments;
-    private Date managingRepairLastModified;
-    private Boolean managingRepairOriginal;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -401,7 +403,7 @@ public class Claim extends Entity implements Serializable {
 
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
         if (hireMonitoringEcds == null) {
-            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+            hireMonitoringEcds = new ArrayList<>();
         }
         return hireMonitoringEcds;
     }
@@ -454,7 +456,7 @@ public class Claim extends Entity implements Serializable {
 
     public void addAttachment(Attachment attachment) {
         if (attachments == null) {
-            attachments = new ArrayList<Attachment>();
+            attachments = new ArrayList<>();
         }
 
         attachment.setClaim(this);
@@ -497,7 +499,7 @@ public class Claim extends Entity implements Serializable {
     public void addHistory(History history) {
 
         if (histories == null) {
-            histories = new ArrayList<History>();
+            histories = new ArrayList<>();
         }
 
         history.setClaim(this);
@@ -507,7 +509,7 @@ public class Claim extends Entity implements Serializable {
     public void addHistories(List<History> histories) {
 
         if (this.histories == null) {
-            this.histories = new ArrayList<History>();
+            this.histories = new ArrayList<>();
         }
 
         for (History history : histories) {
@@ -523,8 +525,24 @@ public class Claim extends Entity implements Serializable {
     public void setClaimOwner(WebUser claimOwner) {
         this.claimOwner = claimOwner;
     }
-    // </editor-fold>
 
+    public String getRemainingSlaDays() {
+        return remainingSlaDays;
+    }
+
+    public void setRemainingSlaDays(String remainingSlaDays) {
+        this.remainingSlaDays = remainingSlaDays;
+    }
+
+    public Integer getRemainingSlaDaysInt() {
+        return remainingSlaDaysInt;
+    }
+
+    public void setRemainingSlaDaysInt(Integer remainingSlaDaysInt) {
+        this.remainingSlaDaysInt = remainingSlaDaysInt;
+    }
+
+    
     // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
     public void setBreBand(BreBand choband) {
         this.choband = choband;

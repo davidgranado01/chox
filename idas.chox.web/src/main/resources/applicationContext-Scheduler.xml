@@ -245,10 +245,17 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <!--  Stored Procedure call: updateDashboard -->
+    <!--  Stored Procedure call: updateWorkflowTables -->
     <bean id="updateWorkflowTablesJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
         <property name="baseDataService" ref="baseDataService" />
         <property name="storedProcName" value="updateWorkflowTables"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--  Stored Procedure call: updateRemainingSlaDays -->
+    <bean id="updateRemainingSlaDaysJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="updateRemainingSlaDays"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
@@ -348,6 +355,12 @@
         <property name="concurrent" value="false" />
     </bean>
 
+    <bean id="updateRemainingSlaDaysJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="updateRemainingSlaDaysJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
 	<!-- Cron Trigger -->
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
@@ -389,6 +402,10 @@
     <bean id="updateDashboardTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateDashboardJobDetail" /> 
         <property name="cronExpression" value="0 15,45 7,9,11,13,15,17 ? * 1-7" /> 
+    </bean>
+    <bean id="updateRemainingSlaDaysTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="updateRemainingSlaDaysJobDetail" /> 
+        <property name="cronExpression" value="0 2 0 ? * 1-7" /> 
     </bean>
     <bean id="cronECDMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
@@ -464,6 +481,7 @@
                 <ref bean="addMissingEcdTaskJobDetail" />
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
+                <ref bean="updateRemainingSlaDaysJobDetail" />
                 <ref bean="updateDashboardJobDetail" />
                 <ref bean="ecdUpdateMailJobDetail" />
                 <ref bean="hireUpdateMailJobDetail" />
@@ -485,6 +503,7 @@
                 <ref bean="addMissingEcdTaskTriggerDaily" />
                 <ref bean="addInvoicePenaltyTaskTriggerDaily" />
                 <ref bean="applyAutoPenaltyChargeTriggerDaily" />
+                <ref bean="updateRemainingSlaDaysTriggerDaily" />
                 <ref bean="updateDashboardTriggerDaily" />
                 <ref bean="cronECDMailUpdateTriggerWeek" />
                 <ref bean="cronECDMailUpdateTriggerWeekend" />

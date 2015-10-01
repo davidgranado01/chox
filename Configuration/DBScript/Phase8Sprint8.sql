@@ -1,0 +1,205 @@
+--------------------------------------------------------------------------------
+-- 8.8.1 SLA Days Remaining On Claim Grid
+--------------------------------------------------------------------------------
+ALTER TABLE claim ADD COLUMN remaining_sla_days_str character varying(5);
+ALTER TABLE claim ADD COLUMN remaining_sla_days int;
+
+create or replace function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[])
+RETURNS INT AS
+$BODY$
+DECLARE
+    days INT;
+    lastDayCounted INT;
+    dayInstatus INT;
+    dayOutstatus INT;
+    previousStatus CHARACTER VARYING(40);
+    statusStart timestamp without time zone;
+    auditTrailRecord record;
+BEGIN
+    days = 0;
+    lastDayCounted = 0;
+    previousStatus = '';
+    statusStart = null;
+
+    FOR auditTrailRecord  IN
+        select * from get_reconstructed_audit_trail(claimId) order by update_date, id
+    LOOP
+        IF (statusStart is null and statuses @> ARRAY[auditTrailRecord.new_status]) THEN
+            statusStart = auditTrailRecord.update_date;
+--            RAISE NOTICE 'Status % start at %', auditTrailRecord.new_status, auditTrailRecord.update_date;
+        ELSEIF (statusStart is not null and not statuses @> ARRAY[auditTrailRecord.new_status]) THEN
+            -- Determine time in status
+            dayInStatus = date_part('doy', statusStart);
+            dayOutStatus = date_part('doy', auditTrailRecord.update_date);
+            IF (not (lastDayCounted = dayInStatus and dayInStatus = dayOutStatus)) THEN
+                days = days + (auditTrailRecord.update_date::date - statusStart::date) + 1;
+--                RAISE NOTICE 'In status for %', date_part('doy', auditTrailRecord.update_date) - dayInStatus + 1;
+            END IF;
+            lastDayCounted = dayOutStatus;
+            statusStart = null;
+        ELSE
+--            RAISE NOTICE 'Nothing to do for status % (statusStart=%)', auditTrailRecord.new_status,statusStart;
+        END IF;
+--        RAISE NOTICE 'Total Days: %', days;
+    END LOOP;
+
+    IF (statusStart is not null) THEN
+        -- We must currently be in the status, so count days until now()
+        dayInStatus = date_part('doy', statusStart);
+--        RAISE NOTICE 'dayInStatus=%, statusStart=%, ', dayInStatus, statusStart;
+        IF (lastDayCounted != dayInStatus) THEN
+            days = days + (now()::date - statusStart::date) + 1;
+--            RAISE NOTICE 'In final status for % (1 day added)', date_part('doy', now()) - dayInStatus + 1;
+        ELSE
+            days = days + date_part('doy', now()) - dayInStatus;
+--            RAISE NOTICE 'In final status for %', date_part('doy', now()) - dayInStatus;
+        END IF;
+    END IF;
+
+    RETURN days;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_user;
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_mi;
+
+
+CREATE OR REPLACE FUNCTION updateRemainingSlaDays()
+  RETURNS boolean AS
+$BODY$
+
+BEGIN
+
+-- First, set all to null
+update claim
+  set remaining_sla_days = null, remaining_sla_days_str = null
+where remaining_sla_days is not null;
+
+update claim
+  set remaining_sla_days = sla_ext_days + bre.subscriber_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+from bre_band bre,
+     bre_band_organisation bbo
+where bbo.chorganisation_id = claim.chorganisation_id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = claim.insurer_id
+  AND claim.claim_type IN (7,8,9)
+  AND claim.status in ('ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
+        'ClaimPending', 'ClaimReferredToFNOL', 'ClaimReferredToEngineer', 'ClaimUpdatedByEngineer',
+        'ClaimRejectionContested', 'ClaimRejected', 'SubscriberClaimRejected');
+
+update claim
+  set remaining_sla_days = sla_ext_days + bre.fixedfee_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+from bre_band bre,
+     bre_band_organisation bbo
+where bbo.chorganisation_id = claim.chorganisation_id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = claim.insurer_id
+  AND claim.claim_type IN (11,12,13)
+  AND claim.status in ('ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
+        'ClaimPending', 'ClaimReferredToFNOL', 'ClaimReferredToEngineer', 'ClaimUpdatedByEngineer',
+        'ClaimRejectionContested', 'ClaimRejected');
+
+update claim
+  set remaining_sla_days_str = remaining_sla_days::varchar(5)
+where remaining_sla_days is not null;
+
+update claim
+  set remaining_sla_days_str = '0'
+where remaining_sla_days < 0;
+
+update claim
+  set remaining_sla_days_str = bre.subscriber_time_cut_off
+from bre_band bre,
+     bre_band_organisation bbo
+where bbo.chorganisation_id = claim.chorganisation_id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = claim.insurer_id
+  AND claim.claim_type IN (7,8,9)
+  AND remaining_sla_days = 0;
+
+update claim
+  set remaining_sla_days_str = bre.fixedfee_time_cut_off
+from bre_band bre,
+     bre_band_organisation bbo
+where bbo.chorganisation_id = claim.chorganisation_id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = claim.insurer_id
+  AND claim.claim_type IN (11,12,13)
+  AND remaining_sla_days = 0;
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+GRANT EXECUTE ON FUNCTION updateRemainingSlaDays() TO chox_user;
+
+
+create or replace function remaining_sla_days_report(IN insurerids integer[])
+returns table
+(
+   "Supplier Reference" character varying(128),
+   "Insurer Claim Number" character varying(128),
+   "Current Status" character varying(128),
+   "Workgroup" character varying(128),
+   "Insurer Claim Owner" text,
+   "CHO Name" character varying(128),
+   "Claim Type" text,
+   "Insurer Name" character varying(128),
+   "SLA Days Remaining" character varying(5)
+)
+as $BODY$
+
+BEGIN
+
+RETURN QUERY
+
+SELECT c.cho_reference as "Supplier Reference",
+       c.claim_number as "Insurer Claim Number",
+       c.status as "Current Status",
+       w.name as "Workgroup",
+       wu.first_name || ' ' || wu.last_name AS "Insurer Claim Owner",
+       ch.name as "CHO Name",
+       (CASE WHEN c.claim_type IN (7,8,9) THEN 'Subscriber'
+             ELSE 'Fixed Fee' END) as "Claim Type",
+       ins.name as "Insurer Name",
+       c.remaining_sla_days_str as "SLA Days Remaining"
+FROM claim c LEFT OUTER JOIN workgroup w ON c.workgroup_id = w.id,
+     web_user wu,
+     chorganisation ch,
+     insurer ins,
+     bre_band bre,
+     bre_band_organisation bbo
+WHERE (insurerids is null or ins.id = ANY(insurerids)) -- restricted to insurers
+  AND c.chorganisation_id = ch.id
+  AND c.insurer_id = ins.id
+  AND c.claim_owner_id = wu.id
+  AND bbo.chorganisation_id = ch.id
+  AND bbo.band_id = bre.id
+  AND bre.insurer_id = ins.id
+  AND c.status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted', 'ClaimPending', 'ClaimReferredToEngineer',
+                    'ClaimUpdatedByEngineer', 'ClaimReferredToFNOL', 'SubscriberClaimRejected', 'ClaimRejected',
+                    'ClaimRejectionContested', 'ClaimUnacknowledgedUnassigned')
+  AND c.claim_type in (7,8,9,11,12,13)
+  AND c.remaining_sla_days_str is not null
+--  AND NOT EXISTS (select * from comment co where co.claim_id=c.id and co.comment ilike '%failed to respond to the % notification within the % day SLA%' and co.reverted = false)
+ORDER BY "SLA Days Remaining"
+;
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION remaining_sla_days_report(IN insurerids integer[]) TO chox_user;
+GRANT EXECUTE ON FUNCTION remaining_sla_days_report(IN insurerids integer[]) TO chox_mi;
+
+drop function remaining_sla_days(IN insurerids integer[]);
+
+----------------------
+-- End of 8.8.1
+----------------------
