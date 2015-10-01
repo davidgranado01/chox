@@ -292,20 +292,6 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
-
-    <bean id="EscalatedInvoices" class="idas.chox.service.filters.FilterByStatus" >
-        <property name="name" value="Escalated Invoices"/>
-        <property name="key" value="EscalatedInvoices"/>
-        <property name="status" value="InvoiceEscalated"/>
-        <property name="queueDescription" value="Claims where the invoice has failed one or more Engineer type business rules and is with an Engineer for review"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="true"/>
-    </bean>
     
     <bean id="InvoiceEscalatedToHandler" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Escalated Invoices To Handler"/>
