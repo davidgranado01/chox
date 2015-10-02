@@ -231,6 +231,28 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         });
     }
     
+    public void callUpdateRemainingSlaDays(int userId) throws SQLException {
+        LOG.debug("Calling stored procedure updateRemainingSlaDays()....");
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select updateRemainingSlaDays()");
+                } catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
+                }
+            }
+        });
+    }
+
     public List findByCriteria(final DetachedCriteria c) {
 
         return getHibernateTemplate().findByCriteria(c);

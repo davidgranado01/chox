@@ -52,6 +52,9 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                 case "updateWorkflowTables":
                     baseDataService.callUpdateWorkflowTables(999);
                     break;
+                case "updateRemainingSlaDays":
+                    baseDataService.callUpdateRemainingSlaDays(999);
+                    break;
             }
             LOG.info("stored proc '{}' job finished.", storedProcName);
         } catch (Exception ex) {
