@@ -45,14 +45,12 @@ BEGIN
 
     IF (statusStart is not null) THEN
         -- We must currently be in the status, so count days until now()
+        days = days + (now()::date - statusStart::date);
         dayInStatus = date_part('doy', statusStart);
---        RAISE NOTICE 'dayInStatus=%, statusStart=%, ', dayInStatus, statusStart;
+--        RAISE NOTICE 'dayInStatus=%, statusStart=%, days added=%', dayInStatus, statusStart, (now()::date - statusStart::date);
         IF (lastDayCounted != dayInStatus) THEN
-            days = days + (now()::date - statusStart::date) + 1;
---            RAISE NOTICE 'In final status for % (1 day added)', date_part('doy', now()) - dayInStatus + 1;
-        ELSE
-            days = days + date_part('doy', now()) - dayInStatus;
---            RAISE NOTICE 'In final status for %', date_part('doy', now()) - dayInStatus;
+            days = days + 1;
+--            RAISE NOTICE '1 day added';
         END IF;
     END IF;
 
