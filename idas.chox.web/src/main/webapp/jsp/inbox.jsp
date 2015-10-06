@@ -210,7 +210,7 @@
                             return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>';}},
                     {header: "Claim Type", width: 50, sortable: true, dataIndex: 'claimType'},
                     {header: "Claim No", width: 60, sortable: true, dataIndex: 'claimNumber'},
-                    {header: "Remaining SLA Days", width: 60, sortable: true, dataIndex: 'remainingSlaDays'},
+                    {header: "SLA Days Remaining", width: 60, sortable: true, dataIndex: 'remainingSlaDays'},
                     {header: "Invoice Upload Date", width: 60, sortable: true, dataIndex: 'invoiceUploadDate'},
                     {header: "Status", width: 100, sortable: true, dataIndex: 'status'},
                     {header: "Total To Pay", width: 60, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},

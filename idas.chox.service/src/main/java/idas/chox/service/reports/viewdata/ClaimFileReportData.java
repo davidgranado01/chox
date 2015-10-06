@@ -287,14 +287,18 @@ public class ClaimFileReportData {
     private BigDecimal extrasRepairMaterials;
     private BigDecimal extrasRepairSpecialist;
     private boolean subscriberClaim;
+    private boolean fixedFeeClaim;
     private boolean collaborationClaim;
     private String  invoicePaymentsTeam;
     private boolean paymentsTeamActivated;
-    
+    private String remainingSlaDays;
+    private boolean isInsurerOrAdmin;
+
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
         subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
+        fixedFeeClaim = ClaimType.isFixedFee(claim.getClaimType());
         collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
         paymentsTeamActivated = claim.getInsurer().isPaymentsTeamEnable();
         if (claim.getChorganisation() != null) {
@@ -305,6 +309,8 @@ public class ClaimFileReportData {
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
+        remainingSlaDays = claim.getRemainingSlaDays();
+
         if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
             liabilityStatus = "";
         }
@@ -312,11 +318,13 @@ public class ClaimFileReportData {
             liabilityStatus = claim.getLiabilityStatus().toString();
         }
         if (currentUser.isAnInsurer()) {
+            isInsurerOrAdmin = true;
             finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
         } else if (currentUser.isCHO()) {
             finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
 //            paymentsTeamActivated = false;
         } else if (currentUser.isCHOXAdmin()) {
+            isInsurerOrAdmin = true;
             finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
                     + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
         }
@@ -2799,6 +2807,26 @@ public class ClaimFileReportData {
         return subscriberClaim;
     }
 
+    public boolean isFixedFeeClaim() {
+        return fixedFeeClaim;
+    }
+
+    public boolean isShowRemainingSlaDays() {
+        boolean result = false;
+
+        if ((subscriberClaim || fixedFeeClaim)
+                && ("ClaimUnacknowledgedUnrouted".equals(status) || "ClaimUnacknowledgedRouted".equals(status)
+                    || "ClaimPending".equals(status) || "ClaimReferredToEngineer".equals(status)
+                    || "ClaimUpdatedByEngineer".equals(status) || "ClaimReferredToFNOL".equals(status)
+                    || "SubscriberClaimRejected".equals(status) || "ClaimRejected".equals(status)
+                    || "ClaimRejectionContested".equals(status) || "ClaimUnacknowledgedUnassigned".equals(status))
+                && isInsurerOrAdmin) {
+            result = true;
+        }
+
+        return result;
+    }
+    
     public boolean isCollaborationClaim() {
         return collaborationClaim;
     }
@@ -2809,6 +2837,10 @@ public class ClaimFileReportData {
 
     public boolean isPaymentsTeamActivated() {
         return paymentsTeamActivated;
+    }
+
+    public String getRemainingSlaDays() {
+        return remainingSlaDays;
     }
 
 }
