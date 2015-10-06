@@ -153,6 +153,21 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return isVisible;
     }
     
+    public boolean isPaymentDisputeCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter anomoliesFilter = filterService.getFilter("InvoicePaymentDispute");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(anomoliesFilter.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the HireUpdateAnomalies filter ", ex);
+        }
+        return isVisible;
+    }
+    
     public boolean isEscalatedToSupervisorCheckBoxVisible() {
         boolean isVisible = false;
         try {

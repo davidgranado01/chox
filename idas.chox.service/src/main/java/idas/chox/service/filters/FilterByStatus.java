@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.search.ClaimSearchCriteria;
 
 public class FilterByStatus extends BaseFilter {
@@ -23,12 +24,23 @@ public class FilterByStatus extends BaseFilter {
 
         // Need to set following for 'Approved Invoices Awaiting Payment' queueif payments team active....
         //NB: null check added to getCurrentUser() to prevent error being thrown when user logd out before queues loaded
-        if (securityInfoProvider.getCurrentUser() != null
+        if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(status) && securityInfoProvider.getCurrentUser() != null
                 && (securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
-                    && securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()))
-                && getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-            claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
-        } 
+                         && (securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()
+                 || securityInfoProvider.getCurrentUser().getInsurer().isPaymentDisputesEnable())))) {
+            Insurer ins = securityInfoProvider.getCurrentUser().getInsurer();
+            if ((ins == null || ins.isPaymentsTeamEnable()) && !"PaymentTeamDispute".equals(key)) {
+                claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
+            }
+            if ((ins == null || ins.isPaymentDisputesEnable()) && "InvoicePaymentDispute".equals(key)) {
+                claimSearchCriteria.setPaymentDispute(Boolean.TRUE);
+            } else if ((ins == null || ins.isPaymentDisputesEnable()) && "PaymentTeamDispute".equals(key)) {
+                claimSearchCriteria.setPaymentDispute(Boolean.TRUE);
+                claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("2")})));
+            } else if (ins == null || ins.isPaymentDisputesEnable()) {
+                claimSearchCriteria.setPaymentDispute(Boolean.FALSE);
+            }
+        }
 
         return claimSearchCriteria;
     }

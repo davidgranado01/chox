@@ -65,12 +65,20 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                     Once the payment has been made please click on the ‘Insurer Invoice Paid’ button.
                   </s:if>
                   <s:else>
-                    If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
-                    this button should only be used if this is intended to be a final payment.  However if an interim payment 
-                    is being made please click on the ‘Make Interim Payment’ button.’
+                    <s:if test="isPaymentDispute">
+                      The CHO has indicated that they have not received full payment on this invoice. Please review the
+                      original payment raised and add any Supporting Notes for the CHO as required. Once this has been
+                      complete either select 'Invoice Payment Logged' or 'Make Interim Payment' to move the case to the
+                      CHO for review.
+                    </s:if>
+                    <s:else>
+                      If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
+                      this button should only be used if this is intended to be a final payment.  However if an interim payment 
+                      is being made please click on the ‘Make Interim Payment’ button.’
+                    </s:else>
                     <s:if test="invoiceWithPaymentsTeam">
-                        Alternatively, if you are not in a position to make a payment and need to return the claim to
-                        the claims handler please click on 'Switch To Claims Handler'.
+                      Alternatively, if you are not in a position to make a payment and need to return the claim to
+                      the claims handler please click on 'Switch To Claims Handler'.
                     </s:if>
                   </s:else>
                 </div>

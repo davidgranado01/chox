@@ -1624,6 +1624,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 || claim.getClaimType() == ClaimType.INSURER_UPLOAD;
     }
 
+    public boolean getIsPaymentDispute() {
+        return claim.getInsurer().isPaymentDisputesEnable() && claim.isPaymentDispute();
+    }
+
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
         this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
     }

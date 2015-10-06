@@ -244,6 +244,24 @@
                 }
             });
             
+            var paymentDisputeCheckBox = new Ext.form.Checkbox({
+                name:'isPaymentDispute',
+                id:'paymentDisputeCheckBoxId',
+                value:'<s:property value="paymentDispute"/>',
+                disabled : !<s:property value="paymentDisputeCheckBoxVisible"/>,
+                hidden : !<s:property value="paymentDisputeCheckBoxVisible"/>,
+                fieldLabel: 'Show Claims With Payment Dispute Only',
+                labelStyle: 'width:190px;margin-top:-5px',
+                checked: <s:property value="paymentDispute"/>,
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+//                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+            
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
@@ -1405,7 +1423,8 @@
                         penaltyChargesToBeAppliedCheckBox, 
                         liabilityStatusUpdateNotification,
                         escalatedToSupervisorCheckBox,
-                        anomaliesCheckBox]
+                        anomaliesCheckBox,
+                        paymentDisputeCheckBox]
             };
 
             var middleColumn = {
@@ -1752,6 +1771,11 @@
                 Ext.getCmp('anomaliesCheckBoxId').setValue(true);
             }
             
+            var paymentDispute = record.get('claimSearchCriteria').paymentDispute;
+            if (paymentDispute) {
+                Ext.getCmp('paymentDisputeCheckBoxId').setValue(true);
+            }
+            
             var escalatedToSupervisor = record.get('claimSearchCriteria').escalatedToSupervisor;
             if (escalatedToSupervisor) {
                 Ext.getCmp('escalatedToSupervisorCheckBoxId').setValue(true);
@@ -1808,6 +1832,7 @@
             var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
             var penaltyChargesToBeApplied = Ext.query('*[name$=isPenaltyChargeApplied]')[0].checked;
             var anomalies = Ext.query('*[name$=isAnomalies]')[0].checked;
+            var paymentDispute = Ext.query('*[name$=isPaymentDispute]')[0].checked;
             var escalatedToSupervisor = Ext.query('*[name$=escalatedToSupervisor]')[0].checked;
             var interimPaymentMade = Ext.query('*[name$=isInterimPaymentMade]')[0].checked;
             var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
@@ -1846,6 +1871,7 @@
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 penaltyChargeApplied : penaltyChargesToBeApplied,
                 anomalies : anomalies, 
+                paymentDispute : paymentDispute, 
                 escalatedToSupervisor : escalatedToSupervisor,
                 interimPaymentMade : interimPaymentMade,
                 liabilityStatuses : liabilityStatuses,

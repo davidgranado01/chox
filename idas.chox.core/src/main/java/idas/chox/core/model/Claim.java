@@ -24,6 +24,7 @@ public class Claim extends Entity implements Serializable {
     private boolean isFnolReviewed;
     private boolean autoPenaltyChargeEnabled;
     private boolean totalLossChase;
+    private boolean paymentDispute;
     private int slaExtDays;
     private int noAttachments;
     private Integer remainingSlaDaysInt;
@@ -414,7 +415,7 @@ public class Claim extends Entity implements Serializable {
 
     public void addHireMonitoringEcd(HireMonitoringEcd ecd) {
         if (hireMonitoringEcds == null) {
-            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+            hireMonitoringEcds = new ArrayList<>();
         }
         ecd.setClaim(this);
         hireMonitoringEcds.add(ecd);
@@ -540,6 +541,14 @@ public class Claim extends Entity implements Serializable {
 
     public void setRemainingSlaDaysInt(Integer remainingSlaDaysInt) {
         this.remainingSlaDaysInt = remainingSlaDaysInt;
+    }
+
+    public boolean isPaymentDispute() {
+        return paymentDispute;
+    }
+
+    public void setPaymentDispute(boolean paymentDispute) {
+        this.paymentDispute = paymentDispute;
     }
 
     

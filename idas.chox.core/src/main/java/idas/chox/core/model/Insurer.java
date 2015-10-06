@@ -90,6 +90,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean enableManualInvoiceOwnership;
     private boolean restrictExport;
     private Branding branding;
+    private boolean paymentDisputesEnable;
 
     public Branding getBranding() {
         return branding == null ? Branding.NO_BRANDING : branding;
@@ -807,6 +808,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setTpiPaymentsTeamEnable(boolean tpiPaymentsTeamEnable) {
         this.tpiPaymentsTeamEnable = tpiPaymentsTeamEnable;
+    }
+
+    public boolean isPaymentDisputesEnable() {
+        return paymentDisputesEnable;
+    }
+
+    public void setPaymentDisputesEnable(boolean paymentDisputesEnable) {
+        this.paymentDisputesEnable = paymentDisputesEnable;
     }
 
 }

@@ -31,6 +31,9 @@ public class FullPaymentNotReceived extends BaseActivity {
         } else {
             claim.getInvoice().setInterimPaymentReceived(interimPaymentReceived);
         }
+        if (claim.getInsurer().isPaymentDisputesEnable()) {
+            claim.setPaymentDispute(true);
+        }
         LOG.debug("Claim updated...");
     }
 

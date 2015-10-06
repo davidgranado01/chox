@@ -819,23 +819,7 @@
                                         <s:checkbox name="fnolEnable" value="fnolEnable" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
-                                
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Insurer Claims</label>
-                                        <s:checkbox name="claimUploadEnabled" value="claimUploadEnabled" onclick="doPageLoadCheck(this);"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Insurer Invoices</label>
-                                        <s:checkbox name="invoiceUploadEnabled" value="invoiceUploadEnabled" onclick="doPageLoadCheck(this);"/>
-                                    </div>
-                                </td>
-                            </tr>
-                          
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
@@ -849,6 +833,15 @@
                                         <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onclick="doPageLoadCheck()" />
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Payment Disputes</label>
+                                        <s:checkbox name="paymentDisputesEnable" value="paymentDisputesEnable" onclick="doPageLoadCheck(this);" />
+                                    </div>
+                                </td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
@@ -873,8 +866,22 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
+                                        <label class="chox-form-std-label">Allow Direct Invoice Upload (TPI)</label>
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Insurer Claims</label>
+                                        <s:checkbox name="claimUploadEnabled" value="claimUploadEnabled" onclick="doPageLoadCheck(this);"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Insurer Invoices</label>
+                                        <s:checkbox name="invoiceUploadEnabled" value="invoiceUploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                             </tr>

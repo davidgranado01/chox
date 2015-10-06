@@ -201,3 +201,39 @@ drop function remaining_sla_days(IN insurerids integer[]);
 ----------------------
 -- End of 8.8.1
 ----------------------
+
+
+--------------------------------------------------------------------------------
+-- 8.8.5 New Queue - Payment Disputes
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN is_payment_disputes_enable boolean NOT NULL DEFAULT false;
+ALTER TABLE claim ADD COLUMN is_payment_dispute boolean NOT NULL DEFAULT false;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'filter.InvoicePaymentDispute', false, false, false, false;
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_CH' FROM accessibility WHERE name='filter.InvoicePaymentDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_PC' FROM accessibility WHERE name='filter.InvoicePaymentDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MNG' FROM accessibility WHERE name='filter.InvoicePaymentDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MI' FROM accessibility WHERE name='filter.InvoicePaymentDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='filter.InvoicePaymentDispute';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'filter.PaymentTeamDispute', false, false, false, false;
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_PC' FROM accessibility WHERE name='filter.PaymentTeamDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MNG' FROM accessibility WHERE name='filter.PaymentTeamDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_INS_MI' FROM accessibility WHERE name='filter.PaymentTeamDispute';
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ROLE_CHOX_ADMIN' FROM accessibility WHERE name='filter.PaymentTeamDispute';
+
+
+----------------------
+-- End of 8.8.5
+----------------------

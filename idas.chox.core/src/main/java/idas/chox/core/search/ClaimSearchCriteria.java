@@ -46,6 +46,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean penaltyChargeApplied;
     private boolean interimPaymentMade;
     private boolean escalatedToSupervisor;
+    private boolean paymentDispute;
     private int start;
     private int limit;
     private String sort;
@@ -740,6 +741,14 @@ public class ClaimSearchCriteria implements Serializable {
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
+    }
+
+    public boolean isPaymentDispute() {
+        return paymentDispute;
+    }
+
+    public void setPaymentDispute(boolean paymentDispute) {
+        this.paymentDispute = paymentDispute;
     }
 
 }

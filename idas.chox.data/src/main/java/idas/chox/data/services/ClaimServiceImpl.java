@@ -781,15 +781,75 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             Criterion paymentTeamOnlyClaims = Restrictions.eq("id", -1);
 
             for (Integer restrictionId : searchCriteria.getApprovedInvoiceOwnershipSearchParamIds()) {
+                // NB. For CHOX Admin, we also need to check the insurer config flag...
                 if (restrictionId == 1) {
-                    claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
+                    if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                        claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
+//                        claimsHandlerOnlyClaims = Restrictions.conjunction().add(Restrictions.eq("iv.paymentTeam", Boolean.FALSE))
+//                                .add(Restrictions.disjunction()
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
+//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.FALSE))
+//                                                                       .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
+                    } else {
+                        claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
+                    }
                 } else if (restrictionId == 2) {
-                    paymentTeamOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.TRUE);
+                    if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                        paymentTeamOnlyClaims = Restrictions.conjunction().add(Restrictions.eq("iv.paymentTeam", Boolean.TRUE))
+                                .add(Restrictions.disjunction()
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
+                    } else {
+                        paymentTeamOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.TRUE);
+                    }
                 }
             }
             criteria.add(Restrictions.disjunction()
                     .add(claimsHandlerOnlyClaims)
                     .add(paymentTeamOnlyClaims));
+        }
+
+        /*
+         * Payment Dispute Filter
+         */
+        // NB. For CHOX Admin, we also need to check the insurer config flag...
+        if (searchCriteria.isPaymentDispute()) {
+            if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                criteria.add(Restrictions.conjunction().add(Restrictions.eq("paymentDispute", Boolean.TRUE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.TRUE)));
+            } else {
+                criteria.add(Restrictions.eq("paymentDispute", Boolean.TRUE));
+            }
+        } else {
+            if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                criteria.add(Restrictions.disjunction()
+                        .add(Restrictions.eq("paymentDispute", Boolean.FALSE))
+                        .add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.FALSE)));
+            } else {
+                criteria.add(Restrictions.eq("paymentDispute", Boolean.FALSE));
+            }
         }
 
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
@@ -1386,7 +1446,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
             LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
-                    new Object[]{ claimAge, subscriberSlaDays,subscriberCutOffTime,claim.getSlaExtDays()});
+                    new Object[]{claimAge, subscriberSlaDays, subscriberCutOffTime, claim.getSlaExtDays()});
 
             if (subscriberSlaDays != 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
                 boolean addComment = true;
@@ -1876,17 +1936,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
      */
     @Override
     public int calculateCurrentPenaltyBand(Claim claim) {
-            Invoice inv = claim.getInvoice();
-            int dateDiff = inv.getInvoicedDays();
-            if (dateDiff <= 30) {
-                return 0;
-            } else if (dateDiff <= 60) {
-                return 30;
-            } else if (dateDiff <= 90) {
-                return 60;
-            } else {
-                return 90;
-            }
+        Invoice inv = claim.getInvoice();
+        int dateDiff = inv.getInvoicedDays();
+        if (dateDiff <= 30) {
+            return 0;
+        } else if (dateDiff <= 60) {
+            return 30;
+        } else if (dateDiff <= 90) {
+            return 60;
+        } else {
+            return 90;
+        }
     }
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
@@ -1926,8 +1986,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         return false;
     }
-    
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
@@ -1949,9 +2009,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         updateLiabilityPayment(claim);
         updateClaim(claim);
     }
-        
+
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean setPenaltyStartToDateInvoiced(String choReference) {
         Claim claim = getClaimByCHOReferenceNumber(choReference);
         if (claim != null && claim.getInvoice() != null) {
@@ -1966,7 +2026,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public Map applyPenaltyCharge(Claim claim, Boolean isPenaltyAlertNotUsed, BigDecimal hirePenaltyChargeAmount,
             String hirePenaltyPercentage, BigDecimal repairPenaltyChargeAmount, String repairPenaltyPercentage) {
         Map resultMap = new HashMap();
@@ -1999,7 +2059,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
             updateLiabilityPayment(claim);
 
-            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) 
+            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed)
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled())) {
                 int penaltyBand = calculateCurrentPenaltyBand(claim);
                 if (penaltyBand == 0) {
@@ -2022,7 +2082,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart, boolean isCHO) {
         Map resultMap = new HashMap();
         if (autoPenaltyStart != null) {
@@ -2060,7 +2120,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         return resultMap;
     }
-    
+
     @Override
     public boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO) {
         boolean result = false;
@@ -2088,23 +2148,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return result;
     }
 
-        /*
+    /*
      *  Calculate the penalty amount for the given claim.
      */
     @Override
     public BigDecimal calculateHirePenaltyChargeVal(Claim claim) {
 
         return (getHirePenaltyPercentageVal(claim).divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-  
+                .setScale(2, RoundingMode.HALF_UP);
+
     }
 
     @Override
     public BigDecimal calculateRepairPenaltyChargeVal(Claim claim) {
 
         return (getRepairPenaltyPercentageVal(claim).divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-  
+                .setScale(2, RoundingMode.HALF_UP);
+
     }
 
     /*
@@ -2113,38 +2173,38 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public BigDecimal calculateHirePenaltyChargeVal(Claim claim, String percentage) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (brePenaltyBand.getHire30Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getHire30Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
+            return (brePenaltyBand.getHire30Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
         } else if (brePenaltyBand.getHire60Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getHire60Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
+            return (brePenaltyBand.getHire60Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
         } else if (brePenaltyBand.getHire90Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getHire90Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
+            return (brePenaltyBand.getHire90Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
         }
         return BigDecimal.ZERO.setScale(2);
     }
 
-   @Override
+    @Override
     public BigDecimal calculateRepairPenaltyChargeVal(Claim claim, String percentage) {
 
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
         if (brePenaltyBand.getRepair30Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getRepair30Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
+            return (brePenaltyBand.getRepair30Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
         } else if (brePenaltyBand.getRepair60Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getRepair60Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
+            return (brePenaltyBand.getRepair60Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
         } else if (brePenaltyBand.getRepair90Day().toString().equals(percentage)) {
-                    return (brePenaltyBand.getRepair90Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                            .setScale(2, RoundingMode.HALF_UP);
-        } 
+            return (brePenaltyBand.getRepair90Day().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
         return BigDecimal.ZERO.setScale(2);
     }
 
@@ -2156,7 +2216,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
@@ -2179,7 +2239,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {

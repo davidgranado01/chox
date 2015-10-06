@@ -391,9 +391,37 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
+    <bean id="InvoicePaymentDispute" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Payment Disputes"/>
+        <property name="key" value="InvoicePaymentDispute"/>
+        <property name="status" value="AwaitingInvoicePayment"/>
+        <property name="queueDescription" value="Claims where the invoice has been approved for payment and liability is resolved, a payment awaits"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
     <bean id="PaymentTeam" class="idas.chox.service.filters.PaymentTeam" >
         <property name="name" value="Payments Team"/>
         <property name="key" value="PaymentTeam"/>
+        <property name="queueDescription" value="Shows claims where the invoice has been approved for payment by Payments Team and liability is resolved, a payment awaits"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
+    <bean id="PaymentTeamDispute" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Payments Team - Payment Disputes"/>
+        <property name="key" value="PaymentTeamDispute"/>
+        <property name="status" value="AwaitingInvoicePayment"/>
         <property name="queueDescription" value="Shows claims where the invoice has been approved for payment by Payments Team and liability is resolved, a payment awaits"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
