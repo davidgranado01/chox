@@ -33,8 +33,6 @@
     <property column="is_supervisor_enable" name="supervisorEnable"/>
     <property column="is_engineers_enable" name="engineersEnable"/>
     <property column="is_fixed_transactional_fee" name="fixedTransactionalFee"/>
-    <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
-    <property column="is_auto_routing_enable_price" name="autoRoutingEnablePrice"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
     <property column="is_claim_locked" name="claimLocked"/>
     <property column="is_support_available" name="onlineSupportEnable"/>
@@ -84,6 +82,8 @@
     <property column="tpi_payments_team_enable" name="tpiPaymentsTeamEnable" not-null="true"/>
     <property column="branding" name="branding" type="idas.chox.data.hibernate.BrandMapping"/>
     <property column="is_payment_disputes_enable" name="paymentDisputesEnable" not-null="true"/>
+    <property column="automatic_routing_strategy" name="automaticRoutingStrategy"
+        type="idas.chox.data.hibernate.AutomaticRoutingStrategyMapping" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

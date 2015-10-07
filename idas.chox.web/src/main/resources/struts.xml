@@ -1065,7 +1065,6 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="updateInsurerDetail" class="idas.chox.web.actions.InsurerAction" method="updateInsurer">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!--End INSURER -->

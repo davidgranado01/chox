@@ -37,8 +37,6 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
 
     private boolean workgroupEnableFlg;
-    private boolean autoRoutingEnableFlg;
-    private boolean autoRoutingPriceFlg;
 
     @Override
     public AutomaticRouting getModel() {
@@ -90,6 +88,10 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public int getAutomaticRoutingStrategy() {
+        return adminInsurerService.getInsurer(insurerId).getAutomaticRoutingStrategy().getAutomaticRoutingStrategyValue();
+    }
+    
     public int getInsurerId() {
         return insurerId;
     }
@@ -239,36 +241,6 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     public void setWorkgroupEnableFlg(boolean workgroupEnableFlg) {
         this.workgroupEnableFlg = workgroupEnableFlg;
     }
-
-    /**
-     * @return the autoRoutingEnableFlg
-     */
-    public boolean isAutoRoutingEnableFlg() {
-        return adminInsurerService.getInsurer(this.insurerId).isAutoRoutingEnable();
-    }
-
-    /**
-     * @param autoRoutingEnableFlg the autoRoutingEnableFlg to set
-     */
-    public void setAutoRoutingEnableFlg(boolean autoRoutingEnableFlg) {
-        this.autoRoutingEnableFlg = autoRoutingEnableFlg;
-    }
-
-    /**
-     * @return the autoRoutingPriceFlg
-     */
-    public boolean isAutoRoutingPriceFlg() {
-        return adminInsurerService.getInsurer(this.insurerId).isAutoRoutingEnablePrice();
-    }
-
-    /**
-     * @param autoRoutingPriceFlg the autoRoutingPriceFlg to set
-     */
-    public void setAutoRoutingPriceFlg(boolean autoRoutingPriceFlg) {
-        this.autoRoutingPriceFlg = autoRoutingPriceFlg;
-    }
-
-    
     
     // </editor-fold>
 }

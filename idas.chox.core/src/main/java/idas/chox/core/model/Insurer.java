@@ -35,8 +35,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean fnolEnable;
     private boolean supervisorEnable;
     private boolean engineersEnable;
-    private boolean autoRoutingEnable;
-    private boolean autoRoutingEnablePrice;
+    private AutomaticRoutingStrategy automaticRoutingStrategy = AutomaticRoutingStrategy.NONE;
     private boolean claimOwnershipEnable;
     private boolean claimLocked;
     private boolean onlineSupportEnable;
@@ -50,7 +49,6 @@ public class Insurer extends Entity implements Serializable {
     private boolean tpiPaymentsTeamEnable;
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
-    private String autoRoutingEnableId;
     private boolean thirdPartyInterventionActivated;
     private String tpiIdentificationString;
     private Workgroup invoiceWorkgroup;
@@ -370,14 +368,6 @@ public class Insurer extends Entity implements Serializable {
         }
     }
 
-    public boolean isAutoRoutingEnable() {
-        return autoRoutingEnable;
-    }
-
-    public void setAutoRoutingEnable(boolean autoRoutingEnable) {
-        this.autoRoutingEnable = autoRoutingEnable;
-    }
-
     public boolean isOnlineSupportEnable() {
         return onlineSupportEnable;
     }
@@ -459,59 +449,6 @@ public class Insurer extends Entity implements Serializable {
         }
     }
 
-    /**
-     * @return the autoRoutingEnablePrice
-     */
-    public boolean isAutoRoutingEnablePrice() {
-        return autoRoutingEnablePrice;
-    }
-
-    /**
-     * @param autoRoutingEnablePrice the autoRoutingEnablePrice to set
-     */
-    public void setAutoRoutingEnablePrice(boolean autoRoutingEnablePrice) {
-        this.autoRoutingEnablePrice = autoRoutingEnablePrice;
-    }
-
-    /**
-     * @return the autoRoutingEnableId
-     */
-    public String getAutoRoutingEnableId() {
-        return autoRoutingEnableId;
-    }
-
-    /**
-     * @param autoRoutingEnableId the autoRoutingEnableId to set
-     */
-    public void setAutoRoutingEnableId(String autoRoutingEnableId) {
-
-        LOG.debug("autoRoutingEnableId value :{}", autoRoutingEnableId);
-        this.autoRoutingEnableId = autoRoutingEnableId;
-
-        if ("autoRoutingEnable".equalsIgnoreCase(this.autoRoutingEnableId)) {
-
-            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
-            this.setAutoRoutingEnable(true);
-            this.setAutoRoutingEnablePrice(false);
-
-        }
-        if ("autoRoutingEnablePrice".equalsIgnoreCase(this.autoRoutingEnableId)) {
-
-            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
-            this.setAutoRoutingEnablePrice(true);
-            this.setAutoRoutingEnable(false);
-
-        }
-        if (autoRoutingEnableId.length() == 0) {
-
-            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
-            this.setAutoRoutingEnablePrice(false);
-            this.setAutoRoutingEnable(false);
-
-        }
-
-
-    }
 
     public boolean isInvoiceUploadEnabled() {
         return invoiceUploadEnabled;
@@ -816,6 +753,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setPaymentDisputesEnable(boolean paymentDisputesEnable) {
         this.paymentDisputesEnable = paymentDisputesEnable;
+    }
+
+    public AutomaticRoutingStrategy getAutomaticRoutingStrategy() {
+        return automaticRoutingStrategy;
+    }
+
+    public void setAutomaticRoutingStrategy(AutomaticRoutingStrategy automaticRoutingStrategy) {
+        this.automaticRoutingStrategy = automaticRoutingStrategy;
     }
 
 }

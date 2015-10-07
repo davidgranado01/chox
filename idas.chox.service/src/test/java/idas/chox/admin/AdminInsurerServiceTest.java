@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
@@ -88,13 +89,12 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setStatus(false);
         insurer.setVatNo("VATNUMBER");
         insurer.setCompanyNo("COMPANYNUMBER");
-        insurer.setAutoRoutingEnable(false);
+        insurer.setAutomaticRoutingStrategy(AutomaticRoutingStrategy.NONE);
         insurer.setClaimLocked(true);
         insurer.setPhone("PHONE");
         insurer.setPostcode("POSTCODE");
         insurer.setWorkgroupEnable(false);
         insurer.setAdminHandlingCharge(BigDecimal.ZERO);
-        insurer.setAutoRoutingEnablePrice(false);
         insurer.setChoAgreedBenefitValue(BigDecimal.ZERO);
         insurer.setClaimLocked(false);
         insurer.setClaimOwnershipEnable(false);
@@ -936,7 +936,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setWorkgroupEnable(true);
         insurer.setClaimLocked(true);
         insurer.setClaimOwnershipEnable(true);
-        insurer.setAutoRoutingEnable(true);
+        insurer.setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
         insurerService.saveInsurer(insurer);
     }
 

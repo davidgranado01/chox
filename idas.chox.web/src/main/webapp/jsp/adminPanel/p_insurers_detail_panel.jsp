@@ -8,8 +8,7 @@
     var insAdminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
-    var autoRoutingPolicyNumberEnabled = <s:property value="autoRoutingEnable"/>;
-    var autoRoutingPrice = <s:property value="autoRoutingEnablePrice"/>;
+    var autoRoutingStrategy = <s:property value="automaticRoutingStrategy.automaticRoutingStrategyValue"/>;
     var disableDiscountTab = true;
     var wgrpJsonReader;
     var workgroupStore;
@@ -17,6 +16,9 @@
     var claimOwnerReader;
     var claimOwnerStore;
     var claimOwnerCombo;
+    var automaticRoutingReader;
+    var automaticRoutingStore;
+    var automaticRoutingCombo;
     var workgroupId=-1;
     var tpiEnable=false;
     var claimOwnerId=-1;
@@ -154,6 +156,38 @@
         
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
        
+        automaticRoutingReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
+
+        var automaticRoutingStrategies = Ext.util.JSON.decode('<s:property value="automaticRoutingStrategiesJsonString" escape="false"/>');
+        automaticRoutingStore = new Ext.data.Store({
+            data : automaticRoutingStrategies,
+            reader : automaticRoutingReader
+        });
+
+        automaticRoutingCombo = new Ext.form.ComboBox({
+            store: automaticRoutingStore,
+            width: 200,
+            renderTo: 'automaticRoutingDivId',
+            valueField: 'value',
+//            id: 'automaticRoutingComboId',
+            hiddenName: 'autoRoutingStrategy',
+            displayField:'text',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 200,
+            forceSelection: true,
+            triggerAction: 'all'
+        });
+        automaticRoutingCombo.setValue(autoRoutingStrategy);
+       
        // The below jquery submit function only used for adding additional callback function which is used to set 
        // the default value to the claimOwner and Workgroup. The actual form submission 
        // is performed by ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
@@ -240,7 +274,38 @@
         getInsurerAdminTabIndex();
         doTpiEnableCheck();
 
-        if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
+        if(autoRoutingStrategy === 1 || autoRoutingStrategy === 2 || autoRoutingStrategy === 3){
+            insAdminTabs = new Ext.TabPanel({
+                renderTo: 'mainPanel',
+                height:615,
+                width:775,
+                enableTabScroll : true,
+                border:true,
+                loadMask:false,
+                activeTab: insDetailAdminTabIndex,
+                items:[
+                    {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
+                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerAliasPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerWorkgroupPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerChorganisationMappingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerBreBandPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerBreBandChorganisationMapping.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerVehicleClassCeilingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerInteligentNoteTab', 
+                        id:"insurerInteligentNoteTabId", 
+                        title:'Intelligent Notes', 
+                        tabTip:'Insurer Intelligent Notes', 
+                        disabled:isNew, 
+                        listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInteligentNotesPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerAutomaticRoutingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerDiscountPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getReasonsOfRejectionPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
+                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 2}})}
+                ]
+            });
+
+
+        }else{
 
             insAdminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
@@ -271,37 +336,6 @@
                 ]
             });
 
-        }else{
-
-            insAdminTabs = new Ext.TabPanel({
-                renderTo: 'mainPanel',
-                height:615,
-                width:775,
-                enableTabScroll : true,
-                border:true,
-                loadMask:false,
-                activeTab: insDetailAdminTabIndex,
-                items:[
-                    {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerAliasPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerWorkgroupPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerChorganisationMappingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerBreBandPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerBreBandChorganisationMapping.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerVehicleClassCeilingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerInteligentNoteTab', 
-                        id:"insurerInteligentNoteTabId", 
-                        title:'Intelligent Notes', 
-                        tabTip:'Insurer Intelligent Notes', 
-                        disabled:isNew, 
-                        listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInteligentNotesPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerAutomaticRoutingPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getInsurerDiscountPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getReasonsOfRejectionPage.action', params:{"insurerId" : '<s:property value="objectId" />'}})},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getIPWhitelistPage.action', params:{"orgId" : '<s:property value="objectId" />', 'orgType' : 2}})}
-                ]
-            });
-
         }
 
         var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
@@ -319,14 +353,6 @@
             $("#CCDFixedTransactionalFeeManualValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
-        }
-
-        if (autoRoutingPolicyNumberEnabled) {
-            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
-        } else if(autoRoutingPrice){
-            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
-        }else{
-            $("select#autoRoutingEnableDropDownId").val("");
         }
         
         displayAutoRoutingTpiAndSusbscriberFields();
@@ -565,7 +591,6 @@
             $("#invoiceWorkgroupId").hide();
             $('form#formUpdateInsurerDetail input[name="enableManualInvoiceWorkgroups"]').attr('checked', false);
             $("#manualInvoiceWorkgroupHolder").hide();
-            $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
     }
@@ -1100,31 +1125,22 @@
                         <fieldset class="x-fieldset">
                             <legend>Workgroup & Ownership</legend>
                             <table>
-                                
                                 <tr>
-                                   <td colspan=2> 
+                                   <td> 
                                        <div class="chox-form-item">
                                            <label class="chox-form-std-label">Enable Workgroup</label>
                                            <s:checkbox name="workgroupEnable" value="workgroupEnable" onclick="doPageLoadCheck(this);"/>
                                        </div>
                                     </td>
                                 </tr>
-                            
-                               <tr>
-                                   <td colspan=2>
+                                <tr>
+                                    <td>
                                         <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                                             <label class="chox-form-std-label">Automatic Claim Routing</label>
-    
-                                            <select id="autoRoutingEnableDropDownId" name="autoRoutingEnableId" >
-                                                <option value="">--Disabled--</option>
-                                                <option value="autoRoutingEnable">By Policy Number</option>
-                                                <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
-                                            </select>
-    
+                                            <div id="automaticRoutingDivId"></div>
                                         </div>
                                     </td>
                                 </tr>
-                                
                                 <tr>
                                     <td>
                                         <div class="chox-form-item">
@@ -1133,18 +1149,16 @@
                                         </div>
                                     </td>
                                 </tr>
-                                
-                                 <tr>
-                                   <td colspan=2>
+                                <tr>
+                                   <td>
                                         <div class="chox-form-item" id="ClaimLockedHolder">
                                             <label class="chox-form-std-label">Enable Claim Locked</label>
                                             <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                                         </div>
                                     </td>
                                 </tr>
-                                
                                 <tr>
-                                    <td colspan=2>
+                                    <td>
                                         <div class="chox-form-item" id="manualInvoiceWorkgroupHolder">
                                             <label class="chox-form-std-label">Enable Insurer Invoice Workgroups</label>
                                             <s:checkbox name="enableManualInvoiceWorkgroups" id="enableManualInvoiceWorkgroupCheckboxId" value="enableManualInvoiceWorkgroups" />
@@ -1152,15 +1166,13 @@
                                     </td>
                                </tr>
                                <tr>
-                                    <td colspan=2>
+                                    <td>
                                         <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
                                             <label class="chox-form-std-label">Enable Insurer Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
                                     </td>
                                 </tr>
-                                
-                                
                             </table>
                        </fieldset>
                         

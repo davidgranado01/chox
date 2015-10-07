@@ -40,37 +40,40 @@ public class WorkgroupRouting extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
 
         LOG.debug("Claim '{}' status is {}", claim.getChoReference(), claim.getStatus());
-        boolean isClaimOwnerCheckedRequired = true;
+        boolean routed = false;
 
-        if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnablePrice()) {
-
-            if (autoWorkgroupRoutingByPrice(claim)) {
-                LOG.debug("Claim has been auto-routed based on price - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        if (claim.getInsurer().isWorkgroupEnable()) {
+            switch (claim.getInsurer().getAutomaticRoutingStrategy()) {
+                case NONE:
+                    break;
+                case POLICY:
+                    if (autoWorkgroupRouting(claim)) {
+                        LOG.debug("Claim has been auto-routed - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        routed = true;
+                    }
+                    break;
+                case PRICE:
+                    if (autoWorkgroupRoutingByPrice(claim)) {
+                        LOG.debug("Claim has been auto-routed based on price - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        routed = true;
+                    }
+                    break;
+                case CHO:
+                    break;
+                case ROUND_ROBIN:
+                    break;
+                case FEWEST_CLAIMS:
+                    break;
             }
-        }
-
-        if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()) {
-            LOG.debug("Trying to route claim...");
-            if (autoWorkgroupRouting(claim)) {
-                LOG.debug("Claim has been auto-routed - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            } else {
-                LOG.debug("No auto-routing for claim {}.", claim.getChoReference());
-                isClaimOwnerCheckedRequired = false;
-            }
-        } else if (!claim.getInsurer().isWorkgroupEnable()) {
-            LOG.debug("Workgroups are  disabled - set status to CLAIM_UNACKNOWLEDGED_ROUTED");
+        } else { // No Workgroups
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            if (!claim.getInsurer().isClaimOwnershipEnable()) {
-                isClaimOwnerCheckedRequired = false;
-            }
-        } else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
-            LOG.debug("Workgroups are enabled, auto-routing disabled", claim.getChoReference());
-            isClaimOwnerCheckedRequired = false;
+            routed = true;
         }
+        
 
-        if (isClaimOwnerCheckedRequired && claim.getInsurer().isClaimOwnershipEnable()) {
+        if (routed && claim.getInsurer().isClaimOwnershipEnable()) {
             LOG.debug("Claim ownership is enabled - set status to CLAIM_UNACKNOWLEDGED_UNASSIGNED");
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }

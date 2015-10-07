@@ -204,6 +204,21 @@ drop function remaining_sla_days(IN insurerids integer[]);
 
 
 --------------------------------------------------------------------------------
+-- 8.8.2 Automatic Routing CHO Assignment
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN automatic_routing_strategy integer NOT NULL default 0;
+update insurer set automatic_routing_strategy = 1 where is_auto_routing_enable = true;
+update insurer set automatic_routing_strategy = 2 where is_auto_routing_enable_price = true;
+
+ALTER TABLE insurer DROP COLUMN is_auto_routing_enable;
+ALTER TABLE insurer DROP COLUMN is_auto_routing_enable_price;
+
+----------------------
+-- End of 8.8.2
+----------------------
+
+
+--------------------------------------------------------------------------------
 -- 8.8.5 New Queue - Payment Disputes
 --------------------------------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN is_payment_disputes_enable boolean NOT NULL DEFAULT false;

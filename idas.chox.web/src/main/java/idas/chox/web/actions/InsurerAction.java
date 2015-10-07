@@ -14,7 +14,10 @@ import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
 
+import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
+import idas.chox.core.services.LookupService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerViewData;
@@ -27,9 +30,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private Insurer model;
     private Integer tabIndex;
     private AdminInsurerService adminInsurerService;
+    private LookupService lookupService;
     private int relatedInsurerId;
     private int claimOwnerIdField;
     private int workgroupIdField;
+    private AutomaticRoutingStrategy autoRoutingStrategy;
 
     public int getClaimOwnerIdField() {
         return this.model.getInvoiceOwner() != null ? this.model.getInvoiceOwner().getId() : 0;
@@ -91,17 +96,17 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     @Override
     public void prepare() {
         try {
-            model = new Insurer();
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
                     addModelToSession(Arrays.asList(model));
                 }
             }
-
+            if (model == null) {
+                model = new Insurer();
+            }
         } catch (Exception ex) {
             handleException(ex);
-
         }
     }
 
@@ -159,6 +164,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         try {
             checkVersion(Arrays.asList(model));
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
+            model.setAutomaticRoutingStrategy(autoRoutingStrategy);
             if (this.adminInsurerService.getWebuserById(claimOwnerIdField) != null) {
                 model.setInvoiceOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
             }
@@ -204,6 +210,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
+
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
+    }
+
     // </editor-fold>
 
     public List<Insurer> getRelatedInsurers() {
@@ -228,4 +239,15 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
+    
+    public String getAutomaticRoutingStrategiesJsonString() {
+        List<LookupItem> automaticRoutingStrategiesList = lookupService.getAutomaticRoutingStrategies();
+        String automaticRoutingStrategiesJson = JSONArray.fromObject(automaticRoutingStrategiesList).toString();
+        return "{totalCount:" + automaticRoutingStrategiesList.size() + ", results:" + automaticRoutingStrategiesJson + "}";
+    }
+
+    public void setAutoRoutingStrategy(String val) {
+        autoRoutingStrategy = AutomaticRoutingStrategy.getAutomaticRoutingStrategy(Integer.valueOf(val));
+    }
+
 }

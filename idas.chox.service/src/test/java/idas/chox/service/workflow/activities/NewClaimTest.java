@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
+import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.util.DocumentHelper;
@@ -54,7 +55,7 @@ public class NewClaimTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(false);
-            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.NONE);
             claim.getInsurer().setClaimOwnershipEnable(false);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
@@ -76,7 +77,7 @@ public class NewClaimTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(true);
-            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.NONE);
             claim.getInsurer().setClaimOwnershipEnable(false);
 
             Activity activity = activityFactory.getActivity("newClaim");
@@ -100,7 +101,7 @@ public class NewClaimTest extends BaseTest {
 
             claim.getInsurer().setWorkgroupEnable(true);
 
-            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
             claim.getInsurer().setClaimOwnershipEnable(false);
 
             Activity activity = activityFactory.getActivity("newClaim");
@@ -123,7 +124,7 @@ public class NewClaimTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(true);
-            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
             claim.getInsurer().setClaimOwnershipEnable(false);
             claim.getThirdParty().setPolicyNumber("**ABC***");
 
@@ -147,7 +148,7 @@ public class NewClaimTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(true);
-            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
             claim.getInsurer().setClaimOwnershipEnable(true);
 
             Activity activity = activityFactory.getActivity("newClaim");
@@ -170,7 +171,7 @@ public class NewClaimTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(true);
-            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
             claim.getInsurer().setClaimOwnershipEnable(true);
             claim.getThirdParty().setPolicyNumber("**ABC***");
 
@@ -193,7 +194,7 @@ public class NewClaimTest extends BaseTest {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
             claim.getInsurer().setWorkgroupEnable(false);
-            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
             claim.getInsurer().setClaimOwnershipEnable(true);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
@@ -214,7 +215,7 @@ public class NewClaimTest extends BaseTest {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
             claim.getInsurer().setWorkgroupEnable(false);
-            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.NONE);
             claim.getInsurer().setClaimOwnershipEnable(true);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
@@ -235,7 +236,7 @@ public class NewClaimTest extends BaseTest {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
             claim.getInsurer().setWorkgroupEnable(true);
-            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setAutomaticRoutingStrategy(AutomaticRoutingStrategy.NONE);
             claim.getInsurer().setClaimOwnershipEnable(true);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
@@ -248,18 +249,10 @@ public class NewClaimTest extends BaseTest {
         //This xml clontains one claim
         //This claim have insurer RSA which is Workgroup Feature : true, Ownership Feauture : true, Auto Routing : true by default
         int totalProcessed = 0;
-        List<ClaimResult> claimResults = null;
-        List<String> choReferences = new ArrayList<String>();
+        List<String> choReferences = new ArrayList<>();
         File file = new ClassPathResource("UnitTest-NewClaim_Base.xml").getFile();
         Document document = DocumentHelper.getDocumentFromFile(file);
-        claimResults = this.uploadClaimXMLService.formClaimResults(document);
-//        for (ClaimResult claimResult : claimResults) {
-//            if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
-//
-//                totalProcessed++;
-//
-//            }
-//        }
+        List<ClaimResult> claimResults = this.uploadClaimXMLService.formClaimResults(document);
 
         return claimResults;
     }

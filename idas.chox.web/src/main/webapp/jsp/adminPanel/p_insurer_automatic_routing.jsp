@@ -18,9 +18,8 @@
     var autoRoutingWorkgroupStore;
     var autoRoutingWorkgroupCombo;
 
-     var workEnable = '<s:property value="workgroupEnableFlg"/>';
-     var auto = '<s:property value="autoRoutingEnableFlg"/>';
-     var price = '<s:property value="autoRoutingPriceFlg"/>';
+    var workEnable = '<s:property value="workgroupEnableFlg"/>';
+    var autoRoutingStrategy = '<s:property value="automaticRoutingStrategy"/>';
 
     Ext.onReady(function(){
 
@@ -66,8 +65,8 @@
                 return true;
             }
         );
-        
-       if(auto==="true"){
+
+    if(autoRoutingStrategy==1){ // By Policy number
             
             var form = $("form#formAutomaticRoutingDetail");
           
@@ -190,7 +189,7 @@
   
             routing_loadGridViewList();
         }
-        if(price==="true"){
+        if(autoRoutingStrategy==2){ // By Vehicle Class Price
 
 
             var form = $("form#formAutomaticRoutingDetail");
@@ -311,9 +310,9 @@
                 
                 autoRoutingWorkgroupCombo.clearValue();
                 autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
-                if(auto==="true"){
+                if(autoRoutingStrategy==1){
                     $("form#formAutomaticRoutingDetail input[name$='expression']").val('');
-                } else if(price==="true"){
+                } else if(autoRoutingStrategy==2){
                     $("form#formAutomaticRoutingDetail input[name$='price']").val('');
                 }
             }
@@ -391,7 +390,7 @@
 </script>
 
 
-<s:if test="autoRoutingPriceFlg">
+<s:if test="automaticRoutingStrategy == 2">
 
     <div class="sub-admin-tab-css">
         <div class="status-info">
@@ -430,7 +429,7 @@
     </div>
 </s:if>
 
-<s:if test="autoRoutingEnableFlg">
+<s:if test="automaticRoutingStrategy == 1">
     <div class="sub-admin-tab-css">
         <div class="status-info">
             This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
