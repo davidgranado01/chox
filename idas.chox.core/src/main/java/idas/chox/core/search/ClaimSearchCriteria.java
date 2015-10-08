@@ -28,6 +28,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<Integer> insurerIds;
     private Set<Integer> hireAndRepairSearchParamIds;
     private Set<Integer> approvedInvoiceOwnershipSearchParamIds;
+    private Set<String> paymentDisputesSearchParamIds;
     private String thirdPartyVrn;
     private String customerVrn;
     private String invoiceNumber;
@@ -46,7 +47,6 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean penaltyChargeApplied;
     private boolean interimPaymentMade;
     private boolean escalatedToSupervisor;
-    private boolean paymentDispute;
     private int start;
     private int limit;
     private String sort;
@@ -574,6 +574,18 @@ public class ClaimSearchCriteria implements Serializable {
         }
     }
 
+    public Set<String> getPaymentDisputesSearchParamIds() {
+        return paymentDisputesSearchParamIds;
+    }
+
+    public void setPaymentDisputesSearchParamIds(Set<String> paymentDisputesSearchParamIds) {
+        if (paymentDisputesSearchParamIds.contains(null) || paymentDisputesSearchParamIds.contains("")) {
+            this.paymentDisputesSearchParamIds = null;
+        } else {
+            this.paymentDisputesSearchParamIds = paymentDisputesSearchParamIds;
+        }
+    }
+
     
     public String getFilterName() {
         return filterName;
@@ -711,16 +723,24 @@ public class ClaimSearchCriteria implements Serializable {
         return null;
     }
     
-    /*
-     * Please note this method will return only hire and repair search param from the
-     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
-     */
     public String getApprovedInvoiceOwnershipSearchParamAsString() {
 
-        if (getApprovedInvoiceOwnershipSearchParamIds()!= null && !getApprovedInvoiceOwnershipSearchParamIds().isEmpty()) {
+        if (approvedInvoiceOwnershipSearchParamIds != null && !approvedInvoiceOwnershipSearchParamIds.isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    public String getPaymentDisputesSearchParamAsString() {
+
+        if (paymentDisputesSearchParamIds != null && !paymentDisputesSearchParamIds.isEmpty()) {
+            StringBuilder returnString = new StringBuilder();
+            for (String i : getPaymentDisputesSearchParamIds()) {
+                returnString.append(i).append(",");
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
@@ -741,14 +761,6 @@ public class ClaimSearchCriteria implements Serializable {
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
-    }
-
-    public boolean isPaymentDispute() {
-        return paymentDispute;
-    }
-
-    public void setPaymentDispute(boolean paymentDispute) {
-        this.paymentDispute = paymentDispute;
     }
 
 }

@@ -33,12 +33,12 @@ public class FilterByStatus extends BaseFilter {
                 claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
             }
             if ((ins == null || ins.isPaymentDisputesEnable()) && "InvoicePaymentDispute".equals(key)) {
-                claimSearchCriteria.setPaymentDispute(Boolean.TRUE);
+                claimSearchCriteria.setPaymentDisputesSearchParamIds(new HashSet<>(Arrays.asList(new String[]{"true"})));
             } else if ((ins == null || ins.isPaymentDisputesEnable()) && "PaymentTeamDispute".equals(key)) {
-                claimSearchCriteria.setPaymentDispute(Boolean.TRUE);
+                claimSearchCriteria.setPaymentDisputesSearchParamIds(new HashSet<>(Arrays.asList(new String[]{"true"})));
                 claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("2")})));
             } else if (ins == null || ins.isPaymentDisputesEnable()) {
-                claimSearchCriteria.setPaymentDispute(Boolean.FALSE);
+                claimSearchCriteria.setPaymentDisputesSearchParamIds(new HashSet<>(Arrays.asList(new String[]{"false"})));
             }
         }
 
