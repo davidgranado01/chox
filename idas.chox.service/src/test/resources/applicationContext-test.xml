@@ -108,6 +108,7 @@
                 <value>hbm/AttachmentFile.hbm.xml</value>
                 <value>hbm/BreRules.hbm.xml</value>
                 <value>hbm/BrePenaltyBand.hbm.xml</value>
+                <value>hbm/AutoRoutingChoWorkgroupAssignment.hbm.xml</value>
             </list>
         </property>
     </bean>

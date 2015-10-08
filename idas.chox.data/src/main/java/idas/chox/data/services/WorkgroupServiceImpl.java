@@ -1,5 +1,14 @@
 package idas.chox.data.services;
 
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUserWorkgroup;
@@ -8,14 +17,6 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.services.WorkgroupService;
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class WorkgroupServiceImpl extends SecureDataService implements WorkgroupService {
 

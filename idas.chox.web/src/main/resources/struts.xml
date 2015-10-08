@@ -1184,6 +1184,20 @@
         <action name="getAvailableInsurerBreBandChorganisation" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationsByInsurerIdWithoutBreBand">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getAvailableChorganisation" class="idas.chox.web.actions.AutoRoutingChoAssignmentMappingAction" method="getChorganisationsByInsurerIdWithoutWorkgroupMapping">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="getSelectedChorganisation" class="idas.chox.web.actions.AutoRoutingChoAssignmentMappingAction" method="getChorganisationsWithAutoRoutingWorkgroupMapping">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="doAddNewChorganisationAutoRoutingMapping" class="idas.chox.web.actions.AutoRoutingChoAssignmentMappingAction" method="addChorganisationWorkgroupMapping">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doRemoveChorganisationAutoRoutingMapping" class="idas.chox.web.actions.AutoRoutingChoAssignmentMappingAction" method="removeChorganisationWorkgroupMapping">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="addBreBandChorganisation">
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>

@@ -13,10 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.AutoRoutingChoWorkgroupAssignment;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ChorganisationService;
 
@@ -47,7 +49,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
         criteria.add(Restrictions.eq("insurerUploadOnly", false));
 
-        if (!order.equalsIgnoreCase("") && order != null) {
+        if (order != null && !order.equalsIgnoreCase("")) {
             criteria.addOrder(Order.asc(order));
         }
 
@@ -80,22 +82,89 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     }
 
     @Override
+    public List<Chorganisation> getChorganisationsWithAutoRoutingWorkgroupMapping(int workgroupId) {
+        // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
+        DetachedCriteria choWithWorkgroupMappingCriteria = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+        choWithWorkgroupMappingCriteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        choWithWorkgroupMappingCriteria.setProjection(Property.forName("chorganisation"));
+        
+        return findByCriteria(choWithWorkgroupMappingCriteria);
+    }
+
+    @Override
+    public List<Chorganisation> getChorganisationsByInsurerWithoutWorkgroupMapping(int insurerId) {
+        // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
+        DetachedCriteria unmappedChos = DetachedCriteria.forClass(InsurerChorganisation.class);
+        unmappedChos.add(Restrictions.eq("insurer.id", insurerId));
+
+        // Get all CHOs that already have a workgroup assignment
+        DetachedCriteria assignedChos = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+        assignedChos.createAlias("this.workgroup", "wk", CriteriaSpecification.INNER_JOIN);
+        assignedChos.add(Restrictions.eq("wk.insurer.id", insurerId));
+        assignedChos.setProjection(Property.forName("chorganisation.id"));
+
+        // RETURN SEARCH RESULT
+        unmappedChos.add(Property.forName("chorganisation.id").notIn(assignedChos));
+        unmappedChos.setProjection(Property.forName("chorganisation"));
+        return findByCriteria(unmappedChos);
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void addChorganisationAutoRoutingWorkgroupMapping(int chorganisationId, int workgroupId) throws Exception {
+
+        if (chorganisationId > 0 && workgroupId > 0) {
+            try {
+                AutoRoutingChoWorkgroupAssignment automaticRouting = new AutoRoutingChoWorkgroupAssignment();
+                automaticRouting.setChorganisation(getChorganisation(chorganisationId));
+                automaticRouting.setWorkgroup((Workgroup)get(Workgroup.class, workgroupId));
+                save(automaticRouting);
+            } catch (Exception ex) {
+                LOG.warn("Exception thrown saving new CHO/Workgroup auto-routing mapping: {}", ex.getMessage(), ex);
+                throw new Exception("An error occurred saving CHO/Workgroup assignment for auto-routing - please try again");
+            }
+        } 
+   
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void removeChorganisationAutoRoutingWorkgroupMapping(int chorganisationId, int workgroupId) throws Exception {
+
+        if (chorganisationId > 0 && workgroupId > 0) {
+            try {
+                DetachedCriteria mapping = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+                mapping.add(Restrictions.eq("chorganisation.id", chorganisationId));
+                mapping.add(Restrictions.eq("workgroup.id", workgroupId));
+                
+                List<AutoRoutingChoWorkgroupAssignment> autoRoutingChoWorkgroupAssignment = (List<AutoRoutingChoWorkgroupAssignment>)findByCriteria(mapping);
+                
+                delete(autoRoutingChoWorkgroupAssignment.get(0));
+            } catch (Exception ex) {
+                LOG.warn("Exception thrown removing CHO/Workgroup auto-routing mapping: {}", ex.getMessage(), ex);
+                throw new Exception("An error occurred removing a CHO/Workgroup assignment for auto-routing - please try again");
+            }
+        } 
+   
+    }
+    
+    @Override
     public List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId) {
 
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
-        DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
-        insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        DetachedCriteria insurerChorganisationCriteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+        insurerChorganisationCriteria.add(Restrictions.eq("insurer.id", insurerId));
 
         // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
-        DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
-        breBandOrganisationCirteria.createAlias("this.breBand", "bre", CriteriaSpecification.INNER_JOIN);
-        breBandOrganisationCirteria.add(Restrictions.eq("bre.insurer.id", insurerId));
-        breBandOrganisationCirteria.setProjection(Property.forName("chorganisation.id"));
+        DetachedCriteria breBandOrganisationCriteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        breBandOrganisationCriteria.createAlias("this.breBand", "bre", CriteriaSpecification.INNER_JOIN);
+        breBandOrganisationCriteria.add(Restrictions.eq("bre.insurer.id", insurerId));
+        breBandOrganisationCriteria.setProjection(Property.forName("chorganisation.id"));
 
         // RETURN SEARCH RESULT
-        insurerChorganisationCirteria.add(Property.forName("chorganisation.id").notIn(breBandOrganisationCirteria));
-        insurerChorganisationCirteria.setProjection(Property.forName("chorganisation"));
-        return findByCriteria(insurerChorganisationCirteria);
+        insurerChorganisationCriteria.add(Property.forName("chorganisation.id").notIn(breBandOrganisationCriteria));
+        insurerChorganisationCriteria.setProjection(Property.forName("chorganisation"));
+        return findByCriteria(insurerChorganisationCriteria);
     }
 
     @Override

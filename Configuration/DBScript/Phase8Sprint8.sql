@@ -213,6 +213,34 @@ update insurer set automatic_routing_strategy = 2 where is_auto_routing_enable_p
 ALTER TABLE insurer DROP COLUMN is_auto_routing_enable;
 ALTER TABLE insurer DROP COLUMN is_auto_routing_enable_price;
 
+CREATE TABLE auto_routing_cho_workgroup_assignment (
+  id serial NOT NULL,
+  version integer,
+  workgroup_id integer NOT NULL,
+  chorganisation_id integer NOT NULL,
+  created_by integer,
+  created_date timestamp without time zone NOT NULL default now(),
+  last_modified_by integer,
+  last_modified_date timestamp without time zone NOT NULL default now(),
+  CONSTRAINT auto_routing_cho_workgroup_assignment_pkey PRIMARY KEY (id),
+  CONSTRAINT auto_routing_cho_workgroup_assignment_ukey UNIQUE (chorganisation_id, workgroup_id),
+  CONSTRAINT auto_routing_cho_workgroup_assignment_wfkey FOREIGN KEY (workgroup_id)
+      REFERENCES workgroup (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT auto_routing_cho_workgroup_assignment_cfkey FOREIGN KEY (chorganisation_id)
+      REFERENCES chorganisation (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE auto_routing_cho_workgroup_assignment TO chox_user;
+GRANT SELECT ON TABLE auto_routing_cho_workgroup_assignment TO chox_mi;
+GRANT SELECT, UPDATE ON TABLE auto_routing_cho_workgroup_assignment_id_seq TO chox_user;
+
 ----------------------
 -- End of 8.8.2
 ----------------------

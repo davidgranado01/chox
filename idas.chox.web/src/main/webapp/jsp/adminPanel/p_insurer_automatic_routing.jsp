@@ -21,6 +21,13 @@
     var workEnable = '<s:property value="workgroupEnableFlg"/>';
     var autoRoutingStrategy = '<s:property value="automaticRoutingStrategy"/>';
 
+    var selectedCho_gridviewGrid;
+    var availableCho_gridviewGrid;
+    var selectedCho_gridviewData;
+    var availableCho_gridviewData;
+    var selectedCho_gridviewJsonReader;
+    var availableCho_gridviewJsonReader;
+
     Ext.onReady(function(){
 
         var autoRoutingWorkgroupJsonReader = new Ext.data.JsonReader({
@@ -52,6 +59,13 @@
             mode: 'local',
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
+<s:if test="automaticRoutingStrategy == 3">
+                listeners: {
+                    select: function() {
+                                choMapping_loadGridViewList();
+                            }
+                },
+</s:if>
             forceSelection: true
         });
         
@@ -189,7 +203,7 @@
   
             routing_loadGridViewList();
         }
-        if(autoRoutingStrategy==2){ // By Vehicle Class Price
+        else if(autoRoutingStrategy==2){ // By Vehicle Class Price
 
 
             var form = $("form#formAutomaticRoutingDetail");
@@ -260,7 +274,79 @@
             routing_loadGridViewListPrice();
         
         }
+        else if(autoRoutingStrategy==3){ // By CHO Assignment
+            availableCho_GridviewJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields: [
+                    {name:'id'},
+                    {name:'name'},
+                    {name:'status'},
+                    {name:'statusDesc'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
 
+            selectedCho_gridviewJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields: [
+                    {name:'id'},
+                    {name:'name'},
+                    {name:'status'},
+                    {name:'statusDesc'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
+
+            availableCho_gridviewData = new choxDataStore({
+                url: '/prv/p/getAvailableChorganisation.action',
+                reader:availableCho_GridviewJsonReader
+            });
+
+            selectedCho_gridviewData = new choxDataStore({
+                url: '/prv/p/getSelectedChorganisation.action',
+                reader:selectedCho_gridviewJsonReader
+            });
+
+            availableCho_gridviewGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:cho_recordOnclickAdd },
+                store: availableCho_gridviewData,
+                renderTo:'cho_available_gridviewGrid',
+                enableHdMenu:false,
+                enableColumnMove: false,
+                layout:'fit',
+                viewConfig:{forceFit:true},
+                columns: [
+                    {header: "Name", width: 190, dataIndex: 'name', sortable: true, resizable: true},
+                    {header: "Active", width: 40, dataIndex: 'statusDesc', sortable: true, resizable: true},
+                    {header: "", width: 30, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>Add</a>";}}
+                ],
+                height:380,
+                width: 360
+            });
+
+            selectedCho_gridviewGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:cho_recordOnclickRemove },
+                store: selectedCho_gridviewData,
+                renderTo:'cho_selected_gridviewGrid',
+                enableHdMenu:false,
+                enableColumnMove: false,
+                layout:'fit',
+                viewConfig:{forceFit:true},
+                columns: [
+                    {header: "Name", width: 170, dataIndex: 'name', sortable: true, resizable: true},
+                    {header: "Active", width: 40, dataIndex: 'statusDesc', sortable: true, resizable: true},
+                    {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
+                ],
+                height:380,
+                width: 360
+            });
+        }
 
        
     });
@@ -370,11 +456,11 @@
                     });
                 });
             } else {
-                if(auto==="true"){
+                if(autoRoutingStrategy==1){
                     autoRoutingWorkgroupCombo.clearValue();
                     autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
                     $("form#formAutomaticRoutingDetail input[name$='expression']").val('');
-                } else if(price==="true"){
+                } else if(autoRoutingStrategy==2){
                     autoRoutingWorkgroupCombo.clearValue();
                     autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
                 }
@@ -387,21 +473,106 @@
 
     }
     
+<s:if test="automaticRoutingStrategy == 3">
+    function cho_recordOnclickAdd(grid, rowIndex, columnIndex, e){
+        if(autoRoutingWorkgroupCombo.getValue()<=0){
+            Ext.MessageBox.alert('', 'Please select a Workgroup');
+            return;
+        }
+
+        if(columnIndex===2){
+            var gridView = availableCho_gridviewGrid.getStore().getAt(rowIndex);
+            var gridViewId = gridView.get("id");
+            var url = "/prv/p/doAddNewChorganisationAutoRoutingMapping.action";
+            var param = {"chorganisationId":gridViewId, "workgroupId":autoRoutingWorkgroupCombo.getValue()};
+            ajax.loadHtml2(url, param, afterChoMappingSubmit);
+        }
+    }
+
+    function cho_recordOnclickRemove(grid, rowIndex, columnIndex, e){
+        if(columnIndex===2){
+            var gridView = selectedCho_gridviewGrid.getStore().getAt(rowIndex);
+            var chorganisationId = gridView.get("id");
+            var url = "/prv/p/doRemoveChorganisationAutoRoutingMapping.action";
+            var param = {"chorganisationId":chorganisationId, "workgroupId":autoRoutingWorkgroupCombo.getValue()};
+            ajax.loadHtml2(url, param, afterChoMappingSubmit);
+        }
+    }
+    
+    function afterChoMappingSubmit(responseText, statusText) {
+        var response = eval('(' + responseText.trim() + ')');
+       
+        if(response) {
+            if(!response.isValid){
+               $.each(response.errors, function() {
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }); 
+            } 
+        }
+        choMapping_loadGridViewList();
+    }
+    
+    function choMapping_loadGridViewList(){
+        availableCho_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
+        selectedCho_gridviewData.load({params:{insurerId:<s:property value="insurerId" />,workgroupId:autoRoutingWorkgroupCombo.getValue()}});
+    }
+</s:if>
+
 </script>
-
-
-<s:if test="automaticRoutingStrategy == 2">
 
     <div class="sub-admin-tab-css">
         <div class="status-info">
             This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
         </div>
+<s:if test="automaticRoutingStrategy == 3">
+        <div class="grid-view-header">
+          <div class="admin-bre-band-detail-section">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <div class="section-name">Automatic Routing By CHO Assignment</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="chox-form-item" style="padding-bottom: 2px">
+                            <label class="chox-form-std-label">Workgroup</label>
+                            <div id = "autoRoutingWorkgroupDiv"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%">
+                <tr>
+                    <td valign="top">
+                        <label class="gird-view-label">Selected Credit Hire Organisations</label>
+                        <div id="cho_selected_gridviewGrid"></div>
+                    </td>
+                    <td valign="top">
+                        <label class="gird-view-label">Available Credit Hire Organisations</label>
+                        <div id="cho_available_gridviewGrid"></div>
+                    </td>
+                </tr>
+            </table>
+          </div>
+        </div>
+</s:if>
+
+
+<s:if test="automaticRoutingStrategy == 2">
         <div class="grid-view-header">
             <table width="100%">
                 <tr>
                     <td>
                         <div class="admin-bre-band-detail-section">
-                            <div class="section-name">Automatic Routing</div>
+                            <div class="section-name">Automatic Routing By Vehicle Class Price</div>
                             <div class="form-container">
                                 <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetailByPrice.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
@@ -426,21 +597,15 @@
             </table>
         </div>
         <div id="automaticRouting_gridviewGridPrice"/>
-    </div>
 </s:if>
 
 <s:if test="automaticRoutingStrategy == 1">
-    <div class="sub-admin-tab-css">
-        <div class="status-info">
-            This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
-        </div>
-
         <div class="grid-view-header">
             <table width="100%">
                 <tr>
                     <td>
                         <div class="admin-bre-band-detail-section">
-                            <div class="section-name">Automatic Routing</div>
+                            <div class="section-name">Automatic Routing By Policy Number</div>
                             <div class="form-container">
                                 <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetail.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
@@ -489,3 +654,4 @@
 
     </div>
 </s:if>
+            </div>

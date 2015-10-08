@@ -1,9 +1,9 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,7 +18,6 @@ import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BreBandChorganisationViewData;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import org.hibernate.StaleObjectStateException;
 
 public class InsurerBreBandMappingAction extends BaseAction {
 
@@ -93,9 +92,8 @@ public class InsurerBreBandMappingAction extends BaseAction {
         if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
             throw new AccessDeniedException("Trying to add BRE Band mapping for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
         }
-        //try {
 
-        List<ChorganisationViewData> credithireorganisation = new ArrayList<ChorganisationViewData>();
+        List<ChorganisationViewData> credithireorganisation = new ArrayList<>();
 
         if (this.insurerId > 0) {
 
@@ -118,11 +116,6 @@ public class InsurerBreBandMappingAction extends BaseAction {
 
         }
 
-        //} catch (Exception ex) {
-        //  handleException(this, ex);
-        //return ERROR;
-        //}
-
         return SUCCESS;
     }
 
@@ -132,11 +125,8 @@ public class InsurerBreBandMappingAction extends BaseAction {
         }
 
         try {
-
-            List<BreBandChorganisationViewData> insurerBreBand;
-            List<BreBandOrganisation> brebandorganisations = new ArrayList<BreBandOrganisation>();
-            brebandorganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId);
-            insurerBreBand = getChoViewDataList(brebandorganisations);
+            List<BreBandOrganisation> brebandorganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId);
+            List<BreBandChorganisationViewData> insurerBreBand = getChoViewDataList(brebandorganisations);
             setJsonData(insurerBreBand, insurerBreBand.size());
 
         } catch (Exception ex) {
@@ -239,8 +229,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
     private boolean canDeleteBreBandChorganisation(int breBandChorganisationId) {
         LOG.debug("Checking if canDeleteBreBandChorganisation for breBandId={}, breBandChorganisationId={}", this.breBandId, breBandChorganisationId);
         List<BreBandChorganisationViewData> chos = getChoViewDataList(adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId));
-        for (Iterator<BreBandChorganisationViewData> i = chos.iterator(); i.hasNext();) {
-            BreBandChorganisationViewData vd = i.next();
+        for (BreBandChorganisationViewData vd : chos) {
             if (vd.getId() == breBandChorganisationId) {
                 return true;
             }
@@ -252,7 +241,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
     }
 
     public List<BreBandChorganisationViewData> getChoViewDataList(List<BreBandOrganisation> objects) {
-        List<BreBandChorganisationViewData> breBandChorganisationViewDatas = new ArrayList<BreBandChorganisationViewData>();
+        List<BreBandChorganisationViewData> breBandChorganisationViewDatas = new ArrayList<>();
         for (BreBandOrganisation h : objects) {
             breBandChorganisationViewDatas.add(new BreBandChorganisationViewData(h));
         }

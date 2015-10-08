@@ -9,7 +9,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 public interface ChorganisationService {
 
     Chorganisation getChorganisation(int chorganisationId);
-
     List<Chorganisation> getChorganisations(String order);
     List<Chorganisation> getNonManualChorganisations(String order);
 
@@ -18,6 +17,13 @@ public interface ChorganisationService {
     List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId);
 
     List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId);
+    
+    List<Chorganisation> getChorganisationsByInsurerWithoutWorkgroupMapping(int insurerId);
+    
+    List<Chorganisation> getChorganisationsWithAutoRoutingWorkgroupMapping(int workgroupId);
+
+    void addChorganisationAutoRoutingWorkgroupMapping(int chorganisationId, int workgroupId) throws Exception;
+    void removeChorganisationAutoRoutingWorkgroupMapping(int chorganisationId, int workgroupId) throws Exception;
 
     boolean isActiveChorganisationsByInsurerCreditHireWithBreBand(int insurerId, int chorganisationId);
 
