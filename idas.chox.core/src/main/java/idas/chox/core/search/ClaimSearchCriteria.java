@@ -46,7 +46,6 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean penaltyChargeApplied;
     private boolean interimPaymentMade;
     private boolean escalatedToSupervisor;
-    private boolean paymentDispute;
     private int start;
     private int limit;
     private String sort;
@@ -66,6 +65,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean liabilityStatusUpdated;
     private Set<ClaimType> claimTypes;
     private int finalReviewValue;
+    private int paymentDisputeValue;
     private String filterName;
 
     @Override
@@ -574,6 +574,14 @@ public class ClaimSearchCriteria implements Serializable {
         }
     }
 
+    public int getPaymentDisputeValue() {
+        return paymentDisputeValue;
+    }
+
+    public void setPaymentDisputeValue(int paymentDisputeValue) {
+        this.paymentDisputeValue = paymentDisputeValue;
+    }
+
     
     public String getFilterName() {
         return filterName;
@@ -711,13 +719,9 @@ public class ClaimSearchCriteria implements Serializable {
         return null;
     }
     
-    /*
-     * Please note this method will return only hire and repair search param from the
-     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
-     */
     public String getApprovedInvoiceOwnershipSearchParamAsString() {
 
-        if (getApprovedInvoiceOwnershipSearchParamIds()!= null && !getApprovedInvoiceOwnershipSearchParamIds().isEmpty()) {
+        if (approvedInvoiceOwnershipSearchParamIds != null && !approvedInvoiceOwnershipSearchParamIds.isEmpty()) {
             StringBuilder returnString = new StringBuilder();
             for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
@@ -726,7 +730,7 @@ public class ClaimSearchCriteria implements Serializable {
         }
         return null;
     }
-    
+        
     /*
      * Please note this method will return only Liability value from the
      * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
@@ -741,14 +745,6 @@ public class ClaimSearchCriteria implements Serializable {
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
-    }
-
-    public boolean isPaymentDispute() {
-        return paymentDispute;
-    }
-
-    public void setPaymentDispute(boolean paymentDispute) {
-        this.paymentDispute = paymentDispute;
     }
 
 }

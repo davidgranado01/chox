@@ -275,6 +275,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    public boolean getInsurerPaymentDisputesEnabled() {
+        if (getIsCHO()) {
+            return false;
+        } else if (getIsChoxAdmin()) {
+            return true;
+        } else {
+            return getAuthenticatedUser().getInsurer().isPaymentDisputesEnable();
+        }
+    }
+
     public boolean getIsChoxAdmin() {
 
         return securityInfoProvider.getIsCHOXAdmin();

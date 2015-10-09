@@ -37,11 +37,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private List<Filter> filters;
     private int totalCount;
     private String actionResult;
-//    private int filterOrgId;
-//    private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
     private boolean canLoadData = true;
-//    private boolean inbox;
     private boolean loadSearchPanelSelectionFromSession;
 
     public boolean isLoadSearchPanelSelectionFromSession() {
@@ -287,10 +284,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         if (canLoadData) {
             LOG.debug("In doSearchClaim().");
-//            Integer start = claimSearchCriteria.getStart();
-//            Integer limit = claimSearchCriteria.getLimit();
-//            String sort = claimSearchCriteria.getSort();
-//            String dir = claimSearchCriteria.getDir();
             
             if (claimSearchCriteria.getSort() == null || claimSearchCriteria.getSort().isEmpty()) {
                 claimSearchCriteria.setSort("created");
@@ -311,15 +304,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 return SUCCESS;
             }
             
-//            filterName = getFilterName();
-//            filterOrgId = getFilterOrgId();
-//            filterClaimTypeId = getFilterClaimTypeId();
             if (claimSearchCriteria.getFilterName() != null && !StringHelper.isEmpty(claimSearchCriteria.getFilterName())) {
                 Filter filter = filterService.getFilter(claimSearchCriteria.getFilterName());
-//                ClaimSearchCriteria filterCriteria;
                 filter.getClaimSearchCriteria(claimSearchCriteria);
-//                mergeClaimSearchCriteria(filterCriteria);
-//                claimSearchCriteria = filterCriteria;
             }
 
             getSession().put("searchCriteria", claimSearchCriteria);
@@ -393,48 +380,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return filters;
     }
 
-//    public String getFilterName() {
-//        if (getSession().containsKey("filterKey") && inbox) {
-//            return (String) getSession().get("filterKey");
-//        } else {
-//            return filterName;
-//        }
-//    }
-
-//    public int getFilterOrgId() {
-//        if (getSession().containsKey("filterOrgId") && inbox) {
-//            return (Integer) getSession().get("filterOrgId");
-//        } else {
-//            return filterOrgId;
-//        }
-//    }
-
-//    public void setFilterOrgId(int filterOrgId) {
-//        this.filterOrgId = filterOrgId;
-//    }
-
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
     }
-
-//    public int getFilterClaimTypeId() {
-//        if (getSession().containsKey("filterClaimTypeId") && inbox) {
-//            return (Integer) getSession().get("filterClaimTypeId");
-//        } else {
-//            return filterClaimTypeId;
-//        }
-//    }
-//
-//    public void setFilterClaimTypeId(int filterClaimTypeId) {
-//        this.filterClaimTypeId = filterClaimTypeId;
-//    }
-//
-//    public boolean isInbox() {
-//        return inbox;
-//    }
-//
-//    public void setInbox(boolean inbox) {
-//        this.inbox = inbox;
-//    }
     
 }

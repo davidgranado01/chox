@@ -785,22 +785,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (restrictionId == 1) {
                     if (RoleHelper.isChoxAdmin(getCurrentUser())) {
                         claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
-//                        claimsHandlerOnlyClaims = Restrictions.conjunction().add(Restrictions.eq("iv.paymentTeam", Boolean.FALSE))
-//                                .add(Restrictions.disjunction()
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
-//                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.FALSE))
-//                                                                       .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
                     } else {
                         claimsHandlerOnlyClaims = Restrictions.eq("iv.paymentTeam", Boolean.FALSE);
                     }
@@ -836,20 +820,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          * Payment Dispute Filter
          */
         // NB. For CHOX Admin, we also need to check the insurer config flag...
-        if (searchCriteria.isPaymentDispute()) {
-            if (RoleHelper.isChoxAdmin(getCurrentUser())) {
-                criteria.add(Restrictions.conjunction().add(Restrictions.eq("paymentDispute", Boolean.TRUE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.TRUE)));
+        if (searchCriteria.getPaymentDisputeValue() > 0) {
+            Criterion paymentDisputeRestriction;
+            if (searchCriteria.getPaymentDisputeValue() == 2) {
+                if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    paymentDisputeRestriction = Restrictions.disjunction().add(Restrictions.eq("paymentDispute", Boolean.FALSE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.FALSE));
+                } else {
+                    paymentDisputeRestriction = Restrictions.eq("paymentDispute", Boolean.FALSE);
+                }
             } else {
-                criteria.add(Restrictions.eq("paymentDispute", Boolean.TRUE));
+                if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    paymentDisputeRestriction = Restrictions.conjunction().add(Restrictions.eq("paymentDispute", Boolean.TRUE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.TRUE));
+                } else {
+                    paymentDisputeRestriction = Restrictions.eq("paymentDispute", Boolean.TRUE);
+                }
             }
-        } else {
-            if (RoleHelper.isChoxAdmin(getCurrentUser())) {
-                criteria.add(Restrictions.disjunction()
-                        .add(Restrictions.eq("paymentDispute", Boolean.FALSE))
-                        .add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.FALSE)));
-            } else {
-                criteria.add(Restrictions.eq("paymentDispute", Boolean.FALSE));
-            }
+            criteria.add(paymentDisputeRestriction);
         }
 
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
@@ -1345,6 +1331,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     criteria.add(Restrictions.eq("finalReviewIns", false));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_OR_INS_TRUE.getValue()) {
                     criteria.add(Restrictions.disjunction()
+                            .add(Restrictions.eq("finalReviewCho", true))
+                            .add(Restrictions.eq("finalReviewIns", true)));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_TRUE.getValue()) {
+                    criteria.add(Restrictions.conjunction()
                             .add(Restrictions.eq("finalReviewCho", true))
                             .add(Restrictions.eq("finalReviewIns", true)));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_FALSE.getValue()) {

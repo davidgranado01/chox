@@ -26,6 +26,7 @@
     var liabilityStatusSearchScreenCombo;
     var hireAndRepairSearchParamCombo;
     var approvedInvoiceOwnershipSearchParamCombo;
+    var paymentDisputesSearchParamCombo;
     var finalReviewValuesCombo;
     var searchColumsPanel;
     var queueDataStore;
@@ -243,25 +244,7 @@
                     }
                 }
             });
-            
-            var paymentDisputeCheckBox = new Ext.form.Checkbox({
-                name:'isPaymentDispute',
-                id:'paymentDisputeCheckBoxId',
-                value:'<s:property value="paymentDispute"/>',
-                disabled : !<s:property value="paymentDisputeCheckBoxVisible"/>,
-                hidden : !<s:property value="paymentDisputeCheckBoxVisible"/>,
-                fieldLabel: 'Show Claims With Payment Dispute Only',
-                labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="paymentDispute"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
-            });
-            
+                        
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
                 name:'escalatedToSupervisor',
                 id:'escalatedToSupervisorCheckBoxId',
@@ -1295,6 +1278,62 @@
                 }
             });
 
+            var paymentDisputesSearchParamData = [['Yes', 1], ['No', 2]];
+            
+            var paymentDisputesSearchParamStore = new Ext.data.ArrayStore({
+                    fields: [
+                       {name: 'text', type: 'string'},
+                       {name: 'value', type: 'int'}
+                    ]
+            });
+            
+            paymentDisputesSearchParamStore.loadData(paymentDisputesSearchParamData);
+            // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
+            var paymentDisputesSearchComboNumberOfSelectedRecord = 0;
+            
+            paymentDisputesSearchParamCombo = new Ext.form.ComboBox({
+                store : paymentDisputesSearchParamStore,
+                width: 120,
+                fieldLabel: 'Invoice Payment Dispute',
+                labelStyle: 'width:155px',
+                valueField : 'value',
+                id : 'paymentDisputesSearchParamComboId',
+                disabled : <s:property value="isCHO || (isInsurer && !insurerPaymentDisputesEnabled)"/>,
+                hidden : <s:property value="isCHO || (isInsurer && !insurerPaymentDisputesEnabled)"/>,
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- N/A ---',
+//                removeValuesFromStore : false,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="paymentDisputeValue"/>' > 0) {
+                            this.setValue('<s:property value="paymentDisputeValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    },
+                    select : function(){
+//                        doLayoutSearchPanel();
+//                        searchClaim(true);
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    }
+                }
+            });
+
             // Add claim type drop-down menu
             var claimTypesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -1423,14 +1462,14 @@
                         penaltyChargesToBeAppliedCheckBox, 
                         liabilityStatusUpdateNotification,
                         escalatedToSupervisorCheckBox,
-                        anomaliesCheckBox,
-                        paymentDisputeCheckBox]
+                        anomaliesCheckBox]
             };
 
             var middleColumn = {
                 width:280,
                 height : 'auto',
                 layout: 'form',
+//                align: 'right',
                 labelAlign: 'right',
                 items: [claimUploadDateFromPicker,
                         claimUploadDateToPicker,
@@ -1442,7 +1481,8 @@
                         rentalEndDatePicker, 
                         reviewRequiredDateFromPicker, 
                         reviewRequiredDateToPicker,
-                        finalReviewValuesCombo]
+                        finalReviewValuesCombo,
+                        paymentDisputesSearchParamCombo]
             };
 
             var rightColumn = {
@@ -1751,6 +1791,11 @@
                 approvedInvoiceOwnershipSearchParamCombo.setValue(paymentsTeam);
             }
             
+            var paymentDisputeValue = record.get('claimSearchCriteria').paymentDisputeValue;
+            if (paymentDisputeValue >= 0) {
+                paymentDisputesSearchParamCombo.setValue(paymentDisputeValue);
+            }
+
             var isLiabilityUpdated = record.get('claimSearchCriteria').liabilityStatusUpdated;
             if (isLiabilityUpdated) {
                 Ext.getCmp('liabilityStatusUpdatedId').setValue(true);
@@ -1770,12 +1815,7 @@
             if (anomalies) {
                 Ext.getCmp('anomaliesCheckBoxId').setValue(true);
             }
-            
-            var paymentDispute = record.get('claimSearchCriteria').paymentDispute;
-            if (paymentDispute) {
-                Ext.getCmp('paymentDisputeCheckBoxId').setValue(true);
-            }
-            
+                        
             var escalatedToSupervisor = record.get('claimSearchCriteria').escalatedToSupervisor;
             if (escalatedToSupervisor) {
                 Ext.getCmp('escalatedToSupervisorCheckBoxId').setValue(true);
@@ -1832,7 +1872,6 @@
             var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
             var penaltyChargesToBeApplied = Ext.query('*[name$=isPenaltyChargeApplied]')[0].checked;
             var anomalies = Ext.query('*[name$=isAnomalies]')[0].checked;
-            var paymentDispute = Ext.query('*[name$=isPaymentDispute]')[0].checked;
             var escalatedToSupervisor = Ext.query('*[name$=escalatedToSupervisor]')[0].checked;
             var interimPaymentMade = Ext.query('*[name$=isInterimPaymentMade]')[0].checked;
             var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
@@ -1840,6 +1879,7 @@
             var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
             var approvedInvoiceOwnershipSearchScreen = Ext.getCmp('approvedInvoiceOwnershipSearchParamComboId').getValue().split(",");
+            var paymentDisputeValue = Ext.getCmp('paymentDisputesSearchParamComboId').getValue();
 
             return {
                 filterName : '',
@@ -1871,14 +1911,14 @@
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 penaltyChargeApplied : penaltyChargesToBeApplied,
                 anomalies : anomalies, 
-                paymentDispute : paymentDispute, 
                 escalatedToSupervisor : escalatedToSupervisor,
                 interimPaymentMade : interimPaymentMade,
                 liabilityStatuses : liabilityStatuses,
                 claimTypes : claimTypes,
                 supplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
                 hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
-                approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen
+                approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen,
+                paymentDisputeValue : (paymentDisputeValue === '') ? 0 : paymentDisputeValue
             };
         }
         
@@ -2027,6 +2067,8 @@
             hireAndRepairSearchParamCombo.clearValue();
             approvedInvoiceOwnershipSearchParamCombo.reset();
             approvedInvoiceOwnershipSearchParamCombo.clearValue();
+            paymentDisputesSearchParamCombo.reset();
+            paymentDisputesSearchParamCombo.clearValue();
             statusSearchScreenCombo.reset();
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();
