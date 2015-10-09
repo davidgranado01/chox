@@ -28,7 +28,6 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<Integer> insurerIds;
     private Set<Integer> hireAndRepairSearchParamIds;
     private Set<Integer> approvedInvoiceOwnershipSearchParamIds;
-    private Set<String> paymentDisputesSearchParamIds;
     private String thirdPartyVrn;
     private String customerVrn;
     private String invoiceNumber;
@@ -66,6 +65,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean liabilityStatusUpdated;
     private Set<ClaimType> claimTypes;
     private int finalReviewValue;
+    private int paymentDisputeValue;
     private String filterName;
 
     @Override
@@ -574,16 +574,12 @@ public class ClaimSearchCriteria implements Serializable {
         }
     }
 
-    public Set<String> getPaymentDisputesSearchParamIds() {
-        return paymentDisputesSearchParamIds;
+    public int getPaymentDisputeValue() {
+        return paymentDisputeValue;
     }
 
-    public void setPaymentDisputesSearchParamIds(Set<String> paymentDisputesSearchParamIds) {
-        if (paymentDisputesSearchParamIds.contains(null) || paymentDisputesSearchParamIds.contains("")) {
-            this.paymentDisputesSearchParamIds = null;
-        } else {
-            this.paymentDisputesSearchParamIds = paymentDisputesSearchParamIds;
-        }
+    public void setPaymentDisputeValue(int paymentDisputeValue) {
+        this.paymentDisputeValue = paymentDisputeValue;
     }
 
     
@@ -734,19 +730,7 @@ public class ClaimSearchCriteria implements Serializable {
         }
         return null;
     }
-    
-    public String getPaymentDisputesSearchParamAsString() {
-
-        if (paymentDisputesSearchParamIds != null && !paymentDisputesSearchParamIds.isEmpty()) {
-            StringBuilder returnString = new StringBuilder();
-            for (String i : getPaymentDisputesSearchParamIds()) {
-                returnString.append(i).append(",");
-            }
-            return returnString.toString().substring(0, returnString.length() - 1);
-        }
-        return null;
-    }
-    
+        
     /*
      * Please note this method will return only Liability value from the
      * loaded(model) claimSearchCriteria and not from available LiabilityStatus.

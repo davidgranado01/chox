@@ -820,29 +820,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          * Payment Dispute Filter
          */
         // NB. For CHOX Admin, we also need to check the insurer config flag...
-        if (searchCriteria.getPaymentDisputesSearchParamIds() != null && !searchCriteria.getPaymentDisputesSearchParamIds().isEmpty()) {
-            Criterion paymentDisputeClaims = Restrictions.eq("id", -1);
-            Criterion nonPaymentDisputeClaims = Restrictions.eq("id", -1);
-
-            for (String restriction : searchCriteria.getPaymentDisputesSearchParamIds()) {
-                // NB. For CHOX Admin, we also need to check the insurer config flag...
-                if (Boolean.valueOf(restriction)) {
-                    if (RoleHelper.isChoxAdmin(getCurrentUser())) {
-                        paymentDisputeClaims = Restrictions.conjunction().add(Restrictions.eq("paymentDispute", Boolean.TRUE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.TRUE));
-                    } else {
-                        paymentDisputeClaims = Restrictions.eq("paymentDispute", Boolean.TRUE);
-                    }
+        if (searchCriteria.getPaymentDisputeValue() > 0) {
+            Criterion paymentDisputeRestriction;
+            if (searchCriteria.getPaymentDisputeValue() == 2) {
+                if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    paymentDisputeRestriction = Restrictions.disjunction().add(Restrictions.eq("paymentDispute", Boolean.FALSE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.FALSE));
                 } else {
-                    if (RoleHelper.isChoxAdmin(getCurrentUser())) {
-                        nonPaymentDisputeClaims = Restrictions.disjunction().add(Restrictions.eq("paymentDispute", Boolean.FALSE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.FALSE));
-                    } else {
-                        nonPaymentDisputeClaims = Restrictions.eq("paymentDispute", Boolean.FALSE);
-                    }
+                    paymentDisputeRestriction = Restrictions.eq("paymentDispute", Boolean.FALSE);
+                }
+            } else {
+                if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    paymentDisputeRestriction = Restrictions.conjunction().add(Restrictions.eq("paymentDispute", Boolean.TRUE)).add(Restrictions.eq("ins.paymentDisputesEnable", Boolean.TRUE));
+                } else {
+                    paymentDisputeRestriction = Restrictions.eq("paymentDispute", Boolean.TRUE);
                 }
             }
-            criteria.add(Restrictions.disjunction()
-                    .add(paymentDisputeClaims)
-                    .add(nonPaymentDisputeClaims));
+            criteria.add(paymentDisputeRestriction);
         }
 
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
@@ -1338,6 +1331,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     criteria.add(Restrictions.eq("finalReviewIns", false));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_OR_INS_TRUE.getValue()) {
                     criteria.add(Restrictions.disjunction()
+                            .add(Restrictions.eq("finalReviewCho", true))
+                            .add(Restrictions.eq("finalReviewIns", true)));
+                } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_TRUE.getValue()) {
+                    criteria.add(Restrictions.conjunction()
                             .add(Restrictions.eq("finalReviewCho", true))
                             .add(Restrictions.eq("finalReviewIns", true)));
                 } else if (searchCriteria.getFinalReviewValue() == FinalReviewMapping.CHO_AND_INS_FALSE.getValue()) {

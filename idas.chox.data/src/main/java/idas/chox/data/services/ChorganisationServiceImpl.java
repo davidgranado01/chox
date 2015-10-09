@@ -47,7 +47,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
         criteria.add(Restrictions.eq("insurerUploadOnly", false));
 
-        if (!order.equalsIgnoreCase("") && order != null) {
+        if (order != null && !order.equalsIgnoreCase("")) {
             criteria.addOrder(Order.asc(order));
         }
 

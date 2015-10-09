@@ -2,23 +2,24 @@ package idas.chox.data.services;
 
 import idas.chox.core.enums.FinalReviewMapping;
 
-import idas.chox.core.model.*;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.util.LookupItemTextComparator;
-import idas.chox.core.util.RoleHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.*;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.util.LookupItemTextComparator;
+import idas.chox.core.util.RoleHelper;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
@@ -30,7 +31,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
             boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
             boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
-        List<LookupItem> items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<>();
         for (String s : ClaimStatus.getAvailableStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
                 isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed, isSubscriberActivated)) {
             items.add(new LookupItem(s, s));
@@ -41,7 +42,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<LookupItem> getLiabilityStatuses(boolean withNull) {
-        List<LookupItem> items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
             if (!withNull && s.getLiablityValue() == 0) {
                 continue;
@@ -58,7 +59,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<LookupItem> getClaimTypes(WebUser user) {
-        List<LookupItem> items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<>();
         Insurer insurer = null;
         
 
@@ -136,7 +137,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List getNonProvisionReason() {
-        List items = new ArrayList<LookupItem>();
+        List items = new ArrayList<>();
         items.add(new LookupItem("Point Blank Refusal", "Point Blank Refusal"));
         items.add(new LookupItem("Faxed Garage", "Faxed Garage"));
         /*
@@ -218,7 +219,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     private List<Workgroup> getWorkgroupsByUserId(int userId, boolean isActiveOnly) {
 
-        List<Workgroup> workgroups = new ArrayList<Workgroup>();
+        List<Workgroup> workgroups = new ArrayList<>();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
@@ -267,12 +268,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (currentUser.isAnInsurer()) {
             return getSuppliers(currentUser.getInsurer().getId(),excludeManualCHO);
         } else {
-            try {
-                throw new Exception();
-            } catch(Exception ex) {
-                LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName(), ex);
-            }
-            return new ArrayList<Chorganisation>();
+            LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
+            return new ArrayList<>();
         }
     }
     
@@ -313,7 +310,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             } catch(Exception ex) {
                 LOG.error("Trying to get insurers for an Insurer user ({}): ", currentUser.getDisplayName(), ex);
             }
-            return new ArrayList<Insurer>();
+            return new ArrayList<>();
         }
     }
 
@@ -324,7 +321,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         List<String> sites = null;
         try {
 
-            sites = new ArrayList<String>();
+            sites = new ArrayList<>();
 
             StringBuilder sb = new StringBuilder();
             sb.append("select distinct site from workgroup where insurer_id=:pInsurerId ");
@@ -357,7 +354,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         try {
             Map extParameters = new HashMap();
 
-            teams = new ArrayList<String>();
+            teams = new ArrayList<>();
 
             StringBuilder sb = new StringBuilder();
             sb.append("select distinct team from workgroup where insurer_id=:pInsurerId ");
@@ -399,7 +396,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List<Insurer> getInsurers(Integer choId) {
 
-        List<Insurer> results = new ArrayList<Insurer>();
+        List<Insurer> results = new ArrayList<>();
 
         if (choId == null) {
             try {
@@ -445,7 +442,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List<Chorganisation> getSuppliers(Integer insurerId, boolean excludeManualCHO) {
 
-        List<Chorganisation> results = new ArrayList<Chorganisation>();
+        List<Chorganisation> results = new ArrayList<>();
 
         if (insurerId == null) {
             try {
@@ -490,7 +487,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List getFinalReviewValues() {
-        List<LookupItem> items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<>();
 
         if (getCurrentUser().isCHO()) {
             for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getChoFinalReviewMappings()) {

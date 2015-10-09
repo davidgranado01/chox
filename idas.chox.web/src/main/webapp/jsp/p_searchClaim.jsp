@@ -1278,12 +1278,12 @@
                 }
             });
 
-            var paymentDisputesSearchParamData = [['Yes', 'true'], ['No', 'false']];
+            var paymentDisputesSearchParamData = [['Yes', 1], ['No', 2]];
             
             var paymentDisputesSearchParamStore = new Ext.data.ArrayStore({
                     fields: [
                        {name: 'text', type: 'string'},
-                       {name: 'value', type: 'string'}
+                       {name: 'value', type: 'int'}
                     ]
             });
             
@@ -1291,20 +1291,20 @@
             // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
             var paymentDisputesSearchComboNumberOfSelectedRecord = 0;
             
-            paymentDisputesSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
+            paymentDisputesSearchParamCombo = new Ext.form.ComboBox({
                 store : paymentDisputesSearchParamStore,
-                width: 175,
+                width: 120,
                 fieldLabel: 'Invoice Payment Dispute',
-//                labelStyle: 'width:155px',
+                labelStyle: 'width:155px',
                 valueField : 'value',
+                id : 'paymentDisputesSearchParamComboId',
                 disabled : <s:property value="isCHO || (isInsurer && !insurerPaymentDisputesEnabled)"/>,
                 hidden : <s:property value="isCHO || (isInsurer && !insurerPaymentDisputesEnabled)"/>,
-                id : 'paymentDisputesSearchParamComboId',
                 displayField :'text',
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                emptyText: '--- ALL ---',
+                emptyText: '--- N/A ---',
 //                removeValuesFromStore : false,
                 selectOnFocus : true,
                 forceSelection : true,
@@ -1315,31 +1315,21 @@
                         }
                     },
                     afterrender : function(){
-                        if ('<s:property value="paymentDisputesSearchParamAsString"/>') {
-                            this.setValue('<s:property value="paymentDisputesSearchParamAsString"/>');
-                            paymentDisputesSearchComboNumberOfSelectedRecord = '<s:property value="paymentDisputesSearchParamAsString"/>'.split(',').length;
-                            doLayoutSearchPanel();
+                        if ('<s:property value="paymentDisputeValue"/>' > 0) {
+                            this.setValue('<s:property value="paymentDisputeValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
                         }
                     },
                     select : function(){
-                        paymentDisputesSearchComboNumberOfSelectedRecord ++;
-                        statusChange();
-                        doLayoutSearchPanel();
+//                        doLayoutSearchPanel();
 //                        searchClaim(true);
-                    },
-                    removeitem : function() {
-                        if (!this.getValue() && paymentDisputesSearchComboNumberOfSelectedRecord >=1) {
-                            paymentDisputesSearchComboNumberOfSelectedRecord = 0;
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
                             this.reset();
                             this.clearValue();
-                            statusChange();
-//                            searchClaim(true);
-                        } else if (paymentDisputesSearchComboNumberOfSelectedRecord >= 1){
-                            paymentDisputesSearchComboNumberOfSelectedRecord --;
-                            statusChange();
-//                            searchClaim(true); 
                         }
-                        doLayoutSearchPanel();
                     }
                 }
             });
@@ -1801,10 +1791,9 @@
                 approvedInvoiceOwnershipSearchParamCombo.setValue(paymentsTeam);
             }
             
-            var paymentDispute = record.get('claimSearchCriteria').paymentDisputesSearchParamAsString;
-            paymentDisputesSearchComboNumberOfSelectedRecord = paymentsTeam.split(',').length;
-            if (paymentDispute) {
-                paymentDisputesSearchParamCombo.setValue(paymentDispute);
+            var paymentDisputeValue = record.get('claimSearchCriteria').paymentDisputeValue;
+            if (paymentDisputeValue >= 0) {
+                paymentDisputesSearchParamCombo.setValue(paymentDisputeValue);
             }
 
             var isLiabilityUpdated = record.get('claimSearchCriteria').liabilityStatusUpdated;
@@ -1890,7 +1879,7 @@
             var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
             var approvedInvoiceOwnershipSearchScreen = Ext.getCmp('approvedInvoiceOwnershipSearchParamComboId').getValue().split(",");
-            var paymentDisputesSearchScreen = Ext.getCmp('paymentDisputesSearchParamComboId').getValue().split(",");
+            var paymentDisputeValue = Ext.getCmp('paymentDisputesSearchParamComboId').getValue();
 
             return {
                 filterName : '',
@@ -1929,7 +1918,7 @@
                 supplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
                 hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
                 approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen,
-                paymentDisputesSearchParamIds : paymentDisputesSearchScreen
+                paymentDisputeValue : (paymentDisputeValue === '') ? 0 : paymentDisputeValue
             };
         }
         
