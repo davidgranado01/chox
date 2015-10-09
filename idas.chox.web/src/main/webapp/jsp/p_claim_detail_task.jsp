@@ -122,7 +122,7 @@
                 $("#paymentMethodLabelId").show();
                 $("#paymentMethodComboId").show();
                 $("#paymentMethodDivId").show();
-                if (visibilityRoleCombo){
+                if (visibilityInternal){
                     // Not repositioned properly in IE6, so redraw (hack!)
                     visibilityRoleCombo.hide();
                     visibilityRoleCombo.show();
@@ -134,7 +134,7 @@
                 $("#paymentDateLabelId").hide();
                 $("#paymentDateDivId").hide();
                 $("form#claimTaskForm #claimPaymentDateId").rules("remove");
-                if (visibilityRoleCombo){
+                if (isINS && visibilityInternal){
                     // Not repositioned properly in IE6, so redraw (hack!)
                     visibilityRoleCombo.hide();
                     visibilityRoleCombo.show();
