@@ -21,7 +21,7 @@ public class PaymentTeam extends BaseFilter {
 
         if (securityInfoProvider.getCurrentUser().isCHOXAdmin()
                 || (securityInfoProvider.getCurrentUser().isAnInsurer() && securityInfoProvider.getCurrentUser().getInsurer().isPaymentDisputesEnable())) {
-            claimSearchCriteria.setPaymentDispute(Boolean.FALSE);
+            claimSearchCriteria.setPaymentDisputeValue(2);
         }
         return claimSearchCriteria;
     }

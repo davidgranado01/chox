@@ -21,7 +21,6 @@ import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.util.LookupItemTextComparator;
 import idas.chox.core.util.RoleHelper;
 
-
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(LookupServiceImpl.class);
@@ -280,11 +279,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (currentUser.isAnInsurer()) {
             return getSuppliers(currentUser.getInsurer().getId(),excludeManualCHO);
         } else {
-            try {
-                throw new Exception();
-            } catch(Exception ex) {
-                LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName(), ex);
-            }
+            LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
             return new ArrayList<>();
         }
     }

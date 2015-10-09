@@ -128,7 +128,6 @@ public class InsurerBreBandMappingAction extends BaseAction {
             List<BreBandOrganisation> brebandorganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId);
             List<BreBandChorganisationViewData> insurerBreBand = getChoViewDataList(brebandorganisations);
             setJsonData(insurerBreBand, insurerBreBand.size());
-
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -147,7 +146,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
             }
             // Now check that the breBandId belongs to this insurer
             BreBand band = adminInsurerService.getBreBand(breBandId);
-            if (band == null || (getUserOrganisationType() == 2 && band.getInsurer().getId().intValue() != getUserOrganisationId())) {
+            if (band == null || (getUserOrganisationType() == 2 && band.getInsurer().getId() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to add BRE Band mapping to an insurer that doen't own the band (POSSIBLE HACK ATTEMPT)");
             }
             // check the breband organisation already added by another concurrent user.
