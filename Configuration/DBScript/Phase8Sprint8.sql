@@ -247,7 +247,7 @@ GRANT SELECT, UPDATE ON TABLE auto_routing_cho_workgroup_assignment_id_seq TO ch
 
 
 --------------------------------------------------------------------------------
--- 8.8.5 New Queue - Payment Disputes
+-- 8.8.3 New Queue - Payment Disputes
 --------------------------------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN is_payment_disputes_enable boolean NOT NULL DEFAULT false;
 ALTER TABLE claim ADD COLUMN is_payment_dispute boolean NOT NULL DEFAULT false;
@@ -278,5 +278,5 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 
 
 ----------------------
--- End of 8.8.5
+-- End of 8.8.3
 ----------------------

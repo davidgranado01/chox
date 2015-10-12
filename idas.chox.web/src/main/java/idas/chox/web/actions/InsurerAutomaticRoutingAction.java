@@ -13,7 +13,7 @@ import com.opensymphony.xwork2.Preparable;
 
 import net.sf.json.JSONArray;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.ActionResponse;
@@ -21,7 +21,7 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
 import org.hibernate.StaleObjectStateException;
 
-public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
+public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRoutingPolicy>, Preparable {
 
     static final Logger LOG = LoggerFactory.getLogger(InsurerAutomaticRoutingAction.class);
 
@@ -29,7 +29,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private int workgroupId = -1;
     private int automaticRoutingId = -1;
     private String objectId;
-    private AutomaticRouting model;
+    private AutomaticRoutingPolicy model;
     private AutomaticRoutingService automaticRoutingService;
     
     private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
@@ -39,11 +39,11 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private boolean workgroupEnableFlg;
 
     @Override
-    public AutomaticRouting getModel() {
+    public AutomaticRoutingPolicy getModel() {
         return model;
     }
 
-    public void setModel(AutomaticRouting model) {
+    public void setModel(AutomaticRoutingPolicy model) {
         this.model = model;
     }
 
@@ -72,7 +72,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         try {
 
-            model = new AutomaticRouting();
+            model = new AutomaticRoutingPolicy();
 
             if (this.objectId != null && !this.objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
@@ -140,8 +140,8 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         try {
 
-            List<AutomaticRouting> automaticRoutingData = adminInsurerService.getInsurerAutomaticRoutings(this.insurerId);
-            for (AutomaticRouting h : automaticRoutingData) {
+            List<AutomaticRoutingPolicy> automaticRoutingData = adminInsurerService.getInsurerAutomaticRoutings(this.insurerId);
+            for (AutomaticRoutingPolicy h : automaticRoutingData) {
                 insurerAutomaticRoutings.add(new InsurerAutomaticRoutingViewData(h));
             }
 
@@ -157,12 +157,12 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         try {
             if (automaticRoutingService.getAutomaticRouting(automaticRoutingId) != null) {
-                AutomaticRouting automaticRouting = adminInsurerService.getInsurerAutomaticRouting(this.automaticRoutingId);
+                AutomaticRoutingPolicy automaticRouting = adminInsurerService.getInsurerAutomaticRouting(this.automaticRoutingId);
                 automaticRouting.setExpression(model.getExpression());
                 adminInsurerService.updateAutomaticRouting(automaticRouting);
             } else {
                 throw new Exception("Record was updated by another transaction/user, please try again.",
-                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+                        new StaleObjectStateException(AutomaticRoutingPolicy.class.getSimpleName().concat("Version"), 0));
             }
 
         } catch (Exception ex) {
@@ -197,7 +197,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
                 setActionResponse(response);
             } else {
                 throw new Exception("Record was updated by another transaction/user, please try again.",
-                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+                        new StaleObjectStateException(AutomaticRoutingPolicy.class.getSimpleName().concat("Version"), 0));
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -214,7 +214,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
                 setActionResponse(response);
             } else {
                 throw new Exception("Record was updated by another transaction/user, please try again.",
-                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+                        new StaleObjectStateException(AutomaticRoutingPolicy.class.getSimpleName().concat("Version"), 0));
             }
         } catch (Exception ex) {
             handleException(ex);

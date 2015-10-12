@@ -15,6 +15,8 @@ public interface WorkgroupService {
 
     List<Workgroup> getActiveWorkgroupsByInsurer(int insurerId);
 
+    List<Workgroup> getActiveWorkgroupsByInsurerSortByNoClaims(int insurerId);
+
     List<Workgroup> getWorkgroupsByInsurer(int insurerId);
 
     boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName);

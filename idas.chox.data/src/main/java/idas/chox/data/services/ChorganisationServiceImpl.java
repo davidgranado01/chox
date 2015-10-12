@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.AutoRoutingChoWorkgroupAssignment;
+import idas.chox.core.model.AutomaticRoutingCho;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
@@ -84,7 +84,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     @Override
     public List<Chorganisation> getChorganisationsWithAutoRoutingWorkgroupMapping(int workgroupId) {
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
-        DetachedCriteria choWithWorkgroupMappingCriteria = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+        DetachedCriteria choWithWorkgroupMappingCriteria = DetachedCriteria.forClass(AutomaticRoutingCho.class);
         choWithWorkgroupMappingCriteria.add(Restrictions.eq("workgroup.id", workgroupId));
         choWithWorkgroupMappingCriteria.setProjection(Property.forName("chorganisation"));
         
@@ -98,7 +98,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         unmappedChos.add(Restrictions.eq("insurer.id", insurerId));
 
         // Get all CHOs that already have a workgroup assignment
-        DetachedCriteria assignedChos = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+        DetachedCriteria assignedChos = DetachedCriteria.forClass(AutomaticRoutingCho.class);
         assignedChos.createAlias("this.workgroup", "wk", CriteriaSpecification.INNER_JOIN);
         assignedChos.add(Restrictions.eq("wk.insurer.id", insurerId));
         assignedChos.setProjection(Property.forName("chorganisation.id"));
@@ -115,7 +115,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
 
         if (chorganisationId > 0 && workgroupId > 0) {
             try {
-                AutoRoutingChoWorkgroupAssignment automaticRouting = new AutoRoutingChoWorkgroupAssignment();
+                AutomaticRoutingCho automaticRouting = new AutomaticRoutingCho();
                 automaticRouting.setChorganisation(getChorganisation(chorganisationId));
                 automaticRouting.setWorkgroup((Workgroup)get(Workgroup.class, workgroupId));
                 save(automaticRouting);
@@ -133,11 +133,11 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
 
         if (chorganisationId > 0 && workgroupId > 0) {
             try {
-                DetachedCriteria mapping = DetachedCriteria.forClass(AutoRoutingChoWorkgroupAssignment.class);
+                DetachedCriteria mapping = DetachedCriteria.forClass(AutomaticRoutingCho.class);
                 mapping.add(Restrictions.eq("chorganisation.id", chorganisationId));
                 mapping.add(Restrictions.eq("workgroup.id", workgroupId));
                 
-                List<AutoRoutingChoWorkgroupAssignment> autoRoutingChoWorkgroupAssignment = (List<AutoRoutingChoWorkgroupAssignment>)findByCriteria(mapping);
+                List<AutomaticRoutingCho> autoRoutingChoWorkgroupAssignment = (List<AutomaticRoutingCho>)findByCriteria(mapping);
                 
                 delete(autoRoutingChoWorkgroupAssignment.get(0));
             } catch (Exception ex) {

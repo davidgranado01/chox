@@ -16,7 +16,10 @@
         <property name="chainActivity" ref="workgroupRouting" />
         <property name="breBandService" ref="breBandService" />
     </bean>
-    <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" scope="prototype"/>
+    <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" scope="prototype">
+        <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+        <property name="workgroupService" ref="workgroupService" />
+    </bean>
     <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" scope="prototype"/>
     <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" scope="prototype"/>
     <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup" scope="prototype"/>

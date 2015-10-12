@@ -1,19 +1,24 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingCho;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.xml.util.NodeHelper;
 
@@ -21,9 +26,15 @@ public class WorkgroupRouting extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupRouting.class);
     private VehicleClassPriceService vehicleClassPriceService;
-
+    private WorkgroupService workgroupService;
+    private static final Map<Integer, Integer> workgoupMap = new ConcurrentHashMap(10);
+    
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
         this.vehicleClassPriceService = vehicleClassPriceService;
+    }
+
+    public void setWorkgroupService(WorkgroupService workgroupService) {
+        this.workgroupService = workgroupService;
     }
 
     @Override
@@ -47,24 +58,39 @@ public class WorkgroupRouting extends BaseActivity {
                 case NONE:
                     break;
                 case POLICY:
-                    if (autoWorkgroupRouting(claim)) {
-                        LOG.debug("Claim has been auto-routed - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                    if (routeByPolicyNumber(claim)) {
+                        LOG.debug("Claim has been auto-routed by Policy Number - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
                         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                         routed = true;
                     }
                     break;
                 case PRICE:
-                    if (autoWorkgroupRoutingByPrice(claim)) {
-                        LOG.debug("Claim has been auto-routed based on price - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                    if (routeByPrice(claim)) {
+                        LOG.debug("Claim has been auto-routed by Vehicle Class Price - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
                         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                         routed = true;
                     }
                     break;
                 case CHO:
+                    if (routeByChoAssignment(claim)) {
+                        LOG.debug("Claim has been auto-routed by CHO Assignment - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        routed = true;
+                    }
                     break;
                 case ROUND_ROBIN:
+                    if (routeByRoundRobin(claim)) {
+                        LOG.debug("Claim has been auto-routed by round-robin- sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        routed = true;
+                    }
                     break;
                 case FEWEST_CLAIMS:
+                    if (routeByFewestClaims(claim)) {
+                        LOG.debug("Claim has been auto-routed by fewest claims - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        routed = true;
+                    }
                     break;
             }
         } else { // No Workgroups
@@ -94,13 +120,61 @@ public class WorkgroupRouting extends BaseActivity {
 
     }
 
-    protected boolean autoWorkgroupRouting(Claim claim) throws Exception {
+    private boolean routeByFewestClaims(Claim claim) {
+        int insId = claim.getInsurer().getId();
+        List<Workgroup> workgroups = workgroupService.getActiveWorkgroupsByInsurerSortByNoClaims(insId);
+        
+        if (workgroups.size() > 0) {
+            claim.setWorkgroup(workgroups.get(0));
+            return true;
+        }
+        
+        return false;
+    }
+
+    private boolean routeByChoAssignment(Claim claim) {
+        AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
+        int choId = claim.getChorganisation().getId();
+        int insurerId = claim.getInsurer().getId();
+
+        List<AutomaticRoutingCho> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutingsByCho(insurerId, choId);
+        if (automaticRoutingMapping.size() > 0) {
+            if (automaticRoutingMapping.size() > 1) {
+                LOG.warn("Multiple mappings found for claim '{}' with CHO '{}'", claim.getChoReference(), claim.getChorganisation().getName());
+            }
+            claim.setWorkgroup(automaticRoutingMapping.get(0).getWorkgroup());
+            return true;
+        } else {
+            LOG.info("No auto-routing by CHO found for claim '{}' with CHO '{}'", claim.getChoReference(), claim.getChorganisation().getName());
+        }
+        
+        return false;
+    }
+
+
+    private boolean routeByRoundRobin(Claim claim) {
+        int insId = claim.getInsurer().getId();
+        List<Workgroup> workgroups = workgroupService.getActiveWorkgroupsByInsurer(insId);
+        
+        // Get index of last workgroup assigned
+        int nextToBeAssignedIndex = workgoupMap.get(insId) == null ? 0 : workgoupMap.get(insId) + 1;
+        if (nextToBeAssignedIndex >= workgroups.size()) {
+            nextToBeAssignedIndex = 0;
+        }
+        claim.setWorkgroup(workgroups.get(nextToBeAssignedIndex));
+        workgoupMap.put(insId, nextToBeAssignedIndex);
+
+        return true;
+    }
+
+
+    private boolean routeByPolicyNumber(Claim claim) throws Exception {
         LOG.debug("Auto-routing claim: {}", claim.getChoReference());
 
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
 
         int insurerId = claim.getInsurer().getId();
-        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutings(insurerId);
+        List<AutomaticRoutingPolicy> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutingsByPolicy(insurerId);
 
         if (automaticRoutingMapping.size() > 0) {
 
@@ -108,7 +182,7 @@ public class WorkgroupRouting extends BaseActivity {
 
             if (policyNumber != null && !policyNumber.equalsIgnoreCase("")) {
 
-                for (AutomaticRouting automaticRouting : automaticRoutingMapping) {
+                for (AutomaticRoutingPolicy automaticRouting : automaticRoutingMapping) {
 
                     if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
                         LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
@@ -124,7 +198,7 @@ public class WorkgroupRouting extends BaseActivity {
         return false;
     }
 
-    protected boolean autoWorkgroupRoutingByPrice(Claim claim) throws Exception {
+    private boolean routeByPrice(Claim claim) throws Exception {
         LOG.debug("Auto-routing claim based on price : {}", claim.getChoReference());
 
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();

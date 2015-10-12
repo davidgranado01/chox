@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
@@ -211,12 +211,12 @@ public class AdminInsurerServiceTest extends BaseTest {
     public void testInsurerAutoRouting_GetSelectedAutoRouting() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
 
-        List<AutomaticRouting> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
+        List<AutomaticRoutingPolicy> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
         Assert.assertEquals(1, autoRoutings.size());
 
         // CHECK EVERY SINGLE AUTO ROUTING
-        for (AutomaticRouting obj : autoRoutings) {
-            AutomaticRouting existAutoRouting = adminInsurerService.getInsurerAutomaticRouting(obj.getId());
+        for (AutomaticRoutingPolicy obj : autoRoutings) {
+            AutomaticRoutingPolicy existAutoRouting = adminInsurerService.getInsurerAutomaticRouting(obj.getId());
             Assert.assertEquals(existAutoRouting, obj);
         }
     }
@@ -240,7 +240,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         ActionResponse response = adminInsurerService.addNewAutomaticRouting(insurer.getId(), workgroupId, "ABCDEFG");
         Assert.assertTrue(response.getIsValid());
 
-        List<AutomaticRouting> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
+        List<AutomaticRoutingPolicy> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
         Assert.assertEquals(2, autoRoutings.size());
     }
 
@@ -249,10 +249,10 @@ public class AdminInsurerServiceTest extends BaseTest {
     public void testInsurerAutoRouting_DeleteAutoRouting() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        List<AutomaticRouting> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
+        List<AutomaticRoutingPolicy> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
 
         // CHECK EVERY SINGLE AUTO ROUTING
-        for (AutomaticRouting obj : autoRoutings) {
+        for (AutomaticRoutingPolicy obj : autoRoutings) {
             ActionResponse response = adminInsurerService.deleteAutomaticRouting(obj.getId());
             Assert.assertTrue(response.getIsValid());
         }
@@ -263,10 +263,10 @@ public class AdminInsurerServiceTest extends BaseTest {
     @Transactional
     public void testInsurerAutoRouting_UpdateAutoRouting() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        List<AutomaticRouting> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
+        List<AutomaticRoutingPolicy> autoRoutings = adminInsurerService.getInsurerAutomaticRoutings(insurer.getId());
 
         // CHECK EVERY SINGLE AUTO ROUTING
-        for (AutomaticRouting obj : autoRoutings) {
+        for (AutomaticRoutingPolicy obj : autoRoutings) {
 
             String newRefExp = "ABC-" + obj.getExpression();
             obj.setExpression(newRefExp);

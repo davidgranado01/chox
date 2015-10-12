@@ -9,7 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
@@ -59,6 +59,18 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria);
+    }
+
+    @Override
+    public List<Workgroup> getActiveWorkgroupsByInsurerSortByNoClaims(int insurerId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("status", true));
+        criteria.add(Restrictions.sqlRestriction("id = (select id from (select w.id, count(*) as noClaims from workgroup w, claim c "
+                + "where c.workgroup_id = w.id and c.insurer_id = " + insurerId
+                + " and c.status not in ('ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted','PaymentReceived','InvoicePaymentLogged','AwaitingInvoicePayment') "
+                + " group by w.id order by noClaims asc limit 1) tbl)"));
         return findByCriteria(criteria);
     }
 
@@ -131,7 +143,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         }
 
         // GET ALL WORKGROUPS ASSIGNED TO WEB USER
-        DetachedCriteria autoroutingworkgroupCirteria = DetachedCriteria.forClass(AutomaticRouting.class);
+        DetachedCriteria autoroutingworkgroupCirteria = DetachedCriteria.forClass(AutomaticRoutingPolicy.class);
         autoroutingworkgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
         autoroutingworkgroupCirteria.setProjection(Property.forName("workgroup.id"));
 

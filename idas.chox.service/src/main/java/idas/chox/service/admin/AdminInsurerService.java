@@ -11,7 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
@@ -194,7 +194,7 @@ public class AdminInsurerService extends SecureDataService {
         return actionResponse;
     }
 
-    public AutomaticRouting getInsurerAutomaticRouting(int automaticRoutingId) {
+    public AutomaticRoutingPolicy getInsurerAutomaticRouting(int automaticRoutingId) {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
     }
 
@@ -202,8 +202,8 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
     }
 
-    public List<AutomaticRouting> getInsurerAutomaticRoutings(int insurerId) {
-        return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
+    public List<AutomaticRoutingPolicy> getInsurerAutomaticRoutings(int insurerId) {
+        return automaticRoutingService.getAutomaticRoutingsByPolicy(insurerId, -1);
     }
 
     public List<AutomaticRoutingPrice> getInsurerAutomaticRoutingsByPrice(int insurerId) {
@@ -227,7 +227,7 @@ public class AdminInsurerService extends SecureDataService {
         actionResponse = new ActionResponse();
 
         if (insurerId > 0 && workgroupId > 0 && !regExpression.equalsIgnoreCase("")) {
-            AutomaticRouting automaticRouting = new AutomaticRouting();
+            AutomaticRoutingPolicy automaticRouting = new AutomaticRoutingPolicy();
             automaticRouting.setExpression(regExpression);
             automaticRouting.setInsurer(insurerService.getInsurer(insurerId));
             automaticRouting.setWorkgroup(workgroupService.getWorkgroup(workgroupId));
@@ -255,7 +255,7 @@ public class AdminInsurerService extends SecureDataService {
         return actionResponse;
     }
 
-    public ActionResponse updateAutomaticRouting(AutomaticRouting automaticRouting) {
+    public ActionResponse updateAutomaticRouting(AutomaticRoutingPolicy automaticRouting) {
         actionResponse = new ActionResponse();
         automaticRoutingService.saveAutomaticRouting(automaticRouting);
         return actionResponse;
@@ -265,7 +265,7 @@ public class AdminInsurerService extends SecureDataService {
         actionResponse = new ActionResponse();
 
         if (automaticRoutingId > 0 && automaticRoutingId != null) {
-            AutomaticRouting automaticRouting = automaticRoutingService.getAutomaticRouting(automaticRoutingId);
+            AutomaticRoutingPolicy automaticRouting = automaticRoutingService.getAutomaticRouting(automaticRoutingId);
             automaticRoutingService.deleteAutomaticRouting(automaticRouting);
         } else {
             actionResponse.AddError("Incorrect Automatic Routing Record");

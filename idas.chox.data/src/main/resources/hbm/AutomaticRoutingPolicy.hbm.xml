@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="idas.chox.core.model.AutoRoutingChoWorkgroupAssignment" table="auto_routing_cho_workgroup_assignment">
+    <class name="idas.chox.core.model.AutomaticRoutingPolicy" table="automatic_routing">
         <cache usage="read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">auto_routing_cho_workgroup_assignment_id_seq</param>
-        </generator>    </id>
+                <param name="sequence">automatic_routing_id_seq</param>
+            </generator>
+        </id>
         <version column="version" name="version" unsaved-value="null"/>
-        <many-to-one class="idas.chox.core.model.Workgroup" column="workgroup_id" name="workgroup"/>
-        <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
-        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
-        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+        <property column="expression" name="expression"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
+        <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
+        <many-to-one class="idas.chox.core.model.Workgroup" column="workgroup_id" name="workgroup"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     </class>
 </hibernate-mapping>

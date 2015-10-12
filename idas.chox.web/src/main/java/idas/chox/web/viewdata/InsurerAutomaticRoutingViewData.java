@@ -1,6 +1,6 @@
 package idas.chox.web.viewdata;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.util.DateHelper;
 
 public class InsurerAutomaticRoutingViewData {
@@ -13,7 +13,7 @@ public class InsurerAutomaticRoutingViewData {
     private String createdBy;
     private String createdDate;
 
-    public InsurerAutomaticRoutingViewData(AutomaticRouting automaticRouting) {
+    public InsurerAutomaticRoutingViewData(AutomaticRoutingPolicy automaticRouting) {
         this.id = automaticRouting.getId();
         this.expression = automaticRouting.getExpression();
         this.insurerId = automaticRouting.getInsurer().getId();

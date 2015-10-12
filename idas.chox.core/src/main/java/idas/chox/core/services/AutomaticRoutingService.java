@@ -2,24 +2,27 @@ package idas.chox.core.services;
 
 import java.util.List;
 
-import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
+import idas.chox.core.model.AutomaticRoutingCho;
 
 public interface AutomaticRoutingService {
 
-    List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId);
+    List<AutomaticRoutingCho> getAutomaticRoutingsByCho(int insurerId, int choId);
+    
+    List<AutomaticRoutingPolicy> getAutomaticRoutingsByPolicy(int insurerId, int workgroupId);
 
-    List<AutomaticRouting> getAutomaticRoutings(int insurerId);
+    List<AutomaticRoutingPolicy> getAutomaticRoutingsByPolicy(int insurerId);
 
     boolean isWorkgroupInUseByAutomaticRouting(int workgroupId);
 
-    AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId);
+    AutomaticRoutingPolicy getAutomaticRouting(int insurerId, int workgroupId);
 
-    AutomaticRouting getAutomaticRouting(int automaticRoutingId);
+    AutomaticRoutingPolicy getAutomaticRouting(int automaticRoutingId);
 
-    void saveAutomaticRouting(AutomaticRouting automaticRouting);
+    void saveAutomaticRouting(AutomaticRoutingPolicy automaticRouting);
 
-    void deleteAutomaticRouting(AutomaticRouting automaticRouting);
+    void deleteAutomaticRouting(AutomaticRoutingPolicy automaticRouting);
 
     List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId);
 

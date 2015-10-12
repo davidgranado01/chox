@@ -9,7 +9,7 @@ public enum AutomaticRoutingStrategy {
     PRICE           (2, "By Customer Vehicle Class Price"),
     CHO             (3, "By CHO Assignment"),
     ROUND_ROBIN     (4, "By Round-Robin Assignment"),
-    FEWEST_CLAIMS   (5, "By Exisiting Allocation<br>(least loaded first)");
+    FEWEST_CLAIMS   (5, "By Exisiting Allocation");
         
     private final String description;
     private final int automaticRoutingStrategyValue;

@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class AutoRoutingChoWorkgroupAssignment extends Entity implements Serializable {
+public class AutomaticRoutingCho extends Entity implements Serializable {
 
     private Workgroup workgroup;
     private Chorganisation chorganisation;
