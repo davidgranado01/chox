@@ -19,7 +19,6 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.services.WorkgroupService;
 
 public class WorkgroupServiceImpl extends SecureDataService implements WorkgroupService {
-
     protected UserWorkgroupService userWorkgroupService;
     protected AutomaticRoutingService automaticRoutingService;
     protected ClaimService claimService;
@@ -59,6 +58,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("name"));
+        
         return findByCriteria(criteria);
     }
 
@@ -71,6 +71,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
                 + "where c.workgroup_id = w.id and c.insurer_id = " + insurerId
                 + " and c.status not in ('ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted','PaymentReceived','InvoicePaymentLogged','AwaitingInvoicePayment') "
                 + " group by w.id order by noClaims asc limit 1) tbl)"));
+        
         return findByCriteria(criteria);
     }
 
@@ -79,24 +80,17 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.addOrder(Order.asc("name"));
+        
         return findByCriteria(criteria);
     }
 
     @Override
     public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName) {
-
-        boolean isExist = false;
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("name", workgroupName.trim()));
 
-        if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-
+        return findByCriteria(criteria).size() > 0;
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
@@ -113,7 +107,6 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
     @Override
     public List<Workgroup> getAvailableUserWorkgroupsByInsurer(int insurerId, int webUserId) {
-
         // GET ALL WORKGROUPS BY INSURER
         DetachedCriteria workgroupCirteria = DetachedCriteria.forClass(Workgroup.class);
         workgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -128,12 +121,10 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
         // RETURN SEARCH RESULT
         return findByCriteria(workgroupCirteria);
-
     }
 
     @Override
     public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId, boolean isActiveOnly) {
-
         // GET ALL WORKGROUPS BY INSURER
         DetachedCriteria workgroupCirteria = DetachedCriteria.forClass(Workgroup.class);
         workgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -152,34 +143,23 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
         // RETURN SEARCH RESULT
         return findByCriteria(workgroupCirteria);
-
     }
 
     @Override
     public boolean isWorkgroupDeletable(int workgroupId) {
 
-        boolean isExist = false;
-
-        if (!isWorkgroupInUseByUser(workgroupId) && !this.claimService.isObjectExist(workgroupId) && !automaticRoutingService.isWorkgroupInUseByAutomaticRouting(workgroupId)) {
-            isExist = true;
-        }
-
-        return isExist;
+        return !isWorkgroupInUseByUser(workgroupId) && !this.claimService.isObjectExist(workgroupId)
+                && !automaticRoutingService.isWorkgroupInUseByAutomaticRouting(workgroupId);
     }
 
     @Override
     public boolean isWorkgroupAllowToInactive(int insurerId, int workgroupId) {
-        
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.ne("id", workgroupId));
         criteria.add(Restrictions.eq("status", true));
 
-        if ((findByCriteria(criteria)).size() > 0) {
-            return true;
-        }
-
-        return false;
+        return (findByCriteria(criteria)).size() > 0;
     }
 
     @Override
@@ -189,18 +169,14 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
         objects = findByCriteria(criteria);
-        if (objects.size() > 0) {
-            return true;
-        }
-        return false;
+        
+        return objects.size() > 0;
     }
 
     private boolean isWorkgroupInUseByUser(Integer workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("workgroup.id", workgroupId));
-        if (findByCriteria(criteria).size() > 0) {
-            return true;
-        }
-        return false;
+        
+        return findByCriteria(criteria).size() > 0;
     }
 }
