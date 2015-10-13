@@ -45,6 +45,9 @@
                 </constructor-arg>
             </bean-->
         </jaxws:inInterceptors>
+        <jaxws:outInterceptors>
+            <bean class="idas.chox.web.ws.MTOMOutInterceptor" />
+        </jaxws:outInterceptors>
     </jaxws:endpoint>
 
     <bean id="wsAuthenticationInterceptor" class="idas.chox.web.ws.WSAuthenticationInInterceptor">
