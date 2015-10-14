@@ -458,7 +458,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException) || ex instanceof DataIntegrityViolationException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
-            LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
+            LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
             throw new AccessDeniedException(ex.getMessage());
         } else if (ex instanceof RuntimeException) {
             LOG.error("Runtime exception thrown: {}", ex.getMessage(), ex);

@@ -145,17 +145,19 @@ public abstract class BaseActivity implements Activity {
         
         if (applicationAccessibility.checkActivityAccessibility(getClass().getSimpleName(),
                 securityInfoProvider.getCurrentUser(), claim) < 1) {
-            LOG.error("No access to activity '{}' for claim '{}' of type {} in status '{}'",
+            LOG.warn("No access to activity '{}' for claim '{}' of type {} in status '{}'",
                     new Object[]{getClass().getSimpleName(), claim.getChoReference(),
                                  claim.getClaimType().name(), claim.getStatus()});
-            throw new AccessDeniedException("No access to activity " + getClass().getSimpleName());
+            throw new AccessDeniedException("No access to activity '" + getClass().getSimpleName() + "' for claim '"
+                    + claim.getChoReference() + "' of type " + claim.getClaimType().name() + " in status '"
+                    + claim.getStatus() + "'");
         }
         
         // Check that, if we are an insurer or CHO, then the claim belongs to us
         if (needsOwnershipCheck() && ((securityInfoProvider.getIsINS() &&
-                claim.getInsurer().getId().intValue() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
+                claim.getInsurer().getId() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
                 || (securityInfoProvider.getIsCHO() &&
-                claim.getChorganisation().getId().intValue() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue()))) {
+                claim.getChorganisation().getId() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue()))) {
                 LOG.error("User with id={} has attempted to action claim '{}' from a different organisation", getCurrentUser().getId(), claim.getChoReference());
                 throw new AccessDeniedException("Attempt to action a claim that you do not own");
         }
@@ -163,7 +165,7 @@ public abstract class BaseActivity implements Activity {
         if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
                 && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
-            if (claim.getClaimOwner() == null || claim.getClaimOwner().getId().intValue() != getCurrentUser().getId().intValue()) {
+            if (claim.getClaimOwner() == null || claim.getClaimOwner().getId() != getCurrentUser().getId().intValue()) {
                 LOG.error("User {} has attempted to action claim '{}' which he does not own.", getCurrentUser().getId(), claim.getChoReference());
                 throw new AccessDeniedException("Attempt to action a claim that you do not own");
             }
