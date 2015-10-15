@@ -1430,10 +1430,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.error("Cannot get Subscriber days for claim with id={}: no such claim", id);
             return claimAge;
         }
-        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-        int subscriberSlaDays = breBand.getSubscriberSlaDays();
-        String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
         if (ClaimType.isSubscriber(claim.getClaimType())) {
+            BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            int subscriberSlaDays = breBand.getSubscriberSlaDays();
+            String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
             claimAge = auditTrailService.getSubscriberClaimDays(id);
             LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
                     new Object[]{claimAge, subscriberSlaDays, subscriberCutOffTime, claim.getSlaExtDays()});
@@ -1493,35 +1493,34 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (claim == null) {
             LOG.error("Cannot get Fixed Fee days for claim with id={}: no such claim", id);
             return claimAge;
-        }
+        } else if (ClaimType.isFixedFee(claim.getClaimType())) {
 
-        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-        int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
-        String fixedFeeCutOffTime = breBand.getFixedFeeTimeCutOff();
+            BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
+            String fixedFeeCutOffTime = breBand.getFixedFeeTimeCutOff();
 
-        if (ClaimType.isFixedFee(claim.getClaimType())) {
             claimAge = auditTrailService.getFixedFeeClaimDays(id);
-        }
 
-        if (fixedFeeSlaDays != 0 && (claimAge > (fixedFeeSlaDays + claim.getSlaExtDays()) || (claimAge == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
-            boolean addComment = true;
-            List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
-            for (Comment comment : comments) {
-                if (comment.getComment().endsWith("claim taken down Fixed Fee route.") && !comment.isReverted()) {
-                    addComment = false;
-                    LOG.debug("Comment already added - skipping");
-                    break;
+            if (fixedFeeSlaDays != 0 && (claimAge > (fixedFeeSlaDays + claim.getSlaExtDays()) || (claimAge == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
+                boolean addComment = true;
+                List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
+                for (Comment comment : comments) {
+                    if (comment.getComment().endsWith("claim taken down Fixed Fee route.") && !comment.isReverted()) {
+                        addComment = false;
+                        LOG.debug("Comment already added - skipping");
+                        break;
+                    }
                 }
-            }
-            if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA, claim taken down Fixed Fee route.");
-                if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Fixed Fee route.");
+                if (addComment) {
+                    Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA, claim taken down Fixed Fee route.");
+                    if (claim.getSlaExtDays() > 0) {
+                        comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the " + fixedFeeSlaDays + " day SLA + " + claim.getSlaExtDays() + " day extension, claim taken down Fixed Fee route.");
+                    }
+                    comment.setRaisedBy(userService.getWebUser(999));
+                    claim.addComment(comment);
+                    save(claim);
+                    LOG.debug("Comment added and claim saved.");
                 }
-                comment.setRaisedBy(userService.getWebUser(999));
-                claim.addComment(comment);
-                save(claim);
-                LOG.debug("Comment added and claim saved.");
             }
         }
 
