@@ -1792,7 +1792,7 @@
             }
             
             var paymentDisputeValue = record.get('claimSearchCriteria').paymentDisputeValue;
-            if (paymentDisputeValue >= 0) {
+            if (paymentDisputeValue) {
                 paymentDisputesSearchParamCombo.setValue(paymentDisputeValue);
             }
 
