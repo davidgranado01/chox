@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.AutomaticRoutingStrategy;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class WorkgroupRoutingTest extends BaseTest{
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         Insurer insurer = insurerService.getInsurer(3);
+        insurer.setAutomaticRoutingStrategy(AutomaticRoutingStrategy.POLICY);
         insurer.setClaimOwnershipEnable(false);
         claim.setInsurer(insurer);
         ThirdParty thirdParty = new ThirdParty();

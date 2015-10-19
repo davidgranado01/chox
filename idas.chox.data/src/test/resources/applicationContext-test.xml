@@ -70,7 +70,7 @@
                 <value>hbm/Notification.hbm.xml</value>
                 <value>hbm/VehicleClassCeiling.hbm.xml</value>
                 <value>hbm/ProtocolVehicleClassCeiling.hbm.xml</value>
-                <value>hbm/AutomaticRouting.hbm.xml</value>
+                <value>hbm/AutomaticRoutingPolicy.hbm.xml</value>
                 <value>hbm/AutomaticRoutingPrice.hbm.xml</value>
                 <value>hbm/BillingCho.hbm.xml</value>
                 <value>hbm/BillingChoDetail.hbm.xml</value>
@@ -91,6 +91,7 @@
                 <value>hbm/AttachmentFile.hbm.xml</value>
                 <value>hbm/BreRules.hbm.xml</value>
                 <value>hbm/BrePenaltyBand.hbm.xml</value>
+                <value>hbm/AutomaticRoutingCho.hbm.xml</value>
             </list>
         </property>
     </bean>

@@ -38,6 +38,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(14);
@@ -61,6 +62,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(10);
@@ -83,6 +85,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(15);
@@ -99,6 +102,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(5);
@@ -121,6 +125,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(4);
@@ -143,6 +148,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(6);
@@ -162,6 +168,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(cho);
         claim.setInsurer(insurerService.getInsurer(3));        
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(19);
@@ -186,6 +193,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(cho);
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(10);
@@ -209,6 +217,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(cho);
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(1);
@@ -232,6 +241,7 @@ public class SlaExtensionTest extends BaseTest {
         claim.setChorganisation(cho);
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setBreBand(testClaim.getTestBreBand());
+        claim.setRemainingSlaDaysInt(0);
 
         SlaExtension activity = (SlaExtension) activityFactory.getActivity("slaExtensionDaysUpdate");
         activity.setSlaExtDays(1);
