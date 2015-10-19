@@ -84,6 +84,7 @@
     <property column="is_payment_disputes_enable" name="paymentDisputesEnable" not-null="true"/>
     <property column="automatic_routing_strategy" name="automaticRoutingStrategy"
         type="idas.chox.data.hibernate.AutomaticRoutingStrategyMapping" not-null="true"/>
+    <property column="complete_routing" name="completeRoutingEnable" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

@@ -69,7 +69,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         criteria.add(Restrictions.eq("status", true));
         criteria.add(Restrictions.sqlRestriction("id = (select id from (select w.id, count(*) as noClaims from workgroup w, claim c "
                 + "where c.workgroup_id = w.id and c.insurer_id = " + insurerId + " and w.status = true "
-                + " and c.status not in ('ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted','PaymentReceived','InvoicePaymentLogged','AwaitingInvoicePayment') "
+                + " and c.status not in ('ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted','PaymentReceived','AwaitingLitigationOutcome','InvoicePaymentLogged','AwaitingInvoicePayment') "
                 + " group by w.id order by noClaims asc limit 1) tbl)"));
         
         return findByCriteria(criteria);

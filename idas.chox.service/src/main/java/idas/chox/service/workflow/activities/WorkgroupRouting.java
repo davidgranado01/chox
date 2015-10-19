@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.AutomaticRoutingCho;
 import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
+import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
@@ -52,9 +53,9 @@ public class WorkgroupRouting extends BaseActivity {
 
         LOG.debug("Claim '{}' status is {}", claim.getChoReference(), claim.getStatus());
         boolean routed = false;
-
+        AutomaticRoutingStrategy routingStrategy = claim.getInsurer().getAutomaticRoutingStrategy();
         if (claim.getInsurer().isWorkgroupEnable()) {
-            switch (claim.getInsurer().getAutomaticRoutingStrategy()) {
+            switch (routingStrategy) {
                 case NONE:
                     break;
                 case POLICY:
@@ -98,7 +99,17 @@ public class WorkgroupRouting extends BaseActivity {
             routed = true;
         }
         
-
+        // If auto-routing stratigy one of POLICY, PRICE or CHO and the claim has not been routed and complete routing
+        // is enabled, then route by fewest claims
+        if (!routed && (routingStrategy == AutomaticRoutingStrategy.POLICY || routingStrategy == AutomaticRoutingStrategy.PRICE
+                || routingStrategy == AutomaticRoutingStrategy.CHO) && claim.getInsurer().isCompleteRoutingEnable()) {
+            if (routeByFewestClaims(claim)) {
+                LOG.debug("Claim has been auto-routed by fewest claims (complete routing enabled) - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                routed = true;
+            }
+        }
+        
         if (routed && claim.getInsurer().isClaimOwnershipEnable()) {
             LOG.debug("Claim ownership is enabled - set status to CLAIM_UNACKNOWLEDGED_UNASSIGNED");
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);

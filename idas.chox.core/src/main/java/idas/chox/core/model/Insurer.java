@@ -89,6 +89,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean restrictExport;
     private Branding branding;
     private boolean paymentDisputesEnable;
+    private boolean completeRoutingEnable;
 
     public Branding getBranding() {
         return branding == null ? Branding.NO_BRANDING : branding;
@@ -761,6 +762,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setAutomaticRoutingStrategy(AutomaticRoutingStrategy automaticRoutingStrategy) {
         this.automaticRoutingStrategy = automaticRoutingStrategy;
+    }
+
+    public boolean isCompleteRoutingEnable() {
+        return completeRoutingEnable;
+    }
+
+    public void setCompleteRoutingEnable(boolean completeRoutingEnable) {
+        this.completeRoutingEnable = completeRoutingEnable;
     }
 
 }

@@ -56,7 +56,8 @@
                  this.value = v;
              }});
 
-        new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will restrict FNOL, COM, and CH users to only be able to edit claims that belong to them'});
+        new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will restrict FNOL, COM, and CH users to only be able to edit claims that belong to them.'});
+        new Ext.ToolTip({ target: 'help-completeClaimRouting', html: '"Enable Complete Claim Routing" will ensure every uploaded claim will be routed based on the Automatic Claim Routing option selected above or if not automatically processed, based on the claim volume in active workgroups.'});
 
             wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -187,6 +188,17 @@
             triggerAction: 'all'
         });
         automaticRoutingCombo.setValue(autoRoutingStrategy);
+        automaticRoutingCombo.on('select', function(box, record, index) {
+            var selection = box.getValue();
+            if (selection === '1' || selection === '2' || selection === '3') {
+                $("#CompleteClaimRoutingHolder").show();
+            } else {
+                $("#CompleteClaimRoutingHolder").hide();
+            }
+        });
+       if (autoRoutingStrategy != 1 && autoRoutingStrategy != 2 && autoRoutingStrategy != 3) {
+                $("#CompleteClaimRoutingHolder").hide();
+       }
        
        // The below jquery submit function only used for adding additional callback function which is used to set 
        // the default value to the claimOwner and Workgroup. The actual form submission 
@@ -1138,6 +1150,14 @@
                                         <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                                             <label class="chox-form-std-label">Automatic Claim Routing</label>
                                             <div id="automaticRoutingDivId"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                   <td>
+                                        <div class="chox-form-item" id="CompleteClaimRoutingHolder">
+                                            <label class="chox-form-std-label">Enable Complete Claim Routing</label>
+                                            <s:checkbox name="completeRoutingEnable" value="completeRoutingEnable" /><img id="help-completeClaimRouting" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                                         </div>
                                     </td>
                                 </tr>

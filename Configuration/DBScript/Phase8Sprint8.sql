@@ -207,6 +207,8 @@ drop function remaining_sla_days(IN insurerids integer[]);
 -- 8.8.2 Automatic Routing CHO Assignment
 --------------------------------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN automatic_routing_strategy integer NOT NULL default 0;
+ALTER TABLE insurer ADD COLUMN complete_routing boolean NOT NULL default false;
+
 update insurer set automatic_routing_strategy = 1 where is_auto_routing_enable = true;
 update insurer set automatic_routing_strategy = 2 where is_auto_routing_enable_price = true;
 
