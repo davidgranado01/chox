@@ -9,8 +9,8 @@ returns table
    "No. Contested to CHO" bigint,
    "No. Contested to Insurer" bigint,
    "Reason of Rejection" character varying(32),
-   "Total time in Contested to CHO" numeric(6,3),
-   "Total time in Contested to Insurer" numeric(6,3),
+   "Total time in Contested to CHO" numeric(10,3),
+   "Total time in Contested to Insurer" numeric(10,3),
    "Current Status" character varying(40)
 )
 as $$
@@ -30,7 +30,7 @@ select cho_reference,
                                 and a.original_status='ContestedInvoiceReferredToCHO')) 
        then 0.00 
        else 
-          (select cast(sum(EXTRACT(EPOCH FROM (a2.update_date - a1.update_date))/(3600*24)) as numeric(6,3)) 
+          (select cast(sum(EXTRACT(EPOCH FROM (a2.update_date - a1.update_date))/(3600*24)) as numeric(10,3)) 
            from audit_trail a1, audit_trail a2 
            where a1.claim_id = a2.claim_id and a1.update_date < a2.update_date 
              and a1.new_status = a2.original_status and a1.reverted=false and a2.reverted=false
@@ -44,7 +44,7 @@ select cho_reference,
        case when (c.status!='ContestedInvoiceReferredToCHO') 
        then 0 
        else 
-          (select cast(sum(EXTRACT(EPOCH FROM (now() - c2.status_modified_date))/(3600*24)) as numeric(6,3)) 
+          (select cast(sum(EXTRACT(EPOCH FROM (now() - c2.status_modified_date))/(3600*24)) as numeric(10,3)) 
            from claim c2 
            where c.id=c2.id and c2.status='ContestedInvoiceReferredToCHO') 
        end ) as "Total time in Contested to CHO",
@@ -52,7 +52,7 @@ select cho_reference,
                                 and a.original_status='ContestedInvoiceReferredToInsurer')) 
        then 0.00 
        else 
-          (select cast(sum(EXTRACT(EPOCH FROM (a2.update_date - a1.update_date))/(3600*24)) as numeric(6,3)) 
+          (select cast(sum(EXTRACT(EPOCH FROM (a2.update_date - a1.update_date))/(3600*24)) as numeric(10,3)) 
            from audit_trail a1, audit_trail a2 
            where a1.claim_id = a2.claim_id and a1.update_date < a2.update_date 
              and a1.new_status = a2.original_status and a1.reverted=false and a2.reverted=false
@@ -66,7 +66,7 @@ select cho_reference,
        case when (c.status!='ContestedInvoiceReferredToInsurer') 
        then 0 
        else 
-          (select cast(sum(EXTRACT(EPOCH FROM (now() - c2.status_modified_date))/(3600*24)) as numeric(6,3)) 
+          (select cast(sum(EXTRACT(EPOCH FROM (now() - c2.status_modified_date))/(3600*24)) as numeric(10,3)) 
            from claim c2 
            where c.id=c2.id and c2.status='ContestedInvoiceReferredToInsurer') 
        end ) as "Total time in Contested to Insurer",
