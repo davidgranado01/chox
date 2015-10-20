@@ -53,7 +53,7 @@
 
     function loadHistory(grid, rowIndex, columnIndex, e){
         var historyItem = historyGrid.getStore().getAt(rowIndex);
-        var title = "History";
+        var title = "BRE Result";
         var msg = "<b>Created Date</b>: " + historyItem.get("createdDate")
             + "<br/><b>Created By</b>: " + historyItem.get("createdBy")
             + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative");

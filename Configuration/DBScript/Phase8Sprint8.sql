@@ -282,3 +282,17 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 ----------------------
 -- End of 8.8.3
 ----------------------
+
+
+--------------------------------------------------------------------------------
+-- bug#3027 - Production - 'History' tab should be accessible in claim status
+-- ManualInvoiceUnassigned
+--------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    SELECT 'tab.History.ManualInvoiceUnassigned', false, false, false, false;
+INSERT INTO accessibility_item(accessibility_id, access_right, role)
+    SELECT id, 1, 'ALL' FROM accessibility WHERE name='tab.History.ManualInvoiceUnassigned';
+
+----------------------
+-- End of bug#3027
+----------------------

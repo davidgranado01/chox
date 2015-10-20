@@ -108,10 +108,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to agree the quantum for the invoice, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                        Please review the 'BRE Results' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to agree the quantum for the invoice, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
                     </s:if>
                     <s:else>
-                        Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to agree the quantum for the invoice or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                        Please review the 'BRE Results' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to agree the quantum for the invoice or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
                     </s:else>
                 </div>
                 <div class="status-control-set">

@@ -45,7 +45,7 @@
 <div class="forget-password-container">
 
     <div class="status-info">
-        Please review the 'History' tab for details on why the claim has been rejected.
+        Please review the 'BRE Results' tab for details on why the claim has been rejected.
         Please decide on whether to progress the claim for payment or reject the claim.
         Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
     </div>

@@ -97,7 +97,7 @@
             <s:hidden id="invoiceExcalatedFormName" name="name"/>
             <div>
                 <div class="status-info">
-                    Please review the ‘History’ tab for details on why the claim has failed the validation rules.
+                    Please review the ‘BRE Results’ tab for details on why the claim has failed the validation rules.
                     Please decide on whether to refer the claim to a Claims Handler or reject the claim back to the CHO.
                     Please enter any relevant details/comments on the ‘Notes’ tab regarding the decision made.
                 </div>
