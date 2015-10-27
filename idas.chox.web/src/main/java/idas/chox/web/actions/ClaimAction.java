@@ -2649,61 +2649,73 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyPercentageJsonString() {
+        List<LookupItem> luItems;
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        List<LookupItem> luItems = new ArrayList<>(3);
-        // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
-        String perdec = new StringBuilder()
+        if (brePenaltyBand != null) {
+            luItems = new ArrayList<>(3);
+            // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
+            String perdec = new StringBuilder()
                     .append("30 days - ")
                     .append(brePenaltyBand.getRepair30Day().toString()).append("%")
                     .toString();
-        luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair30Day().toString()));
-        perdec = new StringBuilder()
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair30Day().toString()));
+            perdec = new StringBuilder()
                     .append("60 days - ")
                     .append(brePenaltyBand.getRepair60Day().toString()).append("%")
                     .toString();
-        luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair60Day().toString()));
-        if (brePenaltyBand.isRepairApply90DayRate()) {
-            if (brePenaltyBand.isRepairUseCommercial()) {
-                luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
-            } else {
-                perdec = new StringBuilder()
-                    .append("90 days - ")
-                    .append(brePenaltyBand.getRepair90Day().toString()).append("%")
-                    .toString();
-            luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair90Day().toString()));
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair60Day().toString()));
+            if (brePenaltyBand.isRepairApply90DayRate()) {
+                if (brePenaltyBand.isRepairUseCommercial()) {
+                    luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
+                } else {
+                    perdec = new StringBuilder()
+                            .append("90 days - ")
+                            .append(brePenaltyBand.getRepair90Day().toString()).append("%")
+                            .toString();
+                    luItems.add(new LookupItem(perdec, brePenaltyBand.getRepair90Day().toString()));
+                }
             }
+        } else {
+            LOG.error("No BRE Penalty Band defined for claim type '{}' and hire start '{}'", claim.getClaimType(), hireStart);
+            luItems = new ArrayList<>(0);
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public String getHirePenaltyPercentageJsonString() {
+        List<LookupItem> luItems;
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        List<LookupItem> luItems = new ArrayList<>(3);
-        // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
-        String perdec = new StringBuilder()
+        if (brePenaltyBand != null) {
+            luItems = new ArrayList<>(3);
+            // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
+            String perdec = new StringBuilder()
                     .append("30 days - ")
                     .append(brePenaltyBand.getHire30Day().toString()).append("%")
                     .toString();
-        luItems.add(new LookupItem(perdec, brePenaltyBand.getHire30Day().toString()));
-        perdec = new StringBuilder()
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getHire30Day().toString()));
+            perdec = new StringBuilder()
                     .append("60 days - ")
                     .append(brePenaltyBand.getHire60Day().toString()).append("%")
                     .toString();
-        luItems.add(new LookupItem(perdec, brePenaltyBand.getHire60Day().toString()));
-        if (brePenaltyBand.isHireApply90DayRate()) {
-            if (brePenaltyBand.isHireUseCommercial()) {
-                luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
-            } else {
-                perdec = new StringBuilder()
-                    .append("90 days - ")
-                    .append(brePenaltyBand.getHire90Day().toString()).append("%")
-                    .toString();
-            luItems.add(new LookupItem(perdec, brePenaltyBand.getHire90Day().toString()));
+            luItems.add(new LookupItem(perdec, brePenaltyBand.getHire60Day().toString()));
+            if (brePenaltyBand.isHireApply90DayRate()) {
+                if (brePenaltyBand.isHireUseCommercial()) {
+                    luItems.add(new LookupItem("90 days - Commercial", "Commercial"));
+                } else {
+                    perdec = new StringBuilder()
+                            .append("90 days - ")
+                            .append(brePenaltyBand.getHire90Day().toString()).append("%")
+                            .toString();
+                    luItems.add(new LookupItem(perdec, brePenaltyBand.getHire90Day().toString()));
+                }
             }
+        } else {
+            LOG.error("No BRE Penalty Band defined for claim type '{}' and hire start '{}'", claim.getClaimType(), hireStart);
+            luItems = new ArrayList<>(0);
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
