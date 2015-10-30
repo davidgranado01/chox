@@ -1,7 +1,11 @@
 package idas.chox.web.actions;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,15 +95,23 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     }
 
     public String getSuppliersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+        List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
         return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
+    public String getClaimTypesJsonString() {
+        List<LookupItem> claimTypesList = new ArrayList<>();
+        for (ClaimType claimType : ClaimType.getMainClaimTypes()) {
+            claimTypesList.add(new LookupItem(claimType.toString(), Integer.toString(claimType.getClaimTypeValue())));
+        }
+        return "{totalCount:" + claimTypesList.size() + ", results:" + JSONArray.fromObject(claimTypesList).toString() + "}";
+    }
+
     public String getInsurerDiscountTypeJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(InsurerDiscountType.values().length);
+        List<LookupItem> luItems = new ArrayList<>(InsurerDiscountType.values().length);
         for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
             luItems.add(new LookupItem(insurerDiscountType.toString(), Integer.toString(insurerDiscountType.getInsurerDiscountTypeValue())));
         }
@@ -145,15 +157,14 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String listDiscountGridData() {
-        List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
+        List<InsurerDiscountViewData> viewList = new ArrayList<>();
         List<InsurerDiscount> discountList;
         if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
 
         discountList = insurerDiscountService.getInsurerDiscount(choId, insurerId);
-        for (Iterator iterator = discountList.iterator(); iterator.hasNext();) {
-            InsurerDiscount object = (InsurerDiscount) iterator.next();
+        for (InsurerDiscount object : discountList) {
             InsurerDiscountViewData dvd = new InsurerDiscountViewData(object);
             LOG.debug(dvd.toString());
             viewList.add(dvd);
@@ -168,7 +179,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         try {
             LOG.debug("Delete insurer discount");
             if (model.getId() != null && model.getId() > 0) {
-                if (getIsInsurer() && model.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
+                if (getIsInsurer() && model.getInsurer().getId() != getAuthenticatedUser().getInsurer().getId().intValue()) {
                     throw new AccessDeniedException("Cannot delete Insurer Discount that does not belong to you.");
                 }
                 checkVersion(Arrays.asList(model));

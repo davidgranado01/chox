@@ -12,12 +12,15 @@
     var insurerDiscountSuppliersStore;
     var insurerDiscountSupplierFilterCombo;
     var insurerDiscountTypeCombo;
+    var insurerDiscountClaimTypeCombo;
     var insurerDiscountRowEditor;
     var choId = -1;
     var discountTypeId = -1;
+    var claimTypeId = -1;
     var insdiscountFromDateEditor;
     var insdiscountToDateEditor;
     var insdiscountTypeEditor;
+    var insdiscountClaimTypeEditor;
     var applyToPenaltiesChecked = false;
 
     Ext.onReady(function(){
@@ -54,7 +57,7 @@
             }
         });
         
-        insurerDiscountTypeJsonReader = new Ext.data.JsonReader({
+        var insurerDiscountTypeJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -64,14 +67,29 @@
             ]
         });
 
-        insurerDiscountType = Ext.util.JSON.decode('<s:property value="insurerDiscountTypeJsonString" escape="false"/>');
-        insurerDiscountTypeStore = new Ext.data.Store({
+        var insurerDiscountType = Ext.util.JSON.decode('<s:property value="insurerDiscountTypeJsonString" escape="false"/>');
+        var insurerDiscountTypeStore = new Ext.data.Store({
             data : insurerDiscountType,
             reader : insurerDiscountTypeJsonReader
         });
        
+        // Add claim type drop-down menu
+        var insurerDiscountClaimTypeJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
+        var insurerDiscountClaimType = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+        var insurerDiscountClaimTypeStore = new Ext.data.Store({
+            data : insurerDiscountClaimType,
+            reader : insurerDiscountClaimTypeJsonReader
+        });
             
-        insurerDiscountSuppliersJsonReader = new Ext.data.JsonReader({
+        var insurerDiscountSuppliersJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -81,8 +99,8 @@
             ]
         });
 
-        insurerDiscountMysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
-        insurerDiscountSuppliersStore = new Ext.data.Store({
+        var insurerDiscountMysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+        var insurerDiscountSuppliersStore = new Ext.data.Store({
             data : insurerDiscountMysuppliers,
             reader : insurerDiscountSuppliersJsonReader
         });
@@ -129,8 +147,8 @@
         insurerDiscountSupplierFilterCombo = new Ext.form.ComboBox({
             store : insurerDiscountSuppliersStore,
             name : 'insurerDiscountSupplierId',
-            width: 150,
-            listWidth: 150,
+            width: 160,
+            listWidth: 160,
             valueField : 'text',
             displayField :'value',
             typeAhead : true,
@@ -162,7 +180,6 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-//                allowBlank : false,
                 renderTo : 'discountTypeComboId',
                 listeners: {
                 select: function () {
@@ -171,6 +188,29 @@
                         discountTypeId = -1;
                     }else{
                         discountTypeId = this.getValue();
+                    }
+                }
+            }
+        }); 
+        
+        insurerDiscountClaimTypeCombo = new Ext.form.ComboBox({
+                store : insurerDiscountClaimTypeStore,
+                name : 'insurerDiscountClaimTypeComboId',
+                width: 160,
+                listWidth: 160,
+                valueField : 'value',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                renderTo : 'claimTypeComboId',
+                listeners: {
+                select: function () {
+                    if(this.getRawValue() === "" ) {
+                        this.clearValue();
+                        claimTypeId = -1;
+                    }else{
+                        claimTypeId = this.getValue();
                     }
                 }
             }
@@ -221,7 +261,20 @@
                 mode : 'local',
                 triggerAction : 'all',
                 fieldLabel : 'Type',
-                name : ''
+                name : 'insDiscountTypeEd'
+        });
+        
+        insdiscountClaimTypeEditor = new Ext.form.ComboBox({
+                store : insurerDiscountClaimTypeStore,
+                width: 120,
+                listWidth: 120,
+                valueField : 'text',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                fieldLabel : 'Type',
+                name : 'insDiscountClaimTypeEd'
         });
         
         insurerDiscount_gridviewJsonReader = new Ext.data.JsonReader({
@@ -238,6 +291,7 @@
                 {name:'choName'},
                 {name:'choId'},
                 {name:'insurerDiscountType'},
+                {name:'claimType'},
                 {name:'appliedToPenalties'}
             ]
         });
@@ -249,7 +303,11 @@
                     clearValidation();
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
                     var url = "/prv/p/addOrUpdateDiscount.action";
-                    var param = {"insurerId":<s:property value="insurerId" />,"choId": record.get('choId'),"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountPercentage": record.get('discount'),"discountId": record.get('discountId'),"insurerDiscountType": record.get('insurerDiscountType'),"appliedToPenalties": record.get('appliedToPenalties')};
+                    var param = {"insurerId":<s:property value="insurerId" />,"choId": record.get('choId'),
+                                 "dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),
+                                 "discountPercentage": record.get('discount'),"discountId": record.get('discountId'),
+                                 "claimType": record.get('claimType'),"insurerDiscountType": record.get('insurerDiscountType'),
+                                 "appliedToPenalties": record.get('appliedToPenalties')};
                     ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                         var response = eval('(' + responseText.trim() + ')');
@@ -290,9 +348,10 @@
             enableHdMenu:false,
             enableColumnMove: false,
             layout:'fit',
-            plugins: [insurerDiscountRowEditor],
+//            plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},
             columns: [
+                {header: "Claim Type", width: 90, dataIndex: 'claimType', sortable: false, resizable: true, editor: insdiscountClaimTypeEditor},
                 {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: false, resizable: true, editor: insdiscountFromDateEditor},
                 {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: false, resizable: true,editor: insdiscountToDateEditor},
                 {header: "Discount", width: 60, dataIndex: 'discount',  sortable: false, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
@@ -331,6 +390,16 @@
                 }
         );
             
+        $.validator.addMethod(
+        	    "checkClaimType",
+        	    function(value, element) {
+                        if (claimTypeId===-1 || claimTypeId === null || claimTypeId ===  '' || claimTypeId === 0){
+                            return false;
+                        }
+                    return true;
+                }
+        );
+            
             
         $("#insurerDiscountForm").validate(
         {
@@ -338,6 +407,7 @@
             rules: {
             	
                 insurerDiscountTypeComboId : {checkDiscountType:true},
+                insurerDiscountClaimTypeComboId : {checkClaimType:true},
                 insurerDiscountSupplierId : { checkCHOId:true },
                 dateFrom :{required:true, dateITA:true, max:function(){
                     var sd = Ext.get('InsurerDiscountDateFromId').getValue().split("/");
@@ -354,6 +424,7 @@
                 dateTo : {required:"A value must be supplied for 'Date To'", dateITA:"You must supply valid date format for 'Date To'"},
                 discountPercentage : {required:"A value must be supplied for 'Discount Percentage'", max :"Maximum allowed discount is 100%"},
                 insurerDiscountTypeComboId : {checkDiscountType : "Please select a Discount Type from the drop-down list"},
+                insurerDiscountClaimTypeComboId : {checkClaimType : "Please select a Claim Type from the drop-down list"},
                 insurerDiscountSupplierId : {checkCHOId : "Please select a CHO from the drop-down list"}
             }
         });
@@ -387,7 +458,7 @@
         } else {
             applyToPenaltiesChecked = false;
         }
-        if(columnIndex === 8){
+        if(columnIndex === 9){
             insurerDiscount_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -453,7 +524,10 @@
         if ($("form#insurerDiscountForm").valid()) {
 
             var url = "/prv/p/addOrUpdateDiscount.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage, "insurerDiscountType" : discountTypeId, "appliedToPenalties": insurerDiscountapplyPenalties};
+            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,
+                         "dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage,
+                         "insurerDiscountType" : discountTypeId, "claimType" : claimTypeId,
+                         "appliedToPenalties": insurerDiscountapplyPenalties};
             ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                 var response = eval('(' + responseText.trim() + ')');
@@ -505,6 +579,18 @@
                     </td>
                     <td width ="16%">
                         <div id="insurerDiscountSuppliers"></div>
+                    </td>
+                    <td width ="16%"></td>
+                    <td width ="16%"></td>
+                    <td width ="16%"></td>
+                    <td width ="16%"></td>
+                </tr>
+                <tr>
+                    <td width ="16%">
+                        <p class="std-label-insdiscount">Claim Type<span class="mandatory">*</span> </p>
+                    </td>
+                    <td width ="16%">
+                        <div id="claimTypeComboId"></div>
                     </td>
                     <td width ="16%">
                         <p class="std-label-insdiscount">Discount Type<span class="mandatory">*</span> </p>

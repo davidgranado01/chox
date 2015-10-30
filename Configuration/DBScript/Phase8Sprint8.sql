@@ -283,6 +283,14 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 -- End of 8.8.3
 ----------------------
 
+--------------------------------------------------------------------------------
+-- 8.8.4 Breakout Discount By Claim Type
+--------------------------------------------------------------------------------
+ALTER TABLE insurer_discount ADD COLUMN claim_type INTEGER NOT NULL DEFAULT 0;
+
+----------------------
+-- End of 8.8.4
+----------------------
 
 --------------------------------------------------------------------------------
 -- bug#3027 - Production - 'History' tab should be accessible in claim status

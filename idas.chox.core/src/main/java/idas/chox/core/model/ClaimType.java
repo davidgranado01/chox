@@ -1,5 +1,8 @@
 package idas.chox.core.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author John
@@ -48,6 +51,10 @@ public enum ClaimType {
         return description;
     }
 
+    public static List<ClaimType> getMainClaimTypes() {
+        return Arrays.asList(new ClaimType[] {GTA, SUBSCRIBER, FIXED_FEE, COLLABORATION_PROTOCOL, TPI, INSURER_VS_INSURER, INSURER_UPLOAD});
+    }
+    
     public static ClaimType getResolvedClaimType(ClaimType claimType) {
         switch (claimType) {
             case GTA:

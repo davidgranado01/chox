@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.InsurerDiscount;
 import idas.chox.core.model.InsurerDiscountType;
@@ -54,7 +55,6 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         /*
          *  Add one day to 'dateTo'
          */
-        Date dateFrom = insurerDiscount.getDateFrom();
         Date dateTo = insurerDiscount.getDateTo();
         int discountId = -1;
         if (insurerDiscount.getId() != null) {
@@ -68,15 +68,14 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         
         insurerDiscount.setDateTo(dateTo);
         
-        int insurerDiscountTypeValue = insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue();
 
-        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
+        Map hm = validateDiscount(insId, choId, insurerDiscount.getDateFrom(), dateTo, discountId, insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue(), insurerDiscount.getClaimType());
         if (hm.get("success") != Boolean.TRUE) {
             evict(insurerDiscount); // this is to prevent from dbInterceptor saving dirty field to the existing model.
             return hm;
         }
         
-        LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
+        LOG.debug("INS ID:{}, CHO ID:{}, DATE FROM:{}, DATE TO:{}, id:{}", new Object[]{insId,choId,insurerDiscount.getDateFrom(),dateTo,discountId});
 
         insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
         insurerDiscount.setInsurer(insurerService.getInsurer(insId));
@@ -87,7 +86,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     @Override
-    public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId) {
+    public List<InsurerDiscount> getInsurerDiscount(int choId, int insId) {
+        return getInsurerDiscount(choId, insId, null);
+    }
+    @Override
+    public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId, ClaimType claimType) {
 
         List<InsurerDiscount> list = new ArrayList<>();
 
@@ -97,6 +100,9 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 criteria.add(Restrictions.eq("chOrganisation.id", choId));
             }
             criteria.add(Restrictions.eq("insurer.id", InsId));
+            if (claimType != null) {
+                criteria.add(Restrictions.eq("claim_type", claimType));
+            }
             criteria.addOrder(Order.desc("dateFrom"));
             list = findByCriteria(criteria);
         } catch (Exception e) {
@@ -121,10 +127,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
+    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId,
+                                 int insurerDiscountTypeValue, ClaimType claimType) {
         Map hm = new HashMap();
 
-        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
+        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue, claimType.getClaimTypeValue());
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -134,18 +141,19 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
+    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue, int claimTypeValue) {
         Map checks = new HashMap();
-        StringBuilder sb = new StringBuilder(100);
-        sb.append("select distinct");
-        sb.append(" (date_from,date_to) ");
-        sb.append("overlaps ");
-        sb.append("(date(:pDateFrom)");
-        sb.append(",date(:pDateTo)) ");
-        sb.append("from insurer_discount ");
-        sb.append("where chorganisation_id = :pChoId");
-        sb.append(" and insurer_id = :pInsurerId");
-        sb.append(" and discount_type = :pInsurerDiscountTypeValue");
+        StringBuilder sb = new StringBuilder(500);
+        sb.append("select distinct")
+          .append(" (date_from,date_to) ")
+          .append("overlaps ")
+          .append("(date(:pDateFrom)")
+          .append(",date(:pDateTo)) ")
+          .append("from insurer_discount ")
+          .append("where chorganisation_id = :pChoId")
+          .append(" and insurer_id = :pInsurerId")
+          .append(" and claim_type = :pClaimTypeValue")
+          .append(" and discount_type = :pInsurerDiscountTypeValue");
         
         if (discountId > 0) {
             sb.append(" and id != :pDiscountId");
@@ -160,6 +168,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         extParameters.put("pChoId", choId);
         extParameters.put("pInsurerId", insId);
         extParameters.put("pInsurerDiscountTypeValue", insurerDiscountTypeValue);
+        extParameters.put("pClaimTypeValue", claimTypeValue);
         if (discountId > 0) {
             extParameters.put("pDiscountId", discountId);
         }
@@ -178,22 +187,23 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     @Override
-    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue) {
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue, int claimTypeValue) {
 
-        StringBuilder sb = new StringBuilder(100);
-        sb.append("select distinct discount_percentage from (");
-        sb.append("select distinct");
-        sb.append("(date_from,date_to) ");
-        sb.append("overlaps ");
-        sb.append("(date(:pInvoiceCreatedDate)");
-        sb.append(",date(:pInvoiceCreatedDate)) ");
-        sb.append("as overlap, discount_percentage ");
-        sb.append("from insurer_discount ");
-        sb.append("where chorganisation_id = :pChoId");
-        sb.append(" and insurer_id = :pInsurerId");
-        sb.append(" and discount_type = :pInsurerDiscountTypeValue");
-        sb.append(") as discountPercentage where overlap = ");
-        sb.append(true);
+        StringBuilder sb = new StringBuilder(500);
+        sb.append("select distinct discount_percentage from (")
+          .append("select distinct")
+          .append("(date_from,date_to) ")
+          .append("overlaps ")
+          .append("(date(:pInvoiceCreatedDate)")
+          .append(",date(:pInvoiceCreatedDate)) ")
+          .append("as overlap, discount_percentage ")
+          .append("from insurer_discount ")
+          .append("where chorganisation_id = :pChoId")
+          .append(" and insurer_id = :pInsurerId")
+          .append(" and claim_type = :pClaimTypeValue")
+          .append(" and discount_type = :pInsurerDiscountTypeValue")
+          .append(") as discountPercentage where overlap = ")
+          .append(true);
 
         String query = sb.toString();
         LOG.debug("getting discount percentage query is: {}", query);
@@ -203,6 +213,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         extParameters.put("pChoId", choId);
         extParameters.put("pInsurerId", insId);
         extParameters.put("pInsurerDiscountTypeValue", insurerDiscountTypeValue);
+        extParameters.put("pClaimTypeValue", claimTypeValue);
         
         List valList;
         /*
@@ -251,7 +262,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             BigDecimal repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
             BigDecimal hireGrossInsurerDiscountAmount = BigDecimal.ZERO;
 
-            List<InsurerDiscount> insurerDiscounts = getInsurerDiscount(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            List<InsurerDiscount> insurerDiscounts = getInsurerDiscount(claim.getChorganisation().getId(), claim.getInsurer().getId(), claim.getClaimType());
 
             boolean isRepairGrossDiscountAppliedToPenalties = false;
             boolean isHireGrossDiscountAppliedToPenalties = false;
@@ -283,7 +294,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue() && inv.getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
                     repairGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
+                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
                     inv.setRepairInsurerDiscountCalculated(repairGrossInsurerDiscountPercentage);
                     LOG.debug("repairGrossInsurerDiscountPercentage = {}", repairGrossInsurerDiscountPercentage);
                     if (repairGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
@@ -292,7 +303,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue() && inv.getHireGross().compareTo(BigDecimal.ZERO) == 1) {
                     hireGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
+                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
                     inv.setHireInsurerDiscountCalculated(hireGrossInsurerDiscountPercentage);
                     LOG.debug("hireGrossInsurerDiscountPercentage = {}", hireGrossInsurerDiscountPercentage);
                     if (hireGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
@@ -301,7 +312,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue() && inv.getTotalGross().compareTo(BigDecimal.ZERO) == 1) {
                     totalGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(),
-                            claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
+                            claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
                     inv.setTotalInsurerDiscountCalculated(totalGrossInsurerDiscountPercentage);
                     LOG.debug("totalGrossInsurerDiscountPercentage = {}", totalGrossInsurerDiscountPercentage);
                     if (totalGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {

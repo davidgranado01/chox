@@ -15,7 +15,9 @@
         <property column="last_modified_date" name="lastModifiedDate"/>
         <property column="is_applied_to_penalties" name="appliedToPenalties"/>
         <property column="discount_type" name="insurerDiscountType"
-            type="idas.chox.data.hibernate.InsurerDiscountTypeMapping"  not-null="true"/>
+            type="idas.chox.data.hibernate.InsurerDiscountTypeMapping" not-null="true"/>
+        <property column="claim_type" name="claimType"
+            type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chOrganisation"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

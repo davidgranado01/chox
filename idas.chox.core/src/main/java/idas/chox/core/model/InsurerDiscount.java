@@ -16,6 +16,7 @@ public class InsurerDiscount extends Entity{
     private BigDecimal discountPercentage;
     private InsurerDiscountType insurerDiscountType;
     private boolean appliedToPenalties;
+    private ClaimType claimType;
 
     public boolean isAppliedToPenalties() {
         return appliedToPenalties;
@@ -71,6 +72,14 @@ public class InsurerDiscount extends Entity{
 
     public void setDiscountPercentage(BigDecimal discount) {
         this.discountPercentage = discount;
+    }
+
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
     }
     
 }

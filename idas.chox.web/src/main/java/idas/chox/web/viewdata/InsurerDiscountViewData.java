@@ -12,16 +12,17 @@ import idas.chox.core.model.InsurerDiscount;
  */
 public class InsurerDiscountViewData {
 
-    private String dateFrom;
-    private String dateTo;
-    private BigDecimal discount;
-    private int discountId;
-    private String createdBy;
-    private String createdDate;
-    private String choName;
-    private String appliedToPenalties; 
-    private String insurerDiscountType;
-    private int choId;
+    private final String dateFrom;
+    private final String dateTo;
+    private final BigDecimal discount;
+    private final int discountId;
+    private final String createdBy;
+    private final String createdDate;
+    private final String choName;
+    private final String appliedToPenalties; 
+    private final String insurerDiscountType;
+    private final int choId;
+    private final String claimType;
 
     public InsurerDiscountViewData(InsurerDiscount insurerDiscount) {
         
@@ -40,86 +41,52 @@ public class InsurerDiscountViewData {
             this.appliedToPenalties = "No";
         }
         this.choId = insurerDiscount.getChOrganisation().getId();
-
+        this.claimType = insurerDiscount.getClaimType().toString();
     }
 
     public int getChoId() {
         return choId;
     }
 
-    public void setChoId(int choId) {
-        this.choId = choId;
-    }
 
     public String getInsurerDiscountType() {
         return insurerDiscountType;
-    }
-
-    public void setInsurerDiscountType(String insurerDiscountType) {
-        this.insurerDiscountType = insurerDiscountType;
     }
 
     public String getAppliedToPenalties() {
         return appliedToPenalties;
     }
 
-    public void setAppliedToPenalties(String appliedToPenalties) {
-        this.appliedToPenalties = appliedToPenalties;
-    }
-
     public String getChoName() {
         return choName;
-    }
-
-    public void setChoName(String choName) {
-        this.choName = choName;
     }
 
     public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
     public String getDateTo() {
         return dateTo;
-    }
-
-    public void setDateTo(String dateTo) {
-        this.dateTo = dateTo;
     }
 
     public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
-
     public int getDiscountId() {
         return discountId;
-    }
-
-    public void setDiscountId(int discountId) {
-        this.discountId = discountId;
     }
 
     public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public String getClaimType() {
+        return claimType;
     }
+
 }
