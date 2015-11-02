@@ -171,6 +171,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossAndStorageFeeCheck;
     private boolean paymentTeamActive;
     private boolean breInvoiceSavingActive;
+    private boolean pauseSubscriberSlaClock;
+    private boolean pauseFixedFeeSlaClock;
     
     public BreBand() {
     }
@@ -1667,6 +1669,22 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setAllowInsurervsInsurerAutoPenaltyCharges(boolean allowInsurervsInsurerAutoPenaltyCharges) {
         this.allowInsurervsInsurerAutoPenaltyCharges = allowInsurervsInsurerAutoPenaltyCharges;
+    }
+
+    public boolean isPauseSubscriberSlaClock() {
+        return pauseSubscriberSlaClock;
+    }
+
+    public void setPauseSubscriberSlaClock(boolean pauseSubscriberSlaClock) {
+        this.pauseSubscriberSlaClock = pauseSubscriberSlaClock;
+    }
+
+    public boolean isPauseFixedFeeSlaClock() {
+        return pauseFixedFeeSlaClock;
+    }
+
+    public void setPauseFixedFeeSlaClock(boolean pauseFixedFeeSlaClock) {
+        this.pauseFixedFeeSlaClock = pauseFixedFeeSlaClock;
     }
 
 }

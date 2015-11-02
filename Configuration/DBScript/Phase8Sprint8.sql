@@ -287,9 +287,24 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 -- 8.8.4 Breakout Discount By Claim Type
 --------------------------------------------------------------------------------
 ALTER TABLE insurer_discount ADD COLUMN claim_type INTEGER NOT NULL DEFAULT 0;
-
 ----------------------
 -- End of 8.8.4
+----------------------
+
+--------------------------------------------------------------------------------
+-- 8.8.5 Subscriber Bank Holiday SLA Clock
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN pause_subscriber_sla_clock boolean NOT NULL DEFAULT false;
+ALTER TABLE bre_band ADD COLUMN pause_fixedfee_sla_clock boolean NOT NULL DEFAULT false;
+create table bank_holidays (
+  id serial NOT NULL,
+  bank_holiday timestamp without time zone NOT NULL,
+  CONSTRAINT bank_holidays_pkey PRIMARY KEY (id),
+  CONSTRAINT bank_holidays_ukey UNIQUE (bank_holiday)
+);
+
+----------------------
+-- End of 8.8.5
 ----------------------
 
 --------------------------------------------------------------------------------
