@@ -302,6 +302,35 @@ create table bank_holidays (
   CONSTRAINT bank_holidays_pkey PRIMARY KEY (id),
   CONSTRAINT bank_holidays_ukey UNIQUE (bank_holiday)
 );
+GRANT SELECT ON TABLE bank_holidays TO chox_user;
+GRANT SELECT ON TABLE bank_holidays TO chox_mi;
+
+insert into bank_holidays(bank_holiday) select '2015-01-01';
+insert into bank_holidays(bank_holiday) select '2015-04-03';
+insert into bank_holidays(bank_holiday) select '2015-04-06';
+insert into bank_holidays(bank_holiday) select '2015-05-04';
+insert into bank_holidays(bank_holiday) select '2015-05-25';
+insert into bank_holidays(bank_holiday) select '2015-08-31';
+insert into bank_holidays(bank_holiday) select '2015-12-25';
+insert into bank_holidays(bank_holiday) select '2015-12-28';
+
+insert into bank_holidays(bank_holiday) select '2016-01-01';
+insert into bank_holidays(bank_holiday) select '2016-03-25';
+insert into bank_holidays(bank_holiday) select '2016-03-28';
+insert into bank_holidays(bank_holiday) select '2016-05-02';
+insert into bank_holidays(bank_holiday) select '2016-05-30';
+insert into bank_holidays(bank_holiday) select '2016-08-29';
+insert into bank_holidays(bank_holiday) select '2016-12-26';
+insert into bank_holidays(bank_holiday) select '2016-12-27';
+
+insert into bank_holidays(bank_holiday) select '2017-01-02';
+insert into bank_holidays(bank_holiday) select '2017-04-14';
+insert into bank_holidays(bank_holiday) select '2017-04-17';
+insert into bank_holidays(bank_holiday) select '2017-05-01';
+insert into bank_holidays(bank_holiday) select '2017-05-29';
+insert into bank_holidays(bank_holiday) select '2017-08-28';
+insert into bank_holidays(bank_holiday) select '2017-12-25';
+insert into bank_holidays(bank_holiday) select '2017-12-26';
 
 ----------------------
 -- End of 8.8.5

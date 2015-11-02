@@ -28,9 +28,9 @@ public interface AuditTrailService {
 
     double getTimeInvoiceWithCHO(int claimId);
 
-    int getSubscriberClaimDays(int claimId);
+    int getSubscriberClaimDays(int claimId, boolean ignoreBankHolidays);
 
-    int getSubscriberClaimRejectedDays(int claimId, String cutOffTime);
+    int getSubscriberClaimRejectedDays(int claimId, String cutOffTime, boolean ignoreBankHolidays);
 
     int getSubscriberClaimRejectedTimes(int claimId);
     
@@ -38,9 +38,9 @@ public interface AuditTrailService {
 
     String getStateBeforeRejection(int claimId);
 
-    int getFixedFeeClaimDays(int claimId);
+    int getFixedFeeClaimDays(int claimId, boolean ignoreBankHolidays);
 
-    int getFixedFeeClaimRejectedDays(int claimId);
+    int getFixedFeeClaimRejectedDays(int claimId, boolean ignoreBankHolidays);
 
     double getTimeInvoiceWithInsurer(int claimId);
 

@@ -1,12 +1,13 @@
-drop function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]);
+drop function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN);
 
-create or replace function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[])
+create or replace function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN)
 RETURNS INT AS
 $BODY$
 DECLARE
     days INT;
     lastDayCounted INT;
     dayInstatus INT;
+    noBankHolidays INT;
     dayOutstatus INT;
     previousStatus CHARACTER VARYING(40);
     statusStart timestamp without time zone;
@@ -30,6 +31,11 @@ BEGIN
             IF (not (lastDayCounted = dayInStatus and dayInStatus = dayOutStatus)) THEN
                 days = days + (auditTrailRecord.update_date::date - statusStart::date) + 1;
 --                RAISE NOTICE 'In status for %', date_part('doy', auditTrailRecord.update_date) - dayInStatus + 1;
+                IF (ignoreBankHolidays) THEN
+                    noBankHolidays = (select count(*) from bank_holidays bh where bh.bank_holiday::Date >= statusStart::date and bh.bank_holiday::Date <= auditTrailRecord.update_date::date);
+--                    RAISE NOTICE 'Subtracting % bank holiday days', noBankHolidays;
+                    days = days - noBankHolidays;
+                END IF;
             END IF;
             lastDayCounted = dayOutStatus;
             statusStart = null;
@@ -42,6 +48,11 @@ BEGIN
     IF (statusStart is not null) THEN
         -- We must currently be in the status, so count days until now()
         days = days + (now()::date - statusStart::date);
+        IF (ignoreBankHolidays) THEN
+            noBankHolidays = (select count(*) from bank_holidays bh where bh.bank_holiday::Date >= statusStart::date and bh.bank_holiday::Date <= now()::date);
+--          RAISE NOTICE 'Subtracting % bank holiday days', noBankHolidays;
+            days = days - noBankHolidays;
+        END IF;
         dayInStatus = date_part('doy', statusStart);
 --        RAISE NOTICE 'dayInStatus=%, statusStart=%, days added=%', dayInStatus, statusStart, (now()::date - statusStart::date);
         IF (lastDayCounted != dayInStatus) THEN
@@ -55,7 +66,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_user;
-GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_mi;
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN) TO chox_user;
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN) TO chox_mi;
 
 -- select * from get_days_in_status(191138, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted","ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}');

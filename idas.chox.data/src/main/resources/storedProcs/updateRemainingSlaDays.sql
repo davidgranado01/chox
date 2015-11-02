@@ -11,7 +11,7 @@ where remaining_sla_days is not null;
 
 update claim
   set remaining_sla_days = sla_ext_days + bre.subscriber_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
-                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}', bre.pause_subscriber_sla_clock)
 from bre_band bre,
      bre_band_organisation bbo
 where bbo.chorganisation_id = claim.chorganisation_id
@@ -24,7 +24,7 @@ where bbo.chorganisation_id = claim.chorganisation_id
 
 update claim
   set remaining_sla_days = sla_ext_days + bre.fixedfee_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
-                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}', bre.pause_fixedfee_sla_clock)
 from bre_band bre,
      bre_band_organisation bbo
 where bbo.chorganisation_id = claim.chorganisation_id

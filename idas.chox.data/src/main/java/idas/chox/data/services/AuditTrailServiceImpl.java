@@ -26,6 +26,8 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
@@ -257,7 +259,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
 
     @Override
-    public int getSubscriberClaimDays(int claimId) {
+    public int getSubscriberClaimDays(int claimId, boolean ignoreBankHolidays) {
         
         return daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
@@ -266,16 +268,16 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                                            ClaimStatus.CLAIM_REFERRED_TO_FNOL,
                                            ClaimStatus.CLAIM_REF_TO_ENG,
                                            ClaimStatus.CLAIM_UPDATE_BY_ENG,
-                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}), ignoreBankHolidays);
     }
 
     @Override
-    public int getFixedFeeClaimDays(int claimId) {
+    public int getFixedFeeClaimDays(int claimId, boolean ignoreBankHolidays) {
         
-        return getSubscriberClaimDays(claimId);
+        return getSubscriberClaimDays(claimId, ignoreBankHolidays);
     }
 
-    private int daysInStatuses(int claimId, Collection<String> statuses) {
+    private int daysInStatuses(int claimId, Collection<String> statuses, boolean ignoreBankHolidays) {
         LOG.debug("Calculating days claim {} in statuses '{}'", claimId, statuses);
         int days = 0;
         
@@ -305,7 +307,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 if (!(lastDayCounted == dayInStatus && dayInStatus == dayOutStatus)) {
                     days += DateHelper.getNumberOfDaysBetween(dateInStatus, trail.getUpdateDate()) + 1;
                 }
-                
+                if (ignoreBankHolidays) {
+                    days -= getNoBankHolidays(dateInStatus, trail.getUpdateDate());
+                }
                 lastDayCounted = dayOutStatus;
                 dateInStatus = null;   
             }
@@ -326,12 +330,25 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             else {
                 days += DateHelper.getNumberOfDaysBetween(dateInStatus, new Date());
             }
+            if (ignoreBankHolidays) {
+                days -= getNoBankHolidays(dateInStatus, new Date());
+            }
         }
 
         LOG.debug("Claim {} in statuses for {} days", claimId, days);
 
         return days;
    }
+
+    private int getNoBankHolidays(Date startDate, Date endDate) {
+        Map extParameters = new HashMap();
+        extParameters.put("pStartDate", startDate);
+        extParameters.put("pEndDate", endDate);
+        int noBankHolidays =  externalQueryCount("select * from bank_holidays where bank_holiday >= :pStartDate and bank_holiday <= :pEndDate", extParameters);
+        LOG.debug("Returning {} bank holidays between '{}' and '{}'", new Object[]{noBankHolidays, startDate, endDate});
+        return noBankHolidays;
+    }
+
 
     private double timeClaimInStatus(int claimId, List<String> statuses) {
         long noDays = 0;
@@ -429,7 +446,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Override
-    public int getSubscriberClaimRejectedDays(int claimId, String cutOffTime) {
+    public int getSubscriberClaimRejectedDays(int claimId, String cutOffTime, boolean ignoreBankHolidays) {
         int days = daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
@@ -437,7 +454,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                                            ClaimStatus.CLAIM_REFERRED_TO_FNOL,
                                            ClaimStatus.CLAIM_REF_TO_ENG,
                                            ClaimStatus.CLAIM_UPDATE_BY_ENG,
-                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}), ignoreBankHolidays);
         
         // Now if the claim was rejected AFTER 3pm and it
         // was uploaded on a different day then we need to add another day
@@ -448,7 +465,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Override
-    public int getFixedFeeClaimRejectedDays(int claimId) {
+    public int getFixedFeeClaimRejectedDays(int claimId, boolean ignoreBankHolidays) {
         int days = daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
                                            ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
@@ -456,7 +473,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                                            ClaimStatus.CLAIM_REFERRED_TO_FNOL,
                                            ClaimStatus.CLAIM_REF_TO_ENG,
                                            ClaimStatus.CLAIM_UPDATE_BY_ENG,
-                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}), ignoreBankHolidays);
         
         // Now if the claim was rejected AFTER 3pm and it
         // was uploaded on a different day then we need to add another day

@@ -1434,7 +1434,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             int subscriberSlaDays = breBand.getSubscriberSlaDays();
             String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
-            claimAge = auditTrailService.getSubscriberClaimDays(id);
+            claimAge = auditTrailService.getSubscriberClaimDays(id, breBand.isPauseSubscriberSlaClock());
             LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
                     new Object[]{claimAge, subscriberSlaDays, subscriberCutOffTime, claim.getSlaExtDays()});
 
@@ -1499,7 +1499,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
             String fixedFeeCutOffTime = breBand.getFixedFeeTimeCutOff();
 
-            claimAge = auditTrailService.getFixedFeeClaimDays(id);
+            claimAge = auditTrailService.getFixedFeeClaimDays(id, breBand.isPauseFixedFeeSlaClock());
 
             if (fixedFeeSlaDays != 0 && (claimAge > (fixedFeeSlaDays + claim.getSlaExtDays()) || (claimAge == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
                 boolean addComment = true;
@@ -1552,7 +1552,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
-            claimAge = auditTrailService.getSubscriberClaimRejectedDays(claimId, subscriberCutOffTime);
+            claimAge = auditTrailService.getSubscriberClaimRejectedDays(claimId, subscriberCutOffTime, breBand.isPauseSubscriberSlaClock());
         }
 
         LOG.debug("Days until subscriber claim ({}) rejected: {}", claimId, claimAge);
@@ -1565,9 +1565,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         int claimAge = -1;
         LOG.debug("Getting days until fixed fee claim rejected with id={}", claimId);
         Claim claim = (Claim) get(Claim.class, claimId);
+        
+        if (claim == null) {
+            LOG.error("Cannot get Fixed Fee  Claim Rejected days for claim with id={}: no such claim", claimId);
+            return claimAge;
+        }
+        BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
 
-        if (claim != null && ClaimType.isFixedFee(claim.getClaimType())) {
-            claimAge = auditTrailService.getFixedFeeClaimRejectedDays(claimId);
+        if (ClaimType.isFixedFee(claim.getClaimType())) {
+            claimAge = auditTrailService.getFixedFeeClaimRejectedDays(claimId, breBand.isPauseFixedFeeSlaClock());
         }
 
         LOG.debug("Days until fixed fee claim ({}) rejected: {}", claimId, claimAge);
