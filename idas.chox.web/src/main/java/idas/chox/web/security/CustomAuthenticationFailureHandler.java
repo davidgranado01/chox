@@ -60,7 +60,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 }
                 pNames.append(pName).append("=").append(pValue);
             }
-            LOG.error("No username found in request parameters: {}", pNames.toString());
+            LOG.warn("No username found in request parameters: {}", pNames.toString());
         }
 
         LOG.debug("AuthenticationException thrown for login attempt with username='{}'\n", username, exception);

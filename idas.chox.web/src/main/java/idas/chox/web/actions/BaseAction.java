@@ -100,16 +100,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         this.session = session;
     }
 
-//    public boolean isSearchHistory() {
-//        return session.containsKey("searchHistory");
-//    }
-//
-//    public void setSearchHistory(boolean searchHistory) {
-//        if (session != null && !session.containsKey("searchHistory") && searchHistory) {
-//            session.put("searchHistory", searchHistory);
-//        }
-//    }
-
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
@@ -376,7 +366,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public Integer getRoleTypeForHelpFile() {
-
         /*
          1: // NORMAL INSURER ROLE
          2: // INSURER MANAGER ROLE
@@ -454,14 +443,12 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     protected void handleException(Exception ex) {
-        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
-                || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException) || ex instanceof DataIntegrityViolationException) {
+        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException || ex instanceof DataIntegrityViolationException
+                || ex.getCause() instanceof StaleObjectStateException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
             LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
-            throw new AccessDeniedException(ex.getMessage());
-        } else if (ex instanceof RuntimeException) {
-            LOG.error("Runtime exception thrown: {}", ex.getMessage(), ex);
+            throw (AccessDeniedException)ex;
         } else {
             LOG.trace("Exception is: {}", ex.getMessage());
         }
