@@ -4,13 +4,16 @@
 ALTER TABLE claim ADD COLUMN remaining_sla_days_str character varying(5);
 ALTER TABLE claim ADD COLUMN remaining_sla_days int;
 
-create or replace function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[])
+drop function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]);
+
+create or replace function get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN)
 RETURNS INT AS
 $BODY$
 DECLARE
     days INT;
     lastDayCounted INT;
     dayInstatus INT;
+    noBankHolidays INT;
     dayOutstatus INT;
     previousStatus CHARACTER VARYING(40);
     statusStart timestamp without time zone;
@@ -34,10 +37,15 @@ BEGIN
             IF (not (lastDayCounted = dayInStatus and dayInStatus = dayOutStatus)) THEN
                 days = days + (auditTrailRecord.update_date::date - statusStart::date) + 1;
 --                RAISE NOTICE 'In status for %', date_part('doy', auditTrailRecord.update_date) - dayInStatus + 1;
+                IF (ignoreBankHolidays) THEN
+                    noBankHolidays = (select count(*) from bank_holidays bh where bh.bank_holiday::Date >= statusStart::date and bh.bank_holiday::Date <= auditTrailRecord.update_date::date);
+--                    RAISE NOTICE 'Subtracting % bank holiday days', noBankHolidays;
+                    days = days - noBankHolidays;
+                END IF;
             END IF;
             lastDayCounted = dayOutStatus;
             statusStart = null;
-        ELSE
+--        ELSE
 --            RAISE NOTICE 'Nothing to do for status % (statusStart=%)', auditTrailRecord.new_status,statusStart;
         END IF;
 --        RAISE NOTICE 'Total Days: %', days;
@@ -46,10 +54,15 @@ BEGIN
     IF (statusStart is not null) THEN
         -- We must currently be in the status, so count days until now()
         days = days + (now()::date - statusStart::date);
+        IF (ignoreBankHolidays) THEN
+            noBankHolidays = (select count(*) from bank_holidays bh where bh.bank_holiday::Date >= statusStart::date and bh.bank_holiday::Date <= now()::date);
+--          RAISE NOTICE 'Subtracting % bank holiday days', noBankHolidays;
+            days = days - noBankHolidays;
+        END IF;
         dayInStatus = date_part('doy', statusStart);
 --        RAISE NOTICE 'dayInStatus=%, statusStart=%, days added=%', dayInStatus, statusStart, (now()::date - statusStart::date);
         IF (lastDayCounted != dayInStatus) THEN
-            days = days + 1;
+            days = days +  1;
 --            RAISE NOTICE '1 day added';
         END IF;
     END IF;
@@ -59,8 +72,8 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_user;
-GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[]) TO chox_mi;
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN) TO chox_user;
+GRANT EXECUTE ON FUNCTION get_days_in_status(IN claimId INT, IN statuses CHARACTER VARYING(40)[], IN ignoreBankHolidays BOOLEAN) TO chox_mi;
 
 
 CREATE OR REPLACE FUNCTION updateRemainingSlaDays()
@@ -76,7 +89,7 @@ where remaining_sla_days is not null;
 
 update claim
   set remaining_sla_days = sla_ext_days + bre.subscriber_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
-                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}', bre.pause_subscriber_sla_clock)
 from bre_band bre,
      bre_band_organisation bbo
 where bbo.chorganisation_id = claim.chorganisation_id
@@ -89,7 +102,7 @@ where bbo.chorganisation_id = claim.chorganisation_id
 
 update claim
   set remaining_sla_days = sla_ext_days + bre.fixedfee_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",
-                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}')
+                    "ClaimPending","ClaimReferredToFNOL","ClaimReferredToEngineer","ClaimUpdatedByEngineer","ClaimRejectionContested"}', bre.pause_fixedfee_sla_clock)
 from bre_band bre,
      bre_band_organisation bbo
 where bbo.chorganisation_id = claim.chorganisation_id
