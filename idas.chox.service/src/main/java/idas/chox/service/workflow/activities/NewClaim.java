@@ -79,10 +79,10 @@ public class NewClaim extends BaseActivity {
                 claim.addComment(comment);
             }
             // For subscriber and fixed-fee claims, we need to set the initial SLA remaining fields
-            if (ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isSubscriber(claim.getClaimType()) && choBand.getSubscriberSlaDays() != 0) {
                 claim.setRemainingSlaDaysInt(choBand.getSubscriberSlaDays() - 1);
                 claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
-            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            } else if (ClaimType.isFixedFee(claim.getClaimType()) && choBand.getFixedFeeSlaDays() != 0) {
                 claim.setRemainingSlaDaysInt(choBand.getFixedFeeSlaDays()- 1);
                 claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
             }
