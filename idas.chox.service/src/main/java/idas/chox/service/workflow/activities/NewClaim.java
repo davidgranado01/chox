@@ -11,6 +11,7 @@ import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
 
@@ -71,10 +72,20 @@ public class NewClaim extends BaseActivity {
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);
         
-        // Add General Note (specified in BRE band)
-        if (choBand != null && choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
-            Comment comment = Comment.newComment(0, claim.getBreBand().getClaimUploadNote());
-            claim.addComment(comment);
+        if (choBand != null) {
+            // Add General Note (specified in BRE band)
+            if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
+                Comment comment = Comment.newComment(0, claim.getBreBand().getClaimUploadNote());
+                claim.addComment(comment);
+            }
+            // For subscriber and fixed-fee claims, we need to set the initial SLA remaining fields
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                claim.setRemainingSlaDaysInt(choBand.getSubscriberSlaDays() - 1);
+                claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                claim.setRemainingSlaDaysInt(choBand.getFixedFeeSlaDays()- 1);
+                claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
+            }
         }
 
         // Perform HPI check
