@@ -95,6 +95,7 @@ from bre_band bre,
 where bbo.chorganisation_id = claim.chorganisation_id
   AND bbo.band_id = bre.id
   AND bre.insurer_id = claim.insurer_id
+  AND bre.subscriber_sla_days != 0
   AND claim.claim_type IN (7,8,9)
   AND claim.status in ('ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
         'ClaimPending', 'ClaimReferredToFNOL', 'ClaimReferredToEngineer', 'ClaimUpdatedByEngineer',
@@ -107,6 +108,7 @@ from bre_band bre,
      bre_band_organisation bbo
 where bbo.chorganisation_id = claim.chorganisation_id
   AND bbo.band_id = bre.id
+  AND bre.fixedfee_sla_days != 0
   AND bre.insurer_id = claim.insurer_id
   AND claim.claim_type IN (11,12,13)
   AND claim.status in ('ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
