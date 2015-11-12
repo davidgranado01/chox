@@ -37,6 +37,9 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
     @Override
     public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPrice.class);
+        criteria.createAlias("workgroup", "workgroup");
+        criteria.add(Restrictions.eq("workgroup.status", true));
+        criteria.createAlias("workgroup.insurer", "insurer");
         if (insurerId > 0) {
             criteria.add(Restrictions.eq("insurer.id", insurerId));
         }
@@ -56,6 +59,7 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
         }
         if (insurerId > 0) {
             criteria.createAlias("workgroup", "workgroup");
+            criteria.add(Restrictions.eq("workgroup.status", true));
             criteria.createAlias("workgroup.insurer", "insurer");
             criteria.add(Restrictions.eq("insurer.id", insurerId));
         }
@@ -67,6 +71,8 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
     public List<AutomaticRoutingPolicy> getAutomaticRoutingsByPolicy(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPolicy.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.createAlias("workgroup", "workgroup");
+        criteria.add(Restrictions.eq("workgroup.status", true));
         return findByCriteria(criteria);
     }
 
@@ -75,6 +81,8 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
     public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPrice.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.createAlias("workgroup", "workgroup");
+        criteria.add(Restrictions.eq("workgroup.status", true));
         criteria.addOrder(Order.asc("price"));
         return findByCriteria(criteria);
 
