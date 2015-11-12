@@ -101,7 +101,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             }
             criteria.add(Restrictions.eq("insurer.id", InsId));
             if (claimType != null) {
-                criteria.add(Restrictions.eq("claim_type", claimType));
+                criteria.add(Restrictions.eq("claimType", claimType));
             }
             criteria.addOrder(Order.desc("dateFrom"));
             list = findByCriteria(criteria);

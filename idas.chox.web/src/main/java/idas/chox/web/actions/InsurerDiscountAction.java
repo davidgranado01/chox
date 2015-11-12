@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,7 +23,6 @@ import idas.chox.core.model.*;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.InsurerDiscountViewData;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 public class InsurerDiscountAction extends BaseAction implements ModelDriven<InsurerDiscount>, Preparable {
 
@@ -103,11 +103,9 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     }
 
     public String getClaimTypesJsonString() {
-        List<LookupItem> claimTypesList = new ArrayList<>();
-        for (ClaimType claimType : ClaimType.getMainClaimTypes()) {
-            claimTypesList.add(new LookupItem(claimType.toString(), Integer.toString(claimType.getClaimTypeValue())));
-        }
-        return "{totalCount:" + claimTypesList.size() + ", results:" + JSONArray.fromObject(claimTypesList).toString() + "}";
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
+        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
+        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
     }
 
     public String getInsurerDiscountTypeJsonString() {
