@@ -15,16 +15,28 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.UserService;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class InsurerUpload extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerUpload.class);
     private BreBandService breBandService;
+    private InsurerDiscountService insurerDiscountService;
+    private UserService userService;
     private boolean autoRoutedInvoice = false;
     protected boolean claimRouted = false;
     protected boolean claimOwnerAssigned = false;
     protected RulesEngineResponse breResponse;
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public RulesEngineResponse getBreResponse() {
         return breResponse;
@@ -69,6 +81,9 @@ public class InsurerUpload extends BaseActivity {
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);
 
+        insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+        claimService.updateLiabilityPayment(claim);
+        
         // Add General Note (specified in BRE band)
         if (choBand != null && choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
             Comment comment = Comment.newComment(0, claim.getBreBand().getClaimUploadNote());

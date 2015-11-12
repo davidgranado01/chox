@@ -89,8 +89,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     public List<InsurerDiscount> getInsurerDiscount(int choId, int insId) {
         return getInsurerDiscount(choId, insId, null);
     }
+    
+
     @Override
-    public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId, ClaimType claimType) {
+    public List<InsurerDiscount> getInsurerDiscount(int choId, int insId, ClaimType claimType) {
 
         List<InsurerDiscount> list = new ArrayList<>();
 
@@ -99,7 +101,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             if (choId >= 1) {
                 criteria.add(Restrictions.eq("chOrganisation.id", choId));
             }
-            criteria.add(Restrictions.eq("insurer.id", InsId));
+            criteria.add(Restrictions.eq("insurer.id", insId));
             if (claimType != null) {
                 criteria.add(Restrictions.eq("claimType", claimType));
             }
@@ -108,7 +110,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         } catch (Exception e) {
             LOG.error("Error getting Insurer Discount: {}", e.getMessage());
         }
-        LOG.debug("total record in insurer Discount for insurer: {}, {} ", list.size());
+        LOG.debug("total records in insurer Discount for insurer={}: {} ", insId, list.size());
         return list;
     }
 
@@ -235,7 +237,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             Map data = (Map) object;
             return (BigDecimal) (data.get("discount_percentage"));
         }
-        LOG.debug("No discount percentage found for this invoice created date: {}", invoiceCreatedDate);
+        LOG.debug("No discount percentage found for CHO={}, Insurer={}, type={}. invoice creation date={} and claim type={}", new Object[]{choId, insId, insurerDiscountTypeValue, invoiceCreatedDate, claimTypeValue});
         return BigDecimal.ZERO;
 
     }
@@ -294,7 +296,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue() && inv.getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
                     repairGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
                     inv.setRepairInsurerDiscountCalculated(repairGrossInsurerDiscountPercentage);
                     LOG.debug("repairGrossInsurerDiscountPercentage = {}", repairGrossInsurerDiscountPercentage);
                     if (repairGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
@@ -303,7 +305,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue() && inv.getHireGross().compareTo(BigDecimal.ZERO) == 1) {
                     hireGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
                     inv.setHireInsurerDiscountCalculated(hireGrossInsurerDiscountPercentage);
                     LOG.debug("hireGrossInsurerDiscountPercentage = {}", hireGrossInsurerDiscountPercentage);
                     if (hireGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
@@ -312,7 +314,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue() && inv.getTotalGross().compareTo(BigDecimal.ZERO) == 1) {
                     totalGrossInsurerDiscountPercentage = getDiscountPercentage(claim.getInsurer().getId(),
-                            claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+                            claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
                     inv.setTotalInsurerDiscountCalculated(totalGrossInsurerDiscountPercentage);
                     LOG.debug("totalGrossInsurerDiscountPercentage = {}", totalGrossInsurerDiscountPercentage);
                     if (totalGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {

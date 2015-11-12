@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.xml.util.NodeHelper;
-import java.text.MessageFormat;
 
 public class NewInvoice extends BaseActivity {
 

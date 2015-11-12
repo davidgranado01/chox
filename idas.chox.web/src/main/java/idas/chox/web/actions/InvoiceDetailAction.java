@@ -257,7 +257,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     private BigDecimal getTotalGrossInsurerDiscountPercentage(Claim claim) {
         if (claim.getInsurer().isInsurerDiscountEnable()) {
-            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
         } else {
             return BigDecimal.ZERO;
         }
@@ -265,7 +265,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     private BigDecimal getRepairGrossInsurerDiscountPercentage(Claim claim) {
         if (claim.getInsurer().isInsurerDiscountEnable()) {
-            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
         } else {
             return BigDecimal.ZERO;
         }
@@ -273,7 +273,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     
     private BigDecimal getHireGrossInsurerDiscountPercentage(Claim claim) {
         if (claim.getInsurer().isInsurerDiscountEnable()) {
-            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.HIRE.getInsurerDiscountTypeValue(), claim.getClaimType().getClaimTypeValue());
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.HIRE.getInsurerDiscountTypeValue(), ClaimType.getResolvedClaimType(claim.getClaimType()).getClaimTypeValue());
         } else {
             return BigDecimal.ZERO;
         }
