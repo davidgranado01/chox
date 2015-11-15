@@ -7,7 +7,7 @@ BEGIN
 -- First, set all to null
 update claim
   set remaining_sla_days = null, remaining_sla_days_str = null
-where remaining_sla_days is not null;
+where remaining_sla_days is not null or remaining_sla_days_str is not null;
 
 update claim
   set remaining_sla_days = sla_ext_days + bre.subscriber_sla_days - get_days_in_status(claim.id, '{"ClaimUnacknowledgedUnassigned","ClaimUnacknowledgedUnrouted","ClaimUnacknowledgedRouted",

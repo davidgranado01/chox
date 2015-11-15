@@ -20,6 +20,8 @@ public class SubscriberClaimToGta extends BaseActivity {
         }
 
         claim.setStatus(auditTrailService.getStateBeforeRejection(claim.getId()));
+        claim.setRemainingSlaDays(null);
+        claim.setRemainingSlaDaysInt(null);
         if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.FIXED_FEE) {
             claim.setClaimType(ClaimType.GTA);
         } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE

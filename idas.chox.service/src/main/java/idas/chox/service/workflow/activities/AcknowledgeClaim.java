@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
@@ -148,7 +149,11 @@ public class AcknowledgeClaim extends BaseActivity {
         }
  
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
- 
+        
+        if (ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            claim.setRemainingSlaDays(null);
+            claim.setRemainingSlaDaysInt(null);
+        }
     }
 
 
