@@ -1311,8 +1311,8 @@
                             <span id="subscriberResubmissionAllowedPH"></span>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="pauseSubscriberSlaClock" value="pauseSubscriberSlaClock" /></div><label class="chox-form-std-label"><b>Pause SLA Clock On Designated Bank Holiday Days</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ticking this box will ensure that the SLA clock for Subscriber Claims pauses on the designated Bank Holiday Days.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="pauseSubscriberSlaClock" value="pauseSubscriberSlaClock" /></div><label class="chox-form-std-label"><b>Pause SLA Clock on designated Bank Holiday Days</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ticking this box will ensure that the SLA Clock for Subscriber Claims pauses on the designated Bank Holiday Days.</div>
                         </div>
                     </div>
 </s:if>     
