@@ -109,7 +109,7 @@
             rules: {
 <s:if test="subscriberClaimsEnabled">                         
                 subsctiberTimeCutOff:{required:true, time:true},
-                subscriberSlaDays:{required:true, number:true, min:1},
+                subscriberSlaDays:{required:true, number:true, min:0},
 </s:if>
 <s:if test="fixedFeeClaimsEnabled">                         
                 fixedFeeTimeCutOff:{required:true, time:true},
@@ -142,7 +142,7 @@
             messages: {
 <s:if test="isSubscriberEnabled">                         
                 rentalStartTime: {required:"You must supply a value for 'Subsctiber Time Cut-Off'" , time:"Invalid time format for 'Subsctiber Time Cut-Off'"},
-                subscriberSlaDays: {required:"You must supply a value for 'Subscriber SLA Days'", number:"'Subscriber SLA Days' must be numeric", min:"'Subscriber SLA Days' cannot be less than one" },
+                subscriberSlaDays: {required:"You must supply a value for 'Subscriber SLA Days'", number:"'Subscriber SLA Days' must be numeric", min:"'Subscriber SLA Days' cannot be less than zero" },
 </s:if>
 <s:if test="isFixedFeeEnabled">                         
                 rentalStartTime: {required:"You must supply a value for 'Fixed Fee Time Cut-Off'" , time:"Invalid time format for 'Fixed Fee Time Cut-Off'"},
