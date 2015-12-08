@@ -55,7 +55,7 @@ WHERE
      AND (((vc.rental_start IS NULL) AND (bpb.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb.start_date <= vc.rental_start)))
      AND i.penalty_band > -1
      AND (current_date - i.auto_penalty_start::DATE) >= i.penalty_band
-     AND ((i.penalty_band = 90 and (bpb.hire_apply_90_day_rate=true or bpb.repair_apply_90_day_rate=true) and hire_use_commercial=false and repair_use_commercial=false) or  i.penalty_band != 90)
+     AND ((i.penalty_band = 90 and ((bpb.hire_apply_90_day_rate=true and bpb.hire_use_commercial=false) or (bpb.repair_apply_90_day_rate=true and bpb.repair_use_commercial=false))) or i.penalty_band != 90)
      -- Subquery to exclude the older penalty band entries
      AND NOT EXISTS (SELECT 
                           bpb1.id 
