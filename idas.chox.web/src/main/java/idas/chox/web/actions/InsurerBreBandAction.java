@@ -251,16 +251,24 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                             LOG.error("Exception converting string date to date with '{}': {}", penaltyBandViewData.getPenaltyBandStartDate(), ex.getMessage());
                             throw new Exception("Error converting Penalty Band Start Date");
                         }
-                        bpb.setHire30Day(penaltyBandViewData.getHire30DayRate());
-                        bpb.setHire60Day(penaltyBandViewData.getHire60DayRate());
-                        bpb.setHire90Day(penaltyBandViewData.getHire90DayRate());
-                        bpb.setHireApply90DayRate(penaltyBandViewData.isHireApply90DayRate());
-                        bpb.setHireUseCommercial(penaltyBandViewData.isHireUseCommercial());
-                        bpb.setRepair30Day(penaltyBandViewData.getRepair30DayRate());
-                        bpb.setRepair60Day(penaltyBandViewData.getRepair60DayRate());
-                        bpb.setRepair90Day(penaltyBandViewData.getRepair90DayRate());
-                        bpb.setRepairApply90DayRate(penaltyBandViewData.isRepairApply90DayRate());
-                        bpb.setRepairUseCommercial(penaltyBandViewData.isRepairUseCommercial());
+                        bpb.setHireDay1(penaltyBandViewData.getHireDayRate1());
+                        bpb.setHireDay2(penaltyBandViewData.getHireDayRate2());
+                        bpb.setHireDay3(penaltyBandViewData.getHireDayRate3());
+                        bpb.setHireUseCommercialDay1(penaltyBandViewData.isHireUseCommercialDay1());
+                        bpb.setHireUseCommercialDay2(penaltyBandViewData.isHireUseCommercialDay2());
+                        bpb.setHireUseCommercialDay3(penaltyBandViewData.isHireUseCommercialDay3());
+                        bpb.setHirePeriodStartDay1(penaltyBandViewData.getHirePeriodStartDay1());
+                        bpb.setHirePeriodStartDay2(penaltyBandViewData.getHirePeriodStartDay2());
+                        bpb.setHirePeriodStartDay3(penaltyBandViewData.getHirePeriodStartDay3());
+                        bpb.setRepairDay1(penaltyBandViewData.getRepairDayRate1());
+                        bpb.setRepairDay2(penaltyBandViewData.getRepairDayRate2());
+                        bpb.setRepairDay3(penaltyBandViewData.getRepairDayRate3());
+                        bpb.setRepairUseCommercialDay1(penaltyBandViewData.isRepairUseCommercialDay1());
+                        bpb.setRepairUseCommercialDay2(penaltyBandViewData.isRepairUseCommercialDay2());
+                        bpb.setRepairUseCommercialDay3(penaltyBandViewData.isRepairUseCommercialDay3());
+                        bpb.setRepairPeriodStartDay1(penaltyBandViewData.getRepairPeriodStartDay1());
+                        bpb.setRepairPeriodStartDay2(penaltyBandViewData.getRepairPeriodStartDay2());
+                        bpb.setRepairPeriodStartDay3(penaltyBandViewData.getRepairPeriodStartDay3());
                         bpb.setBreBand(model);
                         model.addBrePenaltyBand(bpb);
                     }

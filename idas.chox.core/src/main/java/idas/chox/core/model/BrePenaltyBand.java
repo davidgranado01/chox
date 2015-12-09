@@ -16,16 +16,24 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     private BreBand breBand;
     private ClaimType claimType;
     private Date startDate;
-    private BigDecimal hire30Day;
-    private BigDecimal hire60Day;
-    private BigDecimal hire90Day;
-    private boolean hireApply90DayRate;
-    private boolean hireUseCommercial;
-    private BigDecimal repair30Day;
-    private BigDecimal repair60Day;
-    private BigDecimal repair90Day;
-    private boolean repairApply90DayRate;
-    private boolean repairUseCommercial;
+    private BigDecimal hireDay1;
+    private BigDecimal hireDay2;
+    private BigDecimal hireDay3;
+    private boolean hireUseCommercialDay1;
+    private boolean hireUseCommercialDay2;
+    private boolean hireUseCommercialDay3;
+    private int hirePeriodStartDay1;
+    private int hirePeriodStartDay2;
+    private int hirePeriodStartDay3;
+    private BigDecimal repairDay1;
+    private BigDecimal repairDay2;
+    private BigDecimal repairDay3;
+    private boolean repairUseCommercialDay1;
+    private boolean repairUseCommercialDay2;
+    private boolean repairUseCommercialDay3;
+    private int repairPeriodStartDay1;
+    private int repairPeriodStartDay2;
+    private int repairPeriodStartDay3;
 
     public BreBand getBreBand() {
         return breBand;
@@ -51,84 +59,100 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         this.startDate = startDate;
     }
 
-    public BigDecimal getHire30Day() {
-        return hire30Day;
+    public BigDecimal getHireDay1() {
+        return hireDay1;
     }
 
-    public void setHire30Day(BigDecimal hire30Day) {
-        this.hire30Day = hire30Day.setScale(1);
+    public void setHireDay1(BigDecimal hireDay1) {
+        this.hireDay1 = hireDay1.setScale(2);
     }
 
-    public BigDecimal getHire60Day() {
-        return hire60Day;
+    public BigDecimal getHireDay2() {
+        return hireDay2;
     }
 
-    public void setHire60Day(BigDecimal hire60Day) {
-        this.hire60Day = hire60Day.setScale(1);
+    public void setHireDay2(BigDecimal hireDay2) {
+        this.hireDay2 = hireDay2.setScale(2);
     }
 
-    public BigDecimal getHire90Day() {
-        return hire90Day;
+    public BigDecimal getHireDay3() {
+        return hireDay3;
     }
 
-    public void setHire90Day(BigDecimal hire90Day) {
-        this.hire90Day = hire90Day.setScale(1);
+    public void setHireDay3(BigDecimal hireDay3) {
+        this.hireDay3 = hireDay3.setScale(2);
     }
 
-    public boolean isHireApply90DayRate() {
-        return hireApply90DayRate;
+    public boolean isHireUseCommercialDay3() {
+        return hireUseCommercialDay3;
     }
 
-    public void setHireApply90DayRate(boolean hireApply90DayRate) {
-        this.hireApply90DayRate = hireApply90DayRate;
+    public void setHireUseCommercialDay3(boolean hireUseCommercialDay3) {
+        this.hireUseCommercialDay3 = hireUseCommercialDay3;
     }
 
-    public boolean isHireUseCommercial() {
-        return hireUseCommercial;
+    public boolean isHireUseCommercialDay2() {
+        return hireUseCommercialDay2;
     }
 
-    public void setHireUseCommercial(boolean hireUseCommercial) {
-        this.hireUseCommercial = hireUseCommercial;
+    public void setHireUseCommercialDay2(boolean hireUseCommercialDay2) {
+        this.hireUseCommercialDay2 = hireUseCommercialDay2;
     }
 
-    public BigDecimal getRepair30Day() {
-        return repair30Day;
+    public boolean isHireUseCommercialDay1() {
+        return hireUseCommercialDay1;
     }
 
-    public void setRepair30Day(BigDecimal repair30Day) {
-        this.repair30Day = repair30Day.setScale(1);
+    public void setHireUseCommercialDay1(boolean hireUseCommercialDay1) {
+        this.hireUseCommercialDay1 = hireUseCommercialDay1;
     }
 
-    public BigDecimal getRepair60Day() {
-        return repair60Day;
+    public BigDecimal getRepairDay1() {
+        return repairDay1;
     }
 
-    public void setRepair60Day(BigDecimal repair60Day) {
-        this.repair60Day = repair60Day.setScale(1);
+    public void setRepairDay1(BigDecimal repairDay1) {
+        this.repairDay1 = repairDay1.setScale(2);
     }
 
-    public BigDecimal getRepair90Day() {
-        return repair90Day;
+    public BigDecimal getRepairDay2() {
+        return repairDay2;
     }
 
-    public void setRepair90Day(BigDecimal repair90Day) {
-        this.repair90Day = repair90Day.setScale(1);
+    public void setRepairDay2(BigDecimal repairDay2) {
+        this.repairDay2 = repairDay2.setScale(2);
     }
 
-    public boolean isRepairApply90DayRate() {
-        return repairApply90DayRate;
+    public BigDecimal getRepairDay3() {
+        return repairDay3;
     }
 
-    public void setRepairApply90DayRate(boolean repairApply90DayRate) {
-        this.repairApply90DayRate = repairApply90DayRate;
+    public void setRepairDay3(BigDecimal repairDay3) {
+        this.repairDay3 = repairDay3.setScale(2);
     }
 
-    public boolean isRepairUseCommercial() {
-        return repairUseCommercial;
+    public boolean isRepairUseCommercialDay3() {
+        return repairUseCommercialDay3;
     }
 
-    public void setRepairUseCommercial(boolean repairUseCommercial) {
-        this.repairUseCommercial = repairUseCommercial;
+    public boolean isRepairUseCommercialDay2() {
+        return repairUseCommercialDay2;
+    }
+
+    public void setRepairUseCommercialDay2(boolean repairUseCommercialDay2) {
+        this.repairUseCommercialDay2 = repairUseCommercialDay2;
+    }
+
+    public void setRepairUseCommercialDay3(boolean repairUseCommercialDay3) {
+        this.repairUseCommercialDay3 = repairUseCommercialDay3;
+    }
+
+    public boolean isRepairUseCommercialDay1() {
+        return repairUseCommercialDay1;
+    }
+
+    public void setRepairUseCommercialDay1(boolean repairUseCommercialDay1) {
+        this.repairUseCommercialDay1 = repairUseCommercialDay1;
     }
 
     public static List<BrePenaltyBand> getDefaults() {
@@ -138,161 +162,290 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         BrePenaltyBand band = new BrePenaltyBand();
         band.claimType = ClaimType.GTA;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.5");
-        band.hire60Day = new BigDecimal("15.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("7.5");
+        band.hireDay2 = new BigDecimal("15.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
+        
         result.add(band);
         
         band = new BrePenaltyBand();
         band.claimType = ClaimType.GTA;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.5");
-        band.hire60Day = new BigDecimal("20.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("12.5");
+        band.hireDay2 = new BigDecimal("20.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         // Create Subscriber Defaults
         band = new BrePenaltyBand();
         band.claimType = ClaimType.SUBSCRIBER;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("4.0");
-        band.hire60Day = new BigDecimal("8.0");
-        band.hire90Day = new BigDecimal("12.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = false;
-        band.repair30Day = new BigDecimal("0.0");
-        band.repair60Day = new BigDecimal("0.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = true;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("4.0");
+        band.hireDay2 = new BigDecimal("8.0");
+        band.hireDay3 = new BigDecimal("12.0");
+        band.hireUseCommercialDay3 = false;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("0.0");
+        band.repairDay2 = new BigDecimal("0.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = 90;
         result.add(band);
         
         // Create Fixed-Fee Results
         band = new BrePenaltyBand();
         band.claimType = ClaimType.FIXED_FEE;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("5.0");
-        band.hire60Day = new BigDecimal("10.0");
-        band.hire90Day = new BigDecimal("15.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = false;
-        band.repair30Day = new BigDecimal("5.0");
-        band.repair60Day = new BigDecimal("10.0");
-        band.repair90Day = new BigDecimal("15.0");
-        band.repairApply90DayRate = true;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("5.0");
+        band.hireDay2 = new BigDecimal("10.0");
+        band.hireDay3 = new BigDecimal("15.0");
+        band.hireUseCommercialDay3 = false;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("5.0");
+        band.repairDay2 = new BigDecimal("10.0");
+        band.repairDay3 = new BigDecimal("15.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = 90;
         result.add(band);
     
         // Create Collaboration Protocol Defaults
         band = new BrePenaltyBand();
         band.claimType = ClaimType.COLLABORATION_PROTOCOL;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.5");
-        band.hire60Day = new BigDecimal("15.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("7.5");
+        band.hireDay2 = new BigDecimal("15.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         band = new BrePenaltyBand();
         band.claimType = ClaimType.COLLABORATION_PROTOCOL;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.5");
-        band.hire60Day = new BigDecimal("20.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("12.5");
+        band.hireDay2 = new BigDecimal("20.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         // Create Insurer vs Insurer Defaults
         band = new BrePenaltyBand();
         band.claimType = ClaimType.INSURER_VS_INSURER;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.5");
-        band.hire60Day = new BigDecimal("15.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("7.5");
+        band.hireDay2 = new BigDecimal("15.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         band = new BrePenaltyBand();
         band.claimType = ClaimType.INSURER_VS_INSURER;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.5");
-        band.hire60Day = new BigDecimal("20.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("12.5");
+        band.hireDay2 = new BigDecimal("20.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         // Create TPI Defaults
         band = new BrePenaltyBand();
         band.claimType = ClaimType.TPI;
         band.startDate = DateHelper.parse("01/01/1950");
-        band.hire30Day = new BigDecimal("7.5");
-        band.hire60Day = new BigDecimal("15.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.0");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("7.5");
+        band.hireDay2 = new BigDecimal("15.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         band = new BrePenaltyBand();
         band.claimType = ClaimType.TPI;
         band.startDate = DateHelper.parse("15/06/2012");
-        band.hire30Day = new BigDecimal("12.5");
-        band.hire60Day = new BigDecimal("20.0");
-        band.hire90Day = new BigDecimal("0.0");
-        band.hireApply90DayRate = true;
-        band.hireUseCommercial = true;
-        band.repair30Day = new BigDecimal("2.5");
-        band.repair60Day = new BigDecimal("5.0");
-        band.repair90Day = new BigDecimal("0.0");
-        band.repairApply90DayRate = false;
-        band.repairUseCommercial = false;
+        band.hireDay1 = new BigDecimal("12.5");
+        band.hireDay2 = new BigDecimal("20.0");
+        band.hireDay3 = new BigDecimal("0.0");
+        band.hireUseCommercialDay3 = true;
+        band.hireUseCommercialDay2 = false;
+        band.hireUseCommercialDay1 = false;
+        band.hirePeriodStartDay1 = 30;
+        band.hirePeriodStartDay2 = 60;
+        band.hirePeriodStartDay3 = 90;
+        band.repairDay1 = new BigDecimal("2.5");
+        band.repairDay2 = new BigDecimal("5.0");
+        band.repairDay3 = new BigDecimal("0.0");
+        band.repairUseCommercialDay3 = false;
+        band.repairUseCommercialDay2 = false;
+        band.repairUseCommercialDay1 = false;
+        band.repairPeriodStartDay1 = 30;
+        band.repairPeriodStartDay2 = 60;
+        band.repairPeriodStartDay3 = -1;
         result.add(band);
         
         // Create Manual Defaults
         // - no defaults for manual invoices
 
         return result;
+    }
+
+    public int getHirePeriodStartDay1() {
+        return hirePeriodStartDay1;
+    }
+
+    public void setHirePeriodStartDay1(int hirePeriodStartDay1) {
+        this.hirePeriodStartDay1 = hirePeriodStartDay1;
+    }
+
+    public int getHirePeriodStartDay2() {
+        return hirePeriodStartDay2;
+    }
+
+    public void setHirePeriodStartDay2(int hirePeriodStartDay2) {
+        this.hirePeriodStartDay2 = hirePeriodStartDay2;
+    }
+
+    public int getHirePeriodStartDay3() {
+        return hirePeriodStartDay3;
+    }
+
+    public void setHirePeriodStartDay3(int hirePeriodStartDay3) {
+        this.hirePeriodStartDay3 = hirePeriodStartDay3;
+    }
+
+    public int getRepairPeriodStartDay1() {
+        return repairPeriodStartDay1;
+    }
+
+    public void setRepairPeriodStartDay1(int repairPeriodStartDay1) {
+        this.repairPeriodStartDay1 = repairPeriodStartDay1;
+    }
+
+    public int getRepairPeriodStartDay2() {
+        return repairPeriodStartDay2;
+    }
+
+    public void setRepairPeriodStartDay2(int repairPeriodStartDay2) {
+        this.repairPeriodStartDay2 = repairPeriodStartDay2;
+    }
+
+    public int getRepairPeriodStartDay3() {
+        return repairPeriodStartDay3;
+    }
+
+    public void setRepairPeriodStartDay3(int repairPeriodStartDay3) {
+        this.repairPeriodStartDay3 = repairPeriodStartDay3;
     }
 }
