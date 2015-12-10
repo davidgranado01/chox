@@ -26,12 +26,12 @@
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
-        <!--custom-filter before="HEADERS_FILTER" ref="customFilters" /-->
-        <custom-filter before="CSRF_FILTER" ref="customFilters" />
-        <custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" />
+        <custom-filter before="HEADERS_FILTER" ref="customFilters" />
+        <!--custom-filter before="CSRF_FILTER" ref="customFilters" /-->
+        <!--custom-filter after="CSRF_FILTER" ref="csrfTokenChangingFilter" /-->
         <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
         <access-denied-handler ref="choxAccessDeniedHandler"/>
-        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
+        <!--csrf request-matcher-ref="csrfSecurityRequestMatcher"/-->
     </http>
     
     <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
