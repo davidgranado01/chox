@@ -2752,7 +2752,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getCalculatedHirePenaltyPercentage() {
         if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getHirePenaltyPercentage();
-LOG.info("getCalculatedHirePenaltyPercentage -1 Returning {}", (percentage != null && !percentage.isEmpty()) ? percentage : "0.0");
             return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
         }
         Invoice inv = claim.getInvoice();
@@ -2764,29 +2763,21 @@ LOG.info("getCalculatedHirePenaltyPercentage -1 Returning {}", (percentage != nu
             int dateDiff = inv.getInvoicedDays();
             
             if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() == -1) {
-LOG.info("getCalculatedHirePenaltyPercentage 0 Returning 0.0");
                 return "0.0";
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && !brePenaltyBand.isHireUseCommercialDay1()) {
-LOG.info("getCalculatedHirePenaltyPercentage 1 Returning {}", brePenaltyBand.getHireDay1().toString());
                 return brePenaltyBand.getHireDay1().toString();
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.isHireUseCommercialDay1()) {
-LOG.info("getCalculatedHirePenaltyPercentage 2 Returning Commercial");
                 return "Commercial";
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && !brePenaltyBand.isHireUseCommercialDay2()) {
-LOG.info("getCalculatedHirePenaltyPercentage 3 Returning {}", brePenaltyBand.getHireDay2().toString());
                 return brePenaltyBand.getHireDay2().toString();
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && brePenaltyBand.isHireUseCommercialDay2()) {
-LOG.info("getCalculatedHirePenaltyPercentage 4 Returning Commercial");
                 return "Commercial";
             } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1 && !brePenaltyBand.isHireUseCommercialDay3()) {
-LOG.info("getCalculatedHirePenaltyPercentage 5 Returning {}", brePenaltyBand.getHireDay3().toString());
                 return brePenaltyBand.getHireDay3().toString();
             } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1 && brePenaltyBand.isHireUseCommercialDay3()) {
-LOG.info("getCalculatedHirePenaltyPercentage 6 Returning Commercial");
                 return "Commercial";
             }
         }
-LOG.info("getCalculatedHirePenaltyPercentage 7 Returning 0.0");
         return "0.0";
     }
 
