@@ -2675,7 +2675,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         luItems.add(new LookupItem(brePenaltyBand.getRepairPeriodStartDay2() + " days - Commercial", "Commercial"));
                     } else {
                         perdec = new StringBuilder()
-                                .append(brePenaltyBand.getRepairPeriodStartDay2()).append(") days - ")
+                                .append(brePenaltyBand.getRepairPeriodStartDay2()).append(" days - ")
                                 .append(brePenaltyBand.getRepairDay2().toString()).append("%")
                                 .toString();
                         luItems.add(new LookupItem(perdec, brePenaltyBand.getRepairDay2().toString()));
@@ -2724,7 +2724,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         luItems.add(new LookupItem(brePenaltyBand.getHirePeriodStartDay2() + " days - Commercial", "Commercial"));
                     } else {
                         perdec = new StringBuilder()
-                                .append(brePenaltyBand.getHirePeriodStartDay2()).append(") days - ")
+                                .append(brePenaltyBand.getHirePeriodStartDay2()).append(" days - ")
                                 .append(brePenaltyBand.getHireDay2().toString()).append("%")
                                 .toString();
                         luItems.add(new LookupItem(perdec, brePenaltyBand.getHireDay2().toString()));
