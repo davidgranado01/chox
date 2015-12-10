@@ -2,9 +2,12 @@
 -- 8.9.1 Allow Adjustable Penalty Charge Periods
 --------------------------------------------------------------------------------
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_30_Day TO hire_day_1;
+ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_1 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_60_Day TO hire_day_2;
+ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_2 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_90_Day TO hire_day_3;
 ALTER TABLE bre_penalty_band DROP COLUMN hire_apply_90_day_rate;
+ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_3 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_use_commercial TO hire_use_commercial_day_3;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_use_commercial_day_2 BOOLEAN NOT NULL DEFAULT false;
@@ -15,6 +18,9 @@ ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_3 INTEGER NOT NULL
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_30_Day TO repair_day_1;
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_60_Day TO repair_day_2;
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_90_Day TO repair_day_3;
+ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_1 TYPE numeric(6,2);
+ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_2 TYPE numeric(6,2);
+ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_3 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band DROP COLUMN repair_apply_90_day_rate;
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_use_commercial TO repair_use_commercial_day_3;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
