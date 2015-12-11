@@ -1381,7 +1381,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                                                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
                             BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-                            
                             /*
                             * For manual invoices always show 'Adjust Penalty
                             * Charges' more action.
@@ -1390,11 +1389,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             * not have to be over say 30 days in order to be able
                             * to apply the penalty charges
                             */
-                            if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                            if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1())) {
                                 accessRight = 0;
                             }
                             // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                            else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
+                            else if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1) { // Check if not removed from penalty queue
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         && (!claim.isAutoPenaltyChargeEnabled()
