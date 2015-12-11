@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.BreBand;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -37,8 +38,10 @@ public class SubscriberClaimRejectionContestTest extends BaseTest {
 
         Claim claim = new Claim();
         claim.setClaimType(ClaimType.SUBSCRIBER);
+        claim.setBreBand(new BreBand());
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
+        claim.setChorganisation(chorganisationService.getChorganisation(1006));
         claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         claim.setPreviousStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
