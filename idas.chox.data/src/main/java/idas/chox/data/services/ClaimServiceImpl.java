@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1988,6 +1987,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         updateClaim(claim);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void setInitialPenaltyBand(Claim claim) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -2003,6 +2003,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void setNextPenaltyBand(Claim claim) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -2161,26 +2162,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO) {
         boolean result = false;
         boolean allowPenaltyCharges = true;
-        if (isCHO) {
-            Invoice invoice = claim.getInvoice();
-            // Set Claim BRE band
-            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-            claim.setBreBand(choBand);
-            if (claim.getBreBand() == null) {
-                LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
-                allowPenaltyCharges = false;
-            } else if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
-                allowPenaltyCharges = false;
-            }
-            if (allowPenaltyCharges && invoice != null
-                    && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
-                    && invoice.getPenaltyBand() > -1
-                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                    && (!claim.isAutoPenaltyChargeEnabled()
-                    || calculateCurrentPenaltyBand(claim) >= 3)))) {
-                result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
-            }
+        Invoice invoice = claim.getInvoice();
+        // Set Claim BRE band
+        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setBreBand(choBand);
+        if (claim.getBreBand() == null) {
+            LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
+            allowPenaltyCharges = false;
+        } else if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
+            allowPenaltyCharges = false;
+        }
+        if (allowPenaltyCharges && invoice != null
+                && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
+                && invoice.getPenaltyBand() > -1
+                && ((isCHO && !claim.getChorganisation().isAutoPenaltyChargeEnabled())
+                    || (isCHO && claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                        && !claim.isAutoPenaltyChargeEnabled()))
+                && (!isCHO && ClaimType.isInsurerUpload(claim.getClaimType()) && !claim.isAutoPenaltyChargeEnabled())
+            ) {
+            result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
         }
         return result;
     }

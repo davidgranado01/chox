@@ -17,10 +17,10 @@ DECLARE
 
 BEGIN
 
-FOR claimRecord IN 
+FOR claimRecord IN
 
-SELECT 
-     * 
+SELECT
+     *
 FROM
      claim c,
      invoice i, 
@@ -30,19 +30,20 @@ FROM
      insurer ins, 
      chorganisation cho,
      vehicle_hire vc
-WHERE 
+WHERE
      c.invoice_id = i.id 
      AND (c.id = $2 OR $2 = -1)
-     AND ( (c.claim_type in (0,1,2) and bre.allow_gta_penalty_charges =  true and  bre.allow_gta_penalty_charges_auto = true)
-        or (c.claim_type = 3 and bre.allow_tpi_penalty_charges =  true and bre.allow_tpi_penalty_charges_auto =  true)
-        or (c.claim_type in (4,5,6) and bre.allow_ins_vs_ins_penalty_charges =  true and bre.allow_ins_vs_ins_penalty_charges_auto =  true)
-        or (c.claim_type in (7,8,9) and bre.allow_subscriber_penalty_charges =  true and bre.allow_subscriber_penalty_charges_auto =  true)
-        or (c.claim_type in (11,12,13) and bre.allow_fixed_fee_penalty_charges =  true and bre.allow_fixed_fee_penalty_charges_auto =  true)
-        or (c.claim_type in (18,19,20) and bre.allow_collaboration_penalty_charges =  true and bre.allow_collaboration_penalty_charges_auto =  true)
+     AND ( (c.claim_type in (0,1,2) and bre.allow_gta_penalty_charges = true and bre.allow_gta_penalty_charges_auto = true)
+        or (c.claim_type = 3 and bre.allow_tpi_penalty_charges = true and bre.allow_tpi_penalty_charges_auto = true)
+        or (c.claim_type in (4,5,6) and bre.allow_ins_vs_ins_penalty_charges = true and bre.allow_ins_vs_ins_penalty_charges_auto = true)
+        or (c.claim_type in (7,8,9) and bre.allow_subscriber_penalty_charges = true and bre.allow_subscriber_penalty_charges_auto = true)
+        or (c.claim_type in (10,14,15,16,17) and bre.allow_manual_inv_penalty_charges = true and bre.allow_manual_inv_penalty_charges_auto = true)
+        or (c.claim_type in (11,12,13) and bre.allow_fixed_fee_penalty_charges = true and bre.allow_fixed_fee_penalty_charges_auto = true)
+        or (c.claim_type in (18,19,20) and bre.allow_collaboration_penalty_charges = true and bre.allow_collaboration_penalty_charges_auto = true)
       )
      AND bpb.bre_band_id = bre.id
      AND bpb.claim_type = getMainClaimType(c.claim_type)
-     AND c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
+     AND c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted','PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect','ManualInvoicePaid')
      AND c.insurer_id = ins.id 
      AND c.chorganisation_id = cho.id
      AND bre.insurer_id = ins.id
@@ -55,11 +56,11 @@ WHERE
      AND i.penalty_band > -1
      AND (current_date - i.auto_penalty_start::DATE) >= i.penalty_band
      -- Subquery to exclude the older penalty band entries
-     AND NOT EXISTS (SELECT 
+     AND NOT EXISTS (SELECT
                           bpb1.id 
-                     FROM 
+                     FROM
                           bre_penalty_band bpb1
-                     WHERE 
+                     WHERE
                           bpb1.claim_type = bpb.claim_type
                           AND bpb1.bre_band_id = bpb.bre_band_id
                           AND (((vc.rental_start IS NULL) AND (bpb1.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb1.start_date <= vc.rental_start)))
@@ -85,15 +86,15 @@ nextPenaltyBand = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 an
                   CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 != -1 THEN claimRecord.hire_period_start_day_2 ELSE
                   CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 = -1 THEN claimRecord.repair_period_start_day_2 ELSE -1 END END END END;
 
-    
+
 IF hirepenalPerVal != 0.0 or repairpenalPerVal != 0.0 THEN
 RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepenalPer=%    repairpenalPer=%', penaltyAge, claimRecord.penalty_band, claimRecord.cho_reference, hireStartDate, hirepenalPerVal*100.0::numeric(4,1), repairpenalPerVal*100.0::numeric(4,1);
-    UPDATE 
-      invoice  
-    SET 
+    UPDATE
+      invoice
+    SET
       penalty_band = nextPenaltyBand,
-      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
-      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      hire_penalty_charge_applied_date = (CASE WHEN(hirepenalPerVal > 0.0) THEN now() ELSE null END),
+      repair_penalty_charge_applied_date = (CASE WHEN(repairpenalPerVal > 0.0) THEN now() ELSE null END),
       full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
       total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
                            THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
@@ -114,8 +115,8 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
  -- Insurer Discount will be applied to the claim
 
-   UPDATE invoice  
-   SET 
+   UPDATE invoice
+   SET
       hire_gross_insurer_discount = (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
       repair_gross_insurer_discount = (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
       total_gross_insurer_discount = (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
@@ -167,7 +168,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment,version)  
-   SELECT 
+   SELECT
       claimRecord.id,
       $1,
       now() + interval '0.1 sec',
@@ -177,7 +178,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPerVal) + (i.repair_gross * repairpenalPerVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' || claimRecord.penalty_band || ' days.', 
      0
-   FROM 
+   FROM
      invoice i
    WHERE
      i.id = claimRecord.invoice_id;
@@ -188,7 +189,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
-   SELECT 
+   SELECT
       c.id,
       $1,
       now() + interval '0.1 sec',
@@ -200,7 +201,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || hireInsDis.discount_percentage
                                       || '%) has been applied to the Hire on this invoice based on the discount contract in place.' 
                                       
-   FROM 
+   FROM
      claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
              inner join chorganisation cho on cho.id = c.chorganisation_id
              inner join invoice i on (i.id = c.invoice_id AND i.hire_gross > 0)
@@ -216,7 +217,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
-   SELECT 
+   SELECT
       c.id,
       $1,
       now() + interval '0.1 sec',
@@ -228,7 +229,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || repairInsDis.discount_percentage
                                       || '%) has been applied to the Repair on this invoice based on the discount contract in place.' 
                                       
-   FROM 
+   FROM
      claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
              inner join chorganisation cho on cho.id = c.chorganisation_id
              inner join invoice i on (i.id = c.invoice_id AND i.repair_gross > 0)
@@ -246,7 +247,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
-   SELECT 
+   SELECT
       c.id,
       $1,
       now() + interval '0.1 sec',
@@ -258,7 +259,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || totalInsDis.discount_percentage
                                       || '%) has been applied to the Total on this invoice based on the discount contract in place.' 
                                       
-   FROM 
+   FROM
       claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
              inner join chorganisation cho on cho.id = c.chorganisation_id
              inner join invoice i on (i.id = c.invoice_id AND i.total_gross > 0)

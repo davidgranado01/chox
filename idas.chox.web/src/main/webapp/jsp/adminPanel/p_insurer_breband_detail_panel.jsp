@@ -1156,6 +1156,17 @@
         return insurerVsInsurerPenaltiesEnable;
     }
         
+    function doManualInvoicePenaltyChargeCheck(){
+        var manualInvoicePenaltiesEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="allowManualInvoicePenaltyCharges"]:checked').val()){
+            manualInvoicePenaltiesEnable = true;
+            $("#manualInvoicePenaltyIdentifierId").slideDown();
+        }else{
+            $("#manualInvoicePenaltyIdentifierId").hide();
+        }
+        return manualInvoicePenaltiesEnable;
+    }
+        
     function onPenaltyChargeBandPageRefresh(){
         // load the grid.
         penaltyBand_loadGridViewList();
@@ -1165,6 +1176,7 @@
         doFixedFeePenaltyChargeCheck();
         doCollaborationPenaltyChargeCheck();
         doTpiPenaltyChargeCheck();
+        doManualInvoicePenaltyChargeCheck();
         doInsurervsInsurerPenaltyChargeCheck();
 </s:if>
         // reset the form.
@@ -1390,17 +1402,22 @@
                                 </div>
                             </s:if>
                             <div class="chox-form-checkbox"><s:checkbox name="allowInsurervsInsurerPenaltyCharges" value="allowInsurervsInsurerPenaltyCharges" onclick="doInsurervsInsurerPenaltyChargeCheck()" /></div>
-                            <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer vs Insurer Invoices</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer vs Insurer invoices.</div>
-                            <div class="chox-form-checkboxitem" id="insurervsInsurerPenaltyIdentifierId">
-                                <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowInsurervsInsurerAutoPenaltyCharges" value="allowInsurervsInsurerAutoPenaltyCharges"/></div>
-                                <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer vs Insurer Invoices</b></label>
-                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
-                            </div>
+                                <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer vs Insurer Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer vs Insurer invoices.</div>
+                                <div class="chox-form-checkboxitem" id="insurervsInsurerPenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowInsurervsInsurerAutoPenaltyCharges" value="allowInsurervsInsurerAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer vs Insurer Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             <s:if test="insurerUploadEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" /></div>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" onclick="doManulInvoicePenaltyChargeCheck()" /></div>
                                 <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer Upload Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer Upload invoices.</div>
+                                <div class="chox-form-checkboxitem" id="manualInvoicePenaltyIdentifierId">
+                                    <div class="chox-form-checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:checkbox name="allowManualInvoiceAutoPenaltyCharges" value="allowManualInvoiceAutoPenaltyCharges"/></div>
+                                    <label class="chox-form-std-label"><b>Allow Automatic Penalty Charges on Insurer Upload Invoices</b></label>
+                                    <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
+                                </div>
                             </s:if>
                         </div>
                         <div class="status-info">

@@ -320,3 +320,13 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 ----------------------
 -- End of 8.9.1
 ----------------------
+
+--------------------------------------------------------------------------------
+-- 8.9.1 Add Automatic Penalties on Insurer Invoices
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN allow_manual_inv_penalty_charges_auto boolean not null default false;
+
+----------------------
+-- End of 8.9.2
+----------------------
+

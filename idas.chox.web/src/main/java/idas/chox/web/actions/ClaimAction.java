@@ -677,12 +677,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAlertPanel() {
 
         Invoice invoice = claim.getInvoice();
-        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
+        NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         setInvoiceIntroducedDays(invoice.getInvoicedDays());
         setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge()).subtract(invoice.getRepairPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getFullTotalToPay());
-        setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
-        setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
+        setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currencyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
+        setTotalAmountToPayAfterNewPenaltyChargeFormatted(currencyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
@@ -2749,10 +2749,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCalculatedHirePenaltyPercentage() {
-        if (isInsurerClaim()) {
-            String percentage = claim.getInvoice().getHirePenaltyPercentage();
-            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
-        }
+//        if (isInsurerClaim()) {
+//            String percentage = claim.getInvoice().getHirePenaltyPercentage();
+//            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
+//        }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -2782,10 +2782,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 
     public String getCalculatedRepairPenaltyPercentage() {
-        if (isInsurerClaim()) {
-            String percentage = claim.getInvoice().getRepairPenaltyPercentage();
-            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
-        }
+//        if (isInsurerClaim()) {
+//            String percentage = claim.getInvoice().getRepairPenaltyPercentage();
+//            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
+//        }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -2854,6 +2854,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 || (ClaimType.isSubscriber(claim.getClaimType()) && (!claim.getBreBand().isAllowSubscriberAutoPenaltyCharges() || !claim.getBreBand().isAllowSubscriberPenaltyCharges()))
                 || (ClaimType.isTPI(claim.getClaimType()) && (!claim.getBreBand().isAllowTPIAutoPenaltyCharges() || !claim.getBreBand().isAllowTPIPenaltyCharges()))
                 || (ClaimType.isGTA(claim.getClaimType()) && (!claim.getBreBand().isAllowGTAAutoPenaltyCharges() || !claim.getBreBand().isAllowGTAPenaltyCharges()))
+                || (ClaimType.isInsurerUpload(claim.getClaimType()) && (!claim.getBreBand().isAllowManualInvoiceAutoPenaltyCharges() || !claim.getBreBand().isAllowManualInvoicePenaltyCharges()))
                 || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges()))
                 ) {
             return false;
