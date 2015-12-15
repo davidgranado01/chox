@@ -19,18 +19,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     private BigDecimal hireDay1;
     private BigDecimal hireDay2;
     private BigDecimal hireDay3;
-    private boolean hireUseCommercialDay1;
-    private boolean hireUseCommercialDay2;
-    private boolean hireUseCommercialDay3;
+    private boolean useCommercialDay1;
+    private boolean useCommercialDay2;
+    private boolean useCommercialDay3;
     private int hirePeriodStartDay1;
     private int hirePeriodStartDay2;
     private int hirePeriodStartDay3;
     private BigDecimal repairDay1;
     private BigDecimal repairDay2;
     private BigDecimal repairDay3;
-    private boolean repairUseCommercialDay1;
-    private boolean repairUseCommercialDay2;
-    private boolean repairUseCommercialDay3;
     private int repairPeriodStartDay1;
     private int repairPeriodStartDay2;
     private int repairPeriodStartDay3;
@@ -83,30 +80,6 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         this.hireDay3 = hireDay3.setScale(2);
     }
 
-    public boolean isHireUseCommercialDay3() {
-        return hireUseCommercialDay3;
-    }
-
-    public void setHireUseCommercialDay3(boolean hireUseCommercialDay3) {
-        this.hireUseCommercialDay3 = hireUseCommercialDay3;
-    }
-
-    public boolean isHireUseCommercialDay2() {
-        return hireUseCommercialDay2;
-    }
-
-    public void setHireUseCommercialDay2(boolean hireUseCommercialDay2) {
-        this.hireUseCommercialDay2 = hireUseCommercialDay2;
-    }
-
-    public boolean isHireUseCommercialDay1() {
-        return hireUseCommercialDay1;
-    }
-
-    public void setHireUseCommercialDay1(boolean hireUseCommercialDay1) {
-        this.hireUseCommercialDay1 = hireUseCommercialDay1;
-    }
-
     public BigDecimal getRepairDay1() {
         return repairDay1;
     }
@@ -131,29 +104,6 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         this.repairDay3 = repairDay3.setScale(2);
     }
 
-    public boolean isRepairUseCommercialDay3() {
-        return repairUseCommercialDay3;
-    }
-
-    public boolean isRepairUseCommercialDay2() {
-        return repairUseCommercialDay2;
-    }
-
-    public void setRepairUseCommercialDay2(boolean repairUseCommercialDay2) {
-        this.repairUseCommercialDay2 = repairUseCommercialDay2;
-    }
-
-    public void setRepairUseCommercialDay3(boolean repairUseCommercialDay3) {
-        this.repairUseCommercialDay3 = repairUseCommercialDay3;
-    }
-
-    public boolean isRepairUseCommercialDay1() {
-        return repairUseCommercialDay1;
-    }
-
-    public void setRepairUseCommercialDay1(boolean repairUseCommercialDay1) {
-        this.repairUseCommercialDay1 = repairUseCommercialDay1;
-    }
 
     public static List<BrePenaltyBand> getDefaults() {
         List<BrePenaltyBand> result = new ArrayList<>(10);
@@ -165,18 +115,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("7.5");
         band.hireDay2 = new BigDecimal("15.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -189,18 +136,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("12.5");
         band.hireDay2 = new BigDecimal("20.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -213,18 +157,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("4.0");
         band.hireDay2 = new BigDecimal("8.0");
         band.hireDay3 = new BigDecimal("12.0");
-        band.hireUseCommercialDay3 = false;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = false;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("0.0");
         band.repairDay2 = new BigDecimal("0.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = 90;
@@ -237,18 +178,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("5.0");
         band.hireDay2 = new BigDecimal("10.0");
         band.hireDay3 = new BigDecimal("15.0");
-        band.hireUseCommercialDay3 = false;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = false;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("5.0");
         band.repairDay2 = new BigDecimal("10.0");
         band.repairDay3 = new BigDecimal("15.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = 90;
@@ -261,18 +199,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("7.5");
         band.hireDay2 = new BigDecimal("15.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -284,18 +219,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("12.5");
         band.hireDay2 = new BigDecimal("20.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -308,18 +240,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("7.5");
         band.hireDay2 = new BigDecimal("15.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -331,18 +260,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("12.5");
         band.hireDay2 = new BigDecimal("20.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -355,18 +281,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("7.5");
         band.hireDay2 = new BigDecimal("15.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -378,18 +301,15 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         band.hireDay1 = new BigDecimal("12.5");
         band.hireDay2 = new BigDecimal("20.0");
         band.hireDay3 = new BigDecimal("0.0");
-        band.hireUseCommercialDay3 = true;
-        band.hireUseCommercialDay2 = false;
-        band.hireUseCommercialDay1 = false;
+        band.useCommercialDay3 = true;
+        band.useCommercialDay2 = false;
+        band.useCommercialDay1 = false;
         band.hirePeriodStartDay1 = 30;
         band.hirePeriodStartDay2 = 60;
         band.hirePeriodStartDay3 = 90;
         band.repairDay1 = new BigDecimal("2.5");
         band.repairDay2 = new BigDecimal("5.0");
         band.repairDay3 = new BigDecimal("0.0");
-        band.repairUseCommercialDay3 = false;
-        band.repairUseCommercialDay2 = false;
-        band.repairUseCommercialDay1 = false;
         band.repairPeriodStartDay1 = 30;
         band.repairPeriodStartDay2 = 60;
         band.repairPeriodStartDay3 = -1;
@@ -447,5 +367,29 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
 
     public void setRepairPeriodStartDay3(int repairPeriodStartDay3) {
         this.repairPeriodStartDay3 = repairPeriodStartDay3;
+    }
+
+    public boolean isUseCommercialDay1() {
+        return useCommercialDay1;
+    }
+
+    public void setUseCommercialDay1(boolean useCommercialDay1) {
+        this.useCommercialDay1 = useCommercialDay1;
+    }
+
+    public boolean isUseCommercialDay2() {
+        return useCommercialDay2;
+    }
+
+    public void setUseCommercialDay2(boolean useCommercialDay2) {
+        this.useCommercialDay2 = useCommercialDay2;
+    }
+
+    public boolean isUseCommercialDay3() {
+        return useCommercialDay3;
+    }
+
+    public void setUseCommercialDay3(boolean useCommercialDay3) {
+        this.useCommercialDay3 = useCommercialDay3;
     }
 }
