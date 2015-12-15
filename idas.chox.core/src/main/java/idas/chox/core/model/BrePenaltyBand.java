@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -107,6 +106,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
 
     public static List<BrePenaltyBand> getDefaults() {
         List<BrePenaltyBand> result = new ArrayList<>(10);
+/********
     
         // Create GTA Defaults
         BrePenaltyBand band = new BrePenaltyBand();
@@ -317,7 +317,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
         
         // Create Manual Defaults
         // - no defaults for manual invoices
-
+******/
         return result;
     }
 
