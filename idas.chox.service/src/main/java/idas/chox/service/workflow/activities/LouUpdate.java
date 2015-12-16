@@ -229,7 +229,7 @@ public class LouUpdate extends BaseActivity {
         if (repairerName != null) {
             String repairerNameClean = Jsoup.clean(repairerName, Whitelist.basic());
             if (!repairerNameClean.equals(repairerName)) {
-                LOG.warn("Repairer name contains forbidden content - possible XSS attack: {}", repairerName);
+                LOG.warn("Repairer name contains forbidden content - possible XSS attack: '{}'!='{}'", repairerName, repairerNameClean);
                 repairerName = repairerNameClean;
 //                throw new Exception("Repairer name contains forbidden content");
             }
@@ -237,7 +237,7 @@ public class LouUpdate extends BaseActivity {
         if (imeName != null) {
             String imeNameClean = Jsoup.clean(imeName, Whitelist.basic());
             if (!imeNameClean.equals(imeName)) {
-                LOG.warn("IME Name contains forbidden content - possible XSS attack: {}", imeName);
+                LOG.warn("IME Name contains forbidden content - possible XSS attack: '{}'!='{}'", imeName, imeNameClean);
                 imeName = imeNameClean;
 //                throw new Exception("Name of IME contains forbidden content");
             }
@@ -245,7 +245,7 @@ public class LouUpdate extends BaseActivity {
         if (nonProvisionReason != null) {
             String nonProvisionReasonClean = Jsoup.clean(nonProvisionReason, Whitelist.basic());
             if (!nonProvisionReasonClean.equals(nonProvisionReason)) {
-                LOG.warn("Non-provision reason contains forbidden content - possible XSS attack: {}", nonProvisionReason);
+                LOG.warn("Non-provision reason contains forbidden content - possible XSS attack: '{}'!='{}'", nonProvisionReason, nonProvisionReasonClean);
                 nonProvisionReason = nonProvisionReasonClean;
 //                throw new Exception("Non-Provision Reason contains forbidden content");
             }

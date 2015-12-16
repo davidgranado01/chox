@@ -8,12 +8,15 @@ ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_2 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_90_Day TO hire_day_3;
 ALTER TABLE bre_penalty_band DROP COLUMN hire_apply_90_day_rate;
 ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_3 TYPE numeric(6,2);
-ALTER TABLE bre_penalty_band RENAME COLUMN hire_use_commercial TO hire_use_commercial_day_3;
-ALTER TABLE bre_penalty_band ADD COLUMN hire_use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
-ALTER TABLE bre_penalty_band ADD COLUMN hire_use_commercial_day_2 BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE bre_penalty_band RENAME COLUMN hire_use_commercial TO use_commercial_day_3;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_1 INTEGER NOT NULL DEFAULT 30;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_2 INTEGER NOT NULL DEFAULT 60;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_3 INTEGER NOT NULL DEFAULT 90;
+
+UPDATE bre_penalty_band set use_commercial_day_3 = true where repair_use_commercial = true;
+ALTER TABLE bre_penalty_band DROP COLUMN repair_use_commercial;
+ALTER TABLE bre_penalty_band ADD COLUMN use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE bre_penalty_band ADD COLUMN use_commercial_day_2 BOOLEAN NOT NULL DEFAULT false;
 
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_30_Day TO repair_day_1;
 ALTER TABLE bre_penalty_band RENAME COLUMN repair_60_Day TO repair_day_2;
@@ -22,9 +25,6 @@ ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_1 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_2 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_3 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band DROP COLUMN repair_apply_90_day_rate;
-ALTER TABLE bre_penalty_band RENAME COLUMN repair_use_commercial TO repair_use_commercial_day_3;
-ALTER TABLE bre_penalty_band ADD COLUMN repair_use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
-ALTER TABLE bre_penalty_band ADD COLUMN repair_use_commercial_day_2 BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_1 INTEGER NOT NULL DEFAULT 30;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_2 INTEGER NOT NULL DEFAULT 60;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_3 INTEGER NOT NULL DEFAULT 90;
@@ -50,13 +50,14 @@ DECLARE
     repairpenalPerVal NUMERIC(8,4);
     penaltyAge INTEGER;
     nextPenaltyBand INTEGER;
+    useNextCommercial BOOLEAN;
 
 BEGIN
 
 FOR claimRecord IN
 
 SELECT
-     *
+     c.id as claim_claim_id, *
 FROM
      claim c,
      invoice i,
@@ -107,23 +108,35 @@ penaltyAge = current_date - claimRecord.auto_penalty_start::DATE;
 hireStartDate = CASE WHEN claimRecord.rental_start is not null then claimRecord.rental_start else claimRecord.date_invoiced END;
 
 -- Determine hire and/or repar percentages from penalty band
-hirepenalPerVal = CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_1 and claimRecord.hire_use_commercial_day_1 != true then claimRecord.hire_day_1/100.0 ELSE
-                  CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_2 and claimRecord.hire_use_commercial_day_2 != true then claimRecord.hire_day_2/100.0 ELSE
-                  CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_3 and claimRecord.hire_use_commercial_day_3 != true then claimRecord.hire_day_3/100.0 ELSE 0.0 END END END;
+hirepenalPerVal = CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_1 and claimRecord.use_commercial_day_1 != true then claimRecord.hire_day_1/100.0 ELSE
+                  CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_2 and claimRecord.use_commercial_day_2 != true then claimRecord.hire_day_2/100.0 ELSE
+                  CASE WHEN claimRecord.penalty_band = claimRecord.hire_period_start_day_3 and claimRecord.use_commercial_day_3 != true then claimRecord.hire_day_3/100.0 ELSE 0.0 END END END;
 
-repairpenalPerVal = CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_1 and claimRecord.repair_use_commercial_day_1 != true then claimRecord.repair_day_1/100.0 ELSE
-                    CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_2 and claimRecord.repair_use_commercial_day_2 != true then claimRecord.repair_day_2/100.0 ELSE
-                    CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_3 and claimRecord.repair_use_commercial_day_3 != true then claimRecord.repair_day_3/100.0 ELSE 0.0 END END END;
+repairpenalPerVal = CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_1 and claimRecord.use_commercial_day_1 != true then claimRecord.repair_day_1/100.0 ELSE
+                    CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_2 and claimRecord.use_commercial_day_2 != true then claimRecord.repair_day_2/100.0 ELSE
+                    CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_3 and claimRecord.use_commercial_day_3 != true then claimRecord.repair_day_3/100.0 ELSE 0.0 END END END;
 
 -- Determine next penalty Band
+useNextCommercial = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 != -1 THEN claimRecord.use_commercial_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 = -1 then claimRecord.use_commercial_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 != -1 THEN claimRecord.use_commercial_day_2 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 = -1 THEN claimRecord.use_commercial_day_2 ELSE true END END END END;
+
 nextPenaltyBand = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 != -1 THEN claimRecord.hire_period_start_day_3 ELSE
                   CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 = -1 then claimRecord.repair_period_start_day_3 ELSE
                   CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 != -1 THEN claimRecord.hire_period_start_day_2 ELSE
                   CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 = -1 THEN claimRecord.repair_period_start_day_2 ELSE -1 END END END END;
 
+-- if the next penalty band is commercial, then disable automatic penalty charges (for the next iteration)
+IF useNextCommercial = true THEN
+    UPDATE claim
+        SET auto_penalty_charges = false
+    WHERE claim.id = claimRecord.claim_claim_id
+END IF;
 
 IF hirepenalPerVal != 0.0 or repairpenalPerVal != 0.0 THEN
 RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepenalPer=%    repairpenalPer=%', penaltyAge, claimRecord.penalty_band, claimRecord.cho_reference, hireStartDate, hirepenalPerVal*100.0::numeric(4,1), repairpenalPerVal*100.0::numeric(4,1);
+
     UPDATE
       invoice
     SET
@@ -221,7 +234,6 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
 
 -- Apply Hire Gross Insurer Discount Comment
 
-
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)
    SELECT
@@ -235,7 +247,6 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || ' ('
                                       || hireInsDis.discount_percentage
                                       || '%) has been applied to the Hire on this invoice based on the discount contract in place.'
-
    FROM
      claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true)
              inner join chorganisation cho on cho.id = c.chorganisation_id
@@ -246,10 +257,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
    WHERE
       claimRecord.id = c.id;
 
-
-
 -- Apply Repair Gross Insurer Discount Comment
-
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)
    SELECT
@@ -263,7 +271,6 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || ' ('
                                       || repairInsDis.discount_percentage
                                       || '%) has been applied to the Repair on this invoice based on the discount contract in place.'
-
    FROM
      claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true)
              inner join chorganisation cho on cho.id = c.chorganisation_id
@@ -274,12 +281,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
    WHERE
       claimRecord.id = c.id;
 
-
-
 -- Apply Total Gross Insurer Discount Comment
-
-
-
    INSERT INTO comment
       (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)
    SELECT
@@ -293,7 +295,6 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                                       || ' ('
                                       || totalInsDis.discount_percentage
                                       || '%) has been applied to the Total on this invoice based on the discount contract in place.'
-
    FROM
       claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true)
              inner join chorganisation cho on cho.id = c.chorganisation_id

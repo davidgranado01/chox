@@ -16,21 +16,18 @@
     <property column="hire_day_1" name="hireDay1" not-null="true"/>
     <property column="hire_day_2" name="hireDay2" not-null="true"/>
     <property column="hire_day_3" name="hireDay3" not-null="true"/>
-    <property column="hire_use_commercial_day_1" name="hireUseCommercialDay1" not-null="true"/>
-    <property column="hire_use_commercial_day_2" name="hireUseCommercialDay2" not-null="true"/>
-    <property column="hire_use_commercial_day_3" name="hireUseCommercialDay3" not-null="true"/>
     <property column="hire_period_start_day_1" name="hirePeriodStartDay1" not-null="true"/>
     <property column="hire_period_start_day_2" name="hirePeriodStartDay2" not-null="true"/>
     <property column="hire_period_start_day_3" name="hirePeriodStartDay3" not-null="true"/>
     <property column="repair_day_1" name="repairDay1" not-null="true"/>
     <property column="repair_day_2" name="repairDay2" not-null="true"/>
     <property column="repair_day_3" name="repairDay3" not-null="true"/>
-    <property column="repair_use_commercial_day_1" name="repairUseCommercialDay1" not-null="true"/>
-    <property column="repair_use_commercial_day_2" name="repairUseCommercialDay2" not-null="true"/>
-    <property column="repair_use_commercial_day_3" name="repairUseCommercialDay3" not-null="true"/>
     <property column="repair_period_start_day_1" name="repairPeriodStartDay1" not-null="true"/>
     <property column="repair_period_start_day_2" name="repairPeriodStartDay2" not-null="true"/>
     <property column="repair_period_start_day_3" name="repairPeriodStartDay3" not-null="true"/>
+    <property column="use_commercial_day_1" name="useCommercialDay1" not-null="true"/>
+    <property column="use_commercial_day_2" name="useCommercialDay2" not-null="true"/>
+    <property column="use_commercial_day_3" name="useCommercialDay3" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

@@ -1995,8 +1995,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         
         if (brePenaltyBand.getHirePeriodStartDay1() != -1){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay1());
+            if (brePenaltyBand.isUseCommercialDay1()) {
+                claim.setAutoPenaltyChargeEnabled(false);
+            }
         } else if (brePenaltyBand.getHirePeriodStartDay1() == -1 && brePenaltyBand.getRepairPeriodStartDay1() != -1){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay1());
+            if (brePenaltyBand.isUseCommercialDay1()) {
+                claim.setAutoPenaltyChargeEnabled(false);
+            }
         } else {
             claim.getInvoice().setPenaltyBand(-1);
         }
@@ -2025,33 +2031,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.getInvoice().setPenaltyBand(-1);
         }
         
-    }
-    /*
-     *  Calculate the current penalty band by looking at the age of the invoice.
-     */
-    @Override
-    public int calculateCurrentPenaltyBand(Claim claim) {
-        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
-        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-
-        Invoice inv = claim.getInvoice();
-        int dateDiff = inv.getInvoicedDays();
-        if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || dateDiff <= brePenaltyBand.getRepairPeriodStartDay1()
-                || (brePenaltyBand.getHirePeriodStartDay1() == -1 && brePenaltyBand.getRepairPeriodStartDay1() == -1)) {
-            return 0;
-        } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() || dateDiff <= brePenaltyBand.getRepairPeriodStartDay2()
-                && (brePenaltyBand.getHirePeriodStartDay1() != -1 || brePenaltyBand.getRepairPeriodStartDay1() != -1)) {
-            return 1;
-        } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() || dateDiff <= brePenaltyBand.getRepairPeriodStartDay3()
-                && (brePenaltyBand.getHirePeriodStartDay2() != -1 || brePenaltyBand.getRepairPeriodStartDay2() != -1)) {
-            return 2;
-        } else if ((dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1)
-                    || (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() != -1)) {
-            return 3;
-        } else {
-            return 0;
-        }
     }
 
     @Override
@@ -2162,6 +2141,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO) {
         boolean result = false;
         boolean allowPenaltyCharges = true;
+
         Invoice invoice = claim.getInvoice();
         // Set Claim BRE band
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
@@ -2175,10 +2155,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (allowPenaltyCharges && invoice != null
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && invoice.getPenaltyBand() > -1
-                && ((isCHO && !claim.getChorganisation().isAutoPenaltyChargeEnabled())
-                    || (isCHO && claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                        && !claim.isAutoPenaltyChargeEnabled()))
-                && (!isCHO && ClaimType.isInsurerUpload(claim.getClaimType()) && !claim.isAutoPenaltyChargeEnabled())
+                && ((isCHO && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                                    && !claim.isAutoPenaltyChargeEnabled())))
+                    || (!isCHO && ClaimType.isInsurerUpload(claim.getClaimType()) && !claim.isAutoPenaltyChargeEnabled()))
             ) {
             result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
         }
