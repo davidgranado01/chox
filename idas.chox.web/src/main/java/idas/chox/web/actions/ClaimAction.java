@@ -2707,7 +2707,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             luItems = new ArrayList<>(3);
             // Append Age to Repair Penalty Percentage Desc eg. (30 days - 7.5%) 
             String perdec;
-            if (brePenaltyBand.getHirePeriodStartDay1() != -1) {
+            if (brePenaltyBand.getHirePeriodStartDay1() > 0) {
                 if (brePenaltyBand.isUseCommercialDay1()) {
                     luItems.add(new LookupItem(brePenaltyBand.getHirePeriodStartDay1() + " days - Commercial", "Commercial"));
                 } else {
@@ -2717,7 +2717,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             .toString();
                     luItems.add(new LookupItem(perdec, brePenaltyBand.getHireDay1().toString()));
                 }
-                if (brePenaltyBand.getHirePeriodStartDay2() != -1) {
+                if (brePenaltyBand.getHirePeriodStartDay2() > 0) {
                     if (brePenaltyBand.isUseCommercialDay2()) {
                         luItems.add(new LookupItem(brePenaltyBand.getHirePeriodStartDay2() + " days - Commercial", "Commercial"));
                     } else {
@@ -2727,7 +2727,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 .toString();
                         luItems.add(new LookupItem(perdec, brePenaltyBand.getHireDay2().toString()));
                     }
-                    if (brePenaltyBand.getHirePeriodStartDay3() != -1) {
+                    if (brePenaltyBand.getHirePeriodStartDay3() > 0) {
                         if (brePenaltyBand.isUseCommercialDay3()) {
                             luItems.add(new LookupItem(brePenaltyBand.getHirePeriodStartDay3() + " days - Commercial", "Commercial"));
                         } else {
@@ -2760,19 +2760,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             
-            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() == -1) {
+            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() <= 0) {
                 return "0.0";
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && !brePenaltyBand.isUseCommercialDay1()) {
                 return brePenaltyBand.getHireDay1().toString();
             } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.isUseCommercialDay1()) {
                 return "Commercial";
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && !brePenaltyBand.isUseCommercialDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && !brePenaltyBand.isUseCommercialDay2()) {
                 return brePenaltyBand.getHireDay2().toString();
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && brePenaltyBand.isUseCommercialDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.isUseCommercialDay2()) {
                 return "Commercial";
-            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1 && !brePenaltyBand.isUseCommercialDay3()) {
+            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0 && !brePenaltyBand.isUseCommercialDay3()) {
                 return brePenaltyBand.getHireDay3().toString();
-            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1 && brePenaltyBand.isUseCommercialDay3()) {
+            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0 && brePenaltyBand.isUseCommercialDay3()) {
                 return "Commercial";
             }
         }
@@ -2793,19 +2793,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             
-            if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() == -1) {
+            if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() <= 0) {
                 return "0.0";
             } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && !brePenaltyBand.isUseCommercialDay1()) {
                 return brePenaltyBand.getRepairDay1().toString();
             } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.isUseCommercialDay1()) {
                 return "Commercial";
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() != -1 && !brePenaltyBand.isUseCommercialDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() > 0 && !brePenaltyBand.isUseCommercialDay2()) {
                 return brePenaltyBand.getRepairDay2().toString();
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() != -1 && brePenaltyBand.isUseCommercialDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() > 0 && brePenaltyBand.isUseCommercialDay2()) {
                 return "Commercial";
-            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() != -1 && !brePenaltyBand.isUseCommercialDay3()) {
+            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0 && !brePenaltyBand.isUseCommercialDay3()) {
                 return brePenaltyBand.getRepairDay3().toString();
-            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() != -1 && brePenaltyBand.isUseCommercialDay3()) {
+            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0 && brePenaltyBand.isUseCommercialDay3()) {
                 return "Commercial";
             }
         }

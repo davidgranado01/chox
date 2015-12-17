@@ -307,21 +307,30 @@
                 {name:'claimTypeId'},
                 {name:'claimTypeName'},
                 {name:'penaltyBandStartDate', type: 'date', dateFormat:'d/m/Y'},
-                {name:'hire30DayRate'},
-                {name:'hire60DayRate'},
-                {name:'hire90DayRate'},
-                {name:'hireApply90DayRate'},
-                {name:'hireApply90DayRateDesc'},
-                {name:'hireUseCommercial'},
-                {name:'hireUseCommercialDesc'},
-                {name:'repair30DayRate'},
-                {name:'repair60DayRate'},
-                {name:'repair90DayRate'},
-                {name:'repairApply90DayRate'},
-                {name:'repairApply90DayRateDesc'},
-                {name:'repairUseCommercial'},
-                {name:'repairUseCommercialDesc'},
-                {name:'createdBy'},
+                {name:'hireDayRate1'},
+                {name:'hireDayRate2'},
+                {name:'hireDayRate3'},
+                {name:'hirePeriodStartDay1'},
+                {name:'hirePeriodStartDay2'},
+                {name:'hirePeriodStartDay3'},
+                {name:'hireWindow1'},
+                {name:'hireWindow2'},
+                {name:'hireWindow3'},
+                {name:'repairDayRate1'},
+                {name:'repairDayRate2'},
+                {name:'repairDayRate3'},
+                {name:'repairPeriodStartDay1'},
+                {name:'repairPeriodStartDay2'},
+                {name:'repairPeriodStartDay3'},
+                {name:'repairWindow1'},
+                {name:'repairWindow2'},
+                {name:'repairWindow3'},
+                {name:'useCommercialDay1'},
+                {name:'useCommercialDescDay1'},
+                {name:'useCommercialDay2'},
+                {name:'useCommercialDescDay2'},
+                {name:'useCommercialDay3'},
+                {name:'useCommercialDescDay3'},
                 {name:'createdDate', type: 'date', dateFormat:'d/m/Y'},
                 {name:'removed'}
             ]
@@ -372,24 +381,14 @@
             columns: [
                 {header: "Claim Type", width: 200, dataIndex: 'claimTypeName', sortable: true, resizable: true,
                     renderer:function(value,p,r){return "<b>"+value+"</b>"; }},
-                {header: "Start Date", width: 160, dataIndex: 'penaltyBandStartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y')},
-                {header: "Hire 30 Day Rate", width: 100, dataIndex: 'hire30DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Hire 60 Day Rate", width: 100, dataIndex: 'hire60DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Hire 90 Day Rate", width: 100, dataIndex: 'hire90DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Hire Apply 90 Day Rate", width: 100, dataIndex: 'hireApply90DayRateDesc', sortable: true, resizable: true},
-                {header: "Hire Use commercial", width: 100, dataIndex: 'hireUseCommercialDesc', sortable: true, resizable: true},
-                {header: "Repair 30 Day Rate", width: 100, dataIndex: 'repair30DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Repair 60 Day Rate", width: 100, dataIndex: 'repair60DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Repair 90 Day Rate", width: 100, dataIndex: 'repair90DayRate', sortable: true, resizable: true,
-                    renderer: function(value,p,r) {return (parseFloat(value).toFixed(1)) + '%';}},
-                {header: "Repair Apply 90 Day Rate", width: 100, dataIndex: 'repairApply90DayRateDesc', sortable: true, resizable: true},
-                {header: "Repair Use commercial", width: 100, dataIndex: 'repairUseCommercialDesc', sortable: true, resizable: true},
-                {header: "", width: 160, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Start Date", width: 140, dataIndex: 'penaltyBandStartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+                {header: "Hire 1st Window", width: 120, dataIndex: 'hireWindow1', sortable: true, resizable: true},
+                {header: "Repair 1st Window", width: 120, dataIndex: 'repairWindow1', sortable: true, resizable: true},
+                {header: "Hire 2nd Window", width: 120, dataIndex: 'hireWindow2', sortable: true, resizable: true},
+                {header: "Repair 2nd Window", width: 120, dataIndex: 'repairWindow2', sortable: true, resizable: true},
+                {header: "Hire 3rd Window", width: 120, dataIndex: 'hireWindow3', sortable: true, resizable: true},
+                {header: "Repair 3rd Window", width: 120, dataIndex: 'repairWindow3', sortable: true, resizable: true},
+                {header: "", width: 140, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:200,
@@ -467,10 +466,6 @@
         doTtlLossAllowableTtlDuration();
         doRepairDurationRuleforMobileVehicleWithoutECD();
         doRepairDurationRuleforNonMobileVehicleWithoutECD();
-<s:if test="isChoxAdmin">
-        doHireApply90DayRate();
-        doRepairApply90DayRate();
-</s:if>
     }
 
     function doTtlLossAllowableTtlDuration(){
@@ -841,46 +836,115 @@
                 var claimTypeName = penaltyClaimTypesCombo.getRawValue();
                 var claimTypeId = penaltyClaimTypesCombo.getValue();
                 var startDate = penaltyStartDateDatePicker.getValue();
-                var hire30DayRate = parseFloat($("#hire30Day").val()).toFixed(1);
-                var hire60DayRate = parseFloat($("#hire60Day").val()).toFixed(1);
-                var hireApply90DayRate = $("#hireApply90DayRate").is(":checked");
-                var hireApply90DayRateDesc = hireApply90DayRate ? 'Yes' : 'No';
-                var hireUseCommercial =  $("#hireUseCommercial").is(":checked");
-                var hireUseCommercialDesc =  hireUseCommercial ? 'Yes' : 'No';
-                var hire90DayRate;
-                if (hireApply90DayRate && !hireUseCommercial){
-                    hire90DayRate = parseFloat($("#hire90Day").val()).toFixed(1);
-                }else{
-                    hire90DayRate = 0.0;
-                }
+                var hireDayRate1 = $('#hireDayRate1').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate1").val()).toFixed(2);
+                var hireDayRate2 = $('#hireDayRate2').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate2").val()).toFixed(2);
+                var hireDayRate3 = $('#hireDayRate3').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate3").val()).toFixed(2);
+                var hirePeriodStartDay1 = $('#hirePeriodStartDay1').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay1").val());
+                var hirePeriodStartDay2 = $('#hirePeriodStartDay2').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay2").val());
+                var hirePeriodStartDay3 = $('#hirePeriodStartDay3').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay3").val());
 
-                var repair30DayRate = parseFloat($("#repair30Day").val()).toFixed(1);
-                var repair60DayRate = parseFloat($("#repair60Day").val()).toFixed(1);
-                var repairApply90DayRate = $("#repairApply90DayRate").is(":checked");
-                var repairApply90DayRateDesc = repairApply90DayRate ? 'Yes' : 'No';
-                var repairUseCommercial = $("#repairUseCommercial").is(":checked");
-                var repairUseCommercialDesc =  repairUseCommercial ? 'Yes' : 'No';
-                var repair90DayRate;
-                if (repairApply90DayRate && !repairUseCommercial){
-                    repair90DayRate = parseFloat($("#repair90Day").val()).toFixed(1);
-                }else{
-                    repair90DayRate = 0.0;
+                var repairDayRate1 = $('#repairDayRate1').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate1").val()).toFixed(2);
+                var repairDayRate2 = $('#repairDayRate2').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate2").val()).toFixed(2);
+                var repairDayRate3 = $('#repairDayRate3').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate3").val()).toFixed(2);
+                var repairPeriodStartDay1 = $('#repairPeriodStartDay1').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay1").val());
+                var repairPeriodStartDay2 = $('#repairPeriodStartDay2').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay2").val());
+                var repairPeriodStartDay3 = $('#repairPeriodStartDay3').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay3").val());
+
+                var useCommercialDay1 =  $("#useCommercialDay1").is(":checked");
+                var useCommercialDescDay1 =  useCommercialDay1 ? 'Yes' : 'No';
+                var useCommercialDay2 =  $("#useCommercialDay2").is(":checked");
+                var useCommercialDescDay2 =  useCommercialDay2 ? 'Yes' : 'No';
+                var useCommercialDay3 =  $("#useCommercialDay3").is(":checked");
+                var useCommercialDescDay3 =  useCommercialDay3 ? 'Yes' : 'No';
+                var hireWindow1;
+                var hireWindow2;
+                var hireWindow3;
+                var repairWindow1;
+                var repairWindow2;
+                var repairWindow3;
+                if (hirePeriodStartDay1 > 0) {
+                    if (useCommercialDay1){
+                        hireWindow1 = hirePeriodStartDay1 + ' C';      
+                    } else {
+                        hireWindow1 = hirePeriodStartDay1 + ' ' + hireDayRate1 + '%';
+                    }
+                } else {
+                    hireWindow1 = '';
+                }
+                if (hirePeriodStartDay2 > 0) {
+                    if (useCommercialDay2){
+                        hireWindow2 = hirePeriodStartDay2 + ' C';      
+                    } else {
+                        hireWindow2 = hirePeriodStartDay2 + ' ' + hireDayRate2 + '%';
+                    }
+                } else {
+                    hireWindow2 = '';
+                }
+                if (hirePeriodStartDay3 > 0) {
+                    if (useCommercialDay3){
+                        hireWindow3 = hirePeriodStartDay3 + ' C';      
+                    } else {
+                        hireWindow3 = hirePeriodStartDay3 + ' ' + hireDayRate3 + '%';
+                    }
+                } else {
+                    hireWindow3 = '';
+                }
+                if (repairPeriodStartDay1 > 0) {
+                    if (useCommercialDay1){
+                        repairWindow1 = repairPeriodStartDay1 + ' C';      
+                    } else {
+                        repairWindow1 = repairPeriodStartDay1 + ' ' + repairDayRate1 + '%';
+                    }
+                } else {
+                    repairWindow1 = '';
+                }
+                if (repairPeriodStartDay2 > 0) {
+                    if (useCommercialDay2){
+                        repairWindow2 = repairPeriodStartDay2 + ' C';      
+                    } else {
+                        repairWindow2 = repairPeriodStartDay2 + ' ' + repairDayRate2 + '%';
+                    }
+                } else {
+                    repairWindow2 = '';
+                }
+                if (repairPeriodStartDay3 > 0) {
+                    if (useCommercialDay3){
+                        repairWindow3 = repairPeriodStartDay3 + ' C';      
+                    } else {
+                        repairWindow3 = repairPeriodStartDay3 + ' ' + repairDayRate3 + '%';
+                    }
+                } else {
+                    repairWindow3 = '';
                 }
                 // create new record type, mark dirty and add it to the grid store.
                 var recordType = penaltyBand_gridviewGrid.getStore().recordType;
                 var newRecord = new recordType({'claimTypeId':claimTypeId, 'claimTypeName':claimTypeName, 'penaltyBandStartDate':startDate,
-                    'hire30DayRate':hire30DayRate, 'hire60DayRate':hire60DayRate, 'hire90DayRate':hire90DayRate, 'hireApply90DayRate':hireApply90DayRate, 'hireApply90DayRateDesc':hireApply90DayRateDesc, 'hireUseCommercial':hireUseCommercial, 'hireUseCommercialDesc':hireUseCommercialDesc,
-                    'repair30DayRate':repair30DayRate, 'repair60DayRate':repair60DayRate, 'repair90DayRate':repair90DayRate, 'repairApply90DayRate':repairApply90DayRate, 'repairApply90DayRateDesc':repairApply90DayRateDesc, 'repairUseCommercial':repairUseCommercial, 'repairUseCommercialDesc':repairUseCommercialDesc});
+                    'hireDayRate1':hireDayRate1, 'hireDayRate2':hireDayRate2, 'hireDayRate3':hireDayRate3,
+                    'hirePeriodStartDay1':hirePeriodStartDay1, 'hirePeriodStartDay2':hirePeriodStartDay2, 'hirePeriodStartDay3':hirePeriodStartDay3,
+                    'hireWindow1':hireWindow1, 'hireWindow2':hireWindow2, 'hireWindow3':hireWindow3,
+                    'repairDayRate1':hireDayRate1, 'repairDayRate2':hireDayRate2, 'repairDayRate3':hireDayRate3,
+                    'repairPeriodStartDay1':repairPeriodStartDay1, 'repairPeriodStartDay2':repairPeriodStartDay2, 'repairPeriodStartDay3':repairPeriodStartDay3,
+                    'repairWindow1':repairWindow1, 'repairWindow2':repairWindow2, 'repairWindow3':repairWindow3,
+                    'useCommercialDay1':useCommercialDay1, 'useCommercialDescDay1':useCommercialDescDay1,
+                    'useCommercialDay2':useCommercialDay1, 'useCommercialDescDay2':useCommercialDescDay2,
+                    'useCommercialDay3':useCommercialDay1, 'useCommercialDescDay3':useCommercialDescDay3
+                });
                 newRecord.markDirty();
                 newRecord.set('removed', 'false');
                 penaltyBand_gridviewGrid.getStore().insert(0,newRecord);
                 // reset the form details.
-                $("#hire30Day").val('');
-                $("#hire60Day").val('');
-                $("#hire90Day").val('');
-                $("#repair30Day").val('');
-                $("#repair60Day").val('');
-                $("#repair90Day").val('');
+                $("#hireDayRate1").val('');
+                $("#hireDayRate2").val('');
+                $("#hireDayRate3").val('');
+                $("#repairDayRate1").val('');
+                $("#repairDayRate2").val('');
+                $("#repairDayRate3").val('');
+                $("#hirePeriodStartDay1").val('');
+                $("#hirePeriodStartDay2").val('');
+                $("#hirePeriodStartDay3").val('');
+                $("#repairPeriodStartDay1").val('');
+                $("#repairPeriodStartDay2").val('');
+                $("#repairPeriodStartDay3").val('');
             }
         }
 </s:if>
@@ -944,72 +1008,149 @@
                     validForm = false;
                 }
             }
+            var hirePeriodStartDay1 = $('#hirePeriodStartDay1').val().length == 0 ? -1 : parseInt($('#hirePeriodStartDay1').val());
+            var hirePeriodStartDay2 = $('#hirePeriodStartDay2').val().length == 0 ? -1 : parseInt($('#hirePeriodStartDay2').val());
+            var hirePeriodStartDay3 = $('#hirePeriodStartDay3').val().length == 0 ? -1 : parseInt($('#hirePeriodStartDay3').val());
+            var repairPeriodStartDay1 = $('#repairPeriodStartDay1').val().length == 0 ? -1 : parseInt($('#repairPeriodStartDay1').val());
+            var repairPeriodStartDay2 = $('#repairPeriodStartDay2').val().length == 0 ? -1 : parseInt($('#repairPeriodStartDay2').val());
+            var repairPeriodStartDay3 = $('#repairPeriodStartDay3').val().length == 0 ? -1 : parseInt($('#repairPeriodStartDay3').val());
 
-            if ($.isNumeric($("#hire30Day").val())) {
-                if (parseFloat($("#hire30Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Hire 30 Day Rate'\n<br/>").show();
-                    validForm = false;
-                }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Hire 30 Day Rate'\n<br/>").show();
+            if (hirePeriodStartDay1 > 0 && repairPeriodStartDay1 > 0 && hirePeriodStartDay1 != repairPeriodStartDay1){
+                mesBox.append("'Penalty Charge Band' for hire and repair must either be the same or disabled\n<br/>").show();
                 validForm = false;
             }
-                        
-            if ($.isNumeric($("#hire60Day").val())) {
-                if (parseFloat($("#hire60Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Hire 60 Day Rate'\n<br/>").show();
-                    validForm = false;
-                }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Hire 60 Day Rate'\n<br/>").show();
+            if (hirePeriodStartDay2 > 0 && repairPeriodStartDay2 > 0 && hirePeriodStartDay2 != repairPeriodStartDay2){
+                mesBox.append("'Penalty Charge Band' for hire and repair must either be the same or disabled\n<br/>").show();
                 validForm = false;
             }
-                        
-            if($('form#formUpdateInsurerBreBandDetail input[name="hireApply90DayRate"]:checked').val()
-                && !$('form#formUpdateInsurerBreBandDetail input[name="hireUseCommercial"]:checked').val()){
-                if ($.isNumeric($("#hire90Day").val())) {
-                    if (parseFloat($("#hire90Day").val()).toFixed(1) < 0) {
-                        mesBox.append("You must supply a value for 'Hire 90 Day Rate'\n<br/>").show();
+            if (hirePeriodStartDay3 > 0 && repairPeriodStartDay3 > 0 && hirePeriodStartDay3 != repairPeriodStartDay3){
+                mesBox.append("'Penalty Charge Band' for hire and repair must either be the same or disabled\n<br/>").show();
+                validForm = false;
+            }
+            // Must have a 1st window
+            if (hirePeriodStartDay1 < 1 && repairPeriodStartDay1 < 1) {
+                mesBox.append("1st Penalty Charge Band must contain a valid window\n<br/>").show();
+                validForm = false;                
+            }
+            // If second window is disabled, then so must the third
+            if (hirePeriodStartDay2 < 1 && repairPeriodStartDay2 < 1 && (hirePeriodStartDay3 > 0 || repairPeriodStartDay3 > 0)) {
+                mesBox.append("3rd Penalty Charge Band cannot be used as the windows in the 2nd Penalty Charge Band have been disabled\n<br/>").show();
+                validForm = false;                
+            }
+
+            if ((hirePeriodStartDay2 > 0 && (hirePeriodStartDay2 <= hirePeriodStartDay1 || hirePeriodStartDay2 <= repairPeriodStartDay1))
+                    || (repairPeriodStartDay2 > 0 && (repairPeriodStartDay2 <= hirePeriodStartDay1 || repairPeriodStartDay2 <= repairPeriodStartDay1))){
+                mesBox.append("2nd Penalty Charge Band 'Penalty Charge Day' must be after the 1st Penalty Charge Band 'Penalty Charge Day'\n<br/>").show();
+                validForm = false;
+            }
+            if ((hirePeriodStartDay3 > 0 && (hirePeriodStartDay3 <= hirePeriodStartDay2 || hirePeriodStartDay3 <= repairPeriodStartDay2))
+                    ||(repairPeriodStartDay3 > 0 && (repairPeriodStartDay3 <= hirePeriodStartDay2 || repairPeriodStartDay3 <= repairPeriodStartDay2))){
+                mesBox.append("3rd Penalty Charge Band 'Penalty Charge Day' must be after the 2nd Penalty Charge Band 'Penalty Charge Day'\n<br/>").show();
+                validForm = false;
+            }
+            if (isNaN(hirePeriodStartDay1) || hirePeriodStartDay1 < -1) {
+                mesBox.append("Hire 'Period Charge Day' for the 1st Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if (isNaN(hirePeriodStartDay2) || hirePeriodStartDay2 < -1) {
+                mesBox.append("Hire 'Period Charge Day' for the 2nd Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if (isNaN(hirePeriodStartDay3) || hirePeriodStartDay3 < -1) {
+                mesBox.append("Hire 'Period Charge Day' for the 3rd Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if (isNaN(repairPeriodStartDay1) || repairPeriodStartDay1 < -1) {
+                mesBox.append("Repair 'Period Charge Day' for the 1st Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if (isNaN(repairPeriodStartDay2) || repairPeriodStartDay2 < -1) {
+                mesBox.append("Repair 'Period Charge Day' for the 2nd Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if (isNaN(repairPeriodStartDay3) || repairPeriodStartDay3 < -1) {
+                mesBox.append("Repair 'Period Charge Day' for the 3rd Penalty Charge Band must be a number >= -1\n<br/>").show();
+                validForm = false;                
+            }
+            if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay1"]:checked').val()) {
+                if (hirePeriodStartDay1 > 0 && $.isNumeric($("#hireDay1").val())) {
+                    if (isNaN(parseFloat($("#hireDayRate1").val())) || parseFloat($("#hireDayRate1").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Hire Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
-                } else {
-                    mesBox.append("You must supply a numeric value for 'Hire 90 Day Rate'\n<br/>").show();
+                } else if (hirePeriodStartDay1 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Hire Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                     validForm = false;
                 }
-            }
-                        
-            if ($.isNumeric($("#repair30Day").val())) {
-                if (parseFloat($("#repair30Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Repair 30 Day Rate'\n<br/>").show();
-                    validForm = false;
-                }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Repair 30 Day Rate'\n<br/>").show();
-                validForm = false;
-            }
-                        
-            if ($.isNumeric($("#repair60Day").val())) {
-                if (parseFloat($("#repair60Day").val()).toFixed(1) < 0) {
-                    mesBox.append("You must supply a value for 'Repair 60 Day Rate'\n<br/>").show();
-                    validForm = false;
-                }
-            } else {
-                mesBox.append("You must supply a numeric value for 'Repair 60 Day Rate'\n<br/>").show();
-                validForm = false;
-            }
-                        
-            if($('form#formUpdateInsurerBreBandDetail input[name="repairApply90DayRate"]:checked').val()
-                && !$('form#formUpdateInsurerBreBandDetail input[name="repairUseCommercial"]:checked').val()){
-                if ($.isNumeric($("#repair90Day").val())) {
-                    if (parseFloat($("#repair90Day").val()).toFixed(1) < 0) {
-                        mesBox.append("You must supply a value for 'Repair 90 Day Rate'\n<br/>").show();
+                if (repairPeriodStartDay1 > 0 && $.isNumeric($("#repairDayRate1").val())) {
+                    if (isNaN(parseFloat($("#repairDayRate1").val())) || parseFloat($("#repairDayRate1").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Repair Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
-                } else {
-                    mesBox.append("You must supply a numeric value for 'Repair 90 Day Rate'\n<br/>").show();
+                } else if (repairPeriodStartDay1 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Repair Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
+                    validForm = false;
+                }
+            }else{ // Use Commercial selected
+                // check subsequent windows also use commercial or are disabled
+                if (!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay2"]:checked').val() && (hirePeriodStartDay2 > 0 || repairPeriodStartDay2 > 0)) {
+                    mesBox.append("1st Penalty Charge Band is using commercial - the 2nd penalty band must also use commercial or be disabled\n<br/>").show();
+                    validForm = false;
+                }
+                if (!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay3"]:checked').val() && (hirePeriodStartDay3 > 0 || repairPeriodStartDay3 > 0)) {
+                    mesBox.append("1st Penalty Charge Band is using commercial - the 3rd penalty band must also use commercial or be disabled\n<br/>").show();
                     validForm = false;
                 }
             }
+                        
+            if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay2"]:checked').val()) {
+                if (hirePeriodStartDay2 > 0 && $.isNumeric($("#hireDay2").val())) {
+                    if (isNaN(parseFloat($("#hireDayRate2").val())) || parseFloat($("#hireDayRate2").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Hire Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
+                        validForm = false;
+                    }
+                } else if (hirePeriodStartDay2 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Hire Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
+                    validForm = false;
+                }
+                if (repairPeriodStartDay2 > 0 && $.isNumeric($("#repairDayRate2").val())) {
+                    if (isNaN(parseFloat($("#repairDayRate2").val())) || parseFloat($("#repairDayRate2").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Repair Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
+                        validForm = false;
+                    }
+                } else if (repairPeriodStartDay2 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Repair Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
+                    validForm = false;
+                }
+            }else{ // Use Commercial selected
+                // check subsequent windows also use commercial or are disabled
+                if (!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay3"]:checked').val() && (hirePeriodStartDay3 > 0 || repairPeriodStartDay3 > 0)) {
+                    mesBox.append("2nd Penalty Charge Band is using commercial - the 3rd penalty band must also use commercial or be disabled\n<br/>").show();
+                    validForm = false;
+                }
+            }
+                        
+            if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay3"]:checked').val()) {
+                if (hirePeriodStartDay3 > 0 && $.isNumeric($("#hireDayRate3").val())) {
+                    if (isNaN(parseFloat($("#hireDayRate3").val())) || parseFloat($("#hireDayRate3").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Hire Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
+                        validForm = false;
+                    }
+                } else if (hirePeriodStartDay3 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Hire Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
+                    validForm = false;
+                }
+                if (repairPeriodStartDay3 > 0 && $.isNumeric($("#repairDayRate3").val())) {
+                    if (isNaN(parseFloat($("#repairDayRate3").val())) || parseFloat($("#repairDayRate3").val()).toFixed(2) < 0) {
+                        mesBox.append("You must supply a value for 'Repair Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
+                        validForm = false;
+                    }
+                } else if (repairPeriodStartDay3 > 0) {
+                    mesBox.append("You must supply a numeric value for 'Repair Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
+                    validForm = false;
+                }
+            }
+                        
             
             if (validForm){
                 return true;
@@ -1172,39 +1313,11 @@
     }
 
 <s:if test="isChoxAdmin">
-    function doHireApply90DayRate(){
-        if($('form#formUpdateInsurerBreBandDetail input[name="hireApply90DayRate"]:checked').val()){
-            $("#hireUseCommercialDivId").slideDown();
-            if($('form#formUpdateInsurerBreBandDetail input[name="hireUseCommercial"]:checked').val()){
-                $("#hire90DayRateDivId").hide();
-            }else{
-                $("#hire90DayRateDivId").slideDown();
-            }
-        }else{
-            $("#hireUseCommercialDivId").hide();
-            $("#hire90DayRateDivId").hide();
-        }
-    }
-
-    function doRepairApply90DayRate(){
-        if($('form#formUpdateInsurerBreBandDetail input[name="repairApply90DayRate"]:checked').val()){
-            $("#repairUseCommercialDivId").slideDown();
-            if($('form#formUpdateInsurerBreBandDetail input[name="repairUseCommercial"]:checked').val()){
-                $("#repair90DayRateDivId").hide();
-            }else{
-                $("#repair90DayRateDivId").slideDown();
-            }
-        }else{
-            $("#repairUseCommercialDivId").hide();
-            $("#repair90DayRateDivId").hide();
-        }
-    }
-
     function penaltyBand_recordOnclickRemovePenaltyBand(grid, rowIndex, columnIndex, e) {
 
             var gridRecord = penaltyBand_gridviewGrid.getStore().getAt(rowIndex);
 
-            if (columnIndex === 12) {
+            if (columnIndex === 8) {
                 
                 var penaltyBandId = gridRecord.get("id");
                 
@@ -1417,68 +1530,108 @@
                                                     <label class="chox-form-std-label2">Penalty Start Date<span class="mandatory">*</span></label>
                                                     <div id="penaltyStartDateDiv"></div>
                                                 </div>
-                                     <table width="672px">
-                                       <tr>
+                                    <table width="672px">
+                                        <tr>
                                             <td align="right" style="width:33%">
-                                                <label class="chox-form-std-label">Hire 30 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="hire30Day" style="width:50px"/>
+                                                <label class="chox-form-std-label"><b>1st Penalty Charge Band</b></label>
                                             </td>
-                                           <td align="right" style="width:33%">
-                                                <label class="chox-form-std-label">Hire 60 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="hire60Day" style="width:50px"/>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label"><b>2nd Penalty Charge Band</b></label>
                                             </td>
-                                           <td align="right" style="width:34%">
-                                               <div id="hire90DayRateDivId">
-                                                    <label class="chox-form-std-label" >Hire 90 Day Rate<span class="mandatory">*</span></label>
-                                                    <input id="hire90Day" style="width:50px"/>
-                                                </div>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label"><b>3rd Penalty Charge Band</b></label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="hireApply90DayRate" value="true" onclick="doHireApply90DayRate()"/></div>
-                                                    <label class="chox-form-std-label">Apply 90 Day Rate on Hire</label>
-                                                </div>
+                                            <td align="left" colspan ="3">
+                                                <label class="chox-form-std-label"><b>Hire Penalties</b></label>
                                             </td>
-                                            <td>
-                                                <div class="chox-form-checkboxitem" name="hireUseCommercialDiv" id="hireUseCommercialDivId">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="hireUseCommercial" onclick="doHireApply90DayRate()"/></div>
-                                                    <label class="chox-form-std-label">Use Commercial for 90 day Hire</label>
-                                                </div>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Penalty Charge Day</label>
+                                                <input id="hirePeriodStartDay1" style="width:50px"/>
                                             </td>
-                                            <td></td>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Penalty Charge Day</label>
+                                                <input id="hirePeriodStartDay2" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:34%">
+                                                <label class="chox-form-std-label" >Penalty Charge Day</label>
+                                                <input id="hirePeriodStartDay3" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Hire Pen Rate %</label>
+                                                <input id="hireDayRate1" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Hire Pen Rate %</label>
+                                                <input id="hireDayRate2" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:34%">
+                                                <label class="chox-form-std-label" >Hire Pen Rate %</label>
+                                                <input id="hireDayRate3" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" colspan ="3">
+                                                <label class="chox-form-std-label"><b>Repair Penalties</b></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Penalty Charge Day</label>
+                                                <input id="repairPeriodStartDay1" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Penalty Charge Day</label>
+                                                <input id="repairPeriodStartDay2" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:34%">
+                                                <label class="chox-form-std-label" >Penalty Charge Day</label>
+                                                <input id="repairPeriodStartDay3" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Repair Pen Rate %</label>
+                                                <input id="repairDayRate1" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:33%">
+                                                <label class="chox-form-std-label">Repair Pen Rate %</label>
+                                                <input id="repairDayRate2" style="width:50px"/>
+                                            </td>
+                                            <td align="right" style="width:34%">
+                                                <label class="chox-form-std-label" >Repair Pen Rate %</label>
+                                                <input id="repairDayRate3" style="width:50px"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" colspan ="3">
+                                                <label class="chox-form-std-label"><b>Commercial Rates</b></label>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td align="right">
-                                                <label class="chox-form-std-label">Repair 30 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="repair30Day" style="width:50px"/>
-                                            </td>
-                                           <td align="right">
-                                                <label class="chox-form-std-label">Repair 60 Day Rate<span class="mandatory">*</span></label>
-                                                <input id="repair60Day" style="width:50px"/>
-                                            </td>
-                                           <td align="right"
-                                               <div id="repair90DayRateDivId">
-                                                    <label class="chox-form-std-label" >Repair 90 Day Rate<span class="mandatory">*</span></label>
-                                                    <input id="repair90Day" style="width:50px"/>
-                                               </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="chox-form-checkboxitem">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="repairApply90DayRate" value="true" onclick="doRepairApply90DayRate()"/></div>
-                                                    <label class="chox-form-std-label">Apply 90 Day Rate on Repair</label>
+                                                <div class="chox-form-checkbox">
+                                                    <label class="chox-form-std-label">Use Commercial Rate</label>
+                                                    <s:checkbox name="useCommercialDay1" />
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="chox-form-checkboxitem" name="repairUseCommercialDiv" id="repairUseCommercialDivId">
-                                                    <div class="chox-form-checkbox"><s:checkbox name="repairUseCommercial" onclick="doRepairApply90DayRate()"/></div>
-                                                    <label class="chox-form-std-label">Use Commercial for 90 day Repair</label>
+                                            <td align="right">
+                                                <div class="chox-form-checkbox">
+                                                    <label class="chox-form-std-label">Use Commercial Rate</label>
+                                                    <s:checkbox name="useCommercialDay2" />
                                                 </div>
                                             </td>
-                                            <td></td>
+                                            <td align="right">
+                                                <div class="chox-form-checkbox">
+                                                    <label class="chox-form-std-label">Use Commercial Rate</label>
+                                                    <s:checkbox name="useCommercialDay3" />
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan ="3" align="center">

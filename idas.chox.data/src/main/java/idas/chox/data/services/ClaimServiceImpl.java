@@ -2018,13 +2018,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 //        long days = TimeUnit.DAYS.convert((new Date()).getTime() - penaltyStartDate.getTime(), TimeUnit.MILLISECONDS);
         int days = claim.getInvoice().getInvoicedDays();
 
-        if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && brePenaltyBand.getHirePeriodStartDay3() != -1) {
+        if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() > 0) {
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1 && brePenaltyBand.getHirePeriodStartDay3() == -1){
+        } else if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() <= 0){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() != -1 && brePenaltyBand.getHirePeriodStartDay2() != -1){
+        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() > 0){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() != -1 && brePenaltyBand.getHirePeriodStartDay2() == -1){
+        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() <= 0){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
         } else {
             claim.getInvoice().setPenaltyBand(-1);
@@ -2236,13 +2236,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
-            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() == -1) {
+            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() <= 0) {
                 return BigDecimal.ZERO.setScale(2);
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() != -1) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0) {
                 return brePenaltyBand.getHireDay1();
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() != -1) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0) {
                 return brePenaltyBand.getHireDay2();
-            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() != -1) {
+            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0) {
                 return brePenaltyBand.getHireDay3();
             }
         }
@@ -2259,13 +2259,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
-            if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() == -1) {
+            if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() <= 0) {
                 return BigDecimal.ZERO.setScale(2);
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.getRepairPeriodStartDay1() != -1) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.getRepairPeriodStartDay1() > 0) {
                 return brePenaltyBand.getRepairDay1();
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() != -1) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay2() > 0) {
                 return brePenaltyBand.getRepairDay2();
-            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() != -1) {
+            } else if (dateDiff > brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0) {
                 return brePenaltyBand.getRepairDay3();
             }
         }
