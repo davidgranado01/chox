@@ -836,16 +836,16 @@
                 var claimTypeName = penaltyClaimTypesCombo.getRawValue();
                 var claimTypeId = penaltyClaimTypesCombo.getValue();
                 var startDate = penaltyStartDateDatePicker.getValue();
-                var hireDayRate1 = $('#hireDayRate1').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate1").val()).toFixed(2);
-                var hireDayRate2 = $('#hireDayRate2').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate2").val()).toFixed(2);
-                var hireDayRate3 = $('#hireDayRate3').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate3").val()).toFixed(2);
+                var hireDayRate1 = $('#hireDayRate1').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate1").val());
+                var hireDayRate2 = $('#hireDayRate2').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate2").val());
+                var hireDayRate3 = $('#hireDayRate3').val().length == 0 ? 0.00 : parseFloat($("#hireDayRate3").val());
                 var hirePeriodStartDay1 = $('#hirePeriodStartDay1').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay1").val());
                 var hirePeriodStartDay2 = $('#hirePeriodStartDay2').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay2").val());
                 var hirePeriodStartDay3 = $('#hirePeriodStartDay3').val().length == 0 ? -1 : parseInt($("#hirePeriodStartDay3").val());
 
-                var repairDayRate1 = $('#repairDayRate1').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate1").val()).toFixed(2);
-                var repairDayRate2 = $('#repairDayRate2').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate2").val()).toFixed(2);
-                var repairDayRate3 = $('#repairDayRate3').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate3").val()).toFixed(2);
+                var repairDayRate1 = $('#repairDayRate1').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate1").val());
+                var repairDayRate2 = $('#repairDayRate2').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate2").val());
+                var repairDayRate3 = $('#repairDayRate3').val().length == 0 ? 0.00 : parseFloat($("#repairDayRate3").val());
                 var repairPeriodStartDay1 = $('#repairPeriodStartDay1').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay1").val());
                 var repairPeriodStartDay2 = $('#repairPeriodStartDay2').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay2").val());
                 var repairPeriodStartDay3 = $('#repairPeriodStartDay3').val().length == 0 ? -1 : parseInt($("#repairPeriodStartDay3").val());
@@ -922,7 +922,7 @@
                     'hireDayRate1':hireDayRate1, 'hireDayRate2':hireDayRate2, 'hireDayRate3':hireDayRate3,
                     'hirePeriodStartDay1':hirePeriodStartDay1, 'hirePeriodStartDay2':hirePeriodStartDay2, 'hirePeriodStartDay3':hirePeriodStartDay3,
                     'hireWindow1':hireWindow1, 'hireWindow2':hireWindow2, 'hireWindow3':hireWindow3,
-                    'repairDayRate1':hireDayRate1, 'repairDayRate2':hireDayRate2, 'repairDayRate3':hireDayRate3,
+                    'repairDayRate1':repairDayRate1, 'repairDayRate2':repairDayRate2, 'repairDayRate3':repairDayRate3,
                     'repairPeriodStartDay1':repairPeriodStartDay1, 'repairPeriodStartDay2':repairPeriodStartDay2, 'repairPeriodStartDay3':repairPeriodStartDay3,
                     'repairWindow1':repairWindow1, 'repairWindow2':repairWindow2, 'repairWindow3':repairWindow3,
                     'useCommercialDay1':useCommercialDay1, 'useCommercialDescDay1':useCommercialDescDay1,
@@ -1074,7 +1074,7 @@
             }
             if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay1"]:checked').val()) {
                 if (hirePeriodStartDay1 > 0 && $.isNumeric($("#hireDay1").val())) {
-                    if (isNaN(parseFloat($("#hireDayRate1").val())) || parseFloat($("#hireDayRate1").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#hireDayRate1").val())) || parseFloat($("#hireDayRate1").val()) < 0) {
                         mesBox.append("You must supply a value for 'Hire Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
@@ -1083,7 +1083,7 @@
                     validForm = false;
                 }
                 if (repairPeriodStartDay1 > 0 && $.isNumeric($("#repairDayRate1").val())) {
-                    if (isNaN(parseFloat($("#repairDayRate1").val())) || parseFloat($("#repairDayRate1").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#repairDayRate1").val())) || parseFloat($("#repairDayRate1").val()) < 0) {
                         mesBox.append("You must supply a value for 'Repair Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
@@ -1105,7 +1105,7 @@
                         
             if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay2"]:checked').val()) {
                 if (hirePeriodStartDay2 > 0 && $.isNumeric($("#hireDay2").val())) {
-                    if (isNaN(parseFloat($("#hireDayRate2").val())) || parseFloat($("#hireDayRate2").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#hireDayRate2").val())) || parseFloat($("#hireDayRate2").val()) < 0) {
                         mesBox.append("You must supply a value for 'Hire Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
@@ -1114,7 +1114,7 @@
                     validForm = false;
                 }
                 if (repairPeriodStartDay2 > 0 && $.isNumeric($("#repairDayRate2").val())) {
-                    if (isNaN(parseFloat($("#repairDayRate2").val())) || parseFloat($("#repairDayRate2").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#repairDayRate2").val())) || parseFloat($("#repairDayRate2").val()) < 0) {
                         mesBox.append("You must supply a value for 'Repair Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
@@ -1132,7 +1132,7 @@
                         
             if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay3"]:checked').val()) {
                 if (hirePeriodStartDay3 > 0 && $.isNumeric($("#hireDayRate3").val())) {
-                    if (isNaN(parseFloat($("#hireDayRate3").val())) || parseFloat($("#hireDayRate3").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#hireDayRate3").val())) || parseFloat($("#hireDayRate3").val()) < 0) {
                         mesBox.append("You must supply a value for 'Hire Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }
@@ -1141,7 +1141,7 @@
                     validForm = false;
                 }
                 if (repairPeriodStartDay3 > 0 && $.isNumeric($("#repairDayRate3").val())) {
-                    if (isNaN(parseFloat($("#repairDayRate3").val())) || parseFloat($("#repairDayRate3").val()).toFixed(2) < 0) {
+                    if (isNaN(parseFloat($("#repairDayRate3").val())) || parseFloat($("#repairDayRate3").val()) < 0) {
                         mesBox.append("You must supply a value for 'Repair Pen Rate %' for 3rd Penalty Charge Band\n<br/>").show();
                         validForm = false;
                     }

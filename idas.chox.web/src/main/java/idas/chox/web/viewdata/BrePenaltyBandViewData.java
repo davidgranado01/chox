@@ -87,6 +87,9 @@ public class BrePenaltyBandViewData {
         this.repairDayRate1 = object.getRepairDay1();
         this.repairDayRate2 = object.getRepairDay2();
         this.repairDayRate3 = object.getRepairDay3();
+        this.repairPeriodStartDay1 = object.getRepairPeriodStartDay1();
+        this.repairPeriodStartDay2 = object.getRepairPeriodStartDay2();
+        this.repairPeriodStartDay3 = object.getRepairPeriodStartDay3();
         if (repairPeriodStartDay1 == -1) {
             this.repairWindow1 = "";
         } else if (this.useCommercialDay1) {
