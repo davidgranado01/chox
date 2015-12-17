@@ -95,7 +95,7 @@ nextPenaltyBand = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 an
 IF useNextCommercial = true THEN
     UPDATE claim
         SET auto_penalty_charges = false
-    WHERE claim.id = claimRecord.claim_claim_id
+    WHERE claim.id = claimRecord.claim_claim_id;
 END IF;
 
 IF hirepenalPerVal != 0.0 or repairpenalPerVal != 0.0 THEN
