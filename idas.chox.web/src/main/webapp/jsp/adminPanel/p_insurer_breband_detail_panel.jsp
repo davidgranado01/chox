@@ -1073,7 +1073,7 @@
                 validForm = false;                
             }
             if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay1"]:checked').val()) {
-                if (hirePeriodStartDay1 > 0 && $.isNumeric($("#hireDay1").val())) {
+                if (hirePeriodStartDay1 > 0 && $.isNumeric($("#hireDayRate1").val())) {
                     if (isNaN(parseFloat($("#hireDayRate1").val())) || parseFloat($("#hireDayRate1").val()) < 0) {
                         mesBox.append("You must supply a value for 'Hire Pen Rate %' for 1st Penalty Charge Band\n<br/>").show();
                         validForm = false;
@@ -1104,7 +1104,7 @@
             }
                         
             if(!$('form#formUpdateInsurerBreBandDetail input[name="useCommercialDay2"]:checked').val()) {
-                if (hirePeriodStartDay2 > 0 && $.isNumeric($("#hireDay2").val())) {
+                if (hirePeriodStartDay2 > 0 && $.isNumeric($("#hireDayRate2").val())) {
                     if (isNaN(parseFloat($("#hireDayRate2").val())) || parseFloat($("#hireDayRate2").val()) < 0) {
                         mesBox.append("You must supply a value for 'Hire Pen Rate %' for 2nd Penalty Charge Band\n<br/>").show();
                         validForm = false;
