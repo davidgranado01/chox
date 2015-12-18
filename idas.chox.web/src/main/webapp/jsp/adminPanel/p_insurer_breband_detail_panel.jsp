@@ -1523,7 +1523,7 @@
                                     <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the system to apply automatic penalty charges.</div>
                                 </div>
                             <s:if test="insurerUploadEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" onclick="doManulInvoicePenaltyChargeCheck()" /></div>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" onclick="doManualInvoicePenaltyChargeCheck()" /></div>
                                 <label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer Upload Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer Upload invoices.</div>
                                 <div class="chox-form-checkboxitem" id="manualInvoicePenaltyIdentifierId">

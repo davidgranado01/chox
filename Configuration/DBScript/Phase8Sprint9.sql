@@ -323,7 +323,7 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 ----------------------
 
 --------------------------------------------------------------------------------
--- 8.9.1 Add Automatic Penalties on Insurer Invoices
+-- 8.9.2 Add Automatic Penalties on Insurer Invoices
 --------------------------------------------------------------------------------
 ALTER TABLE bre_band ADD COLUMN allow_manual_inv_penalty_charges_auto boolean not null default false;
 
@@ -379,7 +379,7 @@ WHERE
      AND c.auto_penalty_charges = TRUE
      AND cho.auto_penalty_charges = TRUE
      AND (((vc.rental_start IS NULL) AND (bpb.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb.start_date <= vc.rental_start)))
-     AND i.penalty_band > -1
+     AND i.penalty_band > 0
      AND (current_date - i.auto_penalty_start::DATE) >= i.penalty_band
      -- Subquery to exclude the older penalty band entries
      AND NOT EXISTS (SELECT
