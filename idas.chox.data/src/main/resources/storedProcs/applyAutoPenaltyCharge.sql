@@ -54,7 +54,7 @@ WHERE
      AND c.auto_penalty_charges = TRUE
      AND cho.auto_penalty_charges = TRUE
      AND (((vc.rental_start IS NULL) AND (bpb.start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (bpb.start_date <= vc.rental_start)))
-     AND i.penalty_band > -1
+     AND i.penalty_band > 0
      AND (current_date - i.auto_penalty_start::DATE) >= i.penalty_band
      -- Subquery to exclude the older penalty band entries
      AND NOT EXISTS (SELECT
@@ -82,15 +82,15 @@ repairpenalPerVal = CASE WHEN claimRecord.penalty_band = claimRecord.repair_peri
                     CASE WHEN claimRecord.penalty_band = claimRecord.repair_period_start_day_3 and claimRecord.use_commercial_day_3 != true then claimRecord.repair_day_3/100.0 ELSE 0.0 END END END;
 
 -- Determine next penalty Band
-useNextCommercial = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 != -1 THEN claimRecord.use_commercial_day_3 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 = -1 then claimRecord.use_commercial_day_3 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 != -1 THEN claimRecord.use_commercial_day_2 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 = -1 THEN claimRecord.use_commercial_day_2 ELSE true END END END END;
+useNextCommercial = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 > 0 and claimRecord.hire_period_start_day_3 > 0 THEN claimRecord.use_commercial_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 > 0 and claimRecord.hire_period_start_day_3 <= 0 then claimRecord.use_commercial_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 > 0 and claimRecord.hire_period_start_day_2 > 0 THEN claimRecord.use_commercial_day_2 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 > 0 and claimRecord.hire_period_start_day_2 <= 0 THEN claimRecord.use_commercial_day_2 ELSE true END END END END;
 
-nextPenaltyBand = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 != -1 THEN claimRecord.hire_period_start_day_3 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 != -1 and claimRecord.hire_period_start_day_3 = -1 then claimRecord.repair_period_start_day_3 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 != -1 THEN claimRecord.hire_period_start_day_2 ELSE
-                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 != -1 and claimRecord.hire_period_start_day_2 = -1 THEN claimRecord.repair_period_start_day_2 ELSE -1 END END END END;
+nextPenaltyBand = CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 > 0 and claimRecord.hire_period_start_day_3 > 0 THEN claimRecord.hire_period_start_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_2 and penaltyAge < claimRecord.hire_period_start_day_3 and claimRecord.hire_period_start_day_2 > 0 and claimRecord.hire_period_start_day_3 <= 0 then claimRecord.repair_period_start_day_3 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 > 0 and claimRecord.hire_period_start_day_2 > 0 THEN claimRecord.hire_period_start_day_2 ELSE
+                  CASE WHEN penaltyAge >= claimRecord.hire_period_start_day_1 and penaltyAge < claimRecord.hire_period_start_day_2 and claimRecord.hire_period_start_day_1 > 0 and claimRecord.hire_period_start_day_2 <= 0 THEN claimRecord.repair_period_start_day_2 ELSE -1 END END END END;
 
 -- if the next penalty band is commercial, then disable automatic penalty charges (for the next iteration)
 IF useNextCommercial = true THEN

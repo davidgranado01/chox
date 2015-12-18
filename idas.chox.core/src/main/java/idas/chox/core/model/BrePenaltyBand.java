@@ -60,7 +60,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHireDay1(BigDecimal hireDay1) {
-        this.hireDay1 = hireDay1.setScale(2);
+        this.hireDay1 = hireDay1.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     public BigDecimal getHireDay2() {
@@ -68,7 +68,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHireDay2(BigDecimal hireDay2) {
-        this.hireDay2 = hireDay2.setScale(2);
+        this.hireDay2 = hireDay2.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     public BigDecimal getHireDay3() {
@@ -76,7 +76,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setHireDay3(BigDecimal hireDay3) {
-        this.hireDay3 = hireDay3.setScale(2);
+        this.hireDay3 = hireDay3.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     public BigDecimal getRepairDay1() {
@@ -84,7 +84,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepairDay1(BigDecimal repairDay1) {
-        this.repairDay1 = repairDay1.setScale(2);
+        this.repairDay1 = repairDay1.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     public BigDecimal getRepairDay2() {
@@ -92,7 +92,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepairDay2(BigDecimal repairDay2) {
-        this.repairDay2 = repairDay2.setScale(2);
+        this.repairDay2 = repairDay2.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     public BigDecimal getRepairDay3() {
@@ -100,7 +100,7 @@ public class BrePenaltyBand extends Entity implements Serializable, FullAudit {
     }
 
     public void setRepairDay3(BigDecimal repairDay3) {
-        this.repairDay3 = repairDay3.setScale(2);
+        this.repairDay3 = repairDay3.setScale(2, BigDecimal.ROUND_DOWN);
     }
 
 
