@@ -267,7 +267,7 @@
             ]
         });
 
-        var penaltyClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+        var penaltyClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escape="false"/>');
         var penaltyClaimTypesStore = new Ext.data.Store({
             data : penaltyClaimTypes,
             reader : penaltyClaimTypesJsonReader

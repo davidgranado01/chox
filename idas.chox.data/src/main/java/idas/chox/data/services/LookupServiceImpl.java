@@ -68,6 +68,31 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         return items;
     }
+
+
+    @Override
+    public List<LookupItem> getClaimTypes(Insurer insurer) {
+        List<LookupItem> items = new ArrayList<>();
+        if (insurer.isAllowCollaborationProtocolClaims()) {
+            items.add(new LookupItem(ClaimType.COLLABORATION_PROTOCOL.toString(), Integer.toString(ClaimType.COLLABORATION_PROTOCOL.getClaimTypeValue())));
+        }
+        if (insurer.isAllowFixedFeeClaims()) {
+            items.add(new LookupItem(ClaimType.FIXED_FEE.toString(), Integer.toString(ClaimType.FIXED_FEE.getClaimTypeValue())));
+        }
+        items.add(new LookupItem(ClaimType.GTA.toString(), Integer.toString(ClaimType.GTA.getClaimTypeValue())));
+        if (insurer.isInvoiceUploadEnabled()) {
+            items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
+        }
+        items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.getClaimTypeValue())));
+        if (insurer.isAllowSubscriberClaims()) {
+            items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.getClaimTypeValue())));
+        }
+        if (insurer.isThirdPartyInterventionActivated()) {
+            items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
+        }
+        return items;
+    }
+
     @Override
     public List<LookupItem> getClaimTypes(WebUser user) {
         List<LookupItem> items = new ArrayList<>();

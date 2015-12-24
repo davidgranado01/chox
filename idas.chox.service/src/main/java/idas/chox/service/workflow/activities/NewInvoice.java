@@ -124,6 +124,10 @@ public class NewInvoice extends BaseActivity {
         } else {
             claim.getInvoice().setPenaltyBand(-1);
         }
+        // If the first penalty band is set to use commercial rates, then turn off automatic penalties on the claim
+        if (brePenaltyBand.isUseCommercialDay1()) {
+            claim.setAutoPenaltyChargeEnabled(false);
+        }
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {

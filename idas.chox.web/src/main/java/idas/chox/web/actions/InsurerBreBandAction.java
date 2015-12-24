@@ -347,8 +347,15 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setAsCopy(boolean asCopy) {
         this.asCopy = asCopy;
     }
+    
     public String getClaimTypesJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
+        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
+        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+    }
+    
+    public String getClaimTypesForInsurerJsonString() {
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(adminInsurerService.getInsurer(insurerId));
         String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
         return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
     }

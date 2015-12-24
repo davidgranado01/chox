@@ -2031,6 +2031,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.getInvoice().setPenaltyBand(-1);
         }
         
+        LOG.info("Days={}, setting next penalty band to {}", days, claim.getInvoice().getPenaltyBand());
     }
 
     @Override

@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts2.interceptor.ParameterAware;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
-import net.sf.json.JSONArray;
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
@@ -29,7 +32,6 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -151,7 +153,9 @@ public class ReportAction extends BaseAction implements ParameterAware {
             }
             LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            getSession().put("exceptionThrown", true);
+            synchronized (getSessionLock()) {
+                getSession().put("exceptionThrown", true);
+            }
         } catch (Exception ex) {
             LOG.error("Exception in generation report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
             if (fos != null) {
@@ -161,7 +165,9 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
-            getSession().put("exceptionThrown", true); 
+            synchronized (getSessionLock()) {
+                getSession().put("exceptionThrown", true);
+            }
         }
 
         synchronized (getSessionLock()) {
@@ -170,6 +176,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                     getSession().put("cancelExportOperation", false);
                     getSession().put("isExportFinished", true);
+                    LOG.debug("Export finished, report file written to {}", reportFile.getAbsolutePath());
                 } else {
                     LOG.error("Cannot add null reportFileLocation to session");
                 }

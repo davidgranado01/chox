@@ -326,6 +326,7 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 -- 8.9.2 Add Automatic Penalties on Insurer Invoices
 --------------------------------------------------------------------------------
 ALTER TABLE bre_band ADD COLUMN allow_manual_inv_penalty_charges_auto boolean not null default false;
+ALTER TABLE invoice DROP COLUMN auto_penalty_alert_qty;
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
