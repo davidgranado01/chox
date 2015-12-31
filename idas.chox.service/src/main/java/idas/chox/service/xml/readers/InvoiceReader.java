@@ -1,5 +1,6 @@
 package idas.chox.service.xml.readers;
 
+import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -130,7 +131,11 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalLossFeeNet(BigDecimal.ZERO);
         invoice.setTotalLossFeeVat(BigDecimal.ZERO);
         
-        invoice.setAutoPenaltyStart(new Date());
+        if (ClaimType.isInsurerUpload(claimResult.getClaim().getClaimType())) {
+            invoice.setAutoPenaltyStart(invoice.getDateInvoiced());
+        } else {
+            invoice.setAutoPenaltyStart(new Date());
+        }
         claimResult.getClaim().setInvoice(invoice);
         getBordereauReaderContext().getClaimService().updateLiabilityPayment(claimResult.getClaim());
         // Now remove from invoice. This is necessary as some of the invoice sub-sections may not be valid.

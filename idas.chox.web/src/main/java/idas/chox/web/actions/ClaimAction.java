@@ -1392,8 +1392,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1())) {
                                 accessRight = 0;
                             }
-                            // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                            else if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1) { // Check if not removed from penalty queue
+                            // Check the 'Adjust Penalty Charges' Panel is not already displayed
+                            else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1) { // Check if not removed from penalty queue
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         && !claim.isAutoPenaltyChargeEnabled()))
@@ -2844,7 +2844,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getShowAutoPenaltyCheckbox() {
 
-        if (!claim.getChorganisation().isAutoPenaltyChargeEnabled() || ClaimType.isInsurerUpload(claim.getClaimType())) {
+        if (!claim.getChorganisation().isAutoPenaltyChargeEnabled()) {
             return false;
         }
         
@@ -2862,7 +2862,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return true;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
         Map resultMap = claimService.adjustAutoPenaltyCharge(claim, autoPenaltyStart, getIsCHO());

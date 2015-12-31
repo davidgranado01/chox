@@ -996,11 +996,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isPenaltyChargeApplied()) {
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_CONTESTED));
             criteria.add(Restrictions.ge("iv.penaltyBand", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_band)"));
             criteria.add(Restrictions.disjunction()
@@ -1009,9 +1004,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                             .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
                             .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
-            if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
-                LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
-            } else {
+            if (OrganisationType.INS.equals(getCurrentUser().getOrganisationType())) {
+                // Restrict to Manual claims
+                criteria.add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE)));
+                // Don't show claims for CHOs that do not allow penalty charges (from BRE band)
+                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "bbo")
+                        .createAlias("bbo.breBand", "bb", CriteriaSpecification.LEFT_JOIN)
+                        .createAlias("bb.insurer", "ins2", CriteriaSpecification.LEFT_JOIN)
+                        .add(Restrictions.eq("ins2.id", getCurrentUser().getInsurer().getId()))
+                        .add(Restrictions.eq("bb.allowManualInvoicePenaltyCharges", Boolean.FALSE));
+
+                bCriteria.setProjection(Projections.property("bbo.chorganisation"));
+                criteria.add(Property.forName("this.chorganisation").notIn(bCriteria));
+                
+            } else if (OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
+                criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+                criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
                 // Get the id's of the BRE Bands mapped to this CHO
                 DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
                         .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
@@ -1071,6 +1079,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
+            } else {
+                LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
             }
         }
 
@@ -1933,12 +1943,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
                     !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
                     claim.getInvoice()});
+        
+        // Set Claim BRE band
+        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setBreBand(choBand);
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                                                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && claim.getInvoice() != null
-                && claim.getInvoice().getInvoicedDays() > 30) {
+                && !brePenaltyBand.isUseCommercialDay1()
+                && ((claim.getInvoice().getInvoicedDays() > brePenaltyBand.getHirePeriodStartDay1() && brePenaltyBand.getHirePeriodStartDay1() > 0)
+                    || (claim.getInvoice().getInvoicedDays() > brePenaltyBand.getRepairPeriodStartDay1() && brePenaltyBand.getRepairPeriodStartDay1() > 0))) {
 //                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
             try {
