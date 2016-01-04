@@ -1958,7 +1958,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && !brePenaltyBand.isUseCommercialDay1()
                 && ((claim.getInvoice().getInvoicedDays() > brePenaltyBand.getHirePeriodStartDay1() && brePenaltyBand.getHirePeriodStartDay1() > 0)
                     || (claim.getInvoice().getInvoicedDays() > brePenaltyBand.getRepairPeriodStartDay1() && brePenaltyBand.getRepairPeriodStartDay1() > 0))) {
-//                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
             try {
                 LOG.debug("Calling stored procedure to update penalty charges...");
@@ -1972,8 +1971,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 getCurrentSession().getSessionFactory().evict(Claim.class, claim.getId());
                 getCurrentSession().getSessionFactory().evict(Invoice.class, claim.getInvoice().getId());
                 LOG.debug("Auto penalty charge applied to claim: {}", claim.getChoReference());
-//                applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-//                claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
                 return true;
             } catch (Exception ex) {
                 LOG.error("Exception thrown while updating auto penalty charge store procedure for claim '{}'", claim.getChoReference(), ex);
@@ -2011,20 +2008,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        int days = claim.getInvoice().getInvoicedDays();
         
-        if (brePenaltyBand.getHirePeriodStartDay1() != -1){
+        if (days >= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0) {
+            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
+        } else if (days >= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0){
+            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
+        } else if (days >= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay2() > 0){
+            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
+        } else if (days >= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.getRepairPeriodStartDay2() > 0){
+            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
+        } else if (days >= brePenaltyBand.getHirePeriodStartDay1() &&  brePenaltyBand.getHirePeriodStartDay1() > 0){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay1());
-            if (brePenaltyBand.isUseCommercialDay1()) {
-                claim.setAutoPenaltyChargeEnabled(false);
-            }
-        } else if (brePenaltyBand.getHirePeriodStartDay1() == -1 && brePenaltyBand.getRepairPeriodStartDay1() != -1){
+        } else if (days >= brePenaltyBand.getRepairPeriodStartDay1() &&  brePenaltyBand.getRepairPeriodStartDay1() > 0){
             claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay1());
-            if (brePenaltyBand.isUseCommercialDay1()) {
-                claim.setAutoPenaltyChargeEnabled(false);
-            }
         } else {
             claim.getInvoice().setPenaltyBand(-1);
         }
+        LOG.debug("Days={}, setting initial penalty band to {}", days, claim.getInvoice().getPenaltyBand());
         
     }
 
@@ -2050,7 +2051,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.getInvoice().setPenaltyBand(-1);
         }
         
-        LOG.info("Days={}, setting next penalty band to {}", days, claim.getInvoice().getPenaltyBand());
+        LOG.debug("Days={}, setting next penalty band to {}", days, claim.getInvoice().getPenaltyBand());
     }
 
     @Override
@@ -2094,16 +2095,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             invoice.setFullTotalToPay(newTotalAmountToPay);
             invoice.setHirePenaltyCharge(hirePenaltyChargeAmount);
-            invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+            invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
             invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
-            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
             // As we are applying a manual penalty charge, we need to de-activate auto-penalty charges on this claim
             //  - should only be active in case of a manual invoice
-            if (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.isAutoPenaltyChargeEnabled()) {
-                claim.setAutoPenaltyChargeEnabled(false);
-            }
+// Currently a message is displayed advising the user to disable automatic penalty charges, so we won't fo it automatically (for now)
+//            if (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.isAutoPenaltyChargeEnabled()) {
+//                claim.setAutoPenaltyChargeEnabled(false);
+//            }
             
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
             updateLiabilityPayment(claim);
@@ -2146,10 +2148,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 return resultMap;
             }
             updateClaim(claim);
-            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
+//            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
                 // The date has been changed
                 updatePenaltyStartDate(claim, autoPenaltyStart);
-            }
+//            }
             if (updateAutomaticPenaltyCharge(claim)) {
                 LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
                 // Invoice details may have changed  so we need to reload the claim
