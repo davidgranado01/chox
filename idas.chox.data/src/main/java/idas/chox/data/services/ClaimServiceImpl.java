@@ -2099,6 +2099,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
+            // As we are applying a manual penalty charge, we need to de-activate auto-penalty charges on this claim
+            //  - should only be active in case of a manual invoice
+            if (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.isAutoPenaltyChargeEnabled()) {
+                claim.setAutoPenaltyChargeEnabled(false);
+            }
+            
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
             updateLiabilityPayment(claim);
 
