@@ -12,6 +12,7 @@
         <property name="userService" ref="userService"/>
         <property name="taskService" ref="taskService"/>
         <property name="breBandService" ref="breBandService"/>
+        <property name="brePenaltyBandService" ref="brePenaltyBandService"/>
         <property name="eventService" ref="eventService" />
 <!--         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/> -->
 <!--         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/> -->
@@ -272,6 +273,9 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     
+    <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
     
