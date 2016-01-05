@@ -25,7 +25,7 @@ public class ActionPanel {
     public static final String REVIEW_BY_ENGINEER = "ClaimReviewByEng";
     public static final String CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM = "SubscriberClaimRejectionAccept";
 
-    // Non-Activity Based panels - no unique activity to assign, therefore the following panels are assocuated to 'fake' activities
+    // Non-Activity Based panels - no unique activity to assign, therefore the following panels are associated to 'fake' activities
     public static final String UPLOAD_INVOICE_DATA = "uploadInvoiceData";
     public static final String APPROVE_ESCALATED_INVOICE = "approveEscalatedInvoice";
     public static final String APPROVE_CONTESTED_INVOICE = "approveContestedInvoice";
