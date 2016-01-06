@@ -32,11 +32,13 @@ ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_3 INTEGER NOT NU
 --
 -- Update existing BRE Penalty Bands: meed to correctly set the new columns
 --
--- Disable 90 day repair period
+-- Disable 90 day repair period for all claim types except subscriber (7) and fixed fee (11)
 UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 0; -- GTA
 UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 18; -- Collaboration Protocol
 UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 4; -- Insurer vs Insurer
 UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 3; -- TPI
+UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 17; -- Insurer Upload
+
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS

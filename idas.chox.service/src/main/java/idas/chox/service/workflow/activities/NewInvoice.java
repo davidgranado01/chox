@@ -113,26 +113,8 @@ public class NewInvoice extends BaseActivity {
         }
         
         // Set initial penalty band
-        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
-        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        
-        // Set the penalty band to the first band window
-        // Note that this is no longer valid for insurer uploads as the 'Date Invoiced' is used to determine the penalty age,
-        // and so an insurer uploadeded invoice could fall directly into the second or third penalty window
-        // TODO: corrct for manual invoices
-        if (brePenaltyBand != null && brePenaltyBand.getHirePeriodStartDay1() != -1){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay1());
-        } else if (brePenaltyBand != null && brePenaltyBand.getHirePeriodStartDay1() == -1 && brePenaltyBand.getRepairPeriodStartDay1() != -1){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay1());
-        } else {
-            claim.getInvoice().setPenaltyBand(-1);
-        }
+        claimService.setInitialPenaltyBand(claim);
 
-        // If the first penalty band is set to use commercial rates, then turn off automatic penalties on the claim
-        if (brePenaltyBand != null && brePenaltyBand.isUseCommercialDay1()) {
-            claim.setAutoPenaltyChargeEnabled(false);
-        }
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {

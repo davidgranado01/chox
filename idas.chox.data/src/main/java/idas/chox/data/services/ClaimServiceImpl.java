@@ -2004,54 +2004,98 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
-    private void setInitialPenaltyBand(Claim claim) {
+    @Override
+    public void setInitialPenaltyBand(Claim claim) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        int days = claim.getInvoice().getInvoicedDays();
-        
-        if (days >= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0) {
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
-        } else if (days >= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
-        } else if (days >= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay2() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
-        } else if (days >= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.getRepairPeriodStartDay2() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
-        } else if (days >= brePenaltyBand.getHirePeriodStartDay1() &&  brePenaltyBand.getHirePeriodStartDay1() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay1());
-        } else if (days >= brePenaltyBand.getRepairPeriodStartDay1() &&  brePenaltyBand.getRepairPeriodStartDay1() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay1());
+
+        if (brePenaltyBand != null) {
+            int days = claim.getInvoice().getInvoicedDays();
+
+            if (days >= brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
+                if (brePenaltyBand.isUseCommercialDay3()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days >= brePenaltyBand.getRepairPeriodStartDay3() && brePenaltyBand.getRepairPeriodStartDay3() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
+                if (brePenaltyBand.isUseCommercialDay3()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days >= brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay2() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
+                if (brePenaltyBand.isUseCommercialDay2()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days >= brePenaltyBand.getRepairPeriodStartDay2() && brePenaltyBand.getRepairPeriodStartDay2() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
+                if (brePenaltyBand.isUseCommercialDay2()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (brePenaltyBand.getHirePeriodStartDay1() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay1());
+                if (brePenaltyBand.isUseCommercialDay1()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (brePenaltyBand.getRepairPeriodStartDay1() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay1());
+                if (brePenaltyBand.isUseCommercialDay1()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else {
+                claim.getInvoice().setPenaltyBand(-1);
+                claim.setAutoPenaltyChargeEnabled(false);
+            }
+            LOG.debug("Days={}, setting initial penalty band to {} for claim {}", new Object[]{days, claim.getInvoice().getPenaltyBand(), claim.getChoReference()});
         } else {
             claim.getInvoice().setPenaltyBand(-1);
+            LOG.debug("No initial penalty band to set for claim {}", claim.getChoReference());
         }
-        LOG.debug("Days={}, setting initial penalty band to {}", days, claim.getInvoice().getPenaltyBand());
-        
     }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void setNextPenaltyBand(Claim claim) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        
+
+        if (brePenaltyBand != null) {
 //        Date penaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
 //        long days = TimeUnit.DAYS.convert((new Date()).getTime() - penaltyStartDate.getTime(), TimeUnit.MILLISECONDS);
-        int days = claim.getInvoice().getInvoicedDays();
+            int days = claim.getInvoice().getInvoicedDays();
 
-        if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() > 0) {
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() <= 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() > 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
-        } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() <= 0){
-            claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
+            if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay3());
+                if (brePenaltyBand.isUseCommercialDay3()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days > brePenaltyBand.getHirePeriodStartDay2() && days < brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay2() > 0 && brePenaltyBand.getHirePeriodStartDay3() <= 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay3());
+                if (brePenaltyBand.isUseCommercialDay3()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() > 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getHirePeriodStartDay2());
+                if (brePenaltyBand.isUseCommercialDay2()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else if (days > brePenaltyBand.getHirePeriodStartDay1() && days < brePenaltyBand.getHirePeriodStartDay2() && brePenaltyBand.getHirePeriodStartDay1() > 0 && brePenaltyBand.getHirePeriodStartDay2() <= 0) {
+                claim.getInvoice().setPenaltyBand(brePenaltyBand.getRepairPeriodStartDay2());
+                if (brePenaltyBand.isUseCommercialDay2()) {
+                    claim.setAutoPenaltyChargeEnabled(false);
+                }
+            } else {
+                claim.getInvoice().setPenaltyBand(-1);
+                claim.setAutoPenaltyChargeEnabled(false);
+            }
+            LOG.debug("Days={}, setting next penalty band to {} for claim {}", new Object[]{days, claim.getInvoice().getPenaltyBand(), claim.getChoReference()});
         } else {
             claim.getInvoice().setPenaltyBand(-1);
+            LOG.debug("No next penalty band to set for claim {}", claim.getChoReference());
         }
-        
-        LOG.debug("Days={}, setting next penalty band to {}", days, claim.getInvoice().getPenaltyBand());
+
     }
 
     @Override

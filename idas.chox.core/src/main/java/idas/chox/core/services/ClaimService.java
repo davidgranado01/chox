@@ -145,4 +145,5 @@ public interface ClaimService extends DataService {
     
     boolean addOnHireTask(Claim claim);
 
+    void setInitialPenaltyBand(Claim claim);
 }
