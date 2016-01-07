@@ -109,13 +109,14 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String exportReport() {
-
+        LOG.debug("Generating report file '{}' for user '{}'", reportName, this.getAuthenticatedUser().getDisplayName());
         synchronized (getSessionLock()) {
             getSession().put("isExportFinished", false);
             getSession().put("exceptionThrown", false);
             getSession().put("cancelExportOperation", false);
             getSession().put("reportFileLocation", null);
         }
+        LOG.trace("Session variables cleared.");
 
         if ("ClaimFileReport-Excel".equals(reportName) && !getCanExport()) {
             LOG.error("Illegal attempt to generate Claim File Report by user '{}'", getAuthenticatedUser().getDisplayName());
@@ -123,7 +124,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
         }
 
         final Report report = ReportFactory.getReportByName(reportName);
-        LOG.debug("Report generated from the reportfactory");
         if (!getReportAccessibility().canAccess(report.getReportCode())) {
             LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
@@ -143,7 +143,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
             report.build().writeTo(fos);
             fos.flush();
             fos.close();
+            LOG.trace("Report generation complete");
         } catch (IOException ex) {
+            LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
+            LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             if (fos != null) {
                 try {
                     fos.close();
@@ -151,13 +154,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
-            LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
-            LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             synchronized (getSessionLock()) {
                 getSession().put("exceptionThrown", true);
             }
         } catch (Exception ex) {
-            LOG.error("Exception in generation report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
+            LOG.error("Exception in generation of report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
             if (fos != null) {
                 try {
                     fos.close();
@@ -170,16 +171,19 @@ public class ReportAction extends BaseAction implements ParameterAware {
             }
         }
 
+        LOG.trace("Updating session with report generation result");
         synchronized (getSessionLock()) {
             if (!(Boolean) getSession().get("exceptionThrown")) {
                 if (reportFile != null) {
                     getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                     getSession().put("cancelExportOperation", false);
                     getSession().put("isExportFinished", true);
-                    LOG.debug("Export finished, report file written to {}", reportFile.getAbsolutePath());
+                    LOG.debug("Export finished,details added to session - report file written to: {}", reportFile.getAbsolutePath());
                 } else {
                     LOG.error("Cannot add null reportFileLocation to session");
                 }
+            } else {
+                    LOG.debug("Exception thrown (in session) generating report");
             }
         }
         return SUCCESS;
@@ -226,7 +230,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
                 }
-                getSession().put("reportFileLocation", null);
+                getSession().remove("reportFileLocation");
+                getSession().remove("isExportFinished");
+                getSession().remove("exceptionThrown");
+                getSession().remove("cancelExportOperation");
             } else {
                 LOG.error("reportFileLocation not in session or is null: {}", getSession().containsKey("reportFileLocation"));
                 createEmptyReport();
