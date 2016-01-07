@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.Date;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -283,6 +284,16 @@ public class TlTaskCreation extends BaseActivity {
         super.validate(claim);
         String empty="";
         
+        // First, lets check if an open 'Total Loss Payment' type-task is already present on the claim
+        List<Task> tasks = taskService.getAllTasksByClaim(claim.getId());
+        for (Task task : tasks) {
+            if ("Total Loss Payment".equals(task.getType()) && task.getDescription().startsWith("A Total Loss payment is required and the following details apply:")
+                    && !task.getComplete()) {
+                statusString.append("A Total Loss Payment Task already exists on this claim.");
+                break;
+            }
+        }
+
         if (imsReference != null) {
             String clean = Jsoup.clean(imsReference, Whitelist.basic());
             if (!clean.equals(imsReference)) {
