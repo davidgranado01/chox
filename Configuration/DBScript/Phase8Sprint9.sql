@@ -6,7 +6,6 @@ ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_1 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_60_Day TO hire_day_2;
 ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_2 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_90_Day TO hire_day_3;
-ALTER TABLE bre_penalty_band DROP COLUMN hire_apply_90_day_rate;
 ALTER TABLE bre_penalty_band ALTER COLUMN hire_day_3 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band RENAME COLUMN hire_use_commercial TO use_commercial_day_3;
 ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_1 INTEGER NOT NULL DEFAULT 30;
@@ -14,7 +13,6 @@ ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_2 INTEGER NOT NULL
 ALTER TABLE bre_penalty_band ADD COLUMN hire_period_start_day_3 INTEGER NOT NULL DEFAULT 90;
 
 UPDATE bre_penalty_band set use_commercial_day_3 = true where repair_use_commercial = true;
-ALTER TABLE bre_penalty_band DROP COLUMN repair_use_commercial;
 ALTER TABLE bre_penalty_band ADD COLUMN use_commercial_day_1 BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE bre_penalty_band ADD COLUMN use_commercial_day_2 BOOLEAN NOT NULL DEFAULT false;
 
@@ -24,7 +22,6 @@ ALTER TABLE bre_penalty_band RENAME COLUMN repair_90_Day TO repair_day_3;
 ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_1 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_2 TYPE numeric(6,2);
 ALTER TABLE bre_penalty_band ALTER COLUMN repair_day_3 TYPE numeric(6,2);
-ALTER TABLE bre_penalty_band DROP COLUMN repair_apply_90_day_rate;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_1 INTEGER NOT NULL DEFAULT 30;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_2 INTEGER NOT NULL DEFAULT 60;
 ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_3 INTEGER NOT NULL DEFAULT 90;
@@ -32,13 +29,13 @@ ALTER TABLE bre_penalty_band ADD COLUMN repair_period_start_day_3 INTEGER NOT NU
 --
 -- Update existing BRE Penalty Bands: meed to correctly set the new columns
 --
--- Disable 90 day repair period for all claim types except subscriber (7) and fixed fee (11)
-UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 0; -- GTA
-UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 18; -- Collaboration Protocol
-UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 4; -- Insurer vs Insurer
-UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 3; -- TPI
-UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where claim_type = 17; -- Insurer Upload
+-- Disable 90 day repair period fwhere not needed
+UPDATE bre_penalty_band SET repair_period_start_day_3 = -1 where repair_apply_90_day_rate = false;
+UPDATE bre_penalty_band SET hire_period_start_day_3 = -1 where hire_apply_90_day_rate = false;
 
+ALTER TABLE bre_penalty_band DROP COLUMN hire_apply_90_day_rate;
+ALTER TABLE bre_penalty_band DROP COLUMN repair_apply_90_day_rate;
+ALTER TABLE bre_penalty_band DROP COLUMN repair_use_commercial;
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
