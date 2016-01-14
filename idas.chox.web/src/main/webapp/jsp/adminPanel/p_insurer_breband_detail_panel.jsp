@@ -926,8 +926,8 @@
                     'repairPeriodStartDay1':repairPeriodStartDay1, 'repairPeriodStartDay2':repairPeriodStartDay2, 'repairPeriodStartDay3':repairPeriodStartDay3,
                     'repairWindow1':repairWindow1, 'repairWindow2':repairWindow2, 'repairWindow3':repairWindow3,
                     'useCommercialDay1':useCommercialDay1, 'useCommercialDescDay1':useCommercialDescDay1,
-                    'useCommercialDay2':useCommercialDay1, 'useCommercialDescDay2':useCommercialDescDay2,
-                    'useCommercialDay3':useCommercialDay1, 'useCommercialDescDay3':useCommercialDescDay3
+                    'useCommercialDay2':useCommercialDay2, 'useCommercialDescDay2':useCommercialDescDay2,
+                    'useCommercialDay3':useCommercialDay3, 'useCommercialDescDay3':useCommercialDescDay3
                 });
                 newRecord.markDirty();
                 newRecord.set('removed', 'false');
