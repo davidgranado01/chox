@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -1288,6 +1287,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", actionName, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibilityEditable(actionName,
                     getAuthenticatedUser(), claim);
+            LOG.debug("More Action Accessibility for action '{}': {}", actionName, accessRight);
             /*
              * If any of this condition !(insurerWorkgroupEnabled or
              * insurerClaimOwnershipEnabled) or !(manualInvoiceWorkgroupEnabled
@@ -1375,6 +1375,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 }
                                 
                                 if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                                    LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as not allowed on claim type in BRE Band");
                                     accessRight = 0;
                                 }
                             }
@@ -1390,21 +1391,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             * to apply the penalty charges
                             */
                             if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1())) {
+                                LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as the invoice is not old enough: {}", days);
                                 accessRight = 0;
                             }
                             // Check the 'Adjust Penalty Charges' Panel is not already displayed
                             else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1) { // Check if not removed from penalty queue
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                                        && !claim.isAutoPenaltyChargeEnabled()))
-                                        && days > invoice.getPenaltyBand()) {
+                                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && !claim.isAutoPenaltyChargeEnabled()))
+                                     && days > invoice.getPenaltyBand()) {
+                                    LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as it should be displayed");
                                     accessRight = 0;
                                 }
                             }
-                            
-                            
                         } else {
                             // No invoice!
+                            LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as no invoice");
                             accessRight = 0;
                         }
                         break;
@@ -1441,7 +1442,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         break;
                 }
             }
-            LOG.debug("More Action Accessibility for action '{}': {}", actionName, accessRight);
+            LOG.debug("Updated More Action Accessibility for action '{}': {}", actionName, accessRight);
 
             if (accessRight >= 2) {
 

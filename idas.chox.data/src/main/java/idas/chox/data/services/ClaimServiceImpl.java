@@ -2230,10 +2230,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && ((isCHO && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                 || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                     && !claim.isAutoPenaltyChargeEnabled())))
-                    || (!isCHO && ClaimType.isInsurerUpload(claim.getClaimType()) && !claim.isAutoPenaltyChargeEnabled()))
+                    || !isCHO && ClaimType.isInsurerUpload(claim.getClaimType()))
             ) {
             result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
         }
+//        LOG.debug("canShowPenaltyChargeAlert returning {}: invoicedDays={}, band={}, allowPenaltyCharges={}, isCHO={}",
+//                new Object[]{result, invoice.getInvoicedDays(), invoice.getPenaltyBand(), allowPenaltyCharges, isCHO});
         return result;
     }
 
