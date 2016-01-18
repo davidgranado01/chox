@@ -1390,7 +1390,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             * not have to be over say 30 days in order to be able
                             * to apply the penalty charges
                             */
-                            if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1())) {
+                            if (brePenaltyBand == null) {
+                                LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as no penalty band found");
+                                accessRight = 0;
+                            }
+                            else if (accessRight > 0 && !ClaimType.isInsurerUpload(claim.getClaimType()) && !pcExistsBeforeSwithedOffInBreBand && (days <= brePenaltyBand.getRepairPeriodStartDay1() || days <= brePenaltyBand.getHirePeriodStartDay1())) {
                                 LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as the invoice is not old enough: {}", days);
                                 accessRight = 0;
                             }
