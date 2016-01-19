@@ -54,7 +54,7 @@ public class BrePenaltyBandServiceImpl extends SecureDataService implements BreP
         BrePenaltyBand result = null;
         if (claim.getBreBand() != null && claim.getBreBand().getBrePenaltyBands() != null) {
             for (BrePenaltyBand brePenaltyBand : claim.getBreBand().getBrePenaltyBands()) {
-                if (brePenaltyBand.getClaimType() == ClaimType.getResolvedClaimType(claim.getClaimType()) && brePenaltyBand.getStartDate().compareTo(startDate) < 0) {
+                if (brePenaltyBand.getClaimType() == ClaimType.getResolvedClaimType(claim.getClaimType()) && brePenaltyBand.getStartDate().compareTo(startDate) <= 0) {
                     if (result == null) {
                         result = brePenaltyBand;
                     } else if (result.getStartDate().compareTo(brePenaltyBand.getStartDate()) < 0) {
