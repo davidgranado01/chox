@@ -1952,6 +1952,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (claim.isAutoPenaltyChargeEnabled()
+                && brePenaltyBand != null
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && claim.getInvoice() != null
@@ -2267,16 +2268,19 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
-        if (brePenaltyBand.getHireDay1().toString().equals(percentage)) {
-            return (brePenaltyBand.getHireDay1().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-        } else if (brePenaltyBand.getHireDay2().toString().equals(percentage)) {
-            return (brePenaltyBand.getHireDay2().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-        } else if (brePenaltyBand.getHireDay3().toString().equals(percentage)) {
-            return (brePenaltyBand.getHireDay3().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
+        if (brePenaltyBand != null) {
+            if (brePenaltyBand.getHireDay1().toString().equals(percentage)) {
+                return (brePenaltyBand.getHireDay1().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            } else if (brePenaltyBand.getHireDay2().toString().equals(percentage)) {
+                return (brePenaltyBand.getHireDay2().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            } else if (brePenaltyBand.getHireDay3().toString().equals(percentage)) {
+                return (brePenaltyBand.getHireDay3().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            }
         }
+        
         return BigDecimal.ZERO.setScale(2);
     }
 
@@ -2286,16 +2290,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        if (brePenaltyBand.getRepairDay1().toString().equals(percentage)) {
-            return (brePenaltyBand.getRepairDay1().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-        } else if (brePenaltyBand.getRepairDay2().toString().equals(percentage)) {
-            return (brePenaltyBand.getRepairDay2().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
-        } else if (brePenaltyBand.getRepairDay3().toString().equals(percentage)) {
-            return (brePenaltyBand.getRepairDay3().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
-                    .setScale(2, RoundingMode.HALF_UP);
+        
+        if (brePenaltyBand != null) {
+            if (brePenaltyBand.getRepairDay1().toString().equals(percentage)) {
+                return (brePenaltyBand.getRepairDay1().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            } else if (brePenaltyBand.getRepairDay2().toString().equals(percentage)) {
+                return (brePenaltyBand.getRepairDay2().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            } else if (brePenaltyBand.getRepairDay3().toString().equals(percentage)) {
+                return (brePenaltyBand.getRepairDay3().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                        .setScale(2, RoundingMode.HALF_UP);
+            }
         }
+        
         return BigDecimal.ZERO.setScale(2);
     }
 
@@ -2310,7 +2318,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+        if (brePenaltyBand != null && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() <= 0) {
                 return BigDecimal.ZERO.setScale(2);
@@ -2333,7 +2341,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
-        if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+        if (brePenaltyBand != null && inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() <= 0) {
                 return BigDecimal.ZERO.setScale(2);

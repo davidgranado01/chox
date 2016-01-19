@@ -2762,7 +2762,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
         
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+        if (brePenaltyBand != null && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             
             if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() || brePenaltyBand.getHirePeriodStartDay1() <= 0) {
@@ -2795,7 +2795,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
         
-        if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+        if (brePenaltyBand != null && inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             
             if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() || brePenaltyBand.getRepairPeriodStartDay1() <= 0) {
