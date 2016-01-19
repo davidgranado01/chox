@@ -164,6 +164,10 @@ public class InsurerUpload extends BaseActivity {
         }
 
         if (invoicePassedBre && autoRoutedInvoice) {
+            // Claim status will have been advanced after being resubmitted - we need toreverse this
+            super.setCurrentStatus(claim.getPreviousStatus() == null ? "" : claim.getPreviousStatus());
+            claim.setPreviousStatus(super.getCurrentStatus());
+            
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
 
@@ -181,16 +185,14 @@ public class InsurerUpload extends BaseActivity {
             }
 
             if (autoRoutedInvoice && isEnableManualInvoiceWorkgroupOwnership && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
-                super.setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
                 getDataService().save(claim);
                 logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -100);
+                super.setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(super.getCurrentStatus());
             }
 
             // move claim to next status
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
             claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
 
             if (isEnableManualInvoiceWorkgroupOwnership) {
