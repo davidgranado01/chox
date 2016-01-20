@@ -108,6 +108,8 @@ public class ExcelInvoice {
     private Boolean paymentsTeam;
 
     public ExcelInvoice(Map data, boolean isCHO) {
+        boolean hireCommercial = false;
+        boolean repairCommercial = false;
         claimStatus = (String) data.get("claimstatus");
         choReference = (String) data.get("choreference");
         claimnumber = (String) data.get("claimnumber");
@@ -176,12 +178,23 @@ public class ExcelInvoice {
         hirePenaltyCharge = (BigDecimal) data.get("hirepenaltycharge");
         repairPenaltyCharge = (BigDecimal) data.get("repairpenaltycharge");
         hirePenaltyPercentageString = (String) data.get("hirepenaltypercentage");
+        if (hirePenaltyPercentageString.startsWith("Commercial")) {
+            hirePenaltyPercentageString = hirePenaltyPercentageString.replaceAll("%", "");
+            hireCommercial = true;
+        }
         repairPenaltyPercentageString = (String) data.get("repairpenaltypercentage");
-        if (!isCHO && hirePenaltyPercentageString != null && hirePenaltyPercentageString.endsWith("%") && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
+        if (repairPenaltyPercentageString.startsWith("Commercial")) {
+            repairPenaltyPercentageString = hirePenaltyPercentageString.replaceAll("%", "");
+            repairCommercial = true;
+        }
+        if (!isCHO && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
           try {
-            BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
+            BigDecimal givenPercentage = null;
+            if (!hireCommercial) {
+                givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
+            }
             BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
-            if (actualPercentage.compareTo(givenPercentage) != 0) {
+            if (hireCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
                   hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
               }
           } catch (Exception ex) {
@@ -189,11 +202,14 @@ public class ExcelInvoice {
           }
         }
         
-        if (!isCHO && repairPenaltyPercentageString != null && repairPenaltyPercentageString.endsWith("%") && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
+        if (!isCHO && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
           try {
-            BigDecimal givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
+            BigDecimal givenPercentage = null;
+            if (!repairCommercial) {
+                givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
+            }
             BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
-            if (actualPercentage.compareTo(givenPercentage) != 0) {
+            if (repairCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
                   repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
               }
           } catch (Exception ex) {
