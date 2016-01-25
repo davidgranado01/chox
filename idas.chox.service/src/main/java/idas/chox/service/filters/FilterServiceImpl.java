@@ -99,7 +99,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
                             continue;
                         }  else if (filter.getKey().equals(Filter.FILTER_INVOICE_PAYMENT_DISPUTE)
-                                && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentDisputesEnable()) {
+                                && webUser.isAnInsurer() && (!webUser.getInsurer().isPaymentDisputesEnable()
+                                            || (webUser.getInsurer().isPaymentsTeamEnable() && !webUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && !webUser.isInRoleOf(WebUserRole.ROLE_INS_CH)))) {
+                            // Don't show the Payment Disputes queue if these are disabled or if payments team is active and we dont have CH or MNG role
+                            // (as there will be the FILTER_PAYMENT_TEAM_DISPUTE queue for PC role)
                             LOG.debug("Not adding queue '{}' as payment disputes are not enabled", filter.getName());
                             continue;
                         }   else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM_DISPUTE)

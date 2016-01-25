@@ -183,3 +183,12 @@ ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) not null d
 -- End of 8.10.4
 ----------------------
 
+--------------------------------------------------------------------------------
+-- bug#3601 - Production - incorrect audit trail for manual invoices
+--------------------------------------------------------------------------------
+update audit_trail
+  set original_status='AwaitingInvoiceData', version=version+1
+where original_status='InvoiceApprovedByBRE' and new_status='ManualInvoiceBREApproved';
+----------------------
+-- End of bug#3601
+----------------------

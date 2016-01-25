@@ -6,6 +6,8 @@ import java.util.Date;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import idas.chox.core.services.BrePenaltyBandService;
  * @author John
  */
 public class BrePenaltyBandServiceImpl extends SecureDataService implements BrePenaltyBandService {
+    private static final Logger LOG = LoggerFactory.getLogger(BrePenaltyBandServiceImpl.class);
 
     @Override
     public List<BrePenaltyBand> getBrePenaltyBands(int breBandId) {
@@ -49,13 +52,14 @@ public class BrePenaltyBandServiceImpl extends SecureDataService implements BreP
     @Override
     public BrePenaltyBand getBrePenaltyBand(Claim claim, Date startDate) {
         BrePenaltyBand result = null;
-
-        for (BrePenaltyBand brePenaltyBand : claim.getBreBand().getBrePenaltyBands()) {
-            if (brePenaltyBand.getClaimType() == ClaimType.getResolvedClaimType(claim.getClaimType()) && brePenaltyBand.getStartDate().compareTo(startDate) < 0) {
-                if (result == null) {
-                    result = brePenaltyBand;
-                } else if (result.getStartDate().compareTo(brePenaltyBand.getStartDate()) < 0) {
-                    result = brePenaltyBand;
+        if (claim.getBreBand() != null && claim.getBreBand().getBrePenaltyBands() != null) {
+            for (BrePenaltyBand brePenaltyBand : claim.getBreBand().getBrePenaltyBands()) {
+                if (brePenaltyBand.getClaimType() == ClaimType.getResolvedClaimType(claim.getClaimType()) && brePenaltyBand.getStartDate().compareTo(startDate) <= 0) {
+                    if (result == null) {
+                        result = brePenaltyBand;
+                    } else if (result.getStartDate().compareTo(brePenaltyBand.getStartDate()) < 0) {
+                        result = brePenaltyBand;
+                    }
                 }
             }
         }

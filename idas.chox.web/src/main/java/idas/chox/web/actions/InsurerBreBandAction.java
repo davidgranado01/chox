@@ -227,45 +227,56 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
 
     private void updatePenaltyBands(boolean asCopy) throws Exception {
-        List<BrePenaltyBandViewData> penalyBandViewDatas =
-                ((List<BrePenaltyBandViewData>) new Gson().fromJson(penaltyBandRecords, new TypeToken<List<BrePenaltyBandViewData>>() {}.getType()));
-        if (penalyBandViewDatas != null) {
-            for (BrePenaltyBandViewData penaltyBandViewData : penalyBandViewDatas) {
-                BrePenaltyBand bpb;
-                if (!asCopy && penaltyBandViewData.getId() > 0) {
-                    bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId());
-                } else if (asCopy || model.getId() == null || (bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId())) == null) {
-                    bpb = new BrePenaltyBand();
-                }
-                if (bpb != null) {
-                    if (penaltyBandViewData.isRemoved()) {
-                        if (model.getBrePenaltyBands()!= null) {
-                            model.getBrePenaltyBands().remove(bpb);
+        try {
+            List<BrePenaltyBandViewData> penaltyBandViewDatas
+                    = ((List<BrePenaltyBandViewData>) new Gson().fromJson(penaltyBandRecords, new TypeToken<List<BrePenaltyBandViewData>>() {
+                    }.getType()));
+            if (penaltyBandViewDatas != null) {
+                for (BrePenaltyBandViewData penaltyBandViewData : penaltyBandViewDatas) {
+                    BrePenaltyBand bpb;
+                    if (!asCopy && penaltyBandViewData.getId() > 0) {
+                        bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId());
+                    } else if (asCopy || model.getId() == null || (bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId())) == null) {
+                        bpb = new BrePenaltyBand();
+                    }
+                    if (bpb != null) {
+                        if (penaltyBandViewData.isRemoved()) {
+                            if (model.getBrePenaltyBands() != null) {
+                                model.getBrePenaltyBands().remove(bpb);
+                            }
+                        } else {
+                            bpb.setClaimType(ClaimType.values()[penaltyBandViewData.getClaimTypeId()]);
+                            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            try {
+                                bpb.setStartDate(formatter.parse((penaltyBandViewData.getPenaltyBandStartDate()).replace('T', ' ')));
+                            } catch (ParseException ex) {
+                                LOG.error("Exception converting string date to date with '{}': {}", penaltyBandViewData.getPenaltyBandStartDate(), ex.getMessage());
+                                throw new Exception("Error converting Penalty Band Start Date");
+                            }
+                            bpb.setHireDay1(penaltyBandViewData.getHireDayRate1());
+                            bpb.setHireDay2(penaltyBandViewData.getHireDayRate2());
+                            bpb.setHireDay3(penaltyBandViewData.getHireDayRate3());
+                            bpb.setUseCommercialDay1(penaltyBandViewData.isUseCommercialDay1());
+                            bpb.setUseCommercialDay2(penaltyBandViewData.isUseCommercialDay2());
+                            bpb.setUseCommercialDay3(penaltyBandViewData.isUseCommercialDay3());
+                            bpb.setHirePeriodStartDay1(penaltyBandViewData.getHirePeriodStartDay1());
+                            bpb.setHirePeriodStartDay2(penaltyBandViewData.getHirePeriodStartDay2());
+                            bpb.setHirePeriodStartDay3(penaltyBandViewData.getHirePeriodStartDay3());
+                            bpb.setRepairDay1(penaltyBandViewData.getRepairDayRate1());
+                            bpb.setRepairDay2(penaltyBandViewData.getRepairDayRate2());
+                            bpb.setRepairDay3(penaltyBandViewData.getRepairDayRate3());
+                            bpb.setRepairPeriodStartDay1(penaltyBandViewData.getRepairPeriodStartDay1());
+                            bpb.setRepairPeriodStartDay2(penaltyBandViewData.getRepairPeriodStartDay2());
+                            bpb.setRepairPeriodStartDay3(penaltyBandViewData.getRepairPeriodStartDay3());
+                            bpb.setBreBand(model);
+                            model.addBrePenaltyBand(bpb);
                         }
-                    } else {
-                        bpb.setClaimType(ClaimType.values()[penaltyBandViewData.getClaimTypeId()]);
-                        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        try {
-                            bpb.setStartDate(formatter.parse((penaltyBandViewData.getPenaltyBandStartDate()).replace('T', ' ')));
-                        } catch (ParseException ex) {
-                            LOG.error("Exception converting string date to date with '{}': {}", penaltyBandViewData.getPenaltyBandStartDate(), ex.getMessage());
-                            throw new Exception("Error converting Penalty Band Start Date");
-                        }
-                        bpb.setHire30Day(penaltyBandViewData.getHire30DayRate());
-                        bpb.setHire60Day(penaltyBandViewData.getHire60DayRate());
-                        bpb.setHire90Day(penaltyBandViewData.getHire90DayRate());
-                        bpb.setHireApply90DayRate(penaltyBandViewData.isHireApply90DayRate());
-                        bpb.setHireUseCommercial(penaltyBandViewData.isHireUseCommercial());
-                        bpb.setRepair30Day(penaltyBandViewData.getRepair30DayRate());
-                        bpb.setRepair60Day(penaltyBandViewData.getRepair60DayRate());
-                        bpb.setRepair90Day(penaltyBandViewData.getRepair90DayRate());
-                        bpb.setRepairApply90DayRate(penaltyBandViewData.isRepairApply90DayRate());
-                        bpb.setRepairUseCommercial(penaltyBandViewData.isRepairUseCommercial());
-                        bpb.setBreBand(model);
-                        model.addBrePenaltyBand(bpb);
                     }
                 }
             }
+        } catch (Exception ex) {
+            LOG.error("Exceeption thrown updating BRE penalty bands: {}", ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -336,8 +347,15 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setAsCopy(boolean asCopy) {
         this.asCopy = asCopy;
     }
+    
     public String getClaimTypesJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
+        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
+        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+    }
+    
+    public String getClaimTypesForInsurerJsonString() {
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(adminInsurerService.getInsurer(insurerId));
         String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
         return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
     }

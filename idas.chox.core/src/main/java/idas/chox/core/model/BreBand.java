@@ -119,6 +119,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean allowInsurervsInsurerPenaltyCharges = true;
     private boolean allowInsurervsInsurerAutoPenaltyCharges = false;
     private boolean allowManualInvoicePenaltyCharges = true;
+    private boolean allowManualInvoiceAutoPenaltyCharges = false;
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
@@ -312,6 +313,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setAllowManualInvoicePenaltyCharges(boolean allowManualInvoicePenaltyCharges) {
         this.allowManualInvoicePenaltyCharges = allowManualInvoicePenaltyCharges;
+    }
+
+    public boolean isAllowManualInvoiceAutoPenaltyCharges() {
+        return allowManualInvoiceAutoPenaltyCharges;
+    }
+
+    public void setAllowManualInvoiceAutoPenaltyCharges(boolean allowManualInvoiceAutoPenaltyCharges) {
+        this.allowManualInvoiceAutoPenaltyCharges = allowManualInvoiceAutoPenaltyCharges;
     }
 
     public boolean isHasTotalGrossSumCheck() {

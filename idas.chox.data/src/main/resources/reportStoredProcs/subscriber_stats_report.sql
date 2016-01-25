@@ -58,7 +58,7 @@ BEGIN
     FOR insRecord IN
         select * from insurer ins where allow_subscriber_claims = true and ins.id in
                     (select insurer_id from insurer_chorganisation
-                      where chorganisation_id = $1) order by ins.name asc
+                      where chorganisation_id = $1 or $1=-1) order by ins.name asc
     LOOP
     RETURN QUERY
  
@@ -67,7 +67,7 @@ BEGIN
              from claim c
                 inner join insurer ins on ins.id = c.insurer_id
                 inner join chorganisation cho on cho.id = c.chorganisation_id
-             where cho.id = $1
+             where (cho.id = $1 or $1 = -1)
                and ins.id = insRecord.id
                and (c.claim_type in (7,8,9) or (c.id in (select a.claim_id from audit_trail a
                                                          where a.claim_id = c.id and a.reverted = false
@@ -77,20 +77,20 @@ BEGIN
              from claim c
                 inner join insurer ins on ins.id = c.insurer_id
                 inner join chorganisation cho on cho.id = c.chorganisation_id
-             where cho.id = $1
+             where (cho.id = $1 or $1 = -1)
                and ins.id = insRecord.id
                and c.claim_type in (7,8,9)
+               and c.created_date between DATE_FROM and DATE_TO     
                and c.id in (select a.claim_id from audit_trail a
                             where a.claim_id = c.id and a.reverted = false
-                              and a.new_status = 'AwaitingCarHireInfo'
-                              and a.created_date between DATE_FROM and DATE_TO)) as "Total Accepted",
+                              and a.new_status = 'AwaitingCarHireInfo')) as "Total Accepted",
             (select count(*)
              from claim c, audit_trail a
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
+               and c.created_date between DATE_FROM and DATE_TO    
                and c.claim_type not in (7,8,9)
                and not exists (select * from audit_trail a2
                                where a2.claim_id = c.id and a2.reverted=false
@@ -100,8 +100,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Insurer vs Insurer'
@@ -120,8 +120,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Intervention'
@@ -140,8 +140,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Not our Policyholder'
@@ -160,8 +160,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Other'
@@ -180,8 +180,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Channel Islands'
@@ -200,8 +200,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Foreign'
@@ -220,8 +220,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Isle Of Man'
@@ -240,8 +240,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - MIB'
@@ -260,8 +260,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Schemes'
@@ -280,8 +280,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Self Insured'
@@ -300,8 +300,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Tower'
@@ -320,8 +320,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subsciber Bank Holiday Weekend'
@@ -340,8 +340,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Fraud Issues'
@@ -360,8 +360,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Indemnity Issues'
@@ -380,8 +380,8 @@ BEGIN
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
                and a.original_status = 'SubscriberClaimRejected'
-               and a.created_date between DATE_FROM and DATE_TO
-               and c.chorganisation_id = $1
+               and c.created_date between DATE_FROM and DATE_TO
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and c.claim_type not in (7,8,9)
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Liability Issues'
@@ -399,22 +399,22 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and exists (select * from audit_trail a2
                            where a2.claim_id = c.id and a2.reverted=false
                              and a2.new_status = 'SubscriberClaimRejected')) as "Total Closed After Rejection",
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Insurer vs Insurer'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -425,11 +425,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Intervention'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -440,11 +440,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Not our Policyholder'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -455,11 +455,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Other'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -470,11 +470,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Channel Islands'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -485,11 +485,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Foreign'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -500,11 +500,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Isle Of Man'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -515,11 +515,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - MIB'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -530,11 +530,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Schemes'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -545,11 +545,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Self Insured'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -560,11 +560,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Out Of Scope - Tower'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -575,11 +575,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Bank Holiday Weekend'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -590,11 +590,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Fraud Issues'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -605,11 +605,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Indemnity Issues'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -620,11 +620,11 @@ BEGIN
             (select count(*)
              from claim c, audit_trail a, audit_trail a2, reason_of_rejection ror
              where a.claim_id = c.id and a.reverted = false
-               and c.chorganisation_id = $1
+               and (c.chorganisation_id = $1 or $1 = -1)
                and c.insurer_id = insRecord.id
                and a.new_status = 'ClaimClosed'
                and c.claim_type in (7,8,9)
-               and a.created_date between DATE_FROM and DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and a2.claim_id = c.id and a2.reverted = false
                and a2.claim_reason_of_rejection = ror.id and ror.name='Subscriber - Liability Issues'
                and a2.new_status = 'SubscriberClaimRejected' 
@@ -636,10 +636,11 @@ BEGIN
              from claim c
                 inner join insurer ins on ins.id = c.insurer_id
                 inner join chorganisation cho on cho.id = c.chorganisation_id
-                inner join audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_status = 'ClaimClosed' and a1.created_date between DATE_FROM and DATE_TO)
-             where cho.id = $1
+                inner join audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_status = 'ClaimClosed')
+             where (cho.id = $1 or $1 = -1)
                and ins.id = insRecord.id
                and c.claim_type in (7,8,9)
+               and c.created_date between DATE_FROM and DATE_TO
                and c.id not in (select a.claim_id from audit_trail a
                                 where a.claim_id = c.id and a.reverted = false
                                   and a.new_status = 'AwaitingCarHireInfo')
@@ -650,24 +651,24 @@ BEGIN
              from claim c
                 inner join insurer ins on ins.id = c.insurer_id
                 inner join chorganisation cho on cho.id = c.chorganisation_id
-             where cho.id = $1
+             where (cho.id = $1 or $1 = -1)
                and ins.id = insRecord.id
                and c.claim_type in (7,8,9)
-               and c.created_date < DATE_TO
+               and c.created_date between DATE_FROM and DATE_TO
                and c.id not in (select a.claim_id from audit_trail a
                                 where a.claim_id = c.id and a.reverted = false
-                                  and a.new_status = 'ClaimClosed' and a.created_date < DATE_TO)
+                                  and a.new_status = 'ClaimClosed')
                and c.id not in (select a.claim_id from audit_trail a
                                 where a.claim_id = c.id and a.reverted = false
-                                  and a.new_status = 'AwaitingCarHireInfo'
-                                  and a.created_date < DATE_TO)) as "Total Uploaded But Not Yet Accepted",
+                                  and a.new_status = 'AwaitingCarHireInfo')) as "Total Uploaded But Not Yet Accepted",
             (select count(*)
              from claim c
                 inner join insurer ins on ins.id = c.insurer_id
                 inner join chorganisation cho on cho.id = c.chorganisation_id
-                inner join audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_status = 'ClaimClosed' and a1.created_date between DATE_FROM and DATE_TO)
-             where cho.id = $1
+                inner join audit_trail a1 on (a1.claim_id = c.id and a1.reverted = false and a1.new_status = 'ClaimClosed')
+             where (cho.id = $1 or $1 = -1)
                and ins.id = insRecord.id
+               and c.created_date between DATE_FROM and DATE_TO
                and c.id in (select a.claim_id from audit_trail a
                             where a.claim_id = c.id and a.reverted = false
                               and a.new_status = 'AwaitingCarHireInfo')

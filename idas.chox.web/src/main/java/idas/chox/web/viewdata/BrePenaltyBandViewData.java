@@ -14,23 +14,33 @@ public class BrePenaltyBandViewData {
     private int claimTypeId;
     private String claimTypeName;
     private String penaltyBandStartDate;
-    private BigDecimal hire30DayRate;
-    private BigDecimal hire60DayRate;
-    private BigDecimal hire90DayRate;
-    private boolean hireApply90DayRate;
-    private String hireApply90DayRateDesc;
-    private boolean hireUseCommercial;
-    private String hireUseCommercialDesc;
-    private BigDecimal repair30DayRate;
-    private BigDecimal repair60DayRate;
-    private BigDecimal repair90DayRate;
-    private boolean repairApply90DayRate;
-    private String repairApply90DayRateDesc;
-    private boolean repairUseCommercial;
-    private String repairUseCommercialDesc;
+    private BigDecimal hireDayRate1;
+    private BigDecimal hireDayRate2;
+    private BigDecimal hireDayRate3;
+    private boolean useCommercialDay1;
+    private String useCommercialDescDay1;
+    private boolean useCommercialDay2;
+    private String useCommercialDescDay2;
+    private boolean useCommercialDay3;
+    private String useCommercialDescDay3;
+    private int hirePeriodStartDay1;
+    private int hirePeriodStartDay2;
+    private int hirePeriodStartDay3;
+    private BigDecimal repairDayRate1;
+    private BigDecimal repairDayRate2;
+    private BigDecimal repairDayRate3;
+    private int repairPeriodStartDay1;
+    private int repairPeriodStartDay2;
+    private int repairPeriodStartDay3;
     private String createdBy;
     private String createdDate;
     private boolean removed;
+    private String hireWindow1;
+    private String hireWindow2;
+    private String hireWindow3;
+    private String repairWindow1;
+    private String repairWindow2;
+    private String repairWindow3;
     
     public BrePenaltyBandViewData(){}
 
@@ -41,20 +51,66 @@ public class BrePenaltyBandViewData {
         this.claimTypeId = object.getClaimType().getClaimTypeValue();
         this.claimTypeName = object.getClaimType().toString();
         this.penaltyBandStartDate = DateHelper.getLocalDateFormat().format(object.getStartDate());
-        this.hire30DayRate = object.getHire30Day();
-        this.hire60DayRate = object.getHire60Day();
-        this.hire90DayRate = object.getHire90Day();
-        this.hireApply90DayRate = object.isHireApply90DayRate();
-        this.hireApply90DayRateDesc = hireApply90DayRate ? "Yes" : "No";
-        this.hireUseCommercial = object.isHireUseCommercial();
-        this.hireUseCommercialDesc = hireUseCommercial ? "Yes" : "No";
-        this.repair30DayRate = object.getRepair30Day();
-        this.repair60DayRate = object.getRepair60Day();
-        this.repair90DayRate = object.getRepair90Day();
-        this.repairApply90DayRate = object.isRepairApply90DayRate();
-        this.repairApply90DayRateDesc = repairApply90DayRate ? "Yes" : "No";
-        this.repairUseCommercial = object.isRepairUseCommercial();
-        this.repairUseCommercialDesc = repairUseCommercial ? "Yes" : "No";
+        this.hireDayRate1 = object.getHireDay1();
+        this.hireDayRate2 = object.getHireDay2();
+        this.hireDayRate3 = object.getHireDay3();
+        this.useCommercialDay1 = object.isUseCommercialDay1();
+        this.useCommercialDay2 = object.isUseCommercialDay2();
+        this.useCommercialDay3 = object.isUseCommercialDay3();
+        this.useCommercialDescDay1 = useCommercialDay1 ? "Yes" : "No";
+        this.useCommercialDescDay2 = useCommercialDay2 ? "Yes" : "No";
+        this.useCommercialDescDay3 = useCommercialDay3 ? "Yes" : "No";
+        this.hirePeriodStartDay1 = object.getHirePeriodStartDay1();
+        this.hirePeriodStartDay2 = object.getHirePeriodStartDay2();
+        this.hirePeriodStartDay3 = object.getHirePeriodStartDay3();
+        if (hirePeriodStartDay1 == -1) {
+            this.hireWindow1 = "";
+        } else if (this.useCommercialDay1) {
+            this.hireWindow1 = hirePeriodStartDay1 + " C";
+        } else {
+            this.hireWindow1 = hirePeriodStartDay1 + " " + hireDayRate1.toString() + "%";
+        }
+        if (hirePeriodStartDay2 == -1) {
+            this.hireWindow2 = "";
+        } else if (this.useCommercialDay2) {
+            this.hireWindow2 = hirePeriodStartDay2 + " C";
+        } else {
+            this.hireWindow2 = hirePeriodStartDay2 + " " + hireDayRate2.toString() + "%";
+        }
+        if (hirePeriodStartDay3 == -1) {
+            this.hireWindow3 = "";
+        } else if (this.useCommercialDay3) {
+            this.hireWindow3 = hirePeriodStartDay3 + " C";
+        } else {
+            this.hireWindow3 = hirePeriodStartDay3 + " " + hireDayRate3.toString() + "%";
+        }
+        this.repairDayRate1 = object.getRepairDay1();
+        this.repairDayRate2 = object.getRepairDay2();
+        this.repairDayRate3 = object.getRepairDay3();
+        this.repairPeriodStartDay1 = object.getRepairPeriodStartDay1();
+        this.repairPeriodStartDay2 = object.getRepairPeriodStartDay2();
+        this.repairPeriodStartDay3 = object.getRepairPeriodStartDay3();
+        if (repairPeriodStartDay1 == -1) {
+            this.repairWindow1 = "";
+        } else if (this.useCommercialDay1) {
+            this.repairWindow1 = repairPeriodStartDay1 + " C";
+        } else {
+            this.repairWindow1 = repairPeriodStartDay1 + " " + repairDayRate1.toString() + "%";
+        }
+        if (repairPeriodStartDay2 == -1) {
+            this.repairWindow2 = "";
+        } else if (this.useCommercialDay2) {
+            this.repairWindow2 = repairPeriodStartDay2 + " C";
+        } else {
+            this.repairWindow2 = repairPeriodStartDay2 + " " + repairDayRate2.toString() + "%";
+        }
+        if (repairPeriodStartDay3 == -1) {
+            this.repairWindow3 = "";
+        } else if (this.useCommercialDay3) {
+            this.repairWindow3 = repairPeriodStartDay3 + " C";
+        } else {
+            this.repairWindow3 = repairPeriodStartDay3 + " " + repairDayRate3.toString() + "%";
+        }
         if (object.getCreatedBy() != null) {
             this.createdBy = object.getCreatedBy().getDisplayName();
         }
@@ -95,116 +151,100 @@ public class BrePenaltyBandViewData {
         this.penaltyBandStartDate = penaltyBandStartDate;
     }
 
-    public BigDecimal getHire30DayRate() {
-        return hire30DayRate;
+    public BigDecimal getHireDayRate1() {
+        return hireDayRate1;
     }
 
-    public void setHire30DayRate(BigDecimal hire30DayRate) {
-        this.hire30DayRate = hire30DayRate;
+    public void setHireDayRate1(BigDecimal hireDayRate1) {
+        this.hireDayRate1 = hireDayRate1;
     }
 
-    public BigDecimal getHire60DayRate() {
-        return hire60DayRate;
+    public BigDecimal getHireDayRate2() {
+        return hireDayRate2;
     }
 
-    public void setHire60DayRate(BigDecimal hire60DayRate) {
-        this.hire60DayRate = hire60DayRate;
+    public void setHireDayRate2(BigDecimal hireDayRate2) {
+        this.hireDayRate2 = hireDayRate2;
     }
 
-    public BigDecimal getHire90DayRate() {
-        return hire90DayRate;
+    public BigDecimal getHireDayRate3() {
+        return hireDayRate3;
     }
 
-    public void setHire90DayRate(BigDecimal hire90DayRate) {
-        this.hire90DayRate = hire90DayRate;
+    public void setHireDayRate3(BigDecimal hireDayRate3) {
+        this.hireDayRate3 = hireDayRate3;
     }
 
-    public boolean isHireApply90DayRate() {
-        return hireApply90DayRate;
+    public BigDecimal getRepairDayRate1() {
+        return repairDayRate1;
     }
 
-    public void setHireApply90DayRate(boolean hireApply90DayRate) {
-        this.hireApply90DayRate = hireApply90DayRate;
+    public void setRepairDayRate1(BigDecimal repairDayRate1) {
+        this.repairDayRate1 = repairDayRate1;
     }
 
-    public String getHireApply90DayRateDesc() {
-        return hireApply90DayRateDesc;
+    public BigDecimal getRepairDayRate2() {
+        return repairDayRate2;
     }
 
-    public void setHireApply90DayRateDesc(String hireApply90DayRateDesc) {
-        this.hireApply90DayRateDesc = hireApply90DayRateDesc;
+    public void setRepairDayRate2(BigDecimal repairDayRate2) {
+        this.repairDayRate2 = repairDayRate2;
     }
 
-    public boolean isHireUseCommercial() {
-        return hireUseCommercial;
+    public BigDecimal getRepairDayRate3() {
+        return repairDayRate3;
     }
 
-    public void setHireUseCommercial(boolean hireUseCommercial) {
-        this.hireUseCommercial = hireUseCommercial;
+    public void setRepairDayRate3(BigDecimal repairDayRate3) {
+        this.repairDayRate3 = repairDayRate3;
     }
 
-    public String getHireUseCommercialDesc() {
-        return hireUseCommercialDesc;
+    public int getHirePeriodStartDay1() {
+        return hirePeriodStartDay1;
     }
 
-    public void setHireUseCommercialDesc(String hireUseCommercialDesc) {
-        this.hireUseCommercialDesc = hireUseCommercialDesc;
+    public void setHirePeriodStartDay1(int hirePeriodStartDay1) {
+        this.hirePeriodStartDay1 = hirePeriodStartDay1;
     }
 
-    public BigDecimal getRepair30DayRate() {
-        return repair30DayRate;
+    public int getHirePeriodStartDay2() {
+        return hirePeriodStartDay2;
     }
 
-    public void setRepair30DayRate(BigDecimal repair30DayRate) {
-        this.repair30DayRate = repair30DayRate;
+    public void setHirePeriodStartDay2(int hirePeriodStartDay2) {
+        this.hirePeriodStartDay2 = hirePeriodStartDay2;
     }
 
-    public BigDecimal getRepair60DayRate() {
-        return repair60DayRate;
+    public int getHirePeriodStartDay3() {
+        return hirePeriodStartDay3;
     }
 
-    public void setRepair60DayRate(BigDecimal repair60DayRate) {
-        this.repair60DayRate = repair60DayRate;
+    public void setHirePeriodStartDay3(int hirePeriodStartDay3) {
+        this.hirePeriodStartDay3 = hirePeriodStartDay3;
     }
 
-    public BigDecimal getRepair90DayRate() {
-        return repair90DayRate;
+    public int getRepairPeriodStartDay1() {
+        return repairPeriodStartDay1;
     }
 
-    public void setRepair90DayRate(BigDecimal repair90DayRate) {
-        this.repair90DayRate = repair90DayRate;
+    public void setRepairPeriodStartDay1(int repairPeriodStartDay1) {
+        this.repairPeriodStartDay1 = repairPeriodStartDay1;
     }
 
-    public boolean isRepairApply90DayRate() {
-        return repairApply90DayRate;
+    public int getRepairPeriodStartDay2() {
+        return repairPeriodStartDay2;
     }
 
-    public void setRepairApply90DayRate(boolean repairApply90DayRate) {
-        this.repairApply90DayRate = repairApply90DayRate;
+    public void setRepairPeriodStartDay2(int repairPeriodStartDay2) {
+        this.repairPeriodStartDay2 = repairPeriodStartDay2;
     }
 
-    public String getRepairApply90DayRateDesc() {
-        return repairApply90DayRateDesc;
+    public int getRepairPeriodStartDay3() {
+        return repairPeriodStartDay3;
     }
 
-    public void setRepairApply90DayRateDesc(String repairApply90DayRateDesc) {
-        this.repairApply90DayRateDesc = repairApply90DayRateDesc;
-    }
-
-    public boolean isRepairUseCommercial() {
-        return repairUseCommercial;
-    }
-
-    public void setRepairUseCommercial(boolean repairUseCommercial) {
-        this.repairUseCommercial = repairUseCommercial;
-    }
-
-    public String getRepairUseCommercialDesc() {
-        return repairUseCommercialDesc;
-    }
-
-    public void setRepairUseCommercialDesc(String repairUseCommercialDesc) {
-        this.repairUseCommercialDesc = repairUseCommercialDesc;
+    public void setRepairPeriodStartDay3(int repairPeriodStartDay3) {
+        this.repairPeriodStartDay3 = repairPeriodStartDay3;
     }
 
     public String getCreatedBy() {
@@ -230,4 +270,101 @@ public class BrePenaltyBandViewData {
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
+
+    public String getHireWindow1() {
+        return hireWindow1;
+    }
+
+    public void setHireWindow1(String hireWindow1) {
+        this.hireWindow1 = hireWindow1;
+    }
+
+    public String getHireWindow2() {
+        return hireWindow2;
+    }
+
+    public void setHireWindow2(String hireWindow2) {
+        this.hireWindow2 = hireWindow2;
+    }
+
+    public String getHireWindow3() {
+        return hireWindow3;
+    }
+
+    public void setHireWindow3(String hireWindow3) {
+        this.hireWindow3 = hireWindow3;
+    }
+
+    public String getRepairWindow1() {
+        return repairWindow1;
+    }
+
+    public void setRepairWindow1(String repairWindow1) {
+        this.repairWindow1 = repairWindow1;
+    }
+
+    public String getRepairWindow2() {
+        return repairWindow2;
+    }
+
+    public void setRepairWindow2(String repairWindow2) {
+        this.repairWindow2 = repairWindow2;
+    }
+
+    public String getRepairWindow3() {
+        return repairWindow3;
+    }
+
+    public void setRepairWindow3(String repairWindow3) {
+        this.repairWindow3 = repairWindow3;
+    }
+
+    public boolean isUseCommercialDay1() {
+        return useCommercialDay1;
+    }
+
+    public void setUseCommercialDay1(boolean useCommercialDay1) {
+        this.useCommercialDay1 = useCommercialDay1;
+    }
+
+    public String getUseCommercialDescDay1() {
+        return useCommercialDescDay1;
+    }
+
+    public void setUseCommercialDescDay1(String useCommercialDescDay1) {
+        this.useCommercialDescDay1 = useCommercialDescDay1;
+    }
+
+    public boolean isUseCommercialDay2() {
+        return useCommercialDay2;
+    }
+
+    public void setUseCommercialDay2(boolean useCommercialDay2) {
+        this.useCommercialDay2 = useCommercialDay2;
+    }
+
+    public String getUseCommercialDescDay2() {
+        return useCommercialDescDay2;
+    }
+
+    public void setUseCommercialDescDay2(String useCommercialDescDay2) {
+        this.useCommercialDescDay2 = useCommercialDescDay2;
+    }
+
+    public boolean isUseCommercialDay3() {
+        return useCommercialDay3;
+    }
+
+    public void setUseCommercialDay3(boolean useCommercialDay3) {
+        this.useCommercialDay3 = useCommercialDay3;
+    }
+
+    public String getUseCommercialDescDay3() {
+        return useCommercialDescDay3;
+    }
+
+    public void setUseCommercialDescDay3(String useCommercialDescDay3) {
+        this.useCommercialDescDay3 = useCommercialDescDay3;
+    }
+
 }

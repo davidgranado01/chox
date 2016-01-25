@@ -47,7 +47,7 @@ function generateReport(queryString)
         }      
     
                 
-        reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
+        reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
     }
 }
     
@@ -137,7 +137,7 @@ function generateReport1(queryString,reportName)
         fn           : cancelReportGeneration
     });
                 
-    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1000);
+    reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
 
 }
 

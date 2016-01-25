@@ -13,16 +13,21 @@
     <property column="claim_type" name="claimType"
         type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
     <property column="start_date" name="startDate" not-null="true"/>
-    <property column="hire_30_day" name="hire30Day" not-null="true"/>
-    <property column="hire_60_day" name="hire60Day" not-null="true"/>
-    <property column="hire_90_day" name="hire90Day" not-null="true"/>
-    <property column="hire_apply_90_day_rate" name="hireApply90DayRate" not-null="true"/>
-    <property column="hire_use_commercial" name="hireUseCommercial" not-null="true"/>
-    <property column="repair_30_day" name="repair30Day" not-null="true"/>
-    <property column="repair_60_day" name="repair60Day" not-null="true"/>
-    <property column="repair_90_day" name="repair90Day" not-null="true"/>
-    <property column="repair_apply_90_day_rate" name="repairApply90DayRate" not-null="true"/>
-    <property column="repair_use_commercial" name="repairUseCommercial" not-null="true"/>
+    <property column="hire_day_1" name="hireDay1" not-null="true"/>
+    <property column="hire_day_2" name="hireDay2" not-null="true"/>
+    <property column="hire_day_3" name="hireDay3" not-null="true"/>
+    <property column="hire_period_start_day_1" name="hirePeriodStartDay1" not-null="true"/>
+    <property column="hire_period_start_day_2" name="hirePeriodStartDay2" not-null="true"/>
+    <property column="hire_period_start_day_3" name="hirePeriodStartDay3" not-null="true"/>
+    <property column="repair_day_1" name="repairDay1" not-null="true"/>
+    <property column="repair_day_2" name="repairDay2" not-null="true"/>
+    <property column="repair_day_3" name="repairDay3" not-null="true"/>
+    <property column="repair_period_start_day_1" name="repairPeriodStartDay1" not-null="true"/>
+    <property column="repair_period_start_day_2" name="repairPeriodStartDay2" not-null="true"/>
+    <property column="repair_period_start_day_3" name="repairPeriodStartDay3" not-null="true"/>
+    <property column="use_commercial_day_1" name="useCommercialDay1" not-null="true"/>
+    <property column="use_commercial_day_2" name="useCommercialDay2" not-null="true"/>
+    <property column="use_commercial_day_3" name="useCommercialDay3" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

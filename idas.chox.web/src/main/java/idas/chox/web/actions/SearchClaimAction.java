@@ -198,10 +198,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public boolean isPenaltyChargesToBeAppliedCheckBoxVisible() {
         boolean isVisible = false;
         try {
-            Filter penaltyChargesAppliedFilter = filterService.getFilter("PenaltyChargesApplied");
-            for (Filter filter : getAvailableFilters()) {
-                if (filter.getKey().equals(penaltyChargesAppliedFilter.getKey())) {
-                    isVisible = true;
+            if (getIsInsurer()&& isInsurerUploadEnabled()) {
+                isVisible = true;
+            } else {
+                Filter penaltyChargesAppliedFilter = filterService.getFilter("PenaltyChargesApplied");
+                for (Filter filter : getAvailableFilters()) {
+                    if (filter.getKey().equals(penaltyChargesAppliedFilter.getKey())) {
+                        isVisible = true;
+                    }
                 }
             }
         } catch (Exception ex) {

@@ -1609,10 +1609,10 @@ public class Invoice extends Entity implements Serializable {
 
     public boolean isAppliedHirePenaltyPercentageDifferent() {
         try {
-            if (getHirePenaltyPercentageAppliedValue() != null && getHirePenaltyPercentage() != null && getHirePenaltyPercentage().endsWith("%")) {
+            if (getHirePenaltyPercentageAppliedValue() != null && getHirePenaltyPercentage() != null && getHirePenaltyPercentage().endsWith("%") && !getHirePenaltyPercentage().startsWith("Commercial")) {
                 BigDecimal selectedHirePenaltyPercentageValue = new BigDecimal(getHirePenaltyPercentage().trim().replace("%", ""));
                 return getHirePenaltyPercentageAppliedValue().compareTo(selectedHirePenaltyPercentageValue) != 0;
-            } else if (getHirePenaltyPercentage() != null && getHirePenaltyPercentage().equalsIgnoreCase("commercial")) {
+            } else if (getHirePenaltyPercentage() != null && getHirePenaltyPercentage().startsWith("Commercial")) {
                 return true;
             }
         } catch (Exception ex) {
@@ -1624,9 +1624,11 @@ public class Invoice extends Entity implements Serializable {
     public boolean isAppliedRepairPenaltyPercentageDifferent() {
 
         try {
-            if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%")) {
+            if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%") && !getHirePenaltyPercentage().startsWith("Commercial")) {
                 BigDecimal selectedRepairPenaltyPercentageValue = new BigDecimal(getRepairPenaltyPercentage().trim().replace("%", ""));
                 return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0;
+            } else if (getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().startsWith("Commercial")) {
+                return true;
             }
         } catch (Exception ex) {
             LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), ex);

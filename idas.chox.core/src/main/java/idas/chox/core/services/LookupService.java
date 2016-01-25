@@ -4,6 +4,7 @@ import java.util.List;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
 
@@ -17,6 +18,7 @@ public interface LookupService {
     List<LookupItem> getLiabilityStatuses(boolean withNull);
     
     List<LookupItem> getClaimTypes(WebUser user);
+    List<LookupItem> getClaimTypes(Insurer insurer);
     
     List<LookupItem> getAutomaticRoutingStrategies();
 

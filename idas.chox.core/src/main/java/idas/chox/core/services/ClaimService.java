@@ -124,9 +124,7 @@ public interface ClaimService extends DataService {
     public void setTotalLoss(Claim claim, boolean isTotalLoss);
     
     public boolean setLiability(Claim claim, LiabilityStatus liability);
-    
-    int calculateCurrentPenaltyBand(Claim claim);
-    
+        
     boolean setPenaltyStartToDateInvoiced(String choReference);
     
     Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart, boolean isCHO);
@@ -147,4 +145,5 @@ public interface ClaimService extends DataService {
     
     boolean addOnHireTask(Claim claim);
 
+    void setInitialPenaltyBand(Claim claim);
 }

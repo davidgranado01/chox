@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class NewInvoice extends BaseActivity {
     private InsurerDiscountService insurerDiscountService;
     private TaskService taskService;
     private UserService userService;
+    private BrePenaltyBandService brePenaltyBandService;
     private boolean autoRoutedInvoice = false;
     protected boolean claimRouted = false;
     protected boolean claimOwnerAssigned = false;
@@ -34,6 +36,14 @@ public class NewInvoice extends BaseActivity {
     
     public boolean isAutoRoutedInvoice() {
         return autoRoutedInvoice;
+    }
+
+    public BrePenaltyBandService getBrePenaltyBandService() {
+        return brePenaltyBandService;
+    }
+
+    public void setBrePenaltyBandService(BrePenaltyBandService brePenaltyBandService) {
+        this.brePenaltyBandService = brePenaltyBandService;
     }
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
@@ -97,6 +107,14 @@ public class NewInvoice extends BaseActivity {
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         claimService.updateLiabilityPayment(claim);
 
+        if (claim.getBreBand() == null) {
+            BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        }
+        
+        // Set initial penalty band
+        claimService.setInitialPenaltyBand(claim);
+
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {
@@ -113,12 +131,6 @@ public class NewInvoice extends BaseActivity {
                 LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getVehicleHire().getVehicleRegistration(), ex.getMessage());
                 claim.getVehicleHire().setHpiError(ex.getMessage());
             }
-
-            if (claim.getBreBand() == null) {
-                BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                claim.setBreBand(choBand);
-            }
-
 
             // If CHO has automatic Daily Rate Charge Adjustment activated then check daily rate
             if (claim.getChorganisation().isAdjustDailyRateCharge() && claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
