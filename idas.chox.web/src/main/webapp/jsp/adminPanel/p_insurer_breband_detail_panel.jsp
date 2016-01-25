@@ -137,7 +137,8 @@
                 maxAllowedLabourStandardRate:{required:true, number:true, min:0},
                 maxAllowedLabourPrestigeRate:{required:true, number:true, min:0},
                 maxAllowedEngineerNetFee:{required:true, number:true, min:0},
-                maxAllowedTotalLossNetFee:{required:true, number:true, min:0}
+                maxAllowedTotalLossNetFee:{required:true, number:true, min:0},
+                auditProcessPercentage:{required:true, number:true, min:0, max:100}
             },
             messages: {
 <s:if test="isSubscriberEnabled">                         
@@ -170,7 +171,8 @@
                 maxAllowedLabourStandardRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'", number:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' must be numeric", min:"'Maximum Labour Rate Per Hour For Standard Vehicles & Vans'' cannot be less than zero"},
                 maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"},
                 maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"},
-                maxAllowedTotalLossNetFee: {required:"You must supply a value for 'Maximum Total Loss Fee Net Ceiling'", number:"'Maximum Total Loss Fee Net Ceiling' must be numeric", min:"'Maximum Total Loss Fee Net Ceiling' cannot be less than zero"}
+                maxAllowedTotalLossNetFee: {required:"You must supply a value for 'Maximum Total Loss Fee Net Ceiling'", number:"'Maximum Total Loss Fee Net Ceiling' must be numeric", min:"'Maximum Total Loss Fee Net Ceiling' cannot be less than zero"},
+                auditProcessPercentage: {required:"You must supply a value for 'Audit Process Percentage %'", number:"'Audit Process Percentage %' must be numeric", min:"'Audit Process Percentage %' cannot be less than zero", max: "'Audit Process Percentage %' cannot be more than 100"}
             }
         });
 
@@ -1170,6 +1172,17 @@
         // reset the form.
 //        resetPVCCForm();
     }
+    
+    function toggleAuditProcessPercentageDiv() {
+        if($('form#formUpdateInsurerBreBandDetail input[name="enableClaimAudit"]:checked').val()) {
+            $("#auditProcessPercentageDivId").slideDown();
+        } else {
+            $("#auditProcessPercentageDivId").hide();
+            $('form#formUpdateInsurerBreBandDetail input[name="auditProcessPercentage"]').val(0);
+        }
+    }
+    
+    toggleAuditProcessPercentageDiv();
 
 <s:if test="isChoxAdmin">
     function doHireApply90DayRate(){
@@ -1294,7 +1307,20 @@
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable use of offshore 'Payments Team'</div>
                         </div>
                     </div>
-</s:if>     
+</s:if>   
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Claim Audit</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="enableClaimAudit" value="enableClaimAudit" onclick="toggleAuditProcessPercentageDiv()"/></div><label class="chox-form-std-label"><b>Enable Claim Audit</b></label>
+                            <div class="chox-form-std-label-longer" style="padding-left: 12px;">When activated, upon moving to status Payment Received or Manual Invoice Paid, a random selection of claims (with a configurable percentage below) will be directed to a Claim Handler for completion of a claim audit.</div>
+                        </div>
+                        <br/>
+                        <div id="auditProcessPercentageDivId">
+                            <label class="chox-form-std-label-longer" style="font-weight: bold">Audit Process Percentage %:</label>
+                            <input style="padding-left: 5px;" type="text" class="chox-ttxt" name="auditProcessPercentage" value="<s:property value='auditProcessPercentage' />" onkeyup="extractNumber(this,2,true);"/>
+                            <div class="chox-form-std-label-longer" style="padding-left: 12px;">Please enter the percentage chance of an individual claim entering the Audit Process.</div>
+                        </div>
+                    </div>
 <s:if test="subscriberClaimsEnabled">                         
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Subscriber Workflow Parameters</div>

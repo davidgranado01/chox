@@ -25,6 +25,7 @@ import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.enums.AuditReviewClaimType;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -82,6 +83,7 @@ import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
+
     public static final String EMPTY = "empty";
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
@@ -171,11 +173,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-    
+
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
-    
+
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
     }
@@ -220,7 +222,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.activityEventGenerator = activityEventGenerator;
     }
     // </editor-fold>
-
 
     @Override
     public boolean isShowMessage() {
@@ -420,8 +421,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (choBand.isBreInvoiceSavingActive() && (auditTrailService.hasBeenContestedInvoiceReferredToInsurer(claim.getId())
-                                                    || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
-                                                    || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
+                || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
+                || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
             List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
             if (!breRules.isEmpty()) {
                 BigDecimal totalGross = claim.getInvoice().getTotalGross();
@@ -453,26 +454,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean isFullLiability() {
         boolean result = false;
         if (ClaimType.isSubscriber(claim.getClaimType())
-                &&  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_PENDING.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))) {
-                result = true;
+                && (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_PENDING.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))) {
+            result = true;
         }
-   
+
         return result;
     }
 
     public boolean isFullLiabilityOrSplit() {
         boolean result = false;
         if (ClaimType.isFixedFee(claim.getClaimType())
-                &&  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_PENDING.equals(claim.getStatus())
-                        || ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))) {
-                result = true;
+                && (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_PENDING.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))) {
+            result = true;
         }
-   
+
         return result;
     }
 
@@ -482,6 +483,36 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean isChoIsDisablePrivateNotes() {
         return claim.getChorganisation().isDisablePrivateNotes();
+    }
+
+    public Integer getAuditReviewClaimType() {
+        if (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) == 1 
+                && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
+            return AuditReviewClaimType.HIRE_AND_RAPAIR.getValue(); 
+        } else if (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) == 1) {
+            return AuditReviewClaimType.HIRE_ONLY.getValue(); 
+        } else if (claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
+            return AuditReviewClaimType.REPAIR_ONLY.getValue(); 
+        } else {
+            return AuditReviewClaimType.OTHER.getValue(); 
+        }
+    }
+
+    public Integer getAuditReviewClaimTypeFromModel() {
+        if (claim.getClaimAuditReview() != null) {
+            for (AuditReviewClaimType auditReviewClaimType : AuditReviewClaimType.values()) {
+                if (auditReviewClaimType.getDescription().equals(claim.getClaimAuditReview().getClaimType())) {
+                    return auditReviewClaimType.getValue();
+                }
+            }
+        }
+        return null;
+    }
+    
+    // The below method used to decide whether to show the default value on the UI forms or not.
+    public boolean getClaimAuditReviewSaved() {
+        return claim.getClaimAuditReview() != null 
+                && claim.getClaimAuditReview().getLastModifiedDate().compareTo(claim.getClaimAuditReview().getCreatedDate()) != 0;
     }
 
     public BigDecimal getInterimPaymentMade() {
@@ -544,7 +575,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return SUCCESS;
     }
-    
+
     public String openClaim() {
         return SUCCESS;
     }
@@ -638,7 +669,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String updateInvoiceReviewRequired() {
         try {
             checkVersion(Arrays.asList(claim));
@@ -705,7 +736,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-
     public int getClaimNumberDuplications() {
         int duplications = 0;
 
@@ -761,6 +791,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getInvoiceReviewRequiredPanel() {
+        return SUCCESS;
+    }
+
+    public String getClaimAuditPanel() {
         return SUCCESS;
     }
 
@@ -875,43 +909,43 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         // Only update if flag value has changed
         if ((getAuthenticatedUser().isCHO() && finalReviewRequired != claim.isFinalReviewCho())
                 || (getAuthenticatedUser().isAnInsurer() && finalReviewRequired != claim.isFinalReviewIns())) {
-            
-        try {
-            if (finalReviewRequired && (finalReviewReason == null || finalReviewReason.equals("-1"))) {
-                LOG.error("No final review reason given: {}", finalReviewReason);
-                throw new Exception("No Final Review Reason Specified");
-            }
-            if (getAuthenticatedUser().isCHO()) {
-                claim.setFinalReviewCho(finalReviewRequired);
-                if (finalReviewRequired) {
-                    claim.addComment(Comment.newComment(2, "Final Review Reason: " + finalReviewReason));
-                    claim.setFinalReviewByCho(getAuthenticatedUser());
-                    claim.setFinalReviewDateCho(new Date());
-                } else {
-                    claim.setFinalReviewByCho(null);
-                    claim.setFinalReviewDateCho(null);
+
+            try {
+                if (finalReviewRequired && (finalReviewReason == null || finalReviewReason.equals("-1"))) {
+                    LOG.error("No final review reason given: {}", finalReviewReason);
+                    throw new Exception("No Final Review Reason Specified");
                 }
-            } else if (getAuthenticatedUser().isAnInsurer()) {
-                claim.setFinalReviewIns(finalReviewRequired);
-                if (finalReviewRequired) {
-                    claim.addComment(Comment.newComment(1, "Final Review Reason: " + finalReviewReason));
-                    claim.setFinalReviewByIns(getAuthenticatedUser());
-                    claim.setFinalReviewDateIns(new Date());
+                if (getAuthenticatedUser().isCHO()) {
+                    claim.setFinalReviewCho(finalReviewRequired);
+                    if (finalReviewRequired) {
+                        claim.addComment(Comment.newComment(2, "Final Review Reason: " + finalReviewReason));
+                        claim.setFinalReviewByCho(getAuthenticatedUser());
+                        claim.setFinalReviewDateCho(new Date());
+                    } else {
+                        claim.setFinalReviewByCho(null);
+                        claim.setFinalReviewDateCho(null);
+                    }
+                } else if (getAuthenticatedUser().isAnInsurer()) {
+                    claim.setFinalReviewIns(finalReviewRequired);
+                    if (finalReviewRequired) {
+                        claim.addComment(Comment.newComment(1, "Final Review Reason: " + finalReviewReason));
+                        claim.setFinalReviewByIns(getAuthenticatedUser());
+                        claim.setFinalReviewDateIns(new Date());
+                    } else {
+                        claim.setFinalReviewByIns(null);
+                        claim.setFinalReviewDateIns(null);
+                    }
                 } else {
-                    claim.setFinalReviewByIns(null);
-                    claim.setFinalReviewDateIns(null);
+                    LOG.error("Non insurer/cho marking claim {} for final review?", claim.getChoReference());
+                    return ERROR;
                 }
-            } else {
-                LOG.error("Non insurer/cho marking claim {} for final review?", claim.getChoReference());
+                claimService.updateClaim(claim);
+            } catch (Exception ex) {
+                LOG.error("Error marking claim {} for final review:", claim.getChoReference(), ex);
+                handleException(ex);
+                updateRedirectionParamInSession();
                 return ERROR;
             }
-            claimService.updateClaim(claim);
-        } catch (Exception ex) {
-            LOG.error("Error marking claim {} for final review:", claim.getChoReference(), ex);
-            handleException(ex);
-            updateRedirectionParamInSession();
-            return ERROR;
-        }
         }
         updateRedirectionParamInSession();
         return SUCCESS;
@@ -1145,7 +1179,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return tabAccessibility;
     }
 
-
     public NotificationAccessibility getNotificationAccessibility() {
 
         if (notificationAccessibility == null) {
@@ -1157,13 +1190,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanCloseClaim() {
         return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.CLOSE_CLAIM,
-                                    getAuthenticatedUser(), claim)>0;
+                getAuthenticatedUser(), claim) > 0;
     }
 
     public boolean getCanReopenClaim() {
         boolean access = applicationAccessibility.checkActivityAccessibility(
-                                    ApplicationAccessibility.REOPEN_CLAIM,
-                                    getAuthenticatedUser(), claim)>0;
+                ApplicationAccessibility.REOPEN_CLAIM,
+                getAuthenticatedUser(), claim) > 0;
         if (access && getAuthenticatedUser().isAnInsurer() && !ClaimType.isInsurerUpload(claim.getClaimType())) {
             access = false;
         }
@@ -1172,8 +1205,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanRevertClaimStatus() {
         boolean access = applicationAccessibility.checkActivityAccessibility(
-                                    ApplicationAccessibility.REVERT_CLAIM,
-                                    getAuthenticatedUser(), claim)>0;
+                ApplicationAccessibility.REVERT_CLAIM,
+                getAuthenticatedUser(), claim) > 0;
         if (access) {
             // this fix is for bug 2208 disable revert function when there is no previous status.
             AuditTrail auditTrail = auditTrailService.getLastChange(claim.getId());
@@ -1193,20 +1226,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getShowPayNotReceivedButton() {
         return applicationAccessibility.checkActivityAccessibility(
-                                     ApplicationAccessibility.PAYMENT_NOT_RECEIVED,
-                                     getAuthenticatedUser(), claim) > 0;
+                ApplicationAccessibility.PAYMENT_NOT_RECEIVED,
+                getAuthenticatedUser(), claim) > 0;
     }
 
     public boolean getCanShowSwitchClaimButton() {
         boolean canShowButton = false;
         // Only check accessibility if insurer of claim has a 'related' insurer
         if (claim.getInsurer().getRelatedInsurer() != null) {
-            canShowButton =  applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
+            canShowButton = applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
                     getAuthenticatedUser(), claim) > 0;
         }
         return canShowButton;
     }
-
 
     public boolean getCanShowSwitchClaimToMultipleInsButton() {
 
@@ -1220,23 +1252,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         // Only check accessibility if CHO of claim has a 'linked' CHO
         if (claim.getChorganisation().getLinkedCho() != null) {
             canShowButton = applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM_CHO,
-                getAuthenticatedUser(), claim) > 0;
+                    getAuthenticatedUser(), claim) > 0;
         }
-        
-        return canShowButton;
-   }
 
+        return canShowButton;
+    }
 
     public boolean getIsFnolPanelVisible() {
         boolean visible = false;
-        
+
         if (claim.isIsFnolReviewed()) {
             visible = applicationAccessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED,
-                        getAuthenticatedUser(), claim) > 0;
+                    getAuthenticatedUser(), claim) > 0;
         }
         return visible;
     }
-
 
     public String getActionPanel() {
 
@@ -1248,7 +1278,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Access for {} os {}", action, accessRight);
             // If Invoice is with Payments Team then do not show InvoicePaymentLogged for PC
             if (accessRight > 0 && ("InvoicePaymentLogged".equals(action) || "UpdateManualInvoicePaid".equals(action))
-                    && claim.getInsurer().isPaymentsTeamEnable() 
+                    && claim.getInsurer().isPaymentsTeamEnable()
                     && (claim.getInvoice() == null || claim.getInvoice().isPaymentTeam())
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_PC)
@@ -1264,6 +1294,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     && !getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN)) {
                 // Do not show if no CH, MNG, MI or CHOX Admin role
                 accessRight = 0;
+            } else if (accessRight > 0 && action.equals(ActionPanel.CLAIM_ADUIT)) {
+                accessRight = claim.getClaimAuditReview() != null ? claim.getClaimAuditReview().isClaimAuditReviewCompleted() ? 0 : accessRight : 0;
             }
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
@@ -1300,41 +1332,32 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
              */
             if (accessRight > 0) {
                 if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                        && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                        && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership())
                         || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
                     accessRight = 0;
-                }
-            
-                // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
+                } // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
                 else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
                         && claim.getInsurer().isClaimOwnershipEnable()) {
                     accessRight = 0;
-                }
-            
-                else if (actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
+                } else if (actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
                         && claim.getInsurer().isWorkgroupEnable()) {
                     accessRight = 0;
-                }
-            
-                // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
-                 // The following should really be done by updating the accessibility tables....
+                } // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+                // The following should really be done by updating the accessibility tables....
                 else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
                         && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
                     accessRight = 0;
-                }
-                 // The following should really be done by updating the accessibility tables....
-                 else if ((actionName.equals(ExtraAction.MAKE_INTERIM_PAYMENT) || actionName.equals(ExtraAction.FINAL_REVIEW))
-                         && ClaimType.isInsurerUpload(claim.getClaimType())) {
-                     accessRight = 0;
-                 }
-
-                // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
+                } // The following should really be done by updating the accessibility tables....
+                else if ((actionName.equals(ExtraAction.MAKE_INTERIM_PAYMENT) || actionName.equals(ExtraAction.FINAL_REVIEW))
+                        && ClaimType.isInsurerUpload(claim.getClaimType())) {
+                    accessRight = 0;
+                } // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
                 else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
                         && (claim.getWorkgroup() == null || claim.getClaimOwner() == null)) {
                     accessRight = 0;
                 }
             }
-            
+
             if (accessRight >= 2) {
                 switch (actionName) {
                     case ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL:
@@ -1344,10 +1367,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             // is already visible so do not display this more action
                             if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
                                     || claim.getInvoice().getInterimPaymentReceived() == null
-                                    ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
+                                    || claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
                                 b = false;
                             }
-                            
+
                         } catch (Exception e) {
                             b = false;
                         }
@@ -1362,35 +1385,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             int days = invoice.getInvoicedDays();
                             // Penalty charge has been applied to this claim but penalty charge(for this claim type) switched off in the bre band later.
                             boolean pcExistsBeforeSwithedOffInBreBand = false;
-                            
+
                             // Check Penalty Charges disallowed and no current charges
                             if (accessRight != 0) {
                                 if (claim.getBreBand() == null) {
                                     BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                                     claim.setBreBand(choBand);
                                 }
-                                
+
                                 if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && !(invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
                                     pcExistsBeforeSwithedOffInBreBand = true;
                                 }
-                                
+
                                 if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
                                     accessRight = 0;
                                 }
                             }
-                            
+
                             /*
-                            * For manual invoices always show 'Adjust Penalty
-                            * Charges' more action.
-                            *  "7.1.2 Insurer Manual Invoice Process Updates" says -
-                            * the age of the invoice does
-                            * not have to be over say 30 days in order to be able
-                            * to apply the penalty charges
-                            */
+                             * For manual invoices always show 'Adjust Penalty
+                             * Charges' more action.
+                             *  "7.1.2 Insurer Manual Invoice Process Updates" says -
+                             * the age of the invoice does
+                             * not have to be over say 30 days in order to be able
+                             * to apply the penalty charges
+                             */
                             if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= 30 && !ClaimType.isInsurerUpload(claim.getClaimType())) {
                                 accessRight = 0;
-                            }
-                            // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
+                            } // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
                             else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                                         || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
@@ -1400,8 +1422,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                     accessRight = 0;
                                 }
                             }
-                            
-                            
+
                         } else {
                             // No invoice!
                             accessRight = 0;
@@ -1413,7 +1434,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                                 claim.setBreBand(choBand);
                             }
-                            
+
                             if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
                                 accessRight = 0;
                             }
@@ -1438,6 +1459,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             accessRight = 0;
                         }
                         break;
+                    case ExtraAction.REVIEW_CLAIM_ADUIT:
+                        boolean auditReviewCompleted = claim.getClaimAuditReview() != null ? claim.getClaimAuditReview().isClaimAuditReviewCompleted() : false;
+                        accessRight = auditReviewCompleted ? accessRight : 0;
+                        break;
+
                 }
             }
             LOG.debug("More Action Accessibility for action '{}': {}", actionName, accessRight);
@@ -1507,7 +1533,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return false;
     }
-    
+
     public void setNotificationId(Integer notificationId) {
         this.notificationId = notificationId;
     }
@@ -1530,7 +1556,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String acknowledgeNotification() {
 
         if (notificationId != null && notificationId > 0) {
-                notificationService.acknowledgeNotificationById(notificationId);
+            notificationService.acknowledgeNotificationById(notificationId);
         } else if (notificationId != null && notificationService != null && claim != null) {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
@@ -1610,7 +1636,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Boolean getIsAnyAllIntelligentNotes() {
         return getIntelligentNotes2().size() > 0;
     }
-
 
     public boolean getIsInsurerInvoice() {
         return claim.getClaimType() == ClaimType.INSURER_INVOICE;
@@ -1723,19 +1748,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsInsurerVsInsurerClaim() {
         return ClaimType.isInsurerVsInsurer(claim.getClaimType());
     }
-    
+
     public boolean getIsSubscriberClaim() {
         return ClaimType.isSubscriber(claim.getClaimType());
     }
-    
+
     public boolean getIsFixedFeeClaim() {
         return ClaimType.isFixedFee(claim.getClaimType());
     }
-    
+
     public boolean getIsCollaborationProtocolClaim() {
         return ClaimType.isCollaborationProtocol(claim.getClaimType());
     }
-    
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
     public boolean isRejectButtonEnabled() {
@@ -1748,7 +1773,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             int maxDays = 0;
             BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             String cutOffTime = null;
-            
+
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 maxDays = breBand.getSubscriberSlaDays() + claim.getSlaExtDays();
                 cutOffTime = breBand.getSubscriberTimeCutOff();
@@ -1772,7 +1797,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return rejectEnabled;
     }
-    
+
     public boolean getCanShowSlaExtensionButton() {
 
         boolean slaExtensionEnabled = applicationAccessibility.checkActivityAccessibility(
@@ -1783,7 +1808,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         int maxAllowedSlaExtDays = 0;
         BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         String cutOffTime = null;
-        
+
         if (slaExtensionEnabled && !isClaimRejectedMaxAllowed()) {
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
@@ -1807,7 +1832,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBeforeCutOffTime(cutOffTime) && (claim.getSlaExtDays() < maxAllowedSlaExtDays)));
     }
-    
+
     public int getAvailableSlaExtensionDays() {
         int availableDays = 0;
         if (getIsCHO() || getIsChoxAdmin()) {
@@ -1836,22 +1861,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             return false;
         }
-        
+
         if (maxAllowed == -1) {
             return false;
         }
 
         int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? claimService.getSubscriberClaimRejects(claim.getId())
                 : claimService.getClaimRejects(claim.getId());
-        
+
         return noTimesRejected >= maxAllowed;
     }
- 
+
     public String getRejectionCount() {
         int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? claimService.getSubscriberClaimRejects(claim.getId())
                 : claimService.getClaimRejects(claim.getId());
-        
-        switch(noTimesRejected) {
+
+        switch (noTimesRejected) {
             case 1:
                 return "first";
             case 2:
@@ -1866,7 +1891,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 return "last";
         }
     }
-   
+
     /*
      * Returns true if subscriber claim rejected reason is one of
      *     'Subscriber - Indemnity Issues' or 'Subscriber - Fraud Issues' 
@@ -1876,7 +1901,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return ClaimType.isSubscriber(claim.getClaimType()) && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(claim.getStatus())
                 && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection());
     }
- 
+
     public boolean isSubscriberClaimUnderSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
@@ -1903,7 +1928,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return claimDays < (subscriberSlaDays + claim.getSlaExtDays());
     }
-    
+
     public boolean isSubscriberClaimAtSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
@@ -1942,7 +1967,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-
     // <editor-fold defaultstate="collapsed" desc="Fixed Fee Process Utility Functions">
     public boolean isFixedFeeClaimUnderSlaDays() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
@@ -1959,7 +1983,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
             return false;
         }
-        
+
         if (claimDays == null) {
             claimDays = getFixedFeeClaimDays();
         }
@@ -1991,7 +2015,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claimDays == null) {
             claimDays = getFixedFeeClaimDays();
         }
-        
+
         BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
         if (fixedFeeSlaDays == 0) {
@@ -2000,7 +2024,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return claimDays == (fixedFeeSlaDays + claim.getSlaExtDays()) && DateHelper.isBeforeCutOffTime(breBand.getFixedFeeTimeCutOff());
     }
-    
+
     public int getSubscriberSlaDays() {
         BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         return breBand.getSubscriberSlaDays();
@@ -2052,7 +2076,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return "" + ((breBand.getFixedFeeSlaDays() + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
-    
+
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
     private int getFixedFeeClaimDays() {
@@ -2240,7 +2264,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return insurerWorkgroups;
 
     }
-    
+
     // If the claim is blongs to in-active workgroup then add the in-active workgroup.
     private void addCurrentClaimInactiveWorkgroup() {
         if (claim != null && claim.getWorkgroup() != null && !claim.getWorkgroup().isStatus()) {
@@ -2452,6 +2476,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
+    // The below value is used in claim audit review panel. 
+    // sometimes totalling (getHirePenaltyChargePaid() + getRepairPenaltyChargePaid()) gives a penny out on totalPenaltyCharge.
+    // To avoid that apply the liability on totalPenaltyCharge to calculate the totalPenaltyChargePaid amount.
+    // For e.g see claim 394433/Papa . 
+    public BigDecimal getTotalPenaltyChargePaid() {
+        if (claim.getInvoice() != null) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                return claim.getInvoice().getTotalPenaltyCharge();
+            } else {
+                return claim.getInvoice().getTotalPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
             if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
@@ -2544,7 +2585,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-
     public String getChoRef() {
 
         return claim.getChoReference();
@@ -2563,7 +2603,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
-     public String getLinkedChoName() {
+    public String getLinkedChoName() {
 
         return claim.getChorganisation().getLinkedCho().getName();
 
@@ -2593,7 +2633,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statusList.contains(claim.getStatus());
     }
 
-     public boolean isAtInvoicePaymentLogged() {
+    public boolean isAtInvoicePaymentLogged() {
         return ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus());
     }
 
@@ -2727,17 +2767,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        
+
         if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
-            
+
             if (dateDiff <= 30) {
                 return "0.0";
-            } else if (dateDiff <=60) {
+            } else if (dateDiff <= 60) {
                 return brePenaltyBand.getHire30Day().toString();
-            } else if (dateDiff <=90) {
+            } else if (dateDiff <= 90) {
                 return brePenaltyBand.getHire60Day().toString();
             } else if (dateDiff > 90 && brePenaltyBand.isHireApply90DayRate() && !brePenaltyBand.isHireUseCommercial()) {
                 return brePenaltyBand.getHire90Day().toString();
@@ -2748,7 +2788,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "0.0";
     }
 
-
     public String getCalculatedRepairPenaltyPercentage() {
         if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getRepairPenaltyPercentage();
@@ -2756,17 +2795,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        
+
         if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
-            
+
             if (dateDiff <= 30) {
                 return "0.0";
-            } else if (dateDiff <=60) {
+            } else if (dateDiff <= 60) {
                 return brePenaltyBand.getRepair30Day().toString();
-            } else if (dateDiff <=90) {
+            } else if (dateDiff <= 90) {
                 return brePenaltyBand.getRepair60Day().toString();
             } else if (dateDiff > 90 && brePenaltyBand.isRepairApply90DayRate() && !brePenaltyBand.isRepairUseCommercial()) {
                 return brePenaltyBand.getHire90Day().toString();
@@ -2812,17 +2851,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (!claim.getChorganisation().isAutoPenaltyChargeEnabled() || ClaimType.isInsurerUpload(claim.getClaimType())) {
             return false;
         }
-        
+
         if ((ClaimType.isCollaborationProtocol(claim.getClaimType()) && (!claim.getBreBand().isAllowCollaborationProtocolAutoPenaltyCharges() || !claim.getBreBand().isAllowCollaborationProtocolPenaltyCharges()))
                 || (ClaimType.isFixedFee(claim.getClaimType()) && (!claim.getBreBand().isAllowFixedFeeAutoPenaltyCharges() || !claim.getBreBand().isAllowFixedFeePenaltyCharges()))
                 || (ClaimType.isSubscriber(claim.getClaimType()) && (!claim.getBreBand().isAllowSubscriberAutoPenaltyCharges() || !claim.getBreBand().isAllowSubscriberPenaltyCharges()))
                 || (ClaimType.isTPI(claim.getClaimType()) && (!claim.getBreBand().isAllowTPIAutoPenaltyCharges() || !claim.getBreBand().isAllowTPIPenaltyCharges()))
                 || (ClaimType.isGTA(claim.getClaimType()) && (!claim.getBreBand().isAllowGTAAutoPenaltyCharges() || !claim.getBreBand().isAllowGTAPenaltyCharges()))
-                || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges()))
-                ) {
+                || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges()))) {
             return false;
         }
-        
+
         return claimService.calculateCurrentPenaltyBand(claim) < 90;
     }
 
@@ -2911,7 +2949,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsEscalatedToSupervisor() {
-        if (getAuthenticatedUser().isCHO()&& getAuthenticatedUser().getChorganisation().isSupervisorEnable()
+        if (getAuthenticatedUser().isCHO() && getAuthenticatedUser().getChorganisation().isSupervisorEnable()
                 && isChoAllowedForSupervisorQueue()
                 && isEscalatedToSupervisor(getAuthenticatedUser().getChorganisation().getDaysBeforeEscalated(), getAuthenticatedUser().getChorganisation().getTimesInStatusContested())) {
             LOG.debug("Claim escalated to supervisor and visible to cho.");
@@ -2931,8 +2969,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isInvoiceWithPaymentsTeam() {
-        if (claim.getInvoice() == null)
+        if (claim.getInvoice() == null) {
             return false;
+        }
 
         return claim.getInvoice().isPaymentTeam();
     }
@@ -2948,7 +2987,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return false;
     }
-
 
     public String getFinalReviewMessage() {
         if (getAuthenticatedUser().isCHO()) {
@@ -3024,22 +3062,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         LOG.debug("Setting customer claim number to '{}'", customerClaimNumber);
         this.customerClaimNumber = customerClaimNumber;
     }
-    
+
     public boolean isBrandingClaim() {
         return isBrandingTypeClaim(claim);
     }
-    
+
     public String getInvoiceSavingValue() {
         BigDecimal totalGross = claim.getInvoice().getTotalGross();
         BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
 
         return totalGrossOriginal.subtract(totalGross).toPlainString();
     }
-    
+
     public String getJsonBreRuleFailures() {
         List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
         this.jObject = JSONArray.fromObject(breRules);
-        
+
         return SUCCESS;
     }
 

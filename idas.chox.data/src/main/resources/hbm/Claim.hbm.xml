@@ -61,6 +61,7 @@
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Invoice" column="invoice_id" name="invoice"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.ThirdParty" column="third_party_id" name="thirdParty"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.ClaimAuditReview" column="audit_review_id" name="claimAuditReview"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="claim_owner_id" name="claimOwner"/>

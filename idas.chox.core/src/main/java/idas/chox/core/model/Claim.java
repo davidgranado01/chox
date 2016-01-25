@@ -58,6 +58,7 @@ public class Claim extends Entity implements Serializable {
     private Insurer insurer;
     private Chorganisation chorganisation;
     private Customer customer;
+    private ClaimAuditReview claimAuditReview;
     private Incident incident;
     private Invoice invoice;
     private ThirdParty thirdParty;
@@ -189,6 +190,14 @@ public class Claim extends Entity implements Serializable {
             customer.setClaim(this);
         }
         this.customer = customer;
+    }
+
+    public ClaimAuditReview getClaimAuditReview() {
+        return claimAuditReview;
+    }
+
+    public void setClaimAuditReview(ClaimAuditReview claimAuditReview) {
+        this.claimAuditReview = claimAuditReview;
     }
 
     public EngineerReport getEngineerReport() {

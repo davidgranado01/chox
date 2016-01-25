@@ -39,6 +39,7 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.BrePenaltyBand;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimAuditReview;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
@@ -217,7 +218,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {
                 LOG.warn("Cannot revert non-subscriber claim back to 'SubscriberClaimRejected'");
             } else {
+                
+                if ((claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                        || claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_PAID)) && claim.getClaimAuditReview() != null) {
+                    LOG.debug("This claim has auditReview and will be deleted as reverting the status");
+                    ClaimAuditReview oldClaimAuditReview = claim.getClaimAuditReview();
+                    claim.setClaimAuditReview(null);
+                    delete(oldClaimAuditReview);
+                    LOG.debug("auditReview deleted!!!");
+                }
+                
                 claim.setStatus(auditTrail.getOriginalStatus());
+                
                 if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
                     LOG.debug("This claim has invoice and will be deleted as reverting the status");
                     Invoice oldInvoice = claim.getInvoice();
@@ -251,7 +263,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
                     claim.getInvoice().setFinalPayment(null);
                 }
-
+                
                 /*
                  *  To-do item 7.2.2 - If the claim is moved out of either one of these 
                  *  closed states('ClaimClosed','InvoiceRejectionAccepted') then the 'Total To Pay' value
@@ -736,6 +748,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.claimAuditReview", "ar", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         // For filter's workgroup check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
@@ -836,6 +849,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             criteria.add(paymentDisputeRestriction);
+        }
+                
+        if (searchCriteria.getClaimAuditValue() > 0) {
+            if (searchCriteria.getClaimAuditValue() == 1) {
+                criteria.add(Restrictions.conjunction()
+                        .add(Restrictions.isNotNull("claimAuditReview"))
+                        .add(Restrictions.eq("ar.claimAuditReviewCompleted", Boolean.FALSE)));
+            } else if (searchCriteria.getClaimAuditValue() == 2) {
+                criteria.add(Restrictions.conjunction()
+                        .add(Restrictions.isNotNull("claimAuditReview"))
+                        .add(Restrictions.eq("ar.claimAuditReviewCompleted", Boolean.TRUE)));
+            }
         }
 
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {

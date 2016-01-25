@@ -67,6 +67,7 @@ public class ClaimSearchCriteria implements Serializable {
     private int finalReviewValue;
     private int paymentDisputeValue;
     private String filterName;
+    private int claimAuditValue;
 
     @Override
     public String toString() {
@@ -582,6 +583,13 @@ public class ClaimSearchCriteria implements Serializable {
         this.paymentDisputeValue = paymentDisputeValue;
     }
 
+    public int getClaimAuditValue() {
+        return claimAuditValue;
+    }
+
+    public void setClaimAuditValue(int claimAuditValue) {
+        this.claimAuditValue = claimAuditValue;
+    }
     
     public String getFilterName() {
         return filterName;

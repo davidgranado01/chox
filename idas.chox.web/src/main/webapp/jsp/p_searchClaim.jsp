@@ -27,6 +27,7 @@
     var hireAndRepairSearchParamCombo;
     var approvedInvoiceOwnershipSearchParamCombo;
     var paymentDisputesSearchParamCombo;
+    var claimAuditSearchParamCombo
     var finalReviewValuesCombo;
     var searchColumsPanel;
     var queueDataStore;
@@ -1333,6 +1334,60 @@
                     }
                 }
             });
+            
+            
+            var claimAuditSearchParamData = [['To Be Completed', 1], ['Completed', 2]];
+            
+            var claimAuditSearchParamStore = new Ext.data.ArrayStore({
+                    fields: [
+                       {name: 'text', type: 'string'},
+                       {name: 'value', type: 'int'}
+                    ]
+            });
+            
+            claimAuditSearchParamStore.loadData(claimAuditSearchParamData);
+            
+            claimAuditSearchParamCombo = new Ext.form.ComboBox({
+                store : claimAuditSearchParamStore,
+                width: 120,
+                fieldLabel: 'Claim Audit',
+                labelStyle: 'width:155px',
+                valueField : 'value',
+                id : 'claimAuditSearchParamComboId',
+                disabled : <s:property value="isCHO"/>,
+                hidden : <s:property value="isCHO"/>,
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- N/A ---',
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="claimAuditValue"/>' > 0) {
+                            this.setValue('<s:property value="claimAuditValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    },
+                    select : function(){
+//                        doLayoutSearchPanel();
+//                        searchClaim(true);
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    }
+                }
+            });
 
             // Add claim type drop-down menu
             var claimTypesJsonReader = new Ext.data.JsonReader({
@@ -1482,7 +1537,8 @@
                         reviewRequiredDateFromPicker, 
                         reviewRequiredDateToPicker,
                         finalReviewValuesCombo,
-                        paymentDisputesSearchParamCombo]
+                        paymentDisputesSearchParamCombo,
+                        claimAuditSearchParamCombo]
             };
 
             var rightColumn = {
@@ -1795,7 +1851,12 @@
             if (paymentDisputeValue) {
                 paymentDisputesSearchParamCombo.setValue(paymentDisputeValue);
             }
-
+            
+            var claimAuditValue = record.get('claimSearchCriteria').claimAuditValue;
+            if (claimAuditValue) {
+                claimAuditSearchParamCombo.setValue(claimAuditValue);
+            }
+            
             var isLiabilityUpdated = record.get('claimSearchCriteria').liabilityStatusUpdated;
             if (isLiabilityUpdated) {
                 Ext.getCmp('liabilityStatusUpdatedId').setValue(true);
@@ -1824,6 +1885,11 @@
             var interimPaymentMade = record.get('claimSearchCriteria').interimPaymentMade;
             if (interimPaymentMade) {
                 Ext.getCmp('interimPaymentMadeCheckBoxId').setValue(true);
+            }
+            
+            var showOpenClaimsOnly = record.get('claimSearchCriteria').showOpenClaimsOnly;
+            if (!showOpenClaimsOnly) {
+                Ext.getCmp('showOpenClaimsOnlyId').setValue(false);
             }
             
             doLayoutSearchPanel();
@@ -1880,6 +1946,8 @@
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
             var approvedInvoiceOwnershipSearchScreen = Ext.getCmp('approvedInvoiceOwnershipSearchParamComboId').getValue().split(",");
             var paymentDisputeValue = Ext.getCmp('paymentDisputesSearchParamComboId').getValue();
+            var claimAuditValue = Ext.getCmp('claimAuditSearchParamComboId').getValue();
+            
 
             return {
                 filterName : '',
@@ -1918,7 +1986,8 @@
                 supplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
                 hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
                 approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen,
-                paymentDisputeValue : (paymentDisputeValue === '') ? 0 : paymentDisputeValue
+                paymentDisputeValue : (paymentDisputeValue === '') ? 0 : paymentDisputeValue,
+                claimAuditValue : (claimAuditValue === '') ? 0 : claimAuditValue
             };
         }
         
@@ -2069,6 +2138,8 @@
             approvedInvoiceOwnershipSearchParamCombo.clearValue();
             paymentDisputesSearchParamCombo.reset();
             paymentDisputesSearchParamCombo.clearValue();
+            claimAuditSearchParamCombo.reset();
+            claimAuditSearchParamCombo.clearValue();
             statusSearchScreenCombo.reset();
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();

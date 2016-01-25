@@ -546,5 +546,18 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
+    
+    <bean id="ClaimsRequiringAudit" class="idas.chox.service.filters.ClaimsRequiringAudit" >
+        <property name="name" value= "Claims Requiring Audit"/>
+        <property name="key" value= "ClaimsRequiringAudit"/>
+        <property name="queueDescription" value="Claims Requiring Audit"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
 
 </beans>

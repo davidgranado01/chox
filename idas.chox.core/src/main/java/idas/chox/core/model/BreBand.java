@@ -170,6 +170,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossFeeNetCeilingCheck;
     private boolean totalLossAndStorageFeeCheck;
     private boolean paymentTeamActive;
+    private boolean enableClaimAudit;
+    private BigDecimal auditProcessPercentage;
     private boolean breInvoiceSavingActive;
     private boolean pauseSubscriberSlaClock;
     private boolean pauseFixedFeeSlaClock;
@@ -1613,6 +1615,22 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setPaymentTeamActive(boolean paymentTeamActive) {
         this.paymentTeamActive = paymentTeamActive;
+    }
+
+    public boolean isEnableClaimAudit() {
+        return enableClaimAudit;
+    }
+
+    public void setEnableClaimAudit(boolean enableClaimAudit) {
+        this.enableClaimAudit = enableClaimAudit;
+    }
+
+    public BigDecimal getAuditProcessPercentage() {
+        return auditProcessPercentage;
+    }
+
+    public void setAuditProcessPercentage(BigDecimal auditProcessPercentage) {
+        this.auditProcessPercentage = auditProcessPercentage;
     }
 
     public boolean isBreInvoiceSavingActive() {

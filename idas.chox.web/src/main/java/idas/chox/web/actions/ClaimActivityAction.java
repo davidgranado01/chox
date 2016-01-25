@@ -21,6 +21,8 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.SaveClaimAuditReview;
+import idas.chox.service.workflow.activities.SubmitClaimAuditReview;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -87,6 +89,20 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
         LOG.trace("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
+        // TO-DO Refactor the Activity to have a claim property and all the activities 
+        // should access the 'claim' from activities claim property instead passing claim around in the method param.
+        // e.g activity.process(claim) should be refactored to activity.process()
+        
+        // activity.setClaim(claim);
+        
+        // Once the above refactor done remove the below code and access the ClaimAuditReview object from Claim object directly in the activities.
+        if (claim != null && (name.equals("saveClaimAuditReview") || name.equals("submitClaimAuditReview"))) {
+            if (name.equals("saveClaimAuditReview")) {
+                ((SaveClaimAuditReview)activity).setClaimAuditReview(claim.getClaimAuditReview());
+            } else {
+                ((SubmitClaimAuditReview)activity).setClaimAuditReview(claim.getClaimAuditReview());
+            }
+        }
 
     }
 
