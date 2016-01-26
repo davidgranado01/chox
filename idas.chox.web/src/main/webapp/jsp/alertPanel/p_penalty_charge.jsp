@@ -224,11 +224,11 @@
                 <s:if test="IsInsurerUploadClaim">
                     A penalty charge may be applicable to this invoice.  If so, please select the relevant penalty charge percentage and charge and click on the 'Apply' button.
                 </s:if>
-                <s:elseif test="showAutoPenaltyCheckbox && invoiceIntroducedDays > 30 && invoiceIntroducedDays < 61 && autoPenaltyChargeEnabled && penaltyChargeEnabledInBreBand">
+                <s:elseif test="showAutoPenaltyCheckbox && nextPenaltyWindow > 0 && autoPenaltyChargeEnabled && penaltyChargeEnabledInBreBand">
                     Payment for this invoice is overdue. The number of days since the invoice was created
                     is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice. <br /> <br />Please
                     note that unless automatic penalty charges are switched off for this claim using the 'Penalty Charge Configuration' function in
-                    the 'More Actions' drop down menu then penalties will be automatically re-calculated and added to the invoice on day 61
+                    the 'More Actions' drop down menu then penalties will be automatically re-calculated and added to the invoice on day <s:property value="nextPenaltyWindow" />
                     if the invoice remains overdue.
                 </s:elseif>
                 <s:else>
