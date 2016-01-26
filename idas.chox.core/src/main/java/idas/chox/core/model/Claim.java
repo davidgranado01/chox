@@ -25,6 +25,7 @@ public class Claim extends Entity implements Serializable {
     private boolean autoPenaltyChargeEnabled;
     private boolean totalLossChase;
     private boolean paymentDispute;
+    private boolean caseWithClientsSolicitor;
     private int slaExtDays;
     private int noAttachments;
     private Integer remainingSlaDaysInt;
@@ -38,12 +39,14 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityStatusModifiedDate;
     private Date liabilityModifiedDate;
     private Date managingRepairLastModified;
+    private Date dateMarkedWithSolicitor;
     private String choReference;
     private String status;
     private String claimNumber;
     private String tpiClaimStatus;
     private String previousStatus;
     private String remainingSlaDays;
+    private String userMarkedWithSolicitor;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private BigDecimal percentageLiabilityCho;
@@ -77,6 +80,34 @@ public class Claim extends Entity implements Serializable {
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
+    }
+
+    public boolean isCaseWithClientsSolicitor() {
+        return caseWithClientsSolicitor;
+    }
+
+    public void setCaseWithClientsSolicitor(boolean caseWithClientsSolicitor) {
+        this.caseWithClientsSolicitor = caseWithClientsSolicitor;
+    }
+
+    public String getDateMarkedWithSolicitorAsString() {
+        return DateHelper.getLocalDateTimeFormat().format(dateMarkedWithSolicitor);
+    }
+
+    public Date getDateMarkedWithSolicitor() {
+        return dateMarkedWithSolicitor;
+    }
+
+    public void setDateMarkedWithSolicitor(Date dateMarkedWithSolicitor) {
+        this.dateMarkedWithSolicitor = dateMarkedWithSolicitor;
+    }
+
+    public String getUserMarkedWithSolicitor() {
+        return userMarkedWithSolicitor;
+    }
+
+    public void setUserMarkedWithSolicitor(String userMarkedWithSolicitor) {
+        this.userMarkedWithSolicitor = userMarkedWithSolicitor;
     }
 
     public Date getLiabilityStatusModifiedDate() {

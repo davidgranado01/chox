@@ -195,6 +195,20 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return isVisible;
     }
     
+    public boolean isCaseWithClientsSolicitorCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(Filter.FILTER_CASE_WITH_SOLICITOR)) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the CaseWithClientsSolicitor filter ", ex);
+        }
+        return isVisible;
+    }
+    
     public boolean isPenaltyChargesToBeAppliedCheckBoxVisible() {
         boolean isVisible = false;
         try {

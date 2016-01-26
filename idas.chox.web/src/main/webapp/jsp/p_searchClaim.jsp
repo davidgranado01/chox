@@ -31,7 +31,6 @@
     var searchColumsPanel;
     var queueDataStore;
     var queueGrid;
-//    var isQueueSyncWithSearchField = Ext.state.Manager.get("syncWithSearchField");
     
     // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
     var statusComboNumberOfSelectedRecord = 0;
@@ -73,7 +72,6 @@
                 fieldLabel: 'Claim Number',
                 allowBlank:true,
                 value:'<s:property value="claimNumber" escapeJavaScript="true"/>',
-//                renderTo:'claimNumberFieldId',
                 listeners:{
                     specialkey:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -168,6 +166,24 @@
                 fieldLabel: 'Show Claims With Liability Status Update Only',
                 labelStyle: 'width:190px;margin-top:-5px',
                 checked: <s:property value="liabilityStatusUpdated"/>,
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+//                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+            
+            var caseWithClientsSolicitorCheckBox = new Ext.form.Checkbox({
+                name:'caseWithClientsSolicitor',
+                id:'caseWithClientsSolicitorId',
+                disabled : !<s:property value="caseWithClientsSolicitorCheckBoxVisible"/>,
+                hidden : !<s:property value="caseWithClientsSolicitorCheckBoxVisible"/>,
+                value:'<s:property value="caseWithClientsSolicitor"/>',
+                fieldLabel: 'Show Claims With Clients Solicitor Only',
+                labelStyle: 'width:190px;margin-top:-5px',
+                checked: <s:property value="caseWithClientsSolicitorValue"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode === e.ENTER) {
@@ -1462,7 +1478,8 @@
                         penaltyChargesToBeAppliedCheckBox, 
                         liabilityStatusUpdateNotification,
                         escalatedToSupervisorCheckBox,
-                        anomaliesCheckBox]
+                        anomaliesCheckBox,
+                        caseWithClientsSolicitorCheckBox]
             };
 
             var middleColumn = {
@@ -1748,7 +1765,6 @@
             clearForm(false);
             
             var workgrops = record.get('claimSearchCriteria').workgroupIdsAsString;
-//            console.log('workgrops  = ' + workgrops);
             workgroupComboNumberOfSelectedRecord = workgrops.split(',').length;
             if (workgrops) {
                 workgroupSearchScreenCombo.setValue(workgrops);
@@ -1762,7 +1778,6 @@
                 claimOwnerSearchScreenCombo.reset();
                 claimOwnerSearchScreenCombo.clearValue();
             }
-//            console.log('insClaimOwners  = ' + insClaimOwners);
             
             var supplierClaimOwners = record.get('claimSearchCriteria').supplierClaimOwnerIdsAsString;
             supplierClaimOwnerComboNumberOfSelectedRecord = supplierClaimOwners.split(',').length;
@@ -1772,16 +1787,13 @@
             
             var statuses = record.get('claimSearchCriteria').claimStatusesAsString;
             statusComboNumberOfSelectedRecord = statuses.split(',').length;
-//            console.log('statusComboNumberOfSelectedRecord  count is = ' +statusComboNumberOfSelectedRecord);
             if (statuses) { 
-//                console.log('statuses not empty so setting the value = ' + statuses);
                 statusSearchScreenCombo.setValue(statuses);
             }
             
             var claimType = record.get('claimSearchCriteria').claimTypesValueAsString;
             claimTypesComboNumberOfSelectedRecord = claimType.split(',').length;
             if (claimType) {
-//                console.log('claimType not empty so setting the value = ' + claimType);
                 claimTypesSearchScreenCombo.setValue(claimType);
             }
             
@@ -1799,6 +1811,11 @@
             var isLiabilityUpdated = record.get('claimSearchCriteria').liabilityStatusUpdated;
             if (isLiabilityUpdated) {
                 Ext.getCmp('liabilityStatusUpdatedId').setValue(true);
+            }
+            
+            var isCaseWithClientsSolicitor = record.get('claimSearchCriteria').caseWithClientsSolicitor;
+            if (isCaseWithClientsSolicitor) {
+                Ext.getCmp('caseWithClientsSolicitorId').setValue(true);
             }
             
             var isPenaltyChargesApplied = record.get('claimSearchCriteria').penaltyChargeApplied;
@@ -1868,6 +1885,7 @@
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var showOpenClaimsOnly = Ext.query('*[name$=showOpenClaimsOnly]')[0].checked;
             var liabilityStatusUpdated = Ext.query('*[name$=liabilityStatusUpdated]')[0].checked;
+            var caseWithClientsSolicitor = Ext.query('*[name$=caseWithClientsSolicitor]')[0].checked;
             var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
             var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
             var penaltyChargesToBeApplied = Ext.query('*[name$=isPenaltyChargeApplied]')[0].checked;
@@ -1908,6 +1926,7 @@
                 showOpenClaimsOnly : showOpenClaimsOnly,
                 finalReviewValue : (finalReviewValue === '') ? 0 : finalReviewValue,
                 liabilityStatusUpdated : liabilityStatusUpdated,
+                caseWithClientsSolicitor : caseWithClientsSolicitor,
                 penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                 penaltyChargeApplied : penaltyChargesToBeApplied,
                 anomalies : anomalies, 

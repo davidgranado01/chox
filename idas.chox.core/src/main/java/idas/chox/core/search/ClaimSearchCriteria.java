@@ -67,6 +67,7 @@ public class ClaimSearchCriteria implements Serializable {
     private int finalReviewValue;
     private int paymentDisputeValue;
     private String filterName;
+    private Boolean caseWithClientsSolicitor;
 
     @Override
     public String toString() {
@@ -160,6 +161,18 @@ public class ClaimSearchCriteria implements Serializable {
             }
         }
         return true;
+    }
+
+    public Boolean getCaseWithClientsSolicitor() {
+        return caseWithClientsSolicitor;
+    }
+
+    public boolean getCaseWithClientsSolicitorValue() {
+        return caseWithClientsSolicitor == null ? false : caseWithClientsSolicitor;
+    }
+
+    public void setCaseWithClientsSolicitor(Boolean caseWithClientsSolicitor) {
+        this.caseWithClientsSolicitor = caseWithClientsSolicitor;
     }
 
     public int getFinalReviewValue() {

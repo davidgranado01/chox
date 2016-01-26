@@ -47,6 +47,9 @@
     <property column="final_review_date_cho" name="finalReviewDateCho" />
     <property column="final_review_date_ins" name="finalReviewDateIns" />
     <property column="is_payment_dispute" name="paymentDispute" not-null="true"/>
+    <property column="with_solicitor" name="caseWithClientsSolicitor" not-null="true"/>
+    <property column="date_marked_with_solicitor" name="dateMarkedWithSolicitor"/>
+    <property column="user_marked_with_solicitor" name="userMarkedWithSolicitor"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_cho" name="finalReviewByCho" />
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_ins" name="finalReviewByIns" />
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>

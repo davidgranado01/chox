@@ -78,6 +78,7 @@ public class Chorganisation extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean supervisorEnable;
+    private boolean solicitorEnable;
 
     public Integer getTimesInStatusContested() {
         return timesInStatusContested;
@@ -101,6 +102,14 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setSupervisorEnable(boolean supervisorEnable) {
         this.supervisorEnable = supervisorEnable;
+    }
+
+    public boolean isSolicitorEnable() {
+        return solicitorEnable;
+    }
+
+    public void setSolicitorEnable(boolean solicitorEnable) {
+        this.solicitorEnable = solicitorEnable;
     }
 
     public Chorganisation getLinkedCho() {

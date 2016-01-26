@@ -894,6 +894,15 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    UPDATE_CASE_WITH_SOLICITOR_EVENT             (43, "UpdatedCaseWithSolicitorEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, UpdateCaseWithSolicitor activity, Claim claim)  throws Exception {
+            LOG.debug("Building UpdatedCaseWithSolicitorEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("caseWithSolicitor", activity.isCaseWithSolicitor());
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
@@ -1242,6 +1251,11 @@ public enum ActivityEvent {
 
     public void build(ActivityEventGenerator generator, SwitchCho activity, Claim claim)  throws Exception {
         LOG.warn("Build with SwitchCho activity called and no overiding method - will call generic event builder");
+        build(generator, (Activity)activity, claim);
+    }
+
+    public void build(ActivityEventGenerator generator, UpdateCaseWithSolicitor activity, Claim claim)  throws Exception {
+        LOG.warn("Build with UpdateCaseWithSolicitor activity called and no overiding method - will call generic event builder");
         build(generator, (Activity)activity, claim);
     }
 

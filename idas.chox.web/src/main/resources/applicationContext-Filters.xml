@@ -114,6 +114,20 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
+    <bean id="CaseWithClientsSolicitor" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Case With Clients Solicitor"/>
+        <property name="key" value="CaseWithClientsSolicitor"/>
+        <property name="status" value="ContestedInvoiceReferredToCHO"/>
+        <property name="queueDescription" value="to be supplied"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+    
     <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied" >
         <property name="name" value= "Penalty Charges To Be Applied"/>
         <property name="key" value= "PenaltyChargesApplied"/>

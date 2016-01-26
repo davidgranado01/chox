@@ -22,6 +22,7 @@ public class AwaitingLitigationOutcome extends BaseActivity {
             claim.addComment(Comment.newComment(0, supportingLiabilityNotes));
         }
 
+        claim.setCaseWithClientsSolicitor(false);
         claim.setStatus(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
 
     }

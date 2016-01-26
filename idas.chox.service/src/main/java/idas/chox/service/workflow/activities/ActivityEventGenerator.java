@@ -331,6 +331,9 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("SwitchFromPaymentsTeam")) {
                 LOG.debug("SwitchFromPaymentsTeam activity found");
                 ActivityEvent.INVOICE_SWITCHED_FROM_PAYMENTS_TEAM_EVENT.build(this, claim);
+            } else if (activityName.equalsIgnoreCase("UpdateCaseWithSolicitor")) {
+                LOG.debug("UpdateCaseWithSolicitor activity found");
+                ActivityEvent.UPDATE_CASE_WITH_SOLICITOR_EVENT.build(this, (UpdateCaseWithSolicitor) activity, claim);
             } else {
                 LOG.warn("No events to generate for activity '{}'", activityName);
             }
