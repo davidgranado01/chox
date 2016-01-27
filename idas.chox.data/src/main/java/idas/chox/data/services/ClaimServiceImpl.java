@@ -991,6 +991,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Subqueries.propertyIn("id", noti));
         }
 
+        if (searchCriteria.getCaseWithClientsSolicitor() != null) {
+            if (searchCriteria.getCaseWithClientsSolicitor()) {
+                criteria.add(Restrictions.eq("caseWithClientsSolicitor", Boolean.TRUE));
+            } else {
+                criteria.add(Restrictions.eq("caseWithClientsSolicitor", Boolean.FALSE));
+            }
+        }
+
         if (searchCriteria.isPenaltyChargesAppliedOnly()) {
             criteria.add(Restrictions.gt("iv.totalPenaltyCharge", BigDecimal.ZERO));
         }

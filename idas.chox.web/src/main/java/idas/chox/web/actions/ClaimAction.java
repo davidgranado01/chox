@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -802,6 +803,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getMarkCaseWithClientsSolicitor() {
+        return SUCCESS;
+    }
+
     public String getUpdateInterimPayment() {
         if (claim != null && claim.getInvoice() != null) {
             interimPaymentMade = claim.getInvoice().getInterimPaymentMade();
@@ -850,7 +855,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
                 claim.addComment(comment);
                 claim.setSupplierClaimOwner(newClaimOwner);
-                this.claimService.updateClaim(claim);
+                claimService.updateClaim(claim);
 
             } catch (Exception ex) {
                 LOG.error("Error updating supplier claim owner for claim {}: ", claim.getChoReference(), ex);

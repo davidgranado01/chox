@@ -244,6 +244,7 @@
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="IncorrectInvoiceDataCalculations" />
                 <ref bean="ContestedInvoicesReferredToCHO" />
+                <ref bean="CaseWithClientsSolicitor" />
                 <ref bean="PenaltyChargesApplied" />
                 <ref bean="InvoiceEscalatedToHandler" />
                 <ref bean="InvoicesReferredToEngineer" />

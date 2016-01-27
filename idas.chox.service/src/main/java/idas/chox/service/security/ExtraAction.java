@@ -28,7 +28,10 @@ public class ExtraAction {
     public static final String ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER = "updateManualInvClaimOwner";
     public static final String UPDATE_CLAIM_WORKGROUP = "updateClaimWorkgroup";
     public static final String FINAL_REVIEW = "finalReview";
-    private static final List<String> extraActionList = new ArrayList<String>(16);
+    public static final String MARK_CASE_WITH_CLIENTS_SOLICITOR = "markCaseWithClientsSolicitor";
+
+    
+    private static final List<String> extraActionList = new ArrayList<String>(18);
     static {
         extraActionList.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
         extraActionList.add(ESCALATE_UNASSIGNED_CLAIM);
@@ -47,6 +50,7 @@ public class ExtraAction {
         extraActionList.add(UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL);
         extraActionList.add(UPDATE_LIABILITY);
         extraActionList.add(UPDATE_PENALTY_CHARGES);
+        extraActionList.add(MARK_CASE_WITH_CLIENTS_SOLICITOR);
     }
     
     public static List<String> getExtraActions() {
@@ -94,6 +98,8 @@ public class ExtraAction {
             returnStr = "Update Workgroup";
         } else if (extraAction.equalsIgnoreCase(FINAL_REVIEW)) {
             returnStr = "Final Review";
+        } else if (extraAction.equalsIgnoreCase(MARK_CASE_WITH_CLIENTS_SOLICITOR)) {
+            returnStr = "Case With Clients Solicitor";
         }
         return returnStr;
     }

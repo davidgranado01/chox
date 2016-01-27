@@ -41,6 +41,7 @@ public interface Filter {
     public static final String FILTER_MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
     public static final String FILTER_MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
     public static final String FILTER_ESCALATED_INVOICES_TO_SUPERVISOR = "EscalatedInvoicesToSupervisor";
+    public static final String FILTER_CASE_WITH_SOLICITOR = "CaseWithClientsSolicitor";
     public static final String FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED = "ManualInvoicesToBeAssigned";
 
     String getKey();

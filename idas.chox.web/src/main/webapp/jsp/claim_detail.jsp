@@ -675,6 +675,15 @@
         </div>
     </s:if>
 
+    <s:if test="caseWithClientsSolicitor">
+        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+            <div class="status-info">
+                This invoice was flagged as with the Clients Solicitor on <s:property value="dateMarkedWithSolicitorAsString" /> by <s:property value="userMarkedWithSolicitor" />.
+            </div> 
+        </div>
+    </s:if>
+
+
     <script type="text/javascript">
     
 

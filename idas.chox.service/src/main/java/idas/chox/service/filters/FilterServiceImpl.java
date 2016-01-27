@@ -110,6 +110,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 || !webUser.getInsurer().isPaymentsTeamEnable())) {
                             LOG.debug("Not adding queue '{}' as payment disputes or team are not enabled", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_CASE_WITH_SOLICITOR)
+                                && webUser.isCHO() && !webUser.getChorganisation().isSolicitorEnable()) {
+                            LOG.debug("Not adding queue '{}' as queue not enabled.", filter.getName());
+                            continue;
                         }
                         
                      

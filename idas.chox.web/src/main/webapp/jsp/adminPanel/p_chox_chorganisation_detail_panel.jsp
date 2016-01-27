@@ -632,7 +632,12 @@
                                         <s:checkbox name="supervisorEnable" id="choSupervisorEnableId" value="supervisorEnable" onclick="doChoSupervisorEscalationCheck();"/>
                                     </div>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Claims With Clients Solicitor</label>
+                                        <s:checkbox name="solicitorEnable" id="choSolicitorEnableId" value="solicitorEnable"/>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>

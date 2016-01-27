@@ -65,6 +65,7 @@ public class InvoiceResubmit extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
+        claim.setCaseWithClientsSolicitor(false);
         try {
             breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         } catch (Exception ex) {

@@ -22,8 +22,8 @@ public class FilterByStatus extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
-        // Need to set following for 'Approved Invoices Awaiting Payment' queueif payments team active....
-        //NB: null check added to getCurrentUser() to prevent error being thrown when user logd out before queues loaded
+        // Need to set following for 'Approved Invoices Awaiting Payment' queue if payments team active....
+        //NB: null check added to getCurrentUser() to prevent error being thrown when user logged out before queues loaded
         if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(status) && securityInfoProvider.getCurrentUser() != null
                 && (securityInfoProvider.getCurrentUser().isCHOXAdmin() || (securityInfoProvider.getCurrentUser().isAnInsurer()
                          && (securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()
@@ -39,6 +39,12 @@ public class FilterByStatus extends BaseFilter {
                 claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("2")})));
             } else if (ins == null || ins.isPaymentDisputesEnable()) {
                 claimSearchCriteria.setPaymentDisputeValue(2);
+            }
+        } else if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(status)) {
+            if ("CaseWithClientsSolicitor".equals(key)) {
+                claimSearchCriteria.setCaseWithClientsSolicitor(true);
+            } else {
+                claimSearchCriteria.setCaseWithClientsSolicitor(false);
             }
         }
 

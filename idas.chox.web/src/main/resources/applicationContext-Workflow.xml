@@ -143,4 +143,5 @@
         <property name="chainActivity" ref="acceptInvoice" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
+    <bean id="updateCaseWithSolicitor" class="idas.chox.service.workflow.activities.UpdateCaseWithSolicitor" scope="prototype"/>
 </beans>

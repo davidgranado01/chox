@@ -48,6 +48,7 @@
         <property column="restrict_export" name="restrictExport" not-null="true"/>
         <property column="branding" name="branding" type="idas.chox.data.hibernate.BrandMapping"/>
         <property column="is_supervisor_enable" name="supervisorEnable"/>
+        <property column="is_solicitor_enable" name="solicitorEnable"/>
         <property column="days_before_escalated" name="daysBeforeEscalated"/>
         <property column="times_in_status_contested" name="timesInStatusContested"/>
         <property column="allow_engineers_inspection_task" name="allowEngineersInspectionTask" not-null="true"/>

@@ -38,6 +38,7 @@ public class CloseClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         claim.setStatus(ClaimStatus.CLAIM_CLOSED);
+        claim.setCaseWithClientsSolicitor(false);
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());
         if (closeReason != null && !closeReason.isEmpty()) {
