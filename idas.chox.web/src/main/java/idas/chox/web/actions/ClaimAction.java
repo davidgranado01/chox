@@ -2752,6 +2752,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
+    public int getNextPenaltyWindow() {
+        Invoice inv = claim.getInvoice();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+        BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+        
+        if (brePenaltyBand != null && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+            int dateDiff = inv.getInvoicedDays();
+            
+            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() && !brePenaltyBand.isUseCommercialDay1()) {
+                return brePenaltyBand.getHirePeriodStartDay1();
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() && !brePenaltyBand.isUseCommercialDay1()) {
+                return brePenaltyBand.getRepairPeriodStartDay1();
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && !brePenaltyBand.isUseCommercialDay2()) {
+                return brePenaltyBand.getHirePeriodStartDay2();
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && !brePenaltyBand.isUseCommercialDay2()) {
+                return brePenaltyBand.getRepairPeriodStartDay2();
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && !brePenaltyBand.isUseCommercialDay3()) {
+                return brePenaltyBand.getHirePeriodStartDay3();
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && !brePenaltyBand.isUseCommercialDay3()) {
+                return brePenaltyBand.getRepairPeriodStartDay3();
+            } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0 && brePenaltyBand.isUseCommercialDay3()) {
+                return -1;
+            }
+        }
+        return -1;
+    }
+    
     public String getCalculatedHirePenaltyPercentage() {
 //        if (isInsurerClaim()) {
 //            String percentage = claim.getInvoice().getHirePenaltyPercentage();
