@@ -2761,23 +2761,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (brePenaltyBand != null && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int dateDiff = inv.getInvoicedDays();
             
-            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1()) {
+            if (dateDiff <= brePenaltyBand.getHirePeriodStartDay1() && !brePenaltyBand.isUseCommercialDay1()) {
                 return brePenaltyBand.getHirePeriodStartDay1();
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1()) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay1() && !brePenaltyBand.isUseCommercialDay1()) {
                 return brePenaltyBand.getRepairPeriodStartDay1();
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay2() && !brePenaltyBand.isUseCommercialDay2()) {
                 return brePenaltyBand.getHirePeriodStartDay2();
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2()) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay2() && !brePenaltyBand.isUseCommercialDay2()) {
                 return brePenaltyBand.getRepairPeriodStartDay2();
-            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3()) {
+            } else if (dateDiff <= brePenaltyBand.getHirePeriodStartDay3() && !brePenaltyBand.isUseCommercialDay3()) {
                 return brePenaltyBand.getHirePeriodStartDay3();
-            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3()) {
+            } else if (dateDiff <= brePenaltyBand.getRepairPeriodStartDay3() && !brePenaltyBand.isUseCommercialDay3()) {
                 return brePenaltyBand.getRepairPeriodStartDay3();
             } else if (dateDiff > brePenaltyBand.getHirePeriodStartDay3() && brePenaltyBand.getHirePeriodStartDay3() > 0 && brePenaltyBand.isUseCommercialDay3()) {
                 return -1;
             }
         }
-        return 0;
+        return -1;
     }
     
     public String getCalculatedHirePenaltyPercentage() {
