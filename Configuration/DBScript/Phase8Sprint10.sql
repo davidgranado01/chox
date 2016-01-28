@@ -1,4 +1,14 @@
 --------------------------------------------------------------------------------
+-- 8.10.5 Updated Rejection Reasons Panel
+--------------------------------------------------------------------------------
+ALTER TABLE reason_of_rejection ALTER COLUMN type TYPE varchar(17);
+UPDATE reason_of_rejection set type = 'Claim Rejection' where type='Claim';
+UPDATE reason_of_rejection set type = 'Invoice Rejection' where type='Invoice';
+----------------------
+-- End of 8.10.5
+----------------------
+
+--------------------------------------------------------------------------------
 -- 8.10.8 Potential PI Case/With Clients Solicitor Pot
 --------------------------------------------------------------------------------
 ALTER TABLE claim ADD COLUMN with_solicitor boolean not null default false;

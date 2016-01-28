@@ -63,9 +63,9 @@ Ext.onReady(function() {
         layout:'fit',
         viewConfig:{forceFit:true},
         columns: [
-            {header: "Rejection Reason", width: 110, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
+            {header: "Reason", width: 110, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>"+value+"</a>"; }},
-            {header: "Supporting Rejection Note", width: 110, dataIndex: 'description', sortable: true, resizable: true},
+            {header: "Default Supporting Note", width: 110, dataIndex: 'description', sortable: true, resizable: true},
             {header: "Type", width: 40, dataIndex: 'type', sortable: true, resizable: true},
             {header: "GTA Active", width: 40, dataIndex: 'gtaActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
@@ -164,7 +164,7 @@ Ext.onReady(function() {
         }
     });
     
-    var types = ['Claim','Invoice'];
+    var types = ['Claim Rejection','Invoice Rejection', 'Acceptance', 'Closure'];
     
     var typeCombo = new Ext.form.ComboBox({
         store: types,
@@ -181,15 +181,25 @@ Ext.onReady(function() {
         selectOnFocus: true,
         editable: false,
         allowBlank: false,
+        emptyText: '--- Please Select ---',
         forceSelection: true,
         listeners: {
             select: function() {
-                   if(this.getValue() === 'Claim'){
+                   if(this.getValue() === 'Claim Rejection'){
+                       $("#supportingNoteDivId").slideDown();
                        $("#restrictedDivId").slideDown();
                        $("form#rorForm input#restricted").attr('checked',false);
-                   } else {
+                   } else if(this.getValue() === 'Invoice Rejection'){
+                       $("#restrictedDivId").slideUp();
+                       $("#supportingNoteDivId").slideDown();
+                   } else if(this.getValue() === 'Acceptance'){
+                       $("#restrictedDivId").slideUp();
+                       $("#supportingNoteDivId").slideUp();
+                   } else if(this.getValue() === 'Closure'){
+                       $("#supportingNoteDivId").slideDown();
                        $("#restrictedDivId").slideUp();
                    }
+                   loadGridViewList();
             }
         }
     });
@@ -248,8 +258,8 @@ function onSubmitHandler(responseText, statusText){
 }
 
 function onPageRefresh(){
-    loadGridViewList();
     refreshForm();
+    loadGridViewList();
 }
 
 function refreshForm(){
@@ -263,14 +273,12 @@ function refreshForm(){
     $("form#rorForm input#tpiActiveId").attr('checked',false);
     $("form#rorForm input#insurerVsInsurerActiveId").attr('checked',false);
     $("form#rorForm input#insurerUploadActiveId").attr('checked',false);
-    Ext.getCmp('rorTypeId').setValue('Claim');
-    $("#restrictedDivId").slideDown();
     $("form#rorForm input#restricted").attr('checked',false);
     $("form#rorForm input#active").attr('checked',false);
 }
 
 function loadGridViewList(){
-    rorGridViewDataStore.load({params:{insurerId:<s:property value="insurerId" />}});
+    rorGridViewDataStore.load({params:{insurerId:<s:property value="insurerId" />, activeType:Ext.getCmp('rorTypeId').getValue()}});
 }
 
 function showEditReasonOfRejection(gridView){
@@ -284,7 +292,7 @@ function showEditReasonOfRejection(gridView){
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        This tab allows the Rejection Reasons at First Notification and Invoice stages to be customised for the selected Insurer.
+        This tab allows the Acceptance/Rejection Reasons at First Notification, Invoice and Claim Closure stages to be customised for the selected Insurer.
     </div>
 
     <div id="rorGridId">
@@ -293,7 +301,7 @@ function showEditReasonOfRejection(gridView){
                 <tr>
                     <td>
                         <div class="admin-bre-band-detail-section">
-                            <div class="section-name">Rejection Reasons</div>
+                            <div class="section-name">Reason Management</div>
                             <div class="form-container">
                                 <form id="rorForm" name="rorForm" action="<%= request.getContextPath()%>/prv/p/addReasonOfRejection.action" class="XXentity-form" method="post">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
@@ -305,14 +313,15 @@ function showEditReasonOfRejection(gridView){
                                     </div>
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
-                                        <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
+                                        <label class="chox-form-std-label">Reason<span class="mandatory">*</span></label>
                                         <input type="text" id="rorId" name="rorName" style="width: 175px" minlength="5" />
                                     </div>
                                     
-                                    <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Supporting Rejection Note</label>
-                                        <div id="rorDescId" style="padding-left: 12px"/>
+                                    <div class="chox-form-item" id="supportingNoteDivId">
+                                        <label class="chox-form-std-label">Default Supporting Note</label>
+                                        <div id="rorDescId" style="padding-left: 12px"></div>
                                     </div>
+                                    
                                     <br/>
                                     <table style="width: 100%">
                                         <tr>
@@ -343,7 +352,6 @@ function showEditReasonOfRejection(gridView){
                                                 </div>
                                             </td>
                                             <td style="width: 50%; height: 15px">
-                                               
                                                 <div style="position:relative;width:220px;">
                                                     <div style="position:absolute;right:0;">
                                                         <label >Insurer Upload Active</label>
@@ -379,13 +387,10 @@ function showEditReasonOfRejection(gridView){
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td style="width: 50%; height: 15px;">
-                                            </td>
+                                            <td style="width: 50%; height: 15px;"></td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 50%">
-                                                <br/>
-                                            </td>
+                                            <td style="width: 50%"><br/></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
@@ -400,20 +405,17 @@ function showEditReasonOfRejection(gridView){
                                     </table>
                                     <br/>
                                     <br/>
-                                     <div class="chox-form-button">
-                                        <input type="submit" value="Add New Rejection Reason"/>
+                                    <div class="chox-form-button">
+                                        <input type="submit" value="Add Reason"/>
                                     </div>
-                                    
                                     <div class="chox-form-submit-result"></div>
                                     <div id="rorErrorMessageBox" class="action-error-msg"></div>
-                                     
                                 </form>
                             </div>
                         </div>
                     </td>
                 </tr>
             </table>
-            
         </div>
         <div id="rorGridViewPanel"></div>
     </div>

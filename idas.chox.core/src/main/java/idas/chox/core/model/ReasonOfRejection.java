@@ -17,8 +17,10 @@ public class ReasonOfRejection extends Entity implements Serializable {
     private boolean insurerUploadActive;
     private boolean tpiActive;
     
-    public static final String TYPE_CLAIM = "Claim";
-    public static final String TYPE_INVOICE = "Invoice";
+    public static final String TYPE_CLAIM = "Claim Rejection";
+    public static final String TYPE_INVOICE = "Invoice Rejection";
+    public static final String TYPE_ACCEPTANCE = "Acceptance";
+    public static final String TYPE_CLOSURE = "Closure";
 
     public ReasonOfRejection() {
     }
