@@ -55,7 +55,7 @@ BEGIN
                                     a.claim_id = c.id
                                     and c.chorganisation_id IN (choids[i]::int)
                                     and c.insurer_id = insurerid
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. Invoices Paid",
 
@@ -69,7 +69,7 @@ BEGIN
                                     and c.chorganisation_id IN (choids[i]::int)
                                     and c.insurer_id = insurerid
                                     and c.claim_type in (0,1)
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. GTA Invoices Paid",
 
@@ -83,7 +83,7 @@ BEGIN
                                     and c.chorganisation_id IN (choids[i]::int)
                                     and c.insurer_id = insurerid
                                     and c.claim_type not in (0,1,2,6,9,10,13,14,15,16,17,20)
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. Protocol Invoices Paid";
             ELSE
@@ -123,7 +123,7 @@ BEGIN
                                     a.claim_id = c.id
                                     and c.chorganisation_id = ANY(choids)
                                     and c.insurer_id = insurerid
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. Invoices Paid",
 
@@ -137,7 +137,7 @@ BEGIN
                                     and c.chorganisation_id = ANY(choids)
                                     and c.insurer_id = insurerid
                                     and c.claim_type in (0,1)
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. GTA Invoices Paid",
 
@@ -151,7 +151,7 @@ BEGIN
                                     and c.chorganisation_id = ANY(choids)
                                     and c.insurer_id = insurerid
                                     and c.claim_type not in (0,1,2,6,9,10,13,14,15,16,17,20)
-                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged')
+                                    and a.new_status in ('PaymentReceived', 'InvoicePaymentLogged', 'ManualInvoicePaid')
                                     and a.reverted = false
                                     and a.created_date BETWEEN startdate::date AND enddate::date) as "Total No. Protocol Invoices Paid";
 
