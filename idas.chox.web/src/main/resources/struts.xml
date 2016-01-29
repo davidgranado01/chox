@@ -517,7 +517,7 @@
             <result name="ResolveLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="AssignManualInvoiceOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
             <result name="UpdateManualInvoiceAgreeQuantum">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
-            <result name="ClaimAudit">/jsp/actionPanel/p_more_action_update_claim_audit.jsp</result>
+            <result name="SaveOrSubmitClaimAuditReview">/jsp/actionPanel/p_more_action_update_claim_audit.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 

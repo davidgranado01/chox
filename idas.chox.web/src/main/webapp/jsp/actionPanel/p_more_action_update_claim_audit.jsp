@@ -891,6 +891,7 @@
                 afterrender: function () {
                     if (storageClaimedCombo.getValue() == 1) {
                         $("#storageClaimedCorrectlyDropDownDivId").slideDown();
+                        addStorageClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.storageClaimedCorrectly" />'));
                         }
@@ -978,6 +979,7 @@
                 afterrender: function () {
                     if (recoveryClaimedCombo.getValue() == 1) {
                         $("#recoveryClaimedCorrectlyDropDownDivId").slideDown();
+                        addRecoveryClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.recoveryClaimedCorrectly" />'));
                         }
@@ -996,7 +998,7 @@
     });
 
     function saveAuditReview() {
-        actionPanel.registerAction("saveClaimAuditReview");
+        $("#nameOfActivity").val('saveClaimAuditReview');
         var settings = $('form#formClaimAuditReview').validate().settings;
         for (var rule in settings.rules) {
             delete settings.rules[rule].required;
@@ -1007,12 +1009,11 @@
     }
 
     function submitAuditReview() {
-        actionPanel.registerAction("submitClaimAuditReview");
+        $("#nameOfActivity").val('submitClaimAuditReview');
         if ($("form#formClaimAuditReview").valid()) {
             Ext.get('claimDetailScreenDiv').mask("Submitting Claim Audit...");
             choxJqueryHttpSubmit($("form#formClaimAuditReview"));
         }
-
     }
 
 
@@ -1023,7 +1024,8 @@
     <!--<form action="<%=request.getContextPath()%>/prv/updateClaimAuditReview.action" method="post" id="formClaimAuditReview" name="formClaimAuditReview">-->
         <fieldset class="x-fieldset">
             <legend>Claim Audit</legend>
-            <s:hidden id="name" name="name" />
+            <s:hidden id="name" name="name" value="saveOrSubmitClaimAuditReview"/>
+            <s:hidden id="nameOfActivity" name="nameOfActivity" />
             <div class="status-info">
                 <s:if test="claimAuditReview == null || !claimAuditReview.claimAuditReviewCompleted">
                     This claim has been selected for a random audit on some of the claim/invoice details. Please complete the details below. You can either 'Save' this form to come back at a later date or 'Save and Complete' when you have entered in all the relevant details.
