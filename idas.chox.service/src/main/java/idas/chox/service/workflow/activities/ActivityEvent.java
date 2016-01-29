@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimAuditReview;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
@@ -948,6 +949,16 @@ public enum ActivityEvent {
             this.addClaimHireMonitoringParameters(generator, claim);
             generator.completeEvent(claim);
         }
+    },
+    // the below event is activity based events.
+    CLAIM_AUDIT_REVIEW_UPDATED_EVENT           (55, "ClaimAuditReviewUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building ClaimAuditReviewUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimAuditReviewParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
     }
 ;
 
@@ -1764,6 +1775,38 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringIsClientVatRegistered", null);
         }
         addClaimHireVehicleParameters(generator, claim);
+    }
+    
+    public void addClaimAuditReviewParameters(ActivityEventGenerator generator, Claim claim) {
+        ClaimAuditReview claimAuditReview = claim.getClaimAuditReview();
+        if (claimAuditReview != null) {
+            generator.addParameter("claimType", claimAuditReview.getClaimType());
+            generator.addParameter("whoManagedRepair", claimAuditReview.getWhoManagedRepair());
+            generator.addParameter("hireDurationNotAcceptableReason", claimAuditReview.getHireDurationNotAcceptableReason());
+            generator.addParameter("penaltyChargeAvoidableNote", claimAuditReview.getPenaltyChargeAvoidableNote());
+            generator.addParameter("customerVehicleClass", claimAuditReview.getCustomerVehicleClass() != null ? claimAuditReview.getCustomerVehicleClass().getName() : null);
+            generator.addParameter("hireVehicleClass", claimAuditReview.getHireVehicleClass() != null ? claimAuditReview.getHireVehicleClass().getName() : null);
+            generator.addParameter("totalLoss", claimAuditReview.getTotalLoss());
+            generator.addParameter("hireDurationAcceptable", claimAuditReview.getHireDurationAcceptable());
+            generator.addParameter("repairCostExceedsEngRec", claimAuditReview.getRepairCostExceedsEngRec());
+            generator.addParameter("withinABPGuidelines", claimAuditReview.getWithinABPGuidelines());
+            generator.addParameter("storageClaimed", claimAuditReview.getStorageClaimed());
+            generator.addParameter("recoveryClaimed", claimAuditReview.getRecoveryClaimed());
+            generator.addParameter("hireLeakage", claimAuditReview.getHireLeakage());
+            generator.addParameter("penaltyChargeAvoidable", claimAuditReview.getPenaltyChargeAvoidable());
+            generator.addParameter("storageClaimedCorrectly", claimAuditReview.getStorageClaimedCorrectly());
+            generator.addParameter("recoveryClaimedCorrectly", claimAuditReview.getRecoveryClaimedCorrectly());
+            generator.addParameter("claimAuditReviewCompleted", claimAuditReview.isClaimAuditReviewCompleted());
+            generator.addParameter("hireDuration", claimAuditReview.getHireDuration());
+            generator.addParameter("totalHireCost", claimAuditReview.getTotalHireCost());
+            generator.addParameter("totalRepairCost", claimAuditReview.getTotalRepairCost());
+            generator.addParameter("penaltyChargesPaid", claimAuditReview.getPenaltyChargesPaid());
+            generator.addParameter("hireLeakageCost", claimAuditReview.getHireLeakageCost());
+            generator.addParameter("exceededRepairCost", claimAuditReview.getExceededRepairCost());
+            generator.addParameter("nonABPGuidelineRepairLabourRate", claimAuditReview.getNonABPGuidelineRepairLabourRate());
+            generator.addParameter("auditCompletedDate", claimAuditReview.getAuditCompletedDate());
+            generator.addParameter("completedBy", claimAuditReview.getCompletedBy().getDisplayName());
+        }
     }
 
     public void addClaimHireMonitoringEcdParameters(ActivityEventGenerator generator, Claim claim) {

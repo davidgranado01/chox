@@ -19,6 +19,7 @@ public class UpdateManualInvoicePaid extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);
+        selectRandomlyForAuditReview(claim);
         LOG.debug("Claim {} have been moved to manual invoice paid status", claim.getChoReference());
     }
 

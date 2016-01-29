@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.ClaimAuditReview" table="claim_audit_review">
+    <cache usage="nonstrict-read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">claim_audit_review_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <property column="claim_type" name="claimType"/>
+    <property column="who_managed_repair" name="whoManagedRepair"/>
+    <property column="hire_duration_not_acceptable_reason" name="hireDurationNotAcceptableReason"/>
+    <property column="penalty_charge_avoidable_note" name="penaltyChargeAvoidableNote"/>
+    <property column="total_loss" name="totalLoss"/>
+    <property column="hire_duration_acceptable" name="hireDurationAcceptable"/>
+    <property column="repair_cost_exceeds_eng_rec" name="repairCostExceedsEngRec"/>
+    <property column="within_abp_guidelines" name="withinABPGuidelines"/>
+    <property column="storage_claimed" name="storageClaimed"/>
+    <property column="recovery_claimed" name="recoveryClaimed"/>
+    <property column="hire_leakage" name="hireLeakage"/>
+    <property column="penalty_charge_avoidable" name="penaltyChargeAvoidable"/>
+    <property column="storage_claimed_correctly" name="storageClaimedCorrectly"/>
+    <property column="recovery_claimed_correctly" name="recoveryClaimedCorrectly"/>
+    <property column="claim_audit_review_completed" name="claimAuditReviewCompleted" not-null="true"/>
+    <property column="hire_duration" name="hireDuration"/>
+    <property column="total_hire_cost" name="totalHireCost"/>
+    <property column="total_repair_cost" name="totalRepairCost"/>
+    <property column="penalty_charges_paid" name="penaltyChargesPaid"/>
+    <property column="hire_leakage_cost" name="hireLeakageCost"/>
+    <property column="exceeded_repair_cost" name="exceededRepairCost"/>
+    <property column="non_abp_guideline_repair_labour_rate" name="nonABPGuidelineRepairLabourRate"/>
+    <property column="audit_completed_date" name="auditCompletedDate"/>
+    <many-to-one class="idas.chox.core.model.VehicleClass" column="customer_vehicle_class_id" name="customerVehicleClass"/>
+    <many-to-one class="idas.chox.core.model.VehicleClass" column="hire_vehicle_class_id" name="hireVehicleClass"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="completed_by" name="completedBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>

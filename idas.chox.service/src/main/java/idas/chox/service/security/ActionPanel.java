@@ -24,6 +24,7 @@ public class ActionPanel {
     public static final String APPROVE_CONTESTED_INVOICE_TO_ENG = "InvoiceReferToCH";
     public static final String REVIEW_BY_ENGINEER = "ClaimReviewByEng";
     public static final String CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM = "SubscriberClaimRejectionAccept";
+    public static final String CLAIM_ADUIT = "SaveOrSubmitClaimAuditReview";
 
     // Non-Activity Based panels - no unique activity to assign, therefore the following panels are associated to 'fake' activities
     public static final String UPLOAD_INVOICE_DATA = "uploadInvoiceData";
@@ -63,6 +64,7 @@ public class ActionPanel {
         actionPanelList.add(UPDATE_MANUAL_INVOICE_AGREE);
         actionPanelList.add(UPDATE_MANUAL_INVOICE_PAID);
         actionPanelList.add(UPDATE_PAYMENT_RECEIVED);
+        actionPanelList.add(CLAIM_ADUIT);
     }
 
     public static List<String> getPanelActions() {

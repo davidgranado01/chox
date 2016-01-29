@@ -334,6 +334,9 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("UpdateCaseWithSolicitor")) {
                 LOG.debug("UpdateCaseWithSolicitor activity found");
                 ActivityEvent.UPDATE_CASE_WITH_SOLICITOR_EVENT.build(this, (UpdateCaseWithSolicitor) activity, claim);
+            } else if (activityName.equalsIgnoreCase("SaveOrSubmitClaimAuditReview")) {
+                LOG.debug("SaveOrSubmitClaimAuditReview activity found");
+                ActivityEvent.CLAIM_AUDIT_REVIEW_UPDATED_EVENT.build(this, claim);
             } else {
                 LOG.warn("No events to generate for activity '{}'", activityName);
             }
