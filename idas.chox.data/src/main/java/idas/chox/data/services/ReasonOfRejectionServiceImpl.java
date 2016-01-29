@@ -31,9 +31,6 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
         if(reasonType != null) {
             criteria.add(Restrictions.eq("type", reasonType));
         }
-//        else {
-//            criteria.add(Restrictions.in("reasonType", new Object[]{"Invoice Rejection","Claim Rejection"}));
-//        }
         if(status != null && activeType != null) {
             criteria.add(Restrictions.eq(activeReasonOfRejectionClaimType(activeType), status));
         }

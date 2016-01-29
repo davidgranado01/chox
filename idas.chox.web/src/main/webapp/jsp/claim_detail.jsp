@@ -61,6 +61,11 @@
             }
             switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'}]);
         </s:if>
+        var closeClaimReasonsJsonString = '<s:property value="closeClaimReasonsJsonString" escape="false"/>';
+        if (closeClaimReasonsJsonString !== '') {
+            closeClaimReasonsStore.loadData(Ext.util.JSON.decode(closeClaimReasonsJsonString));
+        }
+
 
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',

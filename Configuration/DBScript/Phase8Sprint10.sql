@@ -4,9 +4,56 @@
 ALTER TABLE reason_of_rejection ALTER COLUMN type TYPE varchar(17);
 UPDATE reason_of_rejection set type = 'Claim Rejection' where type='Claim';
 UPDATE reason_of_rejection set type = 'Invoice Rejection' where type='Invoice';
+ALTER TABLE reason_of_rejection_template ALTER COLUMN type TYPE varchar(17);
+UPDATE reason_of_rejection_template set type = 'Claim Rejection' where type='Claim';
+UPDATE reason_of_rejection_template set type = 'Invoice Rejection' where type='Invoice';
 ----------------------
 -- End of 8.10.5
 ----------------------
+
+--------------------------------------------------------------------------------
+-- 8.10.7 Claim Closure Note
+--------------------------------------------------------------------------------
+-- Add template closure reasons
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Accepted Interim Payment As Full & Final', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'No Longer Pursuing Claim', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Incorrect At-Fault Insurer', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Litigating', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Other', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Out Of Scope', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Payment Received In Full', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Pursued Outside Of CHOX', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Write Off - Liability', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Write Off - Indemnity', 'Closure', null, true, true, true, true, true, true, true, false;
+
+INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
+    SELECT 'Write Off - Claim Validation', 'Closure', null, true, true, true, true, true, true, true, false;
+
+-- Add closure reasons for existing insurers ?
+
+----------------------
+-- End of 8.10.5
+----------------------
+
 
 --------------------------------------------------------------------------------
 -- 8.10.8 Potential PI Case/With Clients Solicitor Pot

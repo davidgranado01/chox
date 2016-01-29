@@ -150,6 +150,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
+    public List<ReasonOfRejection> getClaimClosureReason(int insurerId, ClaimType claimType) {
+    	return reasonOfRejectionService.getInsurerReasons(insurerId, ReasonOfRejection.TYPE_CLOSURE , claimType, true, null);
+    }
+    
+    @Override
     public List<ReasonOfRejection> getClaimRejectionReason(int insurerId, ClaimType claimType) {
     	return reasonOfRejectionService.getInsurerReasons(insurerId, ReasonOfRejection.TYPE_CLAIM , claimType, true, null);
     }

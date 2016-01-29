@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,6 +92,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<ReasonOfRejection> reasonOfClaimRejections;
     private List<ReasonOfRejection> reasonOfClaimRejectionsRestricted;
     private List<ReasonOfRejection> reasonOfInvoiceRejections;
+    private List<ReasonOfRejection> closeClaimReasons;
+    private List<Insurer> mappedInsurers;
     private List extraActionList;
     private List insurers;
     private List statuses;
@@ -155,7 +156,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal finalPayment;
     private int actionSelected;
     private String jsonData;
-    private List<Insurer> mappedInsurers;
     private Date autoPenaltyStart;
     private Integer claimDays;
     private String statusMsg = null;
@@ -2647,6 +2647,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return mappedInsurers;
     }
 
+    public List<ReasonOfRejection> getCloseClaimReasons() {
+
+        if (closeClaimReasons == null) {
+            closeClaimReasons = lookupService.getClaimClosureReason(claim.getInsurer().getId(), claim.getClaimType());
+        }
+
+        return closeClaimReasons;
+    }
+
     /*
      * This method will exclude the current claim's insurer. This is used in
      * Switch claim to multiple insurer functionality.
@@ -2655,6 +2664,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<LookupItem> luItems = new ArrayList<>(getMappedInsurers().size());
         for (Insurer insurer : mappedInsurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+    }
+
+    public String getCloseClaimReasonsJsonString() {
+        List<LookupItem> luItems = new ArrayList<>(getCloseClaimReasons().size());
+        for (ReasonOfRejection reason : closeClaimReasons) {
+            luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
         }
         return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
@@ -2886,21 +2903,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
         
-        if ((ClaimType.isCollaborationProtocol(claim.getClaimType()) && (!claim.getBreBand().isAllowCollaborationProtocolAutoPenaltyCharges() || !claim.getBreBand().isAllowCollaborationProtocolPenaltyCharges()))
+        return !((ClaimType.isCollaborationProtocol(claim.getClaimType()) && (!claim.getBreBand().isAllowCollaborationProtocolAutoPenaltyCharges() || !claim.getBreBand().isAllowCollaborationProtocolPenaltyCharges()))
                 || (ClaimType.isFixedFee(claim.getClaimType()) && (!claim.getBreBand().isAllowFixedFeeAutoPenaltyCharges() || !claim.getBreBand().isAllowFixedFeePenaltyCharges()))
                 || (ClaimType.isSubscriber(claim.getClaimType()) && (!claim.getBreBand().isAllowSubscriberAutoPenaltyCharges() || !claim.getBreBand().isAllowSubscriberPenaltyCharges()))
                 || (ClaimType.isTPI(claim.getClaimType()) && (!claim.getBreBand().isAllowTPIAutoPenaltyCharges() || !claim.getBreBand().isAllowTPIPenaltyCharges()))
                 || (ClaimType.isGTA(claim.getClaimType()) && (!claim.getBreBand().isAllowGTAAutoPenaltyCharges() || !claim.getBreBand().isAllowGTAPenaltyCharges()))
                 || (ClaimType.isInsurerUpload(claim.getClaimType()) && (!claim.getBreBand().isAllowManualInvoiceAutoPenaltyCharges() || !claim.getBreBand().isAllowManualInvoicePenaltyCharges()))
-                || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges()))
-                ) {
-            return false;
-        }
-        
-        return true;
+                || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && (!claim.getBreBand().isAllowInsurervsInsurerAutoPenaltyCharges() || !claim.getBreBand().isAllowInsurervsInsurerPenaltyCharges())));
     }
 
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
         Map resultMap = claimService.adjustAutoPenaltyCharge(claim, autoPenaltyStart, getIsCHO());
