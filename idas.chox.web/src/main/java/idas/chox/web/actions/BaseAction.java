@@ -442,13 +442,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG));
     }
 
+
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException || ex instanceof DataIntegrityViolationException
                 || ex.getCause() instanceof StaleObjectStateException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
             LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
-            throw (AccessDeniedException)ex;
+//            throw (AccessDeniedException)ex;
         } else {
             LOG.trace("Exception is: {}", ex.getMessage());
         }
@@ -456,19 +457,21 @@ public class BaseAction extends ActionSupport implements SessionAware {
         getActionResponse().AddError(actionError);
     }
 
+
     protected String formErrorMessage(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
             return "Record was updated by another transaction/user, please try again.";
         }
-
-        if (ex instanceof DataIntegrityViolationException) {
+        else if (ex instanceof DataIntegrityViolationException) {
             return "An entered value exceeds predefined limits - please correct and try again. If this problem persists, please contact CHOX Support.";
         }
-        if (ex instanceof RuntimeException) {
+        else if (ex instanceof AccessDeniedException) {
+            return "An internal access error occured - please try again. If this problem persists then please contact CHOX Support.";
+        }
+        else if (ex instanceof RuntimeException) {
             return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
         }
-        
-        if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
+        else if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error: ", ex);
             return "";
         }

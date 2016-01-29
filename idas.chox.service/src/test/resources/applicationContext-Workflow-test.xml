@@ -63,6 +63,8 @@
         <property name="chainActivity" ref="newTpiClaim" />
         <property name="insurerDiscountService" ref="insurerDiscountService" />
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+        <property name="userService" ref="userService" />
+        <property name="brePenaltyBandService" ref="brePenaltyBandService" />
     </bean>
     <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
         <property name="breBandService" ref="breBandService" />

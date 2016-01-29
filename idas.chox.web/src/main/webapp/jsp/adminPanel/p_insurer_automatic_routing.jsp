@@ -41,14 +41,10 @@
         });
 
         autoRoutingWorkgroupStore = new choxDataStore({
-<s:if test="automaticRoutingStrategy == 1">
             url: "/prv/p/getAvailableAutoRoutingWorkgroups.action", 
             params: {insurerId : <s:property value="insurerId" />},
-</s:if>
-<s:else>
-            url: "/prv/p/WorkgroupDropDownActionByInsurer2.action", 
-            params: {orgId : <s:property value="insurerId" />},
-</s:else>
+//            url: "/prv/p/WorkgroupDropDownActionByInsurer2.action", 
+//            params: {orgId : <s:property value="insurerId" />},
             reader: autoRoutingWorkgroupJsonReader
         });
 

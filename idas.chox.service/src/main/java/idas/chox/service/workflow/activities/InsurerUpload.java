@@ -83,6 +83,8 @@ public class InsurerUpload extends BaseActivity {
 
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         claimService.updateLiabilityPayment(claim);
+        // Set initial penalty band
+        claimService.setInitialPenaltyBand(claim);
         
         // Add General Note (specified in BRE band)
         if (choBand != null && choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {

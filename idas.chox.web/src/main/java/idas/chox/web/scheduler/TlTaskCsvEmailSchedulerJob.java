@@ -167,7 +167,7 @@ public class TlTaskCsvEmailSchedulerJob extends CsvEmailSchedulerJob {
                                 .append(claim.getStatus()).append("')");
                         LOG.warn("AccessDenied Exception thrown when creating TL Task via email scheduler job");
                     } catch (Exception ex) {
-                        statusString.append("Failed: An Internal Error Occurred.");
+                        statusString.append("Failed: ").append(ex.getMessage());
                         LOG.warn("Exception occurred when creating TL Task via email scheduler job: {}", ex.getMessage());
                     }
                 } else if (statusString.toString().isEmpty() && !update) {

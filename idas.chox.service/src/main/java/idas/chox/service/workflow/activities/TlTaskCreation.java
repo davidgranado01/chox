@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.Date;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -21,7 +22,7 @@ import idas.chox.core.util.DateHelper;
  * @author John
  */
 public class TlTaskCreation extends BaseActivity {
-    static final Logger LOG = LoggerFactory.getLogger(LouUpdate.class);
+    static final Logger LOG = LoggerFactory.getLogger(TlTaskCreation.class);
     private TaskService taskService;
     private UserService userService;
     private String imsReference;
@@ -283,10 +284,20 @@ public class TlTaskCreation extends BaseActivity {
         super.validate(claim);
         String empty="";
         
+        // First, lets check if an open 'Total Loss Payment' type-task is already present on the claim
+        List<Task> tasks = taskService.getAllTasksByClaim(claim.getId());
+        for (Task task : tasks) {
+            if ("Total Loss Payment".equals(task.getType()) && task.getDescription().startsWith("A Total Loss payment is required and the following details apply:")
+                    && !task.getComplete()) {
+                statusString.append("A Total Loss Payment Task already exists on this claim.");
+                break;
+            }
+        }
+
         if (imsReference != null) {
             String clean = Jsoup.clean(imsReference, Whitelist.basic());
             if (!clean.equals(imsReference)) {
-                LOG.warn("IMS Reference contains forbidden content - possible XSS attack: {}", imsReference);
+                LOG.warn("IMS Reference contains forbidden content - possible XSS attack: '{}'!='{}'", imsReference, clean);
                 statusString.append("IMS Reference contains forbidden content.");
             }
         } else {
@@ -295,7 +306,7 @@ public class TlTaskCreation extends BaseActivity {
         if (registrationNumber != null) {
             String clean = Jsoup.clean(registrationNumber, Whitelist.basic());
             if (!clean.equals(registrationNumber)) {
-                LOG.warn("Registration Number contains forbidden content - possible XSS attack: {}", registrationNumber);
+                LOG.warn("Registration Number contains forbidden content - possible XSS attack: '{}'!='{}'", registrationNumber, clean);
                 statusString.append("Registration Number contains forbidden content.");
             }
         } else {
@@ -304,7 +315,7 @@ public class TlTaskCreation extends BaseActivity {
         if (make != null) {
             String clean = Jsoup.clean(make, Whitelist.basic());
             if (!clean.equals(make)) {
-                LOG.warn("Make contains forbidden content - possible XSS attack: {}", make);
+                LOG.warn("Make contains forbidden content - possible XSS attack: '{}'!='{}'", make, clean);
                 statusString.append("Make contains forbidden content.");
             }
         } else {
@@ -313,7 +324,7 @@ public class TlTaskCreation extends BaseActivity {
         if (model != null) {
             String clean = Jsoup.clean(model, Whitelist.basic());
             if (!clean.equals(model)) {
-                LOG.warn("Model contains forbidden content - possible XSS attack: {}", model);
+                LOG.warn("Model contains forbidden content - possible XSS attack: '{}'!='{}'", model, clean);
                 statusString.append("Model Number contains forbidden content.");
             }
         } else {
@@ -322,7 +333,7 @@ public class TlTaskCreation extends BaseActivity {
         if (chassisNumber != null) {
             String clean = Jsoup.clean(chassisNumber, Whitelist.basic());
             if (!clean.equals(chassisNumber)) {
-                LOG.warn("Chassis Number contains forbidden content - possible XSS attack: {}", chassisNumber);
+                LOG.warn("Chassis Number contains forbidden content - possible XSS attack: '{}'!='{}'", chassisNumber, clean);
                 statusString.append("Chassis Number contains forbidden content.");
             }
         } else {
@@ -331,7 +342,7 @@ public class TlTaskCreation extends BaseActivity {
         if (preAccidentValue != null) {
             String clean = Jsoup.clean(preAccidentValue, Whitelist.basic());
             if (!clean.equals(preAccidentValue)) {
-                LOG.warn("Pre Accident Value contains forbidden content - possible XSS attack: {}", preAccidentValue);
+                LOG.warn("Pre Accident Value contains forbidden content - possible XSS attack: '{}'!='{}'", preAccidentValue, clean);
                 statusString.append("Pre Accident Value contains forbidden content.");
             }
         } else {
@@ -340,7 +351,7 @@ public class TlTaskCreation extends BaseActivity {
         if (salvageAmount != null) {
             String clean = Jsoup.clean(salvageAmount, Whitelist.basic());
             if (!clean.equals(salvageAmount)) {
-                LOG.warn("Salvage Amount contains forbidden content - possible XSS attack: {}", salvageAmount);
+                LOG.warn("Salvage Amount contains forbidden content - possible XSS attack: '{}'!='{}'", salvageAmount, clean);
                 statusString.append("Salvage Amount contains forbidden content.");
             }
         } else {
@@ -349,7 +360,7 @@ public class TlTaskCreation extends BaseActivity {
         if (salvageCategory != null) {
             String clean = Jsoup.clean(salvageCategory, Whitelist.basic());
             if (!clean.equals(salvageCategory)) {
-                LOG.warn("Salvage Category contains forbidden content - possible XSS attack: {}", salvageCategory);
+                LOG.warn("Salvage Category contains forbidden content - possible XSS attack: '{}'!='{}'", salvageCategory, clean);
                 statusString.append("Salvage Category contains forbidden content.");
             }
         } else {
@@ -358,7 +369,7 @@ public class TlTaskCreation extends BaseActivity {
         if (amountToPay != null) {
             String clean = Jsoup.clean(amountToPay, Whitelist.basic());
             if (!clean.equals(amountToPay)) {
-                LOG.warn("Amount To Pay contains forbidden content - possible XSS attack: {}", amountToPay);
+                LOG.warn("Amount To Pay contains forbidden content - possible XSS attack: '{}'!='{}'", amountToPay, clean);
                 statusString.append("Amount To Pay contains forbidden content.");
             }
         } else {
@@ -367,7 +378,7 @@ public class TlTaskCreation extends BaseActivity {
         if (thirdPartyName != null) {
             String clean = Jsoup.clean(thirdPartyName, Whitelist.basic());
             if (!clean.equals(thirdPartyName)) {
-                LOG.warn("Third Party Name contains forbidden content - possible XSS attack: {}", thirdPartyName);
+                LOG.warn("Third Party Name contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyName, clean);
                 statusString.append("Third Party Name contains forbidden content.");
             }
         } else {
@@ -376,7 +387,7 @@ public class TlTaskCreation extends BaseActivity {
         if (thirdPartyReg != null) {
             String clean = Jsoup.clean(thirdPartyReg, Whitelist.basic());
             if (!clean.equals(thirdPartyReg)) {
-                LOG.warn("Third Party Reg contains forbidden content - possible XSS attack: {}", thirdPartyReg);
+                LOG.warn("Third Party Reg contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyReg, clean);
                 statusString.append("Third Party Reg contains forbidden content.");
             }
         } else {
@@ -385,7 +396,7 @@ public class TlTaskCreation extends BaseActivity {
         if (thirdPartyClaimNumber != null) {
             String clean = Jsoup.clean(thirdPartyClaimNumber, Whitelist.basic());
             if (!clean.equals(thirdPartyClaimNumber)) {
-                LOG.warn("Third Party Claim Number contains forbidden content - possible XSS attack: {}", thirdPartyClaimNumber);
+                LOG.warn("Third Party Claim Number contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyClaimNumber, clean);
                 statusString.append("Third Party Claim Number contains forbidden content.");
             }
         } else {
@@ -394,7 +405,7 @@ public class TlTaskCreation extends BaseActivity {
         if (thirdPartyAgentName != null) {
             String clean = Jsoup.clean(thirdPartyAgentName, Whitelist.basic());
             if (!clean.equals(thirdPartyAgentName)) {
-                LOG.warn("Third Party Agent Name contains forbidden content - possible XSS attack: {}", thirdPartyAgentName);
+                LOG.warn("Third Party Agent Name contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyAgentName, clean);
                 statusString.append("Third Party Agent Name contains forbidden content.");
             }
         } else {
@@ -403,7 +414,7 @@ public class TlTaskCreation extends BaseActivity {
         if (title != null) {
             String clean = Jsoup.clean(title, Whitelist.basic());
             if (!clean.equals(title)) {
-                LOG.warn("Title contains forbidden content - possible XSS attack: {}", title);
+                LOG.warn("Title contains forbidden content - possible XSS attack: '{}'!='{}'", title, clean);
                 statusString.append("Title contains forbidden content");
             }
         } else {
@@ -412,7 +423,7 @@ public class TlTaskCreation extends BaseActivity {
         if (driverFirstName != null) {
             String clean = Jsoup.clean(driverFirstName, Whitelist.basic());
             if (!clean.equals(driverFirstName)) {
-                LOG.warn("Driver First Name contains forbidden content - possible XSS attack: {}", driverFirstName);
+                LOG.warn("Driver First Name contains forbidden content - possible XSS attack: '{}'!='{}'", driverFirstName, clean);
                 statusString.append("Driver First Name contains forbidden content.");
             }
         } else {
@@ -421,7 +432,7 @@ public class TlTaskCreation extends BaseActivity {
         if (driverLastName != null) {
             String clean = Jsoup.clean(driverLastName, Whitelist.basic());
             if (!clean.equals(driverLastName)) {
-                LOG.warn("Driver Last Name contains forbidden content - possible XSS attack: {}", driverLastName);
+                LOG.warn("Driver Last Name contains forbidden content - possible XSS attack: '{}'!='{}'", driverLastName, clean);
                 statusString.append("Driver Last Name contains forbidden content.");
             }
         } else {
@@ -430,7 +441,7 @@ public class TlTaskCreation extends BaseActivity {
         if (payee != null) {
             String clean = Jsoup.clean(payee, Whitelist.basic());
             if (!clean.equals(payee)) {
-                LOG.warn("Payee contains forbidden content - possible XSS attack: {}", payee);
+                LOG.warn("Payee contains forbidden content - possible XSS attack: '{}'!='{}'", payee, clean);
                 statusString.append("Payee contains forbidden content.");
             }
         } else {
@@ -439,7 +450,7 @@ public class TlTaskCreation extends BaseActivity {
         if (line1 != null) {
             String clean = Jsoup.clean(line1, Whitelist.basic());
             if (!clean.equals(line1)) {
-                LOG.warn("Line1 contains forbidden content - possible XSS attack: {}", line1);
+                LOG.warn("Line1 contains forbidden content - possible XSS attack: '{}'!='{}'", line1, clean);
                 statusString.append("Line1 contains forbidden content.");
             }
         } else {
@@ -448,7 +459,7 @@ public class TlTaskCreation extends BaseActivity {
         if (line2 != null) {
             String clean = Jsoup.clean(line2, Whitelist.basic());
             if (!clean.equals(line2)) {
-                LOG.warn("Line2 contains forbidden content - possible XSS attack: {}", line2);
+                LOG.warn("Line2 contains forbidden content - possible XSS attack: '{}'!='{}'", line2, clean);
                 statusString.append("Line2 contains forbidden content.");
             }
         } else {
@@ -457,7 +468,7 @@ public class TlTaskCreation extends BaseActivity {
         if (town != null) {
             String clean = Jsoup.clean(town, Whitelist.basic());
             if (!clean.equals(town)) {
-                LOG.warn("Town contains forbidden content - possible XSS attack: {}", town);
+                LOG.warn("Town contains forbidden content - possible XSS attack: '{}'!='{}'", town, clean);
                 statusString.append("Town contains forbidden content.");
             }
         } else {
@@ -466,7 +477,7 @@ public class TlTaskCreation extends BaseActivity {
         if (postcode != null) {
             String clean = Jsoup.clean(postcode, Whitelist.basic());
             if (!clean.equals(postcode)) {
-                LOG.warn("Postcode contains forbidden content - possible XSS attack: {}", postcode);
+                LOG.warn("Postcode contains forbidden content - possible XSS attack: '{}'!='{}'", postcode, clean);
                 statusString.append("Postcode contains forbidden content.");
             }
         } else {
@@ -475,7 +486,7 @@ public class TlTaskCreation extends BaseActivity {
         if (vehicleStatus != null) {
             String clean = Jsoup.clean(vehicleStatus, Whitelist.basic());
             if (!clean.equals(vehicleStatus)) {
-                LOG.warn("Vehicle Status contains forbidden content - possible XSS attack: {}", vehicleStatus);
+                LOG.warn("Vehicle Status contains forbidden content - possible XSS attack: '{}'!='{}'", vehicleStatus, clean);
                 statusString.append("Vehicle Status contains forbidden content.");
             }
         } else {
@@ -484,7 +495,7 @@ public class TlTaskCreation extends BaseActivity {
         if (area1Severity != null) {
             String clean = Jsoup.clean(area1Severity, Whitelist.basic());
             if (!clean.equals(area1Severity)) {
-                LOG.warn("Area 1 Severity contains forbidden content - possible XSS attack: {}", area1Severity);
+                LOG.warn("Area 1 Severity contains forbidden content - possible XSS attack: '{}'!='{}'", area1Severity, clean);
                 statusString.append("Area 1 Severity contains forbidden content.");
             }
         } else {
@@ -493,7 +504,7 @@ public class TlTaskCreation extends BaseActivity {
         if (area1Damage != null) {
             String clean = Jsoup.clean(area1Damage, Whitelist.basic());
             if (!clean.equals(area1Damage)) {
-                LOG.warn("Area 1 Damage contains forbidden content - possible XSS attack: {}", area1Damage);
+                LOG.warn("Area 1 Damage contains forbidden content - possible XSS attack: '{}'!='{}'", area1Damage, clean);
                 statusString.append("Area 1 Damage contains forbidden content.");
             }
         } else {
@@ -502,7 +513,7 @@ public class TlTaskCreation extends BaseActivity {
         if (area2Severity != null) {
             String clean = Jsoup.clean(area2Severity, Whitelist.basic());
             if (!clean.equals(area2Severity)) {
-                LOG.warn("Area 2 Severity contains forbidden content - possible XSS attack: {}", area2Severity);
+                LOG.warn("Area 2 Severity contains forbidden content - possible XSS attack: '{}'!='{}'", area2Severity, clean);
                 statusString.append("Area 2 Severity contains forbidden content.");
             }
         } else {
@@ -511,7 +522,7 @@ public class TlTaskCreation extends BaseActivity {
         if (area2Damage != null) {
             String clean = Jsoup.clean(area2Damage, Whitelist.basic());
             if (!clean.equals(area2Damage)) {
-                LOG.warn("Area 2 Damage contains forbidden content - possible XSS attack: {}", area2Damage);
+                LOG.warn("Area 2 Damage contains forbidden content - possible XSS attack: '{}'!='{}'", area2Damage, clean);
                 statusString.append("Area 2 Damage contains forbidden content.");
             }
         } else {
@@ -520,7 +531,7 @@ public class TlTaskCreation extends BaseActivity {
         if (totalLossDate != null) {
             String clean = Jsoup.clean(totalLossDate, Whitelist.basic());
             if (!clean.equals(totalLossDate)) {
-                LOG.warn("Total Loss Date contains forbidden content - possible XSS attack: {}", totalLossDate);
+                LOG.warn("Total Loss Date contains forbidden content - possible XSS attack: '{}'!='{}'", totalLossDate, clean);
                 statusString.append("Total Loss Date contains forbidden content.");
             }
         } else {
@@ -541,34 +552,34 @@ public class TlTaskCreation extends BaseActivity {
         task.setComplete(Boolean.FALSE);
         task.setDueDate(DateHelper.addDay(new Date(), 1));
         StringBuilder description = new StringBuilder();
-        description.append("A Total Loss payment is required and the following details apply:\n")
-                .append("IMS Reference: ").append(imsReference).append("\n")
-                .append("Registration Number: ").append(registrationNumber).append("\n")
-                .append("Make: ").append(make).append("\n")
-                .append("Model: ").append(model).append("\n")
-                .append("Chassis Number: ").append(chassisNumber).append("\n")
-                .append("Pre Accident Value: ").append(preAccidentValue).append("\n")
-                .append("Salvage Amount: ").append(salvageAmount).append("\n")
-                .append("Salvage Category: ").append(salvageCategory).append("\n")
-                .append("Amount to Pay: ").append(amountToPay).append("\n")
-                .append("Third Party Name: ").append(thirdPartyName).append("\n")
-                .append("Third Party Reg: ").append(thirdPartyReg).append("\n")
-                .append("Third Party Claim Number: ").append(thirdPartyClaimNumber).append("\n")
-                .append("Third Party Agent Name: ").append(thirdPartyAgentName).append("\n")
-                .append("Title: ").append(title).append("\n")
-                .append("Driver First Name: ").append(driverFirstName).append("\n")
-                .append("Driver Last Name: ").append(driverLastName).append("\n")
-                .append("Payee: ").append(payee).append("\n")
-                .append("Line1: ").append(line1).append("\n")
-                .append("Line2: ").append(line2).append("\n")
-                .append("Town: ").append(town).append("\n")
-                .append("Postcode: ").append(postcode).append("\n")
-                .append("Vehicle Status: ").append(vehicleStatus).append("\n")
-                .append("Area 1 Severity: ").append(area1Severity).append("\n")
-                .append("Area 1 Damage: ").append(area1Damage).append("\n")
-                .append("Area 2 Severity: ").append(area2Severity).append("\n")
-                .append("Area 2 Damage: ").append(area2Damage).append("\n")
-                .append("Total Loss Date: ").append(totalLossDate).append("\n");
+        description.append("A Total Loss payment is required and the following details apply:<br>")
+                .append("IMS Reference: ").append(imsReference).append("<br>")
+                .append("Registration Number: ").append(registrationNumber).append("<br>")
+                .append("Make: ").append(make).append("<br>")
+                .append("Model: ").append(model).append("<br>")
+                .append("Chassis Number: ").append(chassisNumber).append("<br>")
+                .append("Pre Accident Value: ").append(preAccidentValue).append("<br>")
+                .append("Salvage Amount: ").append(salvageAmount).append("<br>")
+                .append("Salvage Category: ").append(salvageCategory).append("<br>")
+                .append("Amount to Pay: ").append(amountToPay).append("<br>")
+                .append("Third Party Name: ").append(thirdPartyName).append("<br>")
+                .append("Third Party Reg: ").append(thirdPartyReg).append("<br>")
+                .append("Third Party Claim Number: ").append(thirdPartyClaimNumber).append("<br>")
+                .append("Third Party Agent Name: ").append(thirdPartyAgentName).append("<br>")
+                .append("Title: ").append(title).append("<br>")
+                .append("Driver First Name: ").append(driverFirstName).append("<br>")
+                .append("Driver Last Name: ").append(driverLastName).append("<br>")
+                .append("Payee: ").append(payee).append("<br>")
+                .append("Line1: ").append(line1).append("<br>")
+                .append("Line2: ").append(line2).append("<br>")
+                .append("Town: ").append(town).append("<br>")
+                .append("Postcode: ").append(postcode).append("<br>")
+                .append("Vehicle Status: ").append(vehicleStatus).append("<br>")
+                .append("Area 1 Severity: ").append(area1Severity).append("<br>")
+                .append("Area 1 Damage: ").append(area1Damage).append("<br>")
+                .append("Area 2 Severity: ").append(area2Severity).append("<br>")
+                .append("Area 2 Damage: ").append(area2Damage).append("<br>")
+                .append("Total Loss Date: ").append(totalLossDate);
         task.setDescription(description.toString());
         task.setRaisedBy(userService.findByUserName("system"));
         task.setType("Total Loss Payment");

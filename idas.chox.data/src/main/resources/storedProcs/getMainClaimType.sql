@@ -17,7 +17,7 @@ $BODY$
     ELSIF $1 IN (7,8,9) THEN
          resultString = 7;
     ELSIF $1 IN (10,14,15,16,17) THEN
-         resultString = 10;
+         resultString = 17;
     ELSIF $1 IN (11,12,13) THEN
          resultString = 11;
     ELSIF $1 IN (18,19,20) THEN

@@ -61,11 +61,11 @@ public class Task extends Entity implements Serializable {
     }
 
     public String getDescription() {
-        return Jsoup.clean(description, Whitelist.none());
+        return description;
     }
 
     public void setDescription(String description) {
-        this.description = Jsoup.clean(description, Whitelist.none());
+        this.description = Jsoup.clean(description, Whitelist.basic());
     }
 
     public Date getDueDate() {

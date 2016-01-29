@@ -160,10 +160,10 @@
                     if(this.getRawValue() === "" ) {
                         this.clearValue();
                         choId = -1;
-                        insurerDiscount_loadGridViewList();
+//                        insurerDiscount_loadGridViewList();
                     }else{
                         choId = this.getValue();
-                        insurerDiscount_loadGridViewList(choId);
+//                        insurerDiscount_loadGridViewList(choId);
                     }
                 }
             }
@@ -315,7 +315,7 @@
                         if(response){
                     
                             if(response.success){
-                                insurerDiscount_loadGridViewList(choId);
+                                insurerDiscount_loadGridViewList(choid);
                             } else if(response.errors){
                                 Ext.MessageBox.show({
                                     title: 'ERROR',
@@ -444,11 +444,11 @@
     }
 
     function insurerDiscount_loadGridViewList(choId){
-        if(choId > 0) {
-            insurerDiscount_gridviewData.load({ params : { insurerId:<s:property value="insurerId" />, choId:choId } });
-        } else {
+//        if(choId > 0) {
+//            insurerDiscount_gridviewData.load({ params : { insurerId:<s:property value="insurerId" />, choId:choId } });
+//        } else {
             insurerDiscount_gridviewData.load({ params : { insurerId:<s:property value="insurerId" />, choId:-1 } });
-        }
+//        }
     }
 
     function insurerDiscount_recordOnclick(grid, rowIndex, columnIndex, e){
