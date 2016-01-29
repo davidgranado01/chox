@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.enums.AuditReviewClaimType;
 import idas.chox.core.enums.YesNoMapping;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +13,15 @@ import idas.chox.core.services.VehicleClassService;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class SaveClaimAuditReview extends BaseActivity {
+public class SaveOrSubmitClaimAuditReview extends BaseActivity {
 
-    static final Logger LOG = LoggerFactory.getLogger(SaveClaimAuditReview.class);
+    static final Logger LOG = LoggerFactory.getLogger(SaveOrSubmitClaimAuditReview.class);
 
     private ClaimAuditReview claimAuditReview;
     @Autowired
     private VehicleClassService vehicleClassService;
+
+    private String nameOfActivity;
 
     private Integer customerVehicleClassId;
     private Integer hireVehicleClassId;
@@ -38,7 +41,7 @@ public class SaveClaimAuditReview extends BaseActivity {
     private String hireDurationNotAcceptableReason;
     private String penaltyChargeAvoidableNote;
     private Integer hireDuration;
-    
+
     // custom AuditReviewBigDecimalConverter is implemented to 
     // avoid global bigdecimal converter changing null value to zero.
     private BigDecimal totalHireCost;
@@ -54,6 +57,14 @@ public class SaveClaimAuditReview extends BaseActivity {
 
     public void setClaimAuditReview(ClaimAuditReview claimAuditReview) {
         this.claimAuditReview = claimAuditReview;
+    }
+
+    public String getNameOfActivity() {
+        return nameOfActivity;
+    }
+
+    public void setNameOfActivity(String nameOfActivity) {
+        this.nameOfActivity = nameOfActivity;
     }
 
     public Integer getCustomerVehicleClassId() {
@@ -390,16 +401,139 @@ public class SaveClaimAuditReview extends BaseActivity {
             LOG.warn("Claim Audit Review Object is null. Can not update Audit Review.");
             throw new Exception("Claim Audit Review Object is null. Can not update Audit Review.");
         }
+        switch (nameOfActivity) {
+            case "submitClaimAuditReview":
+                if (claimAuditReview.getClaimType() == null) {
+                    LOG.warn("'Claim Type' is null. Can not update Audit Review.");
+                    throw new Exception("'Claim Type' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getWhoManagedRepair() == null) {
+                    LOG.warn("Who Managed Repair is null. Can not update Audit Review.");
+                    throw new Exception("'Who Managed Repair?' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getTotalLoss() == null) {
+                    LOG.warn("'Total Loss' is null. Can not update Audit Review.");
+                    throw new Exception("'Total Loss' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getCustomerVehicleClass() == null) {
+                    LOG.warn("'Customers Vehicle Class' is null. Can not update Audit Review.");
+                    throw new Exception("'Customers Vehicle Class' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireVehicleClass() == null) {
+                    LOG.warn("'Hire Vehicle Class' is null. Can not update Audit Review.");
+                    throw new Exception("'Hire Vehicle Class' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireDuration() == null) {
+                    LOG.warn("'Hire Duration' is null. Can not update Audit Review.");
+                    throw new Exception("'Hire Duration' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireDurationAcceptable() == null) {
+                    LOG.warn("'Hire Duration Acceptable' is null. Can not update Audit Review.");
+                    throw new Exception("'Hire Duration Acceptable' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireDurationAcceptable() != null && !claimAuditReview.getHireDurationAcceptable()
+                        && claimAuditReview.getHireDurationNotAcceptableReason() == null) {
+                    LOG.warn("'Reason for Hire Duration Not Acceptable' is null. Can not update Audit Review.");
+                    throw new Exception("'Reason for Hire Duration Not Acceptable' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getTotalHireCost() == null) {
+                    LOG.warn("'Total Hire Costs' is null. Can not update Audit Review.");
+                    throw new Exception("'Total Hire Costs' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireLeakage() == null) {
+                    LOG.warn("'Hire Leakage' is null. Can not update Audit Review.");
+                    throw new Exception("'Hire Leakage' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getHireLeakage() != null && claimAuditReview.getHireLeakage()
+                        && (claimAuditReview.getHireLeakageCost() == null || claimAuditReview.getHireLeakageCost().compareTo(BigDecimal.ZERO) <= 0)) {
+                    if (claimAuditReview.getHireLeakageCost() == null) {
+                        LOG.warn("'If Yes, by how much' for 'Hire Leakage' is null. Can not update Audit Review.");
+                        throw new Exception("'If Yes, by how much' for 'Hire Leakage' is null. Can not update Audit Review.");
+                    } else {
+                        LOG.warn("'If Yes, by how much' for 'Hire Leakage' Must Be Larger Than 0. Can not update Audit Review.");
+                        throw new Exception("'If Yes, by how much' for 'Hire Leakage' Must Be Larger Than 0. Can not update Audit Review.");
+                    }
+                }
+                if (claimAuditReview.getTotalRepairCost() == null) {
+                    LOG.warn("'Total Repair Costs' is null. Can not update Audit Review.");
+                    throw new Exception("'Total Repair Costs' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getRepairCostExceedsEngRec() != null && claimAuditReview.getRepairCostExceedsEngRec()
+                        && (claimAuditReview.getExceededRepairCost() == null || claimAuditReview.getExceededRepairCost().compareTo(BigDecimal.ZERO) <= 0)) {
+                    if (claimAuditReview.getExceededRepairCost() == null) {
+                        LOG.warn("'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations is null. Can not update Audit Review.");
+                        throw new Exception("'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations is null. Can not update Audit Review.");
+                    } else {
+                        LOG.warn("'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must Be Larger Than 0. Can not update Audit Review.");
+                        throw new Exception("'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must Be Larger Than 0. Can not update Audit Review.");
+                    }
+                }
+                if (claimAuditReview.getPenaltyChargesPaid() == null) {
+                    LOG.warn("'Penalty Charges paid' is null. Can not update Audit Review.");
+                    throw new Exception("'Penalty Charges paid' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getPenaltyChargeAvoidable() != null && claimAuditReview.getPenaltyChargeAvoidable()
+                        && claimAuditReview.getPenaltyChargeAvoidableNote() == null) {
+                    LOG.warn("'How were the penalty charges avoidable' is null. Can not update Audit Review.");
+                    throw new Exception("'How were the penalty charges avoidable' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getWithinABPGuidelines() != null && !claimAuditReview.getWithinABPGuidelines()
+                        && (claimAuditReview.getNonABPGuidelineRepairLabourRate() == null || claimAuditReview.getNonABPGuidelineRepairLabourRate().compareTo(BigDecimal.ZERO) <= 0)) {
+                    if (claimAuditReview.getNonABPGuidelineRepairLabourRate() == null) {
+                        LOG.warn("'If No how much was charged (hourly rate)' for 'Repair labour rate' is null. Can not update Audit Review.");
+                        throw new Exception("'If No how much was charged (hourly rate)' for 'Repair labour rate' is null. Can not update Audit Review.");
+                    } else {
+                        LOG.warn("'If No how much was charged (hourly rate)' for 'Repair labour rate' Must Be Larger Than 0. Can not update Audit Review.");
+                        throw new Exception("'If No how much was charged (hourly rate)' for 'Repair labour rate' Must Be Larger Than 0. Can not update Audit Review.");
+                    }
+                }
+                if (claimAuditReview.getStorageClaimed() == null) {
+                    LOG.warn("'Storage Claimed' is null. Can not update Audit Review.");
+                    throw new Exception("'Storage Claimed' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getStorageClaimed() != null && claimAuditReview.getStorageClaimed()
+                        && claimAuditReview.getStorageClaimedCorrectly() == null) {
+                    LOG.warn("'If Yes, correctly so' for 'Storage Claimed' is null. Can not update Audit Review.");
+                    throw new Exception("'If Yes, correctly so' for 'Storage Claimed' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getRecoveryClaimed() == null) {
+                    LOG.warn("'Recovery Claimed' is null. Can not update Audit Review.");
+                    throw new Exception("'Recovery Claimed' is null. Can not update Audit Review.");
+                }
+                if (claimAuditReview.getRecoveryClaimed() != null && claimAuditReview.getRecoveryClaimed()
+                        && claimAuditReview.getRecoveryClaimedCorrectly() == null) {
+                    LOG.warn("'If Yes, correctly so' for 'Recovery Claimed' is null. Can not update Audit Review.");
+                    throw new Exception("'If Yes, correctly so' for 'Recovery Claimed' is null. Can not update Audit Review.");
+                }
+                break;
+            case "saveClaimAuditReview":
+                LOG.debug("Save Claim Audit Review. No validation required!!!");
+                break;
+            default:
+                LOG.error("Activity name does not match for claimAuditReview activity. Can not proceed to save or submit claimAuditReview.");
+                throw new Exception("Activity name does not match. Can not update Audit Review.");
+        }
     }
 
     @Override
     protected void doProcess(Claim claim) {
-        LOG.debug("Saved Claim Audit Review.");
+        switch (nameOfActivity) {
+            case "submitClaimAuditReview":
+                claimAuditReview.setClaimAuditReviewCompleted(true);
+                claimAuditReview.setAuditCompletedDate(new Date());
+                claimAuditReview.setCompletedBy(getCurrentUser());
+                LOG.debug("Submitted Claim Audit Review.");
+                break;
+            case "saveClaimAuditReview":
+                LOG.debug("Saved Claim Audit Review.");
+                break;
+        }
     }
 
     @Override
     protected void afterProcess(Claim claim) {
-//        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-//        getDataService().save(claim);
+        if (nameOfActivity.equals("submitClaimAuditReview")) {
+            activityEventGenerator.generate(claim, this);
+        }
     }
 }

@@ -3,7 +3,7 @@
 -----------------------------------------------------
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
-    values ('filter.ClaimsRequiringAudit',FALSE,FALSE);
+    values ('filter.ClaimsRequiringAudit',TRUE,TRUE);
 INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.ClaimsRequiringAudit';
 INSERT into accessibility_item (role,access_right,accessibility_id) 
@@ -12,70 +12,27 @@ INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MNG',1,id from accessibility where name ='filter.ClaimsRequiringAudit';
 
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.SaveClaimAuditReview.PaymentReceived',FALSE,FALSE);
+    VALUES ('activity.SaveOrSubmitClaimAuditReview.PaymentReceived',TRUE,TRUE);
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.PaymentReceived';
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.PaymentReceived';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.PaymentReceived';
+    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.PaymentReceived';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.PaymentReceived';
+    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.PaymentReceived';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.PaymentReceived';
+    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.PaymentReceived';
 
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.SaveClaimAuditReview.ManualInvoicePaid',FALSE,FALSE);
+    VALUES ('activity.SaveOrSubmitClaimAuditReview.ManualInvoicePaid',TRUE,TRUE);
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.ManualInvoicePaid';
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.ManualInvoicePaid';
+    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.ManualInvoicePaid';
+    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SaveClaimAuditReview.ManualInvoicePaid';
+    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SaveOrSubmitClaimAuditReview.ManualInvoicePaid';
 
-INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.SubmitClaimAuditReview.PaymentReceived',FALSE,FALSE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.PaymentReceived';
-
-INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.SubmitClaimAuditReview.ManualInvoicePaid',FALSE,FALSE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.SubmitClaimAuditReview.ManualInvoicePaid';
-
-INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.ClaimAudit.PaymentReceived',FALSE,FALSE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.ClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.PaymentReceived';
-
-INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
-    VALUES ('activity.ClaimAudit.ManualInvoicePaid',FALSE,FALSE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ALL',0, id FROM accessibility WHERE name = 'activity.ClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'activity.ClaimAudit.ManualInvoicePaid';
 
 CREATE TABLE claim_audit_review (
     id serial not null,
@@ -146,7 +103,7 @@ ALTER TABLE claim ADD CONSTRAINT audit_review_id_fkey FOREIGN KEY (audit_review_
 -----------------------------------------------------
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
-    VALUES ('extraAction.reviewClaimAudit.PaymentReceived',false,false);
+    VALUES ('extraAction.reviewClaimAudit.PaymentReceived',TRUE,TRUE);
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
     SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.PaymentReceived';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
@@ -158,7 +115,7 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
-    VALUES ('extraAction.reviewClaimAudit.ManualInvoicePaid',false,false);
+    VALUES ('extraAction.reviewClaimAudit.ManualInvoicePaid',TRUE,TRUE);
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
     SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
