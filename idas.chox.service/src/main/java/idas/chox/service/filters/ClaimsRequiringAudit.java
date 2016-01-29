@@ -1,6 +1,10 @@
 package idas.chox.service.filters;
 
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.search.ClaimSearchCriteria;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ClaimsRequiringAudit extends BaseFilter {
 
@@ -9,7 +13,7 @@ public class ClaimsRequiringAudit extends BaseFilter {
 
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
-        
+
         claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setClaimAuditValue(1);
         claimSearchCriteria.setManual(getIsManualFilter());
@@ -17,16 +21,16 @@ public class ClaimsRequiringAudit extends BaseFilter {
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
-//        Set<String> claimsRequiringAuditStatus = new HashSet<>(Arrays.asList(
-//                ClaimStatus.INVOICE_PAYMENT_RECEIVED,
-//                ClaimStatus.MANUAL_INVOICE_PAID
-//        ));
-//
-//        claimSearchCriteria.setStatuses(claimsRequiringAuditStatus);
+        Set<String> claimsRequiringAuditStatus = new HashSet<>(Arrays.asList(
+                ClaimStatus.INVOICE_PAYMENT_RECEIVED,
+                ClaimStatus.MANUAL_INVOICE_PAID
+        ));
+
+        claimSearchCriteria.setStatuses(claimsRequiringAuditStatus);
 
         return claimSearchCriteria;
     }
-    
+
     @Override
     public String getName() {
         return name;

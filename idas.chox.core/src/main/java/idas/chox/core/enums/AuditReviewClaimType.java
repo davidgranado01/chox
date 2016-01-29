@@ -4,7 +4,7 @@ public enum AuditReviewClaimType {
 
     HIRE_ONLY(0, "Hire Only"),
     REPAIR_ONLY(1, "Repair Only"),
-    HIRE_AND_RAPAIR(2, "Hire & Repair"),
+    HIRE_AND_REPAIR(2, "Hire & Repair"),
     OTHER(3, "Other");
 
     private final String description;

@@ -487,7 +487,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Integer getAuditReviewClaimType() {
         if (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) == 1 
                 && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
-            return AuditReviewClaimType.HIRE_AND_RAPAIR.getValue(); 
+            return AuditReviewClaimType.HIRE_AND_REPAIR.getValue(); 
         } else if (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) == 1) {
             return AuditReviewClaimType.HIRE_ONLY.getValue(); 
         } else if (claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
