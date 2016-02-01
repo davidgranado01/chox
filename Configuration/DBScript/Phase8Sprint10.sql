@@ -87,7 +87,7 @@ CREATE TABLE claim_audit_review (
 WITH (
   OIDS=FALSE
 );
-GRANT SELECT ON TABLE claim_audit_review TO chox_user;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_audit_review TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_audit_review_id_seq TO chox_user;
 
 ALTER TABLE claim ADD COLUMN audit_review_id integer;
