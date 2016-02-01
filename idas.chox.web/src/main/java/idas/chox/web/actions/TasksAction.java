@@ -404,23 +404,26 @@ public class TasksAction extends BaseAction {
             } catch (Exception ex) {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                getSession().put("exceptionThrown", true);
+                synchronized (getSessionLock()) {
+                    getSession().put("exceptionThrown", true);
+                }
             }
         }
 
         synchronized (getSessionLock()) {
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
+            Map<String, Object> session = getSession();
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     excelStream = new DeleteOnCloseFileInputStream(reportFile);
                     result = SUCCESS;
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
-                    getSession().put("exceptionThrown", true);
+                    session.put("exceptionThrown", true);
                     excelStream = null;
                     result = ERROR;
                 }
-                getSession().put("reportFileLocation", null);
+                session.put("reportFileLocation", null);
             } else {
                 excelStream = null;
                 result = ERROR;
@@ -433,12 +436,13 @@ public class TasksAction extends BaseAction {
     public String doTaskExportToExcel() throws IOException {
 
         synchronized (getSessionLock()) {
-            getSession().put("isExportFinished", false);
-            getSession().put("cancelExportOperation", false);
-            getSession().put("writingToFile", false);
-            getSession().put("numberOfTasksProcessed", 0);
-            getSession().put("reportFileLocation", null);
-            getSession().put("exceptionThrown", false);
+            Map<String, Object> session = getSession();
+            session.put("isExportFinished", false);
+            session.put("cancelExportOperation", false);
+            session.put("writingToFile", false);
+            session.put("numberOfTasksProcessed", 0);
+            session.put("reportFileLocation", null);
+            session.put("exceptionThrown", false);
         }
 
         String rtnStr = SUCCESS;
@@ -478,18 +482,24 @@ public class TasksAction extends BaseAction {
                                 rtnStr = SUCCESS;
                             }
                         } catch (Exception ex) {
-                            getSession().put("exceptionThrown", true);
+                            synchronized (getSessionLock()) {
+                                getSession().put("exceptionThrown", true);
+                            }
                             LOG.error("Exception thrown generating report: ",  ex);
                             return rtnStr;
                         }
                     } else if (totalCount > MAX_EXPORT_SIZE) {
-                        getSession().put("tooManyRows", true);
+                        synchronized (getSessionLock()) {
+                            getSession().put("tooManyRows", true);
+                        }
                     }
                 }
             }
             
         } catch (Exception ex) {
-            getSession().put("exceptionThrown", true);
+            synchronized (getSessionLock()) {
+                getSession().put("exceptionThrown", true);
+            }
             LOG.error("Exporting thrown while exporting task.", ex);
         }
         return rtnStr;
@@ -587,7 +597,9 @@ public class TasksAction extends BaseAction {
                 } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report:", ex);
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                    getSession().put("exceptionThrown", true);
+                    synchronized (getSessionLock()) {
+                        getSession().put("exceptionThrown", true);
+                    }
                 }
             }
         };
@@ -623,16 +635,19 @@ public class TasksAction extends BaseAction {
         } catch (Exception ex) {
             LOG.error("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            getSession().put("exceptionThrown", true);
+            synchronized (getSessionLock()) {
+                getSession().put("exceptionThrown", true);
+            }
         }
 
         synchronized (getSessionLock()) {
             if (getSession().get("exceptionThrown") != null) {
-                getSession().put("numberOfTasksProcessed", null);
-                getSession().put("cancelExportOperation", false);
-                getSession().put("isExportFinished", true);
-                getSession().put("reportFileLocation", reportFile.getAbsolutePath());
-                getSession().put("writingToFile", false);
+                Map<String, Object> session = getSession();
+                session.put("numberOfTasksProcessed", null);
+                session.put("cancelExportOperation", false);
+                session.put("isExportFinished", true);
+                session.put("reportFileLocation", reportFile.getAbsolutePath());
+                session.put("writingToFile", false);
             } else {
                 throw new Exception("Error Generating Report.");
             }
@@ -643,10 +658,11 @@ public class TasksAction extends BaseAction {
 
     public String cancelTaskExportOperation() {
         synchronized (getSessionLock()) {
+            Map<String, Object> session = getSession();
             LOG.debug("export operation cancellation called ...");
-            getSession().put("cancelExportOperation", true);
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                getSession().put("reportFileLocation", null);
+            session.put("cancelExportOperation", true);
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
+                session.put("reportFileLocation", null);
             }
             setExportCanceled(true);
         }
@@ -655,30 +671,31 @@ public class TasksAction extends BaseAction {
 
     public String getExportedTasksCount() {
         synchronized (getSessionLock()) {
-            if (getSession().containsKey("numberOfTasksProcessed") && getSession().get("numberOfTasksProcessed") != null) {
-                setExportedTaskCount((Integer) getSession().get("numberOfTasksProcessed"));
-                setExportFinished((Boolean) getSession().get("isExportFinished"));
-                setWritingToFile((Boolean) getSession().get("writingToFile"));
-                setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                if (getSession().get("exceptionThrown") == null) {
+            Map<String, Object> session = getSession();
+            if (session.containsKey("numberOfTasksProcessed") && session.get("numberOfTasksProcessed") != null) {
+                setExportedTaskCount((Integer) session.get("numberOfTasksProcessed"));
+                setExportFinished((Boolean) session.get("isExportFinished"));
+                setWritingToFile((Boolean) session.get("writingToFile"));
+                setExportCanceled((Boolean) session.get("cancelExportOperation"));
+                if (session.get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
                 } else {
-                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
                 }
             } else {
                 setExportedTaskCount(0);
-                setExportFinished((Boolean) getSession().get("isExportFinished"));
-                setWritingToFile((Boolean) getSession().get("writingToFile"));
-                setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                if (getSession().get("exceptionThrown") == null) {
+                setExportFinished((Boolean) session.get("isExportFinished"));
+                setWritingToFile((Boolean) session.get("writingToFile"));
+                setExportCanceled((Boolean) session.get("cancelExportOperation"));
+                if (session.get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
                 } else {
-                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
                 }
-                if (getSession().get("tooManyRows") == null) {
+                if (session.get("tooManyRows") == null) {
                     setTooManyRows(Boolean.FALSE);
                 } else {
-                    setTooManyRows((Boolean) getSession().get("tooManyRows"));
+                    setTooManyRows((Boolean) session.get("tooManyRows"));
                 }
             }
         }

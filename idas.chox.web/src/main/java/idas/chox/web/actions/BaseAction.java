@@ -524,7 +524,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 HashMap<String, Integer> map = new HashMap<>();
                 map.put("version", model.getVersion());
                 map.put("id", model.getId());
-                getSession().put(model.getClass().getSimpleName(), map);
+                synchronized (getSessionLock()) {
+                    getSession().put(model.getClass().getSimpleName(), map);
+                }
                 LOG.debug("session updated for model name={}, modelVersion={} modelId={}",
                         new Object[]{model.getClass().getSimpleName(), model.getVersion(), model.getId()});
             }
@@ -566,16 +568,22 @@ public class BaseAction extends ActionSupport implements SessionAware {
 //        map.put("redirect", true);
         if (message != null && !message.isEmpty()) {
             map.put("redirectStatusMsg", message);
-            getSession().put("redirect", map);
+            synchronized (getSessionLock()) {
+                getSession().put("redirect", map);
+            }
         }
         else if (actionError != null && !actionError.isEmpty()) {
             map.put("redirectErrorMsg", actionError);
-            getSession().put("redirect", map);
+            synchronized (getSessionLock()) {
+                getSession().put("redirect", map);
+            }
         }
     }
     
     public void removeRedirectionParamInSession() {
-        getSession().remove("redirect");
+        synchronized (getSessionLock()) {
+            getSession().remove("redirect");
+        }
     }
     
     public String getBrandingJsonString() {
