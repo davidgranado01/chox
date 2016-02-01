@@ -2746,7 +2746,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         } else {
-            LOG.error("No BRE Penalty Band defined for claim type '{}' and hire start '{}'", claim.getClaimType(), hireStart);
+            LOG.error("No BRE Penalty Band defined for claim '{}' with claim type '{}' and hire start '{}'", new Object[]{claim.getChoReference(), claim.getClaimType(), hireStart});
             luItems = new ArrayList<>(0);
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
@@ -2795,7 +2795,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         } else {
-            LOG.error("No BRE Penalty Band defined for claim type '{}' and hire start '{}'", claim.getClaimType(), hireStart);
+            LOG.error("No BRE Penalty Band defined for claim '{}' with claim type '{}' and hire start '{}'", new Object[]{claim.getChoReference(), claim.getClaimType(), hireStart});
             luItems = new ArrayList<>(0);
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
