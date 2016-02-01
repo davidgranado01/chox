@@ -43,6 +43,7 @@ public interface Filter {
     public static final String FILTER_ESCALATED_INVOICES_TO_SUPERVISOR = "EscalatedInvoicesToSupervisor";
     public static final String FILTER_CASE_WITH_SOLICITOR = "CaseWithClientsSolicitor";
     public static final String FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED = "ManualInvoicesToBeAssigned";
+    public static final String FILTER_CLAIMS_REQUIRING_AUDIT = "ClaimsRequiringAudit";
 
     String getKey();
 
