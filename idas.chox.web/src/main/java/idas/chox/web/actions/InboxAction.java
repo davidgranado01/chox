@@ -114,7 +114,9 @@ public class InboxAction extends BaseAction {
         if (getSession().containsKey("loadingInboxPageFirstTimeAfterLogin")) {
             loadingInboxPageFirstTimeAfterLogin = false;
         } else {
-            getSession().put("loadingInboxPageFirstTimeAfterLogin", true);
+            synchronized (getSessionLock()) {
+                getSession().put("loadingInboxPageFirstTimeAfterLogin", true);
+            }
             loadingInboxPageFirstTimeAfterLogin = true;
         }
         return SUCCESS;

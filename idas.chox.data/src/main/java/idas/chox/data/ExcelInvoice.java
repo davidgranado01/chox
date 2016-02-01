@@ -14,6 +14,7 @@ import java.util.Date;
  * @author John
  */
 public class ExcelInvoice {
+
     private static final Logger LOG = LoggerFactory.getLogger(ExcelInvoice.class);
 
     private String claimStatus;
@@ -135,8 +136,7 @@ public class ExcelInvoice {
         coverNoteRequired = (Boolean) data.get("covernoterequired");
         if (coverNoteRequired == null) {
             coverNoteRequiredDesc = "";
-        }
-        else {
+        } else {
             coverNoteRequiredDesc = coverNoteRequired ? "Yes" : "No";
         }
         repairAdminFee = (BigDecimal) data.get("repairadminfee");
@@ -178,43 +178,52 @@ public class ExcelInvoice {
         hirePenaltyCharge = (BigDecimal) data.get("hirepenaltycharge");
         repairPenaltyCharge = (BigDecimal) data.get("repairpenaltycharge");
         hirePenaltyPercentageString = (String) data.get("hirepenaltypercentage");
-        if (hirePenaltyPercentageString.startsWith("Commercial")) {
+        if (hirePenaltyPercentageString != null && hirePenaltyPercentageString.startsWith("Commercial")) {
             hirePenaltyPercentageString = hirePenaltyPercentageString.replaceAll("%", "");
             hireCommercial = true;
         }
         repairPenaltyPercentageString = (String) data.get("repairpenaltypercentage");
-        if (repairPenaltyPercentageString.startsWith("Commercial")) {
+        if (repairPenaltyPercentageString != null && repairPenaltyPercentageString.startsWith("Commercial")) {
             repairPenaltyPercentageString = hirePenaltyPercentageString.replaceAll("%", "");
             repairCommercial = true;
         }
-        if (!isCHO && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
-          try {
-            BigDecimal givenPercentage = null;
-            if (!hireCommercial) {
-                givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
+        if (!isCHO && hirePenaltyCharge != null && hireGross != null && hirePenaltyCharge.compareTo(BigDecimal.ZERO) > 0 && hireGross.compareTo(BigDecimal.ZERO) > 0) {
+            if (hirePenaltyPercentageString != null) {
+                try {
+                    BigDecimal givenPercentage = null;
+                    if (!hireCommercial) {
+                        givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
+                    }
+                    BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
+                    if (hireCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
+                        hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+                    }
+                } catch (Exception ex) {
+                    LOG.error("Error determining actual hire penalty % for string {}: ", hirePenaltyPercentageString, ex);
+                }
+            } else {
+                LOG.warn("hirePenaltyPercentageString is null but hirePenaltyCharge='{}'", hirePenaltyCharge);
             }
-            BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
-            if (hireCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
-                  hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
-              }
-          } catch (Exception ex) {
-              LOG.error("Error determining actual hire penalty % for string {}: ", hirePenaltyPercentageString, ex);
-          }
         }
-        
-        if (!isCHO && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
-          try {
-            BigDecimal givenPercentage = null;
-            if (!repairCommercial) {
-                givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
+
+        if (!isCHO && repairPenaltyCharge != null && repairGross != null && repairPenaltyCharge.compareTo(BigDecimal.ZERO) > 0 && repairGross.compareTo(BigDecimal.ZERO) > 0) {
+            if (repairPenaltyPercentageString != null) {
+                try {
+                    BigDecimal givenPercentage = null;
+                    if (!repairCommercial) {
+                        givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
+                    }
+                    BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
+                    if (repairCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
+                        LOG.debug("Repair penalty string is '{}', actual is '{}'", repairPenaltyPercentageString, actualPercentage.toString());
+                        repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+                    }
+                } catch (Exception ex) {
+                    LOG.error("Error determining actual repair penalty % for string {}: ", repairPenaltyPercentageString, ex);
+                }
+            } else {
+                LOG.warn("repairPenaltyPercentageString is null but hirePenaltyCharge='{}'", repairPenaltyCharge);
             }
-            BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
-            if (repairCommercial || actualPercentage.compareTo(givenPercentage) != 0) {
-                  repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
-              }
-          } catch (Exception ex) {
-              LOG.error("Error determining actual repair penalty % for string {}: ", repairPenaltyPercentageString, ex);
-          }
         }
 
         totalPenaltyCharge = (BigDecimal) data.get("totalpenaltycharge");
@@ -606,9 +615,10 @@ public class ExcelInvoice {
     }
 
     public String getPaymentsTeamDesc() {
-        if (paymentsTeam == null)
-                return "";
-        
+        if (paymentsTeam == null) {
+            return "";
+        }
+
         return paymentsTeam ? "Yes" : "No";
     }
 }

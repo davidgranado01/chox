@@ -111,10 +111,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public String exportReport() {
         LOG.debug("Generating report file '{}' for user '{}'", reportName, this.getAuthenticatedUser().getDisplayName());
         synchronized (getSessionLock()) {
-            getSession().put("isExportFinished", false);
-            getSession().put("exceptionThrown", false);
-            getSession().put("cancelExportOperation", false);
-            getSession().put("reportFileLocation", null);
+            Map<String, Object> session = getSession();
+            session.put("isExportFinished", false);
+            session.put("exceptionThrown", false);
+            session.put("cancelExportOperation", false);
+            session.put("reportFileLocation", null);
         }
         LOG.trace("Session variables cleared.");
 
@@ -173,11 +174,12 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         LOG.trace("Updating session with report generation result");
         synchronized (getSessionLock()) {
-            if (!(Boolean) getSession().get("exceptionThrown")) {
+            Map<String, Object> session = getSession();
+            if (!(Boolean) session.get("exceptionThrown")) {
                 if (reportFile != null) {
-                    getSession().put("reportFileLocation", reportFile.getAbsolutePath());
-                    getSession().put("cancelExportOperation", false);
-                    getSession().put("isExportFinished", true);
+                    session.put("reportFileLocation", reportFile.getAbsolutePath());
+                    session.put("cancelExportOperation", false);
+                    session.put("isExportFinished", true);
                     LOG.debug("Export finished,details added to session - report file written to: {}", reportFile.getAbsolutePath());
                 } else {
                     LOG.error("Cannot add null reportFileLocation to session");
@@ -191,19 +193,20 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public String getReportGenerationStatus() {
         synchronized (getSessionLock()) {
-            if (getSession() != null) { // Add extra null checks as session sometimes empty!
-                if (getSession().get("isExportFinished") != null) {
-                    setExportFinished((Boolean) getSession().get("isExportFinished"));
+            Map<String, Object> session = getSession();
+            if (session != null) { // Add extra null checks as session sometimes empty!
+                if (session.get("isExportFinished") != null) {
+                    setExportFinished((Boolean) session.get("isExportFinished"));
                 } else {
                     setExportFinished(Boolean.FALSE);
                 }
-                if (getSession().get("cancelExportOperation") != null) {
-                    setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
+                if (session.get("cancelExportOperation") != null) {
+                    setExportCanceled((Boolean) session.get("cancelExportOperation"));
                 } else {
                     setExportCanceled(Boolean.FALSE);
                 }
-                if (getSession().get("exceptionThrown") != null) {
-                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                if (session.get("exceptionThrown") != null) {
+                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
                 } else {
                     setExceptionOccured(Boolean.FALSE);
                 }
@@ -221,21 +224,22 @@ public class ReportAction extends BaseAction implements ParameterAware {
             exportReport();
         }
         synchronized (getSessionLock()) {
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                LOG.debug("Request to download report file '{}'", getSession().get("reportFileLocation"));
+            Map<String, Object> session = getSession();
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
+                LOG.debug("Request to download report file '{}'", session.get("reportFileLocation"));
                 try {
-                    File reportFile = new File((String) getSession().get("reportFileLocation"));
+                    File reportFile = new File((String) session.get("reportFileLocation"));
                     reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
                 }
-                getSession().remove("reportFileLocation");
-                getSession().remove("isExportFinished");
-                getSession().remove("exceptionThrown");
-                getSession().remove("cancelExportOperation");
+                session.remove("reportFileLocation");
+                session.remove("isExportFinished");
+                session.remove("exceptionThrown");
+                session.remove("cancelExportOperation");
             } else {
-                LOG.error("reportFileLocation not in session or is null: {}", getSession().containsKey("reportFileLocation"));
+                LOG.error("reportFileLocation not in session or is null: {}", session.containsKey("reportFileLocation"));
                 createEmptyReport();
             }
 
@@ -268,9 +272,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public String cancelExportOperation() {
         LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
         synchronized (getSessionLock()) {
-            getSession().put("cancelExportOperation", Boolean.TRUE);
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                getSession().put("reportFileLocation", null);
+            Map<String, Object> session = getSession();
+            session.put("cancelExportOperation", Boolean.TRUE);
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
+                session.put("reportFileLocation", null);
             }
             setExportCanceled(true);
         }

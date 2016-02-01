@@ -22,6 +22,7 @@ public class InvoicePaymentReceived extends BaseActivity {
                     + " (as full payment has been marked as received)."));
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
+        selectRandomlyForAuditReview(claim);
         if (claim.getInvoice().getFinalPayment() != null) {
             if (claim.getInvoice().getInterimPaymentMade() != null) {
                 claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade().add(claim.getInvoice().getFinalPayment()).setScale(2));

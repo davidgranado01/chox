@@ -263,11 +263,15 @@ public class XmlUploadAction extends BaseAction {
             }
             if (this.service.processFile(bordereauId, getSession())) {
                 this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
-                getSession().put("claimsDetails", null);
+                synchronized (getSessionLock()) {
+                    getSession().put("claimsDetails", null);
+                }
                 return SUCCESS;
             } else {
                 this.getActionResponse().AddError(this.service.getErrorMessage());
-                getSession().put("claimsDetails", null);
+                synchronized (getSessionLock()) {
+                    getSession().put("claimsDetails", null);
+                }
                 return ERROR;
             }
 

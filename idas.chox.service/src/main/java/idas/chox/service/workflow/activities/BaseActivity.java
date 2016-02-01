@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimAuditReview;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
@@ -25,14 +26,14 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.service.security.ApplicationAccessibility;
 
-
-
 public abstract class BaseActivity implements Activity {
+
     private static final Logger LOG = LoggerFactory.getLogger(BaseActivity.class);
     private WorkflowContext processContext;
     private Activity chainActivity;
     private String currentStatus;
     private String message;
+//    private Claim claim;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
     @Autowired
@@ -41,6 +42,15 @@ public abstract class BaseActivity implements Activity {
     protected ActivityEventGenerator activityEventGenerator;
     @Autowired
     protected ClaimService claimService;
+
+//    public Claim getClaim() {
+//        return claim;
+//    }
+//
+//    @Override
+//    public void setClaim(Claim claim) {
+//        this.claim = claim;
+//    }
 
     public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
         this.activityEventGenerator = activityEventGenerator;
@@ -55,7 +65,7 @@ public abstract class BaseActivity implements Activity {
     public boolean isXmlActivityProcessing() {
         return xmlActivityProcessing;
     }
-    
+
     public boolean needsOwnershipCheck() {
         return true;
     }
@@ -105,13 +115,13 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void process(Claim claim) throws Exception {
-            processInBatch(claim);
+        processInBatch(claim);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void processInBatch(Claim claim) throws Exception {
 
         if (claim == null) {
@@ -142,24 +152,24 @@ public abstract class BaseActivity implements Activity {
 
     protected void validate(Claim claim) throws Exception {
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        
+
         if (applicationAccessibility.checkActivityAccessibility(getClass().getSimpleName(),
                 securityInfoProvider.getCurrentUser(), claim) < 1) {
             LOG.warn("No access to activity '{}' for claim '{}' of type {} in status '{}'",
                     new Object[]{getClass().getSimpleName(), claim.getChoReference(),
-                                 claim.getClaimType().name(), claim.getStatus()});
+                        claim.getClaimType().name(), claim.getStatus()});
             throw new AccessDeniedException("No access to activity '" + getClass().getSimpleName() + "' for claim '"
                     + claim.getChoReference() + "' of type " + claim.getClaimType().name() + " in status '"
                     + claim.getStatus() + "'");
         }
-        
+
         // Check that, if we are an insurer or CHO, then the claim belongs to us
-        if (needsOwnershipCheck() && ((securityInfoProvider.getIsINS() &&
-                claim.getInsurer().getId() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
-                || (securityInfoProvider.getIsCHO() &&
-                claim.getChorganisation().getId() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue()))) {
-                LOG.error("User with id={} has attempted to action claim '{}' from a different organisation", getCurrentUser().getId(), claim.getChoReference());
-                throw new AccessDeniedException("Attempt to action a claim that you do not own");
+        if (needsOwnershipCheck() && ((securityInfoProvider.getIsINS()
+                && claim.getInsurer().getId() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
+                || (securityInfoProvider.getIsCHO()
+                && claim.getChorganisation().getId() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue()))) {
+            LOG.error("User with id={} has attempted to action claim '{}' from a different organisation", getCurrentUser().getId(), claim.getChoReference());
+            throw new AccessDeniedException("Attempt to action a claim that you do not own");
         }
         // If Insurer is locked and claim ownership is enabled, and if the user is a CH, then the user must own the claim
         if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
@@ -170,7 +180,7 @@ public abstract class BaseActivity implements Activity {
                 throw new AccessDeniedException("Attempt to action a claim that you do not own");
             }
         }
-        
+
         // If Insurer is locked and workgroups are enabled, and if the user is a COM or FNOL, then the user must be in the same workgroup
         if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isWorkgroupEnable() && securityInfoProvider.getIsINS()
                 && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_FNOL))
@@ -179,7 +189,7 @@ public abstract class BaseActivity implements Activity {
                 LOG.error("User {} has attempted to action claim '{}' which is not in a workgroup to which they belong.", getCurrentUser().getId(), claim.getChoReference());
                 throw new AccessDeniedException("Attempt to action a claim to which you do not have access");
             }
-            
+
         }
     }
 
@@ -199,7 +209,6 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected abstract void doProcess(Claim claim) throws Exception;
-
 
     // <editor-fold defaultstate="collapsed" desc="Member functions">
     protected WebUser getCurrentUser() {
@@ -292,7 +301,7 @@ public abstract class BaseActivity implements Activity {
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
     }
-    
+
     private void setPreviousTotalToPay(Claim claim, AuditTrail auditTrail) {
 
         /*
@@ -307,5 +316,14 @@ public abstract class BaseActivity implements Activity {
         }
     }
 
+    public void selectRandomlyForAuditReview(Claim claim) {
+        if (claim.getBreBand().isEnableClaimAudit() && claim.getBreBand().getAuditProcessPercentage().compareTo(BigDecimal.ZERO) == 1) {
+            if (claim.getBreBand().getAuditProcessPercentage().compareTo(new BigDecimal(Math.random() * 100)) >= 0) {
+                LOG.debug("Claim '{}' selected for audit review. Configured auditReview percentage is: {}",
+                        claim.getChoReference(), claim.getBreBand().getAuditProcessPercentage());
+                claim.setClaimAuditReview(new ClaimAuditReview());
+            }
+        }
+    }
 
 }

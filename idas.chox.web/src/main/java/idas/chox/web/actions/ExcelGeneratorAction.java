@@ -142,12 +142,13 @@ public class ExcelGeneratorAction extends BaseAction {
             throw new AccessDeniedException("Illegal attempt to generate Export file.");
         }
         synchronized (getSessionLock()) {
-            getSession().put("isExportFinished", false);
-            getSession().put("cancelExportOperation", false);
-            getSession().put("writingToFile", false);
-            getSession().put("numberOfClaimsProcessed", 0);
-            getSession().put("reportFileLocation", null);
-            getSession().put("exceptionThrown", false);
+            Map<String, Object> session = getSession();
+            session.put("isExportFinished", false);
+            session.put("cancelExportOperation", false);
+            session.put("writingToFile", false);
+            session.put("numberOfClaimsProcessed", 0);
+            session.put("reportFileLocation", null);
+            session.put("exceptionThrown", false);
         }
 
         String rtnStr = ERROR;
@@ -189,7 +190,9 @@ public class ExcelGeneratorAction extends BaseAction {
                     } catch (Exception ex) {
                         LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
                         setErrorMessage("Error encountered generating report.");
-                        getSession().put("exceptionThrown", true);
+                        synchronized (getSessionLock()) {
+                            getSession().put("exceptionThrown", true);
+                        }
                         return rtnStr;
                     }
                 } else if (claims.size() > 10000) {
@@ -354,7 +357,9 @@ public class ExcelGeneratorAction extends BaseAction {
                 } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report: {}", ex.getMessage());
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                    getSession().put("exceptionThrown", true);
+                    synchronized (getSessionLock()) {
+                        getSession().put("exceptionThrown", true);
+                    }
                 }
             }
         };
@@ -390,16 +395,19 @@ public class ExcelGeneratorAction extends BaseAction {
         } catch (Exception ex) {
             LOG.error("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            getSession().put("exceptionThrown", true);
+            synchronized (getSessionLock()) {
+                getSession().put("exceptionThrown", true);
+            }
         }
 
         synchronized (getSessionLock()) {
-            if (getSession().get("exceptionThrown") != null) {
-                getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("cancelExportOperation", false);
-                getSession().put("isExportFinished", true);
-                getSession().put("reportFileLocation", reportFile.getAbsolutePath());
-                getSession().put("writingToFile", false);
+            Map<String, Object> session = getSession();
+            if (session.get("exceptionThrown") != null) {
+                session.put("numberOfClaimsProcessed", null);
+                session.put("cancelExportOperation", false);
+                session.put("isExportFinished", true);
+                session.put("reportFileLocation", reportFile.getAbsolutePath());
+                session.put("writingToFile", false);
             }
             else {
                 throw new Exception("Error Generating Report.");
@@ -411,31 +419,32 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public String getExportedClaimsCount() {
         synchronized (getSessionLock()) {
-            if (getSession().containsKey("numberOfClaimsProcessed") && getSession().get("numberOfClaimsProcessed") != null) {
-                setExportedClaimCount((Integer) getSession().get("numberOfClaimsProcessed"));
-                setExportFinished((Boolean) getSession().get("isExportFinished"));
-                setWritingToFile((Boolean) getSession().get("writingToFile"));
-                setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                if (getSession().get("exceptionThrown") == null) {
+            Map<String, Object> session = getSession();
+            if (session.containsKey("numberOfClaimsProcessed") && session.get("numberOfClaimsProcessed") != null) {
+                setExportedClaimCount((Integer) session.get("numberOfClaimsProcessed"));
+                setExportFinished((Boolean) session.get("isExportFinished"));
+                setWritingToFile((Boolean) session.get("writingToFile"));
+                setExportCanceled((Boolean) session.get("cancelExportOperation"));
+                if (session.get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
                 } else {
-                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
                 }
             } else {
                 setExportedClaimCount(0);
-                setExportFinished((Boolean) getSession().get("isExportFinished"));
-                setWritingToFile((Boolean) getSession().get("writingToFile"));
-                setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                if (getSession().get("exceptionThrown") == null) {
+                setExportFinished((Boolean) session.get("isExportFinished"));
+                setWritingToFile((Boolean) session.get("writingToFile"));
+                setExportCanceled((Boolean) session.get("cancelExportOperation"));
+                if (session.get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
                 } else {
-                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
                 }
-                if (getSession().get("tooManyRows") == null) {
+                if (session.get("tooManyRows") == null) {
                     setTooManyRows(Boolean.FALSE);
                 }
                 else {
-                    setTooManyRows((Boolean) getSession().get("tooManyRows"));
+                    setTooManyRows((Boolean) session.get("tooManyRows"));
                 }
             }
         }
@@ -445,10 +454,11 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public String cancelExportOperation() {
         synchronized (getSessionLock()) {
+            Map<String, Object> session = getSession();
             LOG.debug("export operation cancellation called ...");
-            getSession().put("cancelExportOperation", true);
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                getSession().put("reportFileLocation", null);
+            session.put("cancelExportOperation", true);
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
+                session.put("reportFileLocation", null);
             }
             setExportCanceled(true);
         }
@@ -477,14 +487,17 @@ public class ExcelGeneratorAction extends BaseAction {
             } catch (Exception ex) {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                getSession().put("exceptionThrown", true);
+                synchronized (getSessionLock()) {
+                    getSession().put("exceptionThrown", true);
+                }
             }
         }
 
         synchronized (getSessionLock()) {
-            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
+            Map<String, Object> session = getSession();
+            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
                 try {
-                    File reportFile = new File((String) getSession().get("reportFileLocation"));
+                    File reportFile = new File((String) session.get("reportFileLocation"));
                     excelStream = new DeleteOnCloseFileInputStream(reportFile);
                     HttpServletResponse response = ServletActionContext.getResponse();
                     response.setContentLength((int)reportFile.length());
@@ -494,7 +507,7 @@ public class ExcelGeneratorAction extends BaseAction {
                     excelStream=null;
                     result = ERROR;
                 }
-                getSession().put("reportFileLocation", null);
+                session.put("reportFileLocation", null);
             } else {
                 excelStream=null;
                 result = ERROR;

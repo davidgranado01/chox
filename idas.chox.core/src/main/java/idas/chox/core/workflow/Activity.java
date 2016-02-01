@@ -25,4 +25,6 @@ public interface Activity {
      * 
      */
     public void setXmlActivityProcessing(boolean xmlActivityProcessing);
+    
+//    public void setClaim(Claim claim);
 }

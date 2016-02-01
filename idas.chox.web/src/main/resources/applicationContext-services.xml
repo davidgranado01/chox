@@ -265,6 +265,7 @@
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
                 <ref bean="ManualInvoiceContested" />
+                <ref bean="ClaimsRequiringAudit" />
             </list>
         </property>
     </bean>

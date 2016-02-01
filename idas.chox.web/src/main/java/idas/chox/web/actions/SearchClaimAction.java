@@ -327,8 +327,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 filter.getClaimSearchCriteria(claimSearchCriteria);
             }
 
-            getSession().put("searchCriteria", claimSearchCriteria);
-
+            synchronized (getSessionLock()) {
+                getSession().put("searchCriteria", claimSearchCriteria);
+            }
+           
             LOG.debug("Calling search claim service");
             if (claimSearchCriteria == null) {
                 LOG.debug("Claim search criteria is null.");
@@ -343,7 +345,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             LOG.debug("Returning SUCCESS from doSearchClaim() action");
             return SUCCESS;
         } else {
-            getSession().put("searchCriteria", null);
+            synchronized (getSessionLock()) {
+                getSession().put("searchCriteria", null);
+            }
             results = new ArrayList<>();
             return SUCCESS;
         }
