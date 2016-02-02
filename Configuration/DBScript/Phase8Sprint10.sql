@@ -254,6 +254,32 @@ UPDATE reason_of_rejection_template set type = 'Invoice Rejection' where type='I
 ----------------------
 
 --------------------------------------------------------------------------------
+-- 8.10.6 Acceptance Reason Functionality
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN acceptance_reason_enable boolean not null default false;
+UPDATE insurer set acceptance_reason_enable = true where name='LV=';
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice - Unable To Validate', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice - Liability In Dispute', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Quantum Dispute - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+
+----------------------
+-- End of 8.10.6
+----------------------
+
+--------------------------------------------------------------------------------
 -- 8.10.7 Claim Closure Note
 --------------------------------------------------------------------------------
 -- Add template closure reasons
@@ -334,33 +360,7 @@ INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active,
     SELECT id, 'Write Off - Claim Validation', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
 
 ----------------------
--- End of 8.10.5
-----------------------
-
---------------------------------------------------------------------------------
--- 8.10.6 Acceptance Reason Functionality
---------------------------------------------------------------------------------
-ALTER TABLE insurer ADD COLUMN acceptance_reason_enable boolean not null default false;
-UPDATE insurer set acceptance_reason_enable = true where name='LV=';
-INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
-                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
-INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
-                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice - Unable To Validate', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
-INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
-                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice - Liability In Dispute', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
-INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
-                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Quantum Dispute - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
-
-----------------------
--- End of 8.10.6
+-- End of 8.10.7
 ----------------------
 
 --------------------------------------------------------------------------------
