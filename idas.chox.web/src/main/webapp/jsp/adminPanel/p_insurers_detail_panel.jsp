@@ -1239,12 +1239,13 @@
                             </div>
                             
                             <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable CHO Discounts</label>
-                                    <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="doToggleInsurerDiscount()" />
-                                </div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable IP Whitelist</label>
-                                    <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="doPageLoadCheck()" />
+                                <label class="chox-form-std-label">Enable CHO Discounts</label>
+                                <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="doToggleInsurerDiscount()" />
+                            </div>
+                            
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable IP Whitelist</label>
+                                <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="doPageLoadCheck()" />
                             </div>
                             
                             <div class="chox-form-item">
@@ -1261,7 +1262,12 @@
                                 <label class="chox-form-std-label1">Restrict Export Functions For User Manager roles?</label>
                                 <s:checkbox name="restrictExport" value="restrictExport" />
                             </div>
-                         </fieldset>
+                            <br>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Require Acceptance Reason</label>
+                                <s:checkbox name="acceptanceReasonEnable" value="acceptanceReasonEnable" />
+                            </div>
+                        </fieldset>
                         
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>

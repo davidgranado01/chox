@@ -95,6 +95,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<ReasonOfRejection> reasonOfClaimRejectionsRestricted;
     private List<ReasonOfRejection> reasonOfInvoiceRejections;
     private List<ReasonOfRejection> closeClaimReasons;
+    private List<ReasonOfRejection> acceptanceReasons;
     private List<Insurer> mappedInsurers;
     private List extraActionList;
     private List insurers;
@@ -1777,6 +1778,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     // </editor-fold>
+    
+    public boolean isAcceptanceReasosnsEnabled() {
+        boolean result = false;
+        
+            if (claim.getInsurer().isAcceptanceReasonEnable()) {
+                // check we have at least one reason defined
+                List<ReasonOfRejection> l = getAcceptanceReasons();
+                if (!l.isEmpty()) {
+                    result = true;
+                }
+            }
+            
+        return result;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
     public boolean isRejectButtonEnabled() {
         boolean rejectEnabled = applicationAccessibility.checkActivityAccessibility(
@@ -2700,6 +2716,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return closeClaimReasons;
     }
 
+    public List<ReasonOfRejection> getAcceptanceReasons() {
+
+        if (acceptanceReasons == null) {
+            acceptanceReasons = lookupService.getAcceptanceReason(claim.getInsurer().getId(), claim.getClaimType());
+        }
+
+        return acceptanceReasons;
+    }
+
     /*
      * This method will exclude the current claim's insurer. This is used in
      * Switch claim to multiple insurer functionality.
@@ -2715,6 +2740,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getCloseClaimReasonsJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getCloseClaimReasons().size());
         for (ReasonOfRejection reason : closeClaimReasons) {
+            luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+    }
+
+    public String getAcceptanceReasonsJsonString() {
+        List<LookupItem> luItems = new ArrayList<>(getAcceptanceReasons().size());
+        for (ReasonOfRejection reason : acceptanceReasons) {
             luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
         }
         return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");

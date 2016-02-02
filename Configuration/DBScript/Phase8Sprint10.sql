@@ -2,13 +2,13 @@
 -- TO DO ITEM : 8.10.1 Audit Facility on Claims
 -----------------------------------------------------
 
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
     values ('filter.ClaimsRequiringAudit',TRUE,TRUE);
 INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.ClaimsRequiringAudit';
-INSERT into accessibility_item (role,access_right,accessibility_id) 
+INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_CH',1,id from accessibility where name ='filter.ClaimsRequiringAudit';
-INSERT into accessibility_item (role,access_right,accessibility_id) 
+INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MNG',1,id from accessibility where name ='filter.ClaimsRequiringAudit';
 
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
@@ -102,27 +102,27 @@ ALTER TABLE claim ADD CONSTRAINT audit_review_id_fkey FOREIGN KEY (audit_review_
 -- TO DO ITEM : 8.10.2 More Actions Audit Options
 -----------------------------------------------------
 
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
     VALUES ('extraAction.reviewClaimAudit.PaymentReceived',TRUE,TRUE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.PaymentReceived';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.PaymentReceived';
 
 
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
     VALUES ('extraAction.reviewClaimAudit.ManualInvoicePaid',TRUE,TRUE);
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.ManualInvoicePaid';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.reviewClaimAudit.ManualInvoicePaid';
 
 ----------------------
@@ -337,6 +337,31 @@ INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active,
 -- End of 8.10.5
 ----------------------
 
+--------------------------------------------------------------------------------
+-- 8.10.6 Acceptance Reason Functionality
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN acceptance_reason_enable boolean not null default false;
+UPDATE insurer set acceptance_reason_enable = true where name='LV=';
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice - Unable To Validate', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Without Prejudice - Liability In Dispute', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
+                insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
+                created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 26, 'Accepted - Quantum Dispute - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+
+----------------------
+-- End of 8.10.6
+----------------------
 
 --------------------------------------------------------------------------------
 -- 8.10.8 Potential PI Case/With Clients Solicitor Pot
