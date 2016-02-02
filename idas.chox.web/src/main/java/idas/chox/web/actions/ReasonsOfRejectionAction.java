@@ -49,8 +49,11 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     
     public String getInsurersReasonsOfRejection() {
         try {
-            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasonsOfRejection(
-                                                                this.insurerId, null, null, null, null);
+            if (activeType != null && activeType.isEmpty()) {
+                activeType = null;
+            }
+            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasons(
+                                                                this.insurerId, activeType, null, null, null);
             for (ReasonOfRejection ror : reasonsOfRejection) {
                 reasonOfRejectionViewData.add(new ReasonOfRejectionViewData(ror));
             }
@@ -64,7 +67,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateReasonOfRejection() {
         try {
-            ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+            ReasonOfRejection ror = reasonOfRejectionService.getReason(reasonOfRejectionId);
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
             ror.setLastModifiedBy(getAuthenticatedUser());
             ror.setDescription(model.getDescription());
@@ -112,7 +115,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     public String deleteReasonOfRejection() throws Exception {
         try {
             if (this.reasonOfRejectionId > 0) {
-                ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+                ReasonOfRejection ror = reasonOfRejectionService.getReason(reasonOfRejectionId);
                 ActionResponse response;
                 response = adminInsurerService.deleteReasonOfRejection(ror);
                 setActionResponse(response);
@@ -128,7 +131,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     public String updateReasonOfRejectionActive() throws Exception {
         try {
             if (this.reasonOfRejectionId > 0 && activeType != null) {
-                ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+                ReasonOfRejection ror = reasonOfRejectionService.getReason(reasonOfRejectionId);
                 if(activeType.equals("gtaActive")) {
                     ror.setGtaActive(!ror.isGtaActive());
                 }
@@ -165,7 +168,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     public String updateReasonOfRejectionRestricted() throws Exception {
         try {            
             if (this.reasonOfRejectionId > 0) {
-                ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+                ReasonOfRejection ror = reasonOfRejectionService.getReason(reasonOfRejectionId);
                 ror.setRestricted(!ror.isRestricted());
                 ActionResponse response;
                 response = adminInsurerService.updateReasonOfRejectionRestricted(ror);

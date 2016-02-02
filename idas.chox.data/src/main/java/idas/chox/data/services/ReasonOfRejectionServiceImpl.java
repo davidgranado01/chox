@@ -18,19 +18,22 @@ import idas.chox.core.util.DateHelper;
 
 public class ReasonOfRejectionServiceImpl  extends SecureDataService implements ReasonOfRejectionService {
 
-	ReasonOfRejectionTemplateService reasonOfRejectionTemplateService;
+    ReasonOfRejectionTemplateService reasonOfRejectionTemplateService;
     
     @Override
-    public ReasonOfRejection getReasonOfRejection(int id) {
+    public ReasonOfRejection getReason(int id) {
         return (ReasonOfRejection) get(ReasonOfRejection.class, id);
     }
 
     @Override
-    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, ClaimType activeType, Boolean status,  Boolean restricted) {
+    public List<ReasonOfRejection> getInsurerReasons(int insurerId, String reasonType, ClaimType activeType, Boolean status,  Boolean restricted) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class);
-        if(type != null) {
-            criteria.add(Restrictions.eq("type", type));
+        if(reasonType != null) {
+            criteria.add(Restrictions.eq("type", reasonType));
         }
+//        else {
+//            criteria.add(Restrictions.in("reasonType", new Object[]{"Invoice Rejection","Claim Rejection"}));
+//        }
         if(status != null && activeType != null) {
             criteria.add(Restrictions.eq(activeReasonOfRejectionClaimType(activeType), status));
         }
@@ -46,7 +49,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     public int getInvoiceLiabilityDisputeReasonId(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.add(Restrictions.eq("rorName", "Liability Dispute")).add(Restrictions.eq("type", "Invoice"));
+        criteria.add(Restrictions.eq("rorName", "Liability Dispute")).add(Restrictions.eq("type", "Invoice Rejection"));
         ReasonOfRejection reason = (ReasonOfRejection)getByCriteria(criteria);
         return reason.getId();
     }
@@ -74,19 +77,19 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
             reasonOfRejection.setInsurerUploadActive(ror.isInsurerUploadActive());
             reasonOfRejection.setInsurerVsInsurerActive(ror.isInsurerVsInsurerActive());
             reasonOfRejection.setVersion(0);
-            saveReasonOfRejection(reasonOfRejection);
+            saveReason(reasonOfRejection);
         }
     }
     
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
-    public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+    public void saveReason(ReasonOfRejection reasonOfRejection) {
         save(reasonOfRejection);
     }
     
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
-    public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+    public void deleteReason(ReasonOfRejection reasonOfRejection) {
         delete(reasonOfRejection);
     }
 
@@ -97,12 +100,8 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
 
     @Override
     public boolean isSubscriberClaimRejected(ReasonOfRejection reasonOfRejection) {
-        if (reasonOfRejection.getRorName().equals("Subscriber - Indemnity Issues")
-                || reasonOfRejection.getRorName().equals("Subscriber - Fraud Issues")) {
-            return true;
-        }
-        
-        return false;
+        return reasonOfRejection.getRorName().equals("Subscriber - Indemnity Issues")
+                || reasonOfRejection.getRorName().equals("Subscriber - Fraud Issues");
     }
 
     private String activeReasonOfRejectionClaimType(ClaimType ct){
