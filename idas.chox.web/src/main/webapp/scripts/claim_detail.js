@@ -1,6 +1,7 @@
 var switchClaimWindow;
 var closeClaimWindow;
 var mappedInsurersStore;
+var closeClaimReasonsStore;
 var switchClaimToMulInsForm;
 var closeClaimForm;
 var daysArray = [];
@@ -68,7 +69,6 @@ Ext.onReady(function(){
             text:'Apply',
             handler:function(){
                 if(slaExtensionForm.getForm().isValid()){
-//                    Ext.getCmp('extNonceId').setValue(nonce);
                     slaExtensionForm.getEl().mask();
                     slaExtensionForm.getForm().submit({
                         method:'POST',
@@ -80,7 +80,6 @@ Ext.onReady(function(){
                                 slaExtensionWindow.hide();
                                 Ext.get('claimDetailScreenDiv').mask("Refreshing claim details...");
                                 loadClaimDetail();
-//                                window.location = contextPath+'/prv/openClaimDetail.action?nonce='+nonce ; 
                             }
                         },
                         failure : function(f, a) {
@@ -98,7 +97,6 @@ Ext.onReady(function(){
                                 fn : function(){
                                     slaExtensionWindow.hide();
                                     loadClaimDetail();
-//                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;  
                                 }
                             }); 
                         }
@@ -161,7 +159,6 @@ Ext.onReady(function(){
                     switchClaimToMulInsForm.getForm().submit({
                         method:'POST',
                         url : contextPath + "/prv/p/switchClaim.action",
-//                        url : contextPath + "/prv/processClaim.action",
                         
                         success : function(f, a) {
                             
@@ -174,7 +171,6 @@ Ext.onReady(function(){
                                     fn : function(){
                                         switchClaimWindow.hide();
                                         loadClaimDetail();
-//                                        window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce; 
                                     }
                                 });
                             }
@@ -194,7 +190,6 @@ Ext.onReady(function(){
                                 fn : function(){
                                     switchClaimWindow.hide();
                                     loadClaimDetail();
-//                                    window.location = contextPath+"/prv/openClaimDetail.action?nonce="+nonce;
                                 }
                             }); 
                         }
@@ -229,29 +224,27 @@ Ext.onReady(function(){
         closable : false,
         resizable : false,
         items : [
-        slaExtensionForm
+            slaExtensionForm
         ]
     });
 
-    var closeClaimReasonData = [
-            ['Accepted Interim Payment As Full & Final'],
-            ['No Longer Pursuing Claim'],
-            ['Incorrect At-Fault Insurer'],
-            ['Litigating'],
-            ['Other'],
-            ['Out Of Scope'],
-            ['Payment Received In Full'],
-            ['Pursued Outside Of CHOX'],
-            ['Write Off - Liability'],
-            ['Write Off - Indemnity'],
-            ['Write Off - Claim Validation']
-    ];
-
-
+    var closeClaimReasonsJsonReader = new Ext.data.JsonReader({
+        totalProperty: 'totalCount',
+        root: 'results',
+        fields: [
+            {name:'text'},
+            {name:'value'}
+        ]
+    });
+    
+    closeClaimReasonsStore = new Ext.data.Store({
+        reader : closeClaimReasonsJsonReader
+    });
+    
     closeClaimForm = new Ext.FormPanel({
         id: 'closeClaimForm-form',
-        height : 100,
-        width : 400,
+        height : 150,
+        width : 420,
         frame:true,
         buttonAlign : 'center',
         items : [
@@ -267,20 +260,30 @@ Ext.onReady(function(){
             mode : 'local',
             emptyText : 'Please Select a Reason',
             blankText : 'Please Select a Reason',
-            store : new Ext.data.SimpleStore({
-                            id:0,
-                            fields:
-                                [
-                                    'reasonText'
-                                ],
-                            data:closeClaimReasonData
-            }),
+            store : closeClaimReasonsStore,
             hiddenName : 'closeReason',
-            displayField : 'reasonText',
-            valueField : 'reasonText',
+            displayField : 'text',
+            valueField : 'text',
             allowBlank : false,
             triggerAction : 'all',
+            listeners: {select: function(combo, record, index) {
+                    Ext.getCmp('closureNoteTextId').setValue(closeClaimReasonsStore.getAt(index).get('value'));
+                }},
             editable : false
+        },{
+            xtype: 'textarea',
+            fieldLabel: 'Supporting Note',
+            labelStyle : 'text-align:right;',
+            msgTarget : 'qtip',
+            name: 'closureNote',
+            id: 'closureNoteTextId',
+            allowBlank: true,
+            minLength: 5,
+            maxLength: 256,
+            maxLengthText: 'maximum of 256 characters',
+            minLengthText: 'minimum of 5 characters',
+            width: 250,
+            height : 50,
         },{
             xtype : 'hidden',
             id : 'nameId',
@@ -297,9 +300,9 @@ Ext.onReady(function(){
                     var form = $('<form action="' + url + '" method="post">' +
                         '<input type="hidden" name="name" value="closeClaim"/>' +
                         '<input type="hidden" name="closeReason" value="'+ Ext.getCmp('closeReasonComboId').getValue() +'"/>' +
+                        '<input type="hidden" name="closeNote" value="'+ Ext.getCmp('closureNoteTextId').getValue() +'"/>' +
                         '</form>');
                     $('body').append(form);
-//                    $(form).submit();
                     choxJqueryHttpSubmit($(form));
                 }
             }
@@ -314,8 +317,10 @@ Ext.onReady(function(){
 
     closeClaimWindow = new Ext.Window({
         layout : 'fit',
-        width : 400,
-        height : 100,
+        width : 420,
+        height : 150,
+        plain: false,
+        title: 'Close Claim',
         modal : true,
         closable : false,
         resizable : false,
