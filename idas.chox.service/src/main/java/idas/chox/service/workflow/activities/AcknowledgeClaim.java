@@ -21,6 +21,7 @@ public class AcknowledgeClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(AcknowledgeClaim.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
+    private String acceptanceReason;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isInvoiceReviewRequired;
@@ -65,6 +66,14 @@ public class AcknowledgeClaim extends BaseActivity {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
     // </editor-fold>
+
+    public String getAcceptanceReason() {
+        return acceptanceReason;
+    }
+
+    public void setAcceptanceReason(String acceptanceReason) {
+        this.acceptanceReason = acceptanceReason;
+    }
 
 
     public String getClaimNumber() {
@@ -146,6 +155,9 @@ public class AcknowledgeClaim extends BaseActivity {
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.newComment(0, supportingLiabilityNotes));
+        }
+        if (StringHelper.isNotEmpty(acceptanceReason)) {
+            claim.addComment(Comment.newComment(0, "Claim Acceptance Reason: " + acceptanceReason));
         }
  
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);

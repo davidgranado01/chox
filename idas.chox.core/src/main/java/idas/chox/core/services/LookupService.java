@@ -30,6 +30,8 @@ public interface LookupService {
     List<ReasonOfRejection> getClaimRejectionReason(int insurerId, ClaimType claimType);
     
     List<ReasonOfRejection> getClaimClosureReason(int insurerId, ClaimType claimType);
+    
+    List<ReasonOfRejection> getAcceptanceReason(int insurerId, ClaimType claimType);
 
     List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
     
