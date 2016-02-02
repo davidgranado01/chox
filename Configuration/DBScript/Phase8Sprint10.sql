@@ -244,9 +244,11 @@ ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) not null d
 -- 8.10.5 Updated Rejection Reasons Panel
 --------------------------------------------------------------------------------
 ALTER TABLE reason_of_rejection ALTER COLUMN type TYPE varchar(17);
+ALTER TABLE reason_of_rejection ALTER COLUMN name TYPE character varying;
 UPDATE reason_of_rejection set type = 'Claim Rejection' where type='Claim';
 UPDATE reason_of_rejection set type = 'Invoice Rejection' where type='Invoice';
 ALTER TABLE reason_of_rejection_template ALTER COLUMN type TYPE varchar(17);
+ALTER TABLE reason_of_rejection_template ALTER COLUMN name TYPE character varying;
 UPDATE reason_of_rejection_template set type = 'Claim Rejection' where type='Claim';
 UPDATE reason_of_rejection_template set type = 'Invoice Rejection' where type='Invoice';
 ----------------------
@@ -282,6 +284,8 @@ INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active,
 --------------------------------------------------------------------------------
 -- 8.10.7 Claim Closure Note
 --------------------------------------------------------------------------------
+-- advance sequence number (for some reason, its out of sync)
+select nextval('reason_of_rejection_template_id_seq'::regclass);
 -- Add template closure reasons
 INSERT INTO reason_of_rejection_template(name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active, insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted)
     SELECT 'Accepted Interim Payment As Full & Final', 'Closure', '', true, true, true, true, true, true, true, false;
