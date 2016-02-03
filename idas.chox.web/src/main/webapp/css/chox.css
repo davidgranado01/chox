@@ -1363,6 +1363,14 @@ div.admin-bre-band-detail-holder{
     border:0px solid #B5B8C8;
 }
 
+.admin-panel-sub-heading {
+    padding-left:20px;
+}
+
+.admin-panel-sub-inner-heading {
+    padding-left:40px;
+}
+
 div.admin-bre-band-detail-section{
     border:1px solid #B5B8C8;
     display:block;
