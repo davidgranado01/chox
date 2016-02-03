@@ -854,9 +854,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getClaimAuditValue() > 0) {
             if (searchCriteria.getClaimAuditValue() == 1) {
                 criteria.add(Restrictions.conjunction()
+                        .add(Restrictions.isNotNull("claimAuditReview"))
                         .add(Restrictions.eq("ar.claimAuditReviewCompleted", Boolean.FALSE)));
             } else if (searchCriteria.getClaimAuditValue() == 2) {
                 criteria.add(Restrictions.conjunction()
+                        .add(Restrictions.isNotNull("claimAuditReview"))
                         .add(Restrictions.eq("ar.claimAuditReviewCompleted", Boolean.TRUE)));
             }
         }

@@ -90,6 +90,7 @@ public class Insurer extends Entity implements Serializable {
     private Branding branding;
     private boolean paymentDisputesEnable;
     private boolean completeRoutingEnable;
+    private boolean claimAuditReviewEnable;
 
     public Branding getBranding() {
         return branding == null ? Branding.NO_BRANDING : branding;
@@ -770,6 +771,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setCompleteRoutingEnable(boolean completeRoutingEnable) {
         this.completeRoutingEnable = completeRoutingEnable;
+    }
+
+    public boolean isClaimAuditReviewEnable() {
+        return claimAuditReviewEnable;
+    }
+
+    public void setClaimAuditReviewEnable(boolean claimAuditReviewEnable) {
+        this.claimAuditReviewEnable = claimAuditReviewEnable;
     }
 
 }

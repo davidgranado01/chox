@@ -93,6 +93,7 @@ GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_audit_review_id_seq TO chox_user;
 ALTER TABLE claim ADD COLUMN audit_review_id integer;
 ALTER TABLE claim ADD CONSTRAINT audit_review_id_fkey FOREIGN KEY (audit_review_id) REFERENCES claim_audit_review (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+CREATE INDEX fki_audit_review_id_fkey ON claim USING btree (audit_review_id);
 
 ----------------------
 -- End of 8.10.1
@@ -235,6 +236,8 @@ GRANT EXECUTE ON FUNCTION audit_facility(IN insurerid integer, IN chorgId intege
 
 ALTER TABLE bre_band ADD COLUMN enable_claim_audit boolean not null DEFAULT  false;
 ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) not null default 0;
+
+ALTER TABLE insurer ADD COLUMN claim_audit_review_enable boolean not null DEFAULT  false;
 
 ----------------------
 -- End of 8.10.4

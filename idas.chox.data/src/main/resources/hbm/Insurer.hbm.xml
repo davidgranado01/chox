@@ -59,6 +59,7 @@
     <property column="is_insurer_discount_enable" name="insurerDiscountEnable"/>
     <property column="is_invoice_upload_enabled" name="invoiceUploadEnabled"  not-null="true"/>
     <property column="is_claim_upload_enabled" name="claimUploadEnabled" not-null="true"/>
+    <property column="claim_audit_review_enable" name="claimAuditReviewEnable" not-null="true"/>
     <property column="allow_subscriber_claims" name="allowSubscriberClaims" not-null="true"/>
     <property column="allow_fixedfee_claims" name="allowFixedFeeClaims" not-null="true"/>
     <property column="allow_collaboration_claims" name="allowCollaborationProtocolClaims" not-null="true"/>
