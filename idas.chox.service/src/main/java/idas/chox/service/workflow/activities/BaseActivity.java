@@ -317,7 +317,8 @@ public abstract class BaseActivity implements Activity {
     }
 
     public void selectRandomlyForAuditReview(Claim claim) {
-        if (claim.getBreBand().isEnableClaimAudit() && claim.getBreBand().getAuditProcessPercentage().compareTo(BigDecimal.ZERO) == 1) {
+        if (claim.getInsurer().isClaimAuditReviewEnable() && claim.getBreBand().isEnableClaimAudit() 
+                && claim.getBreBand().getAuditProcessPercentage().compareTo(BigDecimal.ZERO) == 1) {
             if (claim.getBreBand().getAuditProcessPercentage().compareTo(new BigDecimal(Math.random() * 100)) >= 0) {
                 LOG.debug("Claim '{}' selected for audit review. Configured auditReview percentage is: {}",
                         claim.getChoReference(), claim.getBreBand().getAuditProcessPercentage());
