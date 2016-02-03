@@ -6,6 +6,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
+import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 
 public interface LookupService {
@@ -26,11 +27,15 @@ public interface LookupService {
 
     String getVehicleClassName(int id);
     
-    List getClaimRejectionReason(int insurerId, ClaimType claimType);
-
-    List getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
+    List<ReasonOfRejection> getClaimRejectionReason(int insurerId, ClaimType claimType);
     
-    List getInvoiceRejectionReason(int insurerId, ClaimType claimType);
+    List<ReasonOfRejection> getClaimClosureReason(int insurerId, ClaimType claimType);
+    
+    List<ReasonOfRejection> getAcceptanceReason(int insurerId, ClaimType claimType);
+
+    List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
+    
+    List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId, ClaimType claimType);
 
     List getNonProvisionReason();
 

@@ -14,7 +14,45 @@ Ext.onReady(function() {
         renderTo         : 'rejectionDescJspfId',
         disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
     });
+
+<s:if test="acceptanceReasosnsEnabled">
+
+    var acceptanceReasonsJsonReader = new Ext.data.JsonReader({
+        totalProperty: 'totalCount',
+        root: 'results',
+        fields: [
+            {name:'text'},
+            {name:'value'}
+        ]
+    });
     
+    var acceptanceReasonsStore = new Ext.data.Store({
+        reader : acceptanceReasonsJsonReader
+    });
+
+    var   acceptanceReasonsCombo = new Ext.form.ComboBox({
+            store: acceptanceReasonsStore,
+            width: 300,
+            renderTo: 'acceptanceReasonsDiv',
+            valueField: 'text',
+            id: 'acceptanceReasonsComboId',
+            hiddenName: 'acceptanceReason',
+            displayField:'text',
+            typeAhead: false,
+            mode: 'local',
+            listWidth: 300,
+            forceSelection: false,
+            triggerAction: 'all',
+            emptyText : 'Please Select a Reason',
+            blankText : 'Please Select a Reason'
+        });
+        
+        var acceptanceReasonsJsonString = '<s:property value="acceptanceReasonsJsonString" escape="false"/>';
+        if (acceptanceReasonsJsonString !== '') {
+            acceptanceReasonsStore.loadData(Ext.util.JSON.decode(acceptanceReasonsJsonString));
+        }
+
+</s:if>
 });
 var reasonOfRejectionDescReader = new Ext.data.JsonReader({
     fields:[{name:'id'},{name:'description'}]
@@ -164,6 +202,17 @@ function refreshDesc(id){
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
+                            <s:if test="acceptanceReasosnsEnabled">
+                                <tr>
+                                    <td>
+                                        <label>Acceptance Reason</label>
+                                    </td>
+                                    <td colspan="2">
+                                        <div id="acceptanceReasonsDiv"></div>
+                                    </td>
+                                    <td</td>
+                                </tr>
+                            </s:if>
                             <tr valign="top">
                                 <td>
                                     <label>Claim Review Notes (Public)</label>

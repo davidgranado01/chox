@@ -8,6 +8,7 @@ import idas.chox.core.services.TaskService;
 public class CloseClaim extends BaseActivity {
     private TaskService taskService;
     private String closeReason;
+    private String closeNote;
     
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
@@ -19,6 +20,14 @@ public class CloseClaim extends BaseActivity {
 
     public String getCloseReason() {
         return closeReason;
+    }
+
+    public String getCloseNote() {
+        return closeNote;
+    }
+
+    public void setCloseNote(String closeNote) {
+        this.closeNote = closeNote;
     }
 
 
@@ -43,6 +52,9 @@ public class CloseClaim extends BaseActivity {
         taskService.autoCompleteTasksForClaim(claim.getId());
         if (closeReason != null && !closeReason.isEmpty()) {
             claim.addComment(Comment.newComment(0, String.format("Claim Closed: %s", closeReason)));
+        }
+        if (closeNote != null && !closeNote.isEmpty()) {
+            claim.addComment(Comment.newComment(0, String.format("Claim Closed Note: %s", closeNote)));
         }
     }
 }

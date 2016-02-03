@@ -91,6 +91,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean paymentDisputesEnable;
     private boolean completeRoutingEnable;
     private boolean claimAuditReviewEnable;
+    private boolean acceptanceReasonEnable;
 
     public Branding getBranding() {
         return branding == null ? Branding.NO_BRANDING : branding;
@@ -779,6 +780,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setClaimAuditReviewEnable(boolean claimAuditReviewEnable) {
         this.claimAuditReviewEnable = claimAuditReviewEnable;
+    }
+
+    public boolean isAcceptanceReasonEnable() {
+        return acceptanceReasonEnable;
+    }
+
+    public void setAcceptanceReasonEnable(boolean acceptanceReasonEnable) {
+        this.acceptanceReasonEnable = acceptanceReasonEnable;
     }
 
 }

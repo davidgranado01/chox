@@ -522,7 +522,7 @@ public class AdminInsurerService extends SecureDataService {
 
     public ActionResponse addOrUpdateReasonOfRejection(ReasonOfRejection ror) {
         this.actionResponse = new ActionResponse();
-        reasonOfRejectionService.saveReasonOfRejection(ror);
+        reasonOfRejectionService.saveReason(ror);
         return this.actionResponse;
     }
     
@@ -533,7 +533,7 @@ public class AdminInsurerService extends SecureDataService {
         } else if(ror.getType().equalsIgnoreCase(ReasonOfRejection.TYPE_INVOICE) && invoiceService.getNoOfRejectedInvoices(ror.getId()) != 0){
             this.actionResponse.AddError("Rejection reason '" + ror.getRorName() + "' is assigned to an invoice and it cannot be deleted");
         } else {
-            reasonOfRejectionService.deleteReasonOfRejection(ror);
+            reasonOfRejectionService.deleteReason(ror);
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getRorName() + "' has been removed");
         }
         return this.actionResponse;
@@ -544,7 +544,7 @@ public class AdminInsurerService extends SecureDataService {
         if(ror.getType().equalsIgnoreCase(ReasonOfRejection.TYPE_INVOICE)) {
             this.actionResponse.AddError("'Visible before assigned' is not applicable to Invoice type Rejection Reasons.");
         } else {
-            reasonOfRejectionService.saveReasonOfRejection(ror);
+            reasonOfRejectionService.saveReason(ror);
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getRorName() + "' has been updated");
         }
         return this.actionResponse;
@@ -552,7 +552,7 @@ public class AdminInsurerService extends SecureDataService {
     
     public ActionResponse updateReasonOfRejectionActive(ReasonOfRejection ror) {
         this.actionResponse = new ActionResponse();
-        reasonOfRejectionService.saveReasonOfRejection(ror);
+        reasonOfRejectionService.saveReason(ror);
         this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getRorName() + "' has been updated");
         return this.actionResponse;
     }
