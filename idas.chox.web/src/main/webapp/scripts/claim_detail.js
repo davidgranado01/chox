@@ -243,7 +243,7 @@ Ext.onReady(function(){
     
     closeClaimForm = new Ext.FormPanel({
         id: 'closeClaimForm-form',
-        height : 150,
+        height : 180,
         width : 420,
         frame:true,
         buttonAlign : 'center',
@@ -318,7 +318,7 @@ Ext.onReady(function(){
     closeClaimWindow = new Ext.Window({
         layout : 'fit',
         width : 420,
-        height : 150,
+        height : 180,
         plain: false,
         title: 'Close Claim',
         modal : true,
