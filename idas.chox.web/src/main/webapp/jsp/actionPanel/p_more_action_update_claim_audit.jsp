@@ -120,21 +120,21 @@
                         recoveryClaimedId: {required: true}
                     },
                     messages: {
-                        claimTypeId: {required: "You must select a 'Claim Type'"},
-                        whoManagedRepair: {required: "You must select a 'Who managed repair?'"},
-                        totalLossId: {required: "You must select a 'Total Loss?'"},
-                        customerVehicleClassId: {required: "You must select a 'Customers Vehicle Class'"},
-                        hireVehicleClassId: {required: "You must select a 'Hire Vehicle Class'"},
+                        claimTypeId: {required: "You must make a selection for 'Claim Type'"},
+                        whoManagedRepair: {required: "You must make a selection for 'Who managed repair?'"},
+                        totalLossId: {required: "You must make a selection for 'Total Loss?'"},
+                        customerVehicleClassId: {required: "You must make a selection for 'Customers Vehicle Class'"},
+                        hireVehicleClassId: {required: "You must make a selection for 'Hire Vehicle Class'"},
                         hireDuration: {required: "You must supply a value for 'Hire Duration'"},
-                        hireDurationAcceptableId: {required: "You must select a 'Hire Duration Acceptable'"},
+                        hireDurationAcceptableId: {required: "You must make a selection for 'Hire Duration Acceptable?'"},
                         totalHireCost: {required: "You must supply a value for 'Total Hire Costs'"},
-                        hireLeakageId: {required: "You must select a 'Hire Leakage?'"},
+                        hireLeakageId: {required: "You must make a selection for 'Hire Leakage?'"},
                         totalRepairCost: {required: "You must supply a value for 'Total Repair Cost'"},
-//                        repairCostExceedsEngRecId: {required: "You must select a 'Repair Cost Exceeds Engineers Recommendations?'"},
+//                        repairCostExceedsEngRecId: {required: "You must make a selection for 'Repair Cost Exceeds Engineers Recommendations?'"},
                         penaltyChargesPaid: {required: "You must supply a value for 'Penalty Charges paid'"},
-//                        withinABPGuidelinesId: {required: "You must select a 'Repair labour rate within ABP guidelines?'"},
-                        storageClaimedId: {required: "You must select a 'Storage Claimed?'"},
-                        recoveryClaimedId: {required: "You must select a 'Recovery Claimed'"}
+//                        withinABPGuidelinesId: {required: "You must make a selection for 'Repair labour rate within ABP guidelines?'"},
+                        storageClaimedId: {required: "You must make a selection for 'Storage Claimed?'"},
+                        recoveryClaimedId: {required: "You must make a selection for 'Recovery Claimed?'"}
                     }
                 }
         );
@@ -142,7 +142,7 @@
         var addHireDurationNotAcceptableReasonValidation = function () {
             $("form#formClaimAuditReview [name='hireDurationNotAcceptableReason']").rules("add", {
                 required: true,
-                messages: {required: "You must select a 'Reason for Hire Duration Not Acceptable'"}
+                messages: {required: "You must make a selection for 'Reason for Hire Duration Not Acceptable'"}
             });
         };
         var removeHireDurationNotAcceptableReasonValidation = function () {
@@ -180,7 +180,7 @@
         var addPenaltyChargeAvoidableValidation = function () {
 //            $("form#formClaimAuditReview [name='penaltyChargeAvoidableId']").rules("add", {
 //                required: true,
-//                messages: {required: "You must select a 'Were penalty charges avoidable?'"}
+//                messages: {required: "You must make a selection for 'Were penalty charges avoidable?'"}
 //            });
         };
         var removePenaltyChargeAvoidableValidation = function () {
@@ -214,7 +214,7 @@
         var addStorageClaimedCorrectlyValidation = function () {
             $("form#formClaimAuditReview [name='storageClaimedCorrectlyId']").rules("add", {
                 required: true,
-                messages: {required: "You must select a 'If Yes, correctly so?' for Storage Claimed"}
+                messages: {required: "You must make a selection for 'If Yes, correctly so?' for Storage Claimed"}
             });
         };
         var removeStorageClaimedCorrectlyValidation = function () {
@@ -224,7 +224,7 @@
         var addRecoveryClaimedCorrectlyValidation = function () {
             $("form#formClaimAuditReview [name='recoveryClaimedCorrectlyId']").rules("add", {
                 required: true,
-                messages: {required: "You must select a 'If Yes, correctly so?' for Recovery Claimed"}
+                messages: {required: "You must make a selection for 'If Yes, correctly so?' for Recovery Claimed"}
             });
         };
         var removeRecoveryClaimedCorrectlyValidation = function () {
@@ -1047,7 +1047,7 @@
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right"><label>Total Loss : </label></td>
+                        <td align="right"><label>Total Loss? : </label></td>
                         <td ><div id="totalLossDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
@@ -1067,7 +1067,7 @@
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Hire Duration Acceptable : </label></td>
+                        <td align="right" ><label>Hire Duration Acceptable? : </label></td>
                         <td ><div id="hireDurationAcceptableDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
