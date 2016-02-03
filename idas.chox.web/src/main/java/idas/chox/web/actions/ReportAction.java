@@ -195,7 +195,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 if (getSession().get("isExportFinished") != null) {
                     setExportFinished((Boolean) getSession().get("isExportFinished"));
                 } else {
-                    setExportFinished(Boolean.FALSE);
+                    setExportFinished(Boolean.TRUE);
                 }
                 if (getSession().get("cancelExportOperation") != null) {
                     setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
