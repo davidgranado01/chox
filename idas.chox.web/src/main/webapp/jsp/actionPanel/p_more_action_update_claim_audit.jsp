@@ -120,21 +120,21 @@
                         recoveryClaimedId: {required: true}
                     },
                     messages: {
-                        claimTypeId: {required: "You must select 'Claim Type'"},
-                        whoManagedRepair: {required: "You must select 'Who managed repair?'"},
-                        totalLossId: {required: "You must select 'Total Loss?'"},
-                        customerVehicleClassId: {required: "You must select 'Customers Vehicle Class'"},
-                        hireVehicleClassId: {required: "You must select 'Hire Vehicle Class'"},
-                        hireDuration: {required: "You must supply 'Hire Duration'"},
-                        hireDurationAcceptableId: {required: "You must select 'Hire Duration Acceptable'"},
-                        totalHireCost: {required: "You must supply 'Total Hire Costs'"},
-                        hireLeakageId: {required: "You must select 'Hire Leakage?'"},
-                        totalRepairCost: {required: "You must supply 'Total Repair Cost'"},
-//                        repairCostExceedsEngRecId: {required: "You must select 'Repair Cost Exceeds Engineers Recommendations?'"},
-                        penaltyChargesPaid: {required: "You must supply 'Penalty Charges paid'"},
-//                        withinABPGuidelinesId: {required: "You must select 'Repair labour rate within ABP guidelines?'"},
-                        storageClaimedId: {required: "You must select 'Storage Claimed?'"},
-                        recoveryClaimedId: {required: "You must select 'Recovery Claimed'"}
+                        claimTypeId: {required: "You must select a 'Claim Type'"},
+                        whoManagedRepair: {required: "You must select a 'Who managed repair?'"},
+                        totalLossId: {required: "You must select a 'Total Loss?'"},
+                        customerVehicleClassId: {required: "You must select a 'Customers Vehicle Class'"},
+                        hireVehicleClassId: {required: "You must select a 'Hire Vehicle Class'"},
+                        hireDuration: {required: "You must supply a value for 'Hire Duration'"},
+                        hireDurationAcceptableId: {required: "You must select a 'Hire Duration Acceptable'"},
+                        totalHireCost: {required: "You must supply a value for 'Total Hire Costs'"},
+                        hireLeakageId: {required: "You must select a 'Hire Leakage?'"},
+                        totalRepairCost: {required: "You must supply a value for 'Total Repair Cost'"},
+//                        repairCostExceedsEngRecId: {required: "You must select a 'Repair Cost Exceeds Engineers Recommendations?'"},
+                        penaltyChargesPaid: {required: "You must supply a value for 'Penalty Charges paid'"},
+//                        withinABPGuidelinesId: {required: "You must select a 'Repair labour rate within ABP guidelines?'"},
+                        storageClaimedId: {required: "You must select a 'Storage Claimed?'"},
+                        recoveryClaimedId: {required: "You must select a 'Recovery Claimed'"}
                     }
                 }
         );
@@ -142,7 +142,7 @@
         var addHireDurationNotAcceptableReasonValidation = function () {
             $("form#formClaimAuditReview [name='hireDurationNotAcceptableReason']").rules("add", {
                 required: true,
-                messages: {required: "You must select 'Reason for Hire Duration Not Acceptable'"}
+                messages: {required: "You must select a 'Reason for Hire Duration Not Acceptable'"}
             });
         };
         var removeHireDurationNotAcceptableReasonValidation = function () {
@@ -154,7 +154,7 @@
                 required: true,
                 min: 0.01,
                 messages: {
-                    required: "You must supply 'If Yes, by how much?' for Hire Leakage",
+                    required: "You must supply a value for 'If Yes, by how much?' for Hire Leakage",
                     min:"'If Yes, by how much?' for Hire Leakage Must Be Larger Than 0"
                 }
             });
@@ -168,7 +168,7 @@
                 required: true,
                 min: 0.01,
                 messages: {
-                    required: "You must supply 'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations",
+                    required: "You must supply a value for 'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations",
                     min:"'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must Be Larger Than 0"
                 }
             });
@@ -180,7 +180,7 @@
         var addPenaltyChargeAvoidableValidation = function () {
 //            $("form#formClaimAuditReview [name='penaltyChargeAvoidableId']").rules("add", {
 //                required: true,
-//                messages: {required: "You must select 'Were penalty charges avoidable?'"}
+//                messages: {required: "You must select a 'Were penalty charges avoidable?'"}
 //            });
         };
         var removePenaltyChargeAvoidableValidation = function () {
@@ -190,7 +190,7 @@
         var addPenaltyChargeAvoidableNoteValidation = function () {
             $("form#formClaimAuditReview #penaltyChrgAvoidableReasonId").rules("add", {
                 required: true,
-                messages: {required: "You must supply 'How were the penalty charges avoidable?'"}
+                messages: {required: "You must supply a value for 'How were the penalty charges avoidable?'"}
             });
         };
         var removePenaltyChargeAvoidableNoteValidation = function () {
@@ -202,7 +202,7 @@
                 required: true,
                 min: 0.01,
                 messages: {
-                    required: "You must supply 'If No how much was charged (hourly rate)' for Repair labour rate",
+                    required: "You must supply a value for 'If No how much was charged (hourly rate)' for Repair labour rate",
                     min:"'If No how much was charged (hourly rate)' for Repair labour rate Must Be Larger Than 0"
                 }
             });
@@ -214,7 +214,7 @@
         var addStorageClaimedCorrectlyValidation = function () {
             $("form#formClaimAuditReview [name='storageClaimedCorrectlyId']").rules("add", {
                 required: true,
-                messages: {required: "You must select 'If Yes, correctly so?' for Storage Claimed"}
+                messages: {required: "You must select a 'If Yes, correctly so?' for Storage Claimed"}
             });
         };
         var removeStorageClaimedCorrectlyValidation = function () {
@@ -224,7 +224,7 @@
         var addRecoveryClaimedCorrectlyValidation = function () {
             $("form#formClaimAuditReview [name='recoveryClaimedCorrectlyId']").rules("add", {
                 required: true,
-                messages: {required: "You must select 'If Yes, correctly so?' for Recovery Claimed"}
+                messages: {required: "You must select a 'If Yes, correctly so?' for Recovery Claimed"}
             });
         };
         var removeRecoveryClaimedCorrectlyValidation = function () {

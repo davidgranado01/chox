@@ -1432,7 +1432,8 @@
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable use of offshore 'Payments Team'</div>
                         </div>
                     </div>
-</s:if>   
+</s:if>
+<s:if test="insurer.claimAuditReviewEnable">
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Claim Audit</div>
                         <div class="chox-form-checkboxitem">
@@ -1446,6 +1447,8 @@
                             <div class="chox-form-std-label-longer" style="padding-left: 12px;">Please enter the percentage chance of an individual claim entering the Audit Process.</div>
                         </div>
                     </div>
+</s:if>
+
 <s:if test="subscriberClaimsEnabled">                         
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Subscriber Workflow Parameters</div>

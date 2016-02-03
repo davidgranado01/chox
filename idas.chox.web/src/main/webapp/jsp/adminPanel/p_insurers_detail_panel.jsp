@@ -878,16 +878,12 @@
                                         <s:checkbox name="paymentDisputesEnable" value="paymentDisputesEnable" onclick="doPageLoadCheck(this);" />
                                     </div>
                                 </td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Claim Audit</label>
                                         <s:checkbox name="claimAuditReviewEnable" value="claimAuditReviewEnable"/>
                                     </div>
                                 </td>
-                                <td></td>
                             </tr>
                             <tr>
                                 <td>
