@@ -138,7 +138,7 @@
                 maxAllowedLabourPrestigeRate:{required:true, number:true, min:0},
                 maxAllowedEngineerNetFee:{required:true, number:true, min:0},
                 maxAllowedTotalLossNetFee:{required:true, number:true, min:0},
-                auditProcessPercentage:{required:true, number:true, min:0, max:100}
+                auditProcessPercentage:{required:true, number:true, min:0.01, max:100}
             },
             messages: {
 <s:if test="isSubscriberEnabled">                         
@@ -172,7 +172,7 @@
                 maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"},
                 maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"},
                 maxAllowedTotalLossNetFee: {required:"You must supply a value for 'Maximum Total Loss Fee Net Ceiling'", number:"'Maximum Total Loss Fee Net Ceiling' must be numeric", min:"'Maximum Total Loss Fee Net Ceiling' cannot be less than zero"},
-                auditProcessPercentage: {required:"You must supply a value for 'Audit Process Percentage %'", number:"'Audit Process Percentage %' must be numeric", min:"'Audit Process Percentage %' cannot be less than zero", max: "'Audit Process Percentage %' cannot be more than 100"}
+                auditProcessPercentage: {required:"You must supply a value for 'Audit Process Percentage %'", number:"'Audit Process Percentage %' must be numeric", min:"'Audit Process Percentage %' must be larger than zero", max: "'Audit Process Percentage %' cannot be more than 100"}
             }
         });
 
