@@ -13,7 +13,7 @@ Ext.onReady(function() {
         name             : 'description',
         id               : 'rorDescTextId',
         width            :  350,
-        height           :  80,
+        height           :  60,
         allowBlank       :  true,
         renderTo         : 'rorDescId'
     });
@@ -292,6 +292,24 @@ function showEditReasonOfRejection(gridView){
     $("form#rorEditForm #rorDescEditTextId").val(gridView.get("description"));
 }
 
+    function doAddReasonFormSubmit(){
+        if(validateTypeComboBox()){
+            choxJqueryHttpSubmit($("form#rorForm"));
+        }
+        return false;
+    }
+    
+    function validateTypeComboBox(){
+        var msgBox = $("#rorErrorMessageBox");
+        if ($("#rorTypeId").val() === "--- Please Select ---") {
+            msgBox.text("You must select a 'Type'").show();
+            return false;
+        } else {
+            msgBox.text("").show();
+            return true;
+        }
+    }
+
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">
@@ -311,7 +329,7 @@ function showEditReasonOfRejection(gridView){
                                     <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
-                                        <label class="chox-form-std-label">Type</label>
+                                        <label class="chox-form-std-label">Type<span class="mandatory">*</span></label>
                                         <div id="typeDivId" style="padding-left: 70px"></div>
                                     </div>
                                     
@@ -325,7 +343,6 @@ function showEditReasonOfRejection(gridView){
                                         <div id="rorDescId" style="padding-left: 12px"></div>
                                     </div>
                                     
-                                    <br/>
                                     <table style="width: 100%">
                                         <tr>
                                             <td style="width: 50%; height: 15px">
@@ -409,7 +426,7 @@ function showEditReasonOfRejection(gridView){
                                     <br/>
                                     <br/>
                                     <div class="chox-form-button">
-                                        <input type="submit" value="Add Reason"/>
+                                        <input type="submit" value="Add Reason" onclick="return doAddReasonFormSubmit();"/>
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="rorErrorMessageBox" class="action-error-msg"></div>
