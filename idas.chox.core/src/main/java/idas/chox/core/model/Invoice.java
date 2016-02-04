@@ -1624,7 +1624,7 @@ public class Invoice extends Entity implements Serializable {
     public boolean isAppliedRepairPenaltyPercentageDifferent() {
 
         try {
-            if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%") && !getHirePenaltyPercentage().startsWith("Commercial")) {
+            if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%") && !getRepairPenaltyPercentage().startsWith("Commercial")) {
                 BigDecimal selectedRepairPenaltyPercentageValue = new BigDecimal(getRepairPenaltyPercentage().trim().replace("%", ""));
                 return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0;
             } else if (getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().startsWith("Commercial")) {
