@@ -109,7 +109,7 @@ Ext.onReady(function() {
             modal:true,
             closeAction:'hide',
             plain: false,
-            title: 'Edit Rejection Reason',
+            title: 'Edit Reason',
             resizable : false,
             items: new Ext.Panel({
                 applyTo: 'rorEditPanel'
@@ -139,12 +139,12 @@ Ext.onReady(function() {
     {
         errorLabelContainer: "#rorErrorMessageBox",
         rules: {
-            rorName:{ required:true, minlength:5 , maxlength:32}
+            rorName:{ required:true, minlength:5 , maxlength:64}
         },
         messages: {
             rorName: { required:"You must supply a 'Rejection Reason'", 
-                minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
-                maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
+                minlength:"'Reason Name' must be at least 5 characters long." , 
+                maxlength:"'Reason Name' can have maximum 64 characters."}
         }
     });
 
@@ -155,12 +155,12 @@ Ext.onReady(function() {
     {
         errorLabelContainer: "#rorEditErrorMessageBox",
         rules: {
-            rorName:{ required:true, minlength:5 , maxlength:32 }
+            rorName:{ required:true, minlength:5 , maxlength:64 }
         },
         messages: {
             rorName: { required:"You must supply a 'Rejection Reason'", 
-                minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
-                maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
+                minlength:"'Reason Name' must be at least 5 characters long." , 
+                maxlength:"'Reason Name' can have maximum 64 characters."}
         }
     });
     
@@ -430,12 +430,12 @@ function showEditReasonOfRejection(gridView){
                     <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden"/>
                     
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
+                        <label class="chox-form-std-label">Reason<span class="mandatory">*</span></label>
                         <input id="rorEditId" name="rorName" style="width: 175px" disabled="disabled"/>
                     </div>
                     
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Supporting Rejection Note</label>
+                        <label class="chox-form-std-label">Default Supporting Note</label>
                         <div id="rorDescEditId"/>
                     </div>
                     <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
