@@ -265,20 +265,20 @@ ALTER TABLE insurer ADD COLUMN acceptance_reason_enable boolean not null default
 UPDATE insurer set acceptance_reason_enable = true where name='LV=';
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT 26, 'Accepted - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice - Unable To Validate', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT 26, 'Accepted - Without Prejudice - Unable To Validate', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Without Prejudice - Liability In Dispute', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT 26, 'Accepted - Without Prejudice - Liability In Dispute', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT 26, 'Accepted - Quantum Dispute - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now();
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT 26, 'Accepted - Quantum Dispute - Without Prejudice', 'Acceptance', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0;
 
 ----------------------
 -- End of 8.10.6
@@ -327,44 +327,44 @@ INSERT INTO reason_of_rejection_template(name, type, description, gta_active, in
 ALTER TABLE reason_of_rejection ALTER COLUMN name TYPE character varying;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Accepted Interim Payment As Full & Final', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Accepted Interim Payment As Full & Final', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'No Longer Pursuing Claim', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'No Longer Pursuing Claim', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Incorrect At-Fault Insurer', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Incorrect At-Fault Insurer', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Litigating', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Litigating', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Out Of Scope', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Out Of Scope', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Payment Received In Full', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version
+    SELECT id, 'Payment Received In Full', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Pursued Outside Of CHOX', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Pursued Outside Of CHOX', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Write Off - Liability', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Write Off - Liability', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Write Off - Indemnity', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Write Off - Indemnity', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date)
-    SELECT id, 'Write Off - Claim Validation', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now() from insurer;
+                created_by, created_date, last_modified_by, last_modified_date, version)
+    SELECT id, 'Write Off - Claim Validation', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 
 ----------------------
 -- End of 8.10.7
