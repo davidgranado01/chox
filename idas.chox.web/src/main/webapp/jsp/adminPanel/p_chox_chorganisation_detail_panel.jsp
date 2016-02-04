@@ -514,7 +514,7 @@
 
                         <table>
                             <tr>
-                                <td>
+                                <td width=61%">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Active</label>
                                         <s:checkbox name="status" value="status" />
