@@ -401,6 +401,7 @@ ALTER TABLE chorganisation ADD COLUMN is_solicitor_enable boolean not null defau
 -- End of 8.10.8
 ----------------------
 
+--------------------------------------------------------------------------------
 -- bug#3601 - Production - incorrect audit trail for manual invoices
 --------------------------------------------------------------------------------
 update audit_trail
@@ -408,3 +409,4 @@ update audit_trail
 where original_status='InvoiceApprovedByBRE' and new_status='ManualInvoiceBREApproved';
 ----------------------
 -- End of bug#3601
+--------------------------------------------------------------------------------
