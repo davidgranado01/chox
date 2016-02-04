@@ -63,27 +63,27 @@ Ext.onReady(function() {
         layout:'fit',
         viewConfig:{forceFit:true},
         columns: [
-            {header: "Reason", width: 110, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
+            {header: "Reason", width: 100, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>"+value+"</a>"; }},
-            {header: "Default Supporting Note", width: 110, dataIndex: 'description', sortable: true, resizable: true},
-            {header: "Type", width: 40, dataIndex: 'type', sortable: true, resizable: true},
-            {header: "GTA Active", width: 40, dataIndex: 'gtaActive', sortable: true, resizable: true, 
+            {header: "Default Supporting Note", width: 100, dataIndex: 'description', sortable: true, resizable: true},
+            {header: "Type", width: 78, dataIndex: 'type', sortable: true, resizable: true},
+            {header: "GTA Active", width: 38, dataIndex: 'gtaActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Insurer Vs Insurer Active", width: 40, dataIndex: 'insurerVsInsurerActive', sortable: true, resizable: true, 
+            {header: "Insurer Vs Insurer Active", width: 38, dataIndex: 'insurerVsInsurerActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Subscriber Active", width: 40, dataIndex: 'subscriberActive', sortable: true, resizable: true, 
+            {header: "Subscriber Active", width: 38, dataIndex: 'subscriberActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Fixed Fee Active", width: 40, dataIndex: 'fixedFeeActive', sortable: true, resizable: true, 
+            {header: "Fixed Fee Active", width: 38, dataIndex: 'fixedFeeActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Insurer Upload Active", width: 40, dataIndex: 'insurerUploadActive', sortable: true, resizable: true, 
+            {header: "Insurer Upload Active", width: 38, dataIndex: 'insurerUploadActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "TPI Active", width: 40, dataIndex: 'tpiActive', sortable: true, resizable: true, 
+            {header: "TPI Active", width: 38, dataIndex: 'tpiActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Collaboration Active", width: 40, dataIndex: 'collaborationActive', sortable: true, resizable: true, 
+            {header: "Collaboration Active", width: 38, dataIndex: 'collaborationActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
-            {header: "Visible Before Assigned", width: 40, dataIndex: 'restricted', sortable: true, resizable: true,
+            {header: "Visible Before Assigned", width: 38, dataIndex: 'restricted', sortable: true, resizable: true,
                 renderer:booleanLink},                    
-            {header: "", width: 40, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "", width: 38, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>Remove</a>";}}
         ],
         height:155,
@@ -179,11 +179,14 @@ Ext.onReady(function() {
         hiddenName: 'type',
         width: 150,
         selectOnFocus: true,
-        editable: false,
-        allowBlank: false,
+        editable: true,
+        allowBlank: true,
         emptyText: '--- Please Select ---',
         forceSelection: true,
         listeners: {
+            blur: function() {
+                loadGridViewList();
+            },
             select: function() {
                    if(this.getValue() === 'Claim Rejection'){
                        $("#supportingNoteDivId").slideDown();
