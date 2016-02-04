@@ -112,6 +112,7 @@
         <module>idas.chox.jmsClient</module>
         <module>reportToExcel</module>
         <module>reportToExcelTemplate</module>
+        <module>emailNotifications</module>
     </modules>
 
 </project>
