@@ -155,9 +155,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public String execute() {
         JSONObject jsonObject = new JSONObject();
-        LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'",
-                new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference()});
         if (activity != null) {
+            LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'",
+                new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference()});
             try {
                 checkVersion(Arrays.asList(claim));
                 activity.process(claim);
@@ -194,11 +194,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             updateRedirectionParamInSession();
             return SUCCESS;
         } else {
-            LOG.error("Cannot process activity: activity is empty (null)");
+            LOG.error("Cannot process null activity for claim '{}'", claim);
             jsonObject.put("success", Boolean.FALSE);
-            jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
+            jsonObject.put("errors", "An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.");
             setJsonData(jsonObject.toString());
-            this.getActionResponse().AddError("Sorry - No activity implemented for the requested activity action.");
+            this.getActionResponse().AddError("An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.");
         }
 
         return ERROR;
