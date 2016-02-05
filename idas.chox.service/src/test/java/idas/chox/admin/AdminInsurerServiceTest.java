@@ -116,6 +116,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setDisablePrivateNotes(false);
         insurer.setMaxLoginAttempts(0);
         insurer.setEcdIncreaseTriggerPercentage(0);
+        insurer.setClaimAuditReviewEnable(false);
+        insurer.setAcceptanceReasonEnable(false);
 
         ActionResponse response = adminInsurerService.updateInsurer(insurer, true, "test");
         Assert.assertTrue(response.getIsValid());
@@ -347,6 +349,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setValidateUniqueVehicleRegistrationNumber(true);
         breBand.setHireNetDoesNotExceedBandHireNetCeiling(true);
         breBand.setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        breBand.setEnableClaimAudit(false);
+        breBand.setAuditProcessPercentage(BigDecimal.ZERO);
         ActionResponse response = adminInsurerService.updateInsurerBreBand(breBand, insurer.getId(), true);
         Assert.assertTrue(response.getIsValid());
     }
@@ -420,6 +424,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setValidateUniqueVehicleRegistrationNumber(true);
         breBand.setHireNetDoesNotExceedBandHireNetCeiling(true);
         breBand.setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        breBand.setEnableClaimAudit(false);
+        breBand.setAuditProcessPercentage(BigDecimal.ZERO);
         ActionResponse response = adminInsurerService.updateInsurerBreBand(breBand, insurer.getId(), true);
         Assert.assertTrue(response.getIsValid());
 
@@ -495,6 +501,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setValidateUniqueVehicleRegistrationNumber(true);
         breBand.setHireNetDoesNotExceedBandHireNetCeiling(true);
         breBand.setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        breBand.setEnableClaimAudit(false);
+        breBand.setAuditProcessPercentage(BigDecimal.ZERO);
         ActionResponse response = adminInsurerService.updateInsurerBreBand(breBand, insurer.getId(), true);
         Assert.assertTrue(response.getIsValid());
 
