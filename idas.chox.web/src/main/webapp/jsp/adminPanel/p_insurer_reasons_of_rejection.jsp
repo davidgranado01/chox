@@ -348,7 +348,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px">
                                                 <div style="position:relative;width:239px;">
                                                     <div style="position:absolute;right:0;">
-                                                    <label >GTA Active</label>
+                                                    <label>GTA Active</label>
                                                     <s:checkbox id="gtaActiveId" name="gtaActive"/>
                                                     </div>
                                                 </div>
@@ -356,7 +356,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px">
                                                 <div style="position:relative;width:220px;">
                                                     <div style="position:absolute;right:0;">
-                                                    <label >Insurer Vs Insurer Active</label>
+                                                    <label>Insurer Vs Insurer Active</label>
                                                     <s:checkbox id="insurerVsInsurerActiveId" name="insurerVsInsurerActive" />
                                                     </div>
                                                 </div>
@@ -366,7 +366,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px">
                                                 <div style="position:relative;width:239px;">
                                                     <div style="position:absolute;right:0;">
-                                                        <label >Subscriber Active</label>
+                                                        <label>Subscriber Active</label>
                                                         <s:checkbox id="subscriberActiveId" name="subscriberActive"/>
                                                     </div>
                                                 </div>
@@ -374,7 +374,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px">
                                                 <div style="position:relative;width:220px;">
                                                     <div style="position:absolute;right:0;">
-                                                        <label >Insurer Upload Active</label>
+                                                        <label>Insurer Upload Active</label>
                                                         <s:checkbox id="insurerUploadActiveId" name="insurerUploadActive" />
                                                     </div>
                                                 </div>
@@ -384,7 +384,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px;">
                                                 <div style="position:relative;width:239px;">
                                                     <div style="position:absolute;right:0;">
-                                                        <label >TPI Active</label>
+                                                        <label>TPI Active</label>
                                                         <s:checkbox id="tpiActiveId" name="tpiActive"/>
                                                     </div>
                                                 </div>
@@ -392,7 +392,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px;">
                                                 <div style="position:relative;width:220px;">
                                                     <div style="position:absolute;right:0;">
-                                                        <label >Fixed Fee Active</label>
+                                                        <label>Fixed Fee Active</label>
                                                         <s:checkbox id="fixedFeeActiveId" name="fixedFeeActive" />
                                                     </div>
                                                 </div>
@@ -402,7 +402,7 @@ function showEditReasonOfRejection(gridView){
                                             <td style="width: 50%; height: 15px;">
                                                 <div style="position:relative;width:239px;">
                                                     <div style="position:absolute;right:0;">
-                                                        <label >Collaboration Protocol Active</label>
+                                                        <label>Collaboration Protocol Active</label>
                                                         <s:checkbox id="collaborationActiveId" name="collaborationActive"/>
                                                     </div>
                                                 </div>
@@ -416,7 +416,7 @@ function showEditReasonOfRejection(gridView){
                                             <td colspan="2">
                                                <div style="position:relative;width:239px;">
                                                     <div id="restrictedDivId" style="position:absolute;right:0;">
-                                                        <label >Visible Before Assigned</label>
+                                                        <label>Visible Before Assigned</label>
                                                         <s:checkbox id="restricted" name="restricted" />
                                                     </div>
                                                 </div>

@@ -87,13 +87,18 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         try {
             LOG.debug("Checking for ECD anomalies...");
             notificationService.checkForAnomalies(claim, NotificationType.EcdAnomalousNotification.getType());
-            if (ecd.isUpdateInsurer()) {
-                 notificationService.addNotification(claim, new EcdUpdatedNotification());
-           }
         } catch (Exception ex) {
-            LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
-                        NotificationType.EcdAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
+            LOG.error("Exception thrown adding notifications of type '{}' to claim={} [v{}]: {}", new Object[]{
+                        NotificationType.EcdAnomalousNotification.getType(), claim.getId(), claim.getVersion(), ex.getMessage(), ex});
+        }
+        
+        if (ecd.isUpdateInsurer()) {
+            try {
+                notificationService.addNotification(claim, new EcdUpdatedNotification());
+            } catch (Exception ex) {
+                LOG.error("Exception thrown adding EcdUpdatedNotification to claim={} [v{}]: {}", new Object[]{
+                            claim.getId(), claim.getVersion(), ex.getMessage(), ex});
+            }
         }
     }
-
 }
