@@ -1037,67 +1037,67 @@
             <div class="status-control-set">
                 <table class="status-table">
                     <tr>
-                        <td align="right"><label>Claim Type : </label></td>
+                        <td align="right"><label>Claim Type<span class="mandatory">*</span> : </label></td>
                         <td><div id="claimTypeDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right"><label>Who managed repair? : </label></td>
+                        <td align="right"><label>Who managed repair?<span class="mandatory">*</span> : </label></td>
                         <td><div id="whoManagedRepairDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right"><label>Total Loss? : </label></td>
+                        <td align="right"><label>Total Loss?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="totalLossDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Customers Vehicle Class : </label></td>
+                        <td align="right" ><label>Customers Vehicle Class<span class="mandatory">*</span> : </label></td>
                         <td ><div id="customerVehicleClassDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Hire Vehicle Class : </label></td>
+                        <td align="right" ><label>Hire Vehicle Class<span class="mandatory">*</span> : </label></td>
                         <td ><div id="hireVehicleClassDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Hire Duration : </label></td>
+                        <td align="right" ><label>Hire Duration<span class="mandatory">*</span> : </label></td>
                         <td ><div id="hireDurationDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Hire Duration Acceptable? : </label></td>
+                        <td align="right" ><label>Hire Duration Acceptable?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="hireDurationAcceptableDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr id="reasonHDNotAcceptableDropDownDivId">
-                        <td align="right" ><label>Reason for Hire Duration Not Acceptable : </label></td>
+                        <td align="right" ><label>Reason for Hire Duration Not Acceptable<span class="mandatory">*</span> : </label></td>
                         <td ><div id="reasonHDNotAcceptableDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td align="right">
-                            <label>Total Hire Costs:</label>
+                            <label>Total Hire Costs<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="totalHireCostDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label>Hire Leakage? : </label></td>
+                        <td align="right" ><label>Hire Leakage?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="hireLeakageDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr id="hireLeakageCostDivId">
                         <td align="right">
-                            <label>If Yes, by how much? :</label>
+                            <label>If Yes, by how much?<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="hireLeakageCostDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td align="right">
-                            <label>Total Repair Costs:</label>
+                            <label>Total Repair Costs<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="totalRepairCostDiv"></div></td>
                         <td colspan="2"></td>
@@ -1109,14 +1109,14 @@
                     </tr>
                     <tr id="exceededRepairCostDivId">
                         <td align="right">
-                            <label>If Yes, by how much? :</label>
+                            <label>If Yes, by how much?<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="exceededRepairCostDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td align="right">
-                            <label>Penalty Charges paid:</label>
+                            <label>Penalty Charges paid<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="penaltyChargesPaidDiv"></div></td>
                         <td colspan="2"></td>
@@ -1128,7 +1128,7 @@
                     </tr>
                     <tr id="penaltyChrgAvoidableReasonDivId">
                         <td align="right">
-                            <label>How were the penalty charges avoidable? :</label>
+                            <label>How were the penalty charges avoidable?<span class="mandatory">*</span> :</label>
                         </td>
                         <td colspan="3">
                             <div id="penaltyChrgAvoidableReasonDiv"></div>
@@ -1141,28 +1141,28 @@
                     </tr>
                     <tr id="nonABPGuidelineRepairRateDivId">
                         <td align="right">
-                            <label>If No how much was charged (hourly rate):</label>
+                            <label>If No how much was charged (hourly rate)<span class="mandatory">*</span> :</label>
                         </td>
                         <td ><div id="nonABPGuidelineRepairRateDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label style="line-height: 14px;">Storage Claimed? : </label></td>
+                        <td align="right" ><label style="line-height: 14px;">Storage Claimed?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="storageClaimedDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr id="storageClaimedCorrectlyDropDownDivId">
-                        <td align="right" ><label style="line-height: 14px;">If Yes, correctly so? : </label></td>
+                        <td align="right" ><label style="line-height: 14px;">If Yes, correctly so?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="storageClaimedCorrectlyDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
-                        <td align="right" ><label style="line-height: 14px;">Recovery Claimed? : </label></td>
+                        <td align="right" ><label style="line-height: 14px;">Recovery Claimed?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="recoveryClaimedDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr id="recoveryClaimedCorrectlyDropDownDivId">
-                        <td align="right" ><label style="line-height: 14px;">If Yes, correctly so? : </label></td>
+                        <td align="right" ><label style="line-height: 14px;">If Yes, correctly so?<span class="mandatory">*</span> : </label></td>
                         <td ><div id="recoveryClaimedCorrectlyDropDownDiv"></div></td>
                         <td colspan="2"></td>
                     </tr>

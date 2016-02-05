@@ -89,6 +89,8 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         object.setAverageLabourRateStandard(40);
         object.setAverageLabourRatePrestige(40);
         object.setNonStandardInsurancePremiumCeilingTolerance(BigDecimal.ZERO);
+        object.setAuditProcessPercentage(BigDecimal.ZERO);
+        object.setEnableClaimAudit(false);
         return object;
     }
 

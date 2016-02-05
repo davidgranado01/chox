@@ -1442,7 +1442,7 @@
                         </div>
                         <br/>
                         <div id="auditProcessPercentageDivId">
-                            <label class="chox-form-std-label-longer" style="font-weight: bold">Audit Process Percentage %:</label>
+                            <label class="chox-form-std-label-longer" style="font-weight: bold">Audit Process Percentage %<span class="mandatory">*</span></label>
                             <input style="padding-left: 5px;" type="text" class="chox-ttxt" name="auditProcessPercentage" value="<s:property value='auditProcessPercentage' />" onkeyup="extractNumber(this,2,true);"/>
                             <div class="chox-form-std-label-longer" style="padding-left: 12px;">Please enter the percentage chance of an individual claim entering the Audit Process.</div>
                         </div>

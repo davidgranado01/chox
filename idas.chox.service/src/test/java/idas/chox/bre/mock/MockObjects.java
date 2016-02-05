@@ -36,6 +36,8 @@ public class MockObjects {
         insurer.setVatNo("VAT NO");
         insurer.setVehicleClassCeilings(null);
         insurer.setWorkgroupEnable(true);
+        insurer.setClaimAuditReviewEnable(false);
+        insurer.setAcceptanceReasonEnable(false);
         
         return insurer;
         
@@ -89,6 +91,8 @@ public class MockObjects {
         band.setHireDaysPriorToDateRepairCommenced(5);
         band.setHireDaysPriorToDateRepairBookInDateNonMobileVehicles(3);
         band.setHireDaysPriorToDateRepairBookInDateMobileVehicles(1);
+        band.setAuditProcessPercentage(BigDecimal.ZERO);
+        band.setEnableClaimAudit(false);
 
         // band.setHireNetCeiling(new BigDecimal("1500"));
         // band.setMaxRepairValue(BigDecimal.ZERO);
