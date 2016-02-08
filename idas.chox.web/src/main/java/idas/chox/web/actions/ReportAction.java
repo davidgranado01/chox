@@ -192,12 +192,14 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String getReportGenerationStatus() {
+        LOG.trace("Getting report generation status...");
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
             if (session != null) { // Add extra null checks as session sometimes empty!
                 if (session.get("isExportFinished") != null) {
                     setExportFinished((Boolean) session.get("isExportFinished"));
                 } else {
+                    LOG.debug("isExportFinished is null: setting to true in response");
                     setExportFinished(Boolean.TRUE);
                 }
                 if (session.get("cancelExportOperation") != null) {
@@ -220,15 +222,18 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public String downloadReport() {
 
         if (isDirectDownload()) {
-            LOG.debug("Request to direct download report file ");
+            LOG.debug("Request to direct download report file...generating...");
             exportReport();
+            LOG.debug("Direct download report file generated.");
         }
         synchronized (getSessionLock()) {
+            LOG.trace("Getting report file details from session...");
             Map<String, Object> session = getSession();
-            if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
-                LOG.debug("Request to download report file '{}'", session.get("reportFileLocation"));
+            String reportFileLocation = (String)session.get("reportFileLocation");
+            if (reportFileLocation != null) {
+                LOG.debug("Creating stream for report file '{}'", reportFileLocation);
                 try {
-                    File reportFile = new File((String) session.get("reportFileLocation"));
+                    File reportFile = new File(reportFileLocation);
                     reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
@@ -239,7 +244,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 session.remove("exceptionThrown");
                 session.remove("cancelExportOperation");
             } else {
-                LOG.error("reportFileLocation not in session or is null: {}", session.containsKey("reportFileLocation"));
+                LOG.error("reportFileLocation not in session () or is null", !session.containsKey("reportFileLocation"));
                 createEmptyReport();
             }
 
