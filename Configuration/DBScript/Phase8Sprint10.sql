@@ -235,7 +235,7 @@ GRANT EXECUTE ON FUNCTION audit_facility(IN insurerid integer, IN chorgId intege
 -----------------------------------------------------
 
 ALTER TABLE bre_band ADD COLUMN enable_claim_audit boolean not null DEFAULT  false;
-ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) not null default 0;
+ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2);
 
 ALTER TABLE insurer ADD COLUMN claim_audit_review_enable boolean not null DEFAULT  false;
 
