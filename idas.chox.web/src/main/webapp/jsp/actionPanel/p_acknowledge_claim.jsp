@@ -41,7 +41,7 @@ Ext.onReady(function() {
             typeAhead: false,
             mode: 'local',
             listWidth: 300,
-            forceSelection: false,
+            forceSelection: true,
             triggerAction: 'all',
             emptyText : 'Please Select a Reason',
             blankText : 'Please Select a Reason'
