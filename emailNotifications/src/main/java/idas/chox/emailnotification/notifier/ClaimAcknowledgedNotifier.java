@@ -24,14 +24,15 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
 
                     "from claim c " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
-                    "    left outer join web_user wu on (c.claim_owner_id = wu.id), " +
-                    "    insurer i, comment co, audit_trail at " +
+                    "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
+                    "    left outer join comment co on (c.id = co.claim_id)," +
+                    "    insurer i,  audit_trail at " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s " +
                     "    and i.id = c.insurer_id " +
                     "    and claim_type in (10,14,15,16,17) " +
-                    "    and c.id=co.claim_id " +
                     "    and co.comment like 'Supporting Liability Notes:%s' " +
+                    // "    and co.created_date between at.created_date - interval '5 seconds' and at.created_date + interval '5 seconds' " +
                     "    and at.claim_id = c.id " +
                     "    and at.new_status='AwaitingCarHireInfo' " +
                     "    and at.original_status in('ClaimUnacknowledgedRouted','ClaimPending') " +
@@ -58,9 +59,9 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", rs.getString("claim_number"));
-
         data.put("liability_status", lookupLiabilityStatus(rs.getInt("liability_status")));
         data.put("liability_percentage", rs.getInt("percentage_liability_accepted"));
+        data.put("liability_note", rs.getString("comment"));
         data.put("insurer_claim_owner", rs.getString("claim_owner"));
         data.put("workgroup", rs.getString("workgroup"));
 

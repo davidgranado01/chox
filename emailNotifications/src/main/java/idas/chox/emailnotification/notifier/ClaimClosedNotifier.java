@@ -57,7 +57,8 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", rs.getString("claim_number"));
-        data.put("claim_closure_reason", rs.getString("comment"));
+        data.put("claim_closure_reason", rs.getString("comment").substring(13));
+        // TODO ClaimClosureNote
         data.put("claim_closure_note", "ClaimClosureNote");
         data.put("insurer_claim_owner", rs.getString("claim_owner"));
         data.put("workgroup", rs.getString("workgroup"));

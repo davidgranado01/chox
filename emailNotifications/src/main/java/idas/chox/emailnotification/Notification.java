@@ -12,7 +12,11 @@ import org.springframework.context.support.AbstractApplicationContext;
 @PropertySource("classpath:/application.properties")
 public class Notification {
 
+
     private @Autowired EmailNotificationController emailNotificationController;
+
+    // Include mechanism to limit to single email (prevent spam when testing)
+    private static boolean LIMIT1 = false;
 
     public Notification() {
         @SuppressWarnings("resource")
@@ -25,9 +29,13 @@ public class Notification {
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class);
 
         EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-        notificationController.start();
+        notificationController.start(LIMIT1);
 
         context.close();
+    }
+
+    public static void setLIMIT1(boolean lIMIT1) {
+        LIMIT1 = lIMIT1;
     }
 
 

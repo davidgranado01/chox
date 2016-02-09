@@ -26,25 +26,26 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
 
                     "from claim c  " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
-                    "    left outer join web_user wu on (c.claim_owner_id = wu.id), " +
-                    "    insurer i, comment co, invoice inv " +
+                    "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
+                    "    left outer join comment co on (c.id = co.claim_id)," +
+                    "    insurer i, invoice inv " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s  " +
                     "    and i.id = c.insurer_id  " +
                     "    and claim_type in (10,14,15,16,17) " +
                     "    and c.invoice_id = inv.id " +
-                    "    and c.id=co.claim_id " +
                     "    and co.comment like 'Supporting Liability Notes:%s' " +
                     "    and co.created_date between '%s' and '%s' " +
                     "    and c.liability_status_modified_date between '%s' and '%s' " +
-                    "    and c.id not in " +
-                    " ( select claim.id from claim, audit_trail audit " +
-                    "where claim.insurer_id = %s and claim.chorganisation_id = %s " +
-                    "    and claim.claim_type in (10,14,15,16,17) " +
-                    "    and audit.claim_id = claim.id " +
+                    
+                    "    and not exists " +
+                    " ( select * from audit_trail audit " +
+                    "where audit.claim_id = c.id " +
                     "    and audit.new_status='AwaitingCarHireInfo' " +
                     "    and audit.original_status in('ClaimUnacknowledgedRouted','ClaimPending') " +
-                    "    and audit.reverted = false and audit.created_date between '%s' and '%s');";
+                    "    and audit.reverted = false " +
+                    "    and audit.created_date between c.liability_status_modified_date - interval '5 seconds' and c.liability_status_modified_date + interval '5 seconds');";
+
 
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo) {

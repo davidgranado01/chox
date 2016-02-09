@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +51,9 @@ public class EmailNotificationController {
 
     private Map<NotificationType, Notifier> notifiers = new HashMap<NotificationType, Notifier>();
 
-    public void start() {
+    public void start(boolean limit1) {
         List<NotificationSettingsBean> settings = this.loadSettingsFile();
-        this.registerNotifiers();
+        this.registerNotifiers(limit1);
         dateFrom = this.obtainDateFrom();
         dateTo = this.obtainDateTo();
         for (NotificationSettingsBean setting : settings) {
@@ -136,13 +137,24 @@ public class EmailNotificationController {
         }
     }
 
-    public void registerNotifiers() {
+    public void registerNotifiers(boolean limit1) {
         notifiers.put(NotificationType.CLOSED, claimClosedNotifier);
         notifiers.put(NotificationType.ACKNOWLEDGED, claimAcknowledgedNotifier);
         notifiers.put(NotificationType.CONTESTED, invoiceContestedNotifier);
         notifiers.put(NotificationType.PAID, invoicePaidNotifier);
         notifiers.put(NotificationType.LIABILITIED, liabilityUpdatedNotifier);
         notifiers.put(NotificationType.QUANTUMED, quantumAgreedNotifier);
+        if (limit1) {
+            Set<NotificationType> notifierKeys = notifiers.keySet();
+            for (NotificationType key : notifierKeys) {
+                Notifier notifier = notifiers.get(key);
+                notifier.setLimit1(true);
+            }
+        }
+    }
+
+    public Map<NotificationType, Notifier> getNotifiers() {
+        return notifiers;
     }
 
     protected void setNotifiers(Map<NotificationType, Notifier> notifiers) {

@@ -36,6 +36,7 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected static final String DATE_FORMAT = "yyyy-MM-dd";
     protected static final String PERCENTAGE = "%";
+    protected boolean limit1 = false;
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -66,12 +67,22 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected void runReport(NotificationSettingsBean settings, String reportQuery) {
 
+        // Restrict to records produced (if limit1 is set to TRUE)
+        boolean maxRecordsShown = false;
+
         try {
             Connection conn = this.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(reportQuery);
             while (rs.next()) {
-                processRecord(rs, settings.getEmailAddressses());
+                if (!maxRecordsShown) {
+                    processRecord(rs, settings.getEmailAddressses());
+
+                    if (limit1) {
+                        // It limit records is switched on then set max records to true
+                        maxRecordsShown = true;
+                    }
+                }
             }
             rs.close();
             stmt.close();
@@ -97,4 +108,9 @@ public abstract class AbstractNotifier implements Notifier {
     protected void setEmailHelper(EmailHelper emailHelper) {
         this.emailHelper = emailHelper;
     }
+
+    public void setLimit1(boolean limit1) {
+        this.limit1 = limit1;
+    }
+
 }

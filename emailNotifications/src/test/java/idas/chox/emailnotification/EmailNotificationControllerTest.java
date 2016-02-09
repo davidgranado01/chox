@@ -33,6 +33,11 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
     @Ignore
     @Test
     public void testController() {
+
+        // Limit each notifier to a single email (spam reduction)
+        Notification.setLIMIT1(true);
+
+        // Run the core process
         Notification.main(null);
     }
 
@@ -61,7 +66,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         expect(mockNotifiers.put(isA(NotificationType.class), isA(Notifier.class))).andReturn(mockNotifier).times(6);
         replay(mockNotifiers);
         
-        controller.registerNotifiers();
+        controller.registerNotifiers(false);
         
         verify(mockNotifiers);
 
