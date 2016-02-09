@@ -20,18 +20,17 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
     protected static final String SUBJECT = "%s Supplier Reference: %s Claim Acknowledged Notification";
     protected static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, c.percentage_liability_accepted, " +
-                    "    c.liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, co.comment " +
+                    "    c.liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
+                    "    (select  array_to_string(array_agg(substring(co.comment from 28) ), ' ')  from comment co where co.claim_id = c.id and co.created_date between (at.created_date - interval '1 second') and (at.created_date + interval '1 seconds') and co.comment like 'Supporting Liability Note%s') as comment " +
 
                     "from claim c " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
-                    "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%s')," +
+                    "    left outer join web_user wu on (c.claim_owner_id = wu.id), " +
                     "    insurer i,  audit_trail at " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s " +
                     "    and i.id = c.insurer_id " +
                     "    and claim_type in (10,14,15,16,17) " +
-                    "    and case when co is null then true else co.created_date between at.created_date - interval '5 seconds' and at.created_date + interval '5 seconds' end " +
                     "    and at.claim_id = c.id " +
                     "    and at.new_status='AwaitingCarHireInfo' " +
                     "    and at.original_status in('ClaimUnacknowledgedRouted','ClaimPending') " +
