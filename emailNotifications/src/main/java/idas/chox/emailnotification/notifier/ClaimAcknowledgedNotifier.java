@@ -25,14 +25,13 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
                     "from claim c " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id)," +
+                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%s')," +
                     "    insurer i,  audit_trail at " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s " +
                     "    and i.id = c.insurer_id " +
                     "    and claim_type in (10,14,15,16,17) " +
-                    "    and co.comment like 'Supporting Liability Notes:%s' " +
-                    // "    and co.created_date between at.created_date - interval '5 seconds' and at.created_date + interval '5 seconds' " +
+                    "    and case when co is null then true else co.created_date between at.created_date - interval '5 seconds' and at.created_date + interval '5 seconds' end " +
                     "    and at.claim_id = c.id " +
                     "    and at.new_status='AwaitingCarHireInfo' " +
                     "    and at.original_status in('ClaimUnacknowledgedRouted','ClaimPending') " +
@@ -45,7 +44,7 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), PERCENTAGE, dateFromString, dateToString);
+        String reportQuery = String.format(BASE_QUERY, PERCENTAGE, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
         this.runReport(settings, reportQuery);
 
     }
@@ -61,9 +60,14 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
         data.put("insurer_claim_number", rs.getString("claim_number"));
         data.put("liability_status", lookupLiabilityStatus(rs.getInt("liability_status")));
         data.put("liability_percentage", rs.getInt("percentage_liability_accepted"));
-        data.put("liability_note", rs.getString("comment"));
         data.put("insurer_claim_owner", rs.getString("claim_owner"));
         data.put("workgroup", rs.getString("workgroup"));
+
+        String comment = rs.getString("comment");
+        if (comment == null) {
+            comment = "";
+        }
+        data.put("liability_note", comment);
 
         String subject = String.format(SUBJECT, data.get("insurer_name"), data.get("supplier_reference"));
 
