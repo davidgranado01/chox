@@ -1,6 +1,5 @@
 package idas.chox.emailnotification.notifier;
 
-import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.util.EmailHelper;
 import idas.chox.emailnotification.config.NotificationSettingsBean;
 
@@ -35,7 +34,7 @@ public abstract class AbstractNotifier implements Notifier {
     private @Autowired VelocityEngine velocityEngine;
 
     protected static final String DATE_FORMAT = "yyyy-MM-dd";
-    protected static final String PERCENTAGE = "%";
+    // protected static final String PERCENTAGE = "%";
     protected boolean limit1 = false;
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -96,14 +95,6 @@ public abstract class AbstractNotifier implements Notifier {
         return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, ENCODING, model);
     }
 
-    protected String lookupLiabilityStatus(int liabilityValue) {
-        for (LiabilityStatus status : LiabilityStatus.values()) {
-            if (status.getLiablityValue() == liabilityValue) {
-                return status.toString();
-            }
-        }
-        return "";
-    }
 
     protected void setEmailHelper(EmailHelper emailHelper) {
         this.emailHelper = emailHelper;

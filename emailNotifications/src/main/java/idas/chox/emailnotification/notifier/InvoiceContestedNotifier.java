@@ -21,7 +21,7 @@ public class InvoiceContestedNotifier extends AbstractNotifier implements Notifi
 
     protected static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, c.percentage_liability_accepted, " +
-                    "    c.liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
+                    "    getLiabilityStatus(c.liability_status) as liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
                     "    inv.full_total_to_pay, inv.total_to_pay " +
 
                     "from claim c  " +
@@ -59,7 +59,7 @@ public class InvoiceContestedNotifier extends AbstractNotifier implements Notifi
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", rs.getString("claim_number"));
-        data.put("liability_status", lookupLiabilityStatus(rs.getInt("liability_status")));
+        data.put("liability_status", rs.getString("liability_status"));
         data.put("liability_percentage", rs.getInt("percentage_liability_accepted"));
         data.put("total_requested", rs.getString("full_total_to_pay"));
         data.put("total_to_pay", rs.getString("total_to_pay"));

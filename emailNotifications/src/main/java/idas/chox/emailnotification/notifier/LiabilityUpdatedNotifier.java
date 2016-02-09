@@ -21,20 +21,19 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
 
     protected static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, c.percentage_liability_accepted, " +
-                    "    c.liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
+                    "    getLiabilityStatus(c.liability_status) as liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
                     "    inv.full_total_to_pay, inv.total_to_pay, co.comment as liability_status_note " +
 
                     "from claim c  " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id)," +
+                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%' )," +
                     "    insurer i, invoice inv " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s  " +
                     "    and i.id = c.insurer_id  " +
                     "    and claim_type in (10,14,15,16,17) " +
                     "    and c.invoice_id = inv.id " +
-                    "    and co.comment like 'Supporting Liability Notes:%s' " +
                     "    and co.created_date between '%s' and '%s' " +
                     "    and c.liability_status_modified_date between '%s' and '%s' " +
                     
@@ -54,7 +53,7 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), PERCENTAGE, dateFromString, dateToString, dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
+        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString, dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
         this.runReport(settings, reportQuery);
 
     }
@@ -68,7 +67,7 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", rs.getString("claim_number"));
-        data.put("liability_status", lookupLiabilityStatus(rs.getInt("liability_status")));
+        data.put("liability_status", rs.getString("liability_status"));
         data.put("liability_percentage", rs.getInt("percentage_liability_accepted"));
         data.put("liability_note", rs.getString("liability_status_note"));
         data.put("insurer_claim_owner", rs.getString("claim_owner"));

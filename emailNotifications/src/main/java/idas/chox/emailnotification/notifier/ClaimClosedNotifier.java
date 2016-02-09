@@ -31,7 +31,7 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
             "    and i.id = c.insurer_id " + 
             "    and claim_type in (10,14,15,16,17) " +
             "    and c.id=co.claim_id " + 
-            "    and co.comment like 'Claim Closed:%s' " + 
+                    "    and co.comment like 'Claim Closed:%%' " +
             "    and at.claim_id = c.id " + 
             "    and at.new_status='ClaimClosed' " + 
             "    and at.reverted = false and at.created_date between '%s' and '%s';";
@@ -43,7 +43,7 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), PERCENTAGE, dateFromString, dateToString);
+        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
         this.runReport(settings, reportQuery);
 
     }
