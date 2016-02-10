@@ -1362,6 +1362,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         && (claim.getWorkgroup() == null || claim.getClaimOwner() == null)) {
                     accessRight = 0;
                 }
+                else if (actionName.equals(ExtraAction.MARK_CASE_WITH_CLIENTS_SOLICITOR)
+                        && !claim.getChorganisation().isSolicitorEnable()) {
+                    accessRight = 0;
+                }
             }
 
             if (accessRight >= 2) {

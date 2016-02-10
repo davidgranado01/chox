@@ -154,7 +154,7 @@ public class AcknowledgeClaim extends BaseActivity {
             claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Note: " + supportingLiabilityNotes));
         }
         if (StringHelper.isNotEmpty(acceptanceReason)) {
             claim.addComment(Comment.newComment(0, "Claim Acceptance Reason: " + acceptanceReason));

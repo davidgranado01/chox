@@ -265,6 +265,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
         if((!getIsChoxAdmin() && getUserOrganisationType() != organisationTypeId)
                 || (!getIsChoxAdmin() && getUserOrganisationId() != organisationId)) {
+            LOG.warn("Not in correct organisation to view data: organisationTypeId={} ({}), organisationId={} ({})",
+                    new Object[]{organisationTypeId, getUserOrganisationType(), organisationId, getUserOrganisationId()});
             throw new AccessDeniedException("You do not have the correct access role to view the requested data. You will now be logged out.");
         }
         try {
