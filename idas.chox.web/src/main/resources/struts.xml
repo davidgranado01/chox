@@ -1191,10 +1191,10 @@
         </action>
 
        <!--Start INSURER BRE BAND -->
-        <action name="getInsurerBreBandPage" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
+        <action name="getInsurerBreBandPage" class="idas.chox.web.actions.BreBandDropDownAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
         </action>
-        <action name="getInsurerBreBand" class="idas.chox.web.actions.InsurerBreBandAction" method="getInsurerBreBands">
+        <action name="getInsurerBreBand" class="idas.chox.web.actions.BreBandDropDownAction" method="getInsurerBreBands">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
