@@ -42,15 +42,15 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected abstract void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException;
 
-    public abstract void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo, Boolean suppressEmails);
+    @Override
+    public abstract void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean suppressEmails);
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {
         String message = this.generateMessageText(emailTemplate, data);
         try {
             emailHelper.postMail(subject, message, recipients);
         } catch (UnsupportedEncodingException | MessagingException e) {
-            String errorMessage = String.format("Unable to send email with subject %s.", subject);
-            logger.error(errorMessage, e);
+            logger.error("Unable to send email with subject {}.", subject, e);
         }
     }
 
@@ -71,8 +71,7 @@ public abstract class AbstractNotifier implements Notifier {
         boolean maxRecordsShown = false;
 
         try {
-            logger.warn("Extracting data for Manual Email Notifications, using this SQL:");
-            logger.warn(reportQuery);
+            logger.debug("Extracting data for Manual Email Notifications, using this SQL:\n{}", reportQuery);
             Connection conn = this.getConnection();
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = stmt.executeQuery(reportQuery);
@@ -81,7 +80,7 @@ public abstract class AbstractNotifier implements Notifier {
                 rowcount = rs.getRow();
                 rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
             }
-            logger.warn(String.format("This query has recovered %s records.", rowcount));
+            logger.info("This query for '{}' has recovered {} records.", this.getClass(), rowcount);
 
             while (rs.next()) {
                 if (!maxRecordsShown) {
@@ -110,12 +109,12 @@ public abstract class AbstractNotifier implements Notifier {
         this.emailHelper = emailHelper;
     }
 
+    @Override
     public void setLimit1(boolean limit1) {
         this.limit1 = limit1;
     }
 
     protected void logEmail(String subject, String[] emailTo) {
-        String logString = String.format("SendingTo= %s, for subject= %s", Arrays.toString(emailTo), subject);
-        logger.info(logString);
+        logger.info("SendingTo= {}, with subject = '{}'", Arrays.toString(emailTo), subject);
     }
 }

@@ -4,9 +4,6 @@ import idas.chox.emailnotification.config.NotificationSettingsBean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +36,9 @@ public class InvoicePaidNotifier extends AbstractNotifier implements Notifier {
                     "    and at.reverted = false and at.created_date between '%s' and '%s';";
 
     @Override
-    public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo, Boolean enableEmails) {
+    public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
 
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        String dateFromString = dateFormat.format(dateFrom);
-        String dateToString = dateFormat.format(dateTo);
-
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
+        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFrom, dateTo);
         this.runReport(settings, reportQuery, enableEmails);
 
     }
@@ -55,7 +48,7 @@ public class InvoicePaidNotifier extends AbstractNotifier implements Notifier {
         String[] emailTo = (String[]) recipients.toArray();
 
         // Prepare data fields
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", rs.getString("claim_number"));

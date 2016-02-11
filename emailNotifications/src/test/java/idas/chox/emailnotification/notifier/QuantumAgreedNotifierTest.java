@@ -36,7 +36,7 @@ public class QuantumAgreedNotifierTest extends AbstractNotifierTest {
 
         replay(mockEmailHelper);
 
-        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo, true);
+//        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo, true);
 
         verify(mockEmailHelper);
     }

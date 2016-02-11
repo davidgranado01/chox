@@ -1,6 +1,11 @@
 package idas.chox.emailnotification;
 
 import idas.chox.emailnotification.config.EmailNotificationConfig;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -11,7 +16,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 @PropertySource("classpath:/application.properties")
 public class Notification {
-
+    private static String DATE_FORMAT = "yyyy-MM-dd";
 
     private @Autowired EmailNotificationController emailNotificationController;
 
@@ -26,21 +31,43 @@ public class Notification {
     }
 
     public static void main(String[] args) {
-        // check arguments
-        if (args == null || args.length < 2) {
-            showError("Usage:" + Notification.class.getName() + " <settings.txt> <enableEmails>  <dateFrom (yyyyMMdd) {Optional}> ");
-            urgentlyEndProcessing();
+        String startDate = null;
+        boolean enableEmails = false;
+        
+        // check command-line arguments
+        for (int i= 0; i < args.length; i++) {
+            switch(args[i]) {
+                case "-sendEmails":
+                    enableEmails = true;
+                    break;
+                case "-startDate":
+                    if (i+1 >= args.length) {
+                        showUsageAndExit();
+                    }
+                    startDate = args[++i];
+                    // Check its a date in the correct format
+                    SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                    try {
+                        df.parse(startDate);
+                    } catch (ParseException e) {
+                        showUsageAndExit();
+                    }
+                    break;
+                default:
+                    showUsageAndExit();
+                    break;
+            }
         }
         
+        if (startDate == null) {
+            startDate = getYesterdayDateAsString();
+        }
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class);
 
         // extract arguments
-        String settingsLocation = args[0];
-        String lastrunDate = args[1];
-        Boolean enableEmails = new Boolean(args[2]);
 
         EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-        notificationController.start(settingsLocation, lastrunDate, enableEmails, LIMIT1);
+        notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1);
 
         context.close();
     }
@@ -49,12 +76,16 @@ public class Notification {
         LIMIT1 = lIMIT1;
     }
 
-    protected static void urgentlyEndProcessing() {
-        System.exit(1); // NOSONAR
-    }
 
-    protected static void showError(String errorText) {
-        System.err.print(errorText); // NOSONAR
+    protected static void showUsageAndExit() {
+        System.out.println("Usage: java -jar <jarfilename> [-sendEmails] [-startDate yyyy-mm-dd]"); // NOSONAR
+        System.exit(-1);
     }
-
+    
+    private static String getYesterdayDateAsString() {
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);    
+        return dateFormat.format(cal.getTime());
+    }
 }

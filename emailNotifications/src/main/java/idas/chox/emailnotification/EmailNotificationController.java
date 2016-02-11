@@ -11,9 +11,8 @@ import idas.chox.emailnotification.notifier.Notifier;
 import idas.chox.emailnotification.notifier.QuantumAgreedNotifier;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,8 +33,6 @@ public class EmailNotificationController {
 
     private static final String COMMENT = "#";
     protected static final String DATE_FORMAT = "yyyyMMdd";
-    private Date dateFrom;
-    private Date dateTo;
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,30 +43,31 @@ public class EmailNotificationController {
     private @Autowired LiabilityUpdatedNotifier liabilityUpdatedNotifier;
     private @Autowired QuantumAgreedNotifier quantumAgreedNotifier;
 
-    private Map<NotificationType, Notifier> notifiers = new HashMap<NotificationType, Notifier>();
+    private Map<NotificationType, Notifier> notifiers = new HashMap<>();
 
-    public void start(String settingsLocation, String lastrunDate, boolean enableEmails, boolean limit1) {
-        logger.info("Starting manual email notifier.");
-        List<NotificationSettingsBean> settings = this.loadSettingsFile(settingsLocation);
+    public void start(String startDate, String endDate, boolean enableEmails, boolean limit1) {
+        logger.info("Starting email notifier with parameters: startDate='{}', endDate='{}', enableEmails={}", new Object[]{startDate, endDate, enableEmails});
+        List<NotificationSettingsBean> settings = this.loadSettingsFileFromClasspath();
         this.registerNotifiers(limit1);
-        dateFrom = this.obtainDateFrom(lastrunDate);
-        dateTo = this.obtainDateTo();
         for (NotificationSettingsBean setting : settings) {
-            this.process(setting, enableEmails);
+            this.process(setting, startDate, endDate, enableEmails);
         }
-        logger.info("Finishing manual email notifier.");
+        logger.info("Finishing email notifier.");
     }
 
-    public List<NotificationSettingsBean> loadSettingsFile(String settingsLocation) {
-        List<NotificationSettingsBean> settings = new ArrayList<NotificationSettingsBean>();
-
-        File settingsFile = new File(settingsLocation);
-
+    public List<NotificationSettingsBean> loadSettingsFileFromClasspath() {
+        List<NotificationSettingsBean> settings = new ArrayList<>();
+        
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(settingsFile)));
+            InputStream settingsStream = getClass().getResourceAsStream("/settings.txt");
+            if (settingsStream == null) {
+                logger.error("Cannot load resouce file from classpath");
+                throw new RuntimeException("Cannot load resouce file from classpath");
+            }
+            in = new BufferedReader(new InputStreamReader(settingsStream));
 
-            String settingsString = null;
+            String settingsString;
 
             while ((settingsString = in.readLine()) != null) {
                 if (!settingsString.startsWith(COMMENT)) {
@@ -77,28 +75,28 @@ public class EmailNotificationController {
                 }
             }
 
-        } catch (IOException e) {
-            String message = String.format("Unable to read the settings file at %s", settingsLocation);
-            throw new RuntimeException(message, e);
+        } catch (IOException ex) {
+            String message = String.format("Unable to read the settings file: {}", ex.getMessage());
+            throw new RuntimeException(message, ex);
         } finally {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
-                    String message = String.format("Unable to close input stream for %s", settingsLocation);
-                    throw new RuntimeException(message, e);
+                } catch (IOException ex) {
+                    String message = String.format("Unable to close input stream: {}", ex.getMessage());
+                    throw new RuntimeException(message, ex);
                 }
             }
         }
         return settings;
     }
 
-    public void process(NotificationSettingsBean setting, boolean enableEmails) {
+    public void process(NotificationSettingsBean setting, String startDate, String endDate, boolean enableEmails) {
         Notifier notifier = notifiers.get(setting.getType());
         if (notifier == null) {
-            logger.error(String.format("Unable to find Notifier for email type %s.", setting.getType()));
+            logger.error("Unable to find Notifier for email type {}.", setting.getType());
         } else {
-            notifier.getAndProcessNotificationData(setting, dateFrom, dateTo, enableEmails);
+            notifier.getAndProcessNotificationData(setting, startDate, endDate, enableEmails);
         }
     }
 
@@ -145,14 +143,6 @@ public class EmailNotificationController {
 
     protected void setNotifiers(Map<NotificationType, Notifier> notifiers) {
         this.notifiers = notifiers;
-    }
-
-    protected void setDateFrom(Date from) {
-        dateFrom = from;
-    }
-
-    protected void setDateTo(Date to) {
-        dateTo = to;
     }
 
 }
