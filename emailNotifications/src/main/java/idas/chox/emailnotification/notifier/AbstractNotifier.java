@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,9 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected abstract void processRecord(ResultSet rs, List<String> recipients) throws SQLException;
+    protected abstract void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException;
 
-    public abstract void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo);
+    public abstract void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo, Boolean suppressEmails);
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {
         String message = this.generateMessageText(emailTemplate, data);
@@ -64,7 +65,7 @@ public abstract class AbstractNotifier implements Notifier {
         return connection;
     }
 
-    protected void runReport(NotificationSettingsBean settings, String reportQuery) {
+    protected void runReport(NotificationSettingsBean settings, String reportQuery, boolean enableEmails) {
 
         // Restrict to records produced (if limit1 is set to TRUE)
         boolean maxRecordsShown = false;
@@ -81,9 +82,10 @@ public abstract class AbstractNotifier implements Notifier {
                 rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
             }
             logger.warn(String.format("This query has recovered %s records.", rowcount));
+
             while (rs.next()) {
                 if (!maxRecordsShown) {
-                    processRecord(rs, settings.getEmailAddressses());
+                    processRecord(rs, settings.getEmailAddressses(), enableEmails);
 
                     if (limit1) {
                         // It limit records is switched on then set max records to true
@@ -95,7 +97,7 @@ public abstract class AbstractNotifier implements Notifier {
             stmt.close();
             conn.close();
         } catch (Exception e) {
-            logger.error("Unable to get Email Notification data from CHOX database.", e);
+            throw new RuntimeException("Unable to get Email Notification data from CHOX database.", e);
         }
     }
 
@@ -112,4 +114,8 @@ public abstract class AbstractNotifier implements Notifier {
         this.limit1 = limit1;
     }
 
+    protected void logEmail(String subject, String[] emailTo) {
+        String logString = String.format("SendingTo= %s, for subject= %s", Arrays.toString(emailTo), subject);
+        logger.info(logString);
+    }
 }

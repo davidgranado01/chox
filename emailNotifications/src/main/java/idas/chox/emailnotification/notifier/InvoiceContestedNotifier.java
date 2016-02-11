@@ -39,19 +39,19 @@ public class InvoiceContestedNotifier extends AbstractNotifier implements Notifi
                     "    and at.reverted = false and at.created_date between '%s' and '%s';";
 
     @Override
-    public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo) {
+    public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo, Boolean enableEmails) {
 
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
         String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
-        this.runReport(settings, reportQuery);
+        this.runReport(settings, reportQuery, enableEmails);
 
     }
 
     @Override
-    protected void processRecord(ResultSet rs, List<String> recipients) throws SQLException {
+    protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {
         String[] emailTo = (String[]) recipients.toArray();
 
         // Prepare data fields
@@ -68,7 +68,10 @@ public class InvoiceContestedNotifier extends AbstractNotifier implements Notifi
 
         String subject = String.format(SUBJECT, data.get("insurer_name"), data.get("supplier_reference"));
 
-        generateAndSendEmail(subject, TEMPLATE_LOCATION, data, emailTo);
+        logEmail(subject, emailTo);
+        if (enableEmails) {
+            generateAndSendEmail(subject, TEMPLATE_LOCATION, data, emailTo);
+        }
     }
 
 }

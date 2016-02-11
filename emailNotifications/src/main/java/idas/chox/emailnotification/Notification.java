@@ -26,10 +26,21 @@ public class Notification {
     }
 
     public static void main(String[] args) {
+        // check arguments
+        if (args == null || args.length < 2) {
+            showError("Usage:" + Notification.class.getName() + " <settings.txt> <enableEmails>  <dateFrom (yyyyMMdd) {Optional}> ");
+            urgentlyEndProcessing();
+        }
+        
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class);
 
+        // extract arguments
+        String settingsLocation = args[0];
+        String lastrunDate = args[1];
+        Boolean enableEmails = new Boolean(args[2]);
+
         EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-        notificationController.start(LIMIT1);
+        notificationController.start(settingsLocation, lastrunDate, enableEmails, LIMIT1);
 
         context.close();
     }
@@ -38,5 +49,12 @@ public class Notification {
         LIMIT1 = lIMIT1;
     }
 
+    protected static void urgentlyEndProcessing() {
+        System.exit(1); // NOSONAR
+    }
+
+    protected static void showError(String errorText) {
+        System.err.print(errorText); // NOSONAR
+    }
 
 }

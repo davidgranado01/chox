@@ -36,7 +36,7 @@ public class InvoiceContestedNotifierTest extends AbstractNotifierTest {
 
         replay(mockEmailHelper);
 
-        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo);
+        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo, true);
 
         verify(mockEmailHelper);
     }

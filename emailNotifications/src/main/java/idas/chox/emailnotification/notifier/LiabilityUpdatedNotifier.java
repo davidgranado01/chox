@@ -27,14 +27,13 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
                     "from claim c  " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%' )," +
+                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%’ and co.created_date between '%s' and '%s' )," +
                     "    insurer i, invoice inv " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s  " +
                     "    and i.id = c.insurer_id  " +
                     "    and claim_type in (10,14,15,16,17) " +
                     "    and c.invoice_id = inv.id " +
-                    "    and co.created_date between '%s' and '%s' " +
                     "    and c.liability_status_modified_date between '%s' and '%s' " +
                     
                     "    and not exists " +
@@ -47,19 +46,19 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
 
 
     @Override
-    public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo) {
+    public void getAndProcessNotificationData(NotificationSettingsBean settings, Date dateFrom, Date dateTo, Boolean enableEmails) {
 
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
         String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString, dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
-        this.runReport(settings, reportQuery);
+        this.runReport(settings, reportQuery, enableEmails);
 
     }
 
     @Override
-    protected void processRecord(ResultSet rs, List<String> recipients) throws SQLException {
+    protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {
         String[] emailTo = (String[]) recipients.toArray();
 
         // Prepare data fields
@@ -75,7 +74,10 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
 
         String subject = String.format(SUBJECT, data.get("insurer_name"), data.get("supplier_reference"));
 
-        generateAndSendEmail(subject, TEMPLATE_LOCATION, data, emailTo);
+        logEmail(subject, emailTo);
+        if (enableEmails) {
+            generateAndSendEmail(subject, TEMPLATE_LOCATION, data, emailTo);
+        }
     }
 
 }

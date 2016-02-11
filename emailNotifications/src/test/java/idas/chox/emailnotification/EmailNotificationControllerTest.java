@@ -27,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmailNotificationControllerTest extends AbstractEmailNotificationTest {
 
+    private static final String SETTINGS_FILE_LOCATION = "./src/test/resources/settings.txt";
+    private static final String LAST_RUN_FILE_LOCATION = "./src/test/resources/lastrun.txt";
+
     private @Autowired EmailNotificationController controller;
 
     // Enable FULL test if required. Otherwise, suppress to prevent spam
@@ -43,7 +46,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
 
     @Test
     public void testLoadSettings() {
-        List<NotificationSettingsBean> settings = controller.loadSettingsFile();
+        List<NotificationSettingsBean> settings = controller.loadSettingsFile(SETTINGS_FILE_LOCATION);
         assertNotNull(settings);
         assertTrue(settings.size() >= 1);
 
@@ -77,21 +80,21 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         Map<NotificationType, Notifier> testNotifiers = new HashMap<NotificationType, Notifier>();
         Notifier mockNotifier = EasyMock.createMock(Notifier.class);
         testNotifiers.put(NotificationType.CLOSED, mockNotifier);
-        
+
         Date now = new Date();
 
         controller.setNotifiers(testNotifiers);
         controller.setDateFrom(now);
         controller.setDateTo(now);
-        
-        mockNotifier.getAndProcessNotificationData(isA(NotificationSettingsBean.class), isA(Date.class), isA(Date.class));
-        expectLastCall(); 
+
+        mockNotifier.getAndProcessNotificationData(isA(NotificationSettingsBean.class), isA(Date.class), isA(Date.class), isA(Boolean.class));
+        expectLastCall();
         replay(mockNotifier);
-        
-        controller.process(new NotificationSettingsBean("6:1123:CLOSED:test@valexa.com"));
-        
+
+        controller.process(new NotificationSettingsBean("6:1123:CLOSED:test@valexa.com"), true);
+
         verify(mockNotifier);
-        
+
     }
 
     @Test
@@ -110,7 +113,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
 
         replay(mockNotifier);
 
-        controller.process(new NotificationSettingsBean("6:1123:QUANTUMED:test@valexa.com"));
+        controller.process(new NotificationSettingsBean("6:1123:QUANTUMED:test@valexa.com"), true);
 
         verify(mockNotifier);
 
@@ -130,7 +133,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         SimpleDateFormat dateFormat = new SimpleDateFormat(EmailNotificationController.DATE_FORMAT);
         Date expected = dateFormat.parse("20150701");
 
-        Date fromDate = controller.obtainDateFrom();
+        Date fromDate = controller.obtainDateFrom(LAST_RUN_FILE_LOCATION);
         assertEquals(expected, fromDate);
     }
 }
