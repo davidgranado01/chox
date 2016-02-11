@@ -283,7 +283,7 @@ Ext.onReady(function(){
             maxLengthText: 'maximum of 256 characters',
             minLengthText: 'minimum of 5 characters',
             width: 250,
-            height : 50,
+            height : 50
         },{
             xtype : 'hidden',
             id : 'nameId',
