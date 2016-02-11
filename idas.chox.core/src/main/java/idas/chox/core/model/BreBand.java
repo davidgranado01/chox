@@ -2,6 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,7 +173,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossAndStorageFeeCheck;
     private boolean paymentTeamActive;
     private boolean enableClaimAudit;
-    private BigDecimal auditProcessPercentage;
+    private BigDecimal auditProcessPercentage = new BigDecimal(BigInteger.ZERO);
     private boolean breInvoiceSavingActive;
     private boolean pauseSubscriberSlaClock;
     private boolean pauseFixedFeeSlaClock;

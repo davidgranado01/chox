@@ -166,8 +166,8 @@
         <property column="total_loss_storage_fee_check" name="totalLossAndStorageFeeCheck" not-null="true"/>
         <property column="max_allowed_total_loss_net" name="maxAllowedTotalLossNetFee" not-null="true"/>
         <property column="payment_team_active" name="paymentTeamActive" not-null="true"/>
-        <property column="enable_claim_audit" name="enableClaimAudit"/>
-        <property column="audit_process_percentage" name="auditProcessPercentage"/>
+        <property column="enable_claim_audit" name="enableClaimAudit" not-null="true"/>
+        <property column="audit_process_percentage" name="auditProcessPercentage" not-null="true"/>
         <property column="bre_invoice_saving_active" name="breInvoiceSavingActive" not-null="true"/>
         <property column="subscriber_sla_days" name="subscriberSlaDays" not-null="true"/>
         <property column="subscriber_resubmission_allowed" name="subscriberResubmissionAllowed" not-null="true"/>

@@ -234,8 +234,8 @@ GRANT EXECUTE ON FUNCTION audit_facility(IN insurerid integer, IN chorgId intege
 -- TO DO ITEM : 8.10.4 Audit Setup in BRE Bands
 -----------------------------------------------------
 
-ALTER TABLE bre_band ADD COLUMN enable_claim_audit boolean DEFAULT FALSE;
-ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) DEFAULT 0;
+ALTER TABLE bre_band ADD COLUMN enable_claim_audit boolean not null DEFAULT FALSE;
+ALTER TABLE bre_band ADD COLUMN audit_process_percentage numeric(6,2) not null DEFAULT 0;
 
 ALTER TABLE insurer ADD COLUMN claim_audit_review_enable boolean not null DEFAULT  false;
 
