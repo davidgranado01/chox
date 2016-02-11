@@ -16,7 +16,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 @PropertySource("classpath:/application.properties")
 public class Notification {
-    private static String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private @Autowired EmailNotificationController emailNotificationController;
 
@@ -62,14 +62,13 @@ public class Notification {
         if (startDate == null) {
             startDate = getYesterdayDateAsString();
         }
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class);
-
         // extract arguments
-
-        EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-        notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1);
-
-        context.close();
+        try (AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class)) {
+            // extract arguments
+            
+            EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
+            notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1);
+        }
     }
 
     public static void setLIMIT1(boolean lIMIT1) {
