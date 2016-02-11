@@ -7,10 +7,10 @@ Insurer: ${insurer_name}
 Insurer Claim Number: ${insurer_claim_number} 
 Liability Status: ${liability_status}
 Liability Percentage Agreed (Insurer): ${liability_percentage}
+Supporting Liability Note:${liability_note}
 Insurer Claim Owner: ${insurer_claim_owner} 
 Workgroup: ${workgroup}  
 
- ${liability_note}
  
  
 #parse('templates/layout/generic_footer.vm')

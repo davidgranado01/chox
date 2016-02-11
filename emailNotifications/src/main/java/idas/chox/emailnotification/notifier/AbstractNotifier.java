@@ -71,11 +71,11 @@ public abstract class AbstractNotifier implements Notifier {
         boolean maxRecordsShown = false;
 
         try {
+            logger.warn("Extracting data for Manual Email Notifications, using this SQL:");
+            logger.warn(reportQuery);
             Connection conn = this.getConnection();
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = stmt.executeQuery(reportQuery);
-            logger.warn("Extracting data for Manual Email Notifications, using this SQL:");
-            logger.warn(reportQuery);
             int rowcount = 0;
             if (rs.last()) {
                 rowcount = rs.getRow();

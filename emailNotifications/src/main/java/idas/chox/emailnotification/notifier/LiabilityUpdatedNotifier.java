@@ -22,12 +22,12 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
     protected static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, c.percentage_liability_accepted, " +
                     "    getLiabilityStatus(c.liability_status) as liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
-                    "    inv.full_total_to_pay, inv.total_to_pay, co.comment as liability_status_note " +
+                    "    inv.full_total_to_pay, inv.total_to_pay, substring(co.comment from 28) as liability_status_note " +
 
                     "from claim c  " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%’ and co.created_date between '%s' and '%s' )," +
+                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%' and co.created_date between '%s' and '%s' )," +
                     "    insurer i, invoice inv " +
 
                     "where c.insurer_id = %s and c.chorganisation_id = %s  " +
@@ -52,7 +52,7 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
         String dateFromString = dateFormat.format(dateFrom);
         String dateToString = dateFormat.format(dateTo);
 
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString, dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
+        String reportQuery = String.format(BASE_QUERY, dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString, settings.getInsurerId(), settings.getChoId(), dateFromString, dateToString);
         this.runReport(settings, reportQuery, enableEmails);
 
     }

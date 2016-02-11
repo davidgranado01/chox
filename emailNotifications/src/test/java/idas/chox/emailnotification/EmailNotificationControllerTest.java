@@ -21,19 +21,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.easymock.EasyMock;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmailNotificationControllerTest extends AbstractEmailNotificationTest {
 
     private static final String SETTINGS_FILE_LOCATION = "./src/test/resources/settings.txt";
-    private static final String LAST_RUN_FILE_LOCATION = "./src/test/resources/lastrun.txt";
 
     private @Autowired EmailNotificationController controller;
 
     // Enable FULL test if required. Otherwise, suppress to prevent spam
-    @Ignore
+    // @Ignore
     @Test
     public void testController() {
 
@@ -41,7 +39,8 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         Notification.setLIMIT1(true);
 
         // Run the core process
-        Notification.main(null);
+        String[] mainParameters = { SETTINGS_FILE_LOCATION, "20151125", "true" };
+        Notification.main(mainParameters);
     }
 
     @Test
@@ -133,7 +132,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         SimpleDateFormat dateFormat = new SimpleDateFormat(EmailNotificationController.DATE_FORMAT);
         Date expected = dateFormat.parse("20150701");
 
-        Date fromDate = controller.obtainDateFrom(LAST_RUN_FILE_LOCATION);
+        Date fromDate = controller.obtainDateFrom("20150701");
         assertEquals(expected, fromDate);
     }
 }
