@@ -26,21 +26,18 @@ public class InvoicePaidNotifier extends AbstractNotifier implements Notifier {
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id), " +
                     "    insurer i, audit_trail at, invoice inv " +
 
-                    "where c.insurer_id = %s and c.chorganisation_id = %s  " +
+                    "where c.insurer_id = :insId and c.chorganisation_id = :choId  " +
                     "    and i.id = c.insurer_id  " +
                     "    and claim_type in (10,14,15,16,17) " +
                     "    and at.claim_id = c.id  " +
                     "    and c.invoice_id = inv.id " +
                     "    and at.new_status = 'ManualInvoicePaid'  " +
                     "    and at.original_status = 'AwaitingInvoicePayment' " +
-                    "    and at.reverted = false and at.created_date between '%s' and '%s';";
+                    "    and at.reverted = false and at.created_date between :startDate and :endDate";
 
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
-
-        String reportQuery = String.format(BASE_QUERY, settings.getInsurerId(), settings.getChoId(), dateFrom, dateTo);
-        this.runReport(settings, reportQuery, enableEmails);
-
+        this.runReport(settings, BASE_QUERY, dateFrom, dateTo, enableEmails);
     }
 
     @Override

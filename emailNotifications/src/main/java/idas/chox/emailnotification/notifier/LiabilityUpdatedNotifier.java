@@ -24,14 +24,14 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
                     "from claim c  " +
                     "    left outer join workgroup w on (c.workgroup_id = w.id) " +
                     "    left outer join web_user wu on (c.claim_owner_id = wu.id) " +
-                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%%' and co.created_date between '%s' and '%s' )," +
+                    "    left outer join comment co on (c.id = co.claim_id and co.comment like 'Supporting Liability Notes:%' and co.created_date between :startDate and :endDate )," +
                     "    insurer i, invoice inv " +
 
-                    "where c.insurer_id = %s and c.chorganisation_id = %s  " +
+                    "where c.insurer_id = :insId and c.chorganisation_id = :choId  " +
                     "    and i.id = c.insurer_id  " +
                     "    and claim_type in (10,14,15,16,17) " +
                     "    and c.invoice_id = inv.id " +
-                    "    and c.liability_status_modified_date between '%s' and '%s' " +
+                    "    and c.liability_status_modified_date between :startDate and :endDate " +
                     
                     "    and not exists " +
                     " ( select * from audit_trail audit " +
@@ -39,15 +39,12 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
                     "    and audit.new_status='AwaitingCarHireInfo' " +
                     "    and audit.original_status in('ClaimUnacknowledgedRouted','ClaimPending') " +
                     "    and audit.reverted = false " +
-                    "    and audit.created_date between c.liability_status_modified_date - interval '2 seconds' and c.liability_status_modified_date + interval '2 seconds');";
+                    "    and audit.created_date between c.liability_status_modified_date - interval '2 seconds' and c.liability_status_modified_date + interval '2 seconds')";
 
 
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
-
-        String reportQuery = String.format(BASE_QUERY, dateFrom, dateTo, settings.getInsurerId(), settings.getChoId(), dateFrom, dateTo);
-        this.runReport(settings, reportQuery, enableEmails);
-
+        this.runReport(settings, BASE_QUERY, dateFrom, dateTo, enableEmails);
     }
 
     @Override

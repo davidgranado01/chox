@@ -9,8 +9,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +65,7 @@ public abstract class AbstractNotifier implements Notifier {
         return connection;
     }
 
-    protected void runReport(NotificationSettingsBean settings, String reportQuery, boolean enableEmails) {
+    protected void runReport(NotificationSettingsBean settings, String reportQuery, String startDate, String endDate, boolean enableEmails) {
 
         // Restrict to records produced (if limit1 is set to TRUE)
         boolean maxRecordsShown = false;
@@ -73,8 +73,12 @@ public abstract class AbstractNotifier implements Notifier {
         try {
             logger.debug("Extracting data for Manual Email Notifications, using this SQL:\n{}", reportQuery);
             Connection conn = this.getConnection();
-            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = stmt.executeQuery(reportQuery);
+            NamedParameterStatement stmt = new NamedParameterStatement(conn, reportQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stmt.setInt("insId", settings.getInsurerId());
+            stmt.setInt("choId", settings.getChoId());
+            stmt.setTimestamp("startDate", Timestamp.valueOf(startDate + " 00:00:00"));
+            stmt.setTimestamp("endDate", Timestamp.valueOf(endDate + " 00:00:00"));
+            ResultSet rs = stmt.executeQuery();
             int rowcount = 0;
             if (rs.last()) {
                 rowcount = rs.getRow();
