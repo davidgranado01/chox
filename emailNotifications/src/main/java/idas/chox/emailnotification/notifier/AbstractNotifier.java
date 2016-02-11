@@ -71,8 +71,16 @@ public abstract class AbstractNotifier implements Notifier {
 
         try {
             Connection conn = this.getConnection();
-            Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = stmt.executeQuery(reportQuery);
+            logger.warn("Extracting data for Manual Email Notifications, using this SQL:");
+            logger.warn(reportQuery);
+            int rowcount = 0;
+            if (rs.last()) {
+                rowcount = rs.getRow();
+                rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+            }
+            logger.warn(String.format("This query has recovered %s records.", rowcount));
             while (rs.next()) {
                 if (!maxRecordsShown) {
                     processRecord(rs, settings.getEmailAddressses());
