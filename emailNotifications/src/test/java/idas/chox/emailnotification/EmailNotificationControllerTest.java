@@ -118,21 +118,4 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
 
     }
 
-    @Test
-    public void testObtainDateTo() {
-         Date now = new Date();  
-         Date  toDate = controller.obtainDateTo();
-        assertFalse(toDate.before(now));
-    }
-
-    @Test
-    public void testObtainDateFrom() throws ParseException {
-        // NOTE this test relies upon the value in lastrun.txt
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(EmailNotificationController.DATE_FORMAT);
-        Date expected = dateFormat.parse("20150701");
-
-        Date fromDate = controller.obtainDateFrom("20150701");
-        assertEquals(expected, fromDate);
-    }
 }

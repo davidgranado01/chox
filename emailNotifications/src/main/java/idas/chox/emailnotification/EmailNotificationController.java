@@ -14,10 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +29,6 @@ import org.springframework.stereotype.Component;
 public class EmailNotificationController {
 
     private static final String COMMENT = "#";
-    protected static final String DATE_FORMAT = "yyyyMMdd";
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -99,27 +95,6 @@ public class EmailNotificationController {
             notifier.getAndProcessNotificationData(setting, startDate, endDate, enableEmails);
         }
     }
-
-
-    public Date obtainDateFrom(String dateFromString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        // Default to yesterday if no date provided
-        if (dateFromString == null) {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-            return cal.getTime();
-        }
-        try {
-            return dateFormat.parse(dateFromString);
-        } catch (Throwable e) {
-            throw new RuntimeException(String.format("Unable to extract date (format yyyyMMdd) from %s", dateFromString), e);
-        }
-    }
-
-    public Date obtainDateTo() {
-        return new Date();
-    }
-
 
     public void registerNotifiers(boolean limit1) {
         notifiers.put(NotificationType.CLOSED, claimClosedNotifier);
