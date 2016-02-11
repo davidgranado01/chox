@@ -347,7 +347,7 @@ INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active,
     SELECT id, 'Out Of Scope', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
-                created_by, created_date, last_modified_by, last_modified_date, version
+                created_by, created_date, last_modified_by, last_modified_date, version)
     SELECT id, 'Payment Received In Full', 'Closure', '', true, true, true, true, true, true, true, false, 999, now(), 999, now(), 0 from insurer;
 INSERT INTO reason_of_rejection(insurer_id, name, type, description, gta_active, insurer_vs_insurer_active, subscriber_active,
                 insurer_upload_active, tpi_active, fixed_fee_active, collaboration_active, restricted,
