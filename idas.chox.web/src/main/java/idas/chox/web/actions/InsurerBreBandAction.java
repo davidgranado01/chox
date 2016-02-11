@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BrePenaltyBandViewData;
-import idas.chox.web.viewdata.InsurerBreBandViewData;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -42,7 +40,6 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private String objectId;
     private int insurerId = -1;
     private BreBand model;
-    private List<InsurerBreBandViewData> insurerBreBands;
     private AdminInsurerService adminInsurerService;
     private String protocolVehicleClassCeilingRecords;
     private String penaltyBandRecords;
@@ -76,11 +73,6 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setPenaltyBandRecords(String penaltyBandRecords) {
         this.penaltyBandRecords = penaltyBandRecords;
-    }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerBreBands);
-        return "{totalCount:" + this.insurerBreBands.size() + ",results:" + jObject.toString() + "}";
     }
 
     public boolean getIsNew() {
@@ -119,39 +111,25 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void prepare() throws Exception {
         try {
 
-            model = new BreBand();
-
             if (objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getBreBand(Integer.valueOf(this.objectId));
                     addModelToSession(Arrays.asList(model));
                 }
             }
-
-        } catch (Exception ex) {
-            handleException(ex);
-        }
-    }
-
-    public String getInsurerBreBands() {
-        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
-            throw new AccessDeniedException("Trying to get the insurer BRE Bands for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-        }
-
-        try {
-
-            List<BreBand> insurerBreBandData = adminInsurerService.getInsurerBreBands(this.insurerId);
-            insurerBreBands = new ArrayList<>();
-            for (BreBand h : insurerBreBandData) {
-                insurerBreBands.add(new InsurerBreBandViewData(h));
+            
+            if (model == null) {
+                model = new BreBand();
+                // Set insurer to the new BreBand. Used to access insurer settings in the UI.
+                if (insurerId > 0) {
+                    LOG.debug("Attaching insurer id: {} to the new BreBand.", insurerId);
+                    model.setInsurer(adminInsurerService.getInsurer(insurerId));
+                }
             }
 
         } catch (Exception ex) {
             handleException(ex);
-            return ERROR;
         }
-
-        return SUCCESS;
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
