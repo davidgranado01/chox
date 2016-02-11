@@ -83,7 +83,7 @@ public abstract class AbstractNotifier implements Notifier {
                 rowcount = rs.getRow();
                 rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
             }
-            logger.info("This query for '{}' has recovered {} records.", this.getClass(), rowcount);
+            logger.info("The query for '{}' has recovered {} records.", this.getClass().getSimpleName(), rowcount);
 
             while (rs.next()) {
                 if (!maxRecordsShown) {
