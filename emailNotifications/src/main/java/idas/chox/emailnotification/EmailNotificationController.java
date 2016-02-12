@@ -52,7 +52,7 @@ public class EmailNotificationController {
             if (enableEmails) {
                 try {
                     logger.info("Sleeping for {} seconds", noEmailsSent);
-                    Thread.sleep(noEmailsSent*1000); // Wait 1 second for each email sent
+                    Thread.sleep(noEmailsSent*500); // Wait 0.5 second for each email sent
                 } catch (InterruptedException e) {
                     logger.error("Sllep interrupted: %s", e.getMessage());
                 }
