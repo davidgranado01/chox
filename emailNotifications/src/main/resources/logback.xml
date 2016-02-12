@@ -38,6 +38,7 @@
     
     <logger name="emailNotifications" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="mail"/>
     </logger>
     
     <root level="INFO">
