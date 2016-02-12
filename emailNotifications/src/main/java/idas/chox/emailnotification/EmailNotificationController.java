@@ -46,10 +46,19 @@ public class EmailNotificationController {
         logger.info("Starting email notifier with parameters: startDate='{}', endDate='{}', enableEmails={}", new Object[]{startDate, endDate, enableEmails});
         List<NotificationSettingsBean> settings = this.loadSettingsFile(settingsFile);
         this.registerNotifiers(limit1);
+        int noEmailsSent = 0;
         for (NotificationSettingsBean setting : settings) {
-            this.process(setting, startDate, endDate, enableEmails);
+            noEmailsSent += process(setting, startDate, endDate, enableEmails);
+            if (enableEmails && noEmailsSent % 50 == 0) {
+                try {
+                    logger.info("Sleeping for {} seconds", noEmailsSent);
+                    Thread.sleep(noEmailsSent*1000); // Wait 1 second for each email sent
+                } catch (InterruptedException e) {
+                    logger.error("Sllep interrupted: %s", e.getMessage());
+                }
+            }
         }
-        logger.info("Finishing email notifier.");
+        logger.info("Finishing email notifier - sent {} email", noEmailsSent);
     }
 
     private List<NotificationSettingsBean> loadSettingsFile(String settingsFile) {
@@ -92,13 +101,15 @@ public class EmailNotificationController {
         return settings;
     }
 
-    public void process(NotificationSettingsBean setting, String startDate, String endDate, boolean enableEmails) {
+    public int process(NotificationSettingsBean setting, String startDate, String endDate, boolean enableEmails) {
         Notifier notifier = notifiers.get(setting.getType());
         if (notifier == null) {
             logger.error("Unable to find Notifier for email type {}.", setting.getType());
         } else {
-            notifier.getAndProcessNotificationData(setting, startDate, endDate, enableEmails);
+            return notifier.getAndProcessNotificationData(setting, startDate, endDate, enableEmails);
         }
+        
+        return 0;
     }
 
     public void registerNotifiers(boolean limit1) {

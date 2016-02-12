@@ -46,15 +46,19 @@ public abstract class AbstractNotifier implements Notifier {
     protected abstract String getQueryString();
     
     @Override
-    public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
+    public int getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
         if (enableEmails) {
             transport = emailHelper.getTransport();
         }
-        this.runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
+        
+        int noProcessed = runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
+        
         if (enableEmails) {
             emailHelper.closeTransport(transport);
             transport = null;
         }
+        
+        return noProcessed;
     }
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {
@@ -78,43 +82,54 @@ public abstract class AbstractNotifier implements Notifier {
         return connection;
     }
 
-    protected void runReport(NotificationSettingsBean settings, String reportQuery, String startDate, String endDate, boolean enableEmails) {
+    protected int runReport(NotificationSettingsBean settings, String reportQuery, String startDate, String endDate, boolean enableEmails) {
 
         // Restrict to records produced (if limit1 is set to TRUE)
         boolean maxRecordsShown = false;
+        int rowcount = 0;
 
         try {
             logger.debug("Extracting data for Manual Email Notifications, using this SQL:\n{}", reportQuery);
-            Connection conn = this.getConnection();
-            NamedParameterStatement stmt = new NamedParameterStatement(conn, reportQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            stmt.setInt("insId", settings.getInsurerId());
-            stmt.setInt("choId", settings.getChoId());
-            stmt.setTimestamp("startDate", Timestamp.valueOf(startDate + " 00:00:00"));
-            stmt.setTimestamp("endDate", Timestamp.valueOf(endDate + " 00:00:00"));
-            ResultSet rs = stmt.executeQuery();
-            int rowcount = 0;
-            if (rs.last()) {
-                rowcount = rs.getRow();
-                rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
-            }
-            logger.info("The query for '{}' has recovered {} records.", this.getClass().getSimpleName(), rowcount);
-
-            while (rs.next()) {
-                if (!maxRecordsShown) {
-                    processRecord(rs, settings.getEmailAddressses(), enableEmails);
-
-                    if (limit1) {
-                        // It limit records is switched on then set max records to true
-                        maxRecordsShown = true;
+            try (Connection conn = this.getConnection()) {
+                NamedParameterStatement stmt = new NamedParameterStatement(conn, reportQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                stmt.setInt("insId", settings.getInsurerId());
+                stmt.setInt("choId", settings.getChoId());
+                stmt.setTimestamp("startDate", Timestamp.valueOf(startDate + " 00:00:00"));
+                stmt.setTimestamp("endDate", Timestamp.valueOf(endDate + " 00:00:00"));
+                ResultSet rs = stmt.executeQuery();
+                if (rs.last()) {
+                    rowcount = rs.getRow();
+                    rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+                }
+                logger.info("The query for '{}' has recovered {} records.", this.getClass().getSimpleName(), rowcount);
+                
+                int noProcessed = 0;
+                while (rs.next()) {
+                    if (!maxRecordsShown) {
+                        if (enableEmails && noProcessed++ % 10 == 0) {
+                            try {
+                                logger.info("Sleeping for {} seconds", noProcessed);
+                                Thread.sleep(noProcessed * 1000); // Wait 1 second for each email sent
+                            } catch (InterruptedException e) {
+                                logger.error("Sleep interrupted: %s", e.getMessage());
+                            }
+                        }
+                        
+                        processRecord(rs, settings.getEmailAddressses(), enableEmails);
+                        
+                        if (limit1) {
+                            // It limit records is switched on then set max records to true
+                            maxRecordsShown = true;
+                        }
                     }
                 }
+                rs.close();
+                stmt.close();
             }
-            rs.close();
-            stmt.close();
-            conn.close();
         } catch (Exception e) {
             throw new RuntimeException("Unable to get Email Notification data from CHOX database.", e);
         }
+        return rowcount;
     }
 
     private String generateMessageText(String template, Map<String, Object> model) {
