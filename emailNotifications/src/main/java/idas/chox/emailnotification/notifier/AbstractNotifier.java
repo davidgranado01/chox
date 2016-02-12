@@ -34,11 +34,11 @@ public abstract class AbstractNotifier implements Notifier {
     private @Autowired EmailHelper emailHelper;
     private @Autowired VelocityEngine velocityEngine;
 
-    protected static final String DATE_FORMAT = "yyyy-MM-dd";
-    protected boolean limit1 = false;
-    protected Transport transport;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private boolean limit1 = false;
+    private Transport transport;
 
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected abstract void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException;
 
@@ -46,10 +46,14 @@ public abstract class AbstractNotifier implements Notifier {
     
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
-        transport = emailHelper.getTransport();
+        if (enableEmails) {
+            transport = emailHelper.getTransport();
+        }
         this.runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
-        emailHelper.closeTransport(transport);
-        transport = null;
+        if (enableEmails) {
+            emailHelper.closeTransport(transport);
+            transport = null;
+        }
     }
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {

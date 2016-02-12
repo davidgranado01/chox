@@ -38,11 +38,12 @@ public class EmailHelper {
         Transport transport = null;
         try {
         Session session = loadSession();
-            transport = session.getTransport("smtp");
+        transport = session.getTransport("smtp");
 
-        transport.connect("example@gmail.com", "password");
+        transport.connect();
+        LOG.debug("Transport connected");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Unable to connect to Email transport: {}", e.getMessage(), e);
         }
         return transport;
     }
@@ -50,9 +51,9 @@ public class EmailHelper {
     public void closeTransport(Transport transport) {
         try {
             transport.close();
+            LOG.debug("Transport closed");
         } catch (MessagingException e) {
-            LOG.error("Unable to close Email transport", e);
-            e.printStackTrace();
+            LOG.error("Unable to close Email transport: %d", e.getMessage(), e);
         }
     }
 
