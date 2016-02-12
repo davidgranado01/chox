@@ -1,7 +1,5 @@
 package idas.chox.emailnotification.config;
 
-import idas.chox.core.util.EmailHelper;
-
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
+
+import idas.chox.emailnotification.util.EmailHelper;
 
 @Configuration
 @PropertySource("classpath:application.properties")

@@ -1,16 +1,7 @@
 package idas.chox.emailnotification;
 
-import idas.chox.emailnotification.config.NotificationSettingsBean;
-import idas.chox.emailnotification.config.NotificationType;
-import idas.chox.emailnotification.notifier.ClaimAcknowledgedNotifier;
-import idas.chox.emailnotification.notifier.ClaimClosedNotifier;
-import idas.chox.emailnotification.notifier.InvoiceContestedNotifier;
-import idas.chox.emailnotification.notifier.InvoicePaidNotifier;
-import idas.chox.emailnotification.notifier.LiabilityUpdatedNotifier;
-import idas.chox.emailnotification.notifier.Notifier;
-import idas.chox.emailnotification.notifier.QuantumAgreedNotifier;
-
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,6 +15,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import idas.chox.emailnotification.config.NotificationSettingsBean;
+import idas.chox.emailnotification.config.NotificationType;
+import idas.chox.emailnotification.notifier.ClaimAcknowledgedNotifier;
+import idas.chox.emailnotification.notifier.ClaimClosedNotifier;
+import idas.chox.emailnotification.notifier.InvoiceContestedNotifier;
+import idas.chox.emailnotification.notifier.InvoicePaidNotifier;
+import idas.chox.emailnotification.notifier.LiabilityUpdatedNotifier;
+import idas.chox.emailnotification.notifier.Notifier;
+import idas.chox.emailnotification.notifier.QuantumAgreedNotifier;
 
 @Component("notificationController")
 public class EmailNotificationController {
@@ -41,9 +42,9 @@ public class EmailNotificationController {
 
     private Map<NotificationType, Notifier> notifiers = new HashMap<>();
 
-    public void start(String startDate, String endDate, boolean enableEmails, boolean limit1) {
+    public void start(String startDate, String endDate, boolean enableEmails, boolean limit1, String settingsFile) {
         logger.info("Starting email notifier with parameters: startDate='{}', endDate='{}', enableEmails={}", new Object[]{startDate, endDate, enableEmails});
-        List<NotificationSettingsBean> settings = this.loadSettingsFileFromClasspath();
+        List<NotificationSettingsBean> settings = this.loadSettingsFile(settingsFile);
         this.registerNotifiers(limit1);
         for (NotificationSettingsBean setting : settings) {
             this.process(setting, startDate, endDate, enableEmails);
@@ -51,18 +52,21 @@ public class EmailNotificationController {
         logger.info("Finishing email notifier.");
     }
 
-    public List<NotificationSettingsBean> loadSettingsFileFromClasspath() {
+    private List<NotificationSettingsBean> loadSettingsFile(String settingsFile) {
         List<NotificationSettingsBean> settings = new ArrayList<>();
         
         BufferedReader in = null;
         try {
-            InputStream settingsStream = getClass().getResourceAsStream("/settings.txt");
-            if (settingsStream == null) {
-                logger.error("Cannot load resouce file from classpath");
-                throw new RuntimeException("Cannot load resouce file from classpath");
+            if (settingsFile == null) {
+                InputStream settingsStream = getClass().getResourceAsStream("/settings.txt");
+                if (settingsStream == null) {
+                    logger.error("Cannot load resouce file from classpath");
+                    throw new RuntimeException("Cannot load resouce file (settings.txt) from classpath");
+                }
+                in = new BufferedReader(new InputStreamReader(settingsStream));
+            } else {
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(settingsFile)));
             }
-            in = new BufferedReader(new InputStreamReader(settingsStream));
-
             String settingsString;
 
             while ((settingsString = in.readLine()) != null) {
@@ -72,6 +76,7 @@ public class EmailNotificationController {
             }
 
         } catch (IOException ex) {
+            logger.error("Unable to read settings file '{}'", settingsFile);
             String message = String.format("Unable to read the settings file: {}", ex.getMessage());
             throw new RuntimeException(message, ex);
         } finally {

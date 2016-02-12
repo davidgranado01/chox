@@ -1,7 +1,5 @@
 package idas.chox.emailnotification.notifier;
 
-import idas.chox.emailnotification.config.NotificationSettingsBean;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuantumAgreedNotifier extends AbstractNotifier implements Notifier {
 
-    protected static final String TEMPLATE_LOCATION = "templates/quantum_agreed_manual_claim_notification.vm";
-    protected static final String SUBJECT = "%s Supplier Reference: %s Quantum Agreeed Notification";
-    protected static final String BASE_QUERY = //
+    private static final String TEMPLATE_LOCATION = "templates/quantum_agreed_manual_claim_notification.vm";
+    private static final String SUBJECT = "%s Supplier Reference: %s Quantum Agreeed Notification";
+    private static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, c.percentage_liability_accepted, " +
                     "    getLiabilityStatus(c.liability_status) as liability_status, wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " +
                     "    inv.full_total_to_pay, inv.total_to_pay " +
@@ -35,9 +33,7 @@ public class QuantumAgreedNotifier extends AbstractNotifier implements Notifier 
                     "    and at.reverted = false and at.created_date between :startDate and :endDate";
 
     @Override
-    public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
-        this.runReport(settings, BASE_QUERY, dateFrom, dateTo, enableEmails);
-    }
+    public String getQueryString() { return BASE_QUERY;}
 
     @Override
     protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {

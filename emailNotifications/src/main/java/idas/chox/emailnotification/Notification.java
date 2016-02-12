@@ -1,6 +1,8 @@
 package idas.chox.emailnotification;
 
-import idas.chox.emailnotification.config.EmailNotificationConfig;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.AbstractApplicationContext;
+
+import idas.chox.emailnotification.config.EmailNotificationConfig;
 
 @PropertySource("classpath:/application.properties")
 public class Notification {
@@ -32,6 +36,7 @@ public class Notification {
 
     public static void main(String[] args) {
         String startDate = null;
+        String settingsOverideFile = null;
         boolean enableEmails = false;
         
         // check command-line arguments
@@ -53,6 +58,15 @@ public class Notification {
                         showUsageAndExit();
                     }
                     break;
+                case "-settings":
+                    if (i+1 >= args.length) {
+                        showUsageAndExit();
+                    }
+                    settingsOverideFile = args[++i];
+                    if (!isFileReadable(settingsOverideFile)) {
+                        showUsageAndExit();
+                    }
+                    break;
                 default:
                     showUsageAndExit();
                     break;
@@ -67,7 +81,7 @@ public class Notification {
             // extract arguments
             
             EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-            notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1);
+            notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1, settingsOverideFile);
         }
     }
 
@@ -77,7 +91,7 @@ public class Notification {
 
 
     protected static void showUsageAndExit() {
-        System.out.println("Usage: java -jar <jarfilename> [-sendEmails] [-startDate yyyy-mm-dd]"); // NOSONAR
+        System.out.println("Usage: java -jar <jarfilename> [-sendEmails] [-startDate yyyy-mm-dd] [-settings <settingsFile>]"); // NOSONAR
         System.exit(-1);
     }
     
@@ -86,5 +100,16 @@ public class Notification {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);    
         return dateFormat.format(cal.getTime());
+    }
+    
+    private static boolean isFileReadable(String filename) {
+        boolean result = false;
+        
+        Path file = Paths.get(filename);
+        
+        if (Files.isRegularFile(file) && Files.isReadable(file)) {
+            return true;
+        }
+        return result;
     }
 }

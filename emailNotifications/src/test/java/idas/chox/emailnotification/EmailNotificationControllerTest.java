@@ -1,28 +1,22 @@
 package idas.chox.emailnotification;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.easymock.EasyMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import idas.chox.emailnotification.config.NotificationSettingsBean;
 import idas.chox.emailnotification.config.NotificationType;
 import idas.chox.emailnotification.notifier.Notifier;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.easymock.EasyMock;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmailNotificationControllerTest extends AbstractEmailNotificationTest {
 
@@ -41,20 +35,6 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         // Run the core process
         String[] mainParameters = { SETTINGS_FILE_LOCATION, "20151125", "true" };
         Notification.main(mainParameters);
-    }
-
-    @Test
-    public void testLoadSettings() {
-        List<NotificationSettingsBean> settings = controller.loadSettingsFileFromClasspath();
-        assertNotNull(settings);
-        assertTrue(settings.size() >= 1);
-
-        NotificationSettingsBean bean = settings.get(0);
-        assertTrue(bean.getEmailAddressses().size() >= 1);
-        assertNotNull(bean.getInsurerId());
-        assertNotNull(bean.getChoId());
-        assertNotNull(bean.getType());
-
     }
 
     @Test
@@ -80,17 +60,15 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         Notifier mockNotifier = EasyMock.createMock(Notifier.class);
         testNotifiers.put(NotificationType.CLOSED, mockNotifier);
 
-        Date now = new Date();
+        String now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         controller.setNotifiers(testNotifiers);
-//        controller.setDateFrom(now);
-//        controller.setDateTo(now);
 
-//        mockNotifier.getAndProcessNotificationData(isA(NotificationSettingsBean.class), isA(Date.class), isA(Date.class), isA(Boolean.class));
+        mockNotifier.getAndProcessNotificationData(isA(NotificationSettingsBean.class), now, now, isA(Boolean.class));
         expectLastCall();
         replay(mockNotifier);
 
-//        controller.process(new NotificationSettingsBean("6:1123:CLOSED:test@valexa.com"), true);
+        controller.process(new NotificationSettingsBean("6:1123:CLOSED:test@valexa.com"), now, now, true);
 
         verify(mockNotifier);
 
@@ -104,15 +82,13 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         Notifier mockNotifier = EasyMock.createMock(Notifier.class);
         testNotifiers.put(NotificationType.CLOSED, mockNotifier);
 
-        Date now = new Date();
+        String now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         controller.setNotifiers(testNotifiers);
-//        controller.setDateFrom(now);
-//        controller.setDateTo(now);
 
         replay(mockNotifier);
 
-//        controller.process(new NotificationSettingsBean("6:1123:QUANTUMED:test@valexa.com"), true);
+        controller.process(new NotificationSettingsBean("6:1123:QUANTUMED:test@valexa.com"), now, now, true);
 
         verify(mockNotifier);
 

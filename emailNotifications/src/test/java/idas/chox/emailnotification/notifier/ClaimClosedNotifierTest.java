@@ -1,5 +1,6 @@
 package idas.chox.emailnotification.notifier;
 
+
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expectLastCall;
@@ -7,11 +8,11 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
-import idas.chox.core.util.EmailHelper;
-import idas.chox.emailnotification.config.NotificationSettingsBean;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import idas.chox.emailnotification.util.EmailHelper;
+import idas.chox.emailnotification.config.NotificationSettingsBean;
 
 public class ClaimClosedNotifierTest extends AbstractNotifierTest {
 
@@ -36,7 +37,7 @@ public class ClaimClosedNotifierTest extends AbstractNotifierTest {
 
         replay(mockEmailHelper);
 
-//        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo, true);
+        notifier.getAndProcessNotificationData(getSettings(), defaultFrom, defaultTo, true);
 
         verify(mockEmailHelper);
     }

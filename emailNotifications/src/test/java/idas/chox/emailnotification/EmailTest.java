@@ -1,15 +1,15 @@
 package idas.chox.emailnotification;
 
-import static org.junit.Assert.assertNotNull;
-import idas.chox.core.util.EmailHelper;
-
 import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import idas.chox.emailnotification.util.EmailHelper;
 
 public class EmailTest extends AbstractEmailNotificationTest {
 
