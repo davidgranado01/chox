@@ -2,18 +2,17 @@ package idas.chox.emailnotification.notifier;
 
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import idas.chox.emailnotification.util.EmailHelper;
 import idas.chox.emailnotification.AbstractEmailNotificationTest;
 import idas.chox.emailnotification.config.NotificationSettingsBean;
+import idas.chox.emailnotification.util.EmailHelper;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractNotifierTest extends AbstractEmailNotificationTest {
 
     private @Autowired EmailHelper autowiredEmailHelper;
 
-    protected static final String DATE_FORMAT = "yyyyMMdd";
     protected String defaultFrom = "2015-01-01";
     protected String defaultTo = "2015-01-08";
 
@@ -22,6 +21,7 @@ public abstract class AbstractNotifierTest extends AbstractEmailNotificationTest
     public abstract NotificationSettingsBean getSettings();
 
     public AbstractNotifierTest() throws Exception {
+
     }
 
     @Test

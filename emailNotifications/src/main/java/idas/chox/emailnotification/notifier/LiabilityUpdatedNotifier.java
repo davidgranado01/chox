@@ -40,8 +40,10 @@ public class LiabilityUpdatedNotifier extends AbstractNotifier implements Notifi
                     "    and audit.created_date between c.liability_status_modified_date - interval '2 seconds' and c.liability_status_modified_date + interval '2 seconds')";
 
 
+
     @Override
     public String getQueryString() { return BASE_QUERY;}
+
 
     @Override
     protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {

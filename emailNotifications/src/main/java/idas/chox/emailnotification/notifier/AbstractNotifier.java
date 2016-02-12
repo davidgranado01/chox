@@ -1,5 +1,8 @@
 package idas.chox.emailnotification.notifier;
 
+import idas.chox.emailnotification.config.NotificationSettingsBean;
+import idas.chox.emailnotification.util.EmailHelper;
+
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,9 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.velocity.VelocityEngineUtils;
-
-import idas.chox.emailnotification.util.EmailHelper;
-import idas.chox.emailnotification.config.NotificationSettingsBean;
 
 public abstract class AbstractNotifier implements Notifier {
 
@@ -46,6 +46,7 @@ public abstract class AbstractNotifier implements Notifier {
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
         this.runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
+
     }
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {

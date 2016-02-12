@@ -1,5 +1,7 @@
 package idas.chox.emailnotification;
 
+import idas.chox.emailnotification.config.EmailNotificationConfig;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,16 +18,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import idas.chox.emailnotification.config.EmailNotificationConfig;
-
 @PropertySource("classpath:/application.properties")
 public class Notification {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private @Autowired EmailNotificationController emailNotificationController;
 
-    // Include mechanism to limit to single email (prevent spam when testing)
-    private static boolean LIMIT1 = false;
 
     public Notification() {
         @SuppressWarnings("resource")
@@ -38,6 +36,7 @@ public class Notification {
         String startDate = null;
         String settingsOverideFile = null;
         boolean enableEmails = false;
+        boolean limit1 = false;
         
         // check command-line arguments
         for (int i= 0; i < args.length; i++) {
@@ -57,7 +56,7 @@ public class Notification {
                     } catch (ParseException e) {
                         showUsageAndExit();
                     }
-                    break;
+                    break; 
                 case "-settings":
                     if (i+1 >= args.length) {
                         showUsageAndExit();
@@ -66,7 +65,10 @@ public class Notification {
                     if (!isFileReadable(settingsOverideFile)) {
                         showUsageAndExit();
                     }
-                    break;
+                    break; 
+            case "-limit1":
+                limit1 = true;
+                break; 
                 default:
                     showUsageAndExit();
                     break;
@@ -76,18 +78,16 @@ public class Notification {
         if (startDate == null) {
             startDate = getYesterdayDateAsString();
         }
-        // extract arguments
+
         try (AbstractApplicationContext context = new AnnotationConfigApplicationContext(EmailNotificationConfig.class)) {
-            // extract arguments
             
             EmailNotificationController notificationController = (EmailNotificationController) context.getBean("notificationController");
-            notificationController.start(startDate, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), enableEmails, LIMIT1, settingsOverideFile);
+
+            notificationController.start(startDate, new SimpleDateFormat(DATE_FORMAT).format(new Date()), enableEmails, limit1, settingsOverideFile);
+
         }
     }
 
-    public static void setLIMIT1(boolean lIMIT1) {
-        LIMIT1 = lIMIT1;
-    }
 
 
     protected static void showUsageAndExit() {

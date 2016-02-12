@@ -34,6 +34,7 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
     @Override
     public String getQueryString() { return BASE_QUERY;}
 
+
     @Override
     protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {
         String[] emailTo = (String[]) recipients.toArray();
@@ -61,5 +62,6 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
             generateAndSendEmail(subject, TEMPLATE_LOCATION, data, emailTo);
         }
     }
+
 
 }

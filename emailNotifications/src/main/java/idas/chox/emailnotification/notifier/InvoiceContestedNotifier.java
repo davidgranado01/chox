@@ -33,8 +33,10 @@ public class InvoiceContestedNotifier extends AbstractNotifier implements Notifi
                     "    and at.original_status in('ManualInvoiceBRERejected', 'ManualInvoiceBREApproved') " +
                     "    and at.reverted = false and at.created_date between :startDate and :endDate";
 
+
     @Override
     public String getQueryString() { return BASE_QUERY;}
+
 
     @Override
     protected void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException {
