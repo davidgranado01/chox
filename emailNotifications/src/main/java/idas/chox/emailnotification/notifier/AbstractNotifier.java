@@ -106,14 +106,15 @@ public abstract class AbstractNotifier implements Notifier {
                 int noProcessed = 0;
                 while (rs.next()) {
                     if (!maxRecordsShown) {
-                        if (enableEmails && noProcessed++ % 10 == 0) {
+                        if (enableEmails && noProcessed % 10 == 0) {
                             try {
                                 logger.info("Sleeping for {} seconds", noProcessed);
-                                Thread.sleep(noProcessed * 1000); // Wait 1 second for each email sent
+                                Thread.sleep(noProcessed * 500); // Wait half a second for each email sent
                             } catch (InterruptedException e) {
                                 logger.error("Sleep interrupted: %s", e.getMessage());
                             }
                         }
+                        noProcessed++;
                         
                         processRecord(rs, settings.getEmailAddressses(), enableEmails);
                         

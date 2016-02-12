@@ -49,7 +49,7 @@ public class EmailNotificationController {
         int noEmailsSent = 0;
         for (NotificationSettingsBean setting : settings) {
             noEmailsSent += process(setting, startDate, endDate, enableEmails);
-            if (enableEmails && noEmailsSent % 50 == 0) {
+            if (enableEmails) {
                 try {
                     logger.info("Sleeping for {} seconds", noEmailsSent);
                     Thread.sleep(noEmailsSent*1000); // Wait 1 second for each email sent
