@@ -34,6 +34,7 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
         Notification.main(mainParameters);
     }
 
+    @Ignore
     @Test
     public void testControllerInvalidParams() {
 
