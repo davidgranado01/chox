@@ -234,6 +234,7 @@
         var claimTypesCombo = new Ext.form.ComboBox({
             store: claimTypeStore,
             renderTo: 'claimTypeDropDownDiv',
+            width: 175,
             valueField: 'text',
             id: 'claimTypesComboId',
             hiddenName: 'claimTypeId',
@@ -262,6 +263,7 @@
         var whoManagedRepairCombo = new Ext.form.ComboBox({
             store: whoManagedRepairData,
             renderTo: 'whoManagedRepairDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'whoManagedRepairComboId',
             hiddenName: 'whoManagedRepair',
@@ -295,6 +297,7 @@
         var totalLossCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'totalLossDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'totalLossComboId',
             hiddenName: 'totalLossId',
@@ -330,6 +333,7 @@
         var customerVehicleClassCombo = new Ext.form.ComboBox({
             store: vehicleClassStore,
             renderTo: 'customerVehicleClassDropDownDiv',
+            width: 175,
             valueField: 'text',
             id: 'customerVehicleClassComboId',
             hiddenName: 'customerVehicleClassId',
@@ -358,6 +362,7 @@
         var hireVehicleClassCombo = new Ext.form.ComboBox({
             store: vehicleClassStore,
             renderTo: 'hireVehicleClassDropDownDiv',
+            width: 175,
             valueField: 'text',
             id: 'hireVehicleClassComboId',
             hiddenName: 'hireVehicleClassId',
@@ -396,6 +401,7 @@
         var hireDurationAcceptableCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'hireDurationAcceptableDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'hireDurationAcceptableComboId',
             hiddenName: 'hireDurationAcceptableId',
@@ -423,7 +429,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 2) {
-                        $("#reasonHDNotAcceptableDropDownDivId").slideDown();
+                        $("#reasonHDNotAcceptableDropDownDivId").show();
                         addHireDurationNotAcceptableReasonValidation();
                         if (isAuditReviewAlreadyExists) {
                             reasonHDNotAcceptableCombo.setValue('<s:property value="claimAuditReview.hireDurationNotAcceptableReason" />');
@@ -445,6 +451,7 @@
         var reasonHDNotAcceptableCombo = new Ext.form.ComboBox({
             store: reasonHDNotAcceptableData,
             renderTo: 'reasonHDNotAcceptableDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'reasonHDNotAcceptableComboId',
             hiddenName: 'hireDurationNotAcceptableReason',
@@ -464,7 +471,7 @@
                 },
                 afterrender: function () {
                     if (hireDurationAcceptableCombo.getValue() == 2) {
-                        $("#reasonHDNotAcceptableDropDownDivId").slideDown();
+                        $("#reasonHDNotAcceptableDropDownDivId").show();
                         addHireDurationNotAcceptableReasonValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.hireDurationNotAcceptableReason" />');
@@ -494,6 +501,7 @@
         var hireLeakageCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'hireLeakageDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'hireLeakageComboId',
             hiddenName: 'hireLeakageId',
@@ -522,7 +530,7 @@
                 select: function () {
                     if (this.getValue() == 1) {
                         addHireLeakageCostValidation();
-                        $("#hireLeakageCostDivId").slideDown();
+                        $("#hireLeakageCostDivId").show();
                         if (isAuditReviewAlreadyExists) {
                             hireLeakageCost.setValue('<s:property value="claimAuditReview.hireLeakageCost" />');
                         }
@@ -550,7 +558,7 @@
                 afterrender: function () {
                     if (hireLeakageCombo.getValue() == 1) {
                         addHireLeakageCostValidation();
-                        $("#hireLeakageCostDivId").slideDown();
+                        $("#hireLeakageCostDivId").show();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.hireLeakageCost" />');
                         }
@@ -574,6 +582,7 @@
         var repairCostExceedEngRecomCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'RepairCostExceedEngRecomDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'RepairCostExceedEngRecomComboId',
             hiddenName: 'repairCostExceedsEngRecId',
@@ -601,7 +610,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 1) {
-                        $("#exceededRepairCostDivId").slideDown();
+                        $("#exceededRepairCostDivId").show();
                         addExceededRepairCostValidation();
                         if (isAuditReviewAlreadyExists) {
                             exceededRepairCost.setValue('<s:property value="claimAuditReview.exceededRepairCost" />');
@@ -629,7 +638,7 @@
             listeners: {
                 afterrender: function () {
                     if (repairCostExceedEngRecomCombo.getValue() == 1) {
-                        $("#exceededRepairCostDivId").slideDown();
+                        $("#exceededRepairCostDivId").show();
                         addExceededRepairCostValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.exceededRepairCost" />');
@@ -657,7 +666,7 @@
                 },
                 change: function () {
                     if (this.getValue() > 0) {
-                        $("#penaltyChrgAvoidableDropDownDivId").slideDown();
+                        $("#penaltyChrgAvoidableDropDownDivId").show();
 //                        addPenaltyChargeAvoidableValidation();
                         if (isAuditReviewAlreadyExists) {
                             penaltyChrgAvoidableCombo.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.penaltyChargeAvoidable" />'));
@@ -678,6 +687,7 @@
         var penaltyChrgAvoidableCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'penaltyChrgAvoidableDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'penaltyChrgAvoidableComboId',
             hiddenName: 'penaltyChargeAvoidableId',
@@ -700,7 +710,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 1) {
-                        $("#penaltyChrgAvoidableReasonDivId").slideDown();
+                        $("#penaltyChrgAvoidableReasonDivId").show();
                         addPenaltyChargeAvoidableNoteValidation();
                         if (isAuditReviewAlreadyExists) {
                             penaltyChrgAvoidableReason.setValue('<s:property value="claimAuditReview.penaltyChargeAvoidableNote" />');
@@ -713,7 +723,7 @@
                 },
                 afterrender: function () {
                     if (penaltyChargesPaid.getValue() > 0) {
-                        $("#penaltyChrgAvoidableDropDownDivId").slideDown();
+                        $("#penaltyChrgAvoidableDropDownDivId").show();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.penaltyChargeAvoidable" />'));
                         }
@@ -738,7 +748,7 @@
             listeners: {
                 afterrender: function () {
                     if (penaltyChrgAvoidableCombo.getValue() == 1) {
-                        $("#penaltyChrgAvoidableReasonDivId").slideDown();
+                        $("#penaltyChrgAvoidableReasonDivId").show();
                         addPenaltyChargeAvoidableNoteValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.penaltyChargeAvoidableNote" />');
@@ -753,6 +763,7 @@
         var withinABPGuidelineCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'withinABPGuidelineDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'withinABPGuidelineComboId',
             hiddenName: 'withinABPGuidelinesId',
@@ -780,7 +791,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 2) {
-                        $("#nonABPGuidelineRepairRateDivId").slideDown();
+                        $("#nonABPGuidelineRepairRateDivId").show();
                         addNonABPGuidelineRepairLabourRateValidation();
                         if (isAuditReviewAlreadyExists) {
                             nonABPGuidelineRepairRate.setValue('<s:property value="claimAuditReview.nonABPGuidelineRepairLabourRate" />');
@@ -808,7 +819,7 @@
             listeners: {
                 afterrender: function () {
                     if (withinABPGuidelineCombo.getValue() == 2) {
-                        $("#nonABPGuidelineRepairRateDivId").slideDown();
+                        $("#nonABPGuidelineRepairRateDivId").show();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.nonABPGuidelineRepairLabourRate" />');
                         }
@@ -822,6 +833,7 @@
         var storageClaimedCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'storageClaimedDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'storageClaimedComboId',
             hiddenName: 'storageClaimedId',
@@ -849,7 +861,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 1) {
-                        $("#storageClaimedCorrectlyDropDownDivId").slideDown();
+                        $("#storageClaimedCorrectlyDropDownDivId").show();
                         addStorageClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             storageClaimedCorrectlyCombo.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.storageClaimedCorrectly" />'));
@@ -871,6 +883,7 @@
         var storageClaimedCorrectlyCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'storageClaimedCorrectlyDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'storageClaimedCorrectlyComboId',
             hiddenName: 'storageClaimedCorrectlyId',
@@ -890,7 +903,7 @@
                 },
                 afterrender: function () {
                     if (storageClaimedCombo.getValue() == 1) {
-                        $("#storageClaimedCorrectlyDropDownDivId").slideDown();
+                        $("#storageClaimedCorrectlyDropDownDivId").show();
                         addStorageClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.storageClaimedCorrectly" />'));
@@ -910,6 +923,7 @@
         var recoveryClaimedCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'recoveryClaimedDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'recoveryClaimedComboId',
             hiddenName: 'recoveryClaimedId',
@@ -937,7 +951,7 @@
                 },
                 select: function () {
                     if (this.getValue() == 1) {
-                        $("#recoveryClaimedCorrectlyDropDownDivId").slideDown();
+                        $("#recoveryClaimedCorrectlyDropDownDivId").show();
                         addRecoveryClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             recoveryClaimedCorrectlyCombo.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.recoveryClaimedCorrectly" />'));
@@ -959,6 +973,7 @@
         var recoveryClaimedCorrectlyCombo = new Ext.form.ComboBox({
             store: yesNoDataStore,
             renderTo: 'recoveryClaimedCorrectlyDropDownDiv',
+            width: 175,
             valueField: 'value',
             id: 'recoveryClaimedCorrectlyComboId',
             hiddenName: 'recoveryClaimedCorrectlyId',
@@ -978,7 +993,7 @@
                 },
                 afterrender: function () {
                     if (recoveryClaimedCombo.getValue() == 1) {
-                        $("#recoveryClaimedCorrectlyDropDownDivId").slideDown();
+                        $("#recoveryClaimedCorrectlyDropDownDivId").show();
                         addRecoveryClaimedCorrectlyValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue(getYesNoDataStoreValue('<s:property value="claimAuditReview.recoveryClaimedCorrectly" />'));
