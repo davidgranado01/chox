@@ -1,0 +1,7 @@
+# Format: insurerId:choId:NotificationType:CommaSeparatedEmailList 
+6:1123:ACKNOWLEDGED:mark.allen@valexa.com
+6:1123:CLOSED:mark.allen@valexa.com
+6:1123:QUANTUMED:mark.allen@valexa.com
+6:1123:CONTESTED:mark.allen@valexa.com
+6:1123:PAID:mark.alllen@valexa.com
+6:1123:LIABILITIED:mark.allen@valexa.com

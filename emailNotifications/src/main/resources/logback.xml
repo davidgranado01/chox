@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <contextName>emailNotifications</contextName>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="LogFile" class="ch.qos.logback.core.FileAppender">
+        <File>emailNotifications.log</File>
+        <Append>true</Append>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line]: %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
+    <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
+    <!--for documentation-->
+        <Subject>Email Notification Error</Subject>
+        <SMTPHost>localhost</SMTPHost>
+        <To>John.Dowson@valexa.com</To>
+        <From>chox@chox-uk01.idasnetwork.com</From>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </layout>
+        <cyclicBufferTracker>
+      <!-- send just one log entry per email -->
+            <bufferSize>1</bufferSize>
+        </cyclicBufferTracker>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+    
+    <logger name="emailNotifications" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="mail"/>
+    </logger>
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="LogFile" />
+    </root>
+    
+</configuration>

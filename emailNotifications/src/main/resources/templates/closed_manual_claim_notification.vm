@@ -1,0 +1,13 @@
+#parse('templates/layout/generic_header.vm')
+
+Claim Closed
+
+Supplier reference: ${supplier_reference}
+Insurer: ${insurer_name}
+Insurer Claim Number: ${insurer_claim_number} 
+Claim Closure Reason: ${claim_closure_reason} 
+## Claim Closure Note: ${claim_closure_note} 
+Insurer Claim Owner: ${insurer_claim_owner} 
+Workgroup: ${workgroup}  
+
+#parse('templates/layout/generic_footer.vm')
