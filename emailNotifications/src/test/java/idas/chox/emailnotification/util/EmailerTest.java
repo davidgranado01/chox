@@ -22,6 +22,7 @@ public class EmailerTest extends AbstractEmailNotificationTest {
         assertNotNull(emailHelper);
     }
 
+    @Ignore
     @Test
     public void testSendSingleEmail() throws UnsupportedEncodingException, MessagingException {
         Transport transport = emailHelper.getTransport();
