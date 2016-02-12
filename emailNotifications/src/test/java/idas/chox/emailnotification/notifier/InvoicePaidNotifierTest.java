@@ -8,11 +8,13 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
+import idas.chox.emailnotification.config.NotificationSettingsBean;
+import idas.chox.emailnotification.util.EmailHelper;
+
+import javax.mail.Transport;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import idas.chox.emailnotification.util.EmailHelper;
-import idas.chox.emailnotification.config.NotificationSettingsBean;
 
 public class InvoicePaidNotifierTest extends AbstractNotifierTest {
 
@@ -32,7 +34,7 @@ public class InvoicePaidNotifierTest extends AbstractNotifierTest {
         EmailHelper mockEmailHelper = createMock(EmailHelper.class);
         notifier.setEmailHelper(mockEmailHelper);
         
-        mockEmailHelper.postMail(isA(String.class), isA(String.class), (String[]) anyObject());
+        mockEmailHelper.postMail(isA(Transport.class), isA(String.class), isA(String.class), (String[]) anyObject());
         expectLastCall().atLeastOnce();
 
         replay(mockEmailHelper);

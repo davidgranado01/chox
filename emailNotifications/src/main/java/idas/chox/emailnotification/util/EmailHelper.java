@@ -21,16 +21,39 @@ public class EmailHelper {
     private static final String emailSubjectPrefix = "";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final boolean SMTP_authetication = true;
-    private String SmtpHostName;
-    String smtpPort;
-    String smtpEmailUser;
-    String smtpEmailUserPassword;
+    private String smtpHostName;
+    private String smtpPort;
+    private String smtpEmailUser;
+    private String smtpEmailUserPassword;
 
     public EmailHelper(String smtpHostName, String smtpPort, String smtpEmailUser, String smtpEmailUserPassword) {
-        this.SmtpHostName = smtpHostName;
+        this.smtpHostName = smtpHostName;
         this.smtpPort = smtpPort;
         this.smtpEmailUser = smtpEmailUser;
         this.smtpEmailUserPassword = smtpEmailUserPassword;
+    }
+
+    public Transport getTransport() {
+
+        Transport transport = null;
+        try {
+        Session session = loadSession();
+            transport = session.getTransport("smtp");
+
+        transport.connect("example@gmail.com", "password");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transport;
+    }
+
+    public void closeTransport(Transport transport) {
+        try {
+            transport.close();
+        } catch (MessagingException e) {
+            LOG.error("Unable to close Email transport", e);
+            e.printStackTrace();
+        }
     }
 
     private Authenticator getAuthenticator(final String userName, final String password) {
@@ -45,11 +68,11 @@ public class EmailHelper {
         return authenticator;
     }
     
-    public void postMail(String subject, String message, String[] recipients) throws MessagingException, UnsupportedEncodingException {
-        postMail(subject, message, recipients, new String[]{});
+    public void postMail(Transport transport, String subject, String message, String[] recipients) throws MessagingException, UnsupportedEncodingException {
+        postMail(transport, subject, message, recipients, new String[] {});
     }
     
-    public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
+    public void postMail(Transport transport, String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
 
         if (recipients == null) {
             LOG.debug("No recipients - not sending email.");
@@ -61,25 +84,8 @@ public class EmailHelper {
         
         try {
 
-            Properties props = new Properties();
-            props.put("mail.smtp.host", SmtpHostName);
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.debug", "false");
-            props.put("mail.smtp.port", smtpPort);
-            props.put("mail.smtp.socketFactory.port", smtpPort);
-            props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
-            props.put("mail.smtp.socketFactory.fallback", "false");
 
-            Session session;
-
-            if (SMTP_authetication) {
-                Authenticator authenticator = getAuthenticator(smtpEmailUser, smtpEmailUserPassword);
-                session = Session.getInstance(props, authenticator);
-            } else {
-                session = Session.getInstance(props);
-            }
-
-            Message msg = new MimeMessage(session);
+            Message msg = new MimeMessage(loadSession());
             InternetAddress addressFrom = new InternetAddress(smtpEmailUser);
             addressFrom.setPersonal("CHOX Support");
             msg.setFrom(addressFrom);
@@ -96,7 +102,7 @@ public class EmailHelper {
    
             msg.setSubject(emailSubjectPrefix + subject);
             msg.setContent(message, "text/plain");
-            Transport.send(msg);
+            transport.sendMessage(msg, addressTo);
 
         } catch (UnsupportedEncodingException | MessagingException ex) {
             LOG.warn("Error posting email with subject '{}': \n", subject, ex);
@@ -112,11 +118,33 @@ public class EmailHelper {
         this.smtpEmailUserPassword = SmtpEmailUserPassword;
     }
 
-    public void setSmtpHostName(String SmtpHostName) {
-        this.SmtpHostName = SmtpHostName;
+    public void setSmtpHostName(String smtpHostName) {
+        this.smtpHostName = smtpHostName;
     }
 
     public void setSmtpPort(String SmtpPort) {
         this.smtpPort = SmtpPort;
+    }
+
+    protected Session loadSession() {
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", smtpHostName);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.debug", "false");
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.socketFactory.port", smtpPort);
+        props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+        props.put("mail.smtp.socketFactory.fallback", "false");
+
+        Session session;
+
+        if (SMTP_authetication) {
+            Authenticator authenticator = getAuthenticator(smtpEmailUser, smtpEmailUserPassword);
+            session = Session.getInstance(props, authenticator);
+        } else {
+            session = Session.getInstance(props);
+        }
+        return session;
     }
 }

@@ -26,9 +26,6 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
     @Test
     public void testController() {
 
-        // Limit each notifier to a single email (spam reduction)
-        // Notification.setLIMIT1(true);
-
         // Run the core process
         String[] mainParameters = { "-limit1", "-sendEmails" };
         Notification.main(mainParameters);
@@ -37,9 +34,6 @@ public class EmailNotificationControllerTest extends AbstractEmailNotificationTe
     @Ignore
     @Test
     public void testControllerInvalidParams() {
-
-        // Limit each notifier to a single email (spam reduction)
-        // Notification.setLIMIT1(true);
 
         // Run the core process
         String[] mainParameters = { "-invalid" };

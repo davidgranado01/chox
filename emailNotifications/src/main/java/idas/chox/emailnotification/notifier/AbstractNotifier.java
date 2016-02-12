@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.mail.Transport;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
@@ -34,8 +35,8 @@ public abstract class AbstractNotifier implements Notifier {
     private @Autowired VelocityEngine velocityEngine;
 
     protected static final String DATE_FORMAT = "yyyy-MM-dd";
-    // protected static final String PERCENTAGE = "%";
     protected boolean limit1 = false;
+    protected Transport transport;
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -45,14 +46,16 @@ public abstract class AbstractNotifier implements Notifier {
     
     @Override
     public void getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
+        transport = emailHelper.getTransport();
         this.runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
-
+        emailHelper.closeTransport(transport);
+        transport = null;
     }
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {
         String message = this.generateMessageText(emailTemplate, data);
         try {
-            emailHelper.postMail(subject, message, recipients);
+            emailHelper.postMail(transport, subject, message, recipients);
         } catch (UnsupportedEncodingException | MessagingException e) {
             logger.error("Unable to send email with subject {}.", subject, e);
         }
