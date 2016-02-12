@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,9 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected void generateAndSendEmail(String subject, String emailTemplate, Map<String, Object> data, String[] recipients) {
         String message = this.generateMessageText(emailTemplate, data);
+        String cleanedMessage = StringEscapeUtils.unescapeHtml4(message);
         try {
-            emailHelper.postMail(transport, subject, message, recipients);
+            emailHelper.postMail(transport, subject, cleanedMessage, recipients);
         } catch (UnsupportedEncodingException | MessagingException e) {
             logger.error("Unable to send email with subject {}.", subject, e);
         }
