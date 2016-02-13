@@ -114,9 +114,9 @@ public abstract class AbstractNotifier implements Notifier {
                                 logger.error("Sleep interrupted: %s", e.getMessage());
                             }
                         }
-                        noProcessed++;
                         
                         processRecord(rs, settings.getEmailAddressses(), enableEmails);
+                        noProcessed++;
                         
                         if (limit1) {
                             // It limit records is switched on then set max records to true
