@@ -48,15 +48,15 @@ public class EmailNotificationController {
         this.registerNotifiers(limit1);
         int noEmailsSent = 0;
         for (NotificationSettingsBean setting : settings) {
-            noEmailsSent += process(setting, startDate, endDate, enableEmails);
-            if (enableEmails) {
+            if (enableEmails && noEmailsSent > 0) {
                 try {
-                    logger.info("Sleeping for {} seconds", noEmailsSent);
-                    Thread.sleep(noEmailsSent*500); // Wait 0.5 second for each email sent
+                    logger.info("Sleeping for {} seconds", noEmailsSent/10);
+                    Thread.sleep(noEmailsSent*100); // Wait 1/10 second for each email sent
                 } catch (InterruptedException e) {
                     logger.error("Sllep interrupted: %s", e.getMessage());
                 }
             }
+            noEmailsSent += process(setting, startDate, endDate, enableEmails);
         }
         logger.info("Finishing email notifier - sent {} email", noEmailsSent);
     }
