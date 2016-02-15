@@ -300,7 +300,7 @@ Ext.onReady(function(){
                     var form = $('<form action="' + url + '" method="post">' +
                         '<input type="hidden" name="name" value="closeClaim"/>' +
                         '<input type="hidden" name="closeReason" value="'+ Ext.getCmp('closeReasonComboId').getValue() +'"/>' +
-                        '<input type="hidden" name="closeNote" value="'+ Ext.getCmp('closureNoteTextId').getValue() +'"/>' +
+                        '<input type="hidden" name="closeNote" value="'+ Ext.getCmp('closureNoteTextId').getValue().replace(/'/g, "&apos;").replace(/"/g, "&quot;") +'"/>' +
                         '</form>');
                     $('body').append(form);
                     choxJqueryHttpSubmit($(form));
