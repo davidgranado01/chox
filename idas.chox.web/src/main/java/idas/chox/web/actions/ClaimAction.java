@@ -547,7 +547,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim = claimService.getClaim(id);
         }
         if (claim == null) {
-            LOG.error("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
+            LOG.warn("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
         // Make sure we have a BRE Band
