@@ -485,7 +485,7 @@
     var ieVersion = get_MSIE_version();
 <s:if test="invoiceSavingActive">
     if ( $( "#UMIPFormId" ).length ){
-        if (ieVersion==9 || ieVersion==8){
+        if (ieVersion==6 || ieVersion==7 || ieVersion==8 || ieVersion==9){
             $("#UMIPFormId").removeAttr("onclick").unbind('click');
             $("#UMIPFormId").click(function(){return confirmInvoiceSavingsAction();});
         }else{
@@ -495,7 +495,7 @@
 </s:if>
 <s:else>
     if ( $( "#UMIPFormId" ).length ){
-        if (ieVersion==9 || ieVersion==8){
+        if (ieVersion==6 || ieVersion==7 || ieVersion==8 || ieVersion==9){
             $("#UMIPFormId").removeAttr("onclick").unbind('click');
             $("#UMIPFormId").click(function(){return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');});
         }else{
