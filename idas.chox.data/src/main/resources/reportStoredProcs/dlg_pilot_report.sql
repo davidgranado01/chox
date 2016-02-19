@@ -77,7 +77,8 @@ from (select dat1 as startDate, chorgs as chorgIds, insid as insurerId) params
 UNION
 
 select 2 as id, 'Total No. Invoices Paid' as title ,
-(select count(*) from claim c , audit_trail a where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -87,8 +88,8 @@ select 2 as id, 'Total No. Invoices Paid' as title ,
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,  
 
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -98,8 +99,8 @@ where a.claim_id = c.id
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,  
 
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -108,8 +109,8 @@ where a.claim_id = c.id
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,  
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -118,8 +119,8 @@ where a.claim_id = c.id
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_month, 
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -128,8 +129,8 @@ where a.claim_id = c.id
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) as previous_3_month, 
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -138,8 +139,8 @@ where a.claim_id = c.id
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) as previous_4_month,  
 
-(select count(*) from claim c , audit_trail a
-where a.claim_id = c.id
+(select count(*) from claim c, audit_trail a, invoice i
+ where a.claim_id = c.id and c.invoice_id = i.id
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and a.new_status in ('PaymentReceived','ManualInvoicePaid') and c.status in ('PaymentReceived','ManualInvoicePaid')
       and a.reverted = false
@@ -222,11 +223,12 @@ from (select dat1 as startDate, chorgs as chorgIds, insid as insurerId) params
 
 UNION
 
--- Invoices Paid as a percentage of invoices uploaded to be reported in the month of upload.
+-- Invoices Paid as a percentage of invoices uploaded (less those at Claim Closed or Invoice Rejection Accepted) to be reported in the month of upload.
 select 4 as id, 'Settlement Ratio %' as title ,
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -236,6 +238,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -245,6 +248,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -254,6 +258,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -263,6 +268,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -272,6 +278,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -281,6 +288,7 @@ from claim c, invoice i
 (select (100*sum(case when c.status in ('PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
 from claim c, invoice i
     where c.invoice_id=i.id
+       and c.status not in ('ClaimClosed','InvoiceRejectionAccepted')
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
@@ -2063,7 +2071,7 @@ UNION
 -- the Insurer for invoices that have moved to 'Payment Received' or 'Manual Invoice Paid', the invoices will be
 -- reported in the period/column that the invoices were uploaded into CHOX.
 select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2073,7 +2081,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2083,7 +2091,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as current_month,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2093,7 +2101,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
       and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)  
@@ -2103,7 +2111,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2113,7 +2121,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2123,7 +2131,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
       and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(avg(io.repair_gross + (case when i.final_payment is null i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
+(select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c , invoice i, invoice_original io
    where c.invoice_id = i.id and i.invoice_original_id = io.id
       and i.repair_net > 0
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
