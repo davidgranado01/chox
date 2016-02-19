@@ -108,13 +108,13 @@
                         totalLossId: {required: true},
                         customerVehicleClassId: {required: true},
                         hireVehicleClassId: {required: true},
-                        hireDuration: {required: true},
+                        hireDuration: {required: true, number:true},
                         hireDurationAcceptableId: {required: true},
-                        totalHireCost: {required: true},
+                        totalHireCost: {required: true, number:true},
                         hireLeakageId: {required: true},
-                        totalRepairCost: {required: true},
+                        totalRepairCost: {required: true, number:true},
 //                        repairCostExceedsEngRecId: {required: true},
-                        penaltyChargesPaid: {required: true},
+                        penaltyChargesPaid: {required: true, number:true},
 //                        withinABPGuidelinesId: {required: true},
                         storageClaimedId: {required: true},
                         recoveryClaimedId: {required: true}
@@ -125,13 +125,13 @@
                         totalLossId: {required: "You must make a selection for 'Total Loss?'"},
                         customerVehicleClassId: {required: "You must make a selection for 'Customers Vehicle Class'"},
                         hireVehicleClassId: {required: "You must make a selection for 'Hire Vehicle Class'"},
-                        hireDuration: {required: "You must supply a value for 'Hire Duration'"},
+                        hireDuration: {required: "You must supply a value for 'Hire Duration'", number:"'Hire Duration' must be numeric"},
                         hireDurationAcceptableId: {required: "You must make a selection for 'Hire Duration Acceptable?'"},
-                        totalHireCost: {required: "You must supply a value for 'Total Hire Costs'"},
+                        totalHireCost: {required: "You must supply a value for 'Total Hire Costs'", number:"'Total Hire Costs' must be numeric"},
                         hireLeakageId: {required: "You must make a selection for 'Hire Leakage?'"},
-                        totalRepairCost: {required: "You must supply a value for 'Total Repair Cost'"},
+                        totalRepairCost: {required: "You must supply a value for 'Total Repair Cost'", number:"'Total Repair Costs' must be numeric"},
 //                        repairCostExceedsEngRecId: {required: "You must make a selection for 'Repair Cost Exceeds Engineers Recommendations?'"},
-                        penaltyChargesPaid: {required: "You must supply a value for 'Penalty Charges paid'"},
+                        penaltyChargesPaid: {required: "You must supply a value for 'Penalty Charges paid'", number:"'Penalty Charges paid' must be numeric"},
 //                        withinABPGuidelinesId: {required: "You must make a selection for 'Repair labour rate within ABP guidelines?'"},
                         storageClaimedId: {required: "You must make a selection for 'Storage Claimed?'"},
                         recoveryClaimedId: {required: "You must make a selection for 'Recovery Claimed?'"}
@@ -153,9 +153,11 @@
             $("form#formClaimAuditReview #hireLeakageCostId").rules("add", {
                 required: true,
                 min: 0.01,
+                number:true,
                 messages: {
                     required: "You must supply a value for 'If Yes, by how much?' for Hire Leakage",
-                    min:"'If Yes, by how much?' for Hire Leakage Must Be Larger Than 0"
+                    min:"'If Yes, by how much?' for Hire Leakage Must Be Larger Than 0",
+                    number:"'If Yes, by how much?' for Hire Leakage Must be numeric"
                 }
             });
         };
@@ -167,9 +169,11 @@
             $("form#formClaimAuditReview #exceededRepairCostId").rules("add", {
                 required: true,
                 min: 0.01,
+                number:true,
                 messages: {
                     required: "You must supply a value for 'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations",
-                    min:"'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must Be Larger Than 0"
+                    min:"'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must Be Larger Than 0",
+                    number:"'If Yes, by how much?' for Repair Cost Exceeds Engineers Recommendations Must be numeric"
                 }
             });
         };
@@ -201,9 +205,11 @@
             $("form#formClaimAuditReview #nonABPGuidelineRepairLabourRateId").rules("add", {
                 required: true,
                 min: 0.01,
+                number:true,
                 messages: {
                     required: "You must supply a value for 'If No how much was charged (hourly rate)' for Repair labour rate",
-                    min:"'If No how much was charged (hourly rate)' for Repair labour rate Must Be Larger Than 0"
+                    min:"'If No how much was charged (hourly rate)' for Repair labour rate Must Be Larger Than 0",
+                    number:"'If No how much was charged (hourly rate)' for Repair labour rate Must be numeric"
                 }
             });
         };
@@ -820,6 +826,7 @@
                 afterrender: function () {
                     if (withinABPGuidelineCombo.getValue() == 2) {
                         $("#nonABPGuidelineRepairRateDivId").show();
+                        addNonABPGuidelineRepairLabourRateValidation();
                         if (isAuditReviewAlreadyExists) {
                             this.setValue('<s:property value="claimAuditReview.nonABPGuidelineRepairLabourRate" />');
                         }
@@ -1012,15 +1019,24 @@
 
     });
 
-    function saveAuditReview() {
+function saveAuditReview() {
         $("#nameOfActivity").val('saveClaimAuditReview');
         var settings = $('form#formClaimAuditReview').validate().settings;
+        // deep copy the rules so that the deleted rules can be re-applied if the form is not valid.
+        var deletedRules = $.extend(true, {}, settings.rules);
         for (var rule in settings.rules) {
             delete settings.rules[rule].required;
             delete settings.rules[rule].min;
         }
-        Ext.get('claimDetailScreenDiv').mask("Saving Claim Audit...");
-        choxJqueryHttpSubmit($("form#formClaimAuditReview"));
+        if ($("form#formClaimAuditReview").valid()) {
+             Ext.get('claimDetailScreenDiv').mask("Saving Claim Audit...");
+            choxJqueryHttpSubmit($("form#formClaimAuditReview"));
+        } else {
+            // Need to put back the deleted rules so that when the 'Save and Complete' button pressed, all the rules are validated again.
+            for (var rule in settings.rules) {
+                settings.rules[rule] = deletedRules[rule];
+            }
+        }
     }
 
     function submitAuditReview() {
