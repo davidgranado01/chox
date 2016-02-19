@@ -39,7 +39,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     public static class BrowserUtil {
         public static enum BrowserType {
 
-            INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
+            INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, INTERNET_EXPLORER_7, INTERNET_EXPLORER_8, INTERNET_EXPLORER_9, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
         }
     }
 
@@ -96,8 +96,25 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
         
-        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
-            LOG.info("User '{}' still using IE6.", user.toString());
+        switch(checkBrowserType(request)) {
+            case INTERNET_EXPLORER_PRE7:
+                LOG.info("User '{}' still using IE6.", user.toString());
+                break;
+                
+            case INTERNET_EXPLORER_7:
+                LOG.info("User '{}' still using IE7.", user.toString());
+                break;
+                
+            case INTERNET_EXPLORER_8:
+                LOG.info("User '{}' still using IE8.", user.toString());
+                break;
+                
+            case INTERNET_EXPLORER_9:
+                LOG.info("User '{}' still using IE9.", user.toString());
+                break;
+                
+            default:
+                break;
         }
 
         if (orgId >= 0) {
@@ -169,7 +186,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
             LOG.warn("UserID: {}, lastlogin='{}' version={}", new Object[]{user.getVersion(), user.getId(), user.getLastLoginDate()});
         }
-        LOG.info("User '{}' logged-in successfully from IP address {} with HTTP sessionId='{}'.", new Object[]{user.toString(), request.getRemoteAddr(), request.getSession().getId()});
+        LOG.info("User '{}' logged-in successfully from IP address {} on browser '{}' with HTTP sessionId='{}'.",
+                new Object[]{user.toString(), request.getRemoteAddr(), request.getHeader("user-agent"), request.getSession().getId()});
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }
@@ -194,6 +212,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             if (userAgent.contains("MSIE")) {
                 if (userAgent.contains("MSIE 6") || userAgent.contains("MSIE 5") || userAgent.contains("MSIE 4")) {
                     type = BrowserType.INTERNET_EXPLORER_PRE7;
+                } else if (userAgent.contains("MSIE 7")) {
+                    type = BrowserType.INTERNET_EXPLORER_7;
+                } else if (userAgent.contains("MSIE 8")) {
+                    type = BrowserType.INTERNET_EXPLORER_8;
+                } else if (userAgent.contains("MSIE 9")) {
+                    type = BrowserType.INTERNET_EXPLORER_9;
                 } else {
                     type = BrowserType.INTERNET_EXPLORER;
                 }
