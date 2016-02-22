@@ -1,8 +1,5 @@
 package idas.chox.emailnotification.notifier;
 
-import idas.chox.emailnotification.config.NotificationSettingsBean;
-import idas.chox.emailnotification.util.EmailHelper;
-
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,16 +21,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import idas.chox.emailnotification.config.NotificationSettingsBean;
+import idas.chox.emailnotification.util.EmailHelper;
+
 public abstract class AbstractNotifier implements Notifier {
 
-    private @Value("${db.url}") String dbUrl;
-    private @Value("${db.user}") String dbUser;
-    private @Value("${db.password}") String dbPassword;
+    private @Value("${db.url}")
+    String dbUrl;
+    private @Value("${db.user}")
+    String dbUser;
+    private @Value("${db.password}")
+    String dbPassword;
 
     private static final String ENCODING = "UTF-8";
 
-    private @Autowired EmailHelper emailHelper;
-    private @Autowired VelocityEngine velocityEngine;
+    private @Autowired
+    EmailHelper emailHelper;
+    private @Autowired
+    VelocityEngine velocityEngine;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private boolean limit1 = false;
@@ -44,20 +49,20 @@ public abstract class AbstractNotifier implements Notifier {
     protected abstract void processRecord(ResultSet rs, List<String> recipients, Boolean enableEmails) throws SQLException;
 
     protected abstract String getQueryString();
-    
+
     @Override
     public int getAndProcessNotificationData(NotificationSettingsBean settings, String dateFrom, String dateTo, Boolean enableEmails) {
         if (enableEmails) {
             transport = emailHelper.getTransport();
         }
-        
+
         int noProcessed = runReport(settings, getQueryString(), dateFrom, dateTo, enableEmails);
-        
+
         if (enableEmails) {
             emailHelper.closeTransport(transport);
             transport = null;
         }
-        
+
         return noProcessed;
     }
 
@@ -102,22 +107,22 @@ public abstract class AbstractNotifier implements Notifier {
                     rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
                 }
                 logger.info("The query for '{}' has recovered {} records.", this.getClass().getSimpleName(), rowcount);
-                
+
                 int noProcessed = 0;
                 while (rs.next()) {
                     if (!maxRecordsShown) {
                         if (enableEmails && noProcessed % 10 == 0) {
                             try {
-                                logger.info("Sleeping for {} seconds", noProcessed/2);
+                                logger.info("Sleeping for {} seconds", noProcessed / 2);
                                 Thread.sleep(noProcessed * 500); // Wait half a second for each email sent
                             } catch (InterruptedException e) {
                                 logger.error("Sleep interrupted: %s", e.getMessage());
                             }
                         }
-                        
+
                         processRecord(rs, settings.getEmailAddressses(), enableEmails);
                         noProcessed++;
-                        
+
                         if (limit1) {
                             // It limit records is switched on then set max records to true
                             maxRecordsShown = true;
@@ -137,7 +142,6 @@ public abstract class AbstractNotifier implements Notifier {
         return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, ENCODING, model);
     }
 
-
     protected void setEmailHelper(EmailHelper emailHelper) {
         this.emailHelper = emailHelper;
     }
@@ -149,5 +153,10 @@ public abstract class AbstractNotifier implements Notifier {
 
     protected void logEmail(String subject, String[] emailTo) {
         logger.info("SendingTo= {}, with subject = '{}'", Arrays.toString(emailTo), subject);
+    }
+
+    protected String getResultString(ResultSet rs, String stringName) throws SQLException {
+        String resultString = rs.getString(stringName);
+        return resultString == null ? "" : resultString;
     }
 }

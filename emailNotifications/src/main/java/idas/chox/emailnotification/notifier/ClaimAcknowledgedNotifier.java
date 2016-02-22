@@ -43,17 +43,12 @@ public class ClaimAcknowledgedNotifier extends AbstractNotifier implements Notif
         Map<String, Object> data = new HashMap<>();
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
-        data.put("insurer_claim_number", rs.getString("claim_number"));
+        data.put("insurer_claim_number", getResultString(rs, "claim_number"));
         data.put("liability_status", rs.getString("liability_status"));
-        data.put("liability_percentage", rs.getInt("percentage_liability_accepted"));
-        data.put("insurer_claim_owner", rs.getString("claim_owner"));
-        data.put("workgroup", rs.getString("workgroup"));
-
-        String comment = rs.getString("comment");
-        if (comment == null) {
-            comment = "";
-        }
-        data.put("liability_note", comment);
+        data.put("liability_percentage", rs.getBigDecimal("percentage_liability_accepted"));
+        data.put("insurer_claim_owner", getResultString(rs, "claim_owner"));
+        data.put("workgroup", getResultString(rs, "workgroup"));
+        data.put("liability_note", getResultString(rs, "comment"));
 
         String subject = String.format(SUBJECT, data.get("insurer_name"), data.get("supplier_reference"));
 
