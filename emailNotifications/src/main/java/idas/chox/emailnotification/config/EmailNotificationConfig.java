@@ -43,6 +43,7 @@ public class EmailNotificationConfig {
     @Bean
     public Properties velocityProperties() {
         Properties velocityProperties = new Properties();
+        velocityProperties.setProperty("input.encoding", "UTF-8");
         velocityProperties.setProperty("resource.loader", "class");
         velocityProperties.setProperty("class.resource.loader.description", "Velocity Classpath Resource Loader");
         velocityProperties.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
