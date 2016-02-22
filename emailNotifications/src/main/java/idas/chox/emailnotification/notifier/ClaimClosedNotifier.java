@@ -16,7 +16,7 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
     private static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, co.comment, " + 
             "wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " + 
-            "(select co2.comment from comment co2 where co2.claim_id=c.id and co2.comment like 'Claim Closed Note:%' and co2.created_date between (co.created_date - interval '1 second') and (co.created_date + interval '1 second') )as claim_closure_note" +
+            "(select substring(co2.comment from 18) from comment co2 where co2.claim_id=c.id and co2.comment like 'Claim Closed Note:%' and co2.created_date between (co.created_date - interval '1 second') and (co.created_date + interval '1 second') ) as claim_closure_note " +
             "from claim c " + 
             "left outer join workgroup w on (c.workgroup_id = w.id) " + 
             "left outer join web_user wu on (c.claim_owner_id = wu.id), " + 
@@ -46,7 +46,7 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
         data.put("supplier_reference", rs.getString("cho_reference"));
         data.put("insurer_claim_number", getResultString(rs, "claim_number"));
         data.put("claim_closure_reason", rs.getString("comment").substring(13));
-        data.put("claim_closure_note", getResultString(rs, "claim_closure_note").substring(18));
+        data.put("claim_closure_note", getResultString(rs, "claim_closure_note"));
         data.put("insurer_claim_owner", getResultString(rs, "claim_owner"));
         data.put("workgroup", getResultString(rs, "workgroup"));
 
