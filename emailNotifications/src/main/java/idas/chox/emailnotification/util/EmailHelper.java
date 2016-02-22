@@ -102,7 +102,7 @@ public class EmailHelper {
             }
    
             msg.setSubject(emailSubjectPrefix + subject);
-            msg.setContent(message, "text/plain");
+            msg.setContent(message, "text/plain; charset=UTF-8");
             transport.sendMessage(msg, addressTo);
 
         } catch (UnsupportedEncodingException | MessagingException ex) {
