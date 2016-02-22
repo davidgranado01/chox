@@ -15,8 +15,8 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
     private static final String SUBJECT = "%s Supplier Reference: %s Claim Closed Notification";
     private static final String BASE_QUERY = //
             "select i.name as insurer_name, c.cho_reference, c.claim_number, co.comment, " + 
-            "wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup " + 
-            
+            "wu.first_name || ' ' || wu.last_name as claim_owner, w.name as workgroup, " + 
+            "(select co2.comment from comment co2 where co2.claim_id=c.id and co2.comment like 'Claim Closed Note:%' and co2.created_date between (co.created_date - interval '1 second') and (co.created_date + interval '1 second') )as claim_closure_note" +
             "from claim c " + 
             "left outer join workgroup w on (c.workgroup_id = w.id) " + 
             "left outer join web_user wu on (c.claim_owner_id = wu.id), " + 
@@ -26,7 +26,7 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
             "    and i.id = c.insurer_id " + 
             "    and claim_type in (10,14,15,16,17) " +
             "    and c.id=co.claim_id " + 
-                    "    and co.comment like 'Claim Closed:%%' " +
+                    "    and co.comment like 'Claim Closed:%' " +
             "    and at.claim_id = c.id " + 
             "    and at.new_status='ClaimClosed' " + 
             "    and at.reverted = false and at.created_date between :startDate and :endDate";
@@ -44,12 +44,11 @@ public class ClaimClosedNotifier extends AbstractNotifier implements Notifier {
         Map<String, Object> data = new HashMap<>();
         data.put("insurer_name", rs.getString("insurer_name"));
         data.put("supplier_reference", rs.getString("cho_reference"));
-        data.put("insurer_claim_number", rs.getString("claim_number"));
+        data.put("insurer_claim_number", getResultString(rs, "claim_number"));
         data.put("claim_closure_reason", rs.getString("comment").substring(13));
-        // TODO ClaimClosureNote
-        data.put("claim_closure_note", "ClaimClosureNote");
-        data.put("insurer_claim_owner", rs.getString("claim_owner"));
-        data.put("workgroup", rs.getString("workgroup"));
+        data.put("claim_closure_note", getResultString(rs, "claim_closure_note").substring(18));
+        data.put("insurer_claim_owner", getResultString(rs, "claim_owner"));
+        data.put("workgroup", getResultString(rs, "workgroup"));
 
         String subject = String.format(SUBJECT, data.get("insurer_name"), data.get("supplier_reference"));
 
