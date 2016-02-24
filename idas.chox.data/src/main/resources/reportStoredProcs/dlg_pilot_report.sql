@@ -541,7 +541,7 @@ UNION
 -- have moved to 'Payment Received' or 'Manual Invoice Paid', the invoices will be reported in the period/column that the
 -- invoice were uploaded into CHOX.
 select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -551,7 +551,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -561,7 +561,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -571,7 +571,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
                          and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -581,7 +581,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                          and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -591,7 +591,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                          and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -601,7 +601,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
                          and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -621,7 +621,7 @@ UNION
 -- 'Payment Received' or 'Manual Invoice Paid', the invoices will be reported in the period/column that the invoice
 -- were uploaded into CHOX.
 select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -631,7 +631,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -641,7 +641,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -651,7 +651,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
                          and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -661,7 +661,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                          and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -671,7 +671,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                          and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -681,7 +681,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
                          and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(sum(io.hire_gross - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
+(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - i.hire_gross - i.hire_penalty_charge), 0)::numeric(14,2) from claim c , invoice i, invoice_original io
     where c.invoice_id = i.id and i.invoice_original_id = io.id
       and c.created_date > claimUploadStart
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2032,7 +2032,7 @@ UNION
 
 -- Show the sum of Total Repair Value Invoiced less Total Repair Value Paid.
 select 26 as id, 'Total Repair Savings' as title ,
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2041,7 +2041,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
                             and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2050,7 +2050,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
                             and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2059,7 +2059,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
                             and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2068,7 +2068,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
                             and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2077,7 +2077,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
                             and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))   as previous_3_month,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
@@ -2086,7 +2086,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
                             and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
-(select coalesce(sum(o.repair_gross - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
+(select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c, invoice_original o, invoice i, chorganisation cho
    where c.invoice_id = i.id and i.invoice_original_id = o.id
      and c.created_date > claimUploadStart
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
