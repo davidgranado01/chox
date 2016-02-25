@@ -1,10 +1,10 @@
-DROP function processedNotificationsReportDLG(
+DROP function processedNotificationsReport(
     IN choId INTEGER,
     IN insIds INTEGER[],
     IN startPeriod VARCHAR,
     IN endPeriod VARCHAR);
 
-CREATE OR REPLACE FUNCTION processedNotificationsReportDLG(
+CREATE OR REPLACE FUNCTION processedNotificationsReport(
     IN choId INTEGER,
     IN insIds INTEGER[],
     IN startPeriod VARCHAR,
@@ -107,14 +107,14 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
-GRANT EXECUTE ON FUNCTION processedNotificationsReportDLG(
+GRANT EXECUTE ON FUNCTION processedNotificationsReport(
                                               IN choId INTEGER,
                                               IN insIds INTEGER[],
                                               IN startPeriod VARCHAR,
                                               IN endPeriod VARCHAR)
 TO chox_user;
 
-GRANT EXECUTE ON FUNCTION processedNotificationsReportDLG(
+GRANT EXECUTE ON FUNCTION processedNotificationsReport(
                                               IN choId INTEGER,
                                               IN insIds INTEGER[],
                                               IN startPeriod VARCHAR,
