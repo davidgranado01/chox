@@ -8,22 +8,25 @@
         </encoder>
     </appender>
     
-    <appender name="LogFile" class="ch.qos.logback.core.FileAppender">
+<!--    <appender name="LogFile" class="ch.qos.logback.core.FileAppender">
         <File>emailNotifications.log</File>
         <Append>true</Append>
 
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line]: %msg%n</pattern>
         </encoder>
-    </appender>
+    </appender>-->
     
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>Email Notification Error</Subject>
-        <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@valexa.com</To>
-        <From>chox@chox-uk01.idasnetwork.com</From>
+        <Subject>Email Notification Error \(Production\)</Subject>
+        <smtpHost>smtp.gmail.com</smtpHost>
+        <smtpPort>465</smtpPort>
+        <SSL>true</SSL>
+        <username>chox@idaschox.com</username>
+        <password>ch0x_3m4il</password>
+        <To>John.Dowson@valexa.com,Mark.Allen@valexa.com</To>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </layout>
@@ -43,7 +46,6 @@
     
     <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="LogFile" />
     </root>
     
 </configuration>
