@@ -122,5 +122,6 @@ GRANT EXECUTE ON FUNCTION processedNotificationsReport(
 TO chox_mi;
 
 /* select * from processedNotificationsReport(1125, array[26], '2016-02-23', '2016-02-24'); */
+/* select * from processedNotificationsReport(1123, array[6], '2016-02-25', '2016-02-26'); */
 
 
