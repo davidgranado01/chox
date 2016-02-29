@@ -212,7 +212,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public boolean isPenaltyChargesToBeAppliedCheckBoxVisible() {
         boolean isVisible = false;
         try {
-            if (getIsInsurer()&& isInsurerUploadEnabled()) {
+            if (getIsInsurer() && isInsurerUploadEnabled()) {
                 isVisible = true;
             } else {
                 Filter penaltyChargesAppliedFilter = filterService.getFilter("PenaltyChargesApplied");
