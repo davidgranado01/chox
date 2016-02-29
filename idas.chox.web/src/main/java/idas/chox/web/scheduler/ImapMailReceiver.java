@@ -97,7 +97,7 @@ public class ImapMailReceiver {
         } catch (NoSuchProviderException e) {
             LOG.warn("Given mail properties are not correct: {}\n", e.getMessage(), e);
         } catch (MessagingException e) {
-            LOG.warn("Cannot make connecection to the given host: {}\n", e.getMessage(), e);
+            LOG.warn("Cannot make connection to the given host: {}\n", e.getMessage(), e);
         } catch (Exception e) {
             LOG.warn("Cannot retrieve attachments: {}\n", e.getMessage(), e);
         }
