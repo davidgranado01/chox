@@ -425,27 +425,14 @@ public class ExcelGeneratorAction extends BaseAction {
                 setExportFinished((Boolean) session.get("isExportFinished"));
                 setWritingToFile((Boolean) session.get("writingToFile"));
                 setExportCanceled((Boolean) session.get("cancelExportOperation"));
-                if (session.get("exceptionThrown") == null) {
-                    setExceptionOccured(Boolean.FALSE);
-                } else {
-                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
-                }
+                setExceptionOccured(session.get("exceptionThrown") != null ? (Boolean) session.get("exceptionThrown") : Boolean.FALSE);
             } else {
                 setExportedClaimCount(0);
-                setExportFinished((Boolean) session.get("isExportFinished"));
-                setWritingToFile((Boolean) session.get("writingToFile"));
-                setExportCanceled((Boolean) session.get("cancelExportOperation"));
-                if (session.get("exceptionThrown") == null) {
-                    setExceptionOccured(Boolean.FALSE);
-                } else {
-                    setExceptionOccured((Boolean) session.get("exceptionThrown"));
-                }
-                if (session.get("tooManyRows") == null) {
-                    setTooManyRows(Boolean.FALSE);
-                }
-                else {
-                    setTooManyRows((Boolean) session.get("tooManyRows"));
-                }
+                setExportFinished(session.get("isExportFinished") != null ? (Boolean) session.get("isExportFinished") : Boolean.FALSE);
+                setWritingToFile(session.get("writingToFile") != null ? (Boolean) session.get("writingToFile") : Boolean.FALSE);
+                setExportCanceled(session.get("cancelExportOperation") != null ? (Boolean) session.get("cancelExportOperation") : Boolean.FALSE);
+                setExceptionOccured(session.get("exceptionThrown") != null ? (Boolean) session.get("exceptionThrown") : Boolean.FALSE);
+                setTooManyRows(session.get("tooManyRows") != null ? (Boolean) session.get("tooManyRows") : Boolean.FALSE);
             }
         }
         return SUCCESS;
