@@ -24,12 +24,13 @@ BEGIN
 RETURN QUERY
 
 select c.cho_reference, ins.name,
-       case when c.status in ('ManualInvoiceBREApproved','ManualInvoiceBRERejected') then 'Awaiting Invoice Action' else 'Invoice Contested' end,
+       case when c.status in ('ManualInvoiceBREApproved','ManualInvoiceBRERejected') then 'Awaiting Invoice Action' else
+            case when c.status='ManualInvoiceContested' then 'Invoice Contested' else 'Awaiting Liability Resolution' end end,
        tp.policy_number, tp.claim_reference, i.created_date::date as upload_date, getLiabilityStatus(c.liability_status), i.total_to_pay
 from claim c, insurer ins, chorganisation cho, third_party tp, invoice i
 where c.insurer_id = ins.id and c.chorganisation_id = cho.id and c.third_party_id = tp.id and c.invoice_id = i.id
   and cho.insurer_upload_only = true
-  and c.status in ('ManualInvoiceBREApproved','ManualInvoiceBRERejected','ManualInvoiceContested')
+  and c.status in ('ManualInvoiceBREApproved','ManualInvoiceBRERejected','ManualInvoiceContested','AwaitingLiabilityResolution')
   and (choId = -1 or c.chorganisation_id = choId)
   and (insurerIds is null or c.insurer_id = ANY(insurerIds))
 
