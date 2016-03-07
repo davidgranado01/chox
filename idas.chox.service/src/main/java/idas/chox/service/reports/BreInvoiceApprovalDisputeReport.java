@@ -45,7 +45,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
     
     public BreInvoiceApprovalDisputeReport() {
-        reportParameterNames = new ArrayList<String>();
+        reportParameterNames = new ArrayList<>();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         reportParameters.put("date", new Date());
 
@@ -172,8 +172,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         }
         
         List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(currentUser, false);
-        List<BreInvoiceApprovalDisputedRoRData> breInvRorData = new ArrayList<BreInvoiceApprovalDisputedRoRData>();
-        List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<BreInvoiceApprovalDisputedData>();
+        List<BreInvoiceApprovalDisputedRoRData> breInvRorData = new ArrayList<>();
+        List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
@@ -709,14 +709,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             List result1 = reportDataService.getReportData(query1, paramMap1);
 
-            for (int i = 0; i < result1.size(); i++) {
-                LOG.debug("results :" + result1.get(i));
-            }
-
-            List<BreInvoiceApprovalDisputedData> lineData = new ArrayList<BreInvoiceApprovalDisputedData>();
             for (Object o : result1) {
-
-                LOG.debug("inside for loop individual ");
+                LOG.debug("results: {}", o);
                 Map data1 = (Map) o;
                 BreInvoiceApprovalDisputedData breInvoiceApprovalDisputedData = BreInvoiceApprovalDisputedData.getObject(data1, reasonsOfRejection);
                 breInvoiceApproval.add(breInvoiceApprovalDisputedData);
@@ -724,8 +718,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             }
         }
         
-        
-        
+
         //sets the data for uoter loop which loops trough reasons of rejection
         for(ReasonOfRejection ror : getReasonsOfRejection(currentUser, true)){
             BreInvoiceApprovalDisputedRoRData rorData = new BreInvoiceApprovalDisputedRoRData();
@@ -736,7 +729,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             } else {
                 rorData.setCommlineData(BigDecimal.ZERO);
             }
-            List<BigDecimal> lineData = new ArrayList<BigDecimal>();
+            List<BigDecimal> lineData = new ArrayList<>();
             for(BreInvoiceApprovalDisputedData disData : breInvoiceApproval){
                 if(disData.getDisputedApprovalReasonsMap() != null) {
                     lineData.add(disData.getDisputedApprovalReasonsMap().get(ror.getId()));
@@ -750,7 +743,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         }
         
         //populates the 'reason of rejection loop' 
-//        reportParameters.put("breInvoiceRorHeader",getReasonsOfRejection(currentUser, true));
         reportParameters.put("breInvoiceRor", breInvRorData);
         reportParameters.put("breInvoiceCumulative", breInvoiceApprovalDisputeCumulativeData);
         reportParameters.put("breInvoiceApproval", breInvoiceApproval);
@@ -767,7 +759,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
     
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
-        List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
+        List<ReasonOfRejection> reportRows = new ArrayList<>();
         List result;
         if(currentUser.getInsurer() != null){
             String query = (new StringBuilder()).append("select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id ")

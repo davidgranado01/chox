@@ -11,7 +11,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
-import idas.chox.service.bre.util.InvoiceCalcHelper;
 
 /**
  *
@@ -30,7 +29,6 @@ public class TotalGrossSumCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
         if (claim.getBreBand().isHasTotalGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
-            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
             boolean success = CalcHelper.equalTo(invoice.getTotalGross(), invoice.getTotalNet().add(invoice.getTotalVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

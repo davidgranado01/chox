@@ -50,7 +50,7 @@ public class OverviewSummaryReport implements Report {
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
 
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         String userOrgLabel;
         String userOrgName;
@@ -828,9 +828,9 @@ public class OverviewSummaryReport implements Report {
 
             List result = reportDataService.getReportData(query, paramMap);
 
-            List<OverviewSummaryReportByOrg> overviewSummaryReportByOrgs = new ArrayList<OverviewSummaryReportByOrg>();
+            List<OverviewSummaryReportByOrg> overviewSummaryReportByOrgs = new ArrayList<>();
 
-            List<String> orgName = new ArrayList<String>();
+            List<String> orgName = new ArrayList<>();
             orgName.add("All");
 
             for (Object o : result) {
@@ -876,7 +876,7 @@ public class OverviewSummaryReport implements Report {
 
         for (OverviewSummaryLineItem reportLine : reportLines) {
 
-            List<OverviewSummaryLineItemDetail> lineItemDetails = new ArrayList<OverviewSummaryLineItemDetail>();
+            List<OverviewSummaryLineItemDetail> lineItemDetails = new ArrayList<>();
 
             // CREATE
             OverviewSummaryLineItemDetail lineItemDetailAll = new OverviewSummaryLineItemDetail();
@@ -886,7 +886,6 @@ public class OverviewSummaryReport implements Report {
             Integer noCountInvoiceAll = 0;
             Integer noCountAll = 0;
             Integer totalDayAll = 0;
-            BigDecimal totalPercentageAll = new BigDecimal(0.00);
             BigDecimal totalValueAll = new BigDecimal(0.00);
 
             for (OverviewSummaryReportByOrg recordPerOrg : inputList) {
@@ -1331,7 +1330,7 @@ public class OverviewSummaryReport implements Report {
 
     public List<OverviewSummaryLineItem> getReportLineItems() {
 
-        List<OverviewSummaryLineItem> summaries = new ArrayList<OverviewSummaryLineItem>();
+        List<OverviewSummaryLineItem> summaries = new ArrayList<>();
 
         OverviewSummaryLineItem lineItem = new OverviewSummaryLineItem();
         lineItem.setLineId(1);

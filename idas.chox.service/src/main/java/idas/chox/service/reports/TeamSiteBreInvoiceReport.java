@@ -55,7 +55,7 @@ public class TeamSiteBreInvoiceReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
             String supplierId;
@@ -67,7 +67,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             String rptInsurerName = "";
             Date startDate = null;
             Date endDate = null;
-            Date serviceCommencingDate = null;
+
             user = ((WebUser) externalParameter.get("CurrentUser"));
             List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user, false);
             // GET INSURER INFORMATION
@@ -83,7 +83,6 @@ public class TeamSiteBreInvoiceReport implements Report {
                 if (!supplierId.equalsIgnoreCase("-1") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("Team site bre invoice report selectedChoId ={}", selectedCHOId);
-//                    selectedOrgId = iSupplierId;
                     selectedCHOName = getChorganisation(selectedCHOId).getName();
                 }
             }
@@ -122,11 +121,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
-            // First, update user service stats for Workgroup
-//            baseDataService.query("select update_user_service(" + insurerId + ")");
-            // baseDataService.callUpdateWorkgroupService(insurerId);
-
-            List<TeamSiteBreInvoiceReportObject> teamReportObjects = new ArrayList<TeamSiteBreInvoiceReportObject>();
+            List<TeamSiteBreInvoiceReportObject> teamReportObjects = new ArrayList<>();
             HashMap queryParameters = new HashMap();
             queryParameters.put("pInsurerId", insurerId);
             StringBuilder sb = new StringBuilder();
@@ -412,8 +407,8 @@ public class TeamSiteBreInvoiceReport implements Report {
     }
 
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
-        List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
-        List result = null;
+        List<ReasonOfRejection> reportRows = new ArrayList<>();
+        List result;
         if (currentUser.getInsurer() != null) {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id "
                     + "where ror.type='Invoice' "

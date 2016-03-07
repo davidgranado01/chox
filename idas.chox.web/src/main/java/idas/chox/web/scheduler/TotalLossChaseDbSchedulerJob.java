@@ -26,7 +26,6 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
             if (claims != null && claims.size() > 0) {
                 LOG.debug("total no. claims to chase is {}", claims.size());
 
-                int i = 1;
                 for (Claim claim : claims) {
                     int status = claimService.createChaseTask(claim);
                     if (status == 1 && LOG.isDebugEnabled()) {

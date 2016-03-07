@@ -177,7 +177,6 @@ public class BillingChoReport implements Report {
 
     public BigDecimal getChargeRate(int cho_organisation_id, int volume) throws Exception {
         BillingChoRate billingChoRate;
-        BigDecimal fee = BigDecimal.ZERO;
 
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);

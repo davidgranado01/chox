@@ -28,7 +28,6 @@ public class EngineerNetFeeCheck implements IBusinessRule {
         if (claim.getBreBand().isEngineerNetFeeCheck()) {
 
             LOG.debug("Rule 'EngineerNetFeeCheck' active - applying to claim {}.", claim.getChoReference());
-            boolean success = false;
             if (claim.getInvoice().getEngineerFeeNet().compareTo(claim.getBreBand().getMaxAllowedEngineerNetFee()) > 0) {
                 res.setResult(RuleEvaluationResult.RULE_FAILED);
                 narrative = "The CHO is charging more than the allowed value of £" + claim.getBreBand().getMaxAllowedEngineerNetFee().setScale(2) + " for the Engineers Fee. Please review.";
