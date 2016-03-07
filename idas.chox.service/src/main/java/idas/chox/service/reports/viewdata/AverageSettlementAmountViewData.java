@@ -6,7 +6,7 @@ public class AverageSettlementAmountViewData {
     private int month;
     private int year;
     private String labelTitle;
-    private List<AverageSettlementAmountDtlViewData> ReportColumns;
+    private List<AverageSettlementAmountDtlViewData> reportColumns;
 
     public int getMonth() {
         return month;
@@ -48,11 +48,11 @@ public class AverageSettlementAmountViewData {
     }
 
     public List<AverageSettlementAmountDtlViewData> getReportColumns() {
-        return ReportColumns;
+        return reportColumns;
     }
 
-    public void setReportColumns(List<AverageSettlementAmountDtlViewData> ReportColumns) {
-        this.ReportColumns = ReportColumns;
+    public void setReportColumns(List<AverageSettlementAmountDtlViewData> reportColumns) {
+        this.reportColumns = reportColumns;
     }
     
 }

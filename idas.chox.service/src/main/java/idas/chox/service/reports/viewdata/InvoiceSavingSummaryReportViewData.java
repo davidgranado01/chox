@@ -28,8 +28,8 @@ public class InvoiceSavingSummaryReportViewData {
         return AgreedSettlementValue;
     }
 
-    public void setAgreedSettlementValue(BigDecimal AgreedSettlementValue) {
-        this.AgreedSettlementValue = AgreedSettlementValue;
+    public void setAgreedSettlementValue(BigDecimal agreedSettlementValue) {
+        this.AgreedSettlementValue = agreedSettlementValue;
     }
 
     public String getClaimNumber() {

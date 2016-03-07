@@ -12,7 +12,7 @@ public interface AttachmentService {
 
     Attachment getAttachment(int attachmentId);
 
-    boolean deleteAtatchment(int webUserId, int AttachmentId);
+    boolean deleteAtatchment(int webUserId, int attachmentId);
 
     boolean addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category,
                           String remark, boolean notify, boolean isInsurer, String whoCreated);

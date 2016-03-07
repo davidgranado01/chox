@@ -167,8 +167,8 @@ public class OverviewSummaryReportByOrg {
         return averageHireDurationDay;
     }
 
-    public void setAverageHireDurationDay(Integer average_hire_duration_day) {
-        this.averageHireDurationDay = average_hire_duration_day;
+    public void setAverageHireDurationDay(Integer averageHireDurationDay) {
+        this.averageHireDurationDay = averageHireDurationDay;
     }
 
     public BigDecimal getAverageInvoiceValue() {

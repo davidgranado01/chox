@@ -558,7 +558,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             LOG.debug("{} model is accessed from session and id is {}", model.getSimpleName(), map.get("id"));
             return map.get("id");
         } else {
-            LOG.info("Claim is not in session and returing null");
+            LOG.debug("Model ('{}') is not in session and returing null", model.getSimpleName());
             return null;
         }
     }

@@ -23,7 +23,7 @@ public interface WorkgroupService {
 
     void createDefaultWorkgroup(Insurer insurer);
 
-    List<Workgroup> getAvailableUserWorkgroupsByInsurer(int InsurerId, int webUserId);
+    List<Workgroup> getAvailableUserWorkgroupsByInsurer(int insurerId, int webUserId);
 
     List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId, boolean isActiveOnly);
 

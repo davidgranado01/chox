@@ -48,8 +48,8 @@ public class OrganisationDropDownAction extends BaseAction {
         return selectedOrganisationTypeId;
     }
 
-    public void setSelectedOrganisationTypeId(String SelectedOrganisationTypeId) {
-        this.selectedOrganisationTypeId = SelectedOrganisationTypeId;
+    public void setSelectedOrganisationTypeId(String selectedOrganisationTypeId) {
+        this.selectedOrganisationTypeId = selectedOrganisationTypeId;
     }
 
     public List getOrganisationList() {

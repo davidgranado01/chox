@@ -41,8 +41,8 @@ public class ClaimFileBreData {
             return createdBy;
         }
 
-        public void setCreatedBy(String CreatedBy) {
-            this.createdBy = CreatedBy;
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
         }
 
         public String getCreatedOn() {
