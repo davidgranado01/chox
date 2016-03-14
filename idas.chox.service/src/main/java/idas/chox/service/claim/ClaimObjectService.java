@@ -68,6 +68,8 @@ public class ClaimObjectService {
 
         newClaim.setLiability(claim.getLiabilityStatus());
         newClaim.setLiabilityStatusModifiedDate(claim.getLiabilityStatusModifiedDate());
+        newClaim.setLiabilityModifiedDate(claim.getLiabilityModifiedDate());
+        newClaim.setLiabilityAgreedDate(claim.getLiabilityAgreedDate());
         newClaim.setHireMonitoringEcds(null);
         newClaim.setPreviousStatus(null);
         newClaim.setStatus(null);
