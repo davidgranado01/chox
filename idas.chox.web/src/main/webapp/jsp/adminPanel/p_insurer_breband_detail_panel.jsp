@@ -129,6 +129,7 @@
                 hireNetCeiling:{required:true, number:true, min:0},
                 hireDayCeiling:{required:true, number:true, min:0},
                 repairNetCeiling:{required:true, number:true, min:0},
+                storageRecoveryNetCeiling:{required:true, number:true, min:0},
                 averageLabourRateStandard:{required:true, number:true, min:0},
                 averageLabourRatePrestige:{required:true, number:true, min:0},
                 averageLabourHoursPerHireDay:{required:true, number:true, min:0},
@@ -163,6 +164,7 @@
                 hireNetCeiling: {required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero"},
                 hireDayCeiling: {required:"You must supply a value for 'Hire Day Ceiling'", number:"'Hire Day Ceiling' must be numeric", min:"'Hire Day Ceiling' cannot be less than zero"},
                 repairNetCeiling: {required:"You must supply a value for 'Max Repair Value'", number:"'Max Repair Value' must be numeric", min:"'Max Repair Value' cannot be less than zero"},
+                storageRecoveryNetCeiling: {required:"You must supply a value for 'Storage Recovery Net Ceiling'", number:"'Storage Recovery Net Ceiling' must be numeric", min:"'Storage Recovery Net Ceiling' cannot be less than zero"},
                 averageLabourRateStandard: {required:"You must supply a value for 'Average Labour Rate For Standard Vehicles & Vans'", number:"'Average Labour Rate For Standard Vehicles & Vans' must be numeric", min:"'Average Labour Rate For Standard Vehicles & Vans' cannot be less than zero"},
                 averageLabourRatePrestige: {required:"You must supply a value for 'Average Labour Rate For Prestige & Special Vehicles'", number:"'Average Labour Rate For Prestige & Special Vehicles' must be numeric", min:"'Average Labour Rate For Prestige & Special Vehicles' cannot be less than zero"},
                 averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
@@ -1975,6 +1977,14 @@
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Storage Recovery Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Storage Recovery Net Ceiling (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDStorageRecoveryNetCeiling" name="storageRecoveryNetCeiling" value="<s:property value="storageRecoveryNetCeiling" />" />
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Supplier Admin Fee Tolerances</div>
 
                         <div class="chox-form-item">
@@ -2186,6 +2196,11 @@
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div>
                             <label class="chox-form-check-label">Repair Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="storageRecoveryNetCeilingCheck" value="storageRecoveryNetCeilingCheck" /></div>
+                            <label class="chox-form-check-label">Storage Recovery Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Storage Recovery Net billed by the CHO does not exceed the specified Storage Recovery Net ceiling.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div>

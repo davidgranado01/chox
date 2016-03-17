@@ -57,6 +57,7 @@
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnSunday" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedHireNetCeiling" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedRepairNetCeiling" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.StorageRecoveryNetDoesNotExceedStorageRecoveryNetCeiling" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.ValidateUniqueVehicleRegistrationNumber" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.HireGrossSumCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairGrossSumCheck" scope="prototype"></bean>
