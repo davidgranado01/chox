@@ -222,6 +222,12 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
+        <action name="updateSupplierReferenceNumber" class="idas.chox.web.actions.ClaimAction" method="updateSupplierReferenceNumber">
+            <result name="success" type="redirectAction">
+                <param name="actionName">claimDetails</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
         <action name="updateCustomerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateCustomerClaimNumber">
             <result name="success" type="redirectAction">
                 <param name="actionName">claimDetails</param>
@@ -371,6 +377,10 @@
         </action>
         
         <action name="checkIsClaimNumberDuplicated" class="idas.chox.web.actions.AlertAction" method="isClaimNumberDuplicated">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
+        <action name="checkIsSupplierReferenceNumberDuplicated" class="idas.chox.web.actions.AlertAction" method="isSupplierReferenceNumberDuplicated">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         
@@ -548,6 +558,10 @@
         <!-- MORE ACTION !-->
         <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
             <result name="success">/jsp/actionPanel/p_more_action_update_insurer_claim_number.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="updateSupplierReferenceNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateSupplierReferenceNumber">
+            <result name="success">/jsp/actionPanel/p_more_action_update_supplier_reference_number.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
         <action name="updateCustomerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateCustomerClaimNumber">

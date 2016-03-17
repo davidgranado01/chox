@@ -169,6 +169,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ActivityEventGenerator activityEventGenerator;
     private String customerClaimNumber;
     private BrePenaltyBandService brePenaltyBandService;
+    private String originalChoReference;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -246,6 +247,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 showMessage = true;
             }
         }
+    }
+
+    public void setOriginalChoReference(String originalChoReference) {
+        this.originalChoReference = originalChoReference;
     }
 
     public String getFinalReviewReason() {
@@ -652,6 +657,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String updateSupplierReferenceNumber() {
+        try {
+            claim.setChoReference(claim.getChoReference().trim());
+            claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + originalChoReference + "' to '" + claim.getChoReference() + "'"));
+            this.claimService.updateClaim(claim);
+            activityEventGenerator.generate(claim, ActivityEvent.SUPPLIER_REFERENCE_UPDATED_EVENT);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown updating the supplier reference number for claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the supplier reference number. Please contact CHOX support.");
+            updateRedirectionParamInSession();
+            return ERROR;
+        }
+
+        updateRedirectionParamInSession();
+        return SUCCESS;
+    }
+
     public String updateCustomerClaimNumber() {
         try {
             LOG.info("New customer claim number is: {}", customerClaimNumber);
@@ -784,6 +806,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="MORE ACTION - DROP DOWN">
     public String getUpdateInsurerClaimNumber() {
+        return SUCCESS;
+    }
+
+    public String getUpdateSupplierReferenceNumber() {
         return SUCCESS;
     }
 
