@@ -718,16 +718,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isUserHasOpenClaim(int userId) {
+    public boolean isUserHasOpenClaim(int userId, boolean isInsurer) {
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-        for (String sStatus : ClaimStatus.getInsurerClosedStatus(false)) {
-            criteria.add(Restrictions.ne("status", sStatus));
+        if (isInsurer) {
+            criteria.add(Restrictions.eq("claimOwner.id", userId));
+
+            for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+
         }
+        else {
+            criteria.add(Restrictions.eq("supplierClaimOwner.id", userId));
 
+            for (String sStatus : ClaimStatus.getCompletedStatus(false)) {
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+        }
+       
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
         }
