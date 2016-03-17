@@ -2183,9 +2183,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             invoice.setFullTotalToPay(newTotalAmountToPay);
             invoice.setHirePenaltyCharge(hirePenaltyChargeAmount);
-            invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
+            if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) == 0) {
+                invoice.setHirePenaltyPercentage("");
+            } else if (hirePenaltyPercentage.startsWith("Commercial")) {
+                invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+            }
+            else {
+                invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
+            }
             invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
-            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
+            if (repairPenaltyChargeAmount.compareTo(BigDecimal.ZERO) == 0) {
+                invoice.setRepairPenaltyPercentage("");
+            } else if (repairPenaltyPercentage.startsWith("Commercial")) {
+                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+            }
+            else {
+                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
+            }
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
             // As we are applying a manual penalty charge, we need to de-activate auto-penalty charges on this claim
