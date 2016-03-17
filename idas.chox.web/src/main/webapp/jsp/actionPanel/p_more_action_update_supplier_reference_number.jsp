@@ -42,7 +42,7 @@
                 }
                 });
             }else if (data.result && data.resultType==='Message'){
-                Ext.MessageBox.alert('Error', data.result);
+                Ext.MessageBox.alert('Duplicate Supplier Reference', data.result);
             }else {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 choxJqueryHttpSubmit(form);
