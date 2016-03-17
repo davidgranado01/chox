@@ -137,7 +137,7 @@ public class AlertAction extends BaseAction {
                 } else {
                     int choId = claimService.getClaim(claimId).getChorganisation().getId();
                     if (claimService.isClaimSupplierReferenceNumberExistForCho(choReference, choId)) {
-                        this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This Supplier Reference already exists in CHOX, please provide an alternative unique reference");
+                        this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This Supplier Reference already exists in CHOX for this CHO, please provide an alternative unique reference");
                     } else if (claimService.isClaimSupplierReferenceNumberExist(choReference)) {
                         this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "This Supplier Reference already exists in CHOX but for a different CHO. Do you wish to continue?");
                     }
