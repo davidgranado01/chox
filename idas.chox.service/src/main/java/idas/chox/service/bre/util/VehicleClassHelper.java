@@ -5,12 +5,8 @@ import idas.chox.core.model.VehicleClass;
 public class VehicleClassHelper {
 
     public static boolean isVehicleClassValid(VehicleClass vehicleClass) {
-
-        if (vehicleClass != null) {
-           if (!vehicleClass.getName().toUpperCase().equalsIgnoreCase("UNATTACHED")) {
-                return true;
-            }
-        }
-        return false;
+        // Previously a vehicle class of 'Un/ATTACHED' was also consider to be
+        // invalid. This was changed under bug#3083
+        return vehicleClass != null;
     }
 }
