@@ -328,10 +328,10 @@ public class ClaimRejectedReport implements Report {
             
             String query = (new StringBuilder()).append("select ror.id, ror.name from reason_of_rejection ror ")
                     .append("join claim cl on ror.id = cl.reason_of_rejection_id ")
-                    .append("where ror.type='Claim' and ror.insurer_id = :insurerId  ")
-                    .append("or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.fixed_fee_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim' and ror.insurer_id = :insurerId) ")
+                    .append("where ror.type='Claim Rejection' and ror.insurer_id = :insurerId  ")
+                    .append("or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.fixed_fee_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim Rejection' and ror.insurer_id = :insurerId) ")
                     .append("group by ror.id ")
-                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim' and insurer_id = :insurerId order by name asc ")
+                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim Rejection' and insurer_id = :insurerId order by name asc ")
                     .toString();
             
             Map paramMap = new HashMap();
@@ -340,12 +340,12 @@ public class ClaimRejectedReport implements Report {
         } else {
             String query = (new StringBuilder()).append("select ror.name from reason_of_rejection ror ")
                     .append("join claim cl on ror.id = cl.reason_of_rejection_id ")
-                    .append("where ror.type='Claim' and ror.insurer_id in ")
+                    .append("where ror.type='Claim Rejection' and ror.insurer_id in ")
                     .append("(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) ")
-                    .append("or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.fixed_fee_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim' and ror.insurer_id in ")
+                    .append("or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.fixed_fee_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim Rejection' and ror.insurer_id in ")
                     .append("(select insurer_id from insurer_chorganisation where chorganisation_id = :choId)) ")
                     .append("group by ror.id ")
-                    .append("union select name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim' and insurer_id in ")
+                    .append("union select name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim Rejection' and insurer_id in ")
                     .append("(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ")
                     .toString();
             
