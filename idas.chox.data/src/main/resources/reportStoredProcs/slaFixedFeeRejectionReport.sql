@@ -34,12 +34,12 @@ BEGIN
                 FOR j IN 1..2 LOOP
 
                     IF j=1 THEN
-                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim' AND fixed_fee_active = TRUE);
+                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim Rejection' AND fixed_fee_active = TRUE);
                     ELSE
                        totalRejectionReasonRecord = 1;
                     END IF;
 
-                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim' AND fixed_fee_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
+                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim Rejection' AND fixed_fee_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
 
                         RETURN QUERY
 
@@ -391,12 +391,12 @@ BEGIN
                 FOR j IN 1..2 LOOP
 
                     IF j=1 THEN
-                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim' AND fixed_fee_active = TRUE);
+                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim Rejection' AND fixed_fee_active = TRUE);
                     ELSE
                        totalRejectionReasonRecord = 1;
                     END IF;
 
-                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim' AND fixed_fee_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
+                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $3 AND type ILIKE 'Claim Rejection' AND fixed_fee_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
 
                         RETURN QUERY
 
