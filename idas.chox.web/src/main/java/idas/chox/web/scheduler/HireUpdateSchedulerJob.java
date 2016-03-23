@@ -13,17 +13,17 @@ import org.springframework.security.access.annotation.Secured;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.HireUpdate;
 
-
 public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(HireUpdateSchedulerJob.class);
-    
+
     private ActivityFactory activityFactory;
     public static final String JOB_NAME = "HIRE_UPDATE";
     private VehicleClassService vehicleClassService;
@@ -47,13 +47,13 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
                     continue;
                 }
-                
+
                 StringBuilder statusString = new StringBuilder();
 
                 /* Check is valid referenceNumber provided and claim is in valid status.*/
                 String referenceNumber = cells.get(0).trim();
                 Claim claim = validateClaimReferenceNumber(referenceNumber, statusString);
-                
+
                 /* Check vehicle class is valid */
                 String vehicleClassString = null;
                 if (cells.size() > 1) {
@@ -63,7 +63,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 if (vehicleClassString != null && !vehicleClassString.isEmpty()) {
                     vehicleClass = validateVehicleClass(vehicleClassString, statusString);
                 }
-                
+
                 /* Check Hire Start date provided is valid and parse the string date to java date.*/
                 String hireStartString = null;
                 if (cells.size() > 2) {
@@ -89,14 +89,35 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     updateInsurer = validateUpdateInsurer(cells.get(4).trim(), statusString);
                 }
 
+                // Check values have changed, otherwise do not update
+                if (claim != null) {
+                    VehicleHire vh = claim.getVehicleHire();
+                    Date hireStartDateTime;
+                    // Merge date and time
+                    if (hireStartTime != null) {
+                        try {
+                            Date time = DateHelper.getTimeFormat().parse(hireStartTime);
+                            hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
+                        } catch (Exception ex) {
+                            LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
+                            hireStartDateTime = hireStartDate;
+                        }
+                    } else {
+                        hireStartDateTime = hireStartDate;
+                    }
+
+                    if (vh != null && vehicleClass != null && vh.getVehicleClass().getName().equals(vehicleClass.getName()) && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
+                        statusString.append("Failed: No change from existing Vehicle Class or Hire Start details");
+                    }
+                }
                 /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty()) {
                     try {
                         Activity activity = (HireUpdate) activityFactory.getActivity("hireUpdate");
-                        ((HireUpdate)activity).setVehicleClass(vehicleClass);
-                        ((HireUpdate)activity).setHireStartDate(hireStartDate);
-                        ((HireUpdate)activity).setHireStartTime(hireStartTime);
-                        ((HireUpdate)activity).setUpdateInsurer(updateInsurer);
+                        ((HireUpdate) activity).setVehicleClass(vehicleClass);
+                        ((HireUpdate) activity).setHireStartDate(hireStartDate);
+                        ((HireUpdate) activity).setHireStartTime(hireStartTime);
+                        ((HireUpdate) activity).setUpdateInsurer(updateInsurer);
                         activity.process(claim);
                         statusString.append("Success: Updated.");
                         LOG.debug("Updated claim '{}' ('{}') [row:{}]", new Object[]{referenceNumber, claim.getChoReference(), row});
@@ -129,7 +150,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
 
     @Override
     protected String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap) {
-        
+
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By Email: ").append(email).append("\n");
@@ -152,7 +173,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     }
                 }
             }
-  
+
         } else {
             emailMsg.append("No xls attachement found in email, please check and re-submit.\n");
             emailMsg.append("-----------------------------------------------------------------------------------------------\n");
@@ -166,13 +187,13 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         if (vehicleclass == null) {
             statusString.append(" Invalid Replacement Vehicle Class Provided.");
         }
-        
+
         return vehicleclass;
     }
 
     private boolean validateUpdateInsurer(String updateInsurerString, StringBuilder statusString) {
         boolean updateInsurer = false;
-        
+
         if (updateInsurerString != null && !updateInsurerString.isEmpty()) {
             if (updateInsurerString.trim().equalsIgnoreCase("y") || updateInsurerString.trim().equalsIgnoreCase("yes")) {
                 updateInsurer = true;
@@ -186,11 +207,10 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
     }
-    
+
     @Override
     protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
-
 
 }
