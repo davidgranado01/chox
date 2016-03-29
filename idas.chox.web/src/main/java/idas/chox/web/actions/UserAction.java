@@ -18,6 +18,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ChorganisationService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.ActionResponse;
@@ -40,6 +41,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private LookupService lookupService;
     private ChorganisationService chorganisationService;
     private InsurerService insurerService;
+    private ClaimService claimService;
     private int start;
     private int limit;
     private String sort;
@@ -314,8 +316,15 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             
             if (getIsNew()) {
                 response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
-            } else {
+            } else if (model.getStatus()){
                 response = adminUserService.updateUser(model);
+            } else { // user is in-active - check no open claims
+                if (claimService.isUserHasOpenClaim(model.getId(), model.getInsurer() != null ? true : false)) {
+                    response = new ActionResponse();
+                    response.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
+                } else {
+                    response = adminUserService.updateUser(model);
+                }
             }
             updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
@@ -418,5 +427,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         this.insurerService = insurerService;
     }
 
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
     // </editor-fold>
 }
