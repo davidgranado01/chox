@@ -84,8 +84,8 @@ import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
     public static final String EMPTY = "empty";
-
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
+    
     private ApplicationAccessibility applicationAccessibility;
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
@@ -676,8 +676,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateCustomerClaimNumber() {
         try {
-            LOG.info("New customer claim number is: {}", customerClaimNumber);
-            LOG.info("Old customer claim number is: {}", claim.getCustomer().getClaimReference());
             claim.getCustomer().setClaimReference(customerClaimNumber.trim());
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT);
