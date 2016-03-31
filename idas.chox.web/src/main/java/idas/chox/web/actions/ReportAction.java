@@ -244,7 +244,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 session.remove("exceptionThrown");
                 session.remove("cancelExportOperation");
             } else {
-                LOG.error("reportFileLocation not in session () or is null", !session.containsKey("reportFileLocation"));
+                LOG.error("reportFileLocation not in session ({}) or is null", !session.containsKey("reportFileLocation"));
                 createEmptyReport();
             }
 
