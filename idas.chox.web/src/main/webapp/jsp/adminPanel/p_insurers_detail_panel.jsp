@@ -449,6 +449,8 @@
       
         if($('#CCDName').val() !== "")
             $('#nameField').hide();
+        
+        doToggleKbbsInsurerDashboard();
     });
     
     function displayPaymentsTeamFields() {
@@ -710,6 +712,19 @@
         ajax.loadHtml2(url,param, function(data){
             $(target).html(data);
         });
+    }
+
+    function doToggleKbbsInsurerDashboard(){
+        var enableKbbsDashboardFlag = false;
+        if($('form#formUpdateInsurerDetail input[name="enableKbbsDashboard"]:checked').val()){
+            enableKbbsDashboardFlag = true;
+             $("#kbbsInsurerManagerPasswordDiv").slideDown();
+             $("#kbbsInsurerOperativePasswordDiv").slideDown();
+         }else{
+             $("#kbbsInsurerManagerPasswordDiv").hide();
+             $("#kbbsInsurerOperativePasswordDiv").hide();
+        }
+        return enableKbbsDashboardFlag;
     }
 
 </script>
@@ -1271,6 +1286,22 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Require Acceptance Reason</label>
                                 <s:checkbox name="acceptanceReasonEnable" value="acceptanceReasonEnable" />
+                            </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable KBBS Dashboard</label>
+                                <s:checkbox name="enableKbbsDashboard" value="enableKbbsDashboard"  onclick="doToggleKbbsInsurerDashboard()"/>
+                            </div>
+                            <div class="chox-form-item" id="kbbsInsurerManagerPasswordDiv">
+                                <label class="chox-form-std-label">KBBS Manager Password</label>
+                                <input type="text" class="chox-ttxt"
+                                        id="kbbsInsurerManagerPasswordId" name="kbbsManagerPassword"
+                                        value="<s:property value="kbbsManagerPassword" />" />
+                            </div>
+                            <div class="chox-form-item" id="kbbsInsurerOperativePasswordDiv">
+                                <label class="chox-form-std-label" style="margin-top : -7px;">KBBS Operative Password</label>
+                                <input type="text" class="chox-ttxt" 
+                                        id="kbbsInsurerOperativePasswordId" name="kbbsOperativePassword"
+                                        value="<s:property value="kbbsOperativePassword" />" />
                             </div>
                         </fieldset>
                         
