@@ -41,7 +41,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
                         } catch (Exception ex) {
                             LOG.error("Exception thrown while processing {} from sender {} with subject '{}'\n",
                                     new Object[]{getClass().getSimpleName(), sender, emailSubject, ex});
-                            sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
+                            sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", "Exception thrown: " + ex.getMessage());
                         } finally {
                              message.setFlag(Flags.Flag.SEEN, true);
                         }
