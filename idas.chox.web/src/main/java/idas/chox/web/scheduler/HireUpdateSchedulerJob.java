@@ -106,7 +106,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         hireStartDateTime = hireStartDate;
                     }
 
-                    if (vh != null && vehicleClass != null && vh.getVehicleClass().getName().equals(vehicleClass.getName()) && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
+                    if (vh != null && vh.getVehicleClass() != null && vehicleClass != null && vh.getVehicleClass().getName().equals(vehicleClass.getName()) && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
                         statusString.append("Failed: No change from existing Vehicle Class or Hire Start details");
                     }
                 }
