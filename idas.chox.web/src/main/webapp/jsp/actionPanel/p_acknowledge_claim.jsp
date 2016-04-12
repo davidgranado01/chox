@@ -260,7 +260,7 @@ function refreshDesc(id){
                             <tr>
                                 <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
                                 <td colspan="3">
-                                    <div id="rejectionDescJspfId"/>
+                                    <div id="rejectionDescJspfId"></div>
                                 </td>
                             </tr>
                             <tr>
