@@ -33,7 +33,7 @@ public class ExcelReportBuilder implements ReportBuilder {
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
         short[] columnsToHide = report.getColumnsToHide();
-        LOG.info("Report data generated - constructing report from template file '{}'", templeteName);
+        LOG.debug("Report data generated - constructing report from template file '{}'", templeteName);
         return doCreateReport(reportParameters, templeteName, addLogo, columnsToHide, report.isBrandingReportFormat());
     }
 
