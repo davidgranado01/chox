@@ -44,8 +44,6 @@ function generateReport(queryString){
             });
         }      
         reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
-    } else {
-        setTimeout(generateReport(queryString), 500);
     }
 }
 
