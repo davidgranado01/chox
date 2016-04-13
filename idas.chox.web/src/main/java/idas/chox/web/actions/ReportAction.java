@@ -199,13 +199,13 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 if (session.get("isExportFinished") != null) {
                     setExportFinished((Boolean) session.get("isExportFinished"));
                 } else {
-                    LOG.debug("isExportFinished is null: setting to true in response");
-                    setExportFinished(Boolean.TRUE);
+                    LOG.debug("isExportFinished is null: setting to false in response");
+                    setExportFinished(Boolean.FALSE);
                 }
                 if (session.get("cancelExportOperation") != null) {
                     setExportCanceled((Boolean) session.get("cancelExportOperation"));
                 } else {
-                    setExportCanceled(Boolean.FALSE);
+                    setExportCanceled(Boolean.TRUE);
                 }
                 if (session.get("exceptionThrown") != null) {
                     setExceptionOccured((Boolean) session.get("exceptionThrown"));
@@ -239,8 +239,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
                 }
-                session.remove("reportFileLocation");
-                session.remove("isExportFinished");
+//                session.remove("reportFileLocation");
+//                session.remove("isExportFinished");
                 session.remove("exceptionThrown");
                 session.remove("cancelExportOperation");
             } else {
@@ -253,7 +253,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     private void createEmptyReport() {
-        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+        LOG.debug("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
         try {
             File emptyFile = File.createTempFile("emptyReport_", ".xls");
             emptyFile.deleteOnExit();
