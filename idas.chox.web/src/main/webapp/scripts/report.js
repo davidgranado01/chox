@@ -95,7 +95,6 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                         var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action");
                         $("body").append($form);
                         $form.submit();
-//                        window.location = contextPath+"/prv/p/downloadExcelReport.action?";
                     }
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
