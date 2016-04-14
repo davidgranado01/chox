@@ -1,9 +1,8 @@
 var reportGenerationStatusIntervelId, directReportGenerationStatusIntervelId;
 var cancelled=false;
-function generateReport(queryString)
-{
+function generateReport(queryString){
        
-    if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
+    if ( find_MSIE_version() > 0 && find_MSIE_version() < 9 && !cancelled ){
         
         Ext.MessageBox.show({
             title        : 'Generating Report...', 
@@ -15,8 +14,7 @@ function generateReport(queryString)
         directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1000);
         window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
             
-    }else{
-        cancelled = false;
+    }else if ( !cancelled ) {
         choxExtAjaxRequest({
             url: '/prv/p/generateReportFile.action',
             timeout : 3600000,
@@ -34,7 +32,7 @@ function generateReport(queryString)
                 closable     : false,
                 fn           : cancelReportGeneration
             });
-        } else{
+        }else{
             Ext.MessageBox.show({
                 title        : 'Generating Report', 
                 buttons      :  Ext.Msg.CANCEL,
@@ -45,12 +43,11 @@ function generateReport(queryString)
                 fn           : cancelReportGeneration
             });
         }      
-    
-                
         reportGenerationStatusIntervelId = setTimeout(loadLiveReportGenerationStatus, 1500);
     }
 }
-    
+
+
 function cancelReportGeneration(btn){
     if (btn === 'cancel'){
         cancelled = true;
@@ -77,7 +74,7 @@ function cancelReportGeneration(btn){
                             icon : Ext.MessageBox.ERROR
                         });
                     }
-                           
+                    cancelled = false;
                 }
             }
         });
@@ -95,7 +92,9 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                 if(resp.isExportProcessFinished && !resp.exceptionThrown){
                     Ext.MessageBox.hide();
                     if (!cancelled && !resp.exportCancelled){
-                        window.location = contextPath+"/prv/p/downloadExcelReport.action?";
+                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action");
+                        $("body").append($form);
+                        $form.submit();
                     }
                 }else if(resp.exceptionThrown){
                     Ext.MessageBox.hide();
