@@ -32,6 +32,7 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
+import java.io.FileInputStream;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -234,7 +235,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 LOG.debug("Creating stream for report file '{}'", reportFileLocation);
                 try {
                     File reportFile = new File(reportFileLocation);
-                    reportStream = new DeleteOnCloseFileInputStream(reportFile);
+                    reportStream = new FileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
