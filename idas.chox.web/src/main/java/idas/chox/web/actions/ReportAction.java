@@ -1,6 +1,7 @@
 package idas.chox.web.actions;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +33,6 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
-import java.io.FileInputStream;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
