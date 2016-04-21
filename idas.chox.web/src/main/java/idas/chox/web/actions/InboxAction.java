@@ -311,6 +311,13 @@ public class InboxAction extends BaseAction {
         }
     }
 
+    public boolean getIsDashboardUser() {
+        return (RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)
+                        && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MI))
+                || ( RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MNG)
+                        && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MI));
+    }
+  
     public boolean getIsComUser() {
         return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_COM);
     }

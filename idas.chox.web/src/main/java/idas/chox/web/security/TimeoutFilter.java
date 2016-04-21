@@ -4,20 +4,23 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import idas.chox.core.services.UserService;
 /*
  * This class extends OncePerRequestFilter to prevent the forward(httpServelet DispatcherType) request being filterd by this filter.
  */
+
 public class TimeoutFilter extends OncePerRequestFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimeoutFilter.class);
@@ -34,10 +37,14 @@ public class TimeoutFilter extends OncePerRequestFilter {
     private final String WEB_SERVICE_URL_STRING = "/services";
     private final String LOGBACK_LOGGING_URL_STRING = "/logBack";
     private final String ACTIVITY_MONITOR_CHECK_STRING = "activityMonitoringAction";
+    private UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain fc) throws IOException, ServletException {
-
         HttpSession session = request.getSession();
         String serveletPath = request.getServletPath();
 
@@ -46,7 +53,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
             fc.doFilter(request, response);
             return;
         }
-        
+
         // if this is for Logback view web logging request then continue to next filter
         if (serveletPath.contains(LOGBACK_LOGGING_URL_STRING)) {
             fc.doFilter(request, response);
@@ -61,6 +68,8 @@ public class TimeoutFilter extends OncePerRequestFilter {
         // if the user is not authenticated then return the login page unless the request is for the login page or from the login page. 
         if (!((auth != null && auth.isAuthenticated()) || serveletPath.contains(LOGIN_PAGE_REQUEST_URL)
                 || serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
+            // Session could have timed-out - lets try invalidating the KBBS token, just in case....
+            invalidateKbbsToken(request);
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
             return;
         }
@@ -87,7 +96,9 @@ public class TimeoutFilter extends OncePerRequestFilter {
                 request.getSession().invalidate();
                 SecurityContextHolder.clearContext();
 
-                LOG.info("Login session has been expired.");
+                LOG.debug("Login session has been expired - invalidating KBBS authentication token");
+                invalidateKbbsToken(request);
+
                 if (isAjax) { // This error code(418) is caught by extjs and ajax global exception handler and appropriate error message is shown to the user.
 
                     /*
@@ -95,7 +106,6 @@ public class TimeoutFilter extends OncePerRequestFilter {
                      *  Struts global exception handler uses CustomAuthenticationProcessingFilterEntryPoint which change the response status to 401 , to avoid this we use custom http status 418.
                      *  Struts global exception is called for error status 408, by Only request from firefox render engine (firefox, camino) , so to avoid this custom error status used.
                      */
-
                     response.setStatus(418);
                     return;
                 } else if (serveletPath.contains(LOGOUT_STRING)) { // If this is logout request then directly go to login page.
@@ -150,5 +160,23 @@ public class TimeoutFilter extends OncePerRequestFilter {
 
     public void setDefaultRedirectStrategy(DefaultRedirectStrategy defaultRedirectStrategy) {
         this.defaultRedirectStrategy = defaultRedirectStrategy;
+    }
+    
+    private void invalidateKbbsToken(HttpServletRequest request) throws IOException {
+                String result, kbbsToken = null;
+
+                Cookie cookies[] = request.getCookies();
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("JD.Token")) {
+                        kbbsToken = cookie.getValue();
+                    }
+                }
+                if (kbbsToken != null) {
+                    result = userService.kbbsInvalidate(kbbsToken);
+                } else {
+                    result = "No KBBS authentication token (cookie) available";
+                }
+
+                LOG.debug("Result from invalidating KBBS authentication token: {}", result);
     }
 }

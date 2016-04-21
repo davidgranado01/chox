@@ -102,6 +102,10 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return SUCCESS;
     }
 
+    public String showKbbsBoard() {
+        return SUCCESS;
+    }
+
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }

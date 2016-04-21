@@ -6,6 +6,7 @@ import java.util.Set;
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
+import java.io.IOException;
 
 public interface UserService {
 
@@ -54,4 +55,7 @@ public interface UserService {
     void unblock(int userId);
     
     boolean failedLogin(int userId);
+    
+    String kbbsAuthenticate(WebUser user) throws IOException;
+    String kbbsInvalidate(String token) throws IOException;
 }
