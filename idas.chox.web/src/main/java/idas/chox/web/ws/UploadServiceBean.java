@@ -27,6 +27,7 @@ import idas.chox.core.model.WebBordereau;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
@@ -46,6 +47,7 @@ public class UploadServiceBean {
     private AttachmentTypeService attachmentTypeService;
     private AttachmentService attachmentService;
     private ClaimService claimService;
+    private BreBandService breBandService;
     private WebBordereauService webBordereauService;
     private ActivityFactory activityFactory;
     private SecurityInfoProvider securityInfoProvider;
@@ -64,6 +66,10 @@ public class UploadServiceBean {
 
     public void setAttachmentService(AttachmentService attachmentService) {
         this.attachmentService = attachmentService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public void setWebBordereauService(WebBordereauService webBordereauService) {
@@ -433,6 +439,7 @@ public class UploadServiceBean {
                 result.setErrorMessage("Claim is not in correct status to move into 'Payment Received' (should be '"
                         + ClaimStatus.INVOICE_PAYMENT_LOGGED.value() + "' but is '" + claim.getStatus() + "')");
             } else {
+                claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -456,6 +463,7 @@ public class UploadServiceBean {
                 result.setStatus(false);
                 result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
             } else {
+                claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -486,6 +494,7 @@ public class UploadServiceBean {
                 result.setStatus(false);
                 result.setErrorMessage(new StringBuilder().append("Claim with supplier reference number '").append(supplierReference).append("' does not exist.").toString());
             } else {
+                claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -525,6 +534,7 @@ public class UploadServiceBean {
                 ((EcdUpdate) activity).setReason(delayReason);
                 ((EcdUpdate) activity).setSupportingNote(supportingNote);
                 ((EcdUpdate) activity).setUpdateInsurer(true);
+                claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 activity.process(claim);
                 result.setStatus(true);
             }
@@ -578,6 +588,7 @@ public class UploadServiceBean {
                 ((AddNote) activity).setComment(note.getComment());
                 ((AddNote) activity).setVisibilityType(visibilityType);
 
+                claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 activity.process(claim);
                 result.setStatus(true);
             }

@@ -22,6 +22,11 @@ public class InvoicePaymentReceived extends BaseActivity {
                     + " (as full payment has been marked as received)."));
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
+        
+        if (claim.getBreBand() == null) {
+            claim.setBreBand(getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
+        }
+        
         selectRandomlyForAuditReview(claim);
         if (claim.getInvoice().getFinalPayment() != null) {
             if (claim.getInvoice().getInterimPaymentMade() != null) {

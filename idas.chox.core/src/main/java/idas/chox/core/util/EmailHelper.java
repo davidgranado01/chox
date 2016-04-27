@@ -87,11 +87,13 @@ public class EmailHelper {
             InternetAddress[] addressTo = new InternetAddress[recipients.length];
             for (int i = 0; i < recipients.length; i++) {
                 addressTo[i] = new InternetAddress(recipients[i]);
+                LOG.debug("Recipient {} added: '{}'", i, recipients[i]);
             }
             msg.setRecipients(Message.RecipientType.TO, addressTo);
             
             for (String bccRecipient : bccRecipients) {
                 msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(bccRecipient));
+                LOG.debug("BCC Recipient added: {}", bccRecipient);
             }
    
             msg.setSubject(emailSubjectPrefix + subject);
@@ -99,7 +101,7 @@ public class EmailHelper {
             Transport.send(msg);
 
         } catch (UnsupportedEncodingException | MessagingException ex) {
-            LOG.warn("Error posting email with subject '{}': \n", subject, ex);
+            LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         }
     }

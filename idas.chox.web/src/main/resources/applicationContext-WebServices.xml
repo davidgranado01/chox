@@ -66,6 +66,7 @@
     <bean id="uploadServiceBean" class="idas.chox.web.ws.UploadServiceBean" scope="prototype">
         <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
         <property name="claimService" ref="claimService" />
+        <property name="breBandService" ref="breBandService" />
         <property name="webBordereauService" ref="webBordereauService" />
         <property name="activityFactory" ref="activityFactory" />
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
