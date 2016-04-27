@@ -92,6 +92,7 @@
 
     <beans:bean id="timeoutFilter" class="idas.chox.web.security.TimeoutFilter">
         <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
+        <beans:property name="userService" ref="userService"/>
     </beans:bean>
 
     <beans:bean id="csrfTokenChangingFilter" class="idas.chox.web.security.CsrfTokenChangingFilter">
