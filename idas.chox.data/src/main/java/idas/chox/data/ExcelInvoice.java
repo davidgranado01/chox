@@ -81,6 +81,7 @@ public class ExcelInvoice {
     private BigDecimal totalGross;
     private BigDecimal discount;
     private BigDecimal insurerDiscount;
+    private BigDecimal gtaDiscount;
     private BigDecimal fullTotalToPay;
     private BigDecimal fullTotalToPayOriginal;
     private BigDecimal totalToPay;
@@ -232,6 +233,7 @@ public class ExcelInvoice {
         totalGross = (BigDecimal) data.get("totalgross");
         discount = (BigDecimal) data.get("discount");
         insurerDiscount = (BigDecimal) data.get("insurerdiscount");
+        gtaDiscount = (BigDecimal) data.get("gtadiscount");
         fullTotalToPay = (BigDecimal) data.get("fulltotaltopay");
         fullTotalToPayOriginal = (BigDecimal) data.get("original_fulltotaltopay");
         totalToPay = (BigDecimal) data.get("totaltopay");
@@ -432,6 +434,10 @@ public class ExcelInvoice {
 
     public BigDecimal getInsurerDiscount() {
         return insurerDiscount;
+    }
+
+    public BigDecimal getGtaDiscount() {
+        return gtaDiscount;
     }
 
     public BigDecimal getInsurerDiscountFeePaid() {

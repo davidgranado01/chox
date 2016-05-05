@@ -32,6 +32,7 @@
         <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFeeOriginal"/>
         <property column="discount" name="discountOriginal"/>
         <property column="insurer_discount" name="insurerDiscountOriginal"/>
+        <property column="gta_discount" name="gtaDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
         <property column="collaboration_fee" name="collaborationFeeOriginal"/>

@@ -353,6 +353,23 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><label class="std-label-ro">GTA Discount</label></td>
+                                    <td>&nbsp;</td>
+                                    <s:if test="gtaDiscount<0">
+                                        <td><label class="std-data-ro" style="color: red; font-weight:bold;">£<s:property value="gtaDiscount" /></label></td>
+                                    </s:if>
+                                    <s:else>
+                                        <td><label class="std-data-ro">£<s:property value="gtaDiscount" /></label></td>
+                                    </s:else>
+                                    
+                                    <td>
+                                        <s:if test="gtaDiscount!=gtaDiscountOriginal&&(gtaDiscountOriginal!=null)">
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                            <label class="chox-ttnum-smalll">(<s:property value="gtaDiscountOriginal" />)</label>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td><label class="std-label-ro">Full Total Requested</label></td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="fullTotalToPay" /></label></td>

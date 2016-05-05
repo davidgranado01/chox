@@ -2166,7 +2166,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             Invoice invoice = claim.getInvoice();
             BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge())
-                    .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount);
+                    .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount).subtract(invoice.getGtaDiscount());
+            invoice.setGtaDiscount(BigDecimal.ZERO);
             if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
                 resultMap.put("error", "You must supply a value for 'Hire Penalty Percentage'.");
                 return resultMap;

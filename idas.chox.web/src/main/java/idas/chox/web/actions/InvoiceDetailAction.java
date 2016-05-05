@@ -509,6 +509,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getInsurerDiscountOriginal();
     }
 
+    public java.math.BigDecimal getGtaDiscountOriginal() {
+        return invoiceOriginal.getGtaDiscountOriginal();
+    }
+
     public java.math.BigDecimal getFullTotalToPayOriginal() {
         return invoiceOriginal.getFullTotalToPayOriginal();
     }
@@ -919,6 +923,19 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerDiscount());
             }
             invoice.setInsurerDiscount(insurerDiscount);
+        }
+    }
+
+    public java.math.BigDecimal getGtaDiscount() {
+        return invoice.getGtaDiscount();
+    }
+
+    public void setGtaDiscount(java.math.BigDecimal gtaDiscount) {
+        if (actionSelected != reset && invoice != null) {
+            if (gtaDiscount.compareTo(invoice.getGtaDiscount()) != 0) {
+                LOG.debug("GTA Discount from form is {} and existing gtadiscount is {} ", gtaDiscount, invoice.getGtaDiscount());
+            }
+            invoice.setGtaDiscount(gtaDiscount);
         }
     }
 
@@ -2675,6 +2692,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         hireGross = hireGross.add(hireVat);
         hireGross = hireGross.add(hireNet);
         setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
+        insurerDiscountService.applyGtaDiscount(claim);
 
         if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue() == 0)) {
             setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
@@ -2781,6 +2799,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         fullTotalRequested = fullTotalRequested.add(getDiscount());
         fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
         fullTotalRequested = fullTotalRequested.add(getInsurerDiscount());
+        fullTotalRequested = fullTotalRequested.add(getGtaDiscount());
 
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);

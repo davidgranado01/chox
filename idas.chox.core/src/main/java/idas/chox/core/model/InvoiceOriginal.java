@@ -28,6 +28,7 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal deductionForClaimsHandlingFeeOriginal;
     private BigDecimal discountOriginal;
     private BigDecimal insurerDiscountOriginal;
+    private BigDecimal gtaDiscountOriginal;
     private BigDecimal fullTotalToPayOriginal;
     private BigDecimal collaborationFeeOriginal;
     private Integer collaborationQtyOriginal;
@@ -247,6 +248,14 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     public void setInsurerDiscountOriginal(BigDecimal insurerDiscountOriginal) {
         this.insurerDiscountOriginal = insurerDiscountOriginal;
+    }
+
+    public BigDecimal getGtaDiscountOriginal() {
+        return gtaDiscountOriginal;
+    }
+
+    public void setGtaDiscountOriginal(BigDecimal gtaDiscountOriginal) {
+        this.gtaDiscountOriginal = gtaDiscountOriginal;
     }
 
     public BigDecimal getDiscountOriginal() {

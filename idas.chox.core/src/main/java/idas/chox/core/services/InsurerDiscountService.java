@@ -28,6 +28,7 @@ public interface InsurerDiscountService {
     BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue, int claimTypeValue);
 
     void applyInsurerDiscounts(Claim claim, WebUser user, boolean canAddComment);
+    void applyGtaDiscount(Claim claim);
 
     void addInsurerDiscountComment(Claim claim, BigDecimal insurerDiscountAmount, BigDecimal insurerDiscountPercentage, String insurerDiscountType, WebUser user);
 }
