@@ -268,12 +268,14 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         //Do nothing if invoice > 30 days old
-        long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
-        if (days > 30) {
-            LOG.debug("GTA disocunt not added as invoice > 30 days old.");
-            return;
+        if (claim.getInvoice().getCreatedDate() != null) {
+            long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
+            if (days > 30) {
+                LOG.debug("GTA disocunt not added as invoice > 30 days old.");
+                return;
+            }
         }
-                
+        
         // Check GTA Discount enabled in BRE Band
         if (claim.getBreBand() == null) {
             claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
