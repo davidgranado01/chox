@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,8 +32,6 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.util.DateHelper;
-import java.text.ParseException;
-import java.util.logging.Level;
 
 /**
  *
@@ -264,16 +263,24 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     public void applyGtaDiscount(Claim claim) {
         // GTA Discount only applies to GTA and Insurer Uploaded claims
         if (!ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
-            LOG.info("GTA disocunt not added as invalid claim type (not GTA or Insurer Upload).");
+            LOG.debug("GTA disocunt not added as invalid claim type (not GTA or Insurer Upload).");
             return;
         }
 
+        //Do nothing if invoice > 30 days old
+        long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
+        if (days > 30) {
+            LOG.debug("GTA disocunt not added as invoice > 30 days old.");
+            return;
+        }
+                
+        // Check GTA Discount enabled in BRE Band
         if (claim.getBreBand() == null) {
             claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
         }
 
         if (!claim.getBreBand().isEnableGtaDiscount()) {
-            LOG.info("GTA disocunt not added as disabled in BRE band.");
+            LOG.debug("GTA disocunt not added as disabled in BRE band.");
             return;
         }
         

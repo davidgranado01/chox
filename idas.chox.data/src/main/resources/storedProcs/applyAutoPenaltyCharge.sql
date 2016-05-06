@@ -286,7 +286,7 @@ from claim c
 where c.invoice_id = invoice.id
   and gta_discount != 0.0
   and c.status not in ('PaymentReceived','InvoicePaymentLogged','InvoiceRejectionAccepted','ClaimClosed')
-  and now()::date - created_date::date + 1 > 30 ;
+  and now()::date - invoice.created_date::date + 1 > 30 ;
 
 RETURN TRUE;
 
