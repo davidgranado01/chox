@@ -2042,6 +2042,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.addComment(comment);
         }
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
+// Discounts should not change when penalty start date changes....
+//        insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         updateLiabilityPayment(claim);
         updateClaim(claim);

@@ -263,7 +263,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     public void applyGtaDiscount(Claim claim) {
         // GTA Discount only applies to GTA and Insurer Uploaded claims
         if (!ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
-            LOG.debug("GTA disocunt not added as invalid claim type (not GTA or Insurer Upload).");
+            LOG.debug("GTA discount not added as invalid claim type (not GTA or Insurer Upload).");
             return;
         }
 
@@ -271,7 +271,12 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         if (claim.getInvoice().getCreatedDate() != null) {
             long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
             if (days > 30) {
-                LOG.debug("GTA disocunt not added as invoice > 30 days old.");
+                if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                    claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+                    claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                    claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                }
+                LOG.debug("GTA discount not added as invoice > 30 days old.");
                 return;
             }
         }
@@ -282,7 +287,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         if (!claim.getBreBand().isEnableGtaDiscount()) {
-            LOG.debug("GTA disocunt not added as disabled in BRE band.");
+            LOG.debug("GTA discount not added as disabled in BRE band.");
             return;
         }
         
@@ -297,6 +302,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 }
                 if (claim.getVehicleHire().getRentalStart().before(d)) {
                     LOG.debug("GTA Discount not added as rental start {} is before {}", claim.getVehicleHire().getRentalStart(), d);
+                    if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+                        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                        claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                    }
                     return;
                 }
         } else {
@@ -308,8 +318,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
         claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
 
-        // Now set in the original invoice (if available) as we do not want the discount to affect the 'original values'
-        if (claim.getInvoice().getInvoiceOriginal() != null) {
+        // Now set in the original invoice (if available) as we do not want the discount to affect the 'original values' for new invoices
+        if (claim.getInvoice().getCreatedDate() == null && claim.getInvoice().getInvoiceOriginal() != null) {
             claim.getInvoice().getInvoiceOriginal().setFullTotalToPayOriginal(claim.getInvoice().getFullTotalToPay());
             claim.getInvoice().getInvoiceOriginal().setTotalToPayOriginal(claim.getInvoice().getTotalToPay());
             claim.getInvoice().getInvoiceOriginal().setGtaDiscountOriginal(claim.getInvoice().getGtaDiscount());

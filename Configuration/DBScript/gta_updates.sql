@@ -113,10 +113,10 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
       repair_penalty_charge_applied_date = (CASE WHEN(repairpenalPerVal > 0.0) THEN now() ELSE null END),
       full_total_to_pay = (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
       total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
-                           THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
+                           THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
                       WHEN ((claimRecord.liability_status = 4) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
                            THEN (0.00)
-                      ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2)
+                      ELSE (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2)
                            END),
       hire_penalty_charge = (hire_gross * hirepenalPerVal)::NUMERIC(8,2),
       repair_penalty_charge = (repair_gross * repairpenalPerVal)::NUMERIC(8,2),
