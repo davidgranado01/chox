@@ -66,11 +66,11 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
     }
 
     @Override
-    public boolean isChorganisationAliasExist(int chorganisationId, String AliasName) {
+    public boolean isChorganisationAliasExist(int chorganisationId, String aliasName) {
 
         boolean bFlag = true;
         DetachedCriteria criteria = DetachedCriteria.forClass(ChorganisationAlias.class);
-        criteria.add(Restrictions.eq("aliasName", AliasName.trim()));
+        criteria.add(Restrictions.eq("aliasName", aliasName.trim()));
         if (getByCriteria(criteria) == null) {
             bFlag = false;
         }

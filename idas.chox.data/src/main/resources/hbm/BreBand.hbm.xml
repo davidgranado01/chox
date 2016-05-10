@@ -177,6 +177,8 @@
         <property column="fixedfee_time_cut_off" name="fixedFeeTimeCutOff" not-null="true"/>
         <property column="pause_subscriber_sla_clock" name="pauseSubscriberSlaClock"/>
         <property column="pause_fixedfee_sla_clock" name="pauseFixedFeeSlaClock"/>
+        <property column="storage_recovery_net_ceiling_check" name="storageRecoveryNetCeilingCheck"/>
+        <property column="storage_recovery_net_ceiling" name="storageRecoveryNetCeiling"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

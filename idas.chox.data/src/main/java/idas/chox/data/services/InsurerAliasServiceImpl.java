@@ -61,11 +61,11 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     }
 
     @Override
-    public boolean isInsurerAliasExist(int insurerId, String AliasName) {
+    public boolean isInsurerAliasExist(int insurerId, String aliasName) {
 
         boolean bFlag = true;
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
-        criteria.add(Restrictions.eq("aliasName", AliasName.trim()));
+        criteria.add(Restrictions.eq("aliasName", aliasName.trim()));
         if (getByCriteria(criteria) == null) {
             bFlag = false;
         }

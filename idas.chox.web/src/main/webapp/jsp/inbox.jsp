@@ -474,7 +474,7 @@
                         <td><div id="claimRoutedSelectionHolder"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"/></td>
+                        <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"></div></td>
                     </tr>
                 </table>
             </form>
@@ -500,7 +500,7 @@
                         <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
+                        <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"></div></td>
                     </tr>
                 </table>
             </form>
@@ -520,7 +520,7 @@
                         <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv1"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><div id="ownershipClaimFormMessageBox1" class="action-error-msg"/></td>
+                        <td colspan="2"><div id="ownershipClaimFormMessageBox1" class="action-error-msg"></div></td>
                     </tr>
                 </table>
             </form>
@@ -540,7 +540,7 @@
                         <td class="pop-claim-ownership-column"><div id="supplierClaimOwnerDropDownDiv"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"/></td>
+                        <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"></div></td>
                     </tr>
                 </table>
             </form>

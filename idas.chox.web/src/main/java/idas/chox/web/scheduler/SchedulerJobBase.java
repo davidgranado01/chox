@@ -11,21 +11,20 @@ import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
 import org.quartz.JobExecutionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import idas.chox.core.model.Claim;
@@ -36,7 +35,6 @@ import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
-import org.springframework.security.core.AuthenticationException;
 
 /**
  *
@@ -116,7 +114,8 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                     LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
                 }
             }
-
+        } catch (Exception ex) {
+            LOG.error("Exception thrown calling Scheduler Job '{}': {}", getClass().getSimpleName(), ex.getMessage(), ex);
         } finally {
             releaseHibernateSessionConditionally();
         }
@@ -202,14 +201,26 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         session = SessionFactoryUtils.getSession(sessionFactory, true);
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-            hibernateTransaction = session.beginTransaction();
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
         }
     }
 
     public void releaseHibernateSessionConditionally() {
-        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted()) {
+        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted() && hibernateTransaction.isActive()) {
             hibernateTransaction.commit();
-            LOG.debug("Transaction committed.");
+            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+        } else {
+            LOG.debug("Hibernate Transaction not committed: {}", hibernateTransaction);
+            if (hibernateTransaction != null) {
+                LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
+            }
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();

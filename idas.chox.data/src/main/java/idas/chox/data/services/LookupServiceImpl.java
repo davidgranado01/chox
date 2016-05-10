@@ -95,9 +95,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<LookupItem> getClaimTypes(WebUser user) {
-        List<LookupItem> items = new ArrayList<>();
-        Insurer insurer = null;
-        
+        List<LookupItem> items = new ArrayList<>();        
 
         if (RoleHelper.isChoxAdmin(user) || (RoleHelper.isInsurerUser(user) && user.getInsurer().isAllowCollaborationProtocolClaims())
                 || (!RoleHelper.isInsurerUser(user) && user.getChorganisation().isEnableCollaborationProtocolClaims())) {

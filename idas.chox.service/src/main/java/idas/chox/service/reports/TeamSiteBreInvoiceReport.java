@@ -55,7 +55,7 @@ public class TeamSiteBreInvoiceReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
             String supplierId;
@@ -67,7 +67,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             String rptInsurerName = "";
             Date startDate = null;
             Date endDate = null;
-            Date serviceCommencingDate = null;
+
             user = ((WebUser) externalParameter.get("CurrentUser"));
             List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user, false);
             // GET INSURER INFORMATION
@@ -83,7 +83,6 @@ public class TeamSiteBreInvoiceReport implements Report {
                 if (!supplierId.equalsIgnoreCase("-1") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("Team site bre invoice report selectedChoId ={}", selectedCHOId);
-//                    selectedOrgId = iSupplierId;
                     selectedCHOName = getChorganisation(selectedCHOId).getName();
                 }
             }
@@ -122,11 +121,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
-            // First, update user service stats for Workgroup
-//            baseDataService.query("select update_user_service(" + insurerId + ")");
-            // baseDataService.callUpdateWorkgroupService(insurerId);
-
-            List<TeamSiteBreInvoiceReportObject> teamReportObjects = new ArrayList<TeamSiteBreInvoiceReportObject>();
+            List<TeamSiteBreInvoiceReportObject> teamReportObjects = new ArrayList<>();
             HashMap queryParameters = new HashMap();
             queryParameters.put("pInsurerId", insurerId);
             StringBuilder sb = new StringBuilder();
@@ -412,22 +407,22 @@ public class TeamSiteBreInvoiceReport implements Report {
     }
 
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
-        List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
-        List result = null;
+        List<ReasonOfRejection> reportRows = new ArrayList<>();
+        List result;
         if (currentUser.getInsurer() != null) {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id "
-                    + "where ror.type='Invoice' "
+                    + "where ror.type='Invoice Rejection' "
                     + "and ror.insurer_id = :insurerId group by ror.id "
-                    + "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id = :insurerId order by name asc ";
+                    + "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice Rejection' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
             result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id "
-                    + "where ror.type='Invoice' "
+                    + "where ror.type='Invoice Rejection' "
                     + "and ror.insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId)"
                     + " group by ror.id  "
-                    + "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id in "
+                    + "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice Rejection' and insurer_id in "
                     + "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
 
             Map paramMap = new HashMap();

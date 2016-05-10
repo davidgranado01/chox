@@ -580,8 +580,6 @@ public class AdminInsurerService extends SecureDataService {
     public ActionResponse triggerInsurerWorkgroupStpExcluded(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
 
-        Insurer insurer = insurerService.getInsurer(insurerId);
-
         workgroup.setStpExcluded(!workgroup.isStpExcluded());
         workgroupService.saveWorkgroup(workgroup);
 

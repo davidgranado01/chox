@@ -718,16 +718,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isUserHasOpenClaim(int userId) {
+    public boolean isUserHasOpenClaim(int userId, boolean isInsurer) {
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-        for (String sStatus : ClaimStatus.getInsurerClosedStatus(false)) {
-            criteria.add(Restrictions.ne("status", sStatus));
+        if (isInsurer) {
+            criteria.add(Restrictions.eq("claimOwner.id", userId));
+
+            for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+
         }
+        else {
+            criteria.add(Restrictions.eq("supplierClaimOwner.id", userId));
 
+            for (String sStatus : ClaimStatus.getCompletedStatus(false)) {
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+        }
+       
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
         }
@@ -1007,7 +1018,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.isAnomalies()) {
             DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
-            DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
             criteria.add(Subqueries.propertyIn("id", inSubclause));
         }
 
@@ -2173,9 +2183,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             invoice.setFullTotalToPay(newTotalAmountToPay);
             invoice.setHirePenaltyCharge(hirePenaltyChargeAmount);
-            invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
+            if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) == 0) {
+                invoice.setHirePenaltyPercentage("");
+            } else if (hirePenaltyPercentage.startsWith("Commercial")) {
+                invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+            }
+            else {
+                invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
+            }
             invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
-            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
+            if (repairPenaltyChargeAmount.compareTo(BigDecimal.ZERO) == 0) {
+                invoice.setRepairPenaltyPercentage("");
+            } else if (repairPenaltyPercentage.startsWith("Commercial")) {
+                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+            }
+            else {
+                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
+            }
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
             // As we are applying a manual penalty charge, we need to de-activate auto-penalty charges on this claim

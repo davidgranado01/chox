@@ -75,7 +75,7 @@
                     <table class="status-table">
                         <tr>
                             <td>
-                                <label>Claim Number<span class="mandatory">*</span></label></td><td nowrap>
+                                <label>Claim Number<span class="mandatory">*</span>:</label></td><td nowrap>
                                 <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
                                 <input type="button" id="MAUICNUpdateClaimNumberButtonId"value="Update Claim Number" onclick="javascript: return doSubmitClaimNumber()"/>
                             </td>

@@ -31,12 +31,12 @@ BEGIN
                 FOR j IN 1..2 LOOP
 
                     IF j=1 THEN
-                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim' AND subscriber_active = TRUE);
+                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim Rejection' AND subscriber_active = TRUE);
                     ELSE
                        totalRejectionReasonRecord = 1;
                     END IF;
 
-                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim' AND subscriber_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
+                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim Rejection' AND subscriber_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
 
                         IF i=1 THEN
                             queryString = queryString || 'select ''Not Yet Routed'' as "Name",';
@@ -141,12 +141,12 @@ BEGIN
                 FOR j IN 1..2 LOOP
 
                     IF j=1 THEN
-                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim' AND subscriber_active = TRUE);
+                       totalRejectionReasonRecord = (SELECT COUNT(*) FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim Rejection' AND subscriber_active = TRUE);
                     ELSE
                        totalRejectionReasonRecord = 1;
                     END IF;
 
-                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim' AND subscriber_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
+                    FOR reasonOfRejection IN SELECT * FROM reason_of_rejection WHERE insurer_id = $1 AND type ILIKE 'Claim Rejection' AND subscriber_active = TRUE ORDER BY name LIMIT totalRejectionReasonRecord LOOP
 
                         IF i=1 THEN
                             queryString = queryString || 'select ''Not Yet Assigned'' as "Name", ';

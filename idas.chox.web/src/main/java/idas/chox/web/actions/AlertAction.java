@@ -19,6 +19,7 @@ public class AlertAction extends BaseAction {
     private Integer claimId;
     private String claimNumber;
     private String customerClaimNumber;
+    private String choReference;
     private String customerClaimRefNum;
     private List duplicatedClaims;
     private String actionResult;
@@ -111,7 +112,7 @@ public class AlertAction extends BaseAction {
             if (!customerClaimNumber.isEmpty() && claimId != 0) {
                 if (claimService == null) {
                     LOG.error("No Claim Service in AlertAction.isCustomerClaimNumberDuplicated: claimId={}, claimNumber='{}'",
-                            new Object[]{claimId, claimNumber});
+                            new Object[]{claimId, customerClaimNumber});
                     this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether customer claim number is already associated with another claim(s). Do you wish to continue?");
                 } else if (claimService.isCustomerClaimNumberExist(customerClaimNumber, claimId, Boolean.TRUE)) {
                     this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The customer claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
@@ -126,6 +127,31 @@ public class AlertAction extends BaseAction {
         return SUCCESS;
     }
     
+    public String isSupplierReferenceNumberDuplicated() {
+        try {
+            if (!choReference.isEmpty() && claimId != 0) {
+                if (claimService == null) {
+                    LOG.error("No Claim Service in AlertAction.isSupplierReferenceNumberDuplicated: claimId={}, claimNumber='{}'",
+                            new Object[]{claimId, claimNumber});
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether supplier reference number is already associated with another claim(s). Do you wish to continue?");
+                } else {
+                    int choId = claimService.getClaim(claimId).getChorganisation().getId();
+                    if (claimService.isClaimSupplierReferenceNumberExistForCho(choReference, choId)) {
+                        this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This Supplier Reference already exists in CHOX for this CHO, please provide an alternative unique reference");
+                    } else if (claimService.isClaimSupplierReferenceNumberExist(choReference)) {
+                        this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "This Supplier Reference already exists in CHOX but for a different CHO. Do you wish to continue?");
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            LOG.warn("Exception thrown: claimId={}, customerClaimNumber='{}', claimService={}",
+                    new Object[]{claimId, choReference, claimService, ex});
+            this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether the Supplier Reference number is already associated with another claim(s). Do you wish to continue?");
+        }
+
+        return SUCCESS;
+    }
+
     public List getOtherDuplicatedClaims() {
         return duplicatedClaims;
     }
@@ -164,6 +190,14 @@ public class AlertAction extends BaseAction {
 
     public void setCustomerClaimRefNum(String customerClaimRefNum) {
         this.customerClaimRefNum = customerClaimRefNum;
+    }
+
+    public String getChoReference() {
+        return choReference;
+    }
+
+    public void setChoReference(String choReference) {
+        this.choReference = choReference;
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface InsurerAliasService {
 
     void saveInsurerAlias(InsurerAlias insurerAlias);
 
-    boolean isInsurerAliasExist(int insurerId, String AliasName);
+    boolean isInsurerAliasExist(int insurerId, String aliasName);
 
     void createDefaultRecord(Insurer insurer);
 }

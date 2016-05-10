@@ -11,8 +11,8 @@ public class ClaimRejectedReportObject {
         return dateFrom;
     }
 
-    public void setDateFrom(Date DateFrom) {
-        this.dateFrom = DateFrom;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
     public Date getDateTo() {

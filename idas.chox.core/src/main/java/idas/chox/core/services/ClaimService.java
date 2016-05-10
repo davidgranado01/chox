@@ -53,19 +53,19 @@ public interface ClaimService extends DataService {
 
     Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 
-    Boolean isObjectExist(int WorkgroupId);
+    Boolean isObjectExist(int workgroupId);
 
-    boolean isUserHasOpenClaim(int UserId);
+    boolean isUserHasOpenClaim(int userId, boolean isInsurer);
 
-    boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status);
+    boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set workgroupIds, String status);
 
     boolean isSubscriberClaimRejectedAndAgreed(int claimId);
         
-    boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
+    boolean isOpenClaimByWorkgroupExist(int workgroupId);
 
-    boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
+    boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set workgroupIds, int userId);
 
-    boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
+    boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int workgroupId, int UserId);
 
     String getDaysWithCHOForReview(int id);
 
@@ -134,10 +134,10 @@ public interface ClaimService extends DataService {
     
     boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO);
     
-    BigDecimal calculateHirePenaltyChargeVal(Claim claim, String Percentage);
+    BigDecimal calculateHirePenaltyChargeVal(Claim claim, String percentage);
     BigDecimal calculateHirePenaltyChargeVal(Claim claim);
 
-    BigDecimal calculateRepairPenaltyChargeVal(Claim claim, String Percentage);
+    BigDecimal calculateRepairPenaltyChargeVal(Claim claim, String percentage);
     BigDecimal calculateRepairPenaltyChargeVal(Claim claim);
 
     BigDecimal getHirePenaltyPercentageVal(Claim claim);

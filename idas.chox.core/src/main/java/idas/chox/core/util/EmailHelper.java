@@ -21,13 +21,13 @@ public class EmailHelper {
     private static final String emailSubjectPrefix = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final boolean SMTP_authetication = true;
-    private String SmtpHostName;
+    private String smtpHostName;
     String smtpPort;
     String smtpEmailUser;
     String smtpEmailUserPassword;
 
     public EmailHelper(String smtpHostName, String smtpPort, String smtpEmailUser, String smtpEmailUserPassword) {
-        this.SmtpHostName = smtpHostName;
+        this.smtpHostName = smtpHostName;
         this.smtpPort = smtpPort;
         this.smtpEmailUser = smtpEmailUser;
         this.smtpEmailUserPassword = smtpEmailUserPassword;
@@ -62,7 +62,7 @@ public class EmailHelper {
         try {
 
             Properties props = new Properties();
-            props.put("mail.smtp.host", SmtpHostName);
+            props.put("mail.smtp.host", smtpHostName);
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "false");
             props.put("mail.smtp.port", smtpPort);
@@ -87,11 +87,13 @@ public class EmailHelper {
             InternetAddress[] addressTo = new InternetAddress[recipients.length];
             for (int i = 0; i < recipients.length; i++) {
                 addressTo[i] = new InternetAddress(recipients[i]);
+                LOG.debug("Recipient {} added: '{}'", i, recipients[i]);
             }
             msg.setRecipients(Message.RecipientType.TO, addressTo);
             
             for (String bccRecipient : bccRecipients) {
                 msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(bccRecipient));
+                LOG.debug("BCC Recipient added: {}", bccRecipient);
             }
    
             msg.setSubject(emailSubjectPrefix + subject);
@@ -99,7 +101,7 @@ public class EmailHelper {
             Transport.send(msg);
 
         } catch (UnsupportedEncodingException | MessagingException ex) {
-            LOG.warn("Error posting email with subject '{}': \n", subject, ex);
+            LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         }
     }
@@ -112,8 +114,8 @@ public class EmailHelper {
         this.smtpEmailUserPassword = SmtpEmailUserPassword;
     }
 
-    public void setSmtpHostName(String SmtpHostName) {
-        this.SmtpHostName = SmtpHostName;
+    public void setSmtpHostName(String smtpHostName) {
+        this.smtpHostName = smtpHostName;
     }
 
     public void setSmtpPort(String SmtpPort) {

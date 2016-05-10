@@ -7,7 +7,7 @@ public interface WitnessService {
 
     Witness getWitness(int witnessId);
 
-    void saveWitness(Witness Witness);
+    void saveWitness(Witness witness);
 
     Witness getWitnessByIncident(Incident incident);
 }

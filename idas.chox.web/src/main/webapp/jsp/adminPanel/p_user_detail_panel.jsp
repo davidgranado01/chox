@@ -94,9 +94,16 @@
                                     $(target).html(data);
                             });
                     });
-
-                }
-                else {
+                } else if (response.resultType && response.resultType === 'Message') {
+                    Ext.MessageBox.alert('Error', 'Error updating user: '+ response.result, function() {
+                            var target = "#admin_param_panel";
+                            var url = "/prv/p/updateUserDetailPanel.action";
+                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
+                            ajax.loadHtml2(url,param,function(data){
+                                    $(target).html(data);
+                            });
+                    });
+                } else {
                     Ext.MessageBox.alert('Status', 'User "' + '<s:property value="userName" />' + '"has been updated', function() {
                             var target = "#admin_param_panel";
                             var url = "/prv/p/updateUserDetailPanel.action";

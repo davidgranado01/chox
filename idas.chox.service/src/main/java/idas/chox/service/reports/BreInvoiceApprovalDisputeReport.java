@@ -45,7 +45,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
     
     public BreInvoiceApprovalDisputeReport() {
-        reportParameterNames = new ArrayList<String>();
+        reportParameterNames = new ArrayList<>();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         reportParameters.put("date", new Date());
 
@@ -172,8 +172,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         }
         
         List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(currentUser, false);
-        List<BreInvoiceApprovalDisputedRoRData> breInvRorData = new ArrayList<BreInvoiceApprovalDisputedRoRData>();
-        List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<BreInvoiceApprovalDisputedData>();
+        List<BreInvoiceApprovalDisputedRoRData> breInvRorData = new ArrayList<>();
+        List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
@@ -709,14 +709,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             List result1 = reportDataService.getReportData(query1, paramMap1);
 
-            for (int i = 0; i < result1.size(); i++) {
-                LOG.debug("results :" + result1.get(i));
-            }
-
-            List<BreInvoiceApprovalDisputedData> lineData = new ArrayList<BreInvoiceApprovalDisputedData>();
             for (Object o : result1) {
-
-                LOG.debug("inside for loop individual ");
+                LOG.debug("results: {}", o);
                 Map data1 = (Map) o;
                 BreInvoiceApprovalDisputedData breInvoiceApprovalDisputedData = BreInvoiceApprovalDisputedData.getObject(data1, reasonsOfRejection);
                 breInvoiceApproval.add(breInvoiceApprovalDisputedData);
@@ -724,8 +718,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             }
         }
         
-        
-        
+
         //sets the data for uoter loop which loops trough reasons of rejection
         for(ReasonOfRejection ror : getReasonsOfRejection(currentUser, true)){
             BreInvoiceApprovalDisputedRoRData rorData = new BreInvoiceApprovalDisputedRoRData();
@@ -736,7 +729,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             } else {
                 rorData.setCommlineData(BigDecimal.ZERO);
             }
-            List<BigDecimal> lineData = new ArrayList<BigDecimal>();
+            List<BigDecimal> lineData = new ArrayList<>();
             for(BreInvoiceApprovalDisputedData disData : breInvoiceApproval){
                 if(disData.getDisputedApprovalReasonsMap() != null) {
                     lineData.add(disData.getDisputedApprovalReasonsMap().get(ror.getId()));
@@ -750,7 +743,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         }
         
         //populates the 'reason of rejection loop' 
-//        reportParameters.put("breInvoiceRorHeader",getReasonsOfRejection(currentUser, true));
         reportParameters.put("breInvoiceRor", breInvRorData);
         reportParameters.put("breInvoiceCumulative", breInvoiceApprovalDisputeCumulativeData);
         reportParameters.put("breInvoiceApproval", breInvoiceApproval);
@@ -767,23 +759,23 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
     
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
-        List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
+        List<ReasonOfRejection> reportRows = new ArrayList<>();
         List result;
         if(currentUser.getInsurer() != null){
             String query = (new StringBuilder()).append("select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id ")
-                    .append("where ror.type='Invoice' ")
+                    .append("where ror.type='Invoice Rejection' ")
                     .append("and ror.insurer_id = :insurerId group by ror.id ")
-                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id = :insurerId order by name asc ")
+                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice Rejection' and insurer_id = :insurerId order by name asc ")
                     .toString();
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
             result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = (new StringBuilder()).append("select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id ")
-                    .append("where ror.type='Invoice' ")
+                    .append("where ror.type='Invoice Rejection' ")
                     .append("and ror.insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId)")
                     .append(" group by ror.id  ")
-                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id ")
+                    .append("union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice Rejection' and insurer_id ")
                     .append("in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ")
                     .toString();
             Map paramMap = new HashMap();

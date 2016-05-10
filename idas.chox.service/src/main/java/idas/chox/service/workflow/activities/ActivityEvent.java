@@ -904,6 +904,15 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    SUPPLIER_REFERENCE_UPDATED_EVENT             (44, "SupplierReferenceUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim) throws Exception {
+            LOG.warn("Building SupplierReferenceUpdatedEvent event (not from activity!)...");
+            generator.startEvent(claim, new StringBuilder().append(this.getName()).append("[*]").toString(), this.getEventId());
+            generator.addParameter("choReference", claim.getChoReference());
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override

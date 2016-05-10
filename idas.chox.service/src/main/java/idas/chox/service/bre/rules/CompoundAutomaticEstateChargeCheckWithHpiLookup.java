@@ -46,17 +46,15 @@ public class CompoundAutomaticEstateChargeCheckWithHpiLookup implements IBusines
                 && (!claim.getVehicleHire().getHpiVehicleTransmission().toLowerCase().contains("auto")
                         || !claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate"))) {
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
-            Boolean isTclass = false;
             BigDecimal age;
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-            BigDecimal allowedDailyRate = BigDecimal.ZERO;
+            BigDecimal allowedDailyRate;
             BigDecimal vehicleClassPrice = null;
             try {
                 // if hire vehicle class is a T or PT class, and the customer's vehicle is also a T or PT class,
                 // then the price will depend on the age of the hire vehicle
                 if (VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
                         && VehicleClass.isTOrPTClass(claim.getCustomer().getVehicleClass().getName())) {
-                    isTclass = true;
                     /* Determine age of hire vehicle at hire start*/
                     Date firstRegistration = claim.getVehicleHire().getHpiFirstRegistration();
                     Date hireStart = claim.getVehicleHire().getHireStart();
