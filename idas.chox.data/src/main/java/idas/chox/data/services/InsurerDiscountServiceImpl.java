@@ -318,15 +318,6 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
         claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
 
-        // Now set in the original invoice (if available) as we do not want the discount to affect the 'original values' for new invoices
-        if (claim.getInvoice().getCreatedDate() == null && claim.getInvoice().getInvoiceOriginal() != null) {
-            claim.getInvoice().getInvoiceOriginal().setFullTotalToPayOriginal(claim.getInvoice().getFullTotalToPay());
-            claim.getInvoice().getInvoiceOriginal().setTotalToPayOriginal(claim.getInvoice().getTotalToPay());
-            claim.getInvoice().getInvoiceOriginal().setGtaDiscountOriginal(claim.getInvoice().getGtaDiscount());
-            LOG.trace("Original invoice values updated");
-        } else {
-            LOG.trace("No original invoice");
-        }
         LOG.debug("GTA discount on hire gross of {}: {}", hireGross, claim.getInvoice().getGtaDiscount());
     }
 
