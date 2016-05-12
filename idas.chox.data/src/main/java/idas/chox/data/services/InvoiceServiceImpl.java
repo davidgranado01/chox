@@ -17,6 +17,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
@@ -112,7 +113,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setExcessAmountCollectedOriginal(inv.getExcessAmountCollected());
             invOriginal.setVatAmountCollectedOriginal(inv.getVatAmountCollected());
             invOriginal.setVersion(0);
-            invOriginal.setTotalToPayOriginal(inv.getTotalToPay().multiply(inv.getFullTotalToPay().divide(inv.getTotalToPay())).subtract(inv.getGtaDiscount()).multiply(inv.getTotalToPay().divide(inv.getFullTotalToPay())).setScale(2, BigDecimal.ROUND_HALF_UP));
+            invOriginal.setTotalToPayOriginal(inv.getTotalToPay().multiply(inv.getFullTotalToPay().divide(inv.getTotalToPay(), 2, RoundingMode.HALF_UP)).subtract(inv.getGtaDiscount()).multiply(inv.getTotalToPay().divide(inv.getFullTotalToPay(), 2, RoundingMode.HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP));
             invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay().subtract(inv.getGtaDiscount()));
             invOriginal.setAdditionalDriverFeeOriginal(inv.getAdditionalDriverFee());
             invOriginal.setAdditionalDriverQtyOriginal(inv.getAdditionalDriverQty());
