@@ -188,7 +188,7 @@ public class ClaimsGridExportReport {
             .append(" i.hire_penalty_percentage as hirepenaltypercentage, i.repair_penalty_charge as repairpenaltycharge,")
             .append(" i.repair_penalty_percentage as repairpenaltypercentage, i.total_penalty_charge as totalpenaltycharge,")
             .append(" i.total_net as totalnet, i.total_vat as totalvat, i.total_gross as totalgross, i.discount as discount,")
-            .append(" i.insurer_discount as insurerdiscount, i.full_total_to_pay as fulltotaltopay, io.full_total_to_pay as original_fulltotaltopay,")
+            .append(" i.insurer_discount as insurerdiscount, i.gta_discount as gtadiscount, i.full_total_to_pay as fulltotaltopay, io.full_total_to_pay as original_fulltotaltopay,")
             .append(" i.total_to_pay as totaltopay, io.total_to_pay as original_totaltopay, i.interim_payment_made as interimpaymentmade,")
             .append(" i.interim_payment_received as interimpaymentreceived, i.date_invoiced as dateinvoiced, i.hire_gross_paid as hiregrosspaid,")
             .append(" i.repair_gross_paid as repairgrosspaid, i.engineer_fee_gross_paid as engineerfeegrosspaid, i.total_loss_fee_gross_paid as totallossfeegrosspaid,")

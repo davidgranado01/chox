@@ -1426,6 +1426,13 @@
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When activated, any savings made on the Total Gross to a contested invoice must be assigned to a failed business rule.</div>
                         </div>
                     </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">GTA Discount</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="enableGtaDiscount" value="enableGtaDiscount" /></div><label class="chox-form-std-label"><b>Activate GTA Discount</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'When activated an automatic 2% Discount will be applied to the Hire Gross and be valid for 30 days from Invoice Upload. This will apply to GTA or Insurer Upload invoices only.</div>
+                        </div>
+                    </div>
 <s:if test="insurerPaymentsTeamEnabled">                         
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Payments Team</div>

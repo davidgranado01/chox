@@ -2513,9 +2513,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claim.getInvoice() != null) {
             if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
-                return claim.getInvoice().getHireGross();
+                return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount());
             } else {
-                return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;

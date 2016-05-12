@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +27,7 @@ import idas.chox.core.model.InsurerDiscount;
 import idas.chox.core.model.InsurerDiscountType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InsurerService;
@@ -40,9 +42,14 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDiscountServiceImpl.class);
     private ChorganisationService chorganisationService;
     private InsurerService insurerService;
+    private BreBandService breBandService;
 
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public void setChorganisationService(ChorganisationService chorganisationService) {
@@ -252,6 +259,68 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return (InsurerDiscount) get(InsurerDiscount.class, insurerDiscountId);
     }
     
+    @Override
+    public void applyGtaDiscount(Claim claim) {
+        // GTA Discount only applies to GTA and Insurer Uploaded claims
+        if (!ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+            LOG.debug("GTA discount not added as invalid claim type (not GTA or Insurer Upload).");
+            return;
+        }
+
+        //Do nothing if invoice > 30 days old
+        if (claim.getInvoice().getCreatedDate() != null) {
+            long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
+            if (days > 30) {
+                if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                    claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+                    claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                    claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                }
+                LOG.debug("GTA discount not added as invoice > 30 days old.");
+                return;
+            }
+        }
+        
+        // Check GTA Discount enabled in BRE Band
+        if (claim.getBreBand() == null) {
+            claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
+        }
+
+        if (!claim.getBreBand().isEnableGtaDiscount()) {
+            LOG.debug("GTA discount not added as disabled in BRE band.");
+            return;
+        }
+        
+        if (claim.getVehicleHire() != null || claim.getVehicleHire().getRentalStart() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date d;
+                try {
+                    d = sdf.parse("01/05/2016");
+                } catch (ParseException ex) {
+                    LOG.error("Error parsing GTA discount start date");
+                    return;
+                }
+                if (claim.getVehicleHire().getRentalStart().before(d)) {
+                    LOG.debug("GTA Discount not added as rental start {} is before {}", claim.getVehicleHire().getRentalStart(), d);
+                    if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+                        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                        claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                    }
+                    return;
+                }
+        } else {
+            return;
+        }
+        
+        BigDecimal hireGross = claim.getInvoice().getHireGross();
+        claim.getInvoice().setGtaDiscount(hireGross.multiply(new BigDecimal(-0.02)).setScale(2, RoundingMode.HALF_UP));
+        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+
+        LOG.debug("GTA discount on hire gross of {}: {}", hireGross, claim.getInvoice().getGtaDiscount());
+    }
+
     @Override
     public void applyInsurerDiscounts(Claim claim, WebUser user, boolean canAddComment) {
 

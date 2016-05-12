@@ -2042,6 +2042,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.addComment(comment);
         }
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
+// Discounts should not change when penalty start date changes....
+//        insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         updateLiabilityPayment(claim);
         updateClaim(claim);
@@ -2166,7 +2168,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             Invoice invoice = claim.getInvoice();
             BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge())
-                    .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount);
+                    .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount).subtract(invoice.getGtaDiscount());
+            invoice.setGtaDiscount(BigDecimal.ZERO);
             if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
                 resultMap.put("error", "You must supply a value for 'Hire Penalty Percentage'.");
                 return resultMap;

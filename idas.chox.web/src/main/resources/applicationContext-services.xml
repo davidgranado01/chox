@@ -283,6 +283,7 @@
     <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" scope="prototype">
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="insurerService" ref="insurerService"/>
+        <property name="breBandService" ref="breBandService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>

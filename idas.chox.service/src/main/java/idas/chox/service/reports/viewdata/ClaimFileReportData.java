@@ -197,6 +197,7 @@ public class ClaimFileReportData {
     private BigDecimal invoiceDeductionHandlingFee;
     private BigDecimal invoiceDiscount;
     private BigDecimal invoiceInsurerDiscount;
+    private BigDecimal invoiceGtaDiscount;
     private String invoiceInterimPayment;
     private BigDecimal invoiceInterimPaymentAmount;
     private BigDecimal invoiceTotalPenaltyCharge;
@@ -627,6 +628,7 @@ public class ClaimFileReportData {
             invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
             invoiceDiscount = invoice.getDiscount();
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
+            invoiceGtaDiscount = invoice.getGtaDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
@@ -1701,6 +1703,14 @@ public class ClaimFileReportData {
 
     public void setInvoiceInsurerDiscount(BigDecimal invoiceInsurerDiscount) {
         this.invoiceInsurerDiscount = invoiceInsurerDiscount;
+    }
+
+    public BigDecimal getInvoiceGtaDiscount() {
+        return invoiceGtaDiscount;
+    }
+
+    public void setInvoiceGtaDiscount(BigDecimal invoiceGtaDiscount) {
+        this.invoiceGtaDiscount = invoiceGtaDiscount;
     }
 
     public BigDecimal getInvoiceDiscount() {

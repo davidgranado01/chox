@@ -16,6 +16,7 @@ import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
+import java.math.BigDecimal;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
@@ -89,7 +90,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setClaimsHandlingInvoiceAmountOriginal(inv.getClaimsHandlingInvoiceAmount());
             invOriginal.setDeductionForClaimsHandlingFeeOriginal(inv.getDeductionForClaimsHandlingFee());
             invOriginal.setDiscountOriginal(inv.getDiscount());
-            invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay());
             invOriginal.setCollaborationFeeOriginal(inv.getCollaborationFee());
             invOriginal.setMiscellaneousFeeOriginal(inv.getMiscellaneousFee());
             invOriginal.setAutomaticFeeOriginal(inv.getAutomaticFee());
@@ -112,13 +112,15 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setExcessAmountCollectedOriginal(inv.getExcessAmountCollected());
             invOriginal.setVatAmountCollectedOriginal(inv.getVatAmountCollected());
             invOriginal.setVersion(0);
-            invOriginal.setTotalToPayOriginal(inv.getTotalToPay());
+            invOriginal.setTotalToPayOriginal(inv.getTotalToPay().multiply(inv.getFullTotalToPay().divide(inv.getTotalToPay())).subtract(inv.getGtaDiscount()).multiply(inv.getTotalToPay().divide(inv.getFullTotalToPay())).setScale(2, BigDecimal.ROUND_HALF_UP));
+            invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay().subtract(inv.getGtaDiscount()));
             invOriginal.setAdditionalDriverFeeOriginal(inv.getAdditionalDriverFee());
             invOriginal.setAdditionalDriverQtyOriginal(inv.getAdditionalDriverQty());
             invOriginal.setTotalLossFeeNetOriginal(inv.getTotalLossFeeNet());
             invOriginal.setTotalLossFeeVatOriginal(inv.getTotalLossFeeVat());
             invOriginal.setTotalLossFeeGrossOriginal(inv.getTotalLossFeeGross());
             invOriginal.setInsurerDiscountOriginal(inv.getInsurerDiscount());
+            invOriginal.setGtaDiscountOriginal(inv.getGtaDiscount());
             invOriginal.setPaymentTeam(inv.isPaymentTeam());
             save(invOriginal);
             return invOriginal;

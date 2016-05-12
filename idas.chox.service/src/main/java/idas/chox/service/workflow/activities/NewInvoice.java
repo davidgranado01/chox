@@ -104,13 +104,14 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
-        insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-        claimService.updateLiabilityPayment(claim);
-
         if (claim.getBreBand() == null) {
             BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
         }
+        insurerDiscountService.applyGtaDiscount(claim);
+        insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+        claimService.updateLiabilityPayment(claim);
+
         
         // Set initial penalty band
         claimService.setInitialPenaltyBand(claim);

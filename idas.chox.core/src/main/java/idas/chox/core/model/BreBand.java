@@ -179,8 +179,17 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean pauseFixedFeeSlaClock;
     private boolean storageRecoveryNetCeilingCheck;
     private BigDecimal storageRecoveryNetCeiling = BigDecimal.ZERO;
+    private boolean enableGtaDiscount;
 
     public BreBand() {
+    }
+
+    public boolean isEnableGtaDiscount() {
+        return enableGtaDiscount;
+    }
+
+    public void setEnableGtaDiscount(boolean enableGtaDiscount) {
+        this.enableGtaDiscount = enableGtaDiscount;
     }
 
     public boolean isStorageRecoveryNetCeilingCheck() {

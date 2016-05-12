@@ -273,7 +273,7 @@ function refreshDesc(id){
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
                                     <input type="button" id="ACRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="return doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="return doAcknowledgeFormSubmit('acknowledgeClaim');"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="return doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>

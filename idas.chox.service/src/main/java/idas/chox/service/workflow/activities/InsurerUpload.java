@@ -81,6 +81,7 @@ public class InsurerUpload extends BaseActivity {
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);
 
+        insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         claimService.updateLiabilityPayment(claim);
         // Set initial penalty band

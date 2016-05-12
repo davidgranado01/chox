@@ -148,7 +148,7 @@ public class InvoicePaymentLogged extends BaseActivity {
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
             if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) 
                   || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType()) ) {
-                invoice.setHireGrossPaid(invoice.getHireGross());
+                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()));
                 invoice.setRepairGrossPaid(invoice.getRepairGross());
                 invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());
                 invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross());
@@ -160,7 +160,7 @@ public class InvoicePaymentLogged extends BaseActivity {
                 invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
                 invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
             } else {
-                invoice.setHireGrossPaid(invoice.getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
