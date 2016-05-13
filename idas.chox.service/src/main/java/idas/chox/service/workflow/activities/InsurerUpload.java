@@ -78,8 +78,11 @@ public class InsurerUpload extends BaseActivity {
         LOG.debug("Processing Insurer Upload activity with invoice '{}'...", claim.getInvoice());
 
         // Set Claim BRE band
-        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-        claim.setBreBand(choBand);
+        BreBand choBand = claim.getBreBand();
+        if (choBand == null) {
+            choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        }
 
         insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
