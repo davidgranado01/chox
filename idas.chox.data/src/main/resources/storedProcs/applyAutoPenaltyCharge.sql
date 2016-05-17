@@ -281,15 +281,16 @@ END LOOP;
 --
 update invoice
   set full_total_to_pay = full_total_to_pay - gta_discount,
-      total_to_pay = total_to_pay - gta_discount*percentage_liability_accepted/100.0,
+      total_to_pay = case when c.liability_status=5 then total_to_pay - gta_discount*percentage_liability_accepted/100.0 else total_to_pay - gta_discount end,
       gta_discount = 0.00,
       last_modified_by = $1,
       last_modified_date = now(),
       version = invoice.version + 1
 from claim c
 where c.invoice_id = invoice.id
+  and (c.id = $2 OR $2 = -1)
   and gta_discount != 0.0
-  and c.status not in ('PaymentReceived','InvoicePaymentLogged','InvoiceRejectionAccepted','ClaimClosed')
+  and c.status not in ('PaymentReceived','InvoicePaymentLogged','InvoiceRejectionAccepted','ClaimClosed','ManualInvoicePaid')
   and now()::date - invoice.created_date::date + 1 > 30 ;
 
 RETURN TRUE;
