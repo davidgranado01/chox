@@ -166,11 +166,14 @@ public class TimeoutFilter extends OncePerRequestFilter {
                 String result, kbbsToken = null;
 
                 Cookie cookies[] = request.getCookies();
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("JD.Token")) {
-                        kbbsToken = cookie.getValue();
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("JD.Token")) {
+                            kbbsToken = cookie.getValue();
+                        }
                     }
                 }
+                
                 if (kbbsToken != null) {
                     result = userService.kbbsInvalidate(kbbsToken);
                 } else {
