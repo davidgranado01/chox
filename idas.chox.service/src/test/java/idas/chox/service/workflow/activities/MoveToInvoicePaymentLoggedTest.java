@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.workflow.Activity;
@@ -31,6 +32,7 @@ public class MoveToInvoicePaymentLoggedTest extends BaseTest {
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         claim.setInvoice(invoiceService.getInvoice(999));
+        claim.setBreBand(new BreBand());
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
 
         MoveToInvoicePaymentLogged activity = (MoveToInvoicePaymentLogged) activityFactory.getActivity("moveToInvoicePaymentLogged");
