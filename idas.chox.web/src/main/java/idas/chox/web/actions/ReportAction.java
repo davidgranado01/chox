@@ -176,7 +176,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
         LOG.trace("Updating session with report generation result");
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
-            if (!(Boolean) session.get("exceptionThrown") && !(Boolean) session.get("cancelExportOperation")) {
+            if (! (session.get("exceptionThrown")==null ? Boolean.FALSE : (Boolean)session.get("exceptionThrown"))
+                    && ! (session.get("cancelExportOperation")==null ? Boolean.TRUE : (Boolean)session.get("cancelExportOperation"))) {
                 if (reportFile != null) {
                     session.put("reportFileLocation", reportFile.getAbsolutePath());
                     session.put("cancelExportOperation", false);
