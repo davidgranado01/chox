@@ -113,6 +113,7 @@
         <module>reportToExcel</module>
         <module>reportToExcelTemplate</module>
         <module>emailNotifications</module>
+        <module>keoghs</module>
     </modules>
 
 </project>

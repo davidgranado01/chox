@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.KeoghsRequestScoreMessage" table="keoghs_request_score_message">
+        <cache usage="nonstrict-read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">keoghs_request_score_message_id_seq</param>
+            </generator>
+        </id>
+        <property column="score_message_heading" name="scoreMessageHeading"/>
+        <property column="score_message_detail" name="scoreMessageDetail"/>
+        <many-to-one class="idas.chox.core.model.KeoghsRequest" column="keoghs_request" name="keoghsRequest" not-null="true"/>
+        <version column="version" name="version" unsaved-value="null"/>
+        <property column="created_date" name="createdDate"/>
+        <property column="last_modified_date" name="lastModifiedDate"/>
+        <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    </class>
+
+</hibernate-mapping>

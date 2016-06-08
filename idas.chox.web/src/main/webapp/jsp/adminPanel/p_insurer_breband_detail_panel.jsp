@@ -1502,6 +1502,14 @@
 </s:if>     
 <s:if test="isChoxAdmin">
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Fraud Check</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="fraudCheckEnable" value="fraudCheckEnable" /></div><label class="chox-form-std-label"><b>Enable Fraud Check</b></label>
+                            <div class="chox-form-std-label-longer" style="padding-left: 12px;">Enable a Fraud Check to be run on Claims and Invoices.</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Penalty Charges</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="allowGTAPenaltyCharges" value="allowGTAPenaltyCharges" onclick="doGTAPenaltyChargeCheck()"/></div>

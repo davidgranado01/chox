@@ -180,6 +180,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean storageRecoveryNetCeilingCheck;
     private BigDecimal storageRecoveryNetCeiling = BigDecimal.ZERO;
     private boolean enableGtaDiscount;
+    private boolean fraudCheckEnable;
 
     public BreBand() {
     }
@@ -1742,4 +1743,11 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.pauseFixedFeeSlaClock = pauseFixedFeeSlaClock;
     }
 
+    public boolean isFraudCheckEnable() {
+        return fraudCheckEnable;
+    }
+
+    public void setFraudCheckEnableEnable(boolean fraudCheckEnable) {
+        this.fraudCheckEnable = fraudCheckEnable;
+    }
 }

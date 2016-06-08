@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.KeoghsRequest" table="keoghs_request">
+        <cache usage="nonstrict-read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">keoghs_request_id_seq</param>
+            </generator>
+        </id>
+        <version column="version" name="version" unsaved-value="null"/>
+        <property column="client_batch_reference" name="clientBatchReference"/>
+        <property column="batch_status" name="batchStatus"/>
+        <property column="claim_status" name="claimStatus"/>
+        <property column="result_status" name="resultStatus"/>
+        <property column="check_type" name="checkType"/>
+        <property column="rag_result" name="ragResult"/>
+        <property column="total_score" name="totalScore"/>
+        <property column="response_message_debug" name="responseMessageDebug"/>
+        <property column="created_date" name="createdDate"/>
+        <property column="last_modified_date" name="lastModifiedDate"/>
+        <bag cascade="all, delete-orphan" inverse="true" name="scoreMessages">
+            <key column="keoghs_request_id"/>
+            <one-to-many class="idas.chox.core.model.KeoghsRequestScoreMessage"/>
+        </bag>
+        <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    </class>
+
+</hibernate-mapping>

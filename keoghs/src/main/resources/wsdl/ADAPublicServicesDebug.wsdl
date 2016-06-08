@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="ADAPublicServicesDebug" targetNamespace="http://www.keoghs.co.uk/ADA" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://www.keoghs.co.uk/ADA" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://www.keoghs.com/BatchClaimRequestV1"/>
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.WCF.WebServices.Messages"/>
+            <xs:import namespace="http://www.keoghs.com/BatchClaimScoreRequestV1"/>
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/BatchClaimScoreResponseV1"/>
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/ClaimScoreDetailsRequestV1"/>
+            <xs:element name="SubmitMotorClaim">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="q1:BatchClaimRequest" xmlns:q1="http://www.keoghs.com/BatchClaimRequestV1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SubmitMotorClaimResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="SubmitMotorClaimResult" nillable="true" type="q2:ProcessClaimBatchResponse" xmlns:q2="http://schemas.datacontract.org/2004/07/MDA.WCF.WebServices.Messages"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetMotorClaimScore">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="q3:BatchClaimScoreRequest" xmlns:q3="http://www.keoghs.com/BatchClaimScoreRequestV1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetMotorClaimScoreResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="GetMotorClaimScoreResult" nillable="true" type="q4:BatchClaimScoreResponse" xmlns:q4="http://www.keoghs.co.uk/ADA/BatchClaimScoreResponseV1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSingleMotorClaimScore">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="q5:ClaimScoreDetailsRequest" xmlns:q5="http://www.keoghs.co.uk/ADA/ClaimScoreDetailsRequestV1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSingleMotorClaimScoreResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="GetSingleMotorClaimScoreResult" nillable="true" type="q6:BatchClaimScoreResponse" xmlns:q6="http://www.keoghs.co.uk/ADA/BatchClaimScoreResponseV1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+            <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+            <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+            <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+            <xs:element name="byte" nillable="true" type="xs:byte"/>
+            <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+            <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+            <xs:element name="double" nillable="true" type="xs:double"/>
+            <xs:element name="float" nillable="true" type="xs:float"/>
+            <xs:element name="int" nillable="true" type="xs:int"/>
+            <xs:element name="long" nillable="true" type="xs:long"/>
+            <xs:element name="QName" nillable="true" type="xs:QName"/>
+            <xs:element name="short" nillable="true" type="xs:short"/>
+            <xs:element name="string" nillable="true" type="xs:string"/>
+            <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+            <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+            <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+            <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+            <xs:element name="char" nillable="true" type="tns:char"/>
+            <xs:simpleType name="char">
+                <xs:restriction base="xs:int"/>
+            </xs:simpleType>
+            <xs:element name="duration" nillable="true" type="tns:duration"/>
+            <xs:simpleType name="duration">
+                <xs:restriction base="xs:duration">
+                    <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+                    <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+                    <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="guid" nillable="true" type="tns:guid"/>
+            <xs:simpleType name="guid">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:attribute name="FactoryType" type="xs:QName"/>
+            <xs:attribute name="Id" type="xs:ID"/>
+            <xs:attribute name="Ref" type="xs:IDREF"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.com/BatchClaimRequestV1" xmlns:tns="http://www.keoghs.com/BatchClaimRequestV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://www.keoghs.com/ClaimBatchV1"/>
+            <xs:complexType name="BatchClaimRequest">
+                <xs:sequence>
+                    <xs:element name="Batch" nillable="true" type="q1:ClaimBatch" xmlns:q1="http://www.keoghs.com/ClaimBatchV1"/>
+                    <xs:element name="ClientBatchReference" nillable="true" type="xs:string"/>
+                    <xs:element name="HighPriority" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="BatchClaimRequest" nillable="true" type="tns:BatchClaimRequest"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.com/ClaimBatchV1" xmlns:tns="http://www.keoghs.com/ClaimBatchV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common.FileModel"/>
+            <xs:complexType name="ClaimBatch">
+                <xs:sequence>
+                    <xs:element name="Claims" nillable="true" type="q1:ArrayOfClaim" xmlns:q1="http://schemas.datacontract.org/2004/07/MDA.Common.FileModel"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimBatch" nillable="true" type="tns:ClaimBatch"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MDA.Common.FileModel" xmlns:tns="http://schemas.datacontract.org/2004/07/MDA.Common.FileModel" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+            <xs:complexType name="ArrayOfClaim">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="Claim" nillable="true" type="tns:Claim"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfClaim" nillable="true" type="tns:ArrayOfClaim"/>
+            <xs:complexType name="Claim">
+                <xs:sequence>
+                    <xs:element name="ClaimNumber" nillable="true" type="xs:string"/>
+                    <xs:element name="ClaimType" type="q1:ClaimType" xmlns:q1="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="ExternalServices" nillable="true" type="xs:string"/>
+                    <xs:element name="IncidentDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="MotorClaimInfo" nillable="true" type="tns:ClaimInfo"/>
+                    <xs:element minOccurs="0" name="Operation" type="q2:Operation" xmlns:q2="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Organisations" nillable="true" type="tns:ArrayOfOrganisation"/>
+                    <xs:element minOccurs="0" name="Policy" nillable="true" type="tns:Policy"/>
+                    <xs:element name="Vehicles" nillable="true" type="tns:ArrayOfVehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Claim" nillable="true" type="tns:Claim"/>
+            <xs:complexType name="ClaimInfo">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="AmbulanceAttended" nillable="true" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="BypassFraud" nillable="true" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="ClaimCode" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ClaimNotificationDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="ClaimStatus" type="q3:ClaimStatus" xmlns:q3="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="IncidentCircumstances" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="IncidentLocation" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PaymentsToDate" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="PoliceAttended" nillable="true" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="PoliceForce" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PoliceReference" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Reserve" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="SourceClaimStatus" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="TotalClaimCost" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="TotalClaimCostLessExcess" nillable="true" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimInfo" nillable="true" type="tns:ClaimInfo"/>
+            <xs:complexType name="ArrayOfOrganisation">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="Organisation" nillable="true" type="tns:Organisation"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfOrganisation" nillable="true" type="tns:ArrayOfOrganisation"/>
+            <xs:complexType name="Organisation">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Addresses" nillable="true" type="tns:ArrayOfAddress"/>
+                    <xs:element minOccurs="0" name="BankAccount" nillable="true" type="tns:BankAccount"/>
+                    <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MojCrmNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MojCrmStatus" type="q4:MojCRMStatus" xmlns:q4="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Operation" type="q5:Operation" xmlns:q5="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="OrganisationName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="OrganisationPersonRelationship" type="q6:Person2OrganisationRelationship" xmlns:q6="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="OrganisationType" type="q7:OrganisationType" xmlns:q7="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PaymentCard" nillable="true" type="tns:PaymentCard"/>
+                    <xs:element minOccurs="0" name="RegisteredNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Telephone1" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Telephone2" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Telephone3" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="VatNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Vehicles" nillable="true" type="tns:ArrayOfOrganisationVehicle"/>
+                    <xs:element minOccurs="0" name="WebSite" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Organisation" nillable="true" type="tns:Organisation"/>
+            <xs:complexType name="ArrayOfAddress">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="Address" nillable="true" type="tns:Address"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfAddress" nillable="true" type="tns:ArrayOfAddress"/>
+            <xs:complexType name="Address">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="AddressLinkType" type="q8:AddressStatus" xmlns:q8="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Building" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="BuildingNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="County" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="EndOfResidency" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="Locality" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q9:Operation" xmlns:q9="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PAFUPRN" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PostCode" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="StartOfResidency" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="Street" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="SubBuilding" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Town" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Address" nillable="true" type="tns:Address"/>
+            <xs:complexType name="BankAccount">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="BankName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="DatePaymentDetailsTaken" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="Operation" type="q10:Operation" xmlns:q10="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PolicyPaymentType" type="q11:PolicyPaymentType" xmlns:q11="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="SortCode" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="BankAccount" nillable="true" type="tns:BankAccount"/>
+            <xs:complexType name="PaymentCard">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="BankName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="DatePaymentDetailsTaken" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="ExpiryDate" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="HashedCardNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q12:Operation" xmlns:q12="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PaymentCardNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PaymentCardType" type="q13:PaymentCardType" xmlns:q13="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PolicyPaymentType" type="q14:PolicyPaymentType" xmlns:q14="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="SortCode" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="PaymentCard" nillable="true" type="tns:PaymentCard"/>
+            <xs:complexType name="ArrayOfOrganisationVehicle">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="OrganisationVehicle" nillable="true" type="tns:OrganisationVehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfOrganisationVehicle" nillable="true" type="tns:ArrayOfOrganisationVehicle"/>
+            <xs:complexType name="OrganisationVehicle">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Colour" type="q15:VehicleColour" xmlns:q15="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="EngineCapacity" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Fuel" type="q16:VehicleFuelType" xmlns:q16="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="HireEndDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="HireStartDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q17:Operation" xmlns:q17="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Transmission" type="q18:VehicleTransmission" xmlns:q18="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="VIN" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="VehicleInvolvementGroup" type="q19:VehicleInvolvementGroup" xmlns:q19="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="VehicleRegistration" nillable="true" type="xs:string"/>
+                    <xs:element name="VehicleType" type="q20:VehicleType" xmlns:q20="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="OrganisationVehicle" nillable="true" type="tns:OrganisationVehicle"/>
+            <xs:complexType name="Policy">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Broker" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="CoverType" type="q21:PolicyCoverType" xmlns:q21="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Insurer" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q22:Operation" xmlns:q22="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PolicyEndDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="PolicyNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PolicyStartDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="PolicyType" type="q23:PolicyType" xmlns:q23="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Premium" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="PreviousFaultClaimsCount" nillable="true" type="xs:int"/>
+                    <xs:element minOccurs="0" name="PreviousNoFaultClaimsCount" nillable="true" type="xs:int"/>
+                    <xs:element minOccurs="0" name="TradingName" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Policy" nillable="true" type="tns:Policy"/>
+            <xs:complexType name="ArrayOfVehicle">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="Vehicle" nillable="true" type="tns:Vehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfVehicle" nillable="true" type="tns:ArrayOfVehicle"/>
+            <xs:complexType name="Vehicle">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="CategoryOfLoss" type="q24:VehicleCategoryOfLoss" xmlns:q24="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Colour" type="q25:VehicleColour" xmlns:q25="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="DamageDescription" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="EngineCapacity" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Fuel" type="q26:VehicleFuelType" xmlns:q26="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q27:Operation" xmlns:q27="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element name="People" nillable="true" type="tns:ArrayOfPerson"/>
+                    <xs:element minOccurs="0" name="Transmission" type="q28:VehicleTransmission" xmlns:q28="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="VIN" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="VehicleInvolvementGroup" type="q29:VehicleInvolvementGroup" xmlns:q29="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="VehicleRegistration" nillable="true" type="xs:string"/>
+                    <xs:element name="VehicleType" type="q30:VehicleType" xmlns:q30="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Vehicle" nillable="true" type="tns:Vehicle"/>
+            <xs:complexType name="ArrayOfPerson">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="Person" nillable="true" type="tns:Person"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfPerson" nillable="true" type="tns:ArrayOfPerson"/>
+            <xs:complexType name="Person">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Addresses" nillable="true" type="tns:ArrayOfAddress"/>
+                    <xs:element minOccurs="0" name="AttendedHospital" nillable="true" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="BankAccount" nillable="true" type="tns:BankAccount"/>
+                    <xs:element minOccurs="0" name="DateOfBirth" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="DrivingLicenseNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Gender" type="q31:Gender" xmlns:q31="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="LandlineTelephone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MRZPassportNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MobileTelephone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="MojStatus" type="q32:MojStatus" xmlns:q32="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="NINumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Nationality" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Occupation" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Operation" type="q33:Operation" xmlns:q33="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Organisations" nillable="true" type="tns:ArrayOfOrganisation"/>
+                    <xs:element minOccurs="0" name="OtherTelephone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PartyType" type="q34:PartyType" xmlns:q34="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="PassportNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="PaymentCard" nillable="true" type="tns:PaymentCard"/>
+                    <xs:element minOccurs="0" name="Salutation" type="q35:Salutation" xmlns:q35="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="SubPartyType" type="q36:SubPartyType" xmlns:q36="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="WorkTelephone" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Person" nillable="true" type="tns:Person"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MDA.Common.Enum" xmlns:tns="http://schemas.datacontract.org/2004/07/MDA.Common.Enum" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+            <xs:simpleType name="ClaimType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="NA"/>
+                    <xs:enumeration value="Motor"/>
+                    <xs:enumeration value="Commercial"/>
+                    <xs:enumeration value="Employment"/>
+                    <xs:enumeration value="Public Liability"/>
+                    <xs:enumeration value="Travel"/>
+                    <xs:enumeration value="Home Contents"/>
+                    <xs:enumeration value="Home Building"/>
+                    <xs:enumeration value="KeoghsCFS"/>
+                    <xs:enumeration value="KeoghsCMS"/>
+                    <xs:enumeration value="Theft"/>
+                    <xs:enumeration value="Pet"/>
+                    <xs:enumeration value="Mobile Phone"/>
+                    <xs:enumeration value="Person Injury"/>
+                    <xs:enumeration value="Mobile Phone - Accidental Damage"/>
+                    <xs:enumeration value="Mobile Phone - Loss"/>
+                    <xs:enumeration value="Mobile Phone – Theft"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="ClaimType" nillable="true" type="tns:ClaimType"/>
+            <xs:simpleType name="ClaimStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Open"/>
+                    <xs:enumeration value="Settled"/>
+                    <xs:enumeration value="Withdrawn"/>
+                    <xs:enumeration value="Reopened"/>
+                    <xs:enumeration value="Delete"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="ClaimStatus" nillable="true" type="tns:ClaimStatus"/>
+            <xs:simpleType name="Operation">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Normal"/>
+                    <xs:enumeration value="Delete"/>
+                    <xs:enumeration value="Withdrawn"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Operation" nillable="true" type="tns:Operation"/>
+            <xs:simpleType name="AddressStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Previous Address"/>
+                    <xs:enumeration value="Linked Address"/>
+                    <xs:enumeration value="Current Address"/>
+                    <xs:enumeration value="Registered Office"/>
+                    <xs:enumeration value="Trading Address"/>
+                    <xs:enumeration value="Storage Address"/>
+                    <xs:enumeration value="Inspected at"/>
+                    <xs:enumeration value="Blank"/>
+                    <xs:enumeration value="Interviewed at"/>
+                    <xs:enumeration value="Lives at"/>
+                    <xs:enumeration value="Recovered to"/>
+                    <xs:enumeration value="Seen at"/>
+                    <xs:enumeration value="Stolen from"/>
+                    <xs:enumeration value="RepairedAt"/>
+                    <xs:enumeration value="Owner"/>
+                    <xs:enumeration value="Delivery Address"/>
+                    <xs:enumeration value="Pickup Address"/>
+                    <xs:enumeration value="Jiffy Bag Address"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="AddressStatus" nillable="true" type="tns:AddressStatus"/>
+            <xs:simpleType name="PolicyPaymentType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Deposit"/>
+                    <xs:enumeration value="Direct Debit"/>
+                    <xs:enumeration value="Single Payment"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="PolicyPaymentType" nillable="true" type="tns:PolicyPaymentType"/>
+            <xs:simpleType name="MojCRMStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Authorised"/>
+                    <xs:enumeration value="Suspended"/>
+                    <xs:enumeration value="Cancelled"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="MojCRMStatus" nillable="true" type="tns:MojCRMStatus"/>
+            <xs:simpleType name="Person2OrganisationRelationship">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Director"/>
+                    <xs:enumeration value="Secretary"/>
+                    <xs:enumeration value="Employee"/>
+                    <xs:enumeration value="Previous Director"/>
+                    <xs:enumeration value="Previous Secretary"/>
+                    <xs:enumeration value="Previous Employee"/>
+                    <xs:enumeration value="Manager"/>
+                    <xs:enumeration value="Owner"/>
+                    <xs:enumeration value="Partner"/>
+                    <xs:enumeration value="Broker"/>
+                    <xs:enumeration value="Referral Source"/>
+                    <xs:enumeration value="Solicitor"/>
+                    <xs:enumeration value="Engineer"/>
+                    <xs:enumeration value="Recovery"/>
+                    <xs:enumeration value="Storage"/>
+                    <xs:enumeration value="Repairer"/>
+                    <xs:enumeration value="Hire"/>
+                    <xs:enumeration value="Accident Management"/>
+                    <xs:enumeration value="Medical Examiner"/>
+                    <xs:enumeration value="Medical Legal"/>
+                    <xs:enumeration value="Undefined Supplier"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Person2OrganisationRelationship" nillable="true" type="tns:Person2OrganisationRelationship"/>
+            <xs:simpleType name="OrganisationType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Policy Holder"/>
+                    <xs:enumeration value="Undefined Supplier"/>
+                    <xs:enumeration value="Accident Management"/>
+                    <xs:enumeration value="Credit Hire"/>
+                    <xs:enumeration value="Solicitor"/>
+                    <xs:enumeration value="Vehicle Engineer"/>
+                    <xs:enumeration value="Recovery"/>
+                    <xs:enumeration value="Storage"/>
+                    <xs:enumeration value="Broker"/>
+                    <xs:enumeration value="Medical Examiner"/>
+                    <xs:enumeration value="Repairer"/>
+                    <xs:enumeration value="Insurer"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="OrganisationType" nillable="true" type="tns:OrganisationType"/>
+            <xs:simpleType name="PaymentCardType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Credit Card"/>
+                    <xs:enumeration value="Debit Card"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="PaymentCardType" nillable="true" type="tns:PaymentCardType"/>
+            <xs:simpleType name="VehicleColour">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Beige"/>
+                    <xs:enumeration value="Black"/>
+                    <xs:enumeration value="Blue"/>
+                    <xs:enumeration value="Bronze"/>
+                    <xs:enumeration value="Brown"/>
+                    <xs:enumeration value="Cream"/>
+                    <xs:enumeration value="Gold"/>
+                    <xs:enumeration value="Graphite"/>
+                    <xs:enumeration value="Green"/>
+                    <xs:enumeration value="Grey"/>
+                    <xs:enumeration value="Lilac"/>
+                    <xs:enumeration value="Maroon"/>
+                    <xs:enumeration value="Mauve"/>
+                    <xs:enumeration value="Orange"/>
+                    <xs:enumeration value="Pink"/>
+                    <xs:enumeration value="Purple"/>
+                    <xs:enumeration value="Red"/>
+                    <xs:enumeration value="Silver"/>
+                    <xs:enumeration value="Turquoise"/>
+                    <xs:enumeration value="White"/>
+                    <xs:enumeration value="Yellow"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleColour" nillable="true" type="tns:VehicleColour"/>
+            <xs:simpleType name="VehicleFuelType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Petrol"/>
+                    <xs:enumeration value="Diesel"/>
+                    <xs:enumeration value="Electric"/>
+                    <xs:enumeration value="Hybrid"/>
+                    <xs:enumeration value="LPG"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleFuelType" nillable="true" type="tns:VehicleFuelType"/>
+            <xs:simpleType name="VehicleTransmission">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Manual"/>
+                    <xs:enumeration value="Automatic"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleTransmission" nillable="true" type="tns:VehicleTransmission"/>
+            <xs:simpleType name="VehicleInvolvementGroup">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Insured Vehicle"/>
+                    <xs:enumeration value="Third Party Vehicle"/>
+                    <xs:enumeration value="Insured Hire Vehicle"/>
+                    <xs:enumeration value="Third Party Hire Vehicle"/>
+                    <xs:enumeration value="Witness Vehicle"/>
+                    <xs:enumeration value="No Vehicle Involved"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleInvolvementGroup" nillable="true" type="tns:VehicleInvolvementGroup"/>
+            <xs:simpleType name="VehicleType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Bicycle"/>
+                    <xs:enumeration value="Car"/>
+                    <xs:enumeration value="Coach"/>
+                    <xs:enumeration value="Lorry"/>
+                    <xs:enumeration value="Minibus"/>
+                    <xs:enumeration value="Motorcycle"/>
+                    <xs:enumeration value="Pickup"/>
+                    <xs:enumeration value="Van"/>
+                    <xs:enumeration value="Taxi"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleType" nillable="true" type="tns:VehicleType"/>
+            <xs:simpleType name="PolicyCoverType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Comprehensive"/>
+                    <xs:enumeration value="Third Party, Fire and Theft"/>
+                    <xs:enumeration value="Third Party Only"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="PolicyCoverType" nillable="true" type="tns:PolicyCoverType"/>
+            <xs:simpleType name="PolicyType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Personal Motor"/>
+                    <xs:enumeration value="Commercial Motor"/>
+                    <xs:enumeration value="Home Contents"/>
+                    <xs:enumeration value="Home Building"/>
+                    <xs:enumeration value="Employers Liability"/>
+                    <xs:enumeration value="Public Liability">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Payment Protection">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Permanent Health">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">9</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Home">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Commercial">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">11</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Mobile">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">12</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="PolicyType" nillable="true" type="tns:PolicyType"/>
+            <xs:simpleType name="VehicleCategoryOfLoss">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="CatA"/>
+                    <xs:enumeration value="CatB"/>
+                    <xs:enumeration value="CatC"/>
+                    <xs:enumeration value="CatD"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="VehicleCategoryOfLoss" nillable="true" type="tns:VehicleCategoryOfLoss"/>
+            <xs:simpleType name="Gender">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Male"/>
+                    <xs:enumeration value="Female"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Gender" nillable="true" type="tns:Gender"/>
+            <xs:simpleType name="MojStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Stage1"/>
+                    <xs:enumeration value="Stage2"/>
+                    <xs:enumeration value="Stage3"/>
+                    <xs:enumeration value="Out Of Process"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="MojStatus" nillable="true" type="tns:MojStatus"/>
+            <xs:simpleType name="PartyType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Claimant"/>
+                    <xs:enumeration value="Hirer"/>
+                    <xs:enumeration value="Insured"/>
+                    <xs:enumeration value="Litigation Friend"/>
+                    <xs:enumeration value="Policyholder"/>
+                    <xs:enumeration value="Third Party"/>
+                    <xs:enumeration value="Witness"/>
+                    <xs:enumeration value="Vehicle Owner"/>
+                    <xs:enumeration value="Paid Policy"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="PartyType" nillable="true" type="tns:PartyType"/>
+            <xs:simpleType name="Salutation">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Mr"/>
+                    <xs:enumeration value="Mrs"/>
+                    <xs:enumeration value="Ms"/>
+                    <xs:enumeration value="Miss"/>
+                    <xs:enumeration value="Master"/>
+                    <xs:enumeration value="Dr"/>
+                    <xs:enumeration value="Professor"/>
+                    <xs:enumeration value="Reverend"/>
+                    <xs:enumeration value="Sir"/>
+                    <xs:enumeration value="Lord"/>
+                    <xs:enumeration value="Baroness"/>
+                    <xs:enumeration value="Right Honourable"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Salutation" nillable="true" type="tns:Salutation"/>
+            <xs:simpleType name="SubPartyType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown"/>
+                    <xs:enumeration value="Driver"/>
+                    <xs:enumeration value="Passenger"/>
+                    <xs:enumeration value="Witness"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="SubPartyType" nillable="true" type="tns:SubPartyType"/>
+            <xs:simpleType name="ResultStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Error">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-1</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Success">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="InProgress">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="ResultStatus" nillable="true" type="tns:ResultStatus"/>
+            <xs:simpleType name="RagStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unknown">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-1</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Green">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Amber">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Red">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="RagStatus" nillable="true" type="tns:RagStatus"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MDA.WCF.WebServices.Messages" xmlns:tns="http://schemas.datacontract.org/2004/07/MDA.WCF.WebServices.Messages" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common"/>
+            <xs:complexType name="ProcessClaimBatchResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Results" nillable="true" type="q1:ProcessingResults" xmlns:q1="http://schemas.datacontract.org/2004/07/MDA.Common"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ProcessClaimBatchResponse" nillable="true" type="tns:ProcessClaimBatchResponse"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MDA.Common" xmlns:tns="http://schemas.datacontract.org/2004/07/MDA.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType name="ProcessingResults">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Message" nillable="true" type="tns:MessageNode"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ProcessingResults" nillable="true" type="tns:ProcessingResults"/>
+            <xs:complexType name="MessageNode">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="MessageType" type="tns:MessageType"/>
+                    <xs:element minOccurs="0" name="Nodes" nillable="true" type="tns:ArrayOfMessageNode"/>
+                    <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="MessageNode" nillable="true" type="tns:MessageNode"/>
+            <xs:simpleType name="MessageType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Normal"/>
+                    <xs:enumeration value="Warning"/>
+                    <xs:enumeration value="Error"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="MessageType" nillable="true" type="tns:MessageType"/>
+            <xs:complexType name="ArrayOfMessageNode">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="MessageNode" nillable="true" type="tns:MessageNode"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfMessageNode" nillable="true" type="tns:ArrayOfMessageNode"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.com/BatchClaimScoreRequestV1" xmlns:tns="http://www.keoghs.com/BatchClaimScoreRequestV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType name="BatchClaimScoreRequest">
+                <xs:sequence>
+                    <xs:element name="ClientBatchReference" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="BatchClaimScoreRequest" nillable="true" type="tns:BatchClaimScoreRequest"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/BatchClaimScoreResponseV1" xmlns:tns="http://www.keoghs.co.uk/ADA/BatchClaimScoreResponseV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/ClaimScoreResponseV1"/>
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+            <xs:complexType name="BatchClaimScoreResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="ClaimStatusAndScoreResponses" nillable="true" type="q1:ArrayOfClaimScoreResponse" xmlns:q1="http://www.keoghs.co.uk/ADA/ClaimScoreResponseV1"/>
+                    <xs:element minOccurs="0" name="ClientBatchReference" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ResultStatus" type="q2:ResultStatus" xmlns:q2="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="BatchClaimScoreResponse" nillable="true" type="tns:BatchClaimScoreResponse"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/ClaimScoreResponseV1" xmlns:tns="http://www.keoghs.co.uk/ADA/ClaimScoreResponseV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/ClaimScoreResultV1"/>
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/ClaimStatusResultV1"/>
+            <xs:complexType name="ArrayOfClaimScoreResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="ClaimScoreResponse" nillable="true" type="tns:ClaimScoreResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfClaimScoreResponse" nillable="true" type="tns:ArrayOfClaimScoreResponse"/>
+            <xs:complexType name="ClaimScoreResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="ClientClaimRefNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ResultStatus" type="q1:ResultStatus" xmlns:q1="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="Results" nillable="true" type="q2:ClaimScoreResult" xmlns:q2="http://www.keoghs.co.uk/ADA/ClaimScoreResultV1"/>
+                    <xs:element minOccurs="0" name="Status" nillable="true" type="q3:ClaimStatusResult" xmlns:q3="http://www.keoghs.co.uk/ADA/ClaimStatusResultV1"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimScoreResponse" nillable="true" type="tns:ClaimScoreResponse"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/ClaimScoreResultV1" xmlns:tns="http://www.keoghs.co.uk/ADA/ClaimScoreResultV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+            <xs:import namespace="http://www.keoghs.co.uk/ADA/ClaimScoreMessageV1"/>
+            <xs:complexType name="ClaimScoreResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="RagResult" type="q1:RagStatus" xmlns:q1="http://schemas.datacontract.org/2004/07/MDA.Common.Enum"/>
+                    <xs:element minOccurs="0" name="ScoreMessages" nillable="true" type="q2:ArrayOfClaimScoreMessage" xmlns:q2="http://www.keoghs.co.uk/ADA/ClaimScoreMessageV1"/>
+                    <xs:element minOccurs="0" name="TotalScore" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimScoreResult" nillable="true" type="tns:ClaimScoreResult"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/ClaimScoreMessageV1" xmlns:tns="http://www.keoghs.co.uk/ADA/ClaimScoreMessageV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+            <xs:complexType name="ArrayOfClaimScoreMessage">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="ClaimScoreMessage" nillable="true" type="tns:ClaimScoreMessage"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfClaimScoreMessage" nillable="true" type="tns:ArrayOfClaimScoreMessage"/>
+            <xs:complexType name="ClaimScoreMessage">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="MessageDetail" nillable="true" type="q1:ArrayOfstring" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+                    <xs:element minOccurs="0" name="MessageHeading" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimScoreMessage" nillable="true" type="tns:ClaimScoreMessage"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType name="ArrayOfstring">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="string" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/ClaimStatusResultV1" xmlns:tns="http://www.keoghs.co.uk/ADA/ClaimStatusResultV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType name="ClaimStatusResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="BatchStatus" type="xs:int"/>
+                    <xs:element minOccurs="0" name="ClaimStatus" type="xs:int"/>
+                    <xs:element minOccurs="0" name="Error" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimStatusResult" nillable="true" type="tns:ClaimStatusResult"/>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.keoghs.co.uk/ADA/ClaimScoreDetailsRequestV1" xmlns:tns="http://www.keoghs.co.uk/ADA/ClaimScoreDetailsRequestV1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType name="ClaimScoreDetailsRequest">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="ClientClaimRefNumber" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ClientId" type="xs:int"/>
+                    <xs:element minOccurs="0" name="UserId" type="xs:int"/>
+                    <xs:element minOccurs="0" name="Who" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ClaimScoreDetailsRequest" nillable="true" type="tns:ClaimScoreDetailsRequest"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="IADAPublicServicesDebug_SubmitMotorClaim_InputMessage">
+        <wsdl:part element="tns:SubmitMotorClaim" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="IADAPublicServicesDebug_SubmitMotorClaim_OutputMessage">
+        <wsdl:part element="tns:SubmitMotorClaimResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="IADAPublicServicesDebug_GetMotorClaimScore_InputMessage">
+        <wsdl:part element="tns:GetMotorClaimScore" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="IADAPublicServicesDebug_GetMotorClaimScore_OutputMessage">
+        <wsdl:part element="tns:GetMotorClaimScoreResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="IADAPublicServicesDebug_GetSingleMotorClaimScore_InputMessage">
+        <wsdl:part element="tns:GetSingleMotorClaimScore" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="IADAPublicServicesDebug_GetSingleMotorClaimScore_OutputMessage">
+        <wsdl:part element="tns:GetSingleMotorClaimScoreResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:portType name="IADAPublicServicesDebug">
+        <wsdl:operation name="SubmitMotorClaim">
+            <wsdl:input message="tns:IADAPublicServicesDebug_SubmitMotorClaim_InputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/SubmitMotorClaim"/>
+            <wsdl:output message="tns:IADAPublicServicesDebug_SubmitMotorClaim_OutputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/SubmitMotorClaimResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetMotorClaimScore">
+            <wsdl:input message="tns:IADAPublicServicesDebug_GetMotorClaimScore_InputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetMotorClaimScore"/>
+            <wsdl:output message="tns:IADAPublicServicesDebug_GetMotorClaimScore_OutputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetMotorClaimScoreResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleMotorClaimScore">
+            <wsdl:input message="tns:IADAPublicServicesDebug_GetSingleMotorClaimScore_InputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetSingleMotorClaimScore"/>
+            <wsdl:output message="tns:IADAPublicServicesDebug_GetSingleMotorClaimScore_OutputMessage" wsaw:Action="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetSingleMotorClaimScoreResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BasicHttpBinding_IADAPublicServicesDebug" type="tns:IADAPublicServicesDebug">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SubmitMotorClaim">
+            <soap:operation soapAction="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/SubmitMotorClaim" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMotorClaimScore">
+            <soap:operation soapAction="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetMotorClaimScore" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleMotorClaimScore">
+            <soap:operation soapAction="http://www.keoghs.co.uk/ADA/IADAPublicServicesDebug/GetSingleMotorClaimScore" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ADAPublicServicesDebug">
+        <wsdl:port binding="tns:BasicHttpBinding_IADAPublicServicesDebug" name="BasicHttpBinding_IADAPublicServicesDebug">
+            <soap:address location="http://localhost:8000/ADAPublicWebServicesV1/ADAPublicServicesDebug.svc"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

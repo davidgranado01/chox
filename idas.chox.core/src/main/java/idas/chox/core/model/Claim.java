@@ -75,12 +75,48 @@ public class Claim extends Entity implements Serializable {
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
+    private int fraudCheckStatus;
+    private boolean sentToKeoghs;
+    private boolean fraudResultAcknowledged;
+    private KeoghsRequest keoghsRequest;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
+    }
+
+    public boolean isSentToKeoghs() {
+        return sentToKeoghs;
+    }
+
+    public void setSentToKeoghs(boolean sentToKeoghs) {
+        this.sentToKeoghs = sentToKeoghs;
+    }
+
+    public boolean isFraudResultAcknowledged() {
+        return fraudResultAcknowledged;
+    }
+
+    public void setFraudResultAcknowledged(boolean fraudResultAcknowledged) {
+        this.fraudResultAcknowledged = fraudResultAcknowledged;
+    }
+
+    public int getFraudCheckStatus() {
+        return fraudCheckStatus;
+    }
+
+    public void setFraudCheckStatus(int fraudCheckStatus) {
+        this.fraudCheckStatus = fraudCheckStatus;
+    }
+
+    public KeoghsRequest getKeoghsRequest() {
+        return keoghsRequest;
+    }
+
+    public void setKeoghsRequest(KeoghsRequest keoghsRequest) {
+        this.keoghsRequest = keoghsRequest;
     }
 
     public boolean isCaseWithClientsSolicitor() {
