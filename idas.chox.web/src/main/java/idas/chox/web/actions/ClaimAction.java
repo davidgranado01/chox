@@ -690,6 +690,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String updateInvoiceReviewRequired() {
         try {
@@ -706,6 +707,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getFraudCheck() {
+        return SUCCESS;
+    }
+
+    public boolean isFraudCheckAcknowledged() {
+        return claim.isFraudResultAcknowledged();
+    }
+    public boolean isReferredToKeoghs() {
+        return claim.isSentToKeoghs();
+    }
+    public boolean isCanRerunFraudCheck() {
+        return !ClaimStatus.getCompletedStatus(true).contains(claim.getStatus());
+    }
+    
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -1507,6 +1522,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         boolean auditReviewCompleted = claim.getClaimAuditReview() != null ? claim.getClaimAuditReview().isClaimAuditReviewCompleted() : false;
                         accessRight = auditReviewCompleted ? accessRight : 0;
                         break;
+                        
+                    case ExtraAction.FRAUD_CHECK:
+                            // Do not show option if:
+                            //     - fraud checking is disabled
+                            //     - fraud check panel is already visible
+                            //     - claim is in a closed state
+                            if (isFraudCheckPanelVisible() || (ClaimStatus.getCompletedStatus(true).contains(claim.getStatus()) && claim.getFraudCheckStatus() != 3)) {
+                                accessRight = 0;
+                            }
+                        break;
 
                 }
             }
@@ -1807,6 +1832,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // </editor-fold>
     
+    public boolean isFraudCheckPanelVisible() {
+        if (claim.getBreBand() == null) {
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        }
+        
+        return !(!claim.getBreBand().isFraudCheckEnable() || claim.getFraudCheckStatus() != 3 || 
+                !Arrays.asList("ClaimUnacknowledgedRouted", "ClaimPending", "InvoiceEscalatedToHandler", "InvoiceApprovedByBRE", "ManualInvoiceBREApproved", "ManualInvoiceBRERejected").contains(claim.getStatus()));
+    }
+
+    public boolean isMoreOptionRequestFraudCheck() {
+        return (claim.getFraudCheckStatus() != 1 && claim.getFraudCheckStatus() != 2 && claim.getFraudCheckStatus() != 3);
+    }
+
     public boolean isAcceptanceReasosnsEnabled() {
         boolean result = false;
         

@@ -1747,7 +1747,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         return fraudCheckEnable;
     }
 
-    public void setFraudCheckEnableEnable(boolean fraudCheckEnable) {
+    public void setFraudCheckEnable(boolean fraudCheckEnable) {
         this.fraudCheckEnable = fraudCheckEnable;
     }
 }

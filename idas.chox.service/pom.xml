@@ -75,6 +75,11 @@
             <version>${chox.events.version}</version>
         </dependency>
         <dependency>
+            <groupId>idas.chox</groupId>
+            <artifactId>keoghs</artifactId>
+            <version>${chox.keoghs.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring-core.version}</version>

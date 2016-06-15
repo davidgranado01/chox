@@ -15,6 +15,7 @@
         <chox.events.version>1.0</chox.events.version>
         <chox.service.version>2.0</chox.service.version>
         <chox.web.version>2.0</chox.web.version>
+        <chox.keoghs.version>1.0</chox.keoghs.version>
         
         <slf4j.version>1.7.12</slf4j.version>
         <jcl-over-slf4j.version>1.7.12</jcl-over-slf4j.version>

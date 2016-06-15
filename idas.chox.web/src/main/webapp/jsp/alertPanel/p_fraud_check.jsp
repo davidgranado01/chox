@@ -1,0 +1,53 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+
+    Ext.onReady(function(){
+//        var form = $("form#formRunFraudCheckAction");
+//        choxJqueryHttpSubmit(form, function(){});
+    });
+    
+    function doAcknowledgeFormSubmit(action){
+        actionPanel.registerAction(action);
+        var form = $("form#formRunFraudCheckAction");
+//        var claimId = $("form#formRunFraudCheckAction #claimId").val();
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        choxJqueryHttpSubmit(form);
+        
+        return false;
+    }
+
+</script>
+
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
+
+<!--    <form action="<%=request.getContextPath()%>/prv/runFraudCheck.action" method="post" id="formRunFraudCheckAction" name="formRunFraudCheckAction"> -->
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formRunFraudCheckAction" name="formRunFraudCheckAction">
+        <s:hidden id="claimId" name="id" />
+        <s:hidden id="name" name="name" />
+
+        <s:hidden name="id" />
+
+        <fieldset class="x-fieldset"><legend>ADA Fraud Check Report</legend>
+
+            <div class="status-info">
+                This claim has been put through the Keogh's ADA Fraud Check Tool and has returned a 'Red/Amber/Green'
+                status with a total score of xxx. Please see below for the key fraud indicators found.
+            </div>
+                    <div class="status-control-set">
+                        <table class="status-table">
+                            <tr>
+                                <td colspan="4" class="choice" nowrap>
+                                    <input type="button" id="FCAcknowledgeButtonId" value="Acknowledgee Fraud Result" <s:if test="fraudCheckAcknowledged == true">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('acknowledgeFraudCheck');" />
+                                    <input type="button" id="FCReferButtonId" value="Refer Claim To Keoghs" <s:if test="referredToKeoghs == true">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('referFraudCheck');"  />
+                                    <input type="button" id="FCRerunButtonId" value="Re-Run Fraud Check" <s:if test="canRerunFraudCheck == true">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('runFraudCheck');" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="ACKmessageBox" class="action-error-msg"></div>
+                        <div class="chox-form-submit-result">&nbsp;</div>
+                    </div>
+        </fieldset>
+    </form>
+</div>

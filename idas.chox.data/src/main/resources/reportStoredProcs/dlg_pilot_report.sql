@@ -38,7 +38,7 @@ select 1 as id, 'Total No. New Claims Uploaded' as title ,
        and (vh is null or vh.rental_start is null or vh.rental_start >= rentalStart)
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select count(*) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), chorganisation cho
@@ -127,7 +127,7 @@ select 2 as id, 'Total No. Invoices Paid' as title ,
       and c.status in ('InvoicePaymentLogged', 'PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,  
 
 
@@ -235,7 +235,7 @@ select 3 as id, 'Total No. Invoices Uploaded' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select count(*)
@@ -341,7 +341,7 @@ from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), inv
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select (100*sum(case when c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid') then 1 else 0 end)) / sum(1)
@@ -451,7 +451,7 @@ select 5 as id, 'Total Hire Invoiced' as title ,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(sum(io.hire_gross), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io
@@ -546,7 +546,7 @@ select 6 as id, 'Total Hire Paid Exc. LPPs' as title,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i
@@ -642,7 +642,7 @@ select 7 as id, 'Total Hire Paid Inc. LPPs' as title ,
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho
@@ -750,7 +750,7 @@ select 8 as id, 'Total Hire Savings Exc. LPPs' as title ,
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io
@@ -859,7 +859,7 @@ select 9 as id, 'Total Hire Savings Inc. LPPs' as title ,
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                          and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid + i.hire_penalty_charge_paid else i.hire_gross + i.hire_penalty_charge end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io
@@ -966,7 +966,7 @@ select 10 as id, 'Average Hire Value Invoiced' as title ,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
 
@@ -1076,7 +1076,7 @@ select 11 as id, 'Average Hire Value Paid' as title ,
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(12,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i
@@ -1190,7 +1190,7 @@ select 12 as id, 'Average Hire Days Invoiced' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) 
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_6_months,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
@@ -1297,7 +1297,7 @@ select 13 as id, 'Average Hire Days Paid' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, chorganisation cho
@@ -1409,7 +1409,7 @@ select 14 as id, 'Average Daily Hire Rate Invoiced' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(o.hire_rate_charged_per_day), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice_original o, invoice i, chorganisation cho
@@ -1515,7 +1515,7 @@ select 15 as id, 'Average Daily Hire Rate Paid' as title ,
         and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho
@@ -1629,7 +1629,7 @@ select 16 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_6_months,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
@@ -1736,7 +1736,7 @@ select 17 as id, 'Average Total Loss Hire Days Paid' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
@@ -1850,7 +1850,7 @@ select 18 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))   as last_6_months,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
@@ -1956,7 +1956,7 @@ select 19 as id, 'Average Non Total Loss Hire Days Paid' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho
@@ -2073,7 +2073,7 @@ select 20 as id, 'Average Repair Duration' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1)::numeric(10,1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd
@@ -2193,7 +2193,7 @@ select 21 as id, 'Average Credit Repair Duration' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1)::numeric(10,1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd
@@ -2320,7 +2320,7 @@ select 22 as id, 'Average TPI Dealing Repair Duration' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd
@@ -2449,7 +2449,7 @@ select 23 as id, 'Average DLG Dealing Repair Duration' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd
@@ -2586,7 +2586,7 @@ select 24 as id, 'Total Repair Value Invoiced' as title ,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(sum(io.repair_gross), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io, chorganisation cho
@@ -2682,7 +2682,7 @@ select 25 as id, 'Total Repair Value Paid' as title ,
        and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
        and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
        and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
        and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
 
@@ -2789,7 +2789,7 @@ select 26 as id, 'Total Repair Savings' as title ,
      and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
      and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
      and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-     and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+     and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                             and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
 (select coalesce(sum((case when o.repair_gross = 0 then i.repair_gross else o.repair_gross end) - (case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end)), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice_original o, invoice i, chorganisation cho
@@ -2886,7 +2886,7 @@ select 27 as id, 'Average Repair Value Invoiced Exc. LPPs' as title ,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and c.chorganisation_id = cho.id and (params.chorgIds is null or c.chorganisation_id = ANY(params.chorgIds))
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_6_months,
 
 
@@ -2994,7 +2994,7 @@ select 28 as id, 'Average Repair Value Paid Exc. LPPs' as title ,
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(case when i.final_payment is not null then i.repair_gross_paid else i.repair_gross end), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i
@@ -3111,7 +3111,7 @@ select 29 as id, 'Average Repair Value Invoiced Inc LPPs ' as title ,
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(io.repair_gross + (case when i.final_payment is null then i.repair_penalty_charge else i.repair_penalty_charge_paid end)), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io
@@ -3226,7 +3226,7 @@ select 30 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
       and c.status in ('InvoicePaymentLogged','PaymentReceived','ManualInvoicePaid')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
       and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select coalesce(avg(case when i.final_payment is not null then (i.repair_gross_paid + i.repair_penalty_charge_paid) else (i.repair_gross + i.repair_penalty_charge) end), 0)::numeric(10,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i
@@ -3339,7 +3339,7 @@ select 31 as id, 'Volume Rejected/Aborted Claims' as title ,
       and c.status in ('ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted')
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                              and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select count(*) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)
@@ -3437,7 +3437,7 @@ select 32 as id, 'Average Time To Pay' as title ,
       and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = ANY(params.chorgIds) or params.chorgIds is null)
-      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
+      and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
                              and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_6_months,
 
 (select avg(at.created_date::Date - i.created_date::Date)::numeric(10,1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, audit_trail at

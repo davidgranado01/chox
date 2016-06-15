@@ -388,13 +388,30 @@
             }
         }
 
+        function doRunFraudCheck(btn){
+            if(btn==='yes') {
+                var url = "/prv/p/runFraudCheck.action";
+                var param = {"id":<s:property value="id" />,"name":"runFraudCheck"};
+                ajax.loadHtml2(url, param, pageRefresh);
+            }else{
+                $("div#claim-detail-extra #extraAction").val('-- More Actions --');
+                return false;
+            }
+        }
+
         if(selectedAction!=="" && selectedAction!==null){
             
             if(selectedAction==='markSupplementaryInvoicedClaim'){
                 
                 Ext.MessageBox.confirm('Confirm', 'Are you sure you want to mark this as the original claim for Supplementary Invoices as this claim shares the same Customer Claim Number as another claim?',doMarkSupplementaryInvoiced);
                 
-            }else{
+            }
+<s:if test="moreOptionRequestFraudCheck">
+            elseif(selectedAction==='fraudCheck') {
+                Ext.MessageBox.confirm('Run Fraud Check', 'Running the Fraud Check will send the claim data to Keoghs ADA Fraud Tool and return a result to CHOX. It may take a short while to return a result and will require a browser refresh to be visible.',doRunFraudCheck);
+            }
+</s:if>
+            else{
                 var url = "/prv/p/"+selectedAction+".action";
                 var param = {"id":<s:property value="id" />};
                 ajax.loadHtml2(url,param,function(data){

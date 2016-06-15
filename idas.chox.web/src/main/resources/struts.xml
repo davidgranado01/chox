@@ -608,6 +608,10 @@
             <result name="success">/jsp/alertPanel/p_penalty_charge_config.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
+        <action name="fraudCheck" class="idas.chox.web.actions.ClaimAction" method="getFraudCheck">
+            <result name="success">/jsp/alertPanel/p_fraud_check.jsp</result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
         <action name="updateInsurerClaimOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">
             <result name="success">/jsp/actionPanel/p_more_action_update_claim_workgroup_and_owner.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
@@ -1349,6 +1353,10 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         
+        <action name="runFraudCheck" class="idas.chox.web.actions.ClaimActivityAction">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name="doDeleteComment" class="idas.chox.web.actions.CommentAction" method="deleteComment">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>

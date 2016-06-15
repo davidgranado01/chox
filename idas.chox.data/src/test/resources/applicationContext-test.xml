@@ -93,6 +93,8 @@
                 <value>hbm/BrePenaltyBand.hbm.xml</value>
                 <value>hbm/AutomaticRoutingCho.hbm.xml</value>
                 <value>hbm/ClaimAuditReview.hbm.xml</value>
+                <value>hbm/KeoghsRequest.hbm.xml</value>
+                <value>hbm/KeoghsRequestScoreMessage.hbm.xml</value>
             </list>
         </property>
     </bean>

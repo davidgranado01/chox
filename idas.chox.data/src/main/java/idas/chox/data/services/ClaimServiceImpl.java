@@ -68,7 +68,7 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
-
+        
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
     public static final String PENDING = "Pending";
@@ -2443,4 +2443,5 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         return true;
     }
+
 }

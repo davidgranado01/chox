@@ -8,7 +8,7 @@
     </parent>
     <groupId>idas.chox</groupId>
     <artifactId>keoghs</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,15 +95,15 @@
                                 <bindingFile>javabindings.xml</bindingFile>
                             </bindingFiles>
                             <packageName>com.keoghs.ADAPublicServices</packageName>
-<!--                            <wsdlUrls>
-                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc</wsdlUrl>
-                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc</wsdlUrl> -->
-<!--                                <wsdlUrl>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc</wsdlUrl> -->
-<!--                            </wsdlUrls> -->
-                            <wsdlLocation>file:${project.build.directory}/src/main/resources/wsdl/ADAPublicServices.wsdl</wsdlLocation>
-<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> -->
-<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc</wsdlLocation> -->
-<!--                            <wsdlLocation>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc</wsdlLocation> -->
+                            <wsdlUrls>
+                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl>
+<!--                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlUrl>
+                                <wsdlUrl>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl> -->
+                            </wsdlUrls> 
+<!--                            <wsdlLocation>file:${project.build.directory}/src/main/resources/wsdl/ADAPublicServices.wsdl</wsdlLocation>-->
+                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> 
+<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlLocation> -->
+<!--                            <wsdlLocation>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> -->
                             <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServices.stale</staleFile>
                         </configuration>
                         <id>wsimport-generate-ADAPublicServices</id>

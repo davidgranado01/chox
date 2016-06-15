@@ -44,6 +44,6 @@ ALTER TABLE claim ADD COLUMN fraud_check_status int not null DEFAULT 0; -- 0 = n
 --ALTER TABLE claim ADD COLUMN keoghs_client_batch_reference character varying;
 ALTER TABLE claim ADD COLUMN keoghs_request_id integer;
 ALTER TABLE claim ADD COLUMN sent_to_keoghs boolean not null default false;
-ALTER TABLE claim ADD COLUMN fraud_result_acknowledged boolean;
+ALTER TABLE claim ADD COLUMN fraud_result_acknowledged boolean not null default false;
 ALTER TABLE claim ADD CONSTRAINT claim_keoghs_request_fkey FOREIGN KEY (keoghs_request_id) REFERENCES keoghs_request(id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE bre_band ADD COLUMN fraud_check_enable boolean not null default false;

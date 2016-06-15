@@ -29,7 +29,7 @@ where ucd.created_date >= startDate and ucd.created_date < endDate and ucd.creat
                                     (select * from claim where id=ucd.claim_id and insurer_id = ANY(opposingOrgIds))))
          or (w.chorganisation_id is null and w.insurer_id = ANY(uploadOrgIds) and (opposingOrgIds is null or exists 
                                     (select * from claim where id=ucd.claim_id and chorganisation_id = ANY(opposingOrgIds)))))
-order by dateProcesse asc;
+order by dateProcessed asc;
 
 END
 ;

@@ -31,6 +31,7 @@ public class ExtraAction {
     public static final String FINAL_REVIEW = "finalReview";
     public static final String MARK_CASE_WITH_CLIENTS_SOLICITOR = "markCaseWithClientsSolicitor";
     public static final String REVIEW_CLAIM_ADUIT = "reviewClaimAudit";
+    public static final String FRAUD_CHECK = "fraudCheck";
     
     private static final List<String> extraActionList = new ArrayList<String>(19);
     static {
@@ -54,6 +55,7 @@ public class ExtraAction {
         extraActionList.add(UPDATE_PENALTY_CHARGES);
         extraActionList.add(MARK_CASE_WITH_CLIENTS_SOLICITOR);
         extraActionList.add(REVIEW_CLAIM_ADUIT);
+        extraActionList.add(FRAUD_CHECK);
     }
     
     public static List<String> getExtraActions() {
@@ -107,6 +109,8 @@ public class ExtraAction {
             returnStr = "Case With Clients Solicitor";
         } else if (extraAction.equalsIgnoreCase(REVIEW_CLAIM_ADUIT)) {
             returnStr = "Review Claim Audit";
+        } else if (extraAction.equalsIgnoreCase(FRAUD_CHECK)) {
+            returnStr = "Fraud Check";
         }
         return returnStr;
     }
