@@ -32,4 +32,4 @@ update insurer set kbbs_manager_password='{eF&WL>', enable_kbbs_dashboard = true
 update insurer set kbbs_manager_password='*+RJ{DC', enable_kbbs_dashboard = true where id=23;
 update insurer set kbbs_manager_password='eoj>u8l', enable_kbbs_dashboard = true where id=24;
 update insurer set kbbs_manager_password='VA)p&hs', enable_kbbs_dashboard = true where id=25;
-update insurer set kbbs_manager_password='$N9=8J}', enable_kbbs_dashboard = true where id=36;
+update insurer set kbbs_manager_password='$N9=8J}', enable_kbbs_dashboard = true where id=26;
