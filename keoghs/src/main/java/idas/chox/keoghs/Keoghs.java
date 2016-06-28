@@ -4,16 +4,23 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.xml.namespace.QName;
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.namespace.QName;
+
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.headers.Header;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxb.JAXBDataBinding;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.keoghs.ADAPublicServices.*;
-
-import com.sun.xml.ws.api.message.Headers;
-import com.sun.xml.ws.developer.WSBindingProvider;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
@@ -30,51 +37,52 @@ public class Keoghs {
 
     private static final Logger LOG = LoggerFactory.getLogger(Keoghs.class);
 
-    private static final String KBBS_TOKEN = "5DF5864C-5E79-481F-9188-38BF4013D84C";
-    private static final int ERROR = -1;
-    private static final int NOT_REQUESTED = 0;
-    private static final int QUEUED = 1;
-    private static final int PENDING = 2;
-    private static final int AVAILABLE = 3;
+    private static final String KEOGHS_TOKEN = "5DF5864C-5E79-481F-9188-38BF4013D84C";
+    public static final int ERROR = -1;
+    public static final int NOT_REQUESTED = 0;
+    public static final int QUEUED = 1;
+    public static final int PENDING = 2;
+    public static final int AVAILABLE = 3;
 
     private static KeoghsRequestService keoghsRequestService;
     private static ClaimService claimService;
 
-    Keoghs() {
-        // Activate message logging....
-        //      if this doesn't work, try setting as a jvm option:
-        //          export JAVA_OPTS="$JAVA_OPTS -Dcom.sun.xml.ws.transport.http.client.HttpTransportPipe.dump=true"
-        System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
-//        System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
-//        System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
-//        System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");        
-    }
 
-    public static void setKeoghsRequestService(KeoghsRequestService keoghsRequestService) {
+    public void setKeoghsRequestService(KeoghsRequestService keoghsRequestService) {
+        LOG.info("keoghsRequestService set");
         Keoghs.keoghsRequestService = keoghsRequestService;
     }
 
-    public static void setClaimService(ClaimService claimService) {
+    public void setClaimService(ClaimService claimService) {
+        LOG.info("claimService set");
         Keoghs.claimService = claimService;
     }
-
-    public static boolean queueAndSubmit(Claim claim, String checkType) {
-        return Keoghs.queueAndSubmit(claim, checkType, false);
+    
+    public boolean queueAndSubmit(Claim claim, String checkType) {
+        return queueAndSubmit(claim, checkType, false);
     }
 
-    public static boolean queueAndSubmitDebug(Claim claim, String checkType) {
-        return Keoghs.queueAndSubmit(claim, checkType, true);
+    public boolean queueAndSubmitDebug(Claim claim, String checkType) {
+        return queueAndSubmit(claim, checkType, true);
     }
 
-    public static void check() {
-        check(false);
+    public void check() {
+        try {
+            check(false);
+        } catch (JAXBException ex) {
+            LOG.error("Error checking status of kepghs requests: {}", ex.getMessage(), ex);
+        }
     }
 
-    public static void checkDebug() {
-        check(true);
+    public void checkDebug() {
+        try {
+            check(true);
+        } catch (JAXBException ex) {
+            LOG.error("Error checking (debug) status of kepghs requests: {}", ex.getMessage(), ex);
+        }
     }
 
-    public static KeoghsRequest queue(Claim claim, String checkType) {
+    public KeoghsRequest queue(Claim claim, String checkType) {
         if (claim.getFraudCheckStatus() == QUEUED || claim.getFraudCheckStatus() == PENDING) {
             LOG.error("Claim '{}' already sent to Keoghs and pending a response: {}", claim.getChoReference(), claim.getFraudCheckStatus());
             return null;
@@ -103,7 +111,8 @@ public class Keoghs {
             claim.setKeoghsRequest(keoghsRequest);
             claim.setFraudCheckStatus(QUEUED);
             claim.setFraudResultAcknowledged(false);
-            claimService.save(claim);
+            LOG.info("Fraud check status for claim '{}' [id={}] set to QUEUED", claim.getChoReference(), claim.getId());
+//            claimService.save(claim);
             keoghsRequestService.saveKeoghsRequest(keoghsRequest);
         } catch (Exception ex) {
             LOG.error("Exception thrown calling Keoghs: {}\n", ex.getMessage(), ex);
@@ -115,7 +124,7 @@ public class Keoghs {
         return keoghsRequest;
     }
 
-    public static boolean submit(boolean debug) {
+    public boolean submit(boolean debug) {
         boolean result;
         List<KeoghsRequest> keoghsRequests = keoghsRequestService.getQueuedRequests();
         LOG.info("Found {} queued Keoghs requests.", keoghsRequests.size());
@@ -131,7 +140,58 @@ public class Keoghs {
         return true;
     }
 
-    private static boolean submit(KeoghsRequest keoghsRequest, boolean debug) {
+    private IADAPublicServices getADAServices() throws JAXBException {
+            ADAPublicServices service = new ADAPublicServices();
+            IADAPublicServices port = service.getBasicHttpBindingIADAPublicServices();
+
+            // Add  logging interceptors
+            Client client = ClientProxy.getClient(port);
+            client.getInInterceptors().add(new LoggingInInterceptor());
+            client.getOutInterceptors().add(new LoggingOutInterceptor());
+            
+            // Increase timeouts to 3 mins
+            HTTPConduit http = (HTTPConduit) client.getConduit();
+            HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+            httpClientPolicy.setConnectionTimeout(new Long(4 * 60 * 1000));
+            httpClientPolicy.setReceiveTimeout(new Long(4 * 60 * 1000));
+            http.setClient(httpClientPolicy);
+            
+            // Add SOAP Headers to web service request
+            List<Header> headersList = new ArrayList<>();
+//            Header testSoapHeader1 = new Header(new QName("http://www.keoghs.co.uk/ADA", "token"), KEOGHS_TOKEN, new JAXBDataBinding(String.class)); 
+            Header testSoapHeader1 = new Header(new QName("", "token"), KEOGHS_TOKEN, new JAXBDataBinding(String.class)); 
+            headersList.add(testSoapHeader1);
+            client.getRequestContext().put(Header.HEADER_LIST, headersList);
+            
+            return port;
+    }
+
+    private IADAPublicServicesDebug getADAServicesDebug() throws JAXBException {
+            ADAPublicServicesDebug serviceDebug = new ADAPublicServicesDebug();
+            IADAPublicServicesDebug portDebug = serviceDebug.getBasicHttpBindingIADAPublicServicesDebug();
+
+            // Add  logging interceptors
+            Client client = ClientProxy.getClient(portDebug);
+            client.getInInterceptors().add(new LoggingInInterceptor());
+            client.getOutInterceptors().add(new LoggingOutInterceptor());
+            
+            // Increase timeouts to 5 mins
+            HTTPConduit http = (HTTPConduit) client.getConduit();
+            HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+            httpClientPolicy.setConnectionTimeout(new Long(5 * 60 * 1000));
+            httpClientPolicy.setReceiveTimeout(new Long(5 * 60 * 1000));
+            http.setClient(httpClientPolicy);
+            
+            // Add SOAP Headers to web service request
+            List<Header> headersList = new ArrayList<>();
+            Header testSoapHeader1 = new Header(new QName("", "token"), KEOGHS_TOKEN, new JAXBDataBinding(String.class)); 
+            headersList.add(testSoapHeader1);
+            client.getRequestContext().put(Header.HEADER_LIST, headersList);
+            
+            return portDebug;
+    }
+
+    private boolean submit(KeoghsRequest keoghsRequest, boolean debug) {
 
         try {
             Claim claim = keoghsRequest.getClaim();
@@ -152,34 +212,26 @@ public class Keoghs {
             request.setBatch(claimBatch);
             request.setClientBatchReference(keoghsRequest.getClientBatchReference());
 
-            ADAPublicServices service = new ADAPublicServices();
-            IADAPublicServices port = service.getBasicHttpBindingIADAPublicServices();
-            ADAPublicServicesDebug serviceDebug = new ADAPublicServicesDebug();
-            IADAPublicServicesDebug portDebug = serviceDebug.getBasicHttpBindingIADAPublicServicesDebug();
-            // Add Header token
-            WSBindingProvider bp;
-            if (debug) {
-                bp = (WSBindingProvider) portDebug;
-            } else {
-                bp = (WSBindingProvider) port;
-            }
-            bp.setOutboundHeaders(Headers.create(new QName("token"), KBBS_TOKEN));
+//            IADAPublicServices adaServices = getADAServices();
+            IADAPublicServicesDebug adaServicesDebug = getADAServicesDebug();
 
             // call web-service...
             LOG.info("Claim (id={}) sending to Keoghs:\n{}", claim.getId(), request.toString());
             keoghsRequest.setClaimStatus(0);
 //            keoghsRequest.setBatchStatus(0);
-            if (debug) {
-                ProcessClaimBatchResponse response = portDebug.submitMotorClaim(request);
+//            if (debug) {
+                ProcessClaimBatchResponse response = adaServicesDebug.submitMotorClaim(request);
                 LOG.info("Respone is: {}", response.getResults().getMessage().getText());
                 keoghsRequest.setResponseMessageDebug(response.getResults().getMessage().getText());
-            } else {
-                port.submitMotorClaim(request);
-            }
+//            } else {
+//                port.submitMotorClaim(request);
+//            }
             // Update Request
             keoghsRequestService.saveKeoghsRequest(keoghsRequest);
             claim.setFraudCheckStatus(PENDING);
-            claimService.save(claim);
+            claim.setFraudResultAcknowledged(false);
+            LOG.info("Fraud check status for claim '{}' [id={}] set to PENDING", claim.getChoReference(), claim.getId());
+//            claimService.save(claim);
         } catch (Exception ex) {
             LOG.error("Error submitting claim to Keoghs: {}\n", ex.getMessage(), ex);
             return false;
@@ -187,7 +239,7 @@ public class Keoghs {
         return true;
     }
 
-    private static boolean queueAndSubmit(Claim claim, String checkType, boolean debug) {
+    private boolean queueAndSubmit(Claim claim, String checkType, boolean debug) {
         KeoghsRequest keoghsRequest = queue(claim, checkType);
 
         if (keoghsRequest == null) {
@@ -197,23 +249,13 @@ public class Keoghs {
         return submit(keoghsRequest, debug);
     }
 
-    private static void check(boolean debug) {
-        ADAPublicServices service = new ADAPublicServices();
-        IADAPublicServices port = service.getBasicHttpBindingIADAPublicServices();
-        ADAPublicServicesDebug serviceDebug = new ADAPublicServicesDebug();
-        IADAPublicServicesDebug portDebug = serviceDebug.getBasicHttpBindingIADAPublicServicesDebug();
+    private void check(boolean debug) throws JAXBException {
+//        IADAPublicServices adaServices = getADAServices();
+        IADAPublicServicesDebug adaServicesDebug = getADAServicesDebug();
 
-        // Add Header token
-        WSBindingProvider bp;
-        if (debug) {
-            bp = (WSBindingProvider) portDebug;
-        } else {
-            bp = (WSBindingProvider) port;
-        }
-        bp.setOutboundHeaders(Headers.create(new QName("token"), KBBS_TOKEN));
-
-        List<KeoghsRequest> keoghsRequests = keoghsRequestService.getOpenRequests();
-        LOG.info("Found {} open Keoghs requests.", keoghsRequests.size());
+        // Process all open requests
+        List<KeoghsRequest> keoghsRequests = keoghsRequestService.getPendingRequests();
+        LOG.info("Found {} pending Keoghs requests.", keoghsRequests.size());
 
         BatchClaimScoreRequest request;
         BatchClaimScoreResponse response;
@@ -223,13 +265,14 @@ public class Keoghs {
                         originalRequest.getBatchStatus(), originalRequest.getClaimStatus()});
             request = new BatchClaimScoreRequest();
             request.setClientBatchReference(originalRequest.getClientBatchReference());
-            if (debug) {
-                response = portDebug.getMotorClaimScore(request);
-            } else {
-                response = port.getMotorClaimScore(request);
-            }
+//            if (debug) {
+                response = adaServicesDebug.getMotorClaimScore(request);
+//            } else {
+//                response = port.getMotorClaimScore(request);
+//            }
             originalRequest.setResultStatus(response.getResultStatus().toString());
             List<ClaimScoreResponse> responseList = response.getClaimStatusAndScoreResponses().getClaimScoreResponses();
+            LOG.info("Response list size is {}", responseList.size());
             // There should only be one?
             if (responseList.isEmpty()) {
                 LOG.error("No ClaimScoreResponses received for clientBatchReference '{}'", originalRequest.getClientBatchReference());
@@ -241,14 +284,20 @@ public class Keoghs {
             originalRequest.setClaimStatus(claimScoreResponse.getStatus().getClaimStatus());
             originalRequest.setBatchStatus(claimScoreResponse.getStatus().getBatchStatus());
             Claim claim = originalRequest.getClaim();
+            LOG.info("Response result status={}, claimStatus={}, batchStatus={} for batch reference {}",
+                    new Object[]{response.getResultStatus(), claimScoreResponse.getStatus().getClaimStatus(),
+                        claimScoreResponse.getStatus().getBatchStatus(), originalRequest.getClientBatchReference()});
             switch (response.getResultStatus()) {
                 case ERROR:
                     claim.setFraudCheckStatus(ERROR);
+                    LOG.error("Error response received for client batch reference '{}'", originalRequest.getClientBatchReference());
                     break;
                 case IN_PROGRESS:
+                    LOG.info("Pending response received for client batch reference '{}'", originalRequest.getClientBatchReference());
                     claim.setFraudCheckStatus(PENDING);
                     break;
                 case SUCCESS:
+                    LOG.info("Success response received for client batch reference '{}'", originalRequest.getClientBatchReference());
                     claim.setFraudCheckStatus(AVAILABLE);
                     originalRequest.setRagResult(claimScoreResponse.getResults().getRagResult().toString());
                     originalRequest.setTotalScore(claimScoreResponse.getResults().getTotalScore());
@@ -262,8 +311,6 @@ public class Keoghs {
                     }
                     claim.addComment(comment);
                     List<ClaimScoreMessage> messages = claimScoreResponse.getResults().getScoreMessages().getClaimScoreMessages();
-                    List<KeoghsRequestScoreMessage> scoreMessages = new ArrayList();
-                    originalRequest.setScoreMessages(scoreMessages);
                     StringBuilder sb = new StringBuilder();
                     for (ClaimScoreMessage message : messages) {
                         KeoghsRequestScoreMessage scoreMessage = new KeoghsRequestScoreMessage();
@@ -272,17 +319,18 @@ public class Keoghs {
                             sb.append(messageDetail).append("\n");
                         }
                         scoreMessage.setScoreMessageDetail(sb.toString());
-                        scoreMessages.add(scoreMessage);
+                        originalRequest.addKeoghsRequestScoreMessage(scoreMessage);
                         sb.setLength(0);
                     }
                     break;
             }
+            LOG.info("Saving request and claim for '{}'....", originalRequest.getClientBatchReference());
             keoghsRequestService.saveKeoghsRequest(originalRequest);
             claimService.save(claim);
         }
     }
 
-    private static com.keoghs.ADAPublicServices.Claim getKeoghsClaim(Claim claim) {
+    private com.keoghs.ADAPublicServices.Claim getKeoghsClaim(Claim claim) {
         com.keoghs.ADAPublicServices.Claim keoghsClaim = new com.keoghs.ADAPublicServices.Claim();
 
         try {
@@ -465,15 +513,21 @@ public class Keoghs {
                 hireVehicle.setVehicleInvolvementGroup(VehicleInvolvementGroup.THIRD_PARTY_HIRE_VEHICLE);
                 hireVehicle.setEngineCapacity(claim.getVehicleHire().getHpiVehicleCapacity());
                 hireVehicle.setFuel(getVehicleFuelType(claim.getVehicleHire().getHpiVehicleTransmission()));
-                gregory.setTime(claim.getVehicleHire().getHireEnd());
-                hireVehicle.setHireEndDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory));
-                gregory.setTime(claim.getVehicleHire().getHireStart());
-                hireVehicle.setHireStartDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory));
+                if (claim.getVehicleHire().getHireEnd() != null) {
+                    gregory.setTime(claim.getVehicleHire().getHireEnd());
+                    hireVehicle.setHireEndDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory));
+                }
+                if (claim.getVehicleHire().getHireStart() != null) {
+                    gregory.setTime(claim.getVehicleHire().getHireStart());
+                    hireVehicle.setHireStartDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory));
+                }
                 hireVehicle.setMake(claim.getVehicleHire().getHpiVehicleManufacturer());
                 hireVehicle.setModel(claim.getVehicleHire().getHpiVehicleModel());
-                hireVehicle.setTransmission(getVehicleTransmission(claim.getVehicleHire().getHpiVehicleTransmission(), claim.getVehicleHire().getVehicleClass().getName()));
+                if (claim.getVehicleHire().getVehicleClass() != null) {
+                    hireVehicle.setTransmission(getVehicleTransmission(claim.getVehicleHire().getHpiVehicleTransmission(), claim.getVehicleHire().getVehicleClass().getName()));
+                    hireVehicle.setVehicleType(getVehicleTypeFromClass(claim.getVehicleHire().getVehicleClass().getName()));
+                }
                 hireVehicle.setVehicleRegistration(claim.getVehicleHire().getVehicleRegistration());
-                hireVehicle.setVehicleType(getVehicleTypeFromClass(claim.getVehicleHire().getVehicleClass().getName()));
                 ArrayOfOrganisationVehicle choVehicles = new ArrayOfOrganisationVehicle();
                 choVehicles.getOrganisationVehicles().add(hireVehicle);
 
@@ -567,7 +621,11 @@ public class Keoghs {
         return keoghsClaim;
     }
 
-    private static VehicleType getVehicleTypeFromClass(String vehicleClass) {
+    private VehicleType getVehicleTypeFromClass(String vehicleClass) {
+        if (vehicleClass == null) {
+            return VehicleType.UNKNOWN;
+        }
+
         if (vehicleClass.startsWith("PV") || vehicleClass.startsWith("CV") || vehicleClass.startsWith("RV")) {
             return VehicleType.VAN;
         } else if (vehicleClass.startsWith("T") || vehicleClass.startsWith("PT")) {
@@ -586,7 +644,11 @@ public class Keoghs {
         return VehicleType.UNKNOWN;
     }
 
-    private static Salutation getSalutationFromString(String t) {
+    private Salutation getSalutationFromString(String t) {
+        if (t == null) {
+            return Salutation.UNKNOWN;
+        }
+        
         String title = t.toLowerCase();
         if (title.startsWith("mrs")) {
             return Salutation.MRS;
@@ -617,7 +679,11 @@ public class Keoghs {
         return Salutation.UNKNOWN;
     }
 
-    private static VehicleTransmission getVehicleTransmission(String hpiTransmission, String vehicleClassName) {
+    private VehicleTransmission getVehicleTransmission(String hpiTransmission, String vehicleClassName) {
+        if (hpiTransmission == null) {
+            return VehicleTransmission.UNKNOWN;
+        }
+
         if (hpiTransmission.contains("Manual")) {
             return VehicleTransmission.MANUAL;
         } else if (hpiTransmission.contains("Auto") || vehicleClassName.endsWith("A")) {
@@ -626,7 +692,11 @@ public class Keoghs {
         return VehicleTransmission.UNKNOWN;
     }
 
-    private static VehicleFuelType getVehicleFuelType(String hpiTransmission) {
+    private VehicleFuelType getVehicleFuelType(String hpiTransmission) {
+        if (hpiTransmission == null) {
+            return VehicleFuelType.UNKNOWN;
+        }
+
         if (hpiTransmission.contains("Diesel")) {
             return VehicleFuelType.DIESEL;
         } else if (hpiTransmission.contains("Petrol/G")) {

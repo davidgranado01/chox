@@ -711,14 +711,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    public boolean isFraudCheckAcknowledged() {
-        return claim.isFraudResultAcknowledged();
+    public boolean isFraudCheckAcknowledged() { //if true returned, button disabled
+        return claim.isFraudResultAcknowledged() || claim.getFraudCheckStatus() != 3;
     }
     public boolean isReferredToKeoghs() {
         return claim.isSentToKeoghs();
     }
     public boolean isCanRerunFraudCheck() {
-        return !ClaimStatus.getCompletedStatus(true).contains(claim.getStatus());
+        return !(ClaimStatus.getCompletedStatus(true).contains(claim.getStatus()) || claim.getFraudCheckStatus() != 3);
     }
     
     public String getCreatedByDesc() {
@@ -1527,8 +1527,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             // Do not show option if:
                             //     - fraud checking is disabled
                             //     - fraud check panel is already visible
-                            //     - claim is in a closed state
-                            if (isFraudCheckPanelVisible() || (ClaimStatus.getCompletedStatus(true).contains(claim.getStatus()) && claim.getFraudCheckStatus() != 3)) {
+                            //     - claim is in a closed state and no fraud results to display                            
+                            if (!claim.getBreBand().isFraudCheckEnable() || isFraudCheckPanelVisible() || (ClaimStatus.getCompletedStatus(true).contains(claim.getStatus()) && claim.getFraudCheckStatus() != 3)) {
                                 accessRight = 0;
                             }
                         break;
@@ -1833,19 +1833,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
     
     public boolean isFraudCheckPanelVisible() {
-        if (claim.getBreBand() == null) {
-            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-            claim.setBreBand(choBand);
-        }
-        
-        return !(!claim.getBreBand().isFraudCheckEnable() || claim.getFraudCheckStatus() != 3 || 
-                !Arrays.asList("ClaimUnacknowledgedRouted", "ClaimPending", "InvoiceEscalatedToHandler", "InvoiceApprovedByBRE", "ManualInvoiceBREApproved", "ManualInvoiceBRERejected").contains(claim.getStatus()));
+        return claim.getBreBand().isFraudCheckEnable() && claim.getFraudCheckStatus() == 3 && !claim.isFraudResultAcknowledged() &&
+                Arrays.asList("ClaimUnacknowledgedRouted", "ClaimPending", "InvoiceEscalatedToHandler", "InvoiceApprovedByBRE", "ManualInvoiceBREApproved", "ManualInvoiceBRERejected").contains(claim.getStatus());
+    }
+    
+    public boolean isFraudCheckAvailable() {
+        return claim.getFraudCheckStatus() == 3;
+    }
+    
+    public boolean isFraudIndicatorsAvailable() {
+        return claim.getKeoghsRequest() != null && claim.getKeoghsRequest().getKeoghsRequestScoreMessages() != null
+                && !claim.getKeoghsRequest().getKeoghsRequestScoreMessages().isEmpty();
     }
 
     public boolean isMoreOptionRequestFraudCheck() {
         return (claim.getFraudCheckStatus() != 1 && claim.getFraudCheckStatus() != 2 && claim.getFraudCheckStatus() != 3);
     }
 
+    public String getClaimFraudRagResult() {
+        return claim.getKeoghsRequest().getRagResult();
+    }
+    public int getClaimFraudTotalScore() {
+        return claim.getKeoghsRequest().getTotalScore();
+    }
+    
     public boolean isAcceptanceReasosnsEnabled() {
         boolean result = false;
         

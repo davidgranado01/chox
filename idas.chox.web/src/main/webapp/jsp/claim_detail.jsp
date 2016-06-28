@@ -407,7 +407,7 @@
                 
             }
 <s:if test="moreOptionRequestFraudCheck">
-            elseif(selectedAction==='fraudCheck') {
+            else if(selectedAction==='fraudCheck') {
                 Ext.MessageBox.confirm('Run Fraud Check', 'Running the Fraud Check will send the claim data to Keoghs ADA Fraud Tool and return a result to CHOX. It may take a short while to return a result and will require a browser refresh to be visible.',doRunFraudCheck);
             }
 </s:if>
@@ -628,6 +628,10 @@
 
     <s:if test="isEscalatedToSupervisor">
         <s:action name="getClaimEscalatedToSupervisorAlert" namespace="/prv/p" executeResult="true"></s:action>
+    </s:if>
+
+    <s:if test="fraudCheckPanelVisible">
+        <s:action name="fraudCheck" namespace="/prv/p" executeResult="true"></s:action>
     </s:if>
 
     <s:if test="finalReviewRequired">

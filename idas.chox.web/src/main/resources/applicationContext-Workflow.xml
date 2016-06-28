@@ -147,7 +147,9 @@
     <bean id="saveOrSubmitClaimAuditReview" class="idas.chox.service.workflow.activities.SaveOrSubmitClaimAuditReview" scope="prototype">
         <property name="vehicleClassService" ref="vehicleClassService" />
     </bean>
-    <bean id="runFraudCheck" class="idas.chox.service.workflow.activities.RunFraudCheck" scope="prototype"/>
+    <bean id="runFraudCheck" class="idas.chox.service.workflow.activities.RunFraudCheck" scope="prototype">
+        <property name="keoghs" ref="keoghs" />
+    </bean>
     <bean id="referFraudCheck" class="idas.chox.service.workflow.activities.ReferFraudCheck" scope="prototype"/>
     <bean id="acknowledgeFraudCheck" class="idas.chox.service.workflow.activities.AcknowledgeFraudCheck" scope="prototype"/>
 </beans>

@@ -217,4 +217,10 @@
         <property name="initialsParam" value="er"/>
     </bean>
 
+    <bean id="keoghsCheckJob" class="idas.chox.web.scheduler.KeoghsCheckJob">
+        <property name="keoghs" ref="keoghs" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+        
 </beans>

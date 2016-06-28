@@ -11,6 +11,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
+        <cxf.version>2.7.17</cxf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -51,6 +52,7 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <version>2.5.11</version>
+                <version>2.7.18</version>
                 <executions>
                     <execution>
                         <id>choxws-generate-sources</id>
@@ -59,11 +61,19 @@
                             <sourceRoot>${project.build.directory}/generated-sources/wsdl2java</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/ADAPublicServices.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/ADAPublicServicesDebug.wsdl</wsdl>
+                                    <bindingFiles>
+                                        <bindingFile>${basedir}/src/main/resources/wsdl/javabindings2.xml</bindingFile>
+                                    </bindingFiles>
                                     <extraargs>
+                                        <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>http://www.keoghs.com/BatchClaimRequestV1=com.keoghs.ADAPublicServices</extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>http://www.keoghs.com/BatchClaimScoreRequestV1=com.keoghs.ADAPublicServices</extraarg>
                                         <extraarg>-b</extraarg>
-                                        <extraarg>${basedir}/src/main/resources/wsdl/javabindings.xml</extraarg>
+                                        <extraarg>${basedir}/src/main/resources/wsdl/javabindings2.xml</extraarg>
                                     </extraargs>                                     
                                 </wsdlOption>
                             </wsdlOptions>
@@ -95,16 +105,24 @@
                                 <bindingFile>javabindings.xml</bindingFile>
                             </bindingFiles>
                             <packageName>com.keoghs.ADAPublicServices</packageName>
-                            <wsdlUrls>
-                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl>
-<!--                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlUrl>
-                                <wsdlUrl>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl> -->
-                            </wsdlUrls> 
-<!--                            <wsdlLocation>file:${project.build.directory}/src/main/resources/wsdl/ADAPublicServices.wsdl</wsdlLocation>-->
-                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> 
-<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlLocation> -->
+<!--                            <wsdlUrls>
+                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl> 
+                                <wsdlUrl>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlUrl>
+                                <wsdlUrl>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlUrl> 
+                            </wsdlUrls>-->
+                            <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>ADAPublicServices.wsdl</wsdlFile>
+                                <wsdlFile>ADAPublicServicesDebug.wsdl</wsdlFile>
+                            </wsdlFiles>
+<!--                            <wsdlLocation>/wsdl/*</wsdlLocation>-->
+<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> -->
+                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlLocation> 
 <!--                            <wsdlLocation>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> -->
-                            <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServices.stale</staleFile>
+                            <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServicesDebug.stale</staleFile>
+<!--                            <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServices.stale</staleFile>-->
+                            <!-- Keep generated files -->
+                            <keep>true</keep>
                         </configuration>
                         <id>wsimport-generate-ADAPublicServices</id>
                         <phase>generate-sources</phase>
@@ -114,7 +132,7 @@
                     <dependency>
                         <groupId>javax.xml</groupId>
                         <artifactId>webservices-api</artifactId>
-                        <version>2.0</version>
+                        <version>2.0.1</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -133,11 +151,66 @@
             <artifactId>core</artifactId>
             <version>${chox.core.version}</version>
         </dependency>
+        <!-- Apache CXF -->
         <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-policy</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <!-- Apache CXF WS security -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+<!--        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.2.11</version>
+        </dependency>-->
+<!--        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>woodstox-core-asl</artifactId>
+            <version>4.4.1</version>
+        </dependency>-->
+<!--        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2.10</version>
+            <scope>provided</scope> 
+        </dependency>-->
+         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>webservices-rt</artifactId>
-            <version>1.6.1</version>
+            <version>1.4</version>
+<!--           <version>1.6.1</version> -->
             <scope>provided</scope>
-        </dependency>
+        </dependency> 
     </dependencies>
 </project>

@@ -163,11 +163,23 @@
         <appender-ref ref="Q"/>
         <appender-ref ref="CYCLIC" />
     </logger>
+    <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="DEBUG" additivity="false">
+        <appender-ref ref="Q"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox.web.ws" level="INFO" additivity="false">
+        <appender-ref ref="W"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
+    <logger name="idas.chox.keoghs" level="DEBUG" additivity="false">
+        <appender-ref ref="R"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
+    <logger name="org.apache.cxf" level="INFO" additivity="false">
         <appender-ref ref="W"/>
         <appender-ref ref="CYCLIC" />
     </logger>

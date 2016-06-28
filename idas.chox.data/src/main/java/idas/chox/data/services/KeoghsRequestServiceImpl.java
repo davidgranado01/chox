@@ -43,31 +43,28 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
     }
 
     @Override
-    public List<KeoghsRequest> getOpenRequests() {
+    public List<KeoghsRequest> getQueuedRequests() {
         // An open request will have a batch status of null (for new requests) or >=0 and < 5,
         // and a claim status code of  >=0 and < 9
         // NB. A batch status of 5 and a claim status of 9 equates to a successful call
         // NB. A claim status of 0 is set when a claim is submitted
 //        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.disjunction().add(Restrictions.isNull("batchStatus")).add(Restrictions.between("batchStatus", new Integer("0"), new Integer("4"))));
-        // Maybe be better changing this to restrict on the claim.fraudCheckStatus of 2 (pending)
-        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(
-                Restrictions.conjunction()
-                        .add(Restrictions.ge("claimStatus", new Integer("0")))
-                        .add(Restrictions.lt("claimStatus", new Integer("9"))));
-        criteria.addOrder(Order.asc("createdDate"));
-
+        // Maybe be better changing this to restrict on the claim.fraudCheckStatus of 1 (queued)
+        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.eq("batchStatus", 0));
+        criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 1));
         return findByCriteria(criteria);
     }
     
     @Override
-    public List<KeoghsRequest> getQueuedRequests() {
+    public List<KeoghsRequest> getPendingRequests() {
         // An open request will have a batch status of null (for new requests) or >=0 and < 5,
         // and a claim status code of  >=0 and < 9
         // NB. A batch status of 5 and a claim status of 9 equates to a successful call
+        // Queued request will have a claim.fraud_check_status of 1
         
-        // Would be better changing this to restrict on the claim.fraudCheckStatus of 1 (queued)
-        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.isNull("claimStatus"));
-
+        // Would be better changing this to restrict on the claim.fraudCheckStatus of 2 (pending)
+        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.ne("batchStatus", 5));
+        criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2));
         return findByCriteria(criteria);
     }
     

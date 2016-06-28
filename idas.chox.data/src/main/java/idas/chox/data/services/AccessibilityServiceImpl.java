@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
     private static final Logger LOG = LoggerFactory.getLogger(AccessibilityServiceImpl.class);
     private static final int BATCH_UPDATE_ACCESSIBILITY_MAP_SIZE = 10;
-    private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 6500;
+    private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 9500;
     private static final int ACCESSIBILITY_MAP_SIZE = 100;
 
     

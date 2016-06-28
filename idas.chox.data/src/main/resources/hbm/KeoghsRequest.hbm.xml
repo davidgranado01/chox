@@ -19,7 +19,7 @@
         <property column="response_message_debug" name="responseMessageDebug"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
-        <bag cascade="all, delete-orphan" inverse="true" name="scoreMessages">
+        <bag cascade="all, delete-orphan" inverse="true" lazy="extra" name="keoghsRequestScoreMessages" order-by="created_date asc">
             <key column="keoghs_request_id"/>
             <one-to-many class="idas.chox.core.model.KeoghsRequestScoreMessage"/>
         </bag>

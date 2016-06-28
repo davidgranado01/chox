@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class KeoghsRequest extends Entity implements Serializable {
     private String ragResult;
     private int totalScore;
     private String responseMessageDebug;
-    private List<KeoghsRequestScoreMessage> scoreMessages;
+    private List<KeoghsRequestScoreMessage> keoghsRequestScoreMessages;
 
     public Claim getClaim() {
         return claim;
@@ -91,12 +92,25 @@ public class KeoghsRequest extends Entity implements Serializable {
         this.responseMessageDebug = responseMessageDebug;
     }
 
-    public List<KeoghsRequestScoreMessage> getScoreMessages() {
-        return scoreMessages;
+    public List<KeoghsRequestScoreMessage> getKeoghsRequestScoreMessages() {
+        return keoghsRequestScoreMessages;
     }
 
-    public void setScoreMessages(List<KeoghsRequestScoreMessage> scoreMessages) {
-        this.scoreMessages = scoreMessages;
+    public void setKeoghsRequestScoreMessages(List<KeoghsRequestScoreMessage> keoghsRequestScoreMessages) {
+        this.keoghsRequestScoreMessages = keoghsRequestScoreMessages;
+    }
+    
+    public void addKeoghsRequestScoreMessage(KeoghsRequestScoreMessage keoghsRequestScoreMessage) {
+        if (keoghsRequestScoreMessages == null) {
+            keoghsRequestScoreMessages = new ArrayList<>();
+        }
+
+        keoghsRequestScoreMessage.setKeoghsRequest(this);
+        keoghsRequestScoreMessages.add(keoghsRequestScoreMessage);
+    }
+
+    public void deleteKeoghsRequestScoreMessage(KeoghsRequestScoreMessage keoghsRequestScoreMessage) {
+        keoghsRequestScoreMessages.remove(keoghsRequestScoreMessage);
     }
 
 }
