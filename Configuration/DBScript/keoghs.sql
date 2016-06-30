@@ -353,8 +353,11 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 --
 --UPDATE bre_band SET fraud_check_enable = true;
 --
---INSERT INTO keoghs_request(claim_id, client_batch_reference, check_type, created_by, created_date, last_modified_by, last_modified_date)
---      SELECT id, id || '_' || '0', 'Manual', 999, timeOfDay(), 999, timeOfDay() FROM claim WHERE fraud_check_status=0 and status not in ('PaymentReceived','ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted');
+--INSERT INTO keoghs_request(claim_id, client_batch_reference, check_type, total_score, batch_status, claim_status, version, created_by, created_date, last_modified_by, last_modified_date)
+--      SELECT id, id || '_' || '0', 'Manual', 0, 0, 0, 0, 999, timeOfDay()::timestamp, 999, timeOfDay()::timestamp
+--      FROM claim
+--      WHERE fraud_check_status=0 and status not in ('PaymentReceived','ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted')
+--      ORDER BY created_date desc;
 
 --UPDATE claim SET keoghs_request_id = kr.id, fraud_check_status = 1
 --FROM keoghs_request kr WHERE kr.claim_id = claim.id;
