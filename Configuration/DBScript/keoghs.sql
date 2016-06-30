@@ -347,3 +347,14 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
   SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name like 'extraAction.fraudCheck.%';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
   SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name like 'extraAction.fraudCheck.%';
+
+--
+-- Queue all open claims to be sent to ADA
+--
+--UPDATE bre_band SET fraud_check_enable = true;
+--
+--INSERT INTO keoghs_request(claim_id, client_batch_reference, check_type, created_by, created_date, last_modified_by, last_modified_date)
+--      SELECT id, id || '_' || '0', 'Manual', 999, timeOfDay(), 999, timeOfDay() FROM claim WHERE fraud_check_status=0 and status not in ('PaymentReceived','ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted');
+
+--UPDATE claim SET keoghs_request_id = kr.id, fraud_check_status = 1
+--FROM keoghs_request kr WHERE kr.claim_id = claim.id;
