@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
        default-autowire="byName">
+    
     <bean id="baseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -20,7 +21,7 @@
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
         <property name="eventService" ref="eventService" />
-</bean>
+    </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -365,5 +366,10 @@
     <bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="keoghsRequestService" ref="keoghsRequestService" />
+        <property name="keoghsToken" value="${keoghs.token}" />
+        <property name="keoghsTimeout" value="${keoghs.timeout}" />
+        <property name="keoghsLogSoap" value="${keoghs.logSoap}" />
+        <property name="maxRequests" value="${keoghs.maxRequests}" />
+        <property name="useDebugEndpoint" value="${keoghs.useDebugEndpoint}" />
     </bean>
 </beans>

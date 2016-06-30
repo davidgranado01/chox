@@ -13,10 +13,12 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
+import idas.chox.core.model.KeoghsRequest;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.UserService;
+import idas.chox.keoghs.Keoghs;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class InsurerUpload extends BaseActivity {
@@ -26,9 +28,15 @@ public class InsurerUpload extends BaseActivity {
     private InsurerDiscountService insurerDiscountService;
     private UserService userService;
     private boolean autoRoutedInvoice = false;
+    private Keoghs keoghs;
+    private String checkType = "Claim Upload";
     protected boolean claimRouted = false;
     protected boolean claimOwnerAssigned = false;
     protected RulesEngineResponse breResponse;
+
+    public void setKeoghs(Keoghs keoghs) {
+        this.keoghs = keoghs;
+    }
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -53,6 +61,7 @@ public class InsurerUpload extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+            checkType = "Invoice Upload";
             if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
@@ -249,6 +258,17 @@ public class InsurerUpload extends BaseActivity {
                     claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
         }
+
+        // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
+        if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+            try {
+                KeoghsRequest request  = keoghs.queue(claim, checkType);
+                LOG.debug("New Insurer Claim/Invoice '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+            } catch (Exception ex) {
+                LOG.error("Error sending new Insurer Claim/Invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
+            }
+        }
+
         LOG.debug("Finished InsurerUpload activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
 
     }

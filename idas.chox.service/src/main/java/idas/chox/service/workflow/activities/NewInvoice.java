@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import idas.chox.core.hpi.*;
 import idas.chox.core.model.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
+import idas.chox.keoghs.Keoghs;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.xml.util.NodeHelper;
@@ -29,6 +29,11 @@ public class NewInvoice extends BaseActivity {
     protected boolean claimOwnerAssigned = false;
     protected boolean invoiceAccepted = false;
     protected RulesEngineResponse breResponse = null;
+    private Keoghs keoghs;
+
+    public void setKeoghs(Keoghs keoghs) {
+        this.keoghs = keoghs;
+    }
 
     public RulesEngineResponse getBreResponse() {
         return breResponse;
@@ -212,6 +217,15 @@ public class NewInvoice extends BaseActivity {
                 claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
             } else {
                     claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            }
+        }
+        // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
+        if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+            try {
+                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
+                LOG.debug("New Invoice '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+            } catch (Exception ex) {
+                LOG.error("Error sending new invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
             }
         }
     }

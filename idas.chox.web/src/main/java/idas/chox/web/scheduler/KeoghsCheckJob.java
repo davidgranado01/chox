@@ -1,12 +1,13 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.keoghs.Keoghs;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import idas.chox.keoghs.Keoghs;
 
 /**
  *
@@ -27,6 +30,16 @@ public class KeoghsCheckJob implements Runnable {
     private SessionFactory sessionFactory;
     private Transaction hibernateTransaction;
     private AuthenticationManager authenticationManager;
+    private String checkJobUser;
+    private String checkJobPassword;
+
+    public void setCheckJobUser(String checkJobUser) {
+        this.checkJobUser = checkJobUser.trim();
+    }
+
+    public void setCheckJobPassword(String checkJobPassword) {
+        this.checkJobPassword = checkJobPassword.trim();
+    }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -38,19 +51,18 @@ public class KeoghsCheckJob implements Runnable {
     
     @Override
     public void run() {
-        // Do your daily job here.
-        LOG.info("KeoghsCheckJob running with keoghs={}...", keoghs);
-        handleHibernateTransactionIntricacies();
-        authenticateSender("SYSTEM", "C0mpliance");
         
         try {
             if (keoghs != null) {
-                LOG.info("Checking status of submitted requests...");
-                keoghs.checkDebug();
+                LOG.debug("Authenticating sender '{}' with password '{}'", checkJobUser, checkJobPassword);
+                authenticateSender(checkJobUser, checkJobPassword);
+                handleHibernateTransactionIntricacies();
+                LOG.debug("Submitting new requests");
+                keoghs.submit();
                 // Start new transaction?
 //                hibernateTransaction.commit(); hibernateTransaction = session.beginTransaction();
-                LOG.info("Submitting new requests");
-                keoghs.submit(true);
+                LOG.debug("Checking status of submitted requests...");
+                keoghs.check();
             } else {
                 LOG.error("No Keoghs!!!");
             }

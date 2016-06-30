@@ -13,16 +13,22 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.KeoghsRequest;
 import idas.chox.core.services.BreBandService;
+import idas.chox.keoghs.Keoghs;
 
 public class NewClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
     private BreBandService breBandService;
+    private Keoghs keoghs;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }
 
+    public void setKeoghs(Keoghs keoghs) {
+        this.keoghs = keoghs;
+    }
 
     @Override
     public boolean needsOwnershipCheck() {
@@ -119,6 +125,15 @@ public class NewClaim extends BaseActivity {
             claim.getCustomer().setHpiError(ex.getMessage());
         }
 
+        // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
+        if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+            try {
+                KeoghsRequest request  = keoghs.queue(claim, "Claim Upload");
+                LOG.debug("New Claim '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+            } catch (Exception ex) {
+                LOG.error("Error sending new claim with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
+            }
+        }
     }
 
     @Override

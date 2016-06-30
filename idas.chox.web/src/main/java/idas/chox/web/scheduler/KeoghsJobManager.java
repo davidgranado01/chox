@@ -19,11 +19,14 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class KeoghsJobManager implements ServletContextListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeoghsJobManager.class);
-    private static final int CHECK_PERIOD = 5;
-
+    private static int checkPeriod = 5;
     private ScheduledExecutorService scheduler;
     @Autowired
     private KeoghsCheckJob keoghsCheckJob;
+
+    public void setCheckPeriod(int checkPeriod) {
+        KeoghsJobManager.checkPeriod = checkPeriod;
+    }
 
     public void setKeoghsCheckJob(KeoghsCheckJob keoghsCheckJob) {
         this.keoghsCheckJob = keoghsCheckJob;
@@ -32,7 +35,7 @@ public class KeoghsJobManager implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         if (keoghsCheckJob == null) {
-            LOG.warn("No keoghsCheckJob injected, attempting to force injection....");
+            LOG.debug("No keoghsCheckJob injected, attempting to force injection....(with checkPeriod={})", checkPeriod);
             SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         }
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -40,8 +43,8 @@ public class KeoghsJobManager implements ServletContextListener {
 //        scheduler.scheduleAtFixedRate(new SomeDailyJob(), 0, 1, TimeUnit.DAYS);
 //        scheduler.scheduleAtFixedRate(new SomeHourlyJob(), 0, 1, TimeUnit.HOURS);
         if (keoghsCheckJob != null) {
-            scheduler.scheduleAtFixedRate(keoghsCheckJob, 2, CHECK_PERIOD, TimeUnit.MINUTES);
-            LOG.info("KeoghsCheckJob scheduled to run every {} minutes", CHECK_PERIOD);
+            scheduler.scheduleAtFixedRate(keoghsCheckJob, 2, checkPeriod, TimeUnit.MINUTES);
+            LOG.debug("KeoghsCheckJob scheduled to run every {} minutes", checkPeriod);
         } else {
             LOG.error("No keoghsCheckJob to schedule.");
         }
@@ -49,8 +52,10 @@ public class KeoghsJobManager implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        scheduler.shutdownNow();
-        LOG.info("Scheduler terminated.");
+        if (scheduler != null) {
+            scheduler.shutdownNow();
+            LOG.debug("Scheduler terminated.");
+        }
     }
 
 }
