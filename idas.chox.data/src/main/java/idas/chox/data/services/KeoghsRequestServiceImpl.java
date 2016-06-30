@@ -66,7 +66,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
         // Would be better changing this to restrict on the claim.fraudCheckStatus of 2 (pending)
         DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.ne("batchStatus", 5));
         criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2));
-        criteria.addOrder(Order.desc("createdDate"));
+        criteria.addOrder(Order.asc("createdDate"));
         return findByCriteria(criteria);
     }
     
