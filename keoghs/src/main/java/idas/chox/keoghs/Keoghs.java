@@ -197,10 +197,12 @@ public class Keoghs {
 
         try {
             Claim claim = keoghsRequest.getClaim();
-            if (claim.getId() == null) {
-                LOG.warn("Claim '{}' has no Id set", claim.getChoReference());
-            } else {
-                LOG.warn("Claim '{}' has Id set of {}", claim.getChoReference(), claim.getId());
+            if (LOG.isDebugEnabled()) {
+                if (claim.getId() == null) {
+                    LOG.debug("Claim '{}' has no Id set", claim.getChoReference());
+                } else {
+                    LOG.debug("Claim '{}' has Id set of {}", claim.getChoReference(), claim.getId());
+                }
             }
             com.keoghs.ADAPublicServices.Claim keoghsClaim = getKeoghsClaim(claim);
             keoghsClaim.setClaimNumber(keoghsRequest.getClientBatchReference());
