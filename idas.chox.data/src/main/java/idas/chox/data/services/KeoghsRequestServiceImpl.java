@@ -87,7 +87,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
         // Pending requests will have a claim.fraud_check_status of 2
         DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class);
         criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2));
-        criteria.addOrder(Order.asc("id"));
+//        criteria.addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
     
