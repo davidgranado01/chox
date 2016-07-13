@@ -14,7 +14,7 @@ public interface KeoghsRequestService {
     void saveKeoghsRequest(KeoghsRequest keoghsRequest);
 
     List<KeoghsRequest> getKeoghsRequestByClaim(Claim claim);
-    List<KeoghsRequest> getQueuedRequests();
+    List<KeoghsRequest> getQueuedRequests(int maxRequests);
     List<KeoghsRequest> getPendingRequests();
     KeoghsRequest getKeoghsRequestByClientBatchReference(String clientBatchReference);
 

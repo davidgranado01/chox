@@ -349,6 +349,14 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
   SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name like 'extraAction.fraudCheck.%';
 
 --
+-- Set-up Scheduler Job
+--
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver,
+                             error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version)
+    select 'SYSTEM', 'C0mpliance', 'KEOGHS', 'keoghs not used',
+         'john.dowson@valexa.com', 'john.dowson@valexa.com', 'john.dowson@valexa.com', 999, now(), 999, now(), 0;
+
+--
 -- Queue all open claims to be sent to ADA
 --
 --UPDATE bre_band SET fraud_check_enable = true;

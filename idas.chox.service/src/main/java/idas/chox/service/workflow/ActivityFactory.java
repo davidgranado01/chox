@@ -17,9 +17,9 @@ public class ActivityFactory implements BeanFactoryAware {
     public Activity getActivity(String name) {
         Activity activity = null;
       try {
-        LOG.info("Gettting Activity with Name " + name);
+        LOG.trace("Gettting Activity with Name " + name);
         activity =   (Activity) beanFactory.getBean(name);
-        LOG.info("Activity Name " + name + " Activity " +activity.getClass());
+        LOG.debug("Activity Name " + name + " Activity " +activity.getClass());
         activity.setWorkflowContext(workflowContext);
       } catch (Exception ex) {
           LOG.error("Exception creating activity: {}", ex.getMessage(), ex);

@@ -216,18 +216,5 @@
         <property name="passwordParam" value="EXCEL"/>
         <property name="initialsParam" value="er"/>
     </bean>
-
-    <bean id="keoghsJobManager" class="idas.chox.web.scheduler.KeoghsJobManager">
-        <property name="keoghsCheckJob" ref="keoghsCheckJob"/>
-        <property name="checkPeriod" value="${keoghs.checkPeriod}"/>        
-    </bean>
-
-    <bean id="keoghsCheckJob" class="idas.chox.web.scheduler.KeoghsCheckJob">
-        <property name="keoghs" ref="keoghs" />
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="authenticationManager" ref="authenticationManager"/>
-        <property name="checkJobUser" value="${keoghs.checkJobUser}"/>        
-        <property name="checkJobPassword" value="${keoghs.checkJobPassword}"/>        
-    </bean>
-        
+    
 </beans>

@@ -24,6 +24,21 @@
 	
     <bean id="mailUtil" class="idas.chox.web.scheduler.MailUtil" scope="singleton"/>
     
+    <!--  Keoghs Check Job -->
+    <bean id="keoghsDbJob" class="idas.chox.web.scheduler.KeoghsSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="keoghs" ref="keoghs" />
+    </bean>
     <!--  Reference update from queued token -->
     <bean id="referenceUpdateDbJob" class="idas.chox.web.scheduler.ReferenceUpdateDbSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -259,12 +274,18 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="keoghsDbJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+        
     <bean id="referenceUpdateDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="referenceUpdateDbJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
-        
+
     <bean id="imsChaseDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="imsChaseDbJob" />
         <property name="targetMethod" value="execute" />
@@ -365,6 +386,10 @@
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
+    </bean> 
+    <bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="keoghsDbJobDetail" /> 
+        <property name="cronExpression" value="0 1/5 0-2,4-23 ? * 1-7" /> 
     </bean> 
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="imsChaseDbJobDetail" /> 
@@ -467,13 +492,14 @@
             <props>
                 <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
                 <prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
-                <prop key="org.quartz.threadPool.threadCount">4</prop>
+                <prop key="org.quartz.threadPool.threadCount">5</prop>
                 <prop key="waitForJobsToCompleteOnShutdown">false</prop>
             </props>
         </property>
         <property name="jobDetails">
             <list>
                 <ref bean="referenceUpdateMailJobDetail" />
+                <ref bean="keoghsDbJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
                 <ref bean="imsChaseDbJobDetail" />
                 <ref bean="imsStopChaseEmailJobDetail" />
@@ -498,6 +524,7 @@
                 <ref bean="cronRefMailUpdateTriggerWeekend" />
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
+                <ref bean="cronKeoghsDbTriggerDaily" />
                 <ref bean="cronImsChaseTriggerDaily" />
                 <ref bean="cronImsStopChaseTriggerDaily" />
                 <ref bean="addMissingEcdTaskTriggerDaily" />

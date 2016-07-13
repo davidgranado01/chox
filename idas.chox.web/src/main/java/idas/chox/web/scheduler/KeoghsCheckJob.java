@@ -23,9 +23,9 @@ import idas.chox.keoghs.Keoghs;
  * @author john
  */
 public class KeoghsCheckJob implements Runnable {
+
     private static final Logger LOG = LoggerFactory.getLogger(KeoghsCheckJob.class);
     private Keoghs keoghs;
-//    private SecurityInfoProvider securityInfoProvider;
     private Session session;
     private SessionFactory sessionFactory;
     private Transaction hibernateTransaction;
@@ -48,30 +48,27 @@ public class KeoghsCheckJob implements Runnable {
     public void setKeoghs(Keoghs keoghs) {
         this.keoghs = keoghs;
     }
-    
+
     @Override
     public void run() {
-        
+
         try {
-            if (keoghs != null) {
-                LOG.debug("Authenticating sender '{}' with password '{}'", checkJobUser, checkJobPassword);
-                authenticateSender(checkJobUser, checkJobPassword);
-                handleHibernateTransactionIntricacies();
-                LOG.debug("Submitting new requests");
-                keoghs.submit();
-                // Start new transaction?
+            LOG.debug("Authenticating sender '{}' with password '{}'", checkJobUser, checkJobPassword);
+            authenticateSender(checkJobUser, checkJobPassword);
+            handleHibernateTransactionIntricacies();
+            LOG.debug("Submitting new requests");
+            keoghs.submit();
+            // Start new transaction?
 //                hibernateTransaction.commit(); hibernateTransaction = session.beginTransaction();
-                LOG.debug("Checking status of submitted requests...");
-                keoghs.check();
-            } else {
-                LOG.error("No Keoghs!!!");
-            }
+            LOG.debug("Checking status of submitted requests...");
+            keoghs.check();
         } catch (Exception ex) {
             LOG.error("Exception thrown checking Keoghs jobs: {}", ex.getMessage(), ex);
         } finally {
             releaseHibernateSessionConditionally();
         }
     }
+
     public void handleHibernateTransactionIntricacies() {
         session = SessionFactoryUtils.getSession(sessionFactory, true);
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
@@ -88,7 +85,7 @@ public class KeoghsCheckJob implements Runnable {
     }
 
     public void releaseHibernateSessionConditionally() {
-        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted() && hibernateTransaction.isActive()) {
+        if (hibernateTransaction != null && !hibernateTransaction.wasCommitted() && hibernateTransaction.isActive()) {
             hibernateTransaction.commit();
             LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
         } else {

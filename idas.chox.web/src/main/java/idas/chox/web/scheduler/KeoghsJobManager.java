@@ -38,11 +38,9 @@ public class KeoghsJobManager implements ServletContextListener {
             LOG.debug("No keoghsCheckJob injected, attempting to force injection....(with checkPeriod={})", checkPeriod);
             SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         }
-        scheduler = Executors.newSingleThreadScheduledExecutor();
 
-//        scheduler.scheduleAtFixedRate(new SomeDailyJob(), 0, 1, TimeUnit.DAYS);
-//        scheduler.scheduleAtFixedRate(new SomeHourlyJob(), 0, 1, TimeUnit.HOURS);
-        if (keoghsCheckJob != null) {
+        if (keoghsCheckJob != null && checkPeriod > 0) {
+            scheduler = Executors.newSingleThreadScheduledExecutor();
             scheduler.scheduleAtFixedRate(keoghsCheckJob, 2, checkPeriod, TimeUnit.MINUTES);
             LOG.debug("KeoghsCheckJob scheduled to run every {} minutes", checkPeriod);
         } else {

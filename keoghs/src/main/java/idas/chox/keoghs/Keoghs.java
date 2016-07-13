@@ -134,7 +134,7 @@ public class Keoghs {
 
     public void submit() {
         boolean result;
-        List<KeoghsRequest> keoghsRequests = keoghsRequestService.getQueuedRequests();
+        List<KeoghsRequest> keoghsRequests = keoghsRequestService.getQueuedRequests(maxRequests);
         LOG.debug("Found {} queued Keoghs requests.", keoghsRequests.size());
         int requestsSent = 0;
         
@@ -265,13 +265,19 @@ public class Keoghs {
                         originalRequest.getBatchStatus(), originalRequest.getClaimStatus()});
             request = new BatchClaimScoreRequest();
             request.setClientBatchReference(originalRequest.getClientBatchReference());
-            if (debug) {
-                IADAPublicServicesDebug adaServicesDebug = getADAServicesDebug();
-                response = adaServicesDebug.getMotorClaimScore(request);
-            } else {
-                IADAPublicServices adaServices = getADAServices();
-                response = adaServices.getMotorClaimScore(request);
+            try {
+                if (debug) {
+                    IADAPublicServicesDebug adaServicesDebug = getADAServicesDebug();
+                    response = adaServicesDebug.getMotorClaimScore(request);
+                } else {
+                    IADAPublicServices adaServices = getADAServices();
+                    response = adaServices.getMotorClaimScore(request);
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown getting Motor Claim Score for client batch reference '{}': {}", request.getClientBatchReference(), ex.getMessage(), ex);
+                continue;
             }
+            
             originalRequest.setResultStatus(response.getResultStatus().toString());
             List<ClaimScoreResponse> responseList = response.getClaimStatusAndScoreResponses().getClaimScoreResponses();
             LOG.debug("Response list size is {}", responseList.size());
