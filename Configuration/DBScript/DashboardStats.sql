@@ -98,7 +98,7 @@ update dashboard_kbbs d
     set claim_review_days = now()::date - d.claim_upload_date::date + 1
 from claim c
 where c.id = d.claim_id
-  and c.status in ('ClaimUnacknowledgedUnassigned','ClaimPending','ClaimUnacknowledgedUnrouted','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimUnacknowledgedRouted','ClaimRejectionContested');
+  and c.status in ('ClaimUnacknowledgedUnassigned','ClaimPending','ClaimUnacknowledgedUnrouted','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimUnacknowledgedRouted');
 
 update dashboard_kbbs d
     set invoice_review_days = now()::date - d.invoice_upload_date + 1
@@ -246,11 +246,25 @@ where  d.claim_id = c.id and c.vehicle_hire_id = vh.id and c.invoice_id = i.id
     and i.hire_gross > 0;
 
 update dashboard_kbbs d
+    set daily_rate = i.hire_rate_charged_per_day
+from claim c, invoice i
+where d.claim_id = c.id and c.invoice_id = i.id
+  and d.daily_rate < 0;
+
+update dashboard_kbbs d
     set bre_status = 'Passed Not Contested'
 from audit_trail at
 where at.claim_id = d.claim_id
   and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
   and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.new_status in ('InvoiceApprovedByBRE','ManualInvoiceBREApproved'))
+  and not exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
+
+update dashboard_kbbs d
+    set bre_status = 'Passed Not Contested'
+from audit_trail at
+where at.claim_id = d.claim_id
+  and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.original_status = 'InvoiceDataCalculationIncorrect' and at2.new_status='AwaitingInvoicePayment')
   and not exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
 
 update dashboard_kbbs d
@@ -266,7 +280,7 @@ update dashboard_kbbs d
 from audit_trail at
 where at.claim_id = d.claim_id
   and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
-  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.new_status in ('InvoiceEscalatedToHandler','ManualInvoiceBRERejected'))
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.new_status in ('InvoiceEscalated','InvoiceEscalatedToHandler','ManualInvoiceBRERejected'))
   and not exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
 
 update dashboard_kbbs d
@@ -274,9 +288,40 @@ update dashboard_kbbs d
 from audit_trail at
 where at.claim_id = d.claim_id
   and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
-  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.new_status in ('InvoiceEscalatedToHandler','ManualInvoiceBRERejected'))
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.new_status in ('InvoiceEscalated','InvoiceEscalatedToHandler','ManualInvoiceBRERejected'))
   and exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
 
+update dashboard_kbbs d
+    set bre_status = 'Failed Contested'
+from audit_trail at
+where bre_status is null and at.claim_id = d.claim_id
+  and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.original_status in ('InvoiceEscalated','InvoiceEscalatedToHandler'))
+  and exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
+
+update dashboard_kbbs d
+    set bre_status = 'Failed Not Contested'
+from audit_trail at
+where bre_status is null and at.claim_id = d.claim_id
+  and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.original_status in ('InvoiceEscalated','InvoiceEscalatedToHandler'))
+  and not exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
+
+update dashboard_kbbs d
+    set bre_status = 'Passed Not Contested'
+from audit_trail at
+where bre_status is null and at.claim_id = d.claim_id
+  and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.original_status = 'InvoiceApprovedByBRE')
+  and not exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
+
+update dashboard_kbbs d
+    set bre_status = 'Passed Contested'
+from audit_trail at
+where bre_status is null and at.claim_id = d.claim_id
+  and at.reverted = false and at.new_status in ('InvoicePaymentLogged','ManualInvoicePaid')
+  and exists (select * from audit_trail at2 where at2.claim_id = d.claim_id and at2.reverted=false and at2.original_status = 'InvoiceApprovedByBRE')
+  and exists (select * from audit_trail at3 where at3.claim_id = d.claim_id and at3.reverted=false and at3.new_status in ('ContestedInvoiceReferredToCHO','ManualInvoiceContested'));
 
 update dashboard_kbbs d
     set acknowledge_days = at.created_date::date - d.claim_upload_date::date + 1,
@@ -291,13 +336,18 @@ update dashboard_kbbs d
         liability_date = co.created_date::date
 from comment co, claim c
 where d.claim_id = co.claim_id and d.claim_id=c.id
-  and co.comment like 'Liability status changed%' and co.reverted = false
-  and ((c.liability_status = 1 and co.comment like E'%to \'Full Liability Accepted%' and co.reverted = false)
-       or (c.liability_status = 4 and co.comment like E'%to \'Liability Repudiated%' and co.reverted = false)
-       or (c.liability_status = 5 and co.comment like E'%to \'Liability Split%' and co.reverted = false)
-       or (c.liability_status = 6 and co.comment like E'%to \'Proceed Without Prejudice%' and co.reverted = false))
-  and not exists (select * from comment co2 where co2.claim_id = d.claim_id and co2.comment like 'Liability status changed%'  and co.reverted = false and co2.created_date > co.created_date);
+  and co.comment like 'Liability status changed%'
+  and ((c.liability_status = 1 and co.comment like E'%to \'Full Liability Accepted%')
+       or (c.liability_status = 4 and co.comment like E'%to \'Liability Repudiated%')
+       or (c.liability_status = 5 and co.comment like E'%to \'Liability Split%')
+       or (c.liability_status = 6 and co.comment like E'%to \'Proceed Without Prejudice%'))
+  and not exists (select * from comment co2 where co2.claim_id = d.claim_id and co2.comment like 'Liability status changed%' and co2.created_date > co.created_date);
 
+update dashboard_kbbs d
+    set liability_days = c.liability_agreed_date::date - d.claim_upload_date::date + 1,
+        liability_date = c.liability_agreed_date::date
+from claim c
+where d.claim_id=c.id and d.liability_date is null;
 
 update dashboard_kbbs d
     set lifecycle_days = at.created_date::date - d.claim_upload_date::date + 1
