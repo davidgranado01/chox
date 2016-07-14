@@ -98,10 +98,6 @@ public class Keoghs {
             return null;
         }
 
-        if (claim.getId() == null) {
-            LOG.warn("Claim '{}' has no Id set", claim.getChoReference());
-        }
-
         KeoghsRequest keoghsRequest = new KeoghsRequest();
 
         try {
@@ -120,8 +116,9 @@ public class Keoghs {
             claim.setFraudCheckStatus(QUEUED);
             claim.setFraudResultAcknowledged(false);
             LOG.debug("Fraud check status for claim '{}' [id={}] set to QUEUED", claim.getChoReference(), claim.getId());
-//            claimService.save(claim);
             keoghsRequestService.saveKeoghsRequest(keoghsRequest);
+//            claimService.save(claim);
+
         } catch (Exception ex) {
             LOG.error("Exception thrown calling Keoghs: {}\n", ex.getMessage(), ex);
             return null;

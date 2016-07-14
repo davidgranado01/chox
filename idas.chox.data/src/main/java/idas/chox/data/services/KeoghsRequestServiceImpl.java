@@ -32,8 +32,18 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
     }
 
     @Override
+    public List<KeoghsRequest> getKeoghsRequestByClaimId(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        criteria.addOrder(Order.asc("createdDate"));
+
+        return findByCriteria(criteria);
+    }
+
+    @Override
     public List<KeoghsRequest> getKeoghsRequestByClaim(Claim claim) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.eq("claim", claim));
+        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
         criteria.addOrder(Order.asc("createdDate"));
 
         return findByCriteria(criteria);
@@ -58,6 +68,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
 //        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class).add(Restrictions.eq("batchStatus", 0));
 //        criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 1));
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(KeoghsRequest.class)
+                .add(Restrictions.isNull("resultStatus"))
                 .createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("c.fraudCheckStatus", 1));
         criteria.addOrder(Order.desc("createdDate"));
@@ -87,7 +98,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
         // Pending requests will have a claim.fraud_check_status of 2
         DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class);
         criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2));
-//        criteria.addOrder(Order.asc("id"));
+        criteria.addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
     
