@@ -718,7 +718,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.isSentToKeoghs();
     }
     public boolean isCanRerunFraudCheck() {
-        return !(ClaimStatus.getCompletedStatus(true).contains(claim.getStatus()) || claim.getFraudCheckStatus() != 3);
+        return !(ClaimStatus.getCompletedStatus(true).contains(claim.getStatus())
+                    || (claim.getFraudCheckStatus() != 3 && claim.getFraudCheckStatus() != -1));
     }
     
     public String getCreatedByDesc() {
@@ -1833,12 +1834,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
     
     public boolean isFraudCheckPanelVisible() {
-        return claim.getBreBand().isFraudCheckEnable() && claim.getFraudCheckStatus() == 3 && !claim.isFraudResultAcknowledged() &&
+        return claim.getBreBand().isFraudCheckEnable() && (claim.getFraudCheckStatus() == 3 || claim.getFraudCheckStatus() == -1) && !claim.isFraudResultAcknowledged() &&
                 Arrays.asList("ClaimUnacknowledgedRouted", "ClaimPending", "InvoiceEscalatedToHandler", "InvoiceApprovedByBRE", "ManualInvoiceBREApproved", "ManualInvoiceBRERejected").contains(claim.getStatus());
     }
     
     public boolean isFraudCheckAvailable() {
         return claim.getFraudCheckStatus() == 3;
+    }
+
+    public boolean isFraudCheckError() {
+        return claim.getFraudCheckStatus() == -1;
     }
     
     public boolean isFraudIndicatorsAvailable() {
@@ -1847,7 +1852,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isMoreOptionRequestFraudCheck() {
-        return (claim.getFraudCheckStatus() != 1 && claim.getFraudCheckStatus() != 2 && claim.getFraudCheckStatus() != 3);
+        return claim.getFraudCheckStatus() == 0;
     }
 
     public String getClaimFraudRagResult() {

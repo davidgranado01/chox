@@ -88,9 +88,17 @@ function doFraudCheckFormSubmit(action){
 
 </s:if>
 <s:else>
+<s:if test="fraudCheckError">
+            <div class="status-info">
+                This claim has been put through the Keogh's ADA Fraud Check Tool but an internal error occurred and no results are available.
+            </div> 
+</s:if>
+<s:else>
+
             <div class="status-info">
                 This claim has been submitted the Keogh's ADA Fraud Check Tool and a result is pending.
             </div> 
+</s:else>
 </s:else>
                     <div class="status-control-set">
                         <table class="status-table">
