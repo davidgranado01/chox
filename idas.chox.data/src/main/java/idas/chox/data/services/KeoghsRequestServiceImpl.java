@@ -1,19 +1,19 @@
 package idas.chox.data.services;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.KeoghsRequest;
 import idas.chox.core.services.KeoghsRequestService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.transform.Transformers;
 
 /**
  *
@@ -96,9 +96,11 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
         // NB. A batch status of 5 and a claim status of 9 equates to a successful call
         // Queued requests will have a claim.fraud_check_status of 1
         // Pending requests will have a claim.fraud_check_status of 2
-        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class);
-        criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2));
-        criteria.addOrder(Order.asc("id"));
+        DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class)
+            .add(Restrictions.lt("claimStatus", 9))
+            .add(Restrictions.ge("claimStatus", 0))
+            .createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2))
+            .addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
     
