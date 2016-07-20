@@ -56,13 +56,14 @@ public class ReferFraudCheck extends BaseActivity {
         String message = "Client Batch Reference Number: " + claim.getKeoghsRequest().getClientBatchReference()
                 + "\nSupplier Reference: " + claim.getChoReference()
                 + "\nInsurer Name: " + claim.getInsurer().getName()
-                + "\nInsurer Handler Name: " + claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getFullName()
-                + "\nTelephone number of Handle: " + claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getTelephone()
+                + "\nInsurer Handler Name: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getFullName())
+                + "\nTelephone number of Handle: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getTelephone())
                 + "\nInsurer Claim Number: " + claim.getClaimNumber()
                 + "\nCHO Name: " + claim.getChorganisation().getName()
                 + "\nCHO Customer Name: " + claim.getCustomer().getTitle() + " " + claim.getCustomer().getFirstName() + " " + claim.getCustomer().getLastName()
                 + "\nCHO Customer VRN: " + claim.getCustomer().getVehicleRegistration();
 
+        LOG.info("Sending email to keoghs '{}':\n{}", keoghsReceiver, message);
         sendMail(subject, message);
 
         claim.setSentToKeoghs(true);

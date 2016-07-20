@@ -65,9 +65,23 @@
 function doFraudCheckFormSubmit(action){
         actionPanel.registerAction(action);
         var form = $("form#formRunFraudCheckAction");
-//        var claimId = $("form#formRunFraudCheckAction #claimId").val();
-        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        choxJqueryHttpSubmit(form);
+        var warningMessage;
+        if (action ==='referFraudCheck'){
+            warningMessage = 'Do you want to refer this claim to Keoghs?';
+        }else if (action ==='runFraudCheck'){
+            warningMessage = 'Re-running the Fraud Check will send the claim data to Keoghs ADA Fraud Tool and return a result to CHOX.\n It will take a short while to return a result and will require a browser refresh to be visible.\n Continue?';
+        }else {
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+            choxJqueryHttpSubmit(form);
+            return false;
+        }
+        Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
+            if(btn==='yes'){
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                choxJqueryHttpSubmit($(form));
+                return false;
+            }
+        });
         
         return false;
     }
