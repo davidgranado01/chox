@@ -30,6 +30,7 @@ import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
 
@@ -219,6 +220,50 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
 
         return true;
+    }
+
+    public boolean isKbbsDashboardEnabled() {
+        if (getIsInsurer()) {
+            return getAuthenticatedUser().getInsurer().isEnableKbbsDashboard();
+        } else if (getIsCHO()) {
+            return getAuthenticatedUser().getChorganisation().isEnableKbbsDashboard();
+        }
+        
+        return false;
+    }
+
+    public String getKbbsUsername() {
+        String username = null;
+        
+        if (getIsInsurer() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)) {
+            username = "IMAN." + getAuthenticatedUser().getInsurer().getId().toString();
+        } else if (getIsInsurer()) {
+            username = "IOPR." + getAuthenticatedUser().getInsurer().getId().toString();
+        } else if (getIsCHO() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MNG)) {
+            username = "CMAN." + getAuthenticatedUser().getChorganisation().getId().toString();
+        } else if (getIsCHO()) {
+            username = "COPR." + getAuthenticatedUser().getChorganisation().getId().toString();
+        }
+        
+        return username;
+    }
+    public String getKbbsPassword() {
+        String password = null;
+        
+        if (getIsInsurer() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)) {
+            password = getAuthenticatedUser().getInsurer().getKbbsManagerPassword();
+        } else if (getIsInsurer()) {
+            password = getAuthenticatedUser().getInsurer().getKbbsOperativePassword();
+        } else if (getIsCHO() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MNG)) {
+            password = getAuthenticatedUser().getChorganisation().getKbbsManagerPassword();
+        } else if (getIsCHO()) {
+            password = getAuthenticatedUser().getChorganisation().getKbbsOperativePassword();
+        }
+        
+        return password;
+    }
+    public String getKbbsUniqueId() {
+        return getAuthenticatedUser().getId().toString();
     }
 
     public boolean getInsurerIsFnolEnabled() {

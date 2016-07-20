@@ -87,6 +87,9 @@
     <property column="automatic_routing_strategy" name="automaticRoutingStrategy"
         type="idas.chox.data.hibernate.AutomaticRoutingStrategyMapping" not-null="true"/>
     <property column="complete_routing" name="completeRoutingEnable" not-null="true"/>
+    <property column="enable_kbbs_dashboard" name="enableKbbsDashboard" not-null="true"/>
+    <property column="kbbs_manager_password" name="kbbsManagerPassword"/>
+    <property column="kbbs_operative_password" name="kbbsOperativePassword"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

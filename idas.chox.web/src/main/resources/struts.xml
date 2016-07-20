@@ -906,6 +906,10 @@
             <result name="success">/jsp/dashboardPanel/p_cho_board.jsp</result>
             <result name="empty">/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <action name="showKbbsBoard" class="idas.chox.web.actions.DashboardAction" method="showKbbsBoard">
+            <result name="success">/jsp/dashboardPanel/kbbs_board.jsp</result>
+            <result name="empty">/jsp/p_action_response_json_data.jsp</result>
+        </action>
        <!--End Dashboard-->
        <!--Start Report-->
         <action name="buildReport" class="idas.chox.web.actions.ReportAction" method="buildReport">

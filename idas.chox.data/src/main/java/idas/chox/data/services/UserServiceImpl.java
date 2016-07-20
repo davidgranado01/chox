@@ -1,36 +1,52 @@
 package idas.chox.data.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.http.HttpStatus;
+import org.apache.http.ParseException;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.sf.json.JSONObject;
+
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
+import idas.chox.core.util.RoleHelper;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-
-    public UserServiceImpl() {
-    }
+    private static final String KBBS_AUTHENTICATION_URL = "https://dashboards-beta.idaschox.com/authentication/GenerateAccessToken";
+    private static final String KBBS_INVALIDATE_URL = "https://dashboards-beta.idaschox.com/authentication/InvalidateAccessToken";
 
     @Override
     public WebUser findByEmail(String email) {
@@ -388,4 +404,133 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public void savePasswordHistory(PasswordHistory passwordHistory) {
         save(passwordHistory);
     }
+
+    @Override
+    public String kbbsAuthenticate(WebUser user) throws IOException {
+            String username = getKbbsUsername(user);
+            String password = null;
+            if (username != null && username.contains("MAN") && user.isAnInsurer()) {
+                password = user.getInsurer().getKbbsManagerPassword();
+            } else if (username != null && user.isAnInsurer()) {
+                password = user.getInsurer().getKbbsOperativePassword();
+            } else if (username != null && username.contains("MAN") && user.isCHO()) {
+                password = user.getChorganisation().getKbbsManagerPassword();
+            } else if (username != null && user.isCHO()) {
+                password = user.getChorganisation().getKbbsOperativePassword();
+            }
+            if (password != null) {
+                LOG.debug("Authenticating against KBBS for user '{}' with password '{}'", username, password);
+                try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                    HttpPost httppost = new HttpPost(KBBS_AUTHENTICATION_URL);
+                    Map paramMap = new HashMap();
+                    Map extraDataMap = new HashMap();
+                    paramMap.put("UserName", username);
+                    paramMap.put("Password", password);
+                    extraDataMap.put("UniqueId", user.getId());
+                    paramMap.put("ExtraData", extraDataMap);
+                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
+                    StringEntity requestEntity = new StringEntity(jsonObject.toString());
+
+                    requestEntity.setContentType("application/json");
+                    LOG.debug("Setting HTTP POST entity to '{}'", jsonObject.toString());
+                    httppost.setEntity(requestEntity);
+                    httppost.addHeader("Origin", "https://www.idaschox.com");
+
+                    RequestConfig requestConfig = RequestConfig.custom()
+                            .setSocketTimeout(30000)
+                            .setConnectTimeout(30000)
+                            .setConnectionRequestTimeout(30000)
+//                            .setAuthenticationEnabled(true)
+                            .build();
+                    httppost.setConfig(requestConfig);
+                    CookieStore cookieStore = new BasicCookieStore();
+                    HttpClientContext context = HttpClientContext.create();
+                    context.setCookieStore(cookieStore);
+
+                    LOG.debug("Executing request: {}", httppost.getRequestLine());
+
+                    try (CloseableHttpResponse kbbsResponse = httpclient.execute(httppost, context)) {
+                        int statusCode = kbbsResponse.getStatusLine().getStatusCode();
+                        if (statusCode == HttpStatus.SC_OK) {
+                            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                            String content = responseHandler.handleResponse(kbbsResponse);
+                            JSONObject json = JSONObject.fromObject(content);
+                            String authenticationToken = json.getString("AuthenticationToken");
+                            LOG.debug("----------------------------------------");
+                            LOG.debug("KBBS AuthenticationToken for user '{}': {}", user.getFullName(), authenticationToken);
+                            LOG.debug("----------------------------------------");
+                            return authenticationToken;
+                        }
+                    } catch (IOException | ParseException e) {
+                        LOG.error("Error Parsing response from KBBS authentication: {}", e.getMessage(), e);
+                    }
+                }
+            }
+            return null;
+    }
+
+    @Override
+    public String kbbsInvalidate(String token) throws IOException {
+                LOG.debug("Invalidating KBBS authentication token: {}", token);
+                try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                    HttpPost httppost = new HttpPost(KBBS_INVALIDATE_URL);
+                    Map paramMap = new HashMap();
+                    paramMap.put("AuthenticationToken", token);
+                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
+                    StringEntity requestEntity = new StringEntity(jsonObject.toString());
+
+                    requestEntity.setContentType("application/json");
+                    LOG.debug("Setting HTTP POST entity to '{}'", jsonObject.toString());
+                    httppost.setEntity(requestEntity);
+                    httppost.addHeader("Origin", "https://www.idaschox.com");
+
+                    RequestConfig requestConfig = RequestConfig.custom()
+                            .setSocketTimeout(30000)
+                            .setConnectTimeout(30000)
+                            .setConnectionRequestTimeout(30000)
+//                            .setAuthenticationEnabled(true)
+                            .build();
+                    httppost.setConfig(requestConfig);
+                    HttpClientContext context = HttpClientContext.create();
+
+                    LOG.debug("Executing request: {}", httppost.getRequestLine());
+
+                    try (CloseableHttpResponse kbbsResponse = httpclient.execute(httppost, context)) {
+                        int statusCode = kbbsResponse.getStatusLine().getStatusCode();
+                        if (statusCode == HttpStatus.SC_OK) {
+                            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                            String content = responseHandler.handleResponse(kbbsResponse);
+                            JSONObject json = JSONObject.fromObject(content);
+                            String result = json.toString();
+                            LOG.debug("KBBS Invalidate Token Result: {}", result);
+                            return result;
+                        }
+                    } catch (IOException | ParseException e) {
+                        LOG.error("Error Parsing response from KBBS InvalidateToken: {}", e.getMessage(), e);
+                    }
+                }
+            return null;
+    }
+
+    private String getKbbsUsername(WebUser user) {
+        String username = null;
+
+        if (user.isAnInsurer()) {
+            if (RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MNG)) {
+                username = "IMAN." + user.getInsurer().getId();
+            } else {
+                username = "IOPR." + user.getInsurer().getId();
+            }
+        } else if (user.isCHO()) {
+            if (RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHO_MNG)) {
+                username = "CMAN." + user.getChorganisation().getId();
+            } else {
+                username = "COPR." + user.getChorganisation().getId();
+            }
+        }
+
+        return username;
+    }
+
+
 }

@@ -5,22 +5,22 @@ import java.net.URLEncoder;
 import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.slf4j.MDC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
-
 
 /**
  *
@@ -37,6 +37,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private Authentication currentAuthentication;
 
     public static class BrowserUtil {
+
         public static enum BrowserType {
 
             INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, INTERNET_EXPLORER_7, INTERNET_EXPLORER_8, INTERNET_EXPLORER_9, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
@@ -67,15 +68,16 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         this.ipWhitelistService = ipWhitelistService;
     }
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                        HttpServletResponse response,
-                        Authentication authentication) throws ServletException, IOException {
+            HttpServletResponse response,
+            Authentication authentication) throws ServletException, IOException {
         int blockMinutes = 0;
+        boolean isInsurer = false;
+        boolean isCHO = false;
 
         currentAuthentication = authentication;
-        WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
+        WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
 //        MDC.put("userid", user.getDisplayName() + " " + user.getId());
 
         /*
@@ -84,42 +86,43 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
          */
         int orgId = -1;
         if (user.isAnInsurer()) {
+            isInsurer = true;
             blockMinutes = user.getInsurer().getBlockTime();
             if (user.getInsurer().isEnableIPWhitelist()) {
                 orgId = user.getInsurer().getId();
             }
-        }
-        else if (user.isCHO()) {
+        } else if (user.isCHO()) {
+            isCHO = true;
             blockMinutes = user.getChorganisation().getBlockTime();
             if (user.getChorganisation().isEnableIPWhitelist()) {
                 orgId = user.getChorganisation().getId();
             }
         }
-        
-        switch(checkBrowserType(request)) {
+
+        switch (checkBrowserType(request)) {
             case INTERNET_EXPLORER_PRE7:
                 LOG.info("User '{}' still using IE6.", user.toString());
                 break;
-                
+
             case INTERNET_EXPLORER_7:
                 LOG.info("User '{}' still using IE7.", user.toString());
                 break;
-                
+
             case INTERNET_EXPLORER_8:
                 LOG.info("User '{}' still using IE8.", user.toString());
                 break;
-                
+
             case INTERNET_EXPLORER_9:
                 LOG.info("User '{}' still using IE9.", user.toString());
                 break;
-                
+
             default:
                 break;
         }
 
         if (orgId >= 0) {
             boolean isValid = false;
-            
+
             LOG.trace("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
             // Get client's IP address
             // First try with the clients remote address - this will return an 
@@ -130,13 +133,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             if (!ipAddress.isEmpty()) {
                 if (user.isAnInsurer()) {
                     isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, false, true);
-                }
-                else {
+                } else {
                     isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, true, false);
                 }
                 LOG.trace("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
             }
-            
+
             if (!isValid) {
                 LOG.error("User '{}' denied access as IP address {} is not white-listed.", user.getFullName(), ipAddress);
                 HttpServletResponse httpResponse = response;
@@ -146,10 +148,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 return;
             }
         }
-        
+
         // Check account has not been blocked due to failed log-in attempts
         if (user.isBlocked()) {
-            boolean blocked=true;
+            boolean blocked = true;
             // Check time-limit has not passed
             if (blockMinutes > 0) {
                 Date blockTime = user.getBlockedDate();
@@ -164,16 +166,15 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 LOG.error("User '{}' denied access as account is currently blocked.", user.getFullName());
                 String blockedMessage = null;
                 if (user.isCHO()) {
-                    blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(),  "UTF-8");
-                }
-                else if (user.isAnInsurer()) {
-                    blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(),  "UTF-8");
+                    blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(), "UTF-8");
+                } else if (user.isAnInsurer()) {
+                    blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(), "UTF-8");
                 }
                 HttpServletResponse httpResponse = response;
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 request.getSession().invalidate();
                 getRedirectStrategy().sendRedirect(request, response, blockedUrl + "&message=" + blockedMessage);
-                return;                
+                return;
             } else {
                 userService.unblock(user.getId());
             }
@@ -188,11 +189,30 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
         LOG.info("User '{}' logged-in successfully from IP address {} on browser '{}' with HTTP sessionId='{}'.",
                 new Object[]{user.toString(), request.getRemoteAddr(), request.getHeader("user-agent"), request.getSession().getId()});
+
+        // Check if KBBS Dashboards enabled and if so authenticate
+        if ((isInsurer && user.getInsurer().isEnableKbbsDashboard()) || (isCHO && user.getChorganisation().isEnableKbbsDashboard())) {
+            String kbbsAuthenticationToken = userService.kbbsAuthenticate(user);
+            // Add Authentication Cookie
+            if (kbbsAuthenticationToken != null) {
+                Cookie cookie = new Cookie("ASP.NET_Token", kbbsAuthenticationToken);
+                cookie.setDomain("idaschox.com");
+                cookie.setMaxAge(-1);
+//                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+//                cookie.setSecure(true);
+                response.addCookie(cookie);
+                cookie = new Cookie("JD.Token", kbbsAuthenticationToken);
+                cookie.setPath("/");
+                cookie.setMaxAge(-1);
+                response.addCookie(cookie);
+            }
+        }
+
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
-    
     private void checkBrowserWarning(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
@@ -203,7 +223,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
     }
 
-    
+    public static String requote(String jsonString) {
+        return jsonString.replace('\'', '"');
+    }
+
     private BrowserType checkBrowserType(HttpServletRequest req) {
         String userAgent = req.getHeader("user-agent");
         BrowserType type = BrowserType.UNKNOWN;
@@ -236,5 +259,4 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         return type;
     }
 
-    
 }

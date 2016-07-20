@@ -312,9 +312,16 @@
             var dashboardTab = { 
                                 contentEl:'boardPanelTab', 
                                 id:'boardPanelTabId', 
-                                title:'Dashboard<sup>'+' '+'</sup>', 
+                                title:'Overview<sup>'+' '+'</sup>', 
                                 listeners: {activate: handleActivate}, 
                                 autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
+            };
+            var kbbsDashboardTab = { 
+                                contentEl:'kbbsPanelTab', 
+                                id:'kbbsPanelTabId', 
+                                title:'Dashboard<sup>'+' '+'</sup>', 
+                                listeners: {activate: handleActivate}, 
+                                autoLoad: choxUpdateEl({url:'/prv/p/showKbbsBoard.action'})
             };
             var xmlUploadTab = { 
                                 contentEl:'xmlUploadTab', 
@@ -334,10 +341,6 @@
                 tabItems.push(inboxTab);
             </s:if>
 
-            <%--<s:if test="menuAccessibility.isInboxMenuAccessibility!=true">--%>
-        //            tabs.remove('inboxPanelTabId', true);
-            <%--</s:if>--%>
-
             <s:if test="menuAccessibility.isReportMenuAccessibility">
                 tabItems.push(reportTab);
             </s:if>
@@ -347,7 +350,7 @@
             </s:if>
 
             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
-                <s:if test="IsComUser || IsScrUser">
+                <s:if test="isComUser || isScrUser">
                     tabItems.push(dashboardTab);
                 </s:if>
                 <s:else >
@@ -357,6 +360,10 @@
 
             <s:if test="menuAccessibility.isUploadMenuAccessibility">
                 tabItems.push(xmlUploadTab);
+            </s:if>
+
+            <s:if test="kbbsDashboardEnabled && isDashboardUser">
+                tabItems.push(kbbsDashboardTab);
             </s:if>
 
             tabs = new Ext.TabPanel({
@@ -452,6 +459,7 @@
     <div id="reportPanelTab" class="x-hide-display"></div>
     <div id="adminPanelTab" class="x-hide-display"></div>
     <div id="xmlUploadTab" class="x-hide-display"></div>
+    <div id="kbbsPanelTab" class="x-hide-display"></div>
     <div id="gridHolder"></div>
 
 

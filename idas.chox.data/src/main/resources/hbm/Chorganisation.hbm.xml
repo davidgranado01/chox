@@ -52,6 +52,9 @@
         <property column="days_before_escalated" name="daysBeforeEscalated"/>
         <property column="times_in_status_contested" name="timesInStatusContested"/>
         <property column="allow_engineers_inspection_task" name="allowEngineersInspectionTask" not-null="true"/>
+        <property column="enable_kbbs_dashboard" name="enableKbbsDashboard" not-null="true"/>
+        <property column="kbbs_manager_password" name="kbbsManagerPassword"/>
+        <property column="kbbs_operative_password" name="kbbsOperativePassword"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Chorganisation" column="linked_cho" name="linkedCho"/>

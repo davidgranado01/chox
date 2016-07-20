@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.2.1</version>
+            <version>4.5.2</version>
         </dependency>
      <!-- jsoup HTML parser library @ http://jsoup.org/ -->
         <dependency>

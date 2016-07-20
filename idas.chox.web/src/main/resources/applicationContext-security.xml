@@ -24,7 +24,7 @@
     <http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
         <intercept-url pattern="/login.action" access="hasAnyRole('ROLE_ANONYMOUS','ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
-        <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
+        <logout invalidate-session="true" delete-cookies="JSESSIONID" success-handler-ref="logoutSuccessHandler"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
         <custom-filter before="HEADERS_FILTER" ref="customFilters" />
         <!--custom-filter before="CSRF_FILTER" ref="customFilters" /-->
@@ -33,6 +33,10 @@
         <access-denied-handler ref="choxAccessDeniedHandler"/>
         <!--csrf request-matcher-ref="csrfSecurityRequestMatcher"/-->
     </http>
+
+    <beans:bean id="logoutSuccessHandler" class="idas.chox.web.security.LogoutSuccessHandler">
+        <beans:property name="userService" ref="userService"/>
+    </beans:bean>
     
     <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
     
@@ -88,6 +92,7 @@
 
     <beans:bean id="timeoutFilter" class="idas.chox.web.security.TimeoutFilter">
         <beans:property name="defaultRedirectStrategy" ref="defaultRedirectStrategy"/>
+        <beans:property name="userService" ref="userService"/>
     </beans:bean>
 
     <beans:bean id="csrfTokenChangingFilter" class="idas.chox.web.security.CsrfTokenChangingFilter">

@@ -79,7 +79,35 @@ public class Chorganisation extends Entity implements Serializable {
     private Integer daysBeforeEscalated;
     private boolean supervisorEnable;
     private boolean solicitorEnable;
+    private boolean enableKbbsDashboard;
+    private String kbbsManagerPassword;
+    private String kbbsOperativePassword;
 
+    public boolean isEnableKbbsDashboard() {
+        return enableKbbsDashboard;
+    }
+
+    public void setEnableKbbsDashboard(boolean enableKbbsDashboard) {
+        this.enableKbbsDashboard = enableKbbsDashboard;
+    }
+
+    public String getKbbsManagerPassword() {
+        return kbbsManagerPassword;
+    }
+
+    public void setKbbsManagerPassword(String kbbsManagerPassword) {
+        this.kbbsManagerPassword = kbbsManagerPassword;
+    }
+
+    public String getKbbsOperativePassword() {
+        return kbbsOperativePassword;
+    }
+
+    public void setKbbsOperativePassword(String kbbsOperativePassword) {
+        this.kbbsOperativePassword = kbbsOperativePassword;
+    }
+
+    
     public Integer getTimesInStatusContested() {
         return timesInStatusContested;
     }

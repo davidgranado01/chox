@@ -181,6 +181,7 @@
             }
             
             doChoSupervisorEscalationCheck();
+            doEnableKbbsDashboardCheck();
             
         });
         
@@ -379,6 +380,19 @@
              $("#timeEnteredToContestedInvChoDiv").hide();
         }
         return supervisorEscalationFlag;
+    }
+
+    function doEnableKbbsDashboardCheck(){
+        var enableKbbsDashboardFlag = false;
+        if($('form#formUpdateChorganisationDetail input[name="enableKbbsDashboard"]:checked').val()){
+            enableKbbsDashboardFlag = true;
+             $("#kbbsManagerPasswordDiv").slideDown();
+             $("#kbbsOperativePasswordDiv").slideDown();
+         }else{
+             $("#kbbsManagerPasswordDiv").hide();
+             $("#kbbsOperativePasswordDiv").hide();
+        }
+        return enableKbbsDashboardFlag;
     }
 
 </script>
@@ -662,6 +676,43 @@
                                                class="chox-ttxt" id="timeEnteredToContChoId"
                                                name="timesInStatusContested"
                                                value="<s:property value="timesInStatusContested" />" />
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable KBBS Dashboard</label>
+                                        <s:checkbox name="enableKbbsDashboard" id="enableKbbsDashboardId" value="enableKbbsDashboard" onclick="doEnableKbbsDashboardCheck();"/>
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <div class="chox-form-item" id="kbbsManagerPasswordDiv">
+                                    <label class="chox-form-std-label">
+                                        KBBS Manager Password
+                                    </label>
+                                    <input type="text" class="chox-ttxt"
+                                           id="kbbsManagerPasswordId" name="kbbsManagerPassword"
+                                           value="<s:property value="kbbsManagerPassword" />" />
+                                </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item" id="kbbsOperativePasswordDiv">
+                                        <label class="chox-form-std-label" style="margin-top : -7px;">
+                                            KBBS Operative Password
+                                        </label>
+                                        <input type="text"
+                                               class="chox-ttxt" id="kbbsOperativePasswordId"
+                                               name="kbbsOperativePassword"
+                                               value="<s:property value="kbbsOperativePassword" />" />
                                     </div>
                                 </td>
                                 <td></td>
