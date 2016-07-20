@@ -229,6 +229,7 @@ public class Keoghs {
                 adaServices.submitMotorClaim(request);
             }
             // Update Request
+            keoghsRequest.setLastModifiedDate(new Date());
             keoghsRequestService.saveKeoghsRequest(keoghsRequest);
             claim.setFraudCheckStatus(PENDING);
             claim.setFraudResultAcknowledged(false);

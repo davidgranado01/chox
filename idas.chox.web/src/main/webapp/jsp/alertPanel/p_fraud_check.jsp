@@ -27,6 +27,7 @@
         fraudIndicatorsDataStore.setDefaultSort('id', 'desc');
 
         fraudIndicatorsGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:scoreMessageOnClick},
             loadMask:true,
             store: fraudIndicatorsDataStore,
             renderTo:'fraudIndicatorsGridId',
@@ -50,6 +51,16 @@
         fraudIndicatorsDataStore.load({params:{claimId : <s:property value="id" />}});
     }
 </s:if>
+
+    function scoreMessageOnClick(grid, rowIndex, columnIndex, e){
+        var message = fraudIndicatorsGrid.getStore().getAt(rowIndex);
+        var title="Fraud Score Message";
+        var msg = "<b>Heading</b>: " + message.get("scoreMessageHeading");
+        msg += "<br/><b>Detail</b>: " + message.get("scoreMessageDetail");
+
+        propmtMsg(title, msg);
+        
+    }
 
 function doFraudCheckFormSubmit(action){
         actionPanel.registerAction(action);
