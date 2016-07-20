@@ -28,6 +28,7 @@ import idas.chox.core.model.KeoghsRequest;
 import idas.chox.core.model.KeoghsRequestScoreMessage;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.KeoghsRequestService;
+import java.util.Date;
 
 /**
  *
@@ -325,6 +326,7 @@ public class Keoghs {
                     break;
             }
             LOG.debug("Saving request and claim for '{}'....", originalRequest.getClientBatchReference());
+            originalRequest.setLastModifiedDate(new Date());
             keoghsRequestService.saveKeoghsRequest(originalRequest);
             claimService.save(claim);
         }
@@ -395,7 +397,9 @@ public class Keoghs {
             insuredVehicle.setVehicleType(getVehicleTypeFromClass(claim.getThirdParty().getVehicleClass() == null ? "" : claim.getThirdParty().getVehicleClass().getName()));
 
             Person insuredDriver = new Person();
-            insuredDriver.setEmailAddress(claim.getThirdParty().getEmail());
+            if (claim.getThirdParty().getEmail() != null && claim.getThirdParty().getEmail().contains("@")) {
+                insuredDriver.setEmailAddress(claim.getThirdParty().getEmail());
+            }
             insuredDriver.setFirstName(claim.getThirdParty().getFirstName());
             insuredDriver.setLastName(claim.getThirdParty().getLastName());
             insuredDriver.setLandlineTelephone(claim.getThirdParty().getTelephoneEvening());
@@ -441,7 +445,9 @@ public class Keoghs {
             thirdPartyVehicle.setVehicleType(getVehicleTypeFromClass(claim.getCustomer().getVehicleClass() == null ? "" : claim.getCustomer().getVehicleClass().getName()));
 
             Person thirdPartyDriver = new Person();
-            thirdPartyDriver.setEmailAddress(claim.getCustomer().getEmail());
+            if (claim.getCustomer().getEmail() != null && claim.getCustomer().getEmail().contains("@")) {
+                thirdPartyDriver.setEmailAddress(claim.getCustomer().getEmail());
+            }
             thirdPartyDriver.setFirstName(claim.getCustomer().getFirstName());
             thirdPartyDriver.setLastName(claim.getCustomer().getLastName());
             thirdPartyDriver.setLandlineTelephone(claim.getCustomer().getTelephoneEvening());
@@ -578,7 +584,9 @@ public class Keoghs {
                 Organisation engineerOrg = new Organisation();
                 engineerOrg.setOrganisationType(OrganisationType.VEHICLE_ENGINEER);
                 engineerOrg.setOrganisationName(claim.getEngineerReport().getCompany());
-                engineerOrg.setEmail(claim.getEngineerReport().getEmail());
+                if (claim.getEngineerReport().getEmail() != null && claim.getEngineerReport().getEmail().contains("@")) {
+                    engineerOrg.setEmail(claim.getEngineerReport().getEmail());
+                }
                 engineerOrg.setTelephone1(claim.getEngineerReport().getTelephone());
 
                 Address engineerAddress = new Address();
@@ -600,7 +608,9 @@ public class Keoghs {
                 solicitorOrg.setOrganisationType(OrganisationType.SOLICITOR);
                 solicitorOrg.setOrganisationName(claim.getIncident().getInjury().getSolicitor().getName());
 
-                solicitorOrg.setEmail(claim.getIncident().getInjury().getSolicitor().getEmail());
+                if (claim.getIncident().getInjury().getSolicitor().getEmail() != null && claim.getIncident().getInjury().getSolicitor().getEmail().contains("@")) {
+                    solicitorOrg.setEmail(claim.getIncident().getInjury().getSolicitor().getEmail());
+                }
                 solicitorOrg.setTelephone1(claim.getIncident().getInjury().getSolicitor().getTelephone());
 
                 Address solicitorAddress = new Address();
