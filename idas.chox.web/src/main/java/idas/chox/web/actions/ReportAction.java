@@ -176,7 +176,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         LOG.trace("Updating session with report generation result");
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
-            if (! (session.get("exceptionThrown")==null ? Boolean.FALSE : (Boolean)session.get("exceptionThrown"))
+            if (session != null && ! (session.get("exceptionThrown")==null ? Boolean.FALSE : (Boolean)session.get("exceptionThrown"))
                     && ! (session.get("cancelExportOperation")==null ? Boolean.TRUE : (Boolean)session.get("cancelExportOperation"))) {
                 if (reportFile != null) {
                     session.put("reportFileLocation", reportFile.getAbsolutePath());
@@ -187,7 +187,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("Cannot add null reportFileLocation to session");
                 }
             } else {
-                    LOG.debug("Exception thrown or report generation cancelled");
+                    LOG.debug("Exception thrown or report generation cancelled (or session null: {})", session);
             }
         }
         return SUCCESS;
