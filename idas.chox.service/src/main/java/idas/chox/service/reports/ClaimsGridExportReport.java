@@ -199,10 +199,11 @@ public class ClaimsGridExportReport {
             .append(" i.repair_admin_fee as repairadminfee, i.repair_acquisition_fee as repairacquisitionfee,")
             .append(" i.repair_parts as repairparts, i.repair_labour as repairlabour,")
             .append(" i.repair_materials as repairmaterials, i.repair_specialist as repairspecialist,")
-            .append(" i.payment_team as paymentsteam")
+            .append(" i.payment_team as paymentsteam, cho.name as choName")
             .append(" from claim c")
             .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
             .append(" join invoice i on (c.invoice_id = i.id)")
+            .append(" join chorganisation cho on (c.chorganisation_id = cho.id)")
             .append(" join invoice_original io on (i.invoice_original_id = io.id)")
             .append(" where c.id in (");
 
