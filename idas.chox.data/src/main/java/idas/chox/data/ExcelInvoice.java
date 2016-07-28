@@ -255,7 +255,7 @@ public class ExcelInvoice {
         insurerDiscountFeePaid = (BigDecimal) data.get("insurerdiscountfeepaid");
         finalPayment = (BigDecimal) data.get("finalpayment");
         paymentsTeam = (Boolean) data.get("paymentsteam");
-        choName = (String) data.get("choName");
+        choName = (String) data.get("choname");
     }
 
     public String getChoName() {
