@@ -108,6 +108,7 @@ public class ExcelInvoice {
     private BigDecimal repairMaterials;
     private BigDecimal repairSpecialist;
     private Boolean paymentsTeam;
+    private String choName;
 
     public ExcelInvoice(Map data, boolean isCHO) {
         boolean hireCommercial = false;
@@ -254,6 +255,11 @@ public class ExcelInvoice {
         insurerDiscountFeePaid = (BigDecimal) data.get("insurerdiscountfeepaid");
         finalPayment = (BigDecimal) data.get("finalpayment");
         paymentsTeam = (Boolean) data.get("paymentsteam");
+        choName = (String) data.get("choName");
+    }
+
+    public String getChoName() {
+        return choName;
     }
 
     public BigDecimal getAdditionalDriverFee() {
