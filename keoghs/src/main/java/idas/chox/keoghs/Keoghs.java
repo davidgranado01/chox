@@ -282,7 +282,6 @@ public class Keoghs {
             LOG.debug("Response list size is {}", responseList.size());
             // There should only be one?
             if (responseList.isEmpty()) {
-                LOG.error("No ClaimScoreResponses received for clientBatchReference '{}'", originalRequest.getClientBatchReference());
                 if (response.getResultStatus() == ResultStatus.SUCCESS) {
                     // Success response but no response list. This shouldn't happen but if it does we should requeue the claim
                     LOG.error("Success response received but no response list present for client batch reference '{}': requeing claim", originalRequest.getClientBatchReference());
@@ -293,6 +292,8 @@ public class Keoghs {
                     originalRequest.setLastModifiedDate(new Date());
                     keoghsRequestService.saveKeoghsRequest(originalRequest);
                     claimService.save(claim);
+                } else {
+                    LOG.error("No ClaimScoreResponses received for clientBatchReference '{}' and response '{}'", originalRequest.getClientBatchReference(), response.getResultStatus());
                 }
                 continue;
             } else if (responseList.size() != 1) {
