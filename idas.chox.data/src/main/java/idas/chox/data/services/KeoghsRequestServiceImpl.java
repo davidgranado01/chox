@@ -99,8 +99,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
         DetachedCriteria criteria = DetachedCriteria.forClass(KeoghsRequest.class)
             .add(Restrictions.lt("claimStatus", 9))
             .add(Restrictions.ge("claimStatus", 0))
-            .add(Restrictions.ne("resultStatus", "SUCCESS"))
-            .add(Restrictions.ne("resultStatus", "ERROR"))
+            .add(Restrictions.or(Restrictions.eq("resultStatus", "IN_PROGRESS"), Restrictions.isNull("resultStatus")))
             .createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 2))
             .addOrder(Order.asc("id"));
         return findByCriteria(criteria);

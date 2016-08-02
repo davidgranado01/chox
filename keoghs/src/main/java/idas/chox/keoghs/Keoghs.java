@@ -147,8 +147,6 @@ public class Keoghs {
                 return;
             }
         }
-
-        return;
     }
 
     private IADAPublicServices getADAServices() throws JAXBException {
@@ -204,7 +202,6 @@ public class Keoghs {
             }
             com.keoghs.ADAPublicServices.Claim keoghsClaim = getKeoghsClaim(claim);
             keoghsClaim.setClaimNumber(keoghsRequest.getClientBatchReference());
-            keoghsRequest.setClaimStatus(0);
 
             // Set-up the request
             ClaimBatch claimBatch = new ClaimBatch();
@@ -287,11 +284,12 @@ public class Keoghs {
             if (responseList.isEmpty()) {
                 LOG.error("No ClaimScoreResponses received for clientBatchReference '{}'", originalRequest.getClientBatchReference());
                 if (response.getResultStatus() == ResultStatus.SUCCESS) {
-                    // Success response but no response list. This shouldn't happen but if it does we should stop processing of this claim
-                    LOG.error("Success response received but no response list present for client batch reference '{}'", originalRequest.getClientBatchReference());
-                    claim.setFraudCheckStatus(ERROR);
-                    originalRequest.setClaimStatus(-4);
-                    originalRequest.setBatchStatus(-1);
+                    // Success response but no response list. This shouldn't happen but if it does we should requeue the claim
+                    LOG.error("Success response received but no response list present for client batch reference '{}': requeing claim", originalRequest.getClientBatchReference());
+                    claim.setFraudCheckStatus(QUEUED);
+                    originalRequest.setClaimStatus(0);
+                    originalRequest.setBatchStatus(0);
+                    originalRequest.setResultStatus(null);
                     originalRequest.setLastModifiedDate(new Date());
                     keoghsRequestService.saveKeoghsRequest(originalRequest);
                     claimService.save(claim);
