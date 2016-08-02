@@ -280,11 +280,22 @@ public class Keoghs {
             }
             
             originalRequest.setResultStatus(response.getResultStatus().toString());
+            Claim claim = originalRequest.getClaim();
             List<ClaimScoreResponse> responseList = response.getClaimStatusAndScoreResponses().getClaimScoreResponses();
             LOG.debug("Response list size is {}", responseList.size());
             // There should only be one?
             if (responseList.isEmpty()) {
                 LOG.error("No ClaimScoreResponses received for clientBatchReference '{}'", originalRequest.getClientBatchReference());
+                if (response.getResultStatus() == ResultStatus.SUCCESS) {
+                    // Success response but no response list. This shouldn't happen but if it does we should stop processing of this claim
+                    LOG.error("Success response received but no response list present for client batch reference '{}'", originalRequest.getClientBatchReference());
+                    claim.setFraudCheckStatus(ERROR);
+                    originalRequest.setClaimStatus(-4);
+                    originalRequest.setBatchStatus(-1);
+                    originalRequest.setLastModifiedDate(new Date());
+                    keoghsRequestService.saveKeoghsRequest(originalRequest);
+                    claimService.save(claim);
+                }
                 continue;
             } else if (responseList.size() != 1) {
                 LOG.error("Multiple ClaimScoreResponses received for clientBatchReference '{}': {}", originalRequest.getClientBatchReference(), responseList.size());
@@ -292,14 +303,16 @@ public class Keoghs {
             ClaimScoreResponse claimScoreResponse = responseList.get(0);
             originalRequest.setClaimStatus(claimScoreResponse.getStatus().getClaimStatus());
             originalRequest.setBatchStatus(claimScoreResponse.getStatus().getBatchStatus());
-            Claim claim = originalRequest.getClaim();
             LOG.debug("Response result status={}, claimStatus={}, batchStatus={} for batch reference {}",
                     new Object[]{response.getResultStatus(), claimScoreResponse.getStatus().getClaimStatus(),
                         claimScoreResponse.getStatus().getBatchStatus(), originalRequest.getClientBatchReference()});
             switch (response.getResultStatus()) {
                 case ERROR:
                     claim.setFraudCheckStatus(ERROR);
-                    LOG.error("Error response received for client batch reference '{}'", originalRequest.getClientBatchReference());
+                    if (claimScoreResponse.getStatus().getClaimStatus() == -8) { // Failed Unable To Score – Keoghs CFS Case
+                        claim.addComment(Comment.newComment(1, "It was not possible for Keoghs ADA Fraud Check Tool to score this claim as this is already a Keoghs CFS case."));
+                    }
+                    LOG.error("Error response received for client batch reference '{}': claimStatus={}, batchStatus={}", new Object[]{originalRequest.getClientBatchReference(), claimScoreResponse.getStatus().getClaimStatus(),claimScoreResponse.getStatus().getBatchStatus()});
                     break;
                 case IN_PROGRESS:
                     LOG.debug("Pending response received for client batch reference '{}'", originalRequest.getClientBatchReference());
