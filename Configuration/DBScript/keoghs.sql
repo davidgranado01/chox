@@ -24,6 +24,7 @@ create table keoghs_request (
 );
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE keoghs_request TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE keoghs_request_id_seq TO chox_user;
+GRANT SELECT ON TABLE keoghs_request TO chox_mi;
 
 create table keoghs_request_score_message (
     id serial not null,

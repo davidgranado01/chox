@@ -241,6 +241,7 @@ public class ClaimsGridExportReport {
             .append(" c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
             .append(" c.final_review_cho, c.final_review_ins, wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner, c.remaining_sla_days_str,")
+            .append(" c.fraud_check_status, kr.total_score as fraud_score, kr.rag_result as fraud_status,")
             .append(" cust.first_name as customer_first_name, cust.last_name as customer_last_name, cust.address1 as customer_address1, cust.address2 as customer_address2,")
             .append(" cust.address3 as customer_address3, cust.address4 as customer_address4, cust.address5 as customer_address5, cust.postcode as customer_postcode,")
             .append(" cust.telephone_day as customer_telephone_day, cust.telephone_evening as customer_telephone_evening, cust.email as customer_email,")
@@ -305,6 +306,7 @@ public class ClaimsGridExportReport {
             .append("     left outer join engineer_report er on (c.engineer_report_id = er.id)")
             .append("     left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
             .append("     left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
+            .append("     left outer join keoghs_request kr on (c.keoghs_request_id = kr.id)")
             .append("     left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
             .append(" where c.id in (");
 

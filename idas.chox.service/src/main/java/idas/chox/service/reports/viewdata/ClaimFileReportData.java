@@ -294,6 +294,9 @@ public class ClaimFileReportData {
     private boolean paymentsTeamActivated;
     private String remainingSlaDays;
     private boolean isInsurerOrAdmin;
+    private boolean isInsurer;
+    private String fraudScore;
+    private String fraudStatus;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
@@ -311,7 +314,7 @@ public class ClaimFileReportData {
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
         remainingSlaDays = claim.getRemainingSlaDays();
-
+        
         if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
             liabilityStatus = "";
         }
@@ -320,6 +323,7 @@ public class ClaimFileReportData {
         }
         if (currentUser.isAnInsurer()) {
             isInsurerOrAdmin = true;
+            isInsurer = true;
             finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
         } else if (currentUser.isCHO()) {
             finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
@@ -328,6 +332,10 @@ public class ClaimFileReportData {
             isInsurerOrAdmin = true;
             finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
                     + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
+        }
+        if (isInsurer) {
+            fraudScore = claim.getKeoghsRequest() == null ? "" : Integer.toString(claim.getKeoghsRequest().getTotalScore());
+            fraudStatus = claim.getKeoghsRequest() == null ? "" : claim.getKeoghsRequest().getRagResult();
         }
         if (claim.getPolicyHolderContactDate() != null) {
             contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
@@ -2851,6 +2859,18 @@ public class ClaimFileReportData {
 
     public String getRemainingSlaDays() {
         return remainingSlaDays;
+    }
+
+    public String getFraudScore() {
+        return fraudScore;
+    }
+
+    public String getFraudStatus() {
+        return fraudStatus;
+    }
+
+    public boolean isIsInsurer() {
+        return isInsurer;
     }
 
 }

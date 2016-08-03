@@ -178,6 +178,9 @@ public class ExcelClaim {
     private final Date claimHireMonitoringDetailNextReviewDate;
     private final String claimFinalReview;
     private final String claimRemainingSlaDays;
+    private final String claimFraudScore;
+    private final String claimFraudStatus;
+    private final boolean isInsurer;
 
     public ExcelClaim(Map data, Boolean isIns) {
         claimStatus = (String) data.get("status");
@@ -429,6 +432,11 @@ public class ExcelClaim {
         claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_labour_cost");
         claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_non_provision_reason");
         claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_next_review_date");
+        
+        int fraudCheckStatus = (Integer) data.get("fraud_check_status");
+        claimFraudScore = isIns!= null && isIns && fraudCheckStatus == 3 ? ((Integer) data.get("fraud_score")).toString() : "";
+        claimFraudStatus = isIns!= null && isIns && fraudCheckStatus == 3 ? (String) data.get("fraud_status") : "";
+        isInsurer = isIns == null ? false : isIns;
     }
 
     public String getClaimType() {
@@ -1089,6 +1097,18 @@ public class ExcelClaim {
 
     public String getClaimRemainingSlaDays() {
         return claimRemainingSlaDays;
+    }
+
+    public String getClaimFraudScore() {
+        return claimFraudScore;
+    }
+
+    public String getClaimFraudStatus() {
+        return claimFraudStatus;
+    }
+
+    public boolean isIsInsurer() {
+        return isInsurer;
     }
 
 }
