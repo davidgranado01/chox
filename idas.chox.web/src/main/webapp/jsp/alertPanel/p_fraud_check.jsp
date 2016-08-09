@@ -65,6 +65,9 @@
 function doFraudCheckFormSubmit(action){
         actionPanel.registerAction(action);
         var form = $("form#formRunFraudCheckAction");
+        var input = $("<input>").attr("type", "hidden").attr("name", "name").val(action);
+        form.append($(input));
+        
         var warningMessage;
         if (action ==='referFraudCheck'){
             warningMessage = 'Do you want to refer this claim to Keoghs?';
@@ -90,12 +93,8 @@ function doFraudCheckFormSubmit(action){
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
 
-<!--    <form action="<%=request.getContextPath()%>/prv/runFraudCheck.action" method="post" id="formRunFraudCheckAction" name="formRunFraudCheckAction"> -->
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formRunFraudCheckAction" name="formRunFraudCheckAction">
         <s:hidden id="claimId" name="id" />
-        <s:hidden id="name" name="name" />
-
-        <s:hidden name="id" />
 
         <fieldset class="x-fieldset"><legend>ADA Fraud Check Report</legend>
 
