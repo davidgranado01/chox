@@ -223,7 +223,7 @@ public class NewInvoice extends BaseActivity {
         if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
                 KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
-                LOG.debug("New Invoice '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+                LOG.debug("New Invoice '{}' queued to Keoghs.", claim.getChoReference());
             } catch (Exception ex) {
                 LOG.error("Error sending new invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
             }
