@@ -56,12 +56,13 @@ public class KeoghsCheckJob implements Runnable {
             LOG.debug("Authenticating sender '{}' with password '{}'", checkJobUser, checkJobPassword);
             authenticateSender(checkJobUser, checkJobPassword);
             handleHibernateTransactionIntricacies();
-            LOG.debug("Submitting new requests");
-            keoghs.submit();
-            // Start new transaction?
-//                hibernateTransaction.commit(); hibernateTransaction = session.beginTransaction();
             LOG.debug("Checking status of submitted requests...");
             keoghs.check();
+            // Start new transaction?
+//                hibernateTransaction.commit(); hibernateTransaction = session.beginTransaction();
+
+            LOG.debug("Submitting new requests");
+            keoghs.submit(5);
         } catch (Exception ex) {
             LOG.error("Exception thrown checking Keoghs jobs: {}", ex.getMessage(), ex);
         } finally {

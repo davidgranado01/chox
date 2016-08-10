@@ -369,7 +369,8 @@
         <property name="keoghsToken" value="${keoghs.token}" />
         <property name="keoghsTimeout" value="${keoghs.timeout}" />
         <property name="keoghsLogSoap" value="${keoghs.logSoap}" />
-        <property name="maxRequests" value="${keoghs.maxRequests}" />
+        <property name="maxAttempts" value="${keoghs.maxAttempts}" />
+        <property name="maxRequeues" value="${keoghs.maxRequeues}" />
         <property name="useDebugEndpoint" value="${keoghs.useDebugEndpoint}" />
     </bean>
 </beans>

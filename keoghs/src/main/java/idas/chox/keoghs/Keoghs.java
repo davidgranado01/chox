@@ -45,16 +45,22 @@ public class Keoghs {
     public static final int PENDING = 2;
     public static final int AVAILABLE = 3;
 
+    private int maxRequeues;
     private KeoghsRequestService keoghsRequestService;
     private ClaimService claimService;
     private String keoghsToken;
-    private int maxRequests;
+    private int maxAttempts;
     private int keoghsTimeout;
     private boolean keoghsLogSoap;
     private boolean useDebugEndpoint;
 
-    public void setMaxRequests(int maxRequests) {
-        this.maxRequests = maxRequests;
+
+    public void setMaxAttempts(int maxAttempts) {
+        this.maxAttempts = maxAttempts;
+    }
+
+    public void setMaxRequeues(int maxRequeues) {
+        this.maxRequeues = maxRequeues;
     }
     
     public void setKeoghsToken(String keoghsToken) {
@@ -85,12 +91,16 @@ public class Keoghs {
         return queueAndSubmit(claim, checkType, useDebugEndpoint);
     }
 
-    public void check() {
+    public int check() {
+        int noChecked = 0;
+        
         try {
-            check(useDebugEndpoint);
+            noChecked = check(useDebugEndpoint);
         } catch (JAXBException ex) {
             LOG.error("Error checking status of keoghs requests (with debug={}): {}", useDebugEndpoint, ex.getMessage(), ex);
         }
+        
+        return noChecked;
     }
 
     public KeoghsRequest queue(Claim claim, String checkType) {
@@ -130,7 +140,7 @@ public class Keoghs {
         return keoghsRequest;
     }
 
-    public void submit() {
+    public void submit(int maxRequests) {
         boolean result;
         List<KeoghsRequest> keoghsRequests = keoghsRequestService.getQueuedRequests(maxRequests);
         LOG.debug("Found {} queued Keoghs requests.", keoghsRequests.size());
@@ -249,11 +259,12 @@ public class Keoghs {
         return submit(keoghsRequest, debug);
     }
 
-    private void check(boolean debug) throws JAXBException {
+    private int check(boolean debug) throws JAXBException {
 
         // Process all open requests
         List<KeoghsRequest> keoghsRequests = keoghsRequestService.getPendingRequests();
-        LOG.debug("Found {} pending Keoghs requests.", keoghsRequests.size());
+        int checkCount = keoghsRequests.size();
+        LOG.debug("Found {} pending Keoghs requests.", checkCount);
 
         BatchClaimScoreRequest request;
         BatchClaimScoreResponse response;
@@ -315,7 +326,37 @@ public class Keoghs {
                     break;
                 case IN_PROGRESS:
                     LOG.debug("Pending response received for client batch reference '{}'", originalRequest.getClientBatchReference());
-                    claim.setFraudCheckStatus(PENDING);
+                    if (originalRequest.getVersion() > maxAttempts) {
+                        // Requeue Request...
+                        // First mark current request as done
+                        originalRequest.setResultStatus("ERROR");
+                        int requestCount = keoghsRequestService.getKeoghsRequestByClaim(claim).size();
+                        
+                        if (requestCount < maxRequeues) {
+                            originalRequest.setLastModifiedDate(new Date());
+                            keoghsRequestService.saveKeoghsRequest(originalRequest);
+                            // Create new request
+                            KeoghsRequest newRequest = new KeoghsRequest();
+
+                            String clientBatchReference = claim.getId().toString().concat("_" + requestCount);
+
+                            newRequest.setClaim(claim);
+                            newRequest.setClientBatchReference(clientBatchReference);
+                            newRequest.setCheckType(originalRequest.getCheckType());
+
+                            // Add request to Keoghs requests table
+                            claim.setKeoghsRequest(newRequest);
+                            claim.setFraudCheckStatus(QUEUED);
+                            LOG.warn("Fraud check for claim '{}' [id={}] re-queued as version count reached {}", new Object[]{claim.getChoReference(), claim.getId(), originalRequest.getVersion()});
+                            originalRequest = newRequest;
+                            checkCount--;
+                        } else {
+                            claim.setFraudCheckStatus(ERROR);
+                            LOG.error("Fraud check for claim '{}' [id={}] has failed {} times - not requeueing.", new Object[]{claim.getChoReference(), claim.getId(), maxRequeues});
+                        }
+                    } else {
+                        claim.setFraudCheckStatus(PENDING);
+                    }
                     break;
                 case SUCCESS:
                     LOG.debug("Success response received for client batch reference '{}'", originalRequest.getClientBatchReference());
@@ -343,6 +384,8 @@ public class Keoghs {
             keoghsRequestService.saveKeoghsRequest(originalRequest);
             claimService.save(claim);
         }
+        
+        return checkCount;
     }
 
     private com.keoghs.ADAPublicServices.Claim getKeoghsClaim(Claim claim) {

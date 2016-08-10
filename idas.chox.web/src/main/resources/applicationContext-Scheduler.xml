@@ -37,6 +37,8 @@
         <property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="maxQueuedRequests" value="${keoghs.maxQueuedRequests}" />
+        <property name="maxPendingRequests" value="${keoghs.maxPendingRequests}" />
         <property name="keoghs" ref="keoghs" />
     </bean>
     <!--  Reference update from queued token -->
