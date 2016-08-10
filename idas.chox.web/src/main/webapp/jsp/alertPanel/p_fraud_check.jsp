@@ -63,7 +63,7 @@
     }
 
 function doFraudCheckFormSubmit(action){
-        actionPanel.registerAction(action);
+//        actionPanel.registerAction(action);
         var form = $("form#formRunFraudCheckAction");
         var input = $("<input>").attr("type", "hidden").attr("name", "name").val(action);
         form.append($(input));
