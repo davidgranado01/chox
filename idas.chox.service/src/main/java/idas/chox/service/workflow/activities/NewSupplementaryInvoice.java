@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
 
@@ -64,7 +65,11 @@ public class NewSupplementaryInvoice extends BaseActivity {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());
             getChainActivity().processInBatch(claim);
-            breResponse = ((NewInvoice)getChainActivity()).getBreResponse();
+            if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+                breResponse = ((InsurerUpload)getChainActivity()).getBreResponse();
+            } else {
+                breResponse = ((NewInvoice)getChainActivity()).getBreResponse();
+            }
         }
     }
 
