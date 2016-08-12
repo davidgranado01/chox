@@ -903,7 +903,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             // Mark first claim as 'Original'
                             if (oldClaim.getClaimType() == ClaimType.GTA) {
                                 oldClaim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
-                            } else if (oldClaim.getClaimType() == ClaimType.INSURER_CLAIM) {
+                            } else if (oldClaim.getClaimType() == ClaimType.INSURER_CLAIM || oldClaim.getClaimType() == ClaimType.INSURER_INVOICE) {
                                 oldClaim.setClaimType(ClaimType.INSURER_ORIGINAL_INVOICE);
                             } else if (oldClaim.getClaimType() == ClaimType.INSURER_VS_INSURER) {
                                 oldClaim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
@@ -914,7 +914,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             } else if (oldClaim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL) {
                                 oldClaim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE);
                             } else if (!ClaimType.isOriginalSupplementaryInvoice(oldClaim.getClaimType())) { // Not already marked as a supplimentary invoice
-                                LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber, Insurer Claim, Collaboration Protocol): {}", claim.getChoReference(), claim.getClaimType());
+                                LOG.error("Incorrect type for original claim '{}' [for supplementary '{}'] - should be one of GTA, InsurerVsInsurer, Subscriber, Insurer Claim, Insurer Invoice, Collaboration Protocol: {}",
+                                            new Object[]{oldClaim.getChoReference(), claim.getChoReference(), oldClaim.getClaimType()});
                                 claimResult.setValid(false);
                                 claimResult.getMessage().add("Unexpected type of claim found for original claim. Please contact CHOX support.");
                                 claim.setChoReference(choReferenceNumber);
