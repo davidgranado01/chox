@@ -45,8 +45,8 @@ import idas.chox.core.util.RoleHelper;
 public class UserServiceImpl extends BaseDataService implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-    private static final String KBBS_AUTHENTICATION_URL = "https://dashboards-beta.idaschox.com/authentication/GenerateAccessToken";
-    private static final String KBBS_INVALIDATE_URL = "https://dashboards-beta.idaschox.com/authentication/InvalidateAccessToken";
+    private static final String KBBS_AUTHENTICATION_URL = "https://dashboards.idaschox.com/authentication/GenerateAccessToken";
+    private static final String KBBS_INVALIDATE_URL = "https://dashboards.idaschox.com/authentication/InvalidateAccessToken";
 
     @Override
     public WebUser findByEmail(String email) {
