@@ -34,6 +34,7 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
 
     @Override
     public final Map<Integer, List<String>> doJob() {
+        int noRequestsToQueue = maxQueuedRequests;
         try {
             LOG.debug("Checking status of submitted requests...");
             int noPendingRequests = keoghs.check();
@@ -42,14 +43,14 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
 //                releaseHibernateSessionConditionally(); this.handleHibernateTransactionIntricacies();
             if ((maxQueuedRequests > 0 && noPendingRequests + maxQueuedRequests > maxPendingRequests)
                     || maxQueuedRequests < 0) {
-                maxQueuedRequests = maxPendingRequests - noPendingRequests;
+                noRequestsToQueue = maxPendingRequests - noPendingRequests;
             }
             
-            if (maxQueuedRequests > 0) {
-                LOG.debug("Submitting maximum of {} new requests (maxPending={})", maxQueuedRequests, maxPendingRequests);
-                keoghs.submit(maxQueuedRequests);
+            if (noRequestsToQueue > 0) {
+                LOG.debug("Submitting maximum of {} new requests (maxPending={})", noRequestsToQueue, maxPendingRequests);
+                keoghs.submit(noRequestsToQueue);
             } else {
-                LOG.debug("Not submitting any new requests as there are {} already pending (maxQueuedRequests={})", maxPendingRequests, maxQueuedRequests);
+                LOG.debug("Not submitting any new requests as there are {} already pending (noRequestsToQueue={})", maxPendingRequests, noRequestsToQueue);
             }
                         
         } catch (Exception ex) {
