@@ -377,6 +377,7 @@ public class Keoghs {
                         originalRequest.addKeoghsRequestScoreMessage(scoreMessage);
                         sb.setLength(0);
                     }
+                    checkCount--;
                     break;
             }
             LOG.debug("Saving request and claim for '{}'....", originalRequest.getClientBatchReference());
