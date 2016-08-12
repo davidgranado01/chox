@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    var iframeURL = 'https://dashboards-beta.idaschox.com/mydashboard/create/2f2b369e-0ea1-41c6-b070-688f4013329d';
+    var iframeURL = 'https://dashboards.idaschox.com/mydashboard/create/2f2b369e-0ea1-41c6-b070-688f4013329d';
     var iframeID = 'MyIFrame';
 
     function createCookie(name, value, days) {
