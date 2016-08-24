@@ -263,7 +263,7 @@ public class InsurerUpload extends BaseActivity {
         if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
                 KeoghsRequest request  = keoghs.queue(claim, checkType);
-                LOG.debug("New Insurer Claim/Invoice '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+                LOG.debug("New Insurer Claim/Invoice '{}' queued to Keoghs", claim.getChoReference());
             } catch (Exception ex) {
                 LOG.error("Error sending new Insurer Claim/Invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
             }

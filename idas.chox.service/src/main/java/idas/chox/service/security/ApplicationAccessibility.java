@@ -41,6 +41,9 @@ public class ApplicationAccessibility {
     public static final String PAYMENT_NOT_RECEIVED = "PaymentNotReceived";
     public static final String CLAIM_REJECTION = "ClaimRejection";
     public static final String SLA_EXTENSION = "SlaExtension";
+    public static final String ACKNOWLEDGE_FRAUD_CHECK = "AcknowledgeFraudCheck";
+    public static final String REFER_FRAUD_CHECK = "ReferFraudCheck";
+    public static final String RUN_FRAUD_CHECK = "RunFraudCheck";
 
     // ***************************************
     // PANEL

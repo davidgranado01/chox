@@ -363,8 +363,14 @@ public class Keoghs {
                     claim.setFraudCheckStatus(AVAILABLE);
                     originalRequest.setRagResult(claimScoreResponse.getResults().getRagResult().toString());
                     originalRequest.setTotalScore(claimScoreResponse.getResults().getTotalScore());
-                    claim.addComment(Comment.newComment(1, "A " + originalRequest.getCheckType() + " Fraud Check was run with a Fraud Score of "
+                    if (originalRequest.getCheckType().equals("Manual")) {
+                        claim.addComment(Comment.newComment(1, "A " + originalRequest.getCheckType() + " Fraud Check was run by "
+                                + originalRequest.getCreatedBy().getDisplayName() + " with a Fraud Score of "
                                 + claimScoreResponse.getResults().getTotalScore() + "."));
+                    } else {
+                        claim.addComment(Comment.newComment(1, "A " + originalRequest.getCheckType() + " Fraud Check was run with a Fraud Score of "
+                                + claimScoreResponse.getResults().getTotalScore() + "."));
+                    }
                     List<ClaimScoreMessage> messages = claimScoreResponse.getResults().getScoreMessages().getClaimScoreMessages();
                     StringBuilder sb = new StringBuilder();
                     for (ClaimScoreMessage message : messages) {

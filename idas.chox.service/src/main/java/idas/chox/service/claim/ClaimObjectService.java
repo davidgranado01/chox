@@ -109,6 +109,10 @@ public class ClaimObjectService {
         newClaim.setAttachments(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);
+        newClaim.setKeoghsRequest(null);
+        newClaim.setFraudCheckStatus(0);
+        newClaim.setFraudResultAcknowledged(false);
+        newClaim.setSentToKeoghs(false);
 
         return newClaim;
 

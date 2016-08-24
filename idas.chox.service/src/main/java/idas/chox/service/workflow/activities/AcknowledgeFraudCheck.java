@@ -20,7 +20,7 @@ public class AcknowledgeFraudCheck extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.info("Acknowledge Keoghs Fraud Check on claim '{}' to Keoghs...", claim.getChoReference());
         claim.setFraudResultAcknowledged(true);
-        claim.addComment(Comment.newComment(1, "The Keoghs Fraud Check result has been acknolwedged."));
+        claim.addComment(Comment.newComment(1, "The Keoghs Fraud Check result has been acknowledged."));
     }
     
 }

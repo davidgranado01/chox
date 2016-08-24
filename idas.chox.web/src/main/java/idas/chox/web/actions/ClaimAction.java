@@ -712,14 +712,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isFraudCheckAcknowledged() { //if true returned, button disabled
-        return claim.isFraudResultAcknowledged() || claim.getFraudCheckStatus() != 3;
+        return (applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.ACKNOWLEDGE_FRAUD_CHECK, getAuthenticatedUser(), claim) == 0)
+                || claim.isFraudResultAcknowledged() || claim.getFraudCheckStatus() != 3;
     }
+    
     public boolean isReferredToKeoghs() {
-        return claim.isSentToKeoghs();
+        return (applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.REFER_FRAUD_CHECK, getAuthenticatedUser(), claim) == 0)
+                    || claim.isSentToKeoghs();
     }
+    
     public boolean isCanRerunFraudCheck() {
-        return !(ClaimStatus.getCompletedStatus(true).contains(claim.getStatus())
-                    || (claim.getFraudCheckStatus() != 3 && claim.getFraudCheckStatus() != -1));
+        return (applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.RUN_FRAUD_CHECK, getAuthenticatedUser(), claim) > 0)
+                && !(claim.getFraudCheckStatus() != 3 && claim.getFraudCheckStatus() != -1);
     }
     
     public String getCreatedByDesc() {
@@ -1834,7 +1838,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
     
     public boolean isFraudCheckPanelVisible() {
-        return claim.getBreBand().isFraudCheckEnable() && (claim.getFraudCheckStatus() == 3 || claim.getFraudCheckStatus() == -1) && !claim.isFraudResultAcknowledged() &&
+        return getIsInsurer() && claim.getBreBand().isFraudCheckEnable() && (claim.getFraudCheckStatus() == 3 || claim.getFraudCheckStatus() == -1) && !claim.isFraudResultAcknowledged() &&
                 Arrays.asList("ClaimUnacknowledgedRouted", "ClaimPending", "InvoiceEscalatedToHandler", "InvoiceApprovedByBRE", "ManualInvoiceBREApproved", "ManualInvoiceBRERejected").contains(claim.getStatus());
     }
     
