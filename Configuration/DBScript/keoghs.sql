@@ -187,8 +187,7 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
   values ('activity.RunFraudCheck.InvoiceEscalatedToHandler',FALSE,FALSE);
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
   values ('activity.RunFraudCheck.ClaimReferredToFNOL',FALSE,FALSE);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
-  values ('activity.RunFraudCheck.PaymentReceived',FALSE,FALSE);
+
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
   values ('activity.RunFraudCheck.InvoiceRejectionAccepted',FALSE,FALSE);
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
