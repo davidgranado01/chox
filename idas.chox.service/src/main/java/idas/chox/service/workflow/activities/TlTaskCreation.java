@@ -549,7 +549,6 @@ public class TlTaskCreation extends BaseActivity {
         Task task = new Task();
 
         task.setClaim(claim);
-        task.setComplete(Boolean.FALSE);
         task.setDueDate(DateHelper.addDay(new Date(), 1));
         StringBuilder description = new StringBuilder();
         description.append("A Total Loss payment is required and the following details apply:<br>")

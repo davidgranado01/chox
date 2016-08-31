@@ -31,6 +31,9 @@
     var appliedSlaExtDays = <s:property value="slaExtDays" />;
     var ecdDataStore;
     var ecdGrid;
+    var isChoxAdmin = <s:property value="isChoxAdmin" />;
+    var taskTabTitle = 'Tasks';
+    var commentTabTitle = 'Notes';
  
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
@@ -81,9 +84,12 @@
                 {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAttachmentPage.action', params:{"claimId" : '<s:property value="id" />'}})},
                 {contentEl:'historyTab', title: 'BRE Results', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
                 {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAuditTrailPage.action', params:{"claimId" : '<s:property value="id" />'}})},
-                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
-                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
-            ]
+                {contentEl:'commentTab', id:'claimCommentPanelTabId', title: commentTabTitle, disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
+                {contentEl:'taskTab', id:'claimTaskPanelTabId', title: taskTabTitle, disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
+            ],
+            listeners: { 
+                beforerender : updateTabs
+            }
         });
 
         /***********************************************************************************
@@ -136,21 +142,72 @@
             Ext.Msg.alert('Error', '<c:out value='${statusMsg}' />');
         </s:elseif>
     });
-    
+
+    function updateTabs() {
+        if (isChoxAdmin) {
+            return;
+        }
+
+        choxExtAjaxRequest({
+            url: '/prv/p/getClaimVisibleTasks.action',
+            success : function(response, opts) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp && tabPanel1) {
+                           updateClaimTaskTabCount(resp.totalCount);
+                        }
+            },
+            params: {
+                hideCompleted : true,
+                showAssignedTasksOnly : true,
+                claimId : '<s:property value="id" />'
+            }
+        });
+
+        choxExtAjaxRequest({
+            url: '/prv/p/getClaimNotesRequireReview.action',
+            success : function(response, opts) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp && tabPanel1) {
+                           updateClaimNoteTabCount(resp.totalCount);
+                        }
+            },
+            params: {
+                claimId : '<s:property value="id" />'
+            }
+        });
+    }
+
+    function updateClaimTaskTabCount(taskCount) {
+        var title = 'Tasks';
+        if (taskCount > 0) { 
+            title = title + '&nbsp<sup class="notes_bubble" style="background-color:red;">'+taskCount +'</sup>';
+        }
+        tabPanel1.getComponent('claimTaskPanelTabId').setTitle(title);
+    }
+
+    function updateClaimNoteTabCount(noteCount) {
+        var title = 'Notes';
+        if (noteCount > 0) { 
+            title = title + '&nbsp<sup class="notes_bubble" style="background-color:red;">'+noteCount +'</sup>';
+        }
+        tabPanel1.getComponent('claimCommentPanelTabId').setTitle(title);
+    }
+
+
     function doLoadComments(){
         if(notesTabLoaded){
             refereshComments();
         }
     }
-    
+
     function doLoadTasks(){
         if(taskTabLoaded){
             loadClaimTasks();
         }
     }
-    
+
     function clearActionResult(tab){
-    
+
         if(document.getElementById("HMmessageBox")){
             document.getElementById("HMmessageBox").innerHTML = '';
         }

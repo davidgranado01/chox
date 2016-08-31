@@ -14,7 +14,9 @@
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="visibility_type" name="visibilityType"/>
     <property column="reverted" name="reverted"/>
+    <property column="review_required" name="reviewRequired"/>
     <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
+    <many-to-one class="idas.chox.core.model.Task" column="task_id" name="task"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="raised_by" name="raisedBy"/>

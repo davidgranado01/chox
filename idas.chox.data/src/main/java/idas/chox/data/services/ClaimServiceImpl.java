@@ -1881,7 +1881,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         Task task = new Task();
         task.setClaim(claim);
-        task.setComplete(Boolean.FALSE);
         task.setDescription("Total Loss pack has been uploaded and requires review.");
         task.setDueDate(DateHelper.addDay(new Date(), 1));
         task.setInsurer(false);
@@ -2422,7 +2421,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (breBand.isAllowOnHireAutomatedTasks() && claim.getInsurer().isTaskManagementEnable()) {
             Task onHireTask = new Task();
             onHireTask.setClaim(claim);
-            onHireTask.setComplete(Boolean.FALSE);
             onHireTask.setDescription("The Hire Start date has been added to this claim, please review.");
             onHireTask.setDueDate(DateHelper.addDay(new Date(), 1));
             onHireTask.setInsurer(Boolean.TRUE);

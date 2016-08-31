@@ -21,7 +21,7 @@
         var dashboardActionName;
         var isChoxAdmin = <s:property value="isChoxAdmin"/>;
         var isTaskManagementEnabled = <s:property value="taskManagementEnabled"/>;
-        var taskTabTitle = isChoxAdmin ? 'Tasks' : 'Tasks&nbsp  <div  class = "noti_bubble" style="background-color:'+'black'+'; ">'+ '?' +'</div>';
+        var taskTabTitle = 'Tasks';
         var filterName;
         var title;
         var actionMenu;
@@ -426,21 +426,19 @@
         
         function updateTaskTabCount(taskCount, colorCode) {
             if (tabs) {
-                var color = colorCode;
-                if (taskCount <= 0) { 
-                    color = 'black';
+                var taskTabTitle = 'Tasks';
+                if (taskCount > 0) { 
+                    if (taskCount < 10) {
+                        title = title + '&nbsp';
+                    } else if (taskCount < 100) {
+                        title = title + '&nbsp&nbsp';
+                    } else if (taskCount < 1000) {
+                        title = title + '&nbsp&nbsp&nbsp';
+                    } else if (taskCount < 10000) {
+                        title = title + '&nbsp&nbsp&nbsp&nbsp';
+                    }
+                    taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">'+taskCount +'</div>';
                 }
-                var title = 'Tasks';
-                if (taskCount < 10) {
-                    title = title + '&nbsp';
-                } else if (taskCount < 100) {
-                    title = title + '&nbsp&nbsp';
-                } else if (taskCount < 1000) {
-                    title = title + '&nbsp&nbsp&nbsp';
-                } else if (taskCount < 10000) {
-                    title = title + '&nbsp&nbsp&nbsp&nbsp';
-                }
-                taskTabTitle = title + '<div  class = "noti_bubble" style="background-color:'+color+'; ">'+taskCount +'</div>';
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
         }

@@ -505,7 +505,11 @@
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         
-        <action name="markTaskAsComplete" class="idas.chox.web.actions.TasksAction" method="markTaskAsComplete">
+         <action name="getClaimNotesRequireReview" class="idas.chox.web.actions.CommentAction" method="getCommentsForReview">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        
+       <action name="markTaskAsComplete" class="idas.chox.web.actions.TasksAction" method="markTaskAsComplete">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         
@@ -1365,6 +1369,10 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doDeleteComment" class="idas.chox.web.actions.CommentAction" method="deleteComment">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doAcknowledgeComment" class="idas.chox.web.actions.CommentAction" method="acknowledgeComment">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>

@@ -294,17 +294,23 @@ public class TasksAction extends BaseAction {
         List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
-            tasks = taskService.getIncompleteTasksByClaim(this.getAuthenticatedUser().getId(), claimId);
+            tasks = taskService.getIncompleteTasksByClaim(getAuthenticatedUser().getId(), claimId);
         } else {
             LOG.debug("Calling taskService to get all tasks by claim");
-            tasks = taskService.getAllTasksByClaim(this.getAuthenticatedUser().getId(), claimId);
+            tasks = taskService.getAllTasksByClaim(getAuthenticatedUser().getId(), claimId);
         }
 
+        totalCount = 0;
         for (Task c : tasks) {
             if (c.getRaisedBy() != null) {
                 c.setCreatedBy(c.getRaisedBy());
             }
             viewData.add(new TaskViewData(c, showInsurerRole));
+            if ((getAuthenticatedUser().isCHO() && !c.getComplete() && c.getInsurer())
+                    || (getAuthenticatedUser().isAnInsurer() && !c.getComplete() && !c.getInsurer())) {
+                totalCount++;
+            }
+                
         }
 
         this.jObject = JSONArray.fromObject(viewData);
@@ -321,7 +327,6 @@ public class TasksAction extends BaseAction {
             return ERROR;
         }
         Task task = new Task();
-        task.setComplete(Boolean.FALSE);
         if (taskType.equals(TaskType.TOTAL_LOSS_PAYMENT.getDescription())) {
             if (getIsInsurer()) {
                 taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).append(". Payment Date - ").append(DateHelper.getLocalDateFormat().format(paymentDate)).toString();

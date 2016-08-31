@@ -352,6 +352,7 @@
 
                 setTimeout(function() {
                     loadClaimTasks();
+                    updateTabs();
                 }, 100);
 //          loadClaimTasks();
             }

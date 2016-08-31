@@ -11,14 +11,15 @@ import idas.chox.core.util.DateHelper;
  */
 public class CommentViewData {
 
-    private int id;
-    private String createdBy;
-    private String createdDate;
-    private String comment;
+    private final int id;
+    private final String createdBy;
+    private final String createdDate;
+    private final String comment;
+    private String reviewRequired;
     private int visibilityType;
     private String delete = "";
 
-    public CommentViewData(Comment comment,WebUser authenticatedUser) {
+    public CommentViewData(Comment comment, WebUser authenticatedUser) {
         this.id = comment.getId();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(comment.getCreatedDate());
         this.comment = comment.getComment();
@@ -29,18 +30,46 @@ public class CommentViewData {
         if (user != null) {
             if (user.isAnInsurer() && user.getInsurer() != null) {
                 orgName = String.format("(%1$s)", user.getInsurer().getName());
-            } else if (!user.isAnInsurer() && user.getChorganisation() != null ) {
+                if (comment.getReviewRequired() != null && comment.getReviewRequired() && authenticatedUser.isCHO()) {
+                    this.reviewRequired = "Required";
+                } else if (comment.getReviewRequired() != null && comment.getReviewRequired() && !authenticatedUser.isCHO()) {
+                    this.reviewRequired = "Pending";
+                } else if (comment.getReviewRequired() != null) {
+                    this.reviewRequired = "Acknowledged";
+                } else {
+                    this.reviewRequired = "";
+                }
+            } else if (!user.isAnInsurer() && user.getChorganisation() != null) {
                 orgName = String.format("(%1$s)", user.getChorganisation().getName());
+                if (comment.getReviewRequired() != null && comment.getReviewRequired() && authenticatedUser.isAnInsurer()) {
+                    this.reviewRequired = "Required";
+                } else if (comment.getReviewRequired() != null && comment.getReviewRequired() && !authenticatedUser.isAnInsurer()) {
+                    this.reviewRequired = "Pending";
+                } else if (comment.getReviewRequired() != null) {
+                    this.reviewRequired = "Acknowledged";
+                } else {
+                    this.reviewRequired = "";
+                }
             }
             createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         } else {
             createdBy = "unknown";
         }
-        if (authenticatedUser.isCHOXAdmin() 
-                        || (user != null && (authenticatedUser.getId().compareTo(user.getId())==0 
-                             || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())   
-                             || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
-                            && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {
+        
+        if (reviewRequired == null) { // CHOX Admin
+                if (comment.getReviewRequired() != null && comment.getReviewRequired()) {
+                    this.reviewRequired = "Pending";
+                } else if (comment.getReviewRequired() != null) {
+                    this.reviewRequired = "Acknowledged";
+                } else {
+                    this.reviewRequired = "";
+                }
+        }
+        if (authenticatedUser.isCHOXAdmin()
+                || (user != null && (authenticatedUser.getId().compareTo(user.getId()) == 0
+                || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())
+                || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
+                && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {
             this.delete = "Delete";
         }
     }
@@ -75,5 +104,9 @@ public class CommentViewData {
 
     public void setDelete(String delete) {
         this.delete = delete;
+    }
+
+    public String getReviewRequired() {
+        return reviewRequired;
     }
 }

@@ -14,10 +14,10 @@ public interface CommentService {
     List<Comment> getCommentByClaim(Claim claim);
 
     Comment getComment(int commentId);
-
-    void createNewComment(Comment comment);
     
     void deleteAllCommentsByClaimId(int claimId);
     
     void deleteCommentById(int commentId);
+
+    void acknowledgeCommentById(int commentId);
 }

@@ -33,6 +33,7 @@
                 {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y H:i'},
                 {name:'comment'},
                 {name:'visibilityType'},
+                {name:'reviewRequired'},
                 {name:'delete'}]
         });
 
@@ -55,6 +56,11 @@
                 {header: "Created", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Message", width: 540, dataIndex: 'comment', sortable: true, resizable: true},
+                {header: "Review", width: 80, dataIndex: 'reviewRequired', sortable: true, resizable: true, renderer:function(value,p,r){
+                        if (value == 'Required')
+                            return "<a href='#' class='high-light-item'>" + value + "</a>"
+                        else
+                            return value;}},
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>";}}
             ],
@@ -92,9 +98,26 @@
             msg += "</b>: <br/>" + comment.get("comment");
             propmtMsg(title, getFormatedMessage(msg));
         }
-        else if(columnIndex === 3 && comment.get("delete")!==""){
+        else if(columnIndex === 4 && comment.get("delete")!==""){
             deleteComment(fileId);
+        } else if (columnIndex === 3){
+            acknowledgeComment(fileId);
         }
+    }
+    
+    function acknowledgeComment(a){
+        var url = "/prv/p/doAcknowledgeComment.action";
+        var param = {"commentId":a,"claimId":<s:property value="claimId" />};
+        ajax.loadJson2(url, param, function(data){
+                Ext.MessageBox.show({
+                    title: '',
+                    msg: data.result,
+                    width:300,
+                    buttons: Ext.MessageBox.OK
+                });
+                refereshComments();
+                updateTabs();
+        });
     }
     
     function deleteComment(a){
@@ -139,6 +162,7 @@
             $("form#claimCommentForm").each(function(){
                 this.reset();
             });
+            $('#requireReviewId').show();
         }
         loadComments();
     }
@@ -177,6 +201,15 @@
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
     }
    
+    function toggleVisibility(){
+        var visibility = $('input[name=visibilityType]:checked', '#claimCommentForm').val();
+        if (visibility !== '0'){
+            $('#requireReviewId').hide();
+        }else{
+            $('#requireReviewId').show();
+        }
+    }
+
 </script>
 <div class="claim-detail-tab">
 
@@ -192,16 +225,26 @@
 
                 <div class="chox-form-item">
                         <s:if test="isInsurer">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By CHO)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By CHO)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" onchange="toggleVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:if>
                         <s:elseif test="isCHO">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By Insurer)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By Insurer)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" onchange="toggleVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:elseif>
                         <s:elseif test="isChoxAdmin">
                             <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" disabled="disabled" /> Public Note (Visible By Insurer)</span>
                             <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" disabled="disabled" /> Private Note (Only Visible Internally)</span>
+                        </s:elseif>
+                </div>
+                <div class="chox-form-item" id="requireReviewId">
+                        <s:if test="isInsurer && choTaskManagementEnabled">
+                        <s:checkbox name="reviewRequired"/>
+                            <label>&nbsp;&nbsp;Require CHO Review</label>
+                        </s:if>
+                        <s:elseif test="isCHO && insurerTaskManagementEnabled">
+                            <s:checkbox name="reviewRequired"/>
+                            <label>&nbsp;Require Insurer Review</label>
                         </s:elseif>
                 </div>
                     <s:submit type="submit" id="claimDetailsCommentId" disabled="isChoxAdmin" value="Add Note"/>

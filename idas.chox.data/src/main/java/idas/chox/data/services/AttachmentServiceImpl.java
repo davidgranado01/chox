@@ -158,7 +158,6 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             LOG.debug("Attachment saved.");
             if (notify) {
                 Task task = new Task();
-                task.setComplete(Boolean.FALSE);
                 task.setDescription("The " + whoCreated + " has uploaded the following attachment '" + category + "' which requires review.");
                 task.setDueDate(DateHelper.getCurrentDateTime());
                 task.setType("Attachment");

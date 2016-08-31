@@ -21,6 +21,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
     private JSONArray jObject;
     private int commentId;
+    private int claimId;
     private CommentService commentService;
 
     public void setCommentService(CommentService commentService) {
@@ -35,34 +36,10 @@ public class CommentAction extends ClaimModelAction<Comment> {
         this.commentId = commentId;
     }
 
-//    public String createNewComment() {
-//        try {
-//            boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer()
-//                    ? getAuthenticatedUser().getInsurer().isDisablePrivateNotes()
-//                    : getAuthenticatedUser().isCHO()
-//                    ? getAuthenticatedUser().getChorganisation().isDisablePrivateNotes()
-//                    : claim.getInsurer().isDisablePrivateNotes();
-//
-//            if (disablePrivateNotes && model.getVisibilityType() != 0) {
-//                LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
-//                this.getActionResponse().AddError("Note can't be added. Insufficient priviliges!");
-//                return ERROR;
-//            }
-//            claim.addComment(model);
-//            
-//            String result = super.updateModel();
-//            
-//            // Generate NoteAdded Event
-//            LOG.debug("Generating NoteAdded Event...");
-////            activityEventGenerator.generate(claim, model, ActivityEvent.NOTE_ADDED_EVENT);
-//            
-//            return result;
-//        } catch (Exception ex) {
-//            LOG.warn("Error creating comment/note for claim {}", claim.getChoReference(), ex);
-//            handleException(ex);
-//            return ERROR;
-//        }
-//    }
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
+
 
     public String getJsonArrayData() {
         if (jObject != null) {
@@ -95,6 +72,32 @@ public class CommentAction extends ClaimModelAction<Comment> {
         this.jObject = JSONArray.fromObject(viewDatas);
         return SUCCESS;
     }
+
+    public String getCommentsForReview() {
+
+        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
+
+        if (claim == null) {
+            claim = claimService.getClaim(claimId);
+        }
+
+        List<Comment> comments = claim.getComments();
+
+        for (Comment c : comments) {
+            if (c.isReverted() || ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer()))
+                    || c.getReviewRequired() == null || !c.getReviewRequired()) {
+                continue;
+            }
+            CommentViewData cvd = new CommentViewData(c,getAuthenticatedUser());
+            if (cvd.getReviewRequired().equals("Required")) {
+                viewDatas.add(cvd);
+            }
+        }
+
+        this.jObject = JSONArray.fromObject(viewDatas);
+        return SUCCESS;
+    }
+
 
     @Override
     String getTabName() {
@@ -153,6 +156,27 @@ public class CommentAction extends ClaimModelAction<Comment> {
         return SUCCESS;
     }
 
+    public String acknowledgeComment() {
+        LOG.debug("Acknowledging comment...");
+        try {
+            if (model.getId() != null) {
+
+                    commentService.acknowledgeCommentById(model.getId());
+                    LOG.debug("Comment acknowledged.");
+                    this.getActionResponse().AssignMessageResult("Note has been acknowledged.");                    
+            } else {
+                LOG.warn("User trying to delete Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+                this.getActionResponse().AssignMessageResult("No comment id found");
+                return ERROR;
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown deleting comment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult(ex.getMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+
     @Override
     public void validate() {
         if (claim != null) {
@@ -174,6 +198,14 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
     public boolean isChoIsDisablePrivateNotes() {
         return claim.getChorganisation().isDisablePrivateNotes();
+    }
+
+    public boolean isInsurerTaskManagementEnabled() {
+        return claim.getInsurer().isTaskManagementEnable();
+    }
+
+    public boolean isChoTaskManagementEnabled() {
+        return claim.getChorganisation().isTaskManagementEnable();
     }
 
 

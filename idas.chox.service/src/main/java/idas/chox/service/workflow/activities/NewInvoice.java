@@ -249,7 +249,6 @@ public class NewInvoice extends BaseActivity {
     private boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
         if (claim.getChorganisation().isTaskManagementEnable()) {
             Task task = new Task();
-            task.setComplete(Boolean.FALSE);
             task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
             task.setDueDate(DateHelper.getCurrentDateTime());
             task.setType("Repair Documentation");
