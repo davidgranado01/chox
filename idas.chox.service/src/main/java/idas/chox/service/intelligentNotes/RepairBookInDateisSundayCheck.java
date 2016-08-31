@@ -18,7 +18,7 @@ public class RepairBookInDateisSundayCheck implements IntelligentNote {
             }
         }
 
-        Boolean showing = isSunday & c.getCustomer().getIsUsable();
+        Boolean showing = isSunday && c.getCustomer()!=null && c.getCustomer().getIsUsable();
         return showing;
     }
 

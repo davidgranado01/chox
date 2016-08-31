@@ -18,7 +18,7 @@ public class UnroadworthyVehicleCheckNote implements IntelligentNote {
          */
 
         //1. If the ‘Is Usable' field has an N/No
-        showing |= !c.getCustomer().getIsUsable();
+        showing |= !(c.getCustomer()==null || (c.getCustomer()!=null && c.getCustomer().getIsUsable()));
 
         return showing;
     }

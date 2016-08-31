@@ -333,12 +333,12 @@ public class EngineerReport extends Entity implements Serializable {
         if (this.days == null)
             return 0;
 
-        return this.days.intValue();
+        return this.days;
     }
 
     public String getIsUsableDesc() {
         if (isUsable == null)
-            return "";
+            return "Unknown";
         
         return isUsable ? "Yes" : "No";
 

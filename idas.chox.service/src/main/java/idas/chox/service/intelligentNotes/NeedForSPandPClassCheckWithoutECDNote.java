@@ -33,7 +33,7 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
         showing &= !isEcdExist(c);
 
         // 3. the ‘Is Usable' field is ‘Y/Yes/T/True'
-        showing &= c.getCustomer().getIsUsable();
+        showing &= c.getCustomer()!=null && c.getCustomer().getIsUsable();
 
         // 4. If Managing Repair?' field is 'N' (No) [todo item 6.17.1]
         showing &= !c.isManagingRepair();

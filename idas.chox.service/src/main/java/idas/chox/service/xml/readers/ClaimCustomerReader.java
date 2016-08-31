@@ -16,6 +16,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
+import java.util.Objects;
 
 public class ClaimCustomerReader extends BaseEntityReader {
 
@@ -127,11 +128,11 @@ public class ClaimCustomerReader extends BaseEntityReader {
             customer.setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
             customer.setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
             customer.setVehicleYear(XmlHelper.getNodeValue(element, "year-of-manufacture"));
-            boolean currentIsUsable = customer.getIsUsable();
+            Boolean currentIsUsable = customer.getIsUsable();
             customer.setIsUsable(XmlHelper.getBooleanFromNode(element, "usable"));
             // If 'usable' status has changed and this is not a new claim (or new customer)
             // then we need to flag for repair anomaly checking
-            if (currentIsUsable != customer.getIsUsable()
+            if (!Objects.equals(currentIsUsable, customer.getIsUsable())
                     && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
                 claimResult.setCheckForRepairAnomalies(true);
@@ -141,7 +142,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             customer.setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
             Boolean currentIsTotalLoss = customer.getIsTotalLoss();
             customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
-            if (currentIsTotalLoss != null && currentIsTotalLoss != customer.getIsTotalLoss()
+            if (currentIsTotalLoss != null && !Objects.equals(currentIsTotalLoss, customer.getIsTotalLoss())
                     && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
                 customer.setIsTotalLossOriginal(currentIsTotalLoss);

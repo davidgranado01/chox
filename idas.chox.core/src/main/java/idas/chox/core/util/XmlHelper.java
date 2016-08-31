@@ -98,13 +98,12 @@ public class XmlHelper {
         String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
 
         if (thisNodeValue.equalsIgnoreCase("y") || thisNodeValue.equalsIgnoreCase("yes")) {
-            returnBoolean = true;
-        } else if (thisNodeValue.equalsIgnoreCase("n")) {
-            returnBoolean = false;
+            returnBoolean = Boolean.TRUE;
+        } else if (thisNodeValue.equalsIgnoreCase("n") || thisNodeValue.equalsIgnoreCase("no")) {
+            returnBoolean = Boolean.FALSE;
         }
 
         return returnBoolean;
-
     }
 
     public static Date getDateFromNode(Element thisElement, String thisNodeName) {

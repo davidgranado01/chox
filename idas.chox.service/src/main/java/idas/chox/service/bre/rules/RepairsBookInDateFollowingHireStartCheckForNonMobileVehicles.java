@@ -29,7 +29,7 @@ public class RepairsBookInDateFollowingHireStartCheckForNonMobileVehicles implem
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForNonMobileVehicle() && claim.getCustomer().getIsUsable() != null && !claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("Repairs Book In Date Following HireStart Check For NonMobile Vehicles  is active");

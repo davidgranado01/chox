@@ -35,7 +35,7 @@ public class RepairBookedInDateOnThursday implements IBusinessRule {
         if (!isExcluded && !ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairBookedInDateOnThursday() && claim.getHireMonitoringDetail() != null) {
             boolean success = true;
 
-            if (claim.getHireMonitoringDetail().getRepairBookInDate() != null && claim.getCustomer().getIsUsable()) {
+            if (claim.getHireMonitoringDetail().getRepairBookInDate() != null && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
 
                 if (DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate()) == 5) {
                     success = false;

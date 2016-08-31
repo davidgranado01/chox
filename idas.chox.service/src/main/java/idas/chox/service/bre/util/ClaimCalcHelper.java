@@ -66,7 +66,7 @@ public final class ClaimCalcHelper {
         LOG.debug("Adding to allowable days: TakeVehicleOutDays={}", claim.getBreBand().getTakeVehicleOutDays());
         allowedDays += claim.getBreBand().getTakeVehicleOutDays();
         
-        if (claim.getCustomer().getIsUsable()) {
+        if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable() ) {
             LOG.debug("Adding to allowable days: EngineerInspectionDelayDaysMobile={}", claim.getBreBand().getEngineerInspectionDelayDaysMobile());
             allowedDays += claim.getBreBand().getEngineerInspectionDelayDaysMobile();
         } else {
@@ -77,7 +77,7 @@ public final class ClaimCalcHelper {
         //if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
         if (claim.getLatestHireMonitoringEcd() == null) { //no ecd
             LOG.debug("No ECD.");
-            if (claim.getCustomer().getIsUsable()) {
+            if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
                 LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                 allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
                 LOG.debug("Adding to allowable days: IsMobileDayAllowance={}", claim.getBreBand().getIsMobileDayAllowance());
@@ -95,7 +95,7 @@ public final class ClaimCalcHelper {
         } else { //we have an ecd
             LOG.debug("ECD found: adding hire duration");
 
-            if (claim.getCustomer().getIsUsable()) {
+            if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
                 LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                 allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
             } else {
@@ -282,13 +282,13 @@ public final class ClaimCalcHelper {
         int iDays = 0;
 
         if (claim.getLatestHireMonitoringEcd() == null) {
-            if (claim.getCustomer().getIsUsable()) {
+            if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
                 iDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
             } else {
                 iDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
             }
         } else {
-            if (claim.getCustomer().getIsUsable()) {
+            if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
                 iDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
             } else {
                 iDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
@@ -297,7 +297,7 @@ public final class ClaimCalcHelper {
 
         iDays += claim.getBreBand().getTakeVehicleOutDays();
 
-        if (claim.getCustomer().getIsUsable()) {
+        if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
             iDays += claim.getBreBand().getEngineerInspectionDelayDaysMobile();
         } else {
             iDays += claim.getBreBand().getEngineerInspectionDelayDaysNonMobile();

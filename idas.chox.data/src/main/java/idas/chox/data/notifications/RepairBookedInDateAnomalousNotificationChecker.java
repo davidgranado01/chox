@@ -21,18 +21,24 @@ public class RepairBookedInDateAnomalousNotificationChecker implements Anomalous
         boolean bFlag = false;
 
         if (c.getHireMonitoringDetail() != null && c.getHireMonitoringDetail().getRepairBookInDate() != null
-                && c.getCustomer() != null && c.getCustomer().getIsUsable()) {
+                && c.getCustomer() != null && c.getCustomer().getIsUsable() != null && c.getCustomer().getIsUsable()) {
 
             int day = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate());
-            if (day == Calendar.FRIDAY) {
-                dayString = "Friday";
-                bFlag = true;
-            } else if (day == Calendar.SATURDAY) {
-                dayString = "Saturday";
-                bFlag = true;
-            } else if (day == Calendar.SUNDAY) {
-                dayString = "Sunday";
-                bFlag = true;
+            switch (day) {
+                case Calendar.FRIDAY:
+                    dayString = "Friday";
+                    bFlag = true;
+                    break;
+                case Calendar.SATURDAY:
+                    dayString = "Saturday";
+                    bFlag = true;
+                    break;
+                case Calendar.SUNDAY:
+                    dayString = "Sunday";
+                    bFlag = true;
+                    break;
+                default:
+                    break;
             }
         }
 

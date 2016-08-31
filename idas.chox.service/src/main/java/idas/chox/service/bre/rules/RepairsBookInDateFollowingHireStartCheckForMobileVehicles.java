@@ -30,7 +30,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles  is active");

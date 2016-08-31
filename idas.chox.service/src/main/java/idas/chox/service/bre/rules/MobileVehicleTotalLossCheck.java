@@ -27,7 +27,7 @@ public class MobileVehicleTotalLossCheck implements IBusinessRule {
              * flagged for review.
              */
 
-            boolean success = !(claim.getCustomer().getIsTotalLoss() && claim.getCustomer().getIsUsable());
+            boolean success = !(claim.getCustomer().getIsTotalLoss() && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Customer;
 import idas.chox.service.security.TabAccessibility;
+import java.util.Objects;
 
 
 /**
@@ -48,14 +49,14 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
         LOG.debug("Updating Vehicle Damage - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.getIsTotalLoss());
         // If total loss has changed, we also need to update the original field
         // and the hire monitoring total loss fields
-        if (isTotalLossOriginal != isTotalLossNew) {
+        if (!Objects.equals(isTotalLossOriginal, isTotalLossNew)) {
             claimService.setTotalLoss(claim, isTotalLossNew);
             updated=true;
         }
         claim.setCustomer(model);
 
         // If the 'is usable' status has changed then we need to check for anomalies
-        if (isUsableOriginal != model.getIsUsable()) {
+        if (!Objects.equals(isUsableOriginal, model.getIsUsable())) {
             claimService.checkRepairBookedInDateAnomaly(claim);
             updated=true;
             

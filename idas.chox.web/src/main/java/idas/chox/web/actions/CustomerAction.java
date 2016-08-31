@@ -22,7 +22,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
     private VehicleClassService vehicleClassService;
     private int vehicleClassId;
     private String oldVRN;
-    private boolean isUsableOriginal;
+    private Boolean isUsableOriginal;
     @Override
     protected Customer loadModel() {
 
@@ -66,7 +66,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             }
         }
         // If cusomer car is now usable, we need to check for hire anomolies
-        if (!isUsableOriginal && model.getIsUsable()) {
+        if (!((isUsableOriginal != null && isUsableOriginal) || isUsableOriginal == null) && model.getIsUsable()!=null && model.getIsUsable()) {
                 claimService.checkRepairBookedInDateAnomaly(claim);
                 // update model in session before calling super.updateModel as model version
                 // may have been increased when anomalous added or removed from claim.

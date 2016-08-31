@@ -30,7 +30,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
         if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType())
                 && claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()
-                && claim.getCustomer() != null) {
+                && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null) {
 
             Customer cvdamage = claim.getCustomer();
             BreBand choBand = claim.getBreBand();

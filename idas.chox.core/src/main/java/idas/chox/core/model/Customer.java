@@ -100,7 +100,8 @@ public class Customer extends Entity implements Serializable {
     /**
      * This attribute maps to the column is_usable in the customer table.
      */
-    private boolean isUsable;
+    private Boolean isUsable;
+    
     /**
      * This attribute maps to the column is_active in the customer table.
      */
@@ -574,17 +575,35 @@ public class Customer extends Entity implements Serializable {
      *
      * @return boolean
      */
-    public boolean getIsUsable() {
+    public Boolean getIsUsable() {
         return isUsable;
     }
+    
+    public String getIsUsableDesc() {
+
+        return this.isUsable == null ? "Unknown" : this.isUsable ? "Yes" : "No";
+    }
+
 
     /**
      * Method 'setIsUsable'
      *
      * @param isUsable
      */
-    public void setIsUsable(boolean isUsable) {
+    public void setIsUsable(Boolean isUsable) {
         this.isUsable = isUsable;
+    }
+
+    public void setIsUsable(String isUsable) {
+        if (isUsable == null || "null".equalsIgnoreCase(isUsable)) {
+            this.isUsable = null;
+        } else if ("true".equalsIgnoreCase(isUsable)) {
+            this.isUsable = Boolean.TRUE;
+        } else if ("false".equalsIgnoreCase(isUsable)) {
+            this.isUsable = Boolean.FALSE;
+        } else {
+            this.isUsable = null;
+        }
     }
 
     /**
@@ -676,11 +695,6 @@ public class Customer extends Entity implements Serializable {
 
     public void setIsTotalLoss(Boolean isTotalLoss) {
         this.isTotalLoss = isTotalLoss;
-    }
-
-    public String getIsUsableDesc() {
-
-        return this.isUsable ? "Yes" : "No";
     }
 
     public String getIsTotalLossDesc() {

@@ -25,6 +25,7 @@
         
         ui.ajaxForm(form, null, 'html');
         $("#CVDSucsessBox").fadeOut(10000);
+        $('select[name="isUsable"]').val('<s:property value='isUsable'/>');
     });
     
     function vehicleDamageSubmit() {
@@ -57,7 +58,11 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Is Usable?</label>
-                <s:checkbox  id="customerVehicleDamageisUsableId" name="isUsable" />
+                <select name="isUsable" id="customerVehicleDamageisUsableId">
+                    <option value="">Unknown</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -73,4 +78,4 @@
     </fieldset>
     <!--<input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>-->
     <!--s:token/-->
-</form>    
+</form>
