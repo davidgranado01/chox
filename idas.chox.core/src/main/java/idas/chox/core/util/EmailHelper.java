@@ -96,7 +96,11 @@ public class EmailHelper {
                 LOG.debug("BCC Recipient added: {}", bccRecipient);
             }
    
-            msg.setSubject(emailSubjectPrefix + subject);
+            if (subject.startsWith("CHOX Fraud Referral")) {
+                msg.setSubject(subject);
+            } else {
+                msg.setSubject(emailSubjectPrefix + subject);
+            }
             msg.setContent(message, "text/plain");
             Transport.send(msg);
 
