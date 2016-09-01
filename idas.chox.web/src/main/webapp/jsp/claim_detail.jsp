@@ -465,7 +465,7 @@
             }
 <s:if test="moreOptionRequestFraudCheck">
             else if(selectedAction==='fraudCheck') {
-                Ext.MessageBox.confirm('Run Fraud Check', 'Running the Fraud Check will send the claim data to Keoghs ADA Fraud Tool and return a result to CHOX. It may take a short while to return a result and will require a browser refresh to be visible.',doRunFraudCheck);
+                Ext.MessageBox.confirm('Run Fraud Check', 'Running the Fraud Check will send the claim data to Keoghs ADA Fraud Tool and return a result to CHOX. It may take a short while to return a result and will require a browser refresh to be visible.\n Continue?',doRunFraudCheck);
             }
 </s:if>
             else{

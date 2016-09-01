@@ -52,16 +52,16 @@ public class ReferFraudCheck extends BaseActivity {
     @Secured ({"ROLE_INS"})
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Refer claim '{}' to Keoghs...", claim.getChoReference());
-        String subject = "CHOX Fraud Referral from " + claim.getInsurer().getName() + " on claim Supplier Reference '" + claim.getChoReference() + "'";
-        String message = "Client Batch Reference Number: " + claim.getKeoghsRequest().getClientBatchReference()
-                + "\nSupplier Reference: " + claim.getChoReference()
-                + "\nInsurer Name: " + claim.getInsurer().getName()
-                + "\nInsurer Handler Name: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getFullName())
-                + "\nTelephone number of Handle: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getTelephone())
-                + "\nInsurer Claim Number: " + claim.getClaimNumber()
-                + "\nCHO Name: " + claim.getChorganisation().getName()
-                + "\nCHO Customer Name: " + claim.getCustomer().getTitle() + " " + claim.getCustomer().getFirstName() + " " + claim.getCustomer().getLastName()
-                + "\nCHO Customer VRN: " + claim.getCustomer().getVehicleRegistration();
+        String subject = "CHOX Fraud Referral from " + claim.getInsurer().getName() + " on claim '" + claim.getChoReference() + "'";
+        String message = "Client Batch Reference Number: " + (claim.getKeoghsRequest()==null ? "(not available)" : claim.getKeoghsRequest().getClientBatchReference())
+                + "\r\nSupplier Reference: " + claim.getChoReference()
+                + "\r\nInsurer Name: " + claim.getInsurer().getName()
+                + "\r\nInsurer Handler Name: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getFullName())
+                + "\r\nTelephone number of Handler: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getTelephone() == null ? "(not available)" : claim.getClaimOwner().getTelephone())
+                + "\r\nInsurer Claim Number: " + claim.getClaimNumber()
+                + "\r\nCHO Name: " + claim.getChorganisation().getName()
+                + "\r\nCHO Customer Name: " + claim.getCustomer().getTitle() + " " + claim.getCustomer().getFirstName() + " " + claim.getCustomer().getLastName()
+                + "\r\nCHO Customer VRN: " + (claim.getCustomer().getVehicleRegistration()==null ? "(not available)" : claim.getCustomer().getVehicleRegistration());
 
         LOG.info("Sending email to keoghs '{}':\n{}", keoghsReceiver, message);
         sendMail(subject, message);
