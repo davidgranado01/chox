@@ -26,6 +26,8 @@
                 {name:'complete', type: 'boolean'},
                 {name:'claimId'},
                 {name:'choReference'},
+                {name:'insurerOwner'},
+                {name:'choOwner'},
                 {name:'dueDate', type: 'date',  dateFormat: 'd/m/Y'},
                 {name:'type'},
                 {name:'description'},
@@ -149,8 +151,7 @@
                                 this.setText('Show All Tasks');
                             }
                         },
-                        pressed: false,
-                        disabled : !<s:property value="isUserHasManagerRole" />
+                        pressed: false
                     }
                     ,'->'
                     ,{
@@ -181,6 +182,12 @@
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
+<s:if test="isInsurer || isChoxAdmin" >
+                {header: "Insurer Claim Owner", width: 120, dataIndex: 'insurerOwner', sortable: true, resizable: true},
+</s:if>
+<s:else>
+                {header: "CHO Claim Owner", width: 120, dataIndex: 'choOwner', sortable: true, resizable: true},
+</s:else>
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
@@ -669,6 +676,8 @@
             var task = tasksGrid.getStore().getAt(rowIndex);
             var title="Task";
             var msg = "<b>Due Date</b>: " + dateRenderer(task.get("dueDate"));
+            msg += "<br/><b>Insurer Claim Owner</b>: " + task.get("insurerOwner");
+            msg += "<br/><b>CHO Claim Owner</b>: " + task.get("choOwner");
             msg += "<br/><b>Created Date</b>: " + dateRenderer(task.get("createdDate"));
             msg += "<br/><b>Created By</b>: " + task.get("createdBy");
             if (task.get('complete')) {

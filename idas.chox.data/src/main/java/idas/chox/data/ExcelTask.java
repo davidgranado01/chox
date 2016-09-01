@@ -12,6 +12,7 @@ public class ExcelTask {
     private String taskCreatedBy;
     private String taskCreatedByOrg;
     private String taskOwner = "N/A";
+    private String choTaskOwner = "N/A";
     private String taskRoleAssignedTo = "N/A";
     private String taskWrokgroup;
     private String taskCurrentClaimStatus;
@@ -121,5 +122,14 @@ public class ExcelTask {
     public void setTaskStatusOfClaimWhenTaskCreated(String taskStatusOfClaimWhenTaskCreated) {
         this.taskStatusOfClaimWhenTaskCreated = taskStatusOfClaimWhenTaskCreated;
     }
+
+    public String getChoTaskOwner() {
+        return choTaskOwner;
+    }
+
+    public void setChoTaskOwner(String choTaskOwner) {
+        this.choTaskOwner = choTaskOwner;
+    }
+
     
 }

@@ -526,16 +526,18 @@ public class TasksAction extends BaseAction {
             excelTask.setTaskCreatedDate(task.getCreatedDate());
             excelTask.setTaskCreatedBy(task.getCreatedBy().getDisplayName());
             excelTask.setTaskComplete(task.getComplete() ? "Yes" : "No");
-
             if (task.getClaim() != null) {
 
                 excelTask.setSupplierReference(task.getClaim().getChoReference());
                 excelTask.setTaskCurrentClaimStatus(task.getClaim().getStatus());
 
-                if (task.getVisibilityRole() != null && task.getVisibilityRole().equals(WebUserRole.ROLE_INS_CH)) {
+//                if (task.getVisibilityRole() != null && task.getVisibilityRole().equals(WebUserRole.ROLE_INS_CH)) {
                     if (task.getClaim().getClaimOwner() != null) {
                         excelTask.setTaskOwner(task.getClaim().getClaimOwner().getDisplayName());
                     }
+//                }
+                if (task.getClaim().getSupplierClaimOwner()!= null) {
+                        excelTask.setChoTaskOwner(task.getClaim().getSupplierClaimOwner().getDisplayName());
                 }
 
                 if (task.getClaim().getWorkgroup() != null) {
@@ -587,7 +589,9 @@ public class TasksAction extends BaseAction {
                     XLSTransformer transformer = new XLSTransformer();
                     // 'Owner of Claim Task Assigned To' and ‘Role Assigned To’ columns do not apply to the CHO user. Please look at bug#2546.
                     if (isCho) {
-                        transformer.setColumnsToHide(new short[]{(short) 7, (short) 8});
+                        transformer.setColumnsToHide(new short[]{(short) 7, (short) 8, (short) 9});
+                    } else {
+                        transformer.setColumnsToHide(new short[]{(short) 10});
                     }
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
                     InputStream is = new FileInputStream(templateFilePath);

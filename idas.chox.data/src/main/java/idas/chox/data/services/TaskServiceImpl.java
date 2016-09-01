@@ -710,6 +710,16 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 // left join on claim used here to sort the task by choReference.
                 criteria.createAlias("this.raisedBy", "w", CriteriaSpecification.LEFT_JOIN);
             }
+            if (sort != null && sort.equalsIgnoreCase("insurerOwner")) {
+                // left join on claim used here to sort the task by choReference.
+                criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("c.claimOwner", "w", CriteriaSpecification.LEFT_JOIN);
+            }
+            if (sort != null && sort.equalsIgnoreCase("choOwner")) {
+                // left join on claim used here to sort the task by choReference.
+                criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("c.supplierClaimOwner", "w", CriteriaSpecification.LEFT_JOIN);
+            }
             
             criteria.setFirstResult(start);
             criteria.setMaxResults(limit);
@@ -743,6 +753,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
             } else if (sort.equalsIgnoreCase("raisedBy")) {
+                addSort(criteria, "w.lastName", dir);
+                addSort(criteria, "w.firstName", dir);
+            }  else if (sort.equalsIgnoreCase("insurerOwner") || sort.equalsIgnoreCase("choOwner")) {
                 addSort(criteria, "w.lastName", dir);
                 addSort(criteria, "w.firstName", dir);
             }

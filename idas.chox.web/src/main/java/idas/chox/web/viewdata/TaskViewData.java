@@ -26,6 +26,8 @@ public class TaskViewData {
     private String completedDate;
     private String type;
     private String description;
+    private String insurerOwner;
+    private String choOwner;
     private Boolean complete;
     private String createdBy;
     private String completedBy;
@@ -57,7 +59,21 @@ public class TaskViewData {
         } else {
             choReference = "";
         }
-
+        if (task.getClaim() == null) {
+            insurerOwner = "N/A";
+            choOwner = "N/A";
+        } else {
+            if (task.getClaim().getClaimOwner() == null) {
+                insurerOwner = "N/A";
+            } else {
+                insurerOwner = task.getClaim().getClaimOwner().getDisplayName();
+            }
+            if (task.getClaim().getSupplierClaimOwner() == null) {
+                choOwner = "N/A";
+            } else {
+                choOwner = task.getClaim().getSupplierClaimOwner().getDisplayName();
+            }
+        }
         if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3)) {
             if (showInsurerRole) {
                 toBeCompletedBy = task.getVisibilityRole();
@@ -191,5 +207,13 @@ public class TaskViewData {
 
     public String getToBeCompletedBy() {
         return toBeCompletedBy;
+    }
+
+    public String getInsurerOwner() {
+        return insurerOwner;
+    }
+
+    public String getChoOwner() {
+        return choOwner;
     }
 }
