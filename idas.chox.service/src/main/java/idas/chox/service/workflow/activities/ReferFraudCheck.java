@@ -53,7 +53,7 @@ public class ReferFraudCheck extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Refer claim '{}' to Keoghs...", claim.getChoReference());
         String subject = "CHOX Fraud Referral from " + claim.getInsurer().getName() + " on claim '" + claim.getChoReference() + "'";
-        String message = "Client Batch Reference Number: " + claim.getKeoghsRequest()==null ? "(not available)" : claim.getKeoghsRequest().getClientBatchReference()
+        String message = "Client Batch Reference Number: " + (claim.getKeoghsRequest()==null ? "(not available)" : claim.getKeoghsRequest().getClientBatchReference())
                 + "\r\nSupplier Reference: " + claim.getChoReference()
                 + "\r\nInsurer Name: " + claim.getInsurer().getName()
                 + "\r\nInsurer Handler Name: " + (claim.getClaimOwner() == null ? "(not available)" : claim.getClaimOwner().getFullName())
@@ -61,7 +61,7 @@ public class ReferFraudCheck extends BaseActivity {
                 + "\r\nInsurer Claim Number: " + claim.getClaimNumber()
                 + "\r\nCHO Name: " + claim.getChorganisation().getName()
                 + "\r\nCHO Customer Name: " + claim.getCustomer().getTitle() + " " + claim.getCustomer().getFirstName() + " " + claim.getCustomer().getLastName()
-                + "\r\nCHO Customer VRN: " + claim.getCustomer().getVehicleRegistration()==null ? "(not available)" : claim.getCustomer().getVehicleRegistration();
+                + "\r\nCHO Customer VRN: " + (claim.getCustomer().getVehicleRegistration()==null ? "(not available)" : claim.getCustomer().getVehicleRegistration());
 
         LOG.info("Sending email to keoghs '{}':\n{}", keoghsReceiver, message);
         sendMail(subject, message);
