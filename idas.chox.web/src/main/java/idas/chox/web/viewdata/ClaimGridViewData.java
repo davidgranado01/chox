@@ -25,6 +25,7 @@ public class ClaimGridViewData {
     private final String statusModifiedDate;
     private final String status;
     private final String workgroup;
+    private final String lastReviewDate;
     private final String reviewDate;
     private final String cho;
     private final String choBranding;
@@ -69,7 +70,7 @@ public class ClaimGridViewData {
         
         this.reviewDate = (claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getNextReviewDate() != null)
                 ? dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate()) : null;
-
+        this.lastReviewDate = claim.getLastReviewDate() != null ? dateFormat.format(claim.getLastReviewDate()) : null;
         this.isWorkgroupEditable = AccessibilityHelper.getIsClaimWorkgroupEditable(claim, user);
         this.isOwnershipEditable = AccessibilityHelper.getIsClaimOwnershipEditable(claim, user);
 
@@ -127,6 +128,10 @@ public class ClaimGridViewData {
 
     public String getReviewDate() {
         return reviewDate;
+    }
+
+    public String getLastReviewDate() {
+        return lastReviewDate;
     }
 
 

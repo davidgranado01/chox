@@ -68,6 +68,7 @@ import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
+import static idas.chox.core.util.RoleHelper.isCheckSelectedRoleExist;
 import idas.chox.data.notifications.NotificationType;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
@@ -1916,6 +1917,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return rejectEnabled;
     }
 
+    public boolean getCanShowLastReviewButton() {
+        boolean result = false;
+        // Last Review Date Button visible to insurer CH and manager for open claims only
+        if (!ClaimStatus.getInsurerClosedStatus(true).contains(claim.getStatus())
+                && (isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_CH) || isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG))) {
+            result = true;
+        }
+        return result;
+    }
+    
     public boolean getCanShowSlaExtensionButton() {
 
         boolean slaExtensionEnabled = applicationAccessibility.checkActivityAccessibility(

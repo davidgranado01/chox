@@ -149,6 +149,7 @@
         <property name="activityFactory" ref="activityFactory" />
     </bean>
     <bean id="updateCaseWithSolicitor" class="idas.chox.service.workflow.activities.UpdateCaseWithSolicitor" scope="prototype"/>
+    <bean id="lastReviewDate" class="idas.chox.service.workflow.activities.LastReviewDate" scope="prototype"/>
     <bean id="saveOrSubmitClaimAuditReview" class="idas.chox.service.workflow.activities.SaveOrSubmitClaimAuditReview" scope="prototype">
         <property name="vehicleClassService" ref="vehicleClassService" />
     </bean>

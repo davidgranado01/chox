@@ -40,6 +40,7 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityModifiedDate;
     private Date managingRepairLastModified;
     private Date dateMarkedWithSolicitor;
+    private Date lastReviewDate;
     private String choReference;
     private String status;
     private String claimNumber;
@@ -625,6 +626,14 @@ public class Claim extends Entity implements Serializable {
 
     public void setPaymentDispute(boolean paymentDispute) {
         this.paymentDispute = paymentDispute;
+    }
+
+    public Date getLastReviewDate() {
+        return lastReviewDate;
+    }
+
+    public void setLastReviewDate(Date lastReviewDate) {
+        this.lastReviewDate = lastReviewDate;
     }
 
     
