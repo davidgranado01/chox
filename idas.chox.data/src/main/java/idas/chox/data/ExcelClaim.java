@@ -18,6 +18,7 @@ public class ExcelClaim {
     private final String claimChoReference;
     private final String claimChorganisationName;
     private final String claimWorkgroupName;
+    private final Date claimLastReviewDate;
     private final Date claimStatusModifiedDate;
     private final BigDecimal claimIdemnity;
     private final String claimLiabilityStatus;
@@ -190,6 +191,7 @@ public class ExcelClaim {
         claimChorganisationName = (String) data.get("chorg_name");
         claimWorkgroupName= (String) data.get("workgroup_name");
         claimStatusModifiedDate = (Date) data.get("status_modified_date");
+        claimLastReviewDate = (Date) data.get("last_review_date");
         claimIdemnity = (BigDecimal) data.get("indeminty_amount");
         claimLiabilityStatus = (LiabilityStatus.values()[ (Short)data.get("liability_status")]).toString();
         claimPercentageLiabilityAccepted = (BigDecimal) data.get("percentage_liability_accepted");
@@ -889,6 +891,10 @@ public class ExcelClaim {
 
     public Date getClaimStatusModifiedDate() {
         return claimStatusModifiedDate;
+    }
+
+    public Date getClaimLastReviewDate() {
+        return claimLastReviewDate;
     }
 
     public String getClaimThirdPartyAddress1() {
