@@ -102,7 +102,12 @@
                     {name:'claimNumber'},
                     {name:'claimType'},
                     {name:'statusModifiedDate', type: 'string', dateFormat:'timestamp'},
+<s:if test="isInsurer" >
+                    {name:'lastReviewDate', type: 'string', dateFormat:'timestamp'},
+</s:if>
+<s:else>
                     {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
+</s:else>
                     {name:'insurer'},
                     {name:'cho'},
                     {name:'choBranding'},
@@ -218,7 +223,12 @@
                     {header: "Ins Owner", width: 50, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
                     {header: "CHO Owner", width: 50, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
                     {header: "Status Modified Date", width: 40, sortable: true, dataIndex: 'statusModifiedDate'},
+<s:if test="isInsurer" >
+                    {header: "Last Review Date", width: 40, sortable: true, dataIndex: 'lastReviewDate'},
+</s:if>
+<s:else>
                     {header: "Review Date", width: 40, sortable: true, dataIndex: 'reviewDate'},
+</s:else>
                     {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
                     {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                     {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){

@@ -34,7 +34,7 @@
     var isChoxAdmin = <s:property value="isChoxAdmin" />;
     var taskTabTitle = 'Tasks';
     var commentTabTitle = 'Notes';
- 
+    var reviewDateSelectionDlg;
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
@@ -141,6 +141,91 @@
         <s:elseif test="showErrorMessage">
             Ext.Msg.alert('Error', '<c:out value='${statusMsg}' />');
         </s:elseif>
+            
+<s:if test="isInsurer">
+
+        reviewDateSelectionDlg =  new Ext.Window({
+            applyTo:'reviewDateDlgHolder',
+            layout:'fit',
+            width:537,
+            height:260,
+            x: 440,
+            y: 200,
+            closeAction:'hide',
+            plain: false,
+            modal: true,
+            title: 'Last Review Date',
+            resizable : false,
+            items: new Ext.Panel({
+                applyTo: 'reviewDateSelectionPanel'
+            }),
+            buttons: [{
+                text:'Ok',
+                handler:function(){
+                    if($("form#reviewDateForm").valid()){
+                        reviewDateSelectionDlg.hide();
+                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                        choxJqueryHttpSubmit($("form#reviewDateForm"));
+                    }
+                 }
+            },{
+                text: 'Close',
+                handler: function(){
+                    // hide the error message box, which could be displayed,
+                    // so that it doesn't appear when we're opened again
+                    $("#reviewDateFormMessageBox").hide();
+                    reviewDateSelectionDlg.hide();
+                }
+            }]
+        });
+
+        var lastReviewDate = new Ext.form.DateField({
+            id: 'lastReviewDateId',
+            name: 'lastReviewDate',
+            validationEvent: false,
+            validateOnBlur: false,
+            renderTo: 'reviewDateSelectionHolder',
+            width: 95,
+            format: 'd/m/Y',
+            maxValue: new Date(),
+            maxText: 'Invalid',
+            showWeekNumber: true
+        });
+
+        $.validator.addMethod( "checkLastReviewDate",
+            function(value, element) {
+                var composedDate = new Date();
+                var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(value);
+                if(matches != null){
+                    var d = matches[1];
+                    var m = matches[2] - 1;
+                    var y = matches[3];
+                    composedDate = new Date(y, m, d);
+                }
+                if ( value == "" ){
+                    return true;
+                }
+                var currentDate = new Date();
+                if (composedDate>currentDate ){
+                    return false;
+                }
+            return true;
+        }
+    );
+
+        $("#reviewDateForm").validate(
+        {
+            errorLabelContainer: "#reviewDateFormMessageBox",
+            rules: {
+            	
+                lastReviewDate:{dateITA:true, checkLastReviewDate:true}
+            },
+            messages: {
+                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future"}
+            }
+        });
+
+</s:if>
     });
 
     function updateTabs() {
@@ -373,6 +458,10 @@
             });
     }
     
+    function lastReviewDate() {
+                        reviewDateSelectionDlg.show();
+    }
+    
     /***********************************************************************************
      * SWITCH CHO
      ***********************************************************************************/
@@ -557,32 +646,37 @@
                             </s:if>
                             <s:if test="canShowSwitchClaimToMultipleInsButton" >
                                         
-                               <input id="mb1" value="Switch Insurer" type="button" onclick="return switchClaimToMultipleInsurer();"/>
+                               <input id="mb2" value="Switch Insurer" type="button" onclick="return switchClaimToMultipleInsurer();"/>
 
                             </s:if>
                             <s:if test="canShowSwitchChoButton" >
                                         
-                               <input id="mb1" value='Switch CHO To <s:property value="linkedChoName"/>' type="button" onclick="return switchCho();"/>
+                               <input id="mb3" value='Switch CHO To <s:property value="linkedChoName"/>' type="button" onclick="return switchCho();"/>
 
                             </s:if>
                             <s:if test="canRevertClaimStatus">
                                         
-                               <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                               <input value="Revert Status" type="button" onclick="return revertClaimStatus();"/>
                        
                             </s:if>
                             <s:if test="canCloseClaim">
                                 
-                               <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
+                               <input value="Close Claim" type="button" onclick="return closeClaimStatus();"/>
                                         
                             </s:if>
                             <s:if test="canReopenClaim">
                                         
-                               <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                               <input value="Re-Open Claim" type="button" onclick="return reopenClaimStatus();"/>
                        
                             </s:if>
                             <s:if test="canShowSlaExtensionButton">
 
-                                <input value="Grant Extension" type="button" onclick="javascript: return setSlaExtension();"/>
+                                <input value="Grant Extension" type="button" onclick="return setSlaExtension();"/>
+
+                            </s:if>
+                                <s:if test="canShowLastReviewButton" >
+                                        
+                               <input id="lastReviewButtonId" value='Last Review Date' type="button" onclick="return lastReviewDate();"/>
 
                             </s:if>
                          </td>
@@ -1111,6 +1205,35 @@
         <div id="commentTab" class="x-hide-display"></div>
 
         <div id="taskTab" class="x-hide-display"></div>
+        
+    <div id="reviewDateDlgHolder" class="x-hidden">
+        <div id="reviewDateSelectionPanel">
+            <form id="reviewDateForm" action="<%=request.getContextPath()%>/prv/processClaim.action" class="XXentity-form" method="POST">
+                <input name="name" type="hidden" value="lastReviewDate"/>
+                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <td colspan="3"><label><b>Please enter the Last Review Date together with any relevant notes:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><label>Last Review Date:</label></td>
+                        <td><div id="reviewDateSelectionHolder"></div></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><label>Last Review Notes:</label></td>
+                        <td>
+                           <textarea cols="60" rows="4" name="lastReviewNote" id="lastReviewNoteId"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td colspan="2"><div id="reviewDateFormMessageBox" class="action-error-msg"></div></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 
     </div>
 </div>
