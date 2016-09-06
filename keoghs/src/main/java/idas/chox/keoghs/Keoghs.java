@@ -654,9 +654,10 @@ public class Keoghs {
 
                 Address engineerAddress = new Address();
 //                    engineerAddress.setBuilding(claim.getEngineerReport().getAddress1());
-//                    engineerAddress.setStreet(claim.getEngineerReport().getAddress2());
-//                    engineerAddress.setTown(claim.getEngineerReport().getAddress3());
-//                    engineerAddress.setCounty(claim.getEngineerReport().getAddress5());
+                engineerAddress.setStreet(claim.getEngineerReport().getAddress1());
+                engineerAddress.setTown(claim.getEngineerReport().getAddress2());
+                engineerAddress.setLocality(claim.getEngineerReport().getAddress3());
+                engineerAddress.setCounty(claim.getEngineerReport().getAddress4());
                 engineerAddress.setPostCode(claim.getEngineerReport().getPostcode());
 
                 ArrayOfAddress engineerAddressArray = new ArrayOfAddress();
@@ -678,9 +679,10 @@ public class Keoghs {
 
                 Address solicitorAddress = new Address();
 //                    solicitorAddress.setBuilding(claim.getIncident().getInjury().getSolicitor().getAddress1());
-//                    solicitorAddress.setStreet(claim.getIncident().getInjury().getSolicitor().getAddress2());
-//                    solicitorAddress.setTown(claim.getIncident().getInjury().getSolicitor().getAddress3());
-//                    solicitorAddress.setCounty(claim.getIncident().getInjury().getSolicitor().getAddress5());
+                solicitorAddress.setStreet(claim.getIncident().getInjury().getSolicitor().getAddress1());
+                solicitorAddress.setTown(claim.getIncident().getInjury().getSolicitor().getAddress2());
+                solicitorAddress.setLocality(claim.getIncident().getInjury().getSolicitor().getAddress3());
+                solicitorAddress.setCounty(claim.getIncident().getInjury().getSolicitor().getAddress4());
                 solicitorAddress.setPostCode(claim.getIncident().getInjury().getSolicitor().getPostcode());
 
                 ArrayOfAddress solicitorAddressArray = new ArrayOfAddress();

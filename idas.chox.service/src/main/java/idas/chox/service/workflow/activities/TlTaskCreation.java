@@ -66,7 +66,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setImsReference(String imsReference) {
-        this.imsReference = imsReference;
+        this.imsReference = imsReference == null ? null : imsReference.trim().replaceAll("\\s+", " ");
     }
 
     public String getRegistrationNumber() {
@@ -74,7 +74,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
+        this.registrationNumber = registrationNumber == null ? null : registrationNumber.trim().replaceAll("\\s+", " ");
     }
 
     public String getMake() {
@@ -82,7 +82,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setMake(String make) {
-        this.make = make;
+        this.make = make == null ? null : make.trim().replaceAll("\\s+", " ");
     }
 
     public String getModel() {
@@ -90,7 +90,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        this.model = model == null ? null : model.trim().replaceAll("\\s+", " ");
     }
 
     public String getChassisNumber() {
@@ -98,7 +98,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+        this.chassisNumber = chassisNumber == null ? null : chassisNumber.trim().replaceAll("\\s+", " ");
     }
 
     public String getPreAccidentValue() {
@@ -106,7 +106,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setPreAccidentValue(String preAccidentValue) {
-        this.preAccidentValue = preAccidentValue;
+        this.preAccidentValue = preAccidentValue == null ? null : preAccidentValue.trim().replaceAll("\\s+", " ");
     }
 
     public String getSalvageAmmount() {
@@ -114,7 +114,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setSalvageAmmount(String salvageAmmount) {
-        this.salvageAmount = salvageAmmount;
+        this.salvageAmount = salvageAmmount == null ? null : salvageAmmount.trim().replaceAll("\\s+", " ");
     }
 
     public String getSalvageCategory() {
@@ -122,7 +122,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setSalvageCategory(String salvageCategory) {
-        this.salvageCategory = salvageCategory;
+        this.salvageCategory = salvageCategory == null ? null : salvageCategory.trim().replaceAll("\\s+", " ");
     }
 
     public String getAmountToPay() {
@@ -130,7 +130,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setAmountToPay(String amountToPay) {
-        this.amountToPay = amountToPay;
+        this.amountToPay = amountToPay == null ? null : amountToPay.trim().replaceAll("\\s+", " ");
     }
 
     public String getThirdPartyName() {
@@ -138,7 +138,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setThirdPartyName(String thirdPartyName) {
-        this.thirdPartyName = thirdPartyName;
+        this.thirdPartyName = thirdPartyName == null ? null : thirdPartyName.trim().replaceAll("\\s+", " ");
     }
 
     public String getThirdPartyReg() {
@@ -146,7 +146,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setThirdPartyReg(String thirdPartyReg) {
-        this.thirdPartyReg = thirdPartyReg;
+        this.thirdPartyReg = thirdPartyReg == null ? null : thirdPartyReg.trim().replaceAll("\\s+", " ");
     }
 
     public String getThirdPartyClaimNumber() {
@@ -154,7 +154,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setThirdPartyClaimNumber(String thirdPartyClaimNumber) {
-        this.thirdPartyClaimNumber = thirdPartyClaimNumber;
+        this.thirdPartyClaimNumber = thirdPartyClaimNumber == null ? null : thirdPartyClaimNumber.trim().replaceAll("\\s+", " ");
     }
 
     public String getThirdPartyAgentName() {
@@ -162,7 +162,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setThirdPartyAgentName(String thirdPartyAgentName) {
-        this.thirdPartyAgentName = thirdPartyAgentName;
+        this.thirdPartyAgentName = thirdPartyAgentName == null ? null : thirdPartyAgentName.trim().replaceAll("\\s+", " ");
     }
 
     public String getTitle() {
@@ -170,7 +170,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title == null ? null : title.trim().replaceAll("\\s+", " ");
     }
 
     public String getDriverFirstName() {
@@ -178,7 +178,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setDriverFirstName(String driverFirstName) {
-        this.driverFirstName = driverFirstName;
+        this.driverFirstName = driverFirstName == null ? null : driverFirstName.trim().replaceAll("\\s+", " ");
     }
 
     public String getDriverLastName() {
@@ -186,7 +186,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setDriverLastName(String driverLastName) {
-        this.driverLastName = driverLastName;
+        this.driverLastName = driverLastName == null ? null : driverLastName.trim().replaceAll("\\s+", " ");
     }
 
     public String getPayee() {
@@ -194,7 +194,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setPayee(String payee) {
-        this.payee = payee;
+        this.payee = payee == null ? null : payee.trim().replaceAll("\\s+", " ");
     }
 
     public String getLine1() {
@@ -202,7 +202,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setLine1(String line1) {
-        this.line1 = line1;
+        this.line1 = line1 == null ? null : line1.trim().replaceAll("\\s+", " ");
     }
 
     public String getLine2() {
@@ -210,7 +210,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setLine2(String line2) {
-        this.line2 = line2;
+        this.line2 = line2 == null ? null : line2.trim().replaceAll("\\s+", " ");
     }
 
     public String getTown() {
@@ -218,7 +218,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setTown(String town) {
-        this.town = town;
+        this.town = town == null ? null : town.trim().replaceAll("\\s+", " ");
     }
 
     public String getPostcode() {
@@ -226,7 +226,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setPostcode(String postcode) {
-        this.postcode = postcode;
+        this.postcode = postcode == null ? null : postcode.trim().replaceAll("\\s+", " ");
     }
 
     public String getVehicleStatus() {
@@ -234,7 +234,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setVehicleStatus(String vehicleStatus) {
-        this.vehicleStatus = vehicleStatus;
+        this.vehicleStatus = vehicleStatus == null ? null : vehicleStatus.trim().replaceAll("\\s+", " ");
     }
 
     public String getArea1Severity() {
@@ -242,7 +242,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setArea1Severity(String area1Severity) {
-        this.area1Severity = area1Severity;
+        this.area1Severity = area1Severity == null ? null : area1Severity.trim().replaceAll("\\s+", " ");
     }
 
     public String getArea1Damage() {
@@ -250,7 +250,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setArea1Damage(String area1Damage) {
-        this.area1Damage = area1Damage;
+        this.area1Damage = area1Damage == null ? null : area1Damage.trim().replaceAll("\\s+", " ");
     }
 
     public String getArea2Severity() {
@@ -258,7 +258,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setArea2Severity(String area2Severity) {
-        this.area2Severity = area2Severity;
+        this.area2Severity = area2Severity == null ? null : area2Severity.trim().replaceAll("\\s+", " ");
     }
 
     public String getArea2Damage() {
@@ -266,7 +266,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setArea2Damage(String area2Damage) {
-        this.area2Damage = area2Damage;
+        this.area2Damage = area2Damage == null ? null : area2Damage.trim().replaceAll("\\s+", " ");
     }
 
     public String getTotalLossDate() {
@@ -274,7 +274,7 @@ public class TlTaskCreation extends BaseActivity {
     }
 
     public void setTotalLossDate(String totalLossDate) {
-        this.totalLossDate = totalLossDate;
+        this.totalLossDate = totalLossDate == null ? null : totalLossDate.trim().replaceAll("\\s+", " ");
     }
 
 
