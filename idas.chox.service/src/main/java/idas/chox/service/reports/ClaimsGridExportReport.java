@@ -237,7 +237,7 @@ public class ClaimsGridExportReport {
         List<ExcelClaim> results = new ArrayList<>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select")
-            .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.status_modified_date, c.indeminty_amount,")
+            .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.last_review_date::Date, c.status_modified_date, c.indeminty_amount,")
             .append(" c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
             .append(" c.final_review_cho, c.final_review_ins, wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner, c.remaining_sla_days_str,")
