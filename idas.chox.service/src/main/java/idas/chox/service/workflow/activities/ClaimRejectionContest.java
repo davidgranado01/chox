@@ -8,16 +8,18 @@ public class ClaimRejectionContest extends BaseActivity {
     
     @Override
     protected void doProcess(Claim claim) {
-        switch (claim.getPreviousStatus()) {
-            case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED:
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-                break;
-            case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED:
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-                break;
-            default:
-                claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-                break;
+        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+            claim.setStatus(claim.getPreviousStatus());
+        } else {
+            switch (claim.getPreviousStatus()) {
+                case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED:
+                case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED:
+                    claim.setStatus(claim.getPreviousStatus());
+                    break;
+                default:
+                    claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+                    break;
+            }
         }
         
     }

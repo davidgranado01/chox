@@ -69,6 +69,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 && webUser.isCHO() && !webUser.getChorganisation().isEnableFixedFeeClaims()) {
                             LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_REJECTED_MANUAL_CLAIMS)
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isClaimUploadEnabled()) {
+                            LOG.debug("Not adding queue '{}' as Manual claims not enabled.", filter.getName());
+                            continue;
                         }  else if (filter.getKey().equals(Filter.FILTER_AWAITING_INVOICE_DATA)
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isClaimUploadEnabled()) {
                             LOG.debug("Not adding queue '{}' as claim upload not enabled.", filter.getName());

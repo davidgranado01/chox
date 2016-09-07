@@ -229,6 +229,7 @@
                 <ref bean="RejectedClaims" />
                 <ref bean="RejectedSubscriberClaims" />
                 <ref bean="RejectedFixedFeeClaims" />
+                <ref bean="RejectedManualClaims" />
                 <ref bean="LiabilityUpdate"/>
                 <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="NewClaimsToBeRouted" />

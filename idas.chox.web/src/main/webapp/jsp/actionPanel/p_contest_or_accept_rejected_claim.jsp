@@ -13,13 +13,21 @@
 <s:if test="isFixedFeeClaim">
             message="Are you sure you want to 'Send Claim Back To Insurer'?";
 </s:if>
+<s:elseif test="isInsurerManual">
+            message="Are you sure this claim has been Resubmitted?";
+</s:elseif>
 <s:else>
             message="Are you sure you want to 'Contest This Claim'?";
 </s:else>
         } else if (action==='sendClaimGTA'){
             message="Are you sure you want to 'Send Claim Down GTA Route'?";
         } else if (action==='acceptRejectedClaim'){
+<s:if test="isInsurerManual">
+            message="Are you sure the Rejection Decision was Accepted?";
+</s:if>
+<s:else>
             message="Are you sure you want to 'Accept Rejection Decision'?";
+</s:else>
         }
 
         Ext.MessageBox.confirm('Confirm', message,
@@ -65,6 +73,11 @@
                             claim to the Insurer as a new GTA claim within CHOX.
                         </s:else>
                     </s:if>
+                    <s:elseif test="IsInsurerManual">
+                            This claim has been marked as rejected to the CHO. If the CHO has responded with further information
+                            and you can now acknowledge the claim select 'Claim Re-Submitted' below. If the CHO has now withdrawn
+                            this claim select 'Close Claim'.
+                    </s:elseif>
                     <s:else>
                         Please review the Insurer's notes against rejection reasoning and decide whether to accept or reject the Insurer's rejection decision.
                         Please include supporting notes on the decision made using the 'Notes' tab.
@@ -83,14 +96,19 @@
                             <td>
                                 <s:if test="isFixedFeeClaim">
                                     <s:if test="!claimRejectedMaxAllowed">
-                                        <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim')" />
+                                        <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer" onclick="return doFormSubmit('contestRejectedClaim')" />
                                     </s:if>
                                     <input type="button" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
                                 </s:if>
+                                <s:elseif test="isInsurerManual">
+                                    <input type="button" id="COARCContestThisClaimButtonId" value="Claim Re-Submitted" onclick="return doFormSubmit('contestRejectedClaim')" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Rejection Decision Accepted" onclick="return doFormSubmit('acceptRejectedClaim')"  />
+                                </s:elseif>
                                 <s:else>    
-                                    <input type="button" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="return doFormSubmit('contestRejectedClaim')" />
+                                    <input type="button" id="COARCContestThisClaimButtonId" value="Contest This Claim" onclick="return doFormSubmit('contestRejectedClaim')" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
                                 </s:else>    
-                                <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
                             </td>
                         </tr>
                     </table>
