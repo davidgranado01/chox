@@ -158,6 +158,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void createNewTask(Task task) {
+        task.setComplete(Boolean.FALSE);
         if (task.getClaim() != null) {
             // Check task management enabled for Insurer/CHO
             if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3)) {
