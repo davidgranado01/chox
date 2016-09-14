@@ -125,6 +125,10 @@
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
         <property name="reasonOfDelayService" ref="reasonOfDelayService" />
     </bean>
+    <bean id="insurerEcdUpdate" class="idas.chox.service.workflow.activities.InsurerEcdUpdate" scope="prototype">
+        <property name="insurerHireMonitoringEcdService" ref="insurerHireMonitoringEcdService" />
+        <property name="reasonOfDelayService" ref="reasonOfDelayService" />
+    </bean>
     <bean id="hireUpdate" class="idas.chox.service.workflow.activities.HireUpdate" scope="prototype">
         <property name="notificationService" ref="notificationService" />
     </bean>

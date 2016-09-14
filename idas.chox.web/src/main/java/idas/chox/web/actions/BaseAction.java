@@ -221,7 +221,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
         return true;
     }
-
+    
     public boolean isKbbsDashboardEnabled() {
         if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isEnableKbbsDashboard();

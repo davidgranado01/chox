@@ -3,7 +3,12 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
+<s:if test="insurerLouDates">
+        openTab(7);
+</s:if>
+<s:else>
         openTab(6);
+</s:else>
         
         
         $("form#resubmitOrAcceptContestedInvoice").validate(

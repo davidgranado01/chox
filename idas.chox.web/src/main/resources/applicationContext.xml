@@ -25,6 +25,7 @@
                 <value>hbm/Customer.hbm.xml</value>
                 <value>hbm/EngineerReport.hbm.xml</value>
                 <value>hbm/HireMonitoringDetail.hbm.xml</value>
+                <value>hbm/InsurerHireMonitoringDetail.hbm.xml</value>
                 <value>hbm/Incident.hbm.xml</value>
                 <value>hbm/Injury.hbm.xml</value>
                 <value>hbm/Insurer.hbm.xml</value>
@@ -35,6 +36,7 @@
                 <value>hbm/VehicleClassPrice.hbm.xml</value>
                 <value>hbm/VehicleClassPriceSpecialRate.hbm.xml</value>
                 <value>hbm/VehicleHire.hbm.xml</value>
+                <value>hbm/InsurerVehicleHire.hbm.xml</value>
                 <value>hbm/Witness.hbm.xml</value>
                 <value>hbm/BreBand.hbm.xml</value>
                 <value>hbm/InsurerAlias.hbm.xml</value>
@@ -43,6 +45,7 @@
                 <value>hbm/Comment.hbm.xml</value>
                 <value>hbm/Attachment.hbm.xml</value>
                 <value>hbm/HireMonitoringEcd.hbm.xml</value>
+                <value>hbm/InsurerHireMonitoringEcd.hbm.xml</value>
                 <value>hbm/AuditTrail.hbm.xml</value>
                 <value>hbm/ReasonOfRejection.hbm.xml</value>
                 <value>hbm/ReasonOfRejectionTemplate.hbm.xml</value>

@@ -67,12 +67,15 @@ public class Claim extends Entity implements Serializable {
     private Invoice invoice;
     private ThirdParty thirdParty;
     private VehicleHire vehicleHire;
+    private InsurerVehicleHire insurerVehicleHire;
     private EngineerReport engineerReport;
     private HireMonitoringDetail hireMonitoringDetail;
+    private InsurerHireMonitoringDetail insurerHireMonitoringDetail;
     private ReasonOfRejection reasonOfRejection;
     private Workgroup workgroup;
     private Workgroup workgroupOriginal;
     private List<HireMonitoringEcd> hireMonitoringEcds;
+    private List<InsurerHireMonitoringEcd> insurerHireMonitoringEcds;
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
@@ -287,6 +290,17 @@ public class Claim extends Entity implements Serializable {
         this.hireMonitoringDetail = hireMonitoringDetail;
     }
 
+    public InsurerHireMonitoringDetail getInsurerHireMonitoringDetail() {
+        return insurerHireMonitoringDetail;
+    }
+
+    public void setInsurerHireMonitoringDetail(InsurerHireMonitoringDetail insurerHireMonitoringDetail) {
+        if (insurerHireMonitoringDetail != null) {
+            insurerHireMonitoringDetail.setClaim(this);
+        }
+        this.insurerHireMonitoringDetail = insurerHireMonitoringDetail;
+    }
+
     public Incident getIncident() {
         return incident;
     }
@@ -333,6 +347,14 @@ public class Claim extends Entity implements Serializable {
 
     public void setVehicleHire(VehicleHire vehicleHire) {
         this.vehicleHire = vehicleHire;
+    }
+
+    public InsurerVehicleHire getInsurerVehicleHire() {
+        return insurerVehicleHire;
+    }
+
+    public void setInsurerVehicleHire(InsurerVehicleHire insurerVehicleHire) {
+        this.insurerVehicleHire = insurerVehicleHire;
     }
 
     public boolean getManagingRepair() {
@@ -486,6 +508,13 @@ public class Claim extends Entity implements Serializable {
         return hireMonitoringEcds;
     }
 
+    public List<InsurerHireMonitoringEcd> getInsurerHireMonitoringEcds() {
+        if (insurerHireMonitoringEcds == null) {
+            insurerHireMonitoringEcds = new ArrayList<>();
+        }
+        return insurerHireMonitoringEcds;
+    }
+
     public void setHireMonitoringEcds(List<HireMonitoringEcd> hireMonitoringEcds) {
         this.hireMonitoringEcds = hireMonitoringEcds;
     }
@@ -497,6 +526,19 @@ public class Claim extends Entity implements Serializable {
         ecd.setClaim(this);
         hireMonitoringEcds.add(ecd);
         LOG.debug("Hire Monitoring ECD added: {}", ecd.getEcdDate());
+    }
+
+    public void setInsurerHireMonitoringEcds(List<InsurerHireMonitoringEcd> insurerHireMonitoringEcds) {
+        this.insurerHireMonitoringEcds = insurerHireMonitoringEcds;
+    }
+
+    public void addInsurerHireMonitoringEcd(InsurerHireMonitoringEcd ecd) {
+        if (insurerHireMonitoringEcds == null) {
+            insurerHireMonitoringEcds = new ArrayList<>();
+        }
+        ecd.setClaim(this);
+        insurerHireMonitoringEcds.add(ecd);
+        LOG.debug("Insurer Hire Monitoring ECD added: {}", ecd.getEcdDate());
     }
 
     public Date getLatestHireMonitoringEcd() {

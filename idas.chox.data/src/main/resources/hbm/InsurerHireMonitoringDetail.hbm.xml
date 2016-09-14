@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.InsurerHireMonitoringDetail" table="insurer_hire_monitoring_detail">
+    <cache usage="nonstrict-read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">insurer_hire_monitoring_detail_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <property column="repair_book_in_date" name="repairBookInDate"/>
+    <property column="repair_authorised_date" name="repairAuthorisedDate"/>
+    <property column="repair_commenced_date" name="repairCommencedDate"/>
+    <property column="inspection_booked_date" name="inspectionBookedDate"/>
+    <property column="inspection_date" name="inspectionDate"/>
+    <property column="repair_completion_date" name="repairCompletionDate"/>
+    <property column="total_loss_offer_made" name="totalLossOfferMadeDate"/>
+    <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
+    <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
+    <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
+    <property column="labour_rate" name="labourRate"/>
+    <property column="labour_hour" name="labourHour"/>
+    <property column="labour_cost" name="labourCost"/>
+    <property column="claimant_impecunious" name="claimantImpecunious"/>
+    <property column="who_managed_repair" name="whoManagedRepair"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>

@@ -1712,6 +1712,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return getIntelligentNotes2().size() > 0;
     }
 
+    public boolean isInsurerLouDates() {
+        return getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isEnableLouDates() && !ClaimType.isInsurerUpload(claim.getClaimType());
+    }
+
     public boolean getIsInsurerInvoice() {
         return claim.getClaimType() == ClaimType.INSURER_INVOICE;
     }

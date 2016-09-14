@@ -317,6 +317,10 @@
         <property name="notificationService" ref="notificationService"/>
     </bean>
     
+    <bean id="insurerHireMonitoringEcdService" class="idas.chox.data.services.InsurerHireMonitoringEcdServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
     <bean id="insurerIntelligentNoteService" class="idas.chox.data.services.InsurerIntelligentNoteServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="insurerService" ref="insurerService"/>

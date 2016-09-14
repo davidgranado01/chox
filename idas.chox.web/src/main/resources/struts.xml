@@ -818,6 +818,11 @@
             <result name="w">/jsp/p_hire_monitoring_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
+        <action name="getInsurerHireMonitoringDetail" class="idas.chox.web.actions.InsurerHireMonitoringDetailAction">
+            <result name="r">/jsp/p_insurer_hire_monitoring_r.jsp</result>
+            <result name="w">/jsp/p_insurer_hire_monitoring_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
         <action name="updateHireMonitorDetail" class="idas.chox.web.actions.HireMonitoringDetailAction" method="updateModel">
             <result name="success">/jsp/p_hire_monitoring_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
@@ -825,7 +830,16 @@
                 <param name="actionName">getHireMonitoringDetail</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
-                
+                <param name="actionError">${actionError}</param>
+            </result>
+        </action>
+        <action name="updateInsurerHireMonitorDetail" class="idas.chox.web.actions.InsurerHireMonitoringDetailAction" method="updateModel">
+            <result name="success">/jsp/p_insurer_hire_monitoring_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirectAction">
+                <param name="actionName">getInsurerHireMonitoringDetail</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
@@ -836,7 +850,15 @@
             <result name="w">/jsp/p_hire_monitoring_ecd_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
+        <action name="getInsurerHireMonitoringEcd" class="idas.chox.web.actions.InsurerHireMonitoringEcdAction">
+            <result name="r">/jsp/p_insurer_hire_monitoring_ecd_w.jsp</result>
+            <result name="w">/jsp/p_insurer_hire_monitoring_ecd_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
         <action name="getHireMonitoringEcds" class="idas.chox.web.actions.ClaimAction" method="getHireMonitoringEcds">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="getInsurerHireMonitoringEcds" class="idas.chox.web.actions.InsurerHireMonitoringEcdAction" method="getInsurerHireMonitoringEcds">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
        <!-- End HireMonitoringEcd -->
@@ -849,6 +871,12 @@
         <action name="getVehicleMonitoringHire" class="idas.chox.web.actions.VehicleMonitoringHireAction">
             <result name="r">/jsp/p_hire_monitoring_vehicle_r.jsp</result>
             <result name="w">/jsp/p_hire_monitoring_vehicle_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
+      
+        <action name="getInsurerVehicleMonitoringHire" class="idas.chox.web.actions.InsurerVehicleMonitoringHireAction">
+            <result name="r">/jsp/p_insurer_hire_monitoring_vehicle_r.jsp</result>
+            <result name="w">/jsp/p_insurer_hire_monitoring_vehicle_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
       
@@ -874,6 +902,16 @@
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirectAction">
                 <param name="actionName">getVehicleMonitoringHire</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
+        </action>
+        <action name="updateInsurerMonitoringVehicleHire" class="idas.chox.web.actions.InsurerVehicleMonitoringHireAction" method="updateModel">
+            <result name="success">/jsp/p_insurer_hire_monitoring_vehicle_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirectAction">
+                <param name="actionName">getInsurerVehicleMonitoringHire</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>
@@ -1499,6 +1537,10 @@
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
         <action name ="addNewHireMonitoringEcd" class ="idas.chox.web.actions.ClaimActivityAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name ="addNewInsurerHireMonitoringEcd" class ="idas.chox.web.actions.ClaimActivityAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>

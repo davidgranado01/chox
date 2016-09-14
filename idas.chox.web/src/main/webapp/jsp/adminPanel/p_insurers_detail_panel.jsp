@@ -942,6 +942,16 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Insurer LOU Dates</label>
+                                        <s:checkbox name="enableLouDates" value="enableLouDates" onclick="doPageLoadCheck(this);"/>
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
                         </table>
                             <div class="chox-form-item" id="tpiIdentifierId">
                                 <label class="chox-form-std-label1">Invoice Identification String (TPI)</label>

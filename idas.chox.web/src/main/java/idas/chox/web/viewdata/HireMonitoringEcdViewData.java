@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.InsurerHireMonitoringEcd;
 
 /**
  *
@@ -39,6 +40,27 @@ public class HireMonitoringEcdViewData {
             this.supportingNote = h.getSupportingNote();
         } else {
             LOG.error("No Hire Monitoring ECD to format.");
+        }
+    }
+    
+    public HireMonitoringEcdViewData(InsurerHireMonitoringEcd h, int seq) {
+        if (h != null) {
+            Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            if (h.getEcdDate() != null) {
+                this.ecdDate = dateFormat.format(h.getEcdDate());
+            } else {
+                LOG.error("ECD date is null");
+            }
+            if (h.getCreatedDate() != null) {
+                this.createdDate = dateFormat.format(h.getCreatedDate());
+            } else {
+                LOG.error("Created date is null");
+            }
+            this.sequence = String.format("%1d", seq);
+            this.reason = h.getReason();
+            this.supportingNote = h.getSupportingNote();
+        } else {
+            LOG.error("No Insurer Hire Monitoring ECD to format.");
         }
     }
 

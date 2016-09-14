@@ -4,7 +4,12 @@
 <script type="text/javascript">
 
      Ext.onReady(function(){
+<s:if test="insurerLouDates">
+        openTab(5);
+</s:if>
+<s:else>
         openTab(4);
+</s:else>
         var form = $("form#resubmitInvoiceForm");
         choxJqueryHttpSubmit(form, doMaskClaimDetailPage);
     });

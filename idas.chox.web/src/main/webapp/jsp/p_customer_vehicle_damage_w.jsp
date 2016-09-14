@@ -45,7 +45,7 @@
 <form id="formUpdateCustomerVehicleDamageForm" name="formUpdateCustomerVehicleDamageForm" action="<%=request.getContextPath()%>/prv/p/updateCustomerVehicleDamage.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset partial">
-        <legend> Vehicle Damage</legend>
+        <legend>Vehicle Damage</legend>
         <div class="form-container" id="customerVehicleDamageWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Initial ECD</label>

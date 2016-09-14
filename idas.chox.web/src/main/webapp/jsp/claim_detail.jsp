@@ -80,6 +80,9 @@
             items:[
                 {contentEl:'claimDetails', title: 'Claim Details', disabled: claimDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled,listeners: {activate: clearActionResult}},
+<s:if test="insurerLouDates">
+                {contentEl:'insurerHireMonitoringDetails', title: 'Insurer Hire Monitoring', listeners: {activate: clearActionResult}},
+</s:if>
                 {contentEl:'invoiceDetails', title: 'Invoice Details', disabled: invoiceDetailsDisabled},
                 {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAttachmentPage.action', params:{"claimId" : '<s:property value="id" />'}})},
                 {contentEl:'historyTab', title: 'BRE Results', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
@@ -122,13 +125,12 @@
                 layout:'fit',
                 viewConfig:{forceFit:true},
                 columns: [
-                    {header: "", width: 20, dataIndex: 'sequence', sortable: false, resizable: true},
                     {header: "ECD Date", width: 70, dataIndex: 'ecdDate', sortable: false, resizable: true},
                     {header: "Created", width: 70, dataIndex: 'createdDate', sortable: false, resizable: true},
-                    {header: "Reason", width: 80, dataIndex: 'reason', sortable: false, resizable: true},
-                    {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
+                    {header: "Reason", width: 90, dataIndex: 'reason', sortable: false, resizable: true},
+                    {header: "Supporting Note", width: 235, dataIndex: 'supportingNote', sortable: false, resizable: true}
                 ],
-                width:445,
+                width:475,
                 autoHeight:true
             });
 
@@ -918,9 +920,36 @@
             }
         }
 
+        function expandInsurerHireMonitoringDetails(expand) {
+        
+            if (expand) {
+                document.getElementById("expandAllInsurerHireId").onclick = function (){expandInsurerHireMonitoringDetails(false);};
+                document.getElementById("expandAllInsurerHireId").innerHTML = '-Collapse All';
+                $("#expandAllInsurerHireId").attr("title", "Collapse All");
+                $("#insurerHireMonitoringWId").css("display", "block");
+                $("#insurerHireMonitoringRId").css("display", "block");
+                $("#newInsurerRevisedECDWId").css("display", "block");
+                if (document.getElementById("insurerHireMonitoringVehicleDetailRId") !== null)
+                    $("#insurerHireMonitoringVehicleDetailRId").css("display", "block");
+                if (document.getElementById("insurerHireMonitoringVehicleDetailWId") !== null)
+                    $("#insurerHireMonitoringVehicleDetailWId").css("display", "block");
+            } else {
+                document.getElementById("expandAllInsurerHireId").onclick = function (){expandInsurerHireMonitoringDetails(true);};
+                document.getElementById("expandAllInsurerHireId").innerHTML = '+Expand All';
+                $("#expandAllInsurerHireId").attr("title", "Expand All");
+                $("#insurerHireMonitoringWId").css("display", "none");
+                $("#insurerHireMonitoringRId").css("display", "none");
+                $("#newInsurerRevisedECDWId").css("display", "none");
+                if (document.getElementById("insurerHireMonitoringVehicleDetailRId") !== null)
+                    $("#insurerHireMonitoringVehicleDetailRId").css("display", "none");
+                if (document.getElementById("insurerHireMonitoringVehicleDetailWId") !== null)
+                    $("#insurerHireMonitoringVehicleDetailWId").css("display", "none");
+            }
+        }
+
         function expandClaimDetails(expand) {
             if (expand) {
-                document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(false);};
+                document.getElementById("expandAllClaimId").onclick = function (){expandInsurerClaimDetails(false);};
                 document.getElementById("expandAllClaimId").innerHTML = '-Collapse All';
                 $("#expandAllClaimId").attr("title", "Collapse All");
                 $("#customerDetailsRId").css("display", "block");
@@ -1182,6 +1211,33 @@
                     <div id="hireMonitorMessage"></div>
                 </div>
             </s:if>
+        </div>
+        <div id="insurerHireMonitoringDetails" class="x-hide-display">
+                <div class="x-panel-bwrap chox-form-container">
+                    <label id="expandAllInsurerHireId" onclick="expandInsurerHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="top">
+                            <td class="chox-form-left-col">
+                                <s:action name="getInsurerHireMonitoringDetail" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </td>
+                            <td>
+                                <div>
+                                    <s:action name="getInsurerHireMonitoringEcd" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                        <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.insurerHireMonitoringTabAccessibility" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getInsurerVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
         </div>
 
         <div id="invoiceDetails" class="x-hide-display">

@@ -7,6 +7,7 @@ public class TabAccessibility {
     public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
     public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
     public static final String TAB_HIRE_MONITORING = "HireMonitoring";
+    public static final String TAB_INSURER_HIRE_MONITORING = "InsurerHireMonitoring";
     public static final String TAB_PAYMENT_PACK = "PaymentPack";
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes";
@@ -17,6 +18,7 @@ public class TabAccessibility {
     private short claimDetailTabAccessibility;
     private short invoiceDetailTabAccessibility;
     private short hireMonitoringTabAccessibility;
+    private short insurerHireMonitoringTabAccessibility;
     private short historyTabAccessibility;
     private short notesTabAccessibility;
     private short tasksTabAccessibility;
@@ -27,6 +29,8 @@ public class TabAccessibility {
         claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_CLAIM_DETAIL,
                         user, claim);
         hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HIRE_MONITORING,
+                user, claim);
+        insurerHireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_INSURER_HIRE_MONITORING,
                 user, claim);
         historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HISTORY,
                 user, claim);
@@ -59,6 +63,10 @@ public class TabAccessibility {
 
     public short getHireMonitoringTabAccessibility() {
         return hireMonitoringTabAccessibility;
+    }
+
+    public short getInsurerHireMonitoringTabAccessibility() {
+        return insurerHireMonitoringTabAccessibility;
     }
 
     public short getHistoryTabAccessibility() {

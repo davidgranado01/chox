@@ -16,6 +16,7 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
+import idas.chox.core.model.InsurerHireMonitoringDetail;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.ThirdParty;
@@ -913,6 +914,23 @@ public enum ActivityEvent {
             generator.completeEvent(claim);
         }
     },
+    INSURER_HIRE_VEHICLE_UPDATED_EVENT           (45, "InsurerHireVehicleUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building InsurerHireVehicleUpdatedEvent (not from activity!)");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            generator.addParameter("insurerHireStart", claim.getInsurerVehicleHire().getRentalStart());
+            generator.addParameter("insurerVehicleClass", claim.getInsurerVehicleHire().getVehicleClass().getName());
+            generator.completeEvent(claim);
+        }
+        @Override
+        public void build(ActivityEventGenerator generator, HireUpdate activity, Claim claim)  throws Exception {
+            LOG.debug("Building HireVehicleUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimHireVehicleParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
 //    NEW_SUPPLEMENTARY_INVOICE_EVENT         (39, "NewSupplementaryInvoice"), //TODO - not sure if needed (should generate new claim, carhireinfo provided, new invoice?)
     NOTE_ADDED_EVENT                        (51, "NoteAddedEvent") {
         @Override
@@ -968,7 +986,16 @@ public enum ActivityEvent {
             this.addClaimAuditReviewParameters(generator, claim);
             generator.completeEvent(claim);
         }
-    }
+    },
+    INSURER_HIRE_MONITORING_UPDATED_EVENT           (56, "InsurerHireMonitoringUpdatedEvent") {
+        @Override
+        public void build(ActivityEventGenerator generator, Claim claim)  throws Exception {
+            LOG.debug("Building InsurerHireMonitoringUpdatedEvent");
+            generator.startEvent(claim, this.getName(), this.getEventId());
+            this.addClaimInsurerHireMonitoringParameters(generator, claim);
+            generator.completeEvent(claim);
+        }
+    },
 ;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEvent.class);
@@ -1784,6 +1811,74 @@ public enum ActivityEvent {
             generator.addParameter("hireMonitoringIsClientVatRegistered", null);
         }
         addClaimHireVehicleParameters(generator, claim);
+    }
+    
+    public void addClaimInsurerHireMonitoringParameters(ActivityEventGenerator generator, Claim claim) {
+        InsurerHireMonitoringDetail insurerHireMonitoringDetail = claim.getInsurerHireMonitoringDetail();
+        if (insurerHireMonitoringDetail != null) {
+            if (insurerHireMonitoringDetail.getRepairBookInDate() != null) {
+                generator.addParameter("hireMonitoringRepairBookedInDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getRepairBookInDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairBookedInDate", null);
+            }
+            if (insurerHireMonitoringDetail.getInspectionDate() != null) {
+                generator.addParameter("hireMonitoringInspectionDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getInspectionDate()));
+            } else {
+                generator.addParameter("hireMonitoringInspectionDate", null);
+            }
+            if (insurerHireMonitoringDetail.getRepairCompletionDate() != null) {
+                generator.addParameter("hireMonitoringRepairCompletionDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getRepairCompletionDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairCompletionDate", null);
+            }
+            generator.addParameter("hireMonitoringLabourRate", insurerHireMonitoringDetail.getLabourRate());
+            generator.addParameter("hireMonitoringLabourHours", insurerHireMonitoringDetail.getLabourHour());
+            generator.addParameter("hireMonitoringLabourCost", insurerHireMonitoringDetail.getLabourCost());
+            if (insurerHireMonitoringDetail.getRepairAuthorisedDate() != null) {
+                generator.addParameter("hireMonitoringRepairAuthorisedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getRepairAuthorisedDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairAuthorisedDate", null);
+            }
+            if (insurerHireMonitoringDetail.getRepairCommencedDate() != null) {
+                generator.addParameter("hireMonitoringRepairCommencedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getRepairCommencedDate()));
+            } else {
+                generator.addParameter("hireMonitoringRepairCommencedDate", null);
+            }
+            if (insurerHireMonitoringDetail.getTotalLossOfferMadeDate() != null) {
+                generator.addParameter("hireMonitoringTotalLossOfferMadeDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferMadeDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossOfferMadeDate", null);
+            }
+            if (insurerHireMonitoringDetail.getTotalLossOfferAcceptedDate() != null) {
+                generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferAcceptedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", null);
+            }
+            if (insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate() != null) {
+                generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", null);
+            }
+            if (insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate() != null) {
+                generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate()));
+            } else {
+                generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", null);
+            }
+        } else {
+            generator.addParameter("hireMonitoringRepairBookedInDate", null);
+            generator.addParameter("hireMonitoringInspectionDate", null);
+            generator.addParameter("hireMonitoringRepairCompletionDate", null);
+            generator.addParameter("hireMonitoringLabourRate", null);
+            generator.addParameter("hireMonitoringLabourHours", null);
+            generator.addParameter("hireMonitoringLabourCost", null);
+            generator.addParameter("hireMonitoringRepairAuthorisedDate", null);
+            generator.addParameter("hireMonitoringRepairCommencedDate", null);
+            generator.addParameter("hireMonitoringTotalLossOfferMadeDate", null);
+            generator.addParameter("hireMonitoringTotalLossOfferAcceptedDate", null);
+            generator.addParameter("hireMonitoringTotalLossCheckIssuedDate", null);
+            generator.addParameter("hireMonitoringTotalLossCheckReceivedDate", null);
+        }
+//        addClaimInsurerHireVehicleParameters(generator, claim);
     }
     
     public void addClaimAuditReviewParameters(ActivityEventGenerator generator, Claim claim) {
