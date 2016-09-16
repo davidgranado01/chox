@@ -237,7 +237,7 @@ public class ClaimsGridExportReport {
         List<ExcelClaim> results = new ArrayList<>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select")
-            .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.last_review_date::Date, c.status_modified_date, c.indeminty_amount,")
+            .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.last_review_date, c.status_modified_date, c.indeminty_amount,")
             .append(" c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
             .append(" c.final_review_cho, c.final_review_ins, wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner, c.remaining_sla_days_str,")
@@ -289,7 +289,14 @@ public class ClaimsGridExportReport {
             .append(" hmd.total_loss_check_received as hmd_total_loss_check_received, hmd.labour_rate as hmd_labour_rate, hmd.labour_hour as hmd_labour_hour,")
             .append(" hmd.is_repair_only_check as claim_repair_only_check, hmd.is_non_fault_insurer_managing_repair as claim_non_fault_insurer_repair,")
             .append(" hmd.client_vat_registered as claim_client_vat_registered,")
-            .append(" hmd.labour_cost as hmd_labour_cost, hmd.non_provision_reason as hmd_non_provision_reason, hmd.next_review_date as hmd_next_review_date")
+            .append(" hmd.labour_cost as hmd_labour_cost, hmd.non_provision_reason as hmd_non_provision_reason, hmd.next_review_date as hmd_next_review_date,")
+            .append(" ihmd.repair_book_in_date as ihmd_repair_book_in_date, ihmd.repair_authorised_date as ihmd_repair_authorised_date, ihmd.repair_commenced_date as ihmd_repair_commenced_date,")
+            .append(" ihmd.inspection_booked_date as ihmd_inspection_booked_date, ihmd.inspection_date as ihmd_inspection_date,")
+            .append(" ihmd.repair_completion_date as ihmd_repair_completion_date, ihmd.total_loss_offer_made as ihmd_total_loss_offer_made,")
+            .append(" ihmd.total_loss_offer_accepted as ihmd_total_loss_offer_accepted, ihmd.total_loss_check_issued as ihmd_total_loss_check_issued,")
+            .append(" ihmd.total_loss_check_received as ihmd_total_loss_check_received, ihmd.labour_rate as ihmd_labour_rate, ihmd.labour_hour as ihmd_labour_hour,")
+            .append(" ihmd.labour_cost as ihmd_labour_cost, ihmd.claimant_impecunious as ihmd_claimant_impecunious, ihmd.who_managed_repair as ihmd_who_managed_repair,")
+            .append(" ivh_vc.name as ihmd_replacement_vehicle_class, ivh.rental_start as ihmd_rental_start")
             .append(" from claim c")
             .append("     join chorganisation cho on (c.chorganisation_id = cho.id)")
             .append("     left outer join workgroup w on (c.workgroup_id = w.id)")
@@ -306,8 +313,11 @@ public class ClaimsGridExportReport {
             .append("     left outer join engineer_report er on (c.engineer_report_id = er.id)")
             .append("     left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
             .append("     left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
+            .append("     left outer join insurer_vehicle_hire ivh on (c.insurer_vehicle_hire_id = ivh.id)")
+            .append("     left outer join vehicle_class ivh_vc on (ivh.vehicle_class_id = ivh_vc.id)")
             .append("     left outer join keoghs_request kr on (c.keoghs_request_id = kr.id)")
             .append("     left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
+            .append("     left outer join insurer_hire_monitoring_detail ihmd on (c.insurer_hire_monitoring_detail_id = ihmd.id)")
             .append(" where c.id in (");
 
         boolean first = true;

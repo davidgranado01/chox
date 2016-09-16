@@ -330,7 +330,7 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("comments", comments);
         excelMap.put("cycle", claimCycle);
 
-        final String templateFilePath = getIsInsurer() ? getReportTemplatePath("claimTemplateInsurer.xls") : getReportTemplatePath("claimTemplate.xls");
+        final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : getReportTemplatePath("claimTemplate.xls");
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());

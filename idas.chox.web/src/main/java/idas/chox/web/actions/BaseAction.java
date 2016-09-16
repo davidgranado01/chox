@@ -186,6 +186,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return true;
     }
 
+    public boolean isInsurerLouDatesEnabled() {
+        if (getIsInsurer()) {
+            return getAuthenticatedUser().getInsurer().isEnableLouDates();
+        }
+
+        return false;
+    }
+
     public boolean getIsSubscriberEnabled() {
         if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isEnableSubscriberClaims();

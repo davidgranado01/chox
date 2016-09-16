@@ -14,6 +14,7 @@ import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.ClaimFileBreData;
 import idas.chox.service.reports.viewdata.ClaimFileEcdData;
+import idas.chox.service.reports.viewdata.ClaimFileInsurerEcdData;
 import idas.chox.service.reports.viewdata.ClaimFileNoteData;
 import idas.chox.service.reports.viewdata.ClaimFileReportData;
 
@@ -60,6 +61,8 @@ public class ClaimFileReport implements Report {
         ClaimFileReportData claimReport = new ClaimFileReportData(claim, currentUser);
 
         List<ClaimFileEcdData> claimEcds = ClaimFileEcdData.getClaimFileEcdData(claim);
+
+        List<ClaimFileInsurerEcdData> claimInsurerEcds = ClaimFileInsurerEcdData.getClaimFileEcdData(claim);
         
         if (currentUser.isAnInsurer() || currentUser.isCHOXAdmin()) {
             showInsurer = true;
@@ -72,6 +75,7 @@ public class ClaimFileReport implements Report {
         
         reportParameters.put("claim", claimReport);
         reportParameters.put("ecds", claimEcds);
+        reportParameters.put("insurerEcds", claimInsurerEcds);
         reportParameters.put("notes", claimNotes);
         reportParameters.put("bremessages", breMessages);
         return reportParameters;

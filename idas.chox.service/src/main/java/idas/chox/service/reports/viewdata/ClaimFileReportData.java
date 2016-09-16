@@ -12,6 +12,8 @@ import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
+import idas.chox.core.model.InsurerHireMonitoringDetail;
+import idas.chox.core.model.InsurerVehicleHire;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Solicitor;
@@ -21,12 +23,12 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
 
-
 /**
  *
  * @author John
  */
 public class ClaimFileReportData {
+
     private static final Logger LOG = LoggerFactory.getLogger(ClaimFileReportData.class);
     private String choName;
     private String createdBy;
@@ -290,475 +292,561 @@ public class ClaimFileReportData {
     private boolean subscriberClaim;
     private boolean fixedFeeClaim;
     private boolean collaborationClaim;
-    private String  invoicePaymentsTeam;
+    private String invoicePaymentsTeam;
     private boolean paymentsTeamActivated;
     private String remainingSlaDays;
     private boolean isInsurerOrAdmin;
     private boolean isInsurer;
+    private boolean isInsurerHireMonitoring;
     private String fraudScore;
     private String fraudStatus;
+    private String insurerHireMonBookedInDate;
+    private String insurerHireMonAuthorisedDate;
+    private String insurerHireMonCommencedDate;
+    private String insurerHireMonInspectionBookedDate;
+    private String insurerHireMonInspectionDate;
+    private String insurerHireMonTotalLossOfferMadeDate;
+    private String insurerHireMonTotalLossAcceptedDate;
+    private String insurerHireMonTotalLossChequeIssuedDate;
+    private String insurerHireMonTotalLossChequeReceivedDate;
+    private String insurerHireMonRepairCompletionDate;
+    private BigDecimal insurerHireMonLabourRate;
+    private BigDecimal insurerHireMonLabourHours;
+    private BigDecimal insurerHireMonTotalLabourCost;
+    private String insurerHireMonClaimantImpecunious;
+    private String insurerHireMonWhoManagedRepair;
+    private String insurerHireMonReplacementVehicleClass;
+    private String insurerHireMonHireStart;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
-      try {
-        claimType = claim.getClaimType().toString();
-        subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
-        fixedFeeClaim = ClaimType.isFixedFee(claim.getClaimType());
-        collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
-        paymentsTeamActivated = claim.getInsurer().isPaymentsTeamEnable();
-        if (claim.getChorganisation() != null) {
-            choName = claim.getChorganisation().getName();
-        }
-        createdBy = claim.getCreatedBy().getFullName();
-        createdOn = DateHelper.getLocalDateTimeFormat().format(claim.getCreatedDate());
-        supplierReference = claim.getChoReference();
-        insurerClaimNumber = claim.getClaimNumber();
-        status = claim.getStatus();
-        remainingSlaDays = claim.getRemainingSlaDays();
-        
-        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-            liabilityStatus = "";
-        }
-        else {
-            liabilityStatus = claim.getLiabilityStatus().toString();
-        }
-        if (currentUser.isAnInsurer()) {
-            isInsurerOrAdmin = true;
-            isInsurer = true;
-            finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
-        } else if (currentUser.isCHO()) {
-            finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
+        try {
+            claimType = claim.getClaimType().toString();
+            subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
+            fixedFeeClaim = ClaimType.isFixedFee(claim.getClaimType());
+            collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
+            paymentsTeamActivated = claim.getInsurer().isPaymentsTeamEnable();
+            if (claim.getChorganisation() != null) {
+                choName = claim.getChorganisation().getName();
+            }
+            createdBy = claim.getCreatedBy().getFullName();
+            createdOn = DateHelper.getLocalDateTimeFormat().format(claim.getCreatedDate());
+            supplierReference = claim.getChoReference();
+            insurerClaimNumber = claim.getClaimNumber();
+            status = claim.getStatus();
+            remainingSlaDays = claim.getRemainingSlaDays();
+
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
+                liabilityStatus = "";
+            } else {
+                liabilityStatus = claim.getLiabilityStatus().toString();
+            }
+            if (currentUser.isAnInsurer()) {
+                isInsurerOrAdmin = true;
+                isInsurer = true;
+                finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
+                if (currentUser.getInsurer().isEnableLouDates()) {
+                    isInsurerHireMonitoring = true;
+                    InsurerHireMonitoringDetail hmd = claim.getInsurerHireMonitoringDetail();
+                    if (hmd != null) {
+                        if (hmd.getRepairBookInDate() != null) {
+                            insurerHireMonBookedInDate = DateHelper.getLocalDateFormat().format(hmd.getRepairBookInDate());
+                        } else {
+                            insurerHireMonBookedInDate = "";
+                        }
+                        if (hmd.getRepairAuthorisedDate() == null) {
+                            insurerHireMonAuthorisedDate = "";
+                        } else {
+                            insurerHireMonAuthorisedDate = DateHelper.getLocalDateFormat().format(hmd.getRepairAuthorisedDate());
+                        }
+                        if (hmd.getRepairCommencedDate() == null) {
+                            insurerHireMonCommencedDate = "";
+                        } else {
+                            insurerHireMonCommencedDate = DateHelper.getLocalDateFormat().format(hmd.getRepairCommencedDate());
+                        }
+                        if (hmd.getInspectionBookedDate() != null) {
+                            insurerHireMonInspectionBookedDate = DateHelper.getLocalDateFormat().format(hmd.getInspectionBookedDate());
+                        } else {
+                            insurerHireMonInspectionBookedDate = "";
+                        }
+                        if (hmd.getInspectionDate() != null) {
+                            insurerHireMonInspectionDate = DateHelper.getLocalDateFormat().format(hmd.getInspectionDate());
+                        } else {
+                            insurerHireMonInspectionDate = "";
+                        }
+                        if (hmd.getTotalLossOfferMadeDate() == null) {
+                            insurerHireMonTotalLossOfferMadeDate = "";
+                        } else {
+                            insurerHireMonTotalLossOfferMadeDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferMadeDate());
+                        }
+                        if (hmd.getTotalLossOfferAcceptedDate() == null) {
+                            insurerHireMonTotalLossAcceptedDate = "";
+                        } else {
+                            insurerHireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferAcceptedDate());
+                        }
+                        if (hmd.getTotalLossOfferCheckIssuedDate() == null) {
+                            insurerHireMonTotalLossChequeIssuedDate = "";
+                        } else {
+                            insurerHireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferCheckIssuedDate());
+                        }
+                        if (hmd.getTotalLossOfferCheckReceivedDate() == null) {
+                            insurerHireMonTotalLossChequeReceivedDate = "";
+                        } else {
+                            insurerHireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferCheckReceivedDate());
+                        }
+                        if (hmd.getRepairCompletionDate() != null) {
+                            insurerHireMonRepairCompletionDate = DateHelper.getLocalDateTimeFormat().format(hmd.getRepairCompletionDate());
+                        }
+                        insurerHireMonLabourRate = hmd.getLabourRate();
+                        insurerHireMonLabourHours = hmd.getLabourHour();
+                        insurerHireMonTotalLabourCost = hmd.getLabourCost();
+                        insurerHireMonClaimantImpecunious = hmd.getClaimantImpecuniousDesc();
+                        if (hmd.getWhoManagedRepair() != null) {
+                            insurerHireMonWhoManagedRepair = hmd.getWhoManagedRepair();
+                        } else {
+                            insurerHireMonWhoManagedRepair = "";
+                        }
+                        
+                        InsurerVehicleHire insVehicleHire = claim.getInsurerVehicleHire();
+                        if (insVehicleHire != null) {
+                            if (insVehicleHire.getVehicleClass() != null) {
+                                insurerHireMonReplacementVehicleClass = insVehicleHire.getVehicleClass().getName();
+                            } else {
+                                insurerHireMonReplacementVehicleClass = "";
+                            }
+                            if (insVehicleHire.getRentalStart() != null) {
+                                insurerHireMonHireStart = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalStart());
+                            } else {
+                                insurerHireMonHireStart = "";
+                            }
+                        }
+                    }
+                }
+            } else if (currentUser.isCHO()) {
+                finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
 //            paymentsTeamActivated = false;
-        } else if (currentUser.isCHOXAdmin()) {
-            isInsurerOrAdmin = true;
-            finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
-                    + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
-        }
-        if (isInsurer) {
-            fraudScore = claim.getKeoghsRequest() == null ? "" : Integer.toString(claim.getKeoghsRequest().getTotalScore());
-            fraudStatus = claim.getKeoghsRequest() == null ? "" : claim.getKeoghsRequest().getRagResult();
-        }
-        if (claim.getPolicyHolderContactDate() != null) {
-            contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
-        }
-        if (claim.getClaimOwner() != null) {
-            claimOwner = claim.getClaimOwner().getFullName();
-        }
-        if (claim.getSupplierClaimOwner() != null) {
-            supplierClaimOwner = claim.getSupplierClaimOwner().getFullName();
-        }
-        if (claim.getWorkgroup() != null) {
-            workgroup = claim.getWorkgroup().getName();
-        }
-        indemnityValue = claim.getIndemnityAmount();
-        if (claim.getPercentageLiabilityAccepted() != null) {
-            insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal("100.00"));
-        }
-        if (claim.getPercentageLiabilityCho() != null) {
-            choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal("100.00"));
-        }
-        if (claim.getLiabilityAgreedDate() != null) {
-            dateLiabilityAgreed  = DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate());
-        }
-        Customer cust = claim.getCustomer();
-        if (cust != null) {
-            LOG.debug("Adding customer info.");
-            customer = cust.getFormattedName();
-            customerTitle = cust.getTitle();
-            customerFirstName = cust.getFirstName();
-            customerSurname = cust.getLastName();
-            customerAddress1 = cust.getAddress1();
-            customerAddress2 = cust.getAddress2();
-            customerAddress3 = cust.getAddress3();
-            customerAddress4 = cust.getAddress4();
-            customerAddress5 = cust.getAddress5();
-            customerPostcode = cust.getPostcode();
-            customerTelephoneDay = cust.getTelephoneDay();
-            customerTelephoneEvening = cust.getTelephoneEvening();
-            customerEmail = cust.getEmail();
-            customerAge = cust.getAge();
-            customerOccupation = cust.getOccupation();
-            customerPolicyUsage = cust.getPolicyUsage();
-            customerClaimNumber = cust.getClaimReference();
-            customerInsurer = cust.getInsurerName();
-            customerPolicyNumber = cust.getPolicyNumber();
-            customerComprehensive = cust.getIsComprehensiveDesc();
-            customerVehicleManufacturer = cust.getVehicleManufacturer();
-            customerVehicleModel = cust.getVehicleModel();
-            if (cust.getVehicleClass() != null) {
-                customerVehicleClass = cust.getVehicleClass().getName();
+            } else if (currentUser.isCHOXAdmin()) {
+                isInsurerOrAdmin = true;
+                finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ")
+                        + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
             }
-            customerVRN = cust.getVehicleRegistration();
-            customerVehicleLocation = cust.getLocation();
-            customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
-            customerHpiVehicleModel = cust.getHpiVehicleModel();
-            customerHpiVehicleYear = cust.getHpiVehicleYear();
-            if (cust.getHpiFirstRegistration() != null) {
-                customerHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(cust.getHpiFirstRegistration());
+            if (isInsurer) {
+                fraudScore = claim.getKeoghsRequest() == null ? "" : Integer.toString(claim.getKeoghsRequest().getTotalScore());
+                fraudStatus = claim.getKeoghsRequest() == null ? "" : claim.getKeoghsRequest().getRagResult();
             }
-            customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
-            customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
-            customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
-            totalLoss = cust.getIsTotalLossDesc();
-            totalLoss = cust.getIsTotalLossDesc();
-            usable = cust.getIsUsableDesc();
-            description = cust.getDamage();
-            hireMonOriginalECD = cust.getInitialECDDesc();
-            otherVehicleAccess = cust.getCanAccessOtherVehicleDesc();
-            otherVehicleUsed = cust.getOtherVehicleUsedDesc();
-            otherVehicleType = cust.getOtherVehicle();
-            courtesyCarEntitlement = cust.getCourtesyCarEntitledDesc();
-            specificVehicleRequired = cust.getSpecificVehicleRequiredDesc();
-            specificVehicleReason = cust.getSpecificVehicleReason();
-            vehicleTypeRequired = cust.getTypeVehicleRequired();
-            specialRequirements = cust.getSpecialRequirements();
-            if (cust.getAverageDailyMileage() != null) {
-                averageDailyMileage = cust.getAverageDailyMileage();
+            if (claim.getPolicyHolderContactDate() != null) {
+                contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
             }
-            else {
-                averageDailyMileage = "";
+            if (claim.getClaimOwner() != null) {
+                claimOwner = claim.getClaimOwner().getFullName();
             }
-            if (cust.getVehicleYear() != null) {
-                customerVehicleYear = cust.getVehicleYear();
+            if (claim.getSupplierClaimOwner() != null) {
+                supplierClaimOwner = claim.getSupplierClaimOwner().getFullName();
             }
-            else {
-                customerVehicleYear = "";
+            if (claim.getWorkgroup() != null) {
+                workgroup = claim.getWorkgroup().getName();
             }
-        }
-        ThirdParty thirdParty = claim.getThirdParty();
-        if (thirdParty != null) {
-            LOG.debug("Adding thirdparty info.");
-            if (thirdParty.getInsurer() != null) {
-                thirdPartyInsurer = thirdParty.getInsurer().getName();
+            indemnityValue = claim.getIndemnityAmount();
+            if (claim.getPercentageLiabilityAccepted() != null) {
+                insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal("100.00"));
             }
-            thirdPartyTitle = thirdParty.getTitle();
-            thirdPartyFirstName = thirdParty.getFirstName();
-            thirdPartySurname = thirdParty.getLastName();
-            thirdPartyAddress1 = thirdParty.getAddress1();
-            thirdPartyAddress2 = thirdParty.getAddress2();
-            thirdPartyAddress3 = thirdParty.getAddress3();
-            thirdPartyAddress4 = thirdParty.getAddress4();
-            thirdPartyAddress5 = thirdParty.getAddress5();
-            thirdPartyPostcode = thirdParty.getPostcode();
-            thirdPartyTelephoneDay = thirdParty.getTelephoneDay();
-            thirdPartyTelephoneEvening = thirdParty.getTelephoneEvening();
-            thirdPartyEmail = thirdParty.getEmail();
-            thirdPartyInsurer = thirdParty.getInsurer().getName();
-            thirdPartyInsurerBrand = thirdParty.getInsurerBrand();
-            thirdPartyPolicyNumber = thirdParty.getPolicyNumber();
-            thirdPartyVehicleManufacturer = thirdParty.getVehicleManufacturer();
-            thirdPartyVehicleModel = thirdParty.getVehicleModel();
-            thirdPartyVRN = thirdParty.getVehicleRegistration();
-            if (thirdParty.getVehicleClass() != null) {
-                thirdPartyVehicleClass = thirdParty.getVehicleClass().getName();
+            if (claim.getPercentageLiabilityCho() != null) {
+                choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal("100.00"));
             }
-        }
-        managingRepair = claim.getIsManagingRepairDesc();
-        if (claim.getGtaNoticeDate() != null) {
-            noticeDate = DateHelper.getLocalDateTimeFormat().format(claim.getGtaNoticeDate());
-        }
-        if (claim.getCreditAgreementDate() != null) {
-            creditAgreementSignedDate = DateHelper.getLocalDateTimeFormat().format(claim.getCreditAgreementDate());
-        }
-        invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
-        Incident incident = claim.getIncident();
-        if (incident != null) {
-            LOG.debug("Adding incident info.");
-            if (incident.getDate() != null) {
-                incidentDate = DateHelper.getLocalDateTimeFormat().format(incident.getDate());
+            if (claim.getLiabilityAgreedDate() != null) {
+                dateLiabilityAgreed = DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate());
             }
-            incidentLocation = incident.getLocation();
-            incidentPoliceInvolved = incident.getIsPoliceInvolvedDesc();
-            incidentDescription = incident.getIncidentDescription();
-            Witness witness = incident.getWitness();
-            if (witness != null) {
-                LOG.debug("Adding witness info.");
-                witnessName = witness.getName();
-                witnessAddress1 = witness.getAddress1();
-                witnessAddress2 = witness.getAddress2();
-                witnessAddress3 = witness.getAddress3();
-                witnessAddress4 = witness.getAddress4();
-                witnessAddress5 = witness.getAddress5();
-                witnessPostcode = witness.getPostcode();
-                witnessTelephoneDay = witness.getTelephoneDay();
-                witnessTelephoneEvening = witness.getTelephoneEvening();
-                witnessEmail = witness.getEmail();
-            }
-            Injury injury = incident.getInjury();
-            if (injury != null) {
-                LOG.debug("Adding injury info.");
-                injuryName = injury.getName();
-                injuryAddress1 = injury.getAddress1();
-                injuryAddress2 = injury.getAddress2();
-                injuryAddress3 = injury.getAddress3();
-                injuryAddress4 = injury.getAddress4();
-                injuryAddress5 = injury.getAddress5();
-                injuryPostcode = injury.getPostcode();
-                injuryTelephoneDay = injury.getTelephoneDay();
-                injuryTelephoneEvening = injury.getTelephoneEvening();
-                injuryEmail = injury.getEmail();   
-                Solicitor solicitor = injury.getSolicitor();
-                if (solicitor != null) {
-                    LOG.debug("Adding solicitor info.");
-                    solicitorName = solicitor.getName();
-                    solicitorAddress1 = solicitor.getAddress1();
-                    solicitorAddress2 = solicitor.getAddress2();
-                    solicitorAddress3 = solicitor.getAddress3();
-                    solicitorAddress4 = solicitor.getAddress4();
-                    solicitorAddress5 = solicitor.getAddress5();
-                    solicitorPostcode = solicitor.getPostcode();
-                    solicitorTelephoneDay = solicitor.getTelephone();
-                    solicitorEmail = solicitor.getEmail();
+            Customer cust = claim.getCustomer();
+            if (cust != null) {
+                LOG.debug("Adding customer info.");
+                customer = cust.getFormattedName();
+                customerTitle = cust.getTitle();
+                customerFirstName = cust.getFirstName();
+                customerSurname = cust.getLastName();
+                customerAddress1 = cust.getAddress1();
+                customerAddress2 = cust.getAddress2();
+                customerAddress3 = cust.getAddress3();
+                customerAddress4 = cust.getAddress4();
+                customerAddress5 = cust.getAddress5();
+                customerPostcode = cust.getPostcode();
+                customerTelephoneDay = cust.getTelephoneDay();
+                customerTelephoneEvening = cust.getTelephoneEvening();
+                customerEmail = cust.getEmail();
+                customerAge = cust.getAge();
+                customerOccupation = cust.getOccupation();
+                customerPolicyUsage = cust.getPolicyUsage();
+                customerClaimNumber = cust.getClaimReference();
+                customerInsurer = cust.getInsurerName();
+                customerPolicyNumber = cust.getPolicyNumber();
+                customerComprehensive = cust.getIsComprehensiveDesc();
+                customerVehicleManufacturer = cust.getVehicleManufacturer();
+                customerVehicleModel = cust.getVehicleModel();
+                if (cust.getVehicleClass() != null) {
+                    customerVehicleClass = cust.getVehicleClass().getName();
+                }
+                customerVRN = cust.getVehicleRegistration();
+                customerVehicleLocation = cust.getLocation();
+                customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
+                customerHpiVehicleModel = cust.getHpiVehicleModel();
+                customerHpiVehicleYear = cust.getHpiVehicleYear();
+                if (cust.getHpiFirstRegistration() != null) {
+                    customerHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(cust.getHpiFirstRegistration());
+                }
+                customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
+                customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
+                customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
+                totalLoss = cust.getIsTotalLossDesc();
+                totalLoss = cust.getIsTotalLossDesc();
+                usable = cust.getIsUsableDesc();
+                description = cust.getDamage();
+                hireMonOriginalECD = cust.getInitialECDDesc();
+                otherVehicleAccess = cust.getCanAccessOtherVehicleDesc();
+                otherVehicleUsed = cust.getOtherVehicleUsedDesc();
+                otherVehicleType = cust.getOtherVehicle();
+                courtesyCarEntitlement = cust.getCourtesyCarEntitledDesc();
+                specificVehicleRequired = cust.getSpecificVehicleRequiredDesc();
+                specificVehicleReason = cust.getSpecificVehicleReason();
+                vehicleTypeRequired = cust.getTypeVehicleRequired();
+                specialRequirements = cust.getSpecialRequirements();
+                if (cust.getAverageDailyMileage() != null) {
+                    averageDailyMileage = cust.getAverageDailyMileage();
+                } else {
+                    averageDailyMileage = "";
+                }
+                if (cust.getVehicleYear() != null) {
+                    customerVehicleYear = cust.getVehicleYear();
+                } else {
+                    customerVehicleYear = "";
                 }
             }
-        }
+            ThirdParty thirdParty = claim.getThirdParty();
+            if (thirdParty != null) {
+                LOG.debug("Adding thirdparty info.");
+                if (thirdParty.getInsurer() != null) {
+                    thirdPartyInsurer = thirdParty.getInsurer().getName();
+                }
+                thirdPartyTitle = thirdParty.getTitle();
+                thirdPartyFirstName = thirdParty.getFirstName();
+                thirdPartySurname = thirdParty.getLastName();
+                thirdPartyAddress1 = thirdParty.getAddress1();
+                thirdPartyAddress2 = thirdParty.getAddress2();
+                thirdPartyAddress3 = thirdParty.getAddress3();
+                thirdPartyAddress4 = thirdParty.getAddress4();
+                thirdPartyAddress5 = thirdParty.getAddress5();
+                thirdPartyPostcode = thirdParty.getPostcode();
+                thirdPartyTelephoneDay = thirdParty.getTelephoneDay();
+                thirdPartyTelephoneEvening = thirdParty.getTelephoneEvening();
+                thirdPartyEmail = thirdParty.getEmail();
+                thirdPartyInsurer = thirdParty.getInsurer().getName();
+                thirdPartyInsurerBrand = thirdParty.getInsurerBrand();
+                thirdPartyPolicyNumber = thirdParty.getPolicyNumber();
+                thirdPartyVehicleManufacturer = thirdParty.getVehicleManufacturer();
+                thirdPartyVehicleModel = thirdParty.getVehicleModel();
+                thirdPartyVRN = thirdParty.getVehicleRegistration();
+                if (thirdParty.getVehicleClass() != null) {
+                    thirdPartyVehicleClass = thirdParty.getVehicleClass().getName();
+                }
+            }
+            managingRepair = claim.getIsManagingRepairDesc();
+            if (claim.getGtaNoticeDate() != null) {
+                noticeDate = DateHelper.getLocalDateTimeFormat().format(claim.getGtaNoticeDate());
+            }
+            if (claim.getCreditAgreementDate() != null) {
+                creditAgreementSignedDate = DateHelper.getLocalDateTimeFormat().format(claim.getCreditAgreementDate());
+            }
+            invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
+            Incident incident = claim.getIncident();
+            if (incident != null) {
+                LOG.debug("Adding incident info.");
+                if (incident.getDate() != null) {
+                    incidentDate = DateHelper.getLocalDateTimeFormat().format(incident.getDate());
+                }
+                incidentLocation = incident.getLocation();
+                incidentPoliceInvolved = incident.getIsPoliceInvolvedDesc();
+                incidentDescription = incident.getIncidentDescription();
+                Witness witness = incident.getWitness();
+                if (witness != null) {
+                    LOG.debug("Adding witness info.");
+                    witnessName = witness.getName();
+                    witnessAddress1 = witness.getAddress1();
+                    witnessAddress2 = witness.getAddress2();
+                    witnessAddress3 = witness.getAddress3();
+                    witnessAddress4 = witness.getAddress4();
+                    witnessAddress5 = witness.getAddress5();
+                    witnessPostcode = witness.getPostcode();
+                    witnessTelephoneDay = witness.getTelephoneDay();
+                    witnessTelephoneEvening = witness.getTelephoneEvening();
+                    witnessEmail = witness.getEmail();
+                }
+                Injury injury = incident.getInjury();
+                if (injury != null) {
+                    LOG.debug("Adding injury info.");
+                    injuryName = injury.getName();
+                    injuryAddress1 = injury.getAddress1();
+                    injuryAddress2 = injury.getAddress2();
+                    injuryAddress3 = injury.getAddress3();
+                    injuryAddress4 = injury.getAddress4();
+                    injuryAddress5 = injury.getAddress5();
+                    injuryPostcode = injury.getPostcode();
+                    injuryTelephoneDay = injury.getTelephoneDay();
+                    injuryTelephoneEvening = injury.getTelephoneEvening();
+                    injuryEmail = injury.getEmail();
+                    Solicitor solicitor = injury.getSolicitor();
+                    if (solicitor != null) {
+                        LOG.debug("Adding solicitor info.");
+                        solicitorName = solicitor.getName();
+                        solicitorAddress1 = solicitor.getAddress1();
+                        solicitorAddress2 = solicitor.getAddress2();
+                        solicitorAddress3 = solicitor.getAddress3();
+                        solicitorAddress4 = solicitor.getAddress4();
+                        solicitorAddress5 = solicitor.getAddress5();
+                        solicitorPostcode = solicitor.getPostcode();
+                        solicitorTelephoneDay = solicitor.getTelephone();
+                        solicitorEmail = solicitor.getEmail();
+                    }
+                }
+            }
 
-        HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
-        if (hireMonitoringDetail != null) {
-            LOG.debug("Adding HireMonitoringDetail info.");
-            if (hireMonitoringDetail.getNextReviewDate() != null) {
-                hireMonNextReviewDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getNextReviewDate());
+            HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
+            if (hireMonitoringDetail != null) {
+                LOG.debug("Adding HireMonitoringDetail info.");
+                if (hireMonitoringDetail.getNextReviewDate() != null) {
+                    hireMonNextReviewDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getNextReviewDate());
+                }
+                hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
+                if (hireMonitoringDetail.getRepairBookInDate() != null) {
+                    hireMonBookedInDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairBookInDate());
+                }
+                if (hireMonitoringDetail.getInspectionBookedDate() != null) {
+                    hireMonInspectionBookedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getInspectionBookedDate());
+                }
+                if (hireMonitoringDetail.getInspectionDate() != null) {
+                    hireMonInspectionDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getInspectionDate());
+                }
+                hireMonTotalLoss = hireMonitoringDetail.getIsTotalLossDesc();
+                if (hireMonitoringDetail.getRepairCompletionDate() != null) {
+                    hireMonRepairCompletionDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCompletionDate());
+                }
+                hireMonIME = hireMonitoringDetail.getNameOfIme();
+                hireMonLabourRate = hireMonitoringDetail.getLabourRate();
+                hireMonLabourHours = hireMonitoringDetail.getLabourHour();
+                hireMonTotalLabourCost = hireMonitoringDetail.getLabourCost();
+                hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
+                isRepairOnlyCheck = hireMonitoringDetail.isIsRepairOnlyCheck() ? "Yes" : "No";
+                isNFInsurerManagingRepair = hireMonitoringDetail.isIsNFInsurerManagingRepair() ? "Yes" : "No";
+                clientVatRegistered = hireMonitoringDetail.getClientVatRegisteredDesc();
+                if (hireMonitoringDetail.getRepairAuthorisedDate() == null) {
+                    hireMonAuthorisedDate = "";
+                } else {
+                    hireMonAuthorisedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairAuthorisedDate());
+                }
+                if (hireMonitoringDetail.getRepairCommencedDate() == null) {
+                    hireMonCommencedDate = "";
+                } else {
+                    hireMonCommencedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCommencedDate());
+                }
+                if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null) {
+                    hireMonTotalLossOfferMadeDate = "";
+                } else {
+                    hireMonTotalLossOfferMadeDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferMadeDate());
+                }
+                if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null) {
+                    hireMonTotalLossAcceptedDate = "";
+                } else {
+                    hireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
+                }
+                if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null) {
+                    hireMonTotalLossChequeIssuedDate = "";
+                } else {
+                    hireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
+                }
+                if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null) {
+                    hireMonTotalLossChequeReceivedDate = "";
+                } else {
+                    hireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
+                }
             }
-            hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
-            if (hireMonitoringDetail.getRepairBookInDate() != null) {
-                hireMonBookedInDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairBookInDate());
-            }
-            if (hireMonitoringDetail.getInspectionBookedDate() != null) {
-                hireMonInspectionBookedDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionBookedDate());
-            }
-            if (hireMonitoringDetail.getInspectionDate() != null) {
-                hireMonInspectionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionDate());
-            }
-            hireMonTotalLoss = hireMonitoringDetail.getIsTotalLossDesc();
-            if (hireMonitoringDetail.getRepairCompletionDate() != null) {
-                hireMonRepairCompletionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairCompletionDate());
-            }
-            hireMonIME = hireMonitoringDetail.getNameOfIme();
-            hireMonLabourRate = hireMonitoringDetail.getLabourRate();
-            hireMonLabourHours = hireMonitoringDetail.getLabourHour();
-            hireMonTotalLabourCost = hireMonitoringDetail.getLabourCost();
-            hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
-            isRepairOnlyCheck = hireMonitoringDetail.isIsRepairOnlyCheck() ? "Yes" : "No";
-            isNFInsurerManagingRepair = hireMonitoringDetail.isIsNFInsurerManagingRepair() ? "Yes" : "No";
-            clientVatRegistered = hireMonitoringDetail.getClientVatRegisteredDesc();
-            if (hireMonitoringDetail.getRepairAuthorisedDate() == null) {
-                hireMonAuthorisedDate = "";
-            } else {
-                hireMonAuthorisedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairAuthorisedDate());
-            }
-            if (hireMonitoringDetail.getRepairCommencedDate() == null) {
-                hireMonCommencedDate = "";
-            } else {
-                hireMonCommencedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCommencedDate());
-            }
-            if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null) {
-                hireMonTotalLossOfferMadeDate = "";
-            } else {
-                hireMonTotalLossOfferMadeDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferMadeDate());
-            }
-            if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null) {
-                hireMonTotalLossAcceptedDate = "";
-            } else {
-                hireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
-            }
-            if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null) {
-                hireMonTotalLossChequeIssuedDate = "";
-            } else {
-                hireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
-            }
-            if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null) {
-                hireMonTotalLossChequeReceivedDate = "";
-            } else {
-                hireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
-            }
-        }
 
-        VehicleHire vehicleHire = claim.getVehicleHire();
-        if (vehicleHire != null) {
-            LOG.debug("Adding vehicleHire info.");
-            hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
-            hireVehicleModel = vehicleHire.getVehicleModel();
-            hireVehicleRegistration = vehicleHire.getVehicleRegistration();
-            if (vehicleHire.getVehicleClass() != null) {
-                hireVehicleClass = vehicleHire.getVehicleClass().getName();
+            VehicleHire vehicleHire = claim.getVehicleHire();
+            if (vehicleHire != null) {
+                LOG.debug("Adding vehicleHire info.");
+                hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
+                hireVehicleModel = vehicleHire.getVehicleModel();
+                hireVehicleRegistration = vehicleHire.getVehicleRegistration();
+                if (vehicleHire.getVehicleClass() != null) {
+                    hireVehicleClass = vehicleHire.getVehicleClass().getName();
+                }
+                if (vehicleHire.getHireStart() != null) {
+                    hireVehicleHireStart = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireStart());
+                }
+                if (vehicleHire.getHireEnd() != null) {
+                    hireVehicleHireEnd = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireEnd());
+                }
+                hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
+                hireVehicleNoHireDays = vehicleHire.getDays();
+                hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
+                hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
+                hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
+                if (vehicleHire.getHpiFirstRegistration() != null) {
+                    hireVehicleHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(vehicleHire.getHpiFirstRegistration());
+                }
+                hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
+                hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
+                hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
             }
-            if (vehicleHire.getHireStart() != null) {
-                hireVehicleHireStart = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireStart());
-            }
-            if (vehicleHire.getHireEnd() != null) {
-                hireVehicleHireEnd = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireEnd());
-            }
-            hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
-            hireVehicleNoHireDays = vehicleHire.getDays();
-            hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
-            hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
-            hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
-            if (vehicleHire.getHpiFirstRegistration() != null) {
-                hireVehicleHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(vehicleHire.getHpiFirstRegistration());
-            }
-            hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
-            hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
-            hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
-        }
-        
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
-            extrasMiscellaneousTitle = "Acquisition Fee";
-        }
-        else {
-            extrasMiscellaneousTitle = "Miscellaneous Fee";
-        }
 
-        
-        Invoice invoice = claim.getInvoice();
-        if (invoice != null) {
-            LOG.debug("Adding invoice info.");
-            invoiceSupplierClaimsHandlingNo = invoice.getHandlingInvoiceNo();
-            invoiceSupplierClaimInvoiceNo = invoice.getClaimInvoiceNo();
-            invoiceHireRate = invoice.getHireRateChargedPerDay();
-            invoiceHireNet = invoice.getHireNet();
-            invoiceHireVat = invoice.getHireVat();
-            invoiceHireGross = invoice.getHireGross();
-            invoiceRepairNet = invoice.getRepairNet();
-            invoiceRepairVat = invoice.getRepairVat();
-            invoiceRepairGross = invoice.getRepairGross();
-            invoiceEngineerFeeNet = invoice.getEngineerFeeNet();
-            invoiceEngineerFeeVat = invoice.getEngineerFeeVat();
-            invoiceEngineerFeeGross = invoice.getEngineerFeeGross();
-            invoiceTotalLossFeeNet = invoice.getTotalLossFeeNet();
-            invoiceTotalLossFeeVat = invoice.getTotalLossFeeVat();
-            invoiceTotalLossFeeGross = invoice.getTotalLossFeeGross();
-            invoiceStorageRecoveryNet = invoice.getStorageRecoveryNet();
-            invoiceStorageRecoveryVat = invoice.getStorageRecoveryVat();
-            invoiceStorageRecoveryGross = invoice.getStorageRecoveryGross();
-            invoiceTotalNet = invoice.getTotalNet();
-            invoiceTotalVat = invoice.getTotalVat();
-            invoiceTotalGross = invoice.getTotalGross();
-            invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
-            invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
-            invoiceDiscount = invoice.getDiscount();
-            invoiceInsurerDiscount = invoice.getInsurerDiscount();
-            invoiceGtaDiscount = invoice.getGtaDiscount();
-            invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
-            invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
-            if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
-                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
-            }
-            invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
-            invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
-            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO()) {
-                invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
-            }
-            invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
-            invoiceFullTotalToPay = invoice.getFullTotalToPay();
-            invoiceTotalToPay = invoice.getTotalToPay();
-            if (invoice.getInvoiceOriginal().getFullTotalToPayOriginal() != null) {
-                originalInvoiceFullTotalToPay = invoice.getInvoiceOriginal().getFullTotalToPayOriginal();
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                extrasMiscellaneousTitle = "Acquisition Fee";
             } else {
-                originalInvoiceFullTotalToPay = BigDecimal.ZERO;
+                extrasMiscellaneousTitle = "Miscellaneous Fee";
             }
-            if (invoice.getInvoiceOriginal().getTotalToPayOriginal() != null) {
-                originalInvoiceTotalToPay = invoice.getInvoiceOriginal().getTotalToPayOriginal();
-            } else {
-                originalInvoiceTotalToPay = BigDecimal.ZERO;
-            }
-            invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
-            invoiceVATAmountCollected = invoice.getVatAmountCollected();
-            invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
-            if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0) {
-                invoiceInterimPayment = "";
-            }
-            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
-            }
-            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) < 0) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Only £" + invoice.getInterimPaymentReceived() + " Received)";
-            }
-            else {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
-            }
-            if (invoice.getDateInvoiced() != null) {
-                invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
-            }
-            if (invoice.getCreatedDate() != null) {
-                invoiceUploadedDate = DateHelper.getLocalDateTimeFormat().format(invoice.getCreatedDate());
-            }
-            if (invoice.getAutoPenaltyStart() != null) {
-                penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
-            }
-            extrasCollaborationFee = invoice.getCollaborationFee();
-            extrasCollaborationQuantity = invoice.getCollaborationQty();
-            extrasMiscellaneousFee = invoice.getMiscellaneousFee();
-            extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
-            extrasAutomaticFee = invoice.getAutomaticFee();
-            extrasAutomaticQuantity = invoice.getAutomaticQty();
-            extrasAdditionalDriverFee = invoice.getAdditionalDriverFee();
-            extrasAdditionalDriverQuantity = invoice.getAdditionalDriverQty();
-            extrasSatNavFee = invoice.getSatNavFee();
-            extrasSatNavQuantity = invoice.getSatNavQty();
-            extrasEstateFee = invoice.getEstateFee();
-            extrasEstateQuantity = invoice.getEstateQty();
-            extrasBabySeatFee = invoice.getBabySeatFee();
-            extrasBabySeatQuantity = invoice.getBabySeatQty();
-            extrasTowBarFee = invoice.getTowBarsFee();
-            extrasTowBarQuantity = invoice.getTowBarsQty();
-            extrasNSRInsPremiumFee = invoice.getNonStandardInsurancePremiumFee();
-            extrasNSRInsPremiumQuantity = invoice.getNonStandardInsurancePremiumQty();
-            extrasAdminFee = invoice.getAdminFee();
-            extrasAdminQuantity = invoice.getAdminQty();
-            extrasRoofRackFee = invoice.getRoofRackFee();
-            extrasRoofRackQuantity = invoice.getRoofRackQty();
-            extrasDualControlFee = invoice.getDualControlFee();
-            extrasDualControlQuantity = invoice.getDualControlQty();
-            extrasDeliveryCollectionFee = invoice.getDeliveryCollectionFee();
-            extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
-            extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
-            extrasRepairAdminFee = invoice.getRepairAdminFee();
-            extrasRepairAcquisitionFee = invoice.getRepairAcquisitionFee();
-            extrasRepairParts = invoice.getRepairParts();
-            extrasRepairLabour = invoice.getRepairLabour();
-            extrasRepairMaterials = invoice.getRepairMaterials();
-            extrasRepairSpecialist = invoice.getRepairSpecialist();
-            
-            paymentDetailsHirePaid = invoice.getHireGrossPaid();
-            paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
-            paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
-            paymentDetailsTotalLossPaid = invoice.getTotalLossFeeGrossPaid();
-            paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
-            paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
-            paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
-            paymentDetailsClaimHandlerChargePaid = invoice.getClaimHandlerChargePaid();
-            paymentDetailsDeductionClaimHandlerFeePaid = invoice.getDeductionClaimHandlerFeePaid();
-            paymentDetailsChoDiscountFeePaid = invoice.getChoDiscountFeePaid();
-            paymentDetailsInsurerDiscountFeePaid = invoice.getInsurerDiscountFeePaid();
-            paymentDetailsFinalPayment = invoice.getFinalPayment();
-            invoicePaymentsTeam = invoice.getPaymentTeamDesc();
-        }
+            Invoice invoice = claim.getInvoice();
+            if (invoice != null) {
+                LOG.debug("Adding invoice info.");
+                invoiceSupplierClaimsHandlingNo = invoice.getHandlingInvoiceNo();
+                invoiceSupplierClaimInvoiceNo = invoice.getClaimInvoiceNo();
+                invoiceHireRate = invoice.getHireRateChargedPerDay();
+                invoiceHireNet = invoice.getHireNet();
+                invoiceHireVat = invoice.getHireVat();
+                invoiceHireGross = invoice.getHireGross();
+                invoiceRepairNet = invoice.getRepairNet();
+                invoiceRepairVat = invoice.getRepairVat();
+                invoiceRepairGross = invoice.getRepairGross();
+                invoiceEngineerFeeNet = invoice.getEngineerFeeNet();
+                invoiceEngineerFeeVat = invoice.getEngineerFeeVat();
+                invoiceEngineerFeeGross = invoice.getEngineerFeeGross();
+                invoiceTotalLossFeeNet = invoice.getTotalLossFeeNet();
+                invoiceTotalLossFeeVat = invoice.getTotalLossFeeVat();
+                invoiceTotalLossFeeGross = invoice.getTotalLossFeeGross();
+                invoiceStorageRecoveryNet = invoice.getStorageRecoveryNet();
+                invoiceStorageRecoveryVat = invoice.getStorageRecoveryVat();
+                invoiceStorageRecoveryGross = invoice.getStorageRecoveryGross();
+                invoiceTotalNet = invoice.getTotalNet();
+                invoiceTotalVat = invoice.getTotalVat();
+                invoiceTotalGross = invoice.getTotalGross();
+                invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
+                invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
+                invoiceDiscount = invoice.getDiscount();
+                invoiceInsurerDiscount = invoice.getInsurerDiscount();
+                invoiceGtaDiscount = invoice.getGtaDiscount();
+                invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
+                invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
+                if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
+                    invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
+                }
+                invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
+                invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
+                if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO()) {
+                    invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
+                }
+                invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
+                invoiceFullTotalToPay = invoice.getFullTotalToPay();
+                invoiceTotalToPay = invoice.getTotalToPay();
+                if (invoice.getInvoiceOriginal().getFullTotalToPayOriginal() != null) {
+                    originalInvoiceFullTotalToPay = invoice.getInvoiceOriginal().getFullTotalToPayOriginal();
+                } else {
+                    originalInvoiceFullTotalToPay = BigDecimal.ZERO;
+                }
+                if (invoice.getInvoiceOriginal().getTotalToPayOriginal() != null) {
+                    originalInvoiceTotalToPay = invoice.getInvoiceOriginal().getTotalToPayOriginal();
+                } else {
+                    originalInvoiceTotalToPay = BigDecimal.ZERO;
+                }
+                invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
+                invoiceVATAmountCollected = invoice.getVatAmountCollected();
+                invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
+                if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO) == 0) {
+                    invoiceInterimPayment = "";
+                } else if (invoice.getInterimPaymentReceived() != null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
+                    invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
+                } else if (invoice.getInterimPaymentReceived() != null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) < 0) {
+                    invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Only £" + invoice.getInterimPaymentReceived() + " Received)";
+                } else {
+                    invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
+                }
+                if (invoice.getDateInvoiced() != null) {
+                    invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
+                }
+                if (invoice.getCreatedDate() != null) {
+                    invoiceUploadedDate = DateHelper.getLocalDateTimeFormat().format(invoice.getCreatedDate());
+                }
+                if (invoice.getAutoPenaltyStart() != null) {
+                    penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
+                }
+                extrasCollaborationFee = invoice.getCollaborationFee();
+                extrasCollaborationQuantity = invoice.getCollaborationQty();
+                extrasMiscellaneousFee = invoice.getMiscellaneousFee();
+                extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
+                extrasAutomaticFee = invoice.getAutomaticFee();
+                extrasAutomaticQuantity = invoice.getAutomaticQty();
+                extrasAdditionalDriverFee = invoice.getAdditionalDriverFee();
+                extrasAdditionalDriverQuantity = invoice.getAdditionalDriverQty();
+                extrasSatNavFee = invoice.getSatNavFee();
+                extrasSatNavQuantity = invoice.getSatNavQty();
+                extrasEstateFee = invoice.getEstateFee();
+                extrasEstateQuantity = invoice.getEstateQty();
+                extrasBabySeatFee = invoice.getBabySeatFee();
+                extrasBabySeatQuantity = invoice.getBabySeatQty();
+                extrasTowBarFee = invoice.getTowBarsFee();
+                extrasTowBarQuantity = invoice.getTowBarsQty();
+                extrasNSRInsPremiumFee = invoice.getNonStandardInsurancePremiumFee();
+                extrasNSRInsPremiumQuantity = invoice.getNonStandardInsurancePremiumQty();
+                extrasAdminFee = invoice.getAdminFee();
+                extrasAdminQuantity = invoice.getAdminQty();
+                extrasRoofRackFee = invoice.getRoofRackFee();
+                extrasRoofRackQuantity = invoice.getRoofRackQty();
+                extrasDualControlFee = invoice.getDualControlFee();
+                extrasDualControlQuantity = invoice.getDualControlQty();
+                extrasDeliveryCollectionFee = invoice.getDeliveryCollectionFee();
+                extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
+                extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
-        EngineerReport engineerReport = claim.getEngineerReport();
-        if (engineerReport != null) {
-            LOG.debug("Adding engineerReport info.");
-            engReportEstimatedLabourAmount = engineerReport.getEstimatedLabourAmount();
-            engReportEstimatedTotalRepairAmount = engineerReport.getEstimatedTotalRepairAmount();
-            engReportEstimatedDaysUnderRepair = engineerReport.getEstimatedDaysUnderRepair();
-            engReportUsable = engineerReport.getIsUsableDesc();
-            engReportName = engineerReport.getName();
-            engReportCompany = engineerReport.getCompany();
-            engReportAddress1 = engineerReport.getAddress1();
-            engReportAddress2 = engineerReport.getAddress2();
-            engReportAddress3 = engineerReport.getAddress3();
-            engReportAddress4 = engineerReport.getAddress4();
-            engReportAddress5 = engineerReport.getAddress5();
-            engReportPostcode = engineerReport.getPostcode();
-            engReportTelephone = engineerReport.getTelephone();
-            engReportEmail = engineerReport.getEmail();
+                extrasRepairAdminFee = invoice.getRepairAdminFee();
+                extrasRepairAcquisitionFee = invoice.getRepairAcquisitionFee();
+                extrasRepairParts = invoice.getRepairParts();
+                extrasRepairLabour = invoice.getRepairLabour();
+                extrasRepairMaterials = invoice.getRepairMaterials();
+                extrasRepairSpecialist = invoice.getRepairSpecialist();
+
+                paymentDetailsHirePaid = invoice.getHireGrossPaid();
+                paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
+                paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
+                paymentDetailsTotalLossPaid = invoice.getTotalLossFeeGrossPaid();
+                paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
+                paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
+                paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
+                paymentDetailsClaimHandlerChargePaid = invoice.getClaimHandlerChargePaid();
+                paymentDetailsDeductionClaimHandlerFeePaid = invoice.getDeductionClaimHandlerFeePaid();
+                paymentDetailsChoDiscountFeePaid = invoice.getChoDiscountFeePaid();
+                paymentDetailsInsurerDiscountFeePaid = invoice.getInsurerDiscountFeePaid();
+                paymentDetailsFinalPayment = invoice.getFinalPayment();
+                invoicePaymentsTeam = invoice.getPaymentTeamDesc();
+            }
+
+            EngineerReport engineerReport = claim.getEngineerReport();
+            if (engineerReport != null) {
+                LOG.debug("Adding engineerReport info.");
+                engReportEstimatedLabourAmount = engineerReport.getEstimatedLabourAmount();
+                engReportEstimatedTotalRepairAmount = engineerReport.getEstimatedTotalRepairAmount();
+                engReportEstimatedDaysUnderRepair = engineerReport.getEstimatedDaysUnderRepair();
+                engReportUsable = engineerReport.getIsUsableDesc();
+                engReportName = engineerReport.getName();
+                engReportCompany = engineerReport.getCompany();
+                engReportAddress1 = engineerReport.getAddress1();
+                engReportAddress2 = engineerReport.getAddress2();
+                engReportAddress3 = engineerReport.getAddress3();
+                engReportAddress4 = engineerReport.getAddress4();
+                engReportAddress5 = engineerReport.getAddress5();
+                engReportPostcode = engineerReport.getPostcode();
+                engReportTelephone = engineerReport.getTelephone();
+                engReportEmail = engineerReport.getEmail();
+            }
+        } catch (Exception ex) {
+            LOG.error("Error creating claim file report for claim '{}':\n", claim.getChoReference(), ex);
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage(), ex.getCause());
+            }
         }
-      }
-      catch (Exception ex) {
-          LOG.error("Error creating claim file report for claim '{}':\n", claim.getChoReference(), ex);
-          if (ex.getCause() != null) {
-              LOG.error("    Caused by: {}", ex.getCause().getMessage(), ex.getCause());
-          }
-      }
     }
 
     public String getClaimType() {
@@ -2689,13 +2777,13 @@ public class ClaimFileReportData {
         this.paymentDetailsTotalLossPaid = paymentDetailsTotalLossPaid;
     }
 
-	public BigDecimal getPaymentDetailsFinalPayment() {
-		return paymentDetailsFinalPayment;
-	}
+    public BigDecimal getPaymentDetailsFinalPayment() {
+        return paymentDetailsFinalPayment;
+    }
 
-	public void setPaymentDetailsFinalPayment(BigDecimal paymentDetailsFinalPayment) {
-		this.paymentDetailsFinalPayment = paymentDetailsFinalPayment;
-	}
+    public void setPaymentDetailsFinalPayment(BigDecimal paymentDetailsFinalPayment) {
+        this.paymentDetailsFinalPayment = paymentDetailsFinalPayment;
+    }
 
     public BigDecimal getPaymentDetailsChoDiscountFeePaid() {
         return paymentDetailsChoDiscountFeePaid;
@@ -2768,7 +2856,7 @@ public class ClaimFileReportData {
     public String getClientVatRegistered() {
         return clientVatRegistered;
     }
-    
+
     public String getFinalReview() {
         return finalReview;
     }
@@ -2834,17 +2922,17 @@ public class ClaimFileReportData {
 
         if ((subscriberClaim || fixedFeeClaim)
                 && ("ClaimUnacknowledgedUnrouted".equals(status) || "ClaimUnacknowledgedRouted".equals(status)
-                    || "ClaimPending".equals(status) || "ClaimReferredToEngineer".equals(status)
-                    || "ClaimUpdatedByEngineer".equals(status) || "ClaimReferredToFNOL".equals(status)
-                    || "SubscriberClaimRejected".equals(status) || "ClaimRejected".equals(status)
-                    || "ClaimRejectionContested".equals(status) || "ClaimUnacknowledgedUnassigned".equals(status))
+                || "ClaimPending".equals(status) || "ClaimReferredToEngineer".equals(status)
+                || "ClaimUpdatedByEngineer".equals(status) || "ClaimReferredToFNOL".equals(status)
+                || "SubscriberClaimRejected".equals(status) || "ClaimRejected".equals(status)
+                || "ClaimRejectionContested".equals(status) || "ClaimUnacknowledgedUnassigned".equals(status))
                 && isInsurerOrAdmin) {
             result = true;
         }
 
         return result;
     }
-    
+
     public boolean isCollaborationClaim() {
         return collaborationClaim;
     }
@@ -2873,5 +2961,80 @@ public class ClaimFileReportData {
         return isInsurer;
     }
 
-}
+    public boolean isIsInsurerOrAdmin() {
+        return isInsurerOrAdmin;
+    }
 
+    public boolean isIsInsurerHireMonitoring() {
+        return isInsurerHireMonitoring;
+    }
+
+    public String getInsurerHireMonBookedInDate() {
+        return insurerHireMonBookedInDate;
+    }
+
+    public String getInsurerHireMonAuthorisedDate() {
+        return insurerHireMonAuthorisedDate;
+    }
+
+    public String getInsurerHireMonCommencedDate() {
+        return insurerHireMonCommencedDate;
+    }
+
+    public String getInsurerHireMonInspectionBookedDate() {
+        return insurerHireMonInspectionBookedDate;
+    }
+
+    public String getInsurerHireMonInspectionDate() {
+        return insurerHireMonInspectionDate;
+    }
+
+    public String getInsurerHireMonTotalLossOfferMadeDate() {
+        return insurerHireMonTotalLossOfferMadeDate;
+    }
+
+    public String getInsurerHireMonTotalLossAcceptedDate() {
+        return insurerHireMonTotalLossAcceptedDate;
+    }
+
+    public String getInsurerHireMonTotalLossChequeIssuedDate() {
+        return insurerHireMonTotalLossChequeIssuedDate;
+    }
+
+    public String getInsurerHireMonTotalLossChequeReceivedDate() {
+        return insurerHireMonTotalLossChequeReceivedDate;
+    }
+
+    public String getInsurerHireMonRepairCompletionDate() {
+        return insurerHireMonRepairCompletionDate;
+    }
+
+    public BigDecimal getInsurerHireMonLabourRate() {
+        return insurerHireMonLabourRate;
+    }
+
+    public BigDecimal getInsurerHireMonLabourHours() {
+        return insurerHireMonLabourHours;
+    }
+
+    public BigDecimal getInsurerHireMonTotalLabourCost() {
+        return insurerHireMonTotalLabourCost;
+    }
+
+    public String getInsurerHireMonClaimantImpecunious() {
+        return insurerHireMonClaimantImpecunious;
+    }
+
+    public String getInsurerHireMonWhoManagedRepair() {
+        return insurerHireMonWhoManagedRepair;
+    }
+
+    public String getInsurerHireMonReplacementVehicleClass() {
+        return insurerHireMonReplacementVehicleClass;
+    }
+
+    public String getInsurerHireMonHireStart() {
+        return insurerHireMonHireStart;
+    }
+
+}

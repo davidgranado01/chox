@@ -182,6 +182,23 @@ public class ExcelClaim {
     private final String claimFraudScore;
     private final String claimFraudStatus;
     private final boolean isInsurer;
+    private final Date claimInsHMDRepairBookInDate;
+    private final Date claimInsHMDRepairAuthorisedDate;
+    private final Date claimInsHMDRepairCommencedDate;
+    private final Date claimInsHMDInspectionBookedDate;
+    private final Date claimInsHMDInspectionDate;
+    private final Date claimInsHMDRepairCompletionDate;
+    private final Date claimInsHMDTotalLossOfferMadeDate;
+    private final Date claimInsHMDTotalLossOfferAcceptedDate;
+    private final Date claimInsHMDTotalLossOfferCheckIssuedDate;
+    private final Date claimInsHMDTotalLossOfferCheckReceivedDate;
+    private final BigDecimal claimInsHMDLabourRate;
+    private final BigDecimal claimInsHMDLabourHour;
+    private final BigDecimal claimInsHMDLabourCost;
+    private final Boolean claimInsHMDClaimantImpecunious;
+    private final String claimInsHMDWhoManagedRepair;
+    private final String claimInsHMDReplacementVehicleClass;
+    private final Date claimInsHMDRentalStart;
 
     public ExcelClaim(Map data, Boolean isIns) {
         claimStatus = (String) data.get("status");
@@ -439,6 +456,24 @@ public class ExcelClaim {
         claimFraudScore = isIns!= null && isIns && fraudCheckStatus == 3 ? ((Integer) data.get("fraud_score")).toString() : "";
         claimFraudStatus = isIns!= null && isIns && fraudCheckStatus == 3 ? (String) data.get("fraud_status") : "";
         isInsurer = isIns == null ? false : isIns;
+
+        claimInsHMDRepairBookInDate = (Date) data.get("ihmd_repair_book_in_date");
+        claimInsHMDRepairAuthorisedDate = (Date) data.get("ihmd_repair_authorised_date");
+        claimInsHMDRepairCommencedDate = (Date) data.get("ihmd_repair_commenced_date");
+        claimInsHMDInspectionBookedDate = (Date) data.get("ihmd_inspection_booked_date");
+        claimInsHMDInspectionDate = (Date) data.get("ihmd_inspection_date");
+        claimInsHMDRepairCompletionDate = (Date) data.get("ihmd_repair_completion_date");
+        claimInsHMDTotalLossOfferMadeDate = (Date) data.get("ihmd_total_loss_offer_made");
+        claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
+        claimInsHMDTotalLossOfferCheckIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
+        claimInsHMDTotalLossOfferCheckReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
+        claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
+        claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
+        claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
+        claimInsHMDClaimantImpecunious = (Boolean) data.get("ihmd_claimant_impecunious");
+        claimInsHMDWhoManagedRepair = (String) data.get("ihmd_who_managed_repair");
+        claimInsHMDReplacementVehicleClass = (String) data.get("ihmd_replacement_vehicle_class");
+        claimInsHMDRentalStart = (Date) data.get("ihmd_rental_start");
     }
 
     public String getClaimType() {
@@ -1115,6 +1150,74 @@ public class ExcelClaim {
 
     public boolean isIsInsurer() {
         return isInsurer;
+    }
+
+    public Date getClaimInsHMDRepairBookInDate() {
+        return claimInsHMDRepairBookInDate;
+    }
+
+    public Date getClaimInsHMDRepairAuthorisedDate() {
+        return claimInsHMDRepairAuthorisedDate;
+    }
+
+    public Date getClaimInsHMDRepairCommencedDate() {
+        return claimInsHMDRepairCommencedDate;
+    }
+
+    public Date getClaimInsHMDInspectionBookedDate() {
+        return claimInsHMDInspectionBookedDate;
+    }
+
+    public Date getClaimInsHMDInspectionDate() {
+        return claimInsHMDInspectionDate;
+    }
+
+    public Date getClaimInsHMDRepairCompletionDate() {
+        return claimInsHMDRepairCompletionDate;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferMadeDate() {
+        return claimInsHMDTotalLossOfferMadeDate;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferAcceptedDate() {
+        return claimInsHMDTotalLossOfferAcceptedDate;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferCheckIssuedDate() {
+        return claimInsHMDTotalLossOfferCheckIssuedDate;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferCheckReceivedDate() {
+        return claimInsHMDTotalLossOfferCheckReceivedDate;
+    }
+
+    public BigDecimal getClaimInsHMDLabourRate() {
+        return claimInsHMDLabourRate;
+    }
+
+    public BigDecimal getClaimInsHMDLabourHour() {
+        return claimInsHMDLabourHour;
+    }
+
+    public BigDecimal getClaimInsHMDLabourCost() {
+        return claimInsHMDLabourCost;
+    }
+
+    public String getClaimInsHMDClaimantImpecunious() {
+        return claimInsHMDClaimantImpecunious == null ? "" : claimInsHMDClaimantImpecunious ? "Yes" : "No";
+    }
+
+    public String getClaimInsHMDWhoManagedRepair() {
+        return claimInsHMDWhoManagedRepair;
+    }
+
+    public String getClaimInsHMDReplacementVehicleClass() {
+        return claimInsHMDReplacementVehicleClass;
+    }
+
+    public Date getClaimInsHMDRentalStart() {
+        return claimInsHMDRentalStart;
     }
 
 }
