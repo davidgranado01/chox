@@ -610,7 +610,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
     FOR i IN 0..months LOOP
         queryString = queryString || ',(select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho ';
-        queryString = queryString || 'where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true and c.created_date > ''' || claimUploadStart || ''' ';
+        queryString = queryString || 'where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and vh.rental_start >= ''' || rentalStart || ''' and i.hire_net - i.admin_fee > 0 ';
         queryString = queryString || 'and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) ';
         queryString = queryString || 'and (c.insurer_id = params.insurerId or params.insurerId = -1) ';
@@ -643,7 +643,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
     FOR i IN 0..months LOOP
         queryString = queryString || ',(select coalesce(avg(vh.days), 0)::numeric(8,1) from claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho ';
-        queryString = queryString || 'where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true and c.created_date > ''' || claimUploadStart || ''' ';
+        queryString = queryString || 'where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and vh.rental_start >= ''' || rentalStart || ''' and i.hire_net - i.admin_fee > 0 ';
         queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
         queryString = queryString || 'and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) ';
