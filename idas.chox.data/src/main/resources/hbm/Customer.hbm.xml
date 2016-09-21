@@ -33,7 +33,7 @@
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_primary_driver" name="isPrimaryDriver" not-null="true"/>
-    <property column="is_usable" name="isUsable" not-null="true"/>
+    <property column="is_usable" name="isUsable"/>
     <property column="is_active" name="isActive" not-null="true"/>
     <property column="comprehensive" name="comprehensive" not-null="true"/>
     <property column="is_total_loss" name="isTotalLoss" not-null="true"/>
