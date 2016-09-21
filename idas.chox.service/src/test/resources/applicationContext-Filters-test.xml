@@ -42,6 +42,21 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
+    <bean id="RejectedManualClaims" class="idas.chox.service.filters.FilterManualRejected" >
+        <property name="name" value="Rejected Manual Claims"/>
+        <property name="key" value="RejectedManualClaims"/>
+        <property name="status" value="ClaimRejected"/>
+        <property name="isManualFilter" value="true"/>
+        <property name="queueDescription" value="Manual claim notifications rejected by the Insurer"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+    
     <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>

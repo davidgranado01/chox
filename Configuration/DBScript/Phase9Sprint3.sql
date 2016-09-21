@@ -669,9 +669,6 @@ WITH (
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE insurer_hire_monitoring_ecd TO chox_user;
 GRANT SELECT ON TABLE insurer_hire_monitoring_ecd TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE insurer_hire_monitoring_ecd_id_seq TO chox_user;
-ALTER TABLE claim ADD COLUMN insurer_hire_monitoring_ecd_id integer;
-
-ALTER TABLE claim ADD CONSTRAINT insurer_hire_monitoring_ecd_id_fkey FOREIGN KEY (insurer_hire_monitoring_ecd_id) REFERENCES insurer_hire_monitoring_ecd(id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'activity.InsurerEcdUpdate.ClaimUnacknowledgedUnrouted', false, false;
