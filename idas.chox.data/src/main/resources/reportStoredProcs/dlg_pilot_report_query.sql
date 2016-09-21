@@ -185,7 +185,7 @@ BEGIN
     queryString = queryString || ' UNION ';
 
     queryString = queryString || 'select 6 as id, ''Total Hire Paid Exc. LPPs'' as title, ';
-    queryString = queryString || '(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
+    queryString = queryString || '(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross+i.gta_discount ELSE i.hire_gross_paid END), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
     queryString = queryString || 'where c.invoice_id = i.id and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
     queryString = queryString || 'and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
@@ -196,7 +196,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
 
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
+        queryString = queryString || ',(select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross+i.gta_discount ELSE i.hire_gross_paid END), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
         queryString = queryString || 'where c.invoice_id = i.id and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end) ';
@@ -218,7 +218,7 @@ BEGIN
     queryString = queryString || ' UNION ';
 
     queryString = queryString || 'select 7 as id, ''Total Hire Paid Inc. LPPs'' as title, ';
-    queryString = queryString || '(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho ';
+    queryString = queryString || '(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge + i.gta_discount) end), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho ';
     queryString = queryString || 'where c.invoice_id = i.id and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
     queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -229,7 +229,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
 
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho ';
+        queryString = queryString || ',(select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge + i.gta_discount) end), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, chorganisation cho ';
         queryString = queryString || 'where c.invoice_id = i.id and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -255,7 +255,7 @@ BEGIN
 -- have moved to 'Payment Received' or 'Manual Invoice Paid', the invoices will be reported in the period/column that the
 -- invoice were uploaded into CHOX.
     queryString = queryString || 'select 8 as id, ''Total Hire Savings Exc. LPPs'' as title, ';
-    queryString = queryString || '(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
+    queryString = queryString || '(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross + i.gta_discount end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
     queryString = queryString || 'where c.invoice_id = i.id and i.invoice_original_id = io.id and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
     queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -266,7 +266,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
 
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
+        queryString = queryString || ',(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross + i.gta_discount end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
         queryString = queryString || 'where c.invoice_id = i.id and i.invoice_original_id = io.id and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -292,7 +292,7 @@ BEGIN
 -- 'Payment Received' or 'Manual Invoice Paid', the invoices will be reported in the period/column that the invoice
 -- were uploaded into CHOX.
     queryString = queryString || 'select 9 as id, ''Total Hire Savings Inc. LPPs'' as title, ';
-    queryString = queryString || '(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid + i.hire_penalty_charge_paid else i.hire_gross + i.hire_penalty_charge end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
+    queryString = queryString || '(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid + i.hire_penalty_charge_paid else i.hire_gross + i.hire_penalty_charge  + i.gta_discount end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
     queryString = queryString || 'where c.invoice_id = i.id and i.invoice_original_id = io.id and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
     queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -303,7 +303,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
 
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid + i.hire_penalty_charge_paid else i.hire_gross + i.hire_penalty_charge end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
+        queryString = queryString || ',(select coalesce(sum((case when io.hire_gross = 0 then i.hire_gross else io.hire_gross end) - (case when i.final_payment is not null then i.hire_gross_paid + i.hire_penalty_charge_paid else i.hire_gross + i.hire_penalty_charge  + i.gta_discount end)), 0)::numeric(14,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, invoice_original io ';
         queryString = queryString || 'where c.invoice_id = i.id and i.invoice_original_id = io.id and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and c.status in (''InvoicePaymentLogged'',''PaymentReceived'',''ManualInvoicePaid'') ';
@@ -362,7 +362,7 @@ BEGIN
 
 
     queryString = queryString || 'select 11 as id, ''Average Hire Value Paid'' as title, ';
-    queryString = queryString || '(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(12,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
+    queryString = queryString || '(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross+i.gta_discount end), 0)::numeric(12,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
     queryString = queryString || 'where c.invoice_id = i.id and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
     queryString = queryString || 'and i.hire_net - i.admin_fee > 0 ';
@@ -374,7 +374,7 @@ BEGIN
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
 
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross end), 0)::numeric(12,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
+        queryString = queryString || ',(select coalesce(avg(case when i.final_payment is not null then i.hire_gross_paid else i.hire_gross+i.gta_discount end), 0)::numeric(12,2) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i ';
         queryString = queryString || 'where c.invoice_id = i.id and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and i.hire_net - i.admin_fee > 0 ';
