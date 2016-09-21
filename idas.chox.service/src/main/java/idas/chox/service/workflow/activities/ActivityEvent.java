@@ -920,7 +920,7 @@ public enum ActivityEvent {
             LOG.debug("Building InsurerHireVehicleUpdatedEvent (not from activity!)");
             generator.startEvent(claim, this.getName(), this.getEventId());
             generator.addParameter("insurerHireStart", claim.getInsurerVehicleHire().getRentalStart());
-            generator.addParameter("insurerVehicleClass", claim.getInsurerVehicleHire().getVehicleClass().getName());
+            generator.addParameter("insurerVehicleClass", claim.getInsurerVehicleHire().getVehicleClass() != null ? claim.getInsurerVehicleHire().getVehicleClass().getName() : "");
             generator.completeEvent(claim);
         }
         @Override
