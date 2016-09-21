@@ -1212,6 +1212,7 @@
                 </div>
             </s:if>
         </div>
+<s:if test="insurerLouDates">
         <div id="insurerHireMonitoringDetails" class="x-hide-display">
                 <div class="x-panel-bwrap chox-form-container">
                     <label id="expandAllInsurerHireId" onclick="expandInsurerHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>
@@ -1239,7 +1240,7 @@
                     </table>
                 </div>
         </div>
-
+</s:if>
         <div id="invoiceDetails" class="x-hide-display">
             <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
                 <div class="x-panel-bwrap chox-form-container">
