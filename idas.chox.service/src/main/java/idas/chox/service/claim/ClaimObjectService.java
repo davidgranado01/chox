@@ -71,6 +71,7 @@ public class ClaimObjectService {
         newClaim.setLiabilityModifiedDate(claim.getLiabilityModifiedDate());
         newClaim.setLiabilityAgreedDate(claim.getLiabilityAgreedDate());
         newClaim.setHireMonitoringEcds(null);
+        newClaim.setInsurerHireMonitoringEcds(null);
         newClaim.setPreviousStatus(null);
         newClaim.setStatus(null);
         newClaim.setId(null);
@@ -79,7 +80,9 @@ public class ClaimObjectService {
         newClaim.setVersion(null);
         newClaim.setChoReference(null);
         newClaim.setVehicleHire(null);
+        newClaim.setInsurerVehicleHire(null);
         newClaim.setHireMonitoringDetail(null);
+        newClaim.setInsurerHireMonitoringDetail(null);
         if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
         } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE || claim.getClaimType() == ClaimType.INSURER_INVOICE) {
