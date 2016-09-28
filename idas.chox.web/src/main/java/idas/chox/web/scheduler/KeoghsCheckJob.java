@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import org.quartz.DisallowConcurrentExecution;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,7 @@ import idas.chox.keoghs.Keoghs;
  *
  * @author john
  */
+@DisallowConcurrentExecution
 public class KeoghsCheckJob implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeoghsCheckJob.class);
