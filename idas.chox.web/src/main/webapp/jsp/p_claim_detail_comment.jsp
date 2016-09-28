@@ -100,7 +100,7 @@
         }
         else if(columnIndex === 4 && comment.get("delete")!==""){
             deleteComment(fileId);
-        } else if (columnIndex === 3){
+        } else if (columnIndex === 3 && comment.get("reviewRequired")==="Required"){
             acknowledgeComment(fileId);
         }
     }
@@ -204,6 +204,7 @@
     function toggleVisibility(){
         var visibility = $('input[name=visibilityType]:checked', '#claimCommentForm').val();
         if (visibility !== '0'){
+            $('#requireReviewCheckId').prop('checked', false);
             $('#requireReviewId').hide();
         }else{
             $('#requireReviewId').show();
@@ -239,7 +240,7 @@
                 </div>
                 <div class="chox-form-item" id="requireReviewId">
                         <s:if test="isInsurer && choTaskManagementEnabled">
-                        <s:checkbox name="reviewRequired"/>
+                        <s:checkbox name="reviewRequired" id="requireReviewCheckId"/>
                             <label>&nbsp;&nbsp;Require CHO Review</label>
                         </s:if>
                         <s:elseif test="isCHO && insurerTaskManagementEnabled">
