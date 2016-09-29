@@ -35,6 +35,7 @@
     var taskTabTitle = 'Tasks';
     var commentTabTitle = 'Notes';
     var reviewDateSelectionDlg;
+    var myLastReviewDate;
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
@@ -145,12 +146,14 @@
         </s:elseif>
             
 <s:if test="isInsurer">
+     var ieVersion = getIEVersion();
 
+      if (ieVersion > 0){
         reviewDateSelectionDlg =  new Ext.Window({
             applyTo:'reviewDateDlgHolder',
             layout:'fit',
-            width:537,
-            height:260,
+            width:600,
+            height:285,
             x: 440,
             y: 200,
             closeAction:'hide',
@@ -180,8 +183,44 @@
                 }
             }]
         });
+    }else{
+        reviewDateSelectionDlg =  new Ext.Window({
+            applyTo:'reviewDateDlgHolder',
+            layout:'fit',
+            width:525,
+            height:280,
+            x: 440,
+            y: 200,
+            closeAction:'hide',
+            plain: false,
+            modal: true,
+            title: 'Last Review Date',
+            resizable : false,
+            items: new Ext.Panel({
+                applyTo: 'reviewDateSelectionPanel'
+            }),
+            buttons: [{
+                text:'Ok',
+                handler:function(){
+                    if($("form#reviewDateForm").valid()){
+                        reviewDateSelectionDlg.hide();
+                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                        choxJqueryHttpSubmit($("form#reviewDateForm"));
+                    }
+                 }
+            },{
+                text: 'Close',
+                handler: function(){
+                    // hide the error message box, which could be displayed,
+                    // so that it doesn't appear when we're opened again
+                    $("#reviewDateFormMessageBox").hide();
+                    reviewDateSelectionDlg.hide();
+                }
+            }]
+        });
+    }
 
-        var lastReviewDate = new Ext.form.DateField({
+        myLastReviewDate = new Ext.form.DateField({
             id: 'lastReviewDateId',
             name: 'lastReviewDate',
             validationEvent: false,
@@ -461,7 +500,11 @@
     }
     
     function lastReviewDate() {
-                        reviewDateSelectionDlg.show();
+        $("#reviewDateFormMessageBox").text("");
+        $("#lastReviewNoteId").val("");
+        $("#lastReviewDateId").val("");
+        myLastReviewDate.reset();
+        reviewDateSelectionDlg.show();
     }
     
     /***********************************************************************************
@@ -587,6 +630,19 @@
 //            $('.chox-form-container').css({"background":"#fff"});
 //        }
 //    }
+
+        function getIEVersion(){
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf ( "MSIE " );
+
+            if ( msie > 0 )      // If Internet Explorer, return version number
+                return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
+            else if (ua.indexOf("rv:11") > 0) {
+                return 11;
+            } else // If another browser, return 0
+                return 0;
+	}
+
 </script>
 <div id="claimDetailScreenDiv">
     <div style="width:1000px">
@@ -1279,8 +1335,8 @@
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><label>Last Review Notes:</label></td>
-                        <td>
-                           <textarea cols="60" rows="4" name="lastReviewNote" id="lastReviewNoteId"></textarea>
+                        <td style="text-align:left;">
+                           <textarea cols="50" rows="4" name="lastReviewNote" id="lastReviewNoteId"></textarea>
                         </td>
                     </tr>
                     <tr>
