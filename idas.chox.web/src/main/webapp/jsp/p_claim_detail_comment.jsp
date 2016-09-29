@@ -199,9 +199,11 @@
     
     function refereshComments(){
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
+//        $('input[name=visibilityType][value=0]').prop('checked', true);
+//        $('#requireReviewId').show();
     }
    
-    function toggleVisibility(){
+    function toggleRRVisibility(){
         var visibility = $('input[name=visibilityType]:checked', '#claimCommentForm').val();
         if (visibility !== '0'){
             $('#requireReviewCheckId').prop('checked', false);
@@ -226,12 +228,12 @@
 
                 <div class="chox-form-item">
                         <s:if test="isInsurer">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By CHO)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" onchange="toggleVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleRRVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By CHO)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" onchange="toggleRRVisibility()" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:if>
                         <s:elseif test="isCHO">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By Insurer)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" onchange="toggleVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" onchange="toggleRRVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By Insurer)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" onchange="toggleRRVisibility()" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:elseif>
                         <s:elseif test="isChoxAdmin">
                             <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" disabled="disabled" /> Public Note (Visible By Insurer)</span>
