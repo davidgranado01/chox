@@ -3213,6 +3213,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
+    public boolean isHasLastReviewDate() {
+        return claim.getLastReviewDate() !=null;
+    }
+    
     public String getFinalReviewMessage() {
         if (getAuthenticatedUser().isCHO()) {
             return "This invoice had a final review on "

@@ -258,11 +258,20 @@
         {
             errorLabelContainer: "#reviewDateFormMessageBox",
             rules: {
-            	
+<s:if test="hasLastReviewDate">
                 lastReviewDate:{dateITA:true, checkLastReviewDate:true}
+</s:if>
+<s:else>
+                lastReviewDate:{dateITA:true, checkLastReviewDate:true, required:true}
+</s:else>
             },
             messages: {
+<s:if test="hasLastReviewDate">
                 lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future"}
+</s:if>
+<s:else>
+                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", required:"The 'Last Review Date' cannot be empty."}
+</s:else>
             }
         });
 
@@ -1329,7 +1338,12 @@
                     </tr>
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<s:if test="hasLastReviewDate">
                         <td><label>Last Review Date:</label></td>
+</s:if>
+<s:else>
+                        <td><label>Last Review Date <span class="mandatory">*</span>:</label></td>
+</s:else>
                         <td><div id="reviewDateSelectionHolder"></div></td>
                     </tr>
                     <tr>
