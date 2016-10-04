@@ -324,6 +324,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.invoice_original_id = o.id 
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
+        and c.workgroup_id = w.id and w.team like params.team
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
         and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as last_12_months,
 
@@ -345,6 +346,7 @@ select 3 as id, 'Average Hire Rate Invoiced' as title,
         and i.invoice_original_id = o.id 
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
+        and c.workgroup_id = w.id and w.team like params.team
         and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
         and to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy'))  as previous_month,
 
