@@ -260,7 +260,7 @@ public class InsurerUpload extends BaseActivity {
         }
 
         // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
-        if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+        if (choBand != null && choBand.isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
                 KeoghsRequest request  = keoghs.queue(claim, checkType);
                 LOG.debug("New Insurer Claim/Invoice '{}' queued to Keoghs", claim.getChoReference());
