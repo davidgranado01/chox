@@ -29,7 +29,6 @@ public class InsurerUpload extends BaseActivity {
     private UserService userService;
     private boolean autoRoutedInvoice = false;
     private Keoghs keoghs;
-    private String checkType = "Claim Upload";
     protected boolean claimRouted = false;
     protected boolean claimOwnerAssigned = false;
     protected RulesEngineResponse breResponse;
@@ -61,7 +60,6 @@ public class InsurerUpload extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
-            checkType = "Invoice Upload";
             if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
@@ -262,10 +260,10 @@ public class InsurerUpload extends BaseActivity {
         // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
         if (choBand != null && choBand.isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
-                KeoghsRequest request  = keoghs.queue(claim, checkType);
-                LOG.debug("New Insurer Claim/Invoice '{}' queued to Keoghs", claim.getChoReference());
+                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
+                LOG.debug("New Insurer Invoice '{}' queued to Keoghs", claim.getChoReference());
             } catch (Exception ex) {
-                LOG.error("Error sending new Insurer Claim/Invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
+                LOG.error("Error sending new Insurer Invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);
             }
         }
 
