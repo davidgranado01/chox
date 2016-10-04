@@ -4427,7 +4427,7 @@ select 35 as id, 'Average Repair Duration' as title ,
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
-       and i.created_date between to_date(to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
+       and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
