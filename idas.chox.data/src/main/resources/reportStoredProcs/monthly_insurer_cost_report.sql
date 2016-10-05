@@ -4379,6 +4379,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4388,6 +4389,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4397,6 +4399,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4406,6 +4409,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4415,6 +4419,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4424,6 +4429,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4433,6 +4439,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4442,6 +4449,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4451,6 +4459,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4460,6 +4469,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4469,6 +4479,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4478,6 +4489,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
@@ -4487,6 +4499,7 @@ select 35 as id, 'Average Repair Duration' as title ,
 (select avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1) from claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho
   where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
        and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+       and hmd.repair_commenced_date <= hmd.repair_completion_date
        and (case when array_length(claimType, 1) > 0 then c.claim_type = ANY(claimType) else true end)
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
