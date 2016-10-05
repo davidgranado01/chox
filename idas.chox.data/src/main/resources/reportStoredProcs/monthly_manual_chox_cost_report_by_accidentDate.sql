@@ -5483,6 +5483,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND c.incident_id = inc.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5497,6 +5498,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND c.incident_id = inc.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5511,6 +5513,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5525,6 +5528,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5539,6 +5543,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5553,6 +5558,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5567,6 +5573,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5581,6 +5588,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5595,6 +5603,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5609,6 +5618,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5623,6 +5633,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5637,6 +5648,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -5651,6 +5663,7 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, incident inc
    WHERE c.invoice_id=i.id
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.incident_id = inc.id
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)

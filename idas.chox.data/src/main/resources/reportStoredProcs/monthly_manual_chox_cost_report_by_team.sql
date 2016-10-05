@@ -32,7 +32,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -47,7 +47,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -62,7 +62,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -77,7 +77,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -92,7 +92,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -107,7 +107,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -122,7 +122,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
     FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -137,7 +137,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -152,7 +152,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -167,7 +167,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -182,7 +182,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -197,7 +197,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -212,7 +212,7 @@ SELECT 1 as id, 'Average Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
     FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.chorganisation_id = cho.id
@@ -236,7 +236,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -250,7 +250,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -264,7 +264,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -278,7 +278,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -292,7 +292,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -306,7 +306,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -320,7 +320,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -334,7 +334,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -348,7 +348,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -362,7 +362,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -376,7 +376,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -390,7 +390,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -404,7 +404,7 @@ SELECT 2 as id, 'Average Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -429,7 +429,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -443,7 +443,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -457,7 +457,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -471,7 +471,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -485,7 +485,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -499,7 +499,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -513,7 +513,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -527,7 +527,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -541,7 +541,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -555,7 +555,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -569,7 +569,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -583,7 +583,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -597,7 +597,7 @@ SELECT 3 as id, 'Average Hire Rate Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -619,7 +619,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -632,7 +632,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -645,7 +645,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -658,7 +658,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -671,7 +671,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -684,7 +684,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -697,7 +697,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -710,7 +710,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -723,7 +723,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -736,7 +736,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -749,7 +749,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -762,7 +762,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -775,7 +775,7 @@ SELECT 4 as id, 'Average Hire Rate Paid' AS title,
   (SELECT coalesce(avg(i.hire_rate_charged_per_day), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -800,7 +800,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -814,7 +814,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -828,7 +828,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -842,7 +842,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -856,7 +856,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -870,7 +870,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -884,7 +884,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -898,7 +898,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -912,7 +912,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -926,7 +926,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -940,7 +940,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -954,7 +954,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -968,7 +968,7 @@ SELECT 5 as id, 'Average Hire Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -988,7 +988,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1001,7 +1001,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1014,7 +1014,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1027,7 +1027,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1040,7 +1040,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1053,7 +1053,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1066,7 +1066,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1079,7 +1079,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1092,7 +1092,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1105,7 +1105,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1118,7 +1118,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1131,7 +1131,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1144,7 +1144,7 @@ SELECT 6 as id, 'Average Hire Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.hire_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1166,7 +1166,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1179,7 +1179,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1192,7 +1192,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1205,7 +1205,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1218,7 +1218,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1231,7 +1231,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1244,7 +1244,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1257,7 +1257,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1270,7 +1270,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1283,7 +1283,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1296,7 +1296,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1309,7 +1309,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1322,7 +1322,7 @@ SELECT 7 as id, 'Average Hire Value Paid plus Average Hire Penalties Paid' AS ti
   (SELECT coalesce(avg(i.hire_gross + i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1344,7 +1344,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1358,7 +1358,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1372,7 +1372,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1386,7 +1386,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1400,7 +1400,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1414,7 +1414,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1428,7 +1428,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1442,7 +1442,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1456,7 +1456,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1470,7 +1470,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1484,7 +1484,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1498,7 +1498,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1512,7 +1512,7 @@ SELECT 8 as id, 'Average Repair Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -1534,7 +1534,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1547,7 +1547,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1560,7 +1560,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1573,7 +1573,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1586,7 +1586,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1599,7 +1599,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1612,7 +1612,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1625,7 +1625,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1638,7 +1638,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1651,7 +1651,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1664,7 +1664,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1677,7 +1677,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1690,7 +1690,7 @@ SELECT 9 as id, 'Average Repair Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_gross > 0
      AND c.vehicle_hire_id = vh.id
      AND c.status = 'ManualInvoicePaid'
@@ -1712,7 +1712,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1728,7 +1728,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1744,7 +1744,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1760,7 +1760,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1776,7 +1776,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1792,7 +1792,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1808,7 +1808,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1824,7 +1824,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1840,7 +1840,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1856,7 +1856,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1872,7 +1872,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1888,7 +1888,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1904,7 +1904,7 @@ SELECT 10 as id, 'Average Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1928,7 +1928,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1943,7 +1943,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1958,7 +1958,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1973,7 +1973,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -1988,7 +1988,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2003,7 +2003,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2018,7 +2018,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2033,7 +2033,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2048,7 +2048,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2063,7 +2063,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2078,7 +2078,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2093,7 +2093,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2108,7 +2108,7 @@ SELECT 11 as id, 'Average Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2132,7 +2132,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2147,7 +2147,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2162,7 +2162,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2177,7 +2177,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2192,7 +2192,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2207,7 +2207,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2222,7 +2222,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2237,7 +2237,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2252,7 +2252,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2267,7 +2267,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2282,7 +2282,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2297,7 +2297,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2312,7 +2312,7 @@ SELECT 12 as id, 'Average Non Total Loss Hire Days Invoiced' AS title,
   (SELECT coalesce(avg(CASE WHEN vh.days_original IS NOT NULL THEN vh.days_original ELSE vh.days END), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2335,7 +2335,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2351,7 +2351,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2367,7 +2367,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2383,7 +2383,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2399,7 +2399,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2415,7 +2415,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2431,7 +2431,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2447,7 +2447,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2463,7 +2463,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2479,7 +2479,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2495,7 +2495,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2511,7 +2511,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2527,7 +2527,7 @@ SELECT 13 as id, 'Average Non Total Loss Hire Days Paid' AS title,
   (SELECT coalesce(avg(vh.days), 0)::numeric(8,1)
    FROM claim c, invoice i, vehicle_hire vh, customer cu, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.hire_net - i.admin_fee > 0
      AND c.vehicle_hire_id = vh.id
      AND c.customer_id = cu.id
@@ -2555,7 +2555,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2567,7 +2567,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
     FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2579,7 +2579,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2591,7 +2591,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
     FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2603,7 +2603,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2615,7 +2615,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2627,7 +2627,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2639,7 +2639,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2651,7 +2651,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2663,7 +2663,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2675,7 +2675,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2687,7 +2687,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2699,7 +2699,7 @@ SELECT 14 as id, 'Average Penalty Payment' AS title,
   (SELECT coalesce(avg(i.total_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -2719,7 +2719,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2731,7 +2731,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2743,7 +2743,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
     FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2755,7 +2755,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2767,7 +2767,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2779,7 +2779,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2791,7 +2791,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
     FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2803,7 +2803,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2815,7 +2815,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2827,7 +2827,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2839,7 +2839,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2851,7 +2851,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2863,7 +2863,7 @@ SELECT 15 as id, 'Average Hire Penalty Payment' AS title,
   (SELECT coalesce(avg(i.hire_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0)
@@ -2883,7 +2883,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2895,7 +2895,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2907,7 +2907,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2919,7 +2919,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2931,7 +2931,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2943,7 +2943,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2955,7 +2955,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2967,7 +2967,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2979,7 +2979,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -2991,7 +2991,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -3003,7 +3003,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -3015,7 +3015,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -3027,7 +3027,7 @@ SELECT 16 as id, 'Average Repair Penalty Payment' AS title,
   (SELECT coalesce(avg(i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.repair_penalty_charge > 0.0)
@@ -3049,7 +3049,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3062,7 +3062,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3075,7 +3075,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3088,7 +3088,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3101,7 +3101,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId  OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3114,7 +3114,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3127,7 +3127,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3140,7 +3140,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3153,7 +3153,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3166,7 +3166,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3179,7 +3179,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3192,7 +3192,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c , workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3205,7 +3205,7 @@ SELECT 17 as id, 'Average Repair Value Invoiced' AS title,
    FROM chorganisation cho, claim c, workgroup w, invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3225,7 +3225,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3237,7 +3237,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3249,7 +3249,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3261,7 +3261,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3273,7 +3273,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3285,7 +3285,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3297,7 +3297,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3309,7 +3309,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3321,7 +3321,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3333,7 +3333,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3345,7 +3345,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3357,7 +3357,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3369,7 +3369,7 @@ SELECT 18 as id, 'Average Repair Value Paid (exc pens)' AS title,
   (SELECT coalesce(avg(i.repair_gross), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3390,7 +3390,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3402,7 +3402,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3414,7 +3414,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3426,7 +3426,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3438,7 +3438,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3450,7 +3450,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3462,7 +3462,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3474,7 +3474,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3486,7 +3486,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3498,7 +3498,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3510,7 +3510,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3522,7 +3522,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3534,7 +3534,7 @@ SELECT 19 as id, 'Average Repair Value Paid plus Average Repair Penalties Paid' 
   (SELECT coalesce(avg(i.repair_gross + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND i.repair_net > 0
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
@@ -3556,7 +3556,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3568,7 +3568,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3580,7 +3580,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3592,7 +3592,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3604,7 +3604,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3616,7 +3616,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3628,7 +3628,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3640,7 +3640,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3652,7 +3652,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3664,7 +3664,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3676,7 +3676,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3688,7 +3688,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3700,7 +3700,7 @@ SELECT 20 as id, 'Total No. Claims Penalty Payments' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -3720,7 +3720,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3731,7 +3731,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3742,7 +3742,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3753,7 +3753,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3765,7 +3765,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3775,7 +3775,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3785,7 +3785,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3795,7 +3795,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3805,7 +3805,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3815,7 +3815,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3825,7 +3825,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3835,7 +3835,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3845,7 +3845,7 @@ SELECT 21 as id, 'Total No. Claims Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, chorganisation cho, workgroup w
    WHERE (c.insurer_id = params.insurerId OR params.insurerId = -1)
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
@@ -3864,7 +3864,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3877,7 +3877,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3890,7 +3890,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3903,7 +3903,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3916,7 +3916,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3929,7 +3929,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3942,7 +3942,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3955,7 +3955,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3968,7 +3968,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3981,7 +3981,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -3994,7 +3994,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -4007,7 +4007,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -4020,7 +4020,7 @@ SELECT 22 as id, 'Total No. Invoices Paid' AS title,
   (SELECT count(*)
    FROM claim c, audit_trail a, chorganisation cho, workgroup w
    WHERE a.claim_id = c.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND a.new_status = 'ManualInvoicePaid'
      AND c.status = 'ManualInvoicePaid'
      AND a.reverted = FALSE
@@ -4041,7 +4041,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4052,7 +4052,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4063,7 +4063,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4074,7 +4074,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4085,7 +4085,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4096,7 +4096,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4107,7 +4107,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4118,7 +4118,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4129,7 +4129,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4140,7 +4140,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4151,7 +4151,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4162,7 +4162,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4173,7 +4173,7 @@ SELECT 23 as id, 'Total No. Invoices Uploaded' AS title,
   (SELECT count(*)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
      AND c.claim_type IN (10,14,15,16,17)
@@ -4199,7 +4199,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')
@@ -4207,7 +4207,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month'
@@ -4215,7 +4215,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
@@ -4223,7 +4223,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
@@ -4231,7 +4231,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
@@ -4239,7 +4239,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months'
@@ -4247,7 +4247,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months'
@@ -4255,7 +4255,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months'
@@ -4263,7 +4263,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months'
@@ -4271,7 +4271,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months'
@@ -4279,7 +4279,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months'
@@ -4287,7 +4287,7 @@ select 24 as id, 'Total Hire Paid' AS title,
 
 (select coalesce(sum(case when i.final_payment is not null then (i.hire_gross_paid + i.hire_penalty_charge_paid) else (i.hire_gross + i.hire_penalty_charge) end), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
       and c.status_modified_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months'
@@ -4304,7 +4304,7 @@ UNION
 select 25 as id, 'Total Hire Value Invoiced' AS title,
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4313,7 +4313,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4322,7 +4322,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4331,7 +4331,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4340,7 +4340,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4349,7 +4349,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4358,7 +4358,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4367,7 +4367,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4376,7 +4376,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4385,7 +4385,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4394,7 +4394,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4403,7 +4403,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4412,7 +4412,7 @@ select 25 as id, 'Total Hire Value Invoiced' AS title,
 
 (select coalesce(sum(io.hire_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4430,7 +4430,7 @@ UNION
 select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4439,7 +4439,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4448,7 +4448,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4457,7 +4457,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4466,7 +4466,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4475,7 +4475,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4484,7 +4484,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4493,7 +4493,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4502,7 +4502,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4511,7 +4511,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4520,7 +4520,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4529,7 +4529,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4538,7 +4538,7 @@ select 26 as id, 'Total Hire Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.hire_gross_paid is null THEN i.hire_gross ELSE i.hire_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4557,7 +4557,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4568,7 +4568,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4579,7 +4579,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4590,7 +4590,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4601,7 +4601,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4612,7 +4612,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4623,7 +4623,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4634,7 +4634,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4645,7 +4645,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4656,7 +4656,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4667,7 +4667,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4678,7 +4678,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4689,7 +4689,7 @@ SELECT 27 as id, 'Total Hire Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.hire_gross + i.hire_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4707,7 +4707,7 @@ UNION
 select 28 as id, 'Total Repair Value Invoiced' AS title,
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4716,7 +4716,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4725,7 +4725,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4734,7 +4734,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4743,7 +4743,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4752,7 +4752,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4761,7 +4761,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4770,7 +4770,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4779,7 +4779,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4788,7 +4788,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4797,7 +4797,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4806,7 +4806,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4815,7 +4815,7 @@ select 28 as id, 'Total Repair Value Invoiced' AS title,
 
 (select coalesce(sum(io.repair_gross), 0) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4833,7 +4833,7 @@ UNION
 select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4842,7 +4842,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4851,7 +4851,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4860,7 +4860,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4869,7 +4869,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4878,7 +4878,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4887,7 +4887,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4896,7 +4896,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4905,7 +4905,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4914,7 +4914,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4923,7 +4923,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4932,7 +4932,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4941,7 +4941,7 @@ select 29 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select coalesce(sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END), 0) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -4960,7 +4960,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4971,7 +4971,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4982,7 +4982,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -4993,7 +4993,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5004,7 +5004,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5015,7 +5015,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5026,7 +5026,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5037,7 +5037,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5048,7 +5048,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5059,7 +5059,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5070,7 +5070,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5081,7 +5081,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5092,7 +5092,7 @@ SELECT 30 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT coalesce(sum(i.repair_gross + i.repair_penalty_charge), 0)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id = i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5110,7 +5110,7 @@ UNION
 select 31 as id, 'Total Repair Value Invoiced' AS title,
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5119,7 +5119,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5128,7 +5128,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5137,7 +5137,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5146,7 +5146,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5155,7 +5155,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5164,7 +5164,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5173,7 +5173,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5182,7 +5182,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5191,7 +5191,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5200,7 +5200,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5209,7 +5209,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5218,7 +5218,7 @@ select 31 as id, 'Total Repair Value Invoiced' AS title,
 
 (select sum(io.repair_gross) from claim c , invoice i, invoice_original io, workgroup w
     where c.invoice_id = i.id and i.invoice_original_id = io.id
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5236,7 +5236,7 @@ UNION
 select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5245,7 +5245,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5254,7 +5254,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5263,7 +5263,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5272,7 +5272,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5281,7 +5281,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5290,7 +5290,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5299,7 +5299,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5308,7 +5308,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5317,7 +5317,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5326,7 +5326,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5335,7 +5335,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5344,7 +5344,7 @@ select 32 as id, 'Total Repair Value Paid (exc pens)' AS title,
 
 (select sum(CASE WHEN i.repair_gross_paid is null THEN i.repair_gross ELSE i.repair_gross_paid END) from claim c , invoice i, workgroup w
     where c.invoice_id = i.id and c.status='ManualInvoicePaid'
-      and c.workgroup_id = w.id AND w.team like params.team
+      and c.workgroup_id = w.id AND w.team = params.team
       and c.claim_type IN (10,14,15,16,17)
       and (c.insurer_id = params.insurerId or params.insurerId = -1)                                        
       and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5363,7 +5363,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5374,7 +5374,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5385,7 +5385,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5396,7 +5396,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5407,7 +5407,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5418,7 +5418,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5429,7 +5429,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5440,7 +5440,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5451,7 +5451,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5462,7 +5462,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5473,7 +5473,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5484,7 +5484,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5495,7 +5495,7 @@ SELECT 33 as id, 'Total Repair Value Paid (inc pens)' AS title,
   (SELECT sum(i.repair_gross + i.repair_penalty_charge)::numeric(12,2)
    FROM claim c , invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5514,8 +5514,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5528,8 +5529,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5542,8 +5544,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5556,8 +5559,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5570,8 +5574,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5584,8 +5589,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5598,8 +5604,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5612,8 +5619,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5626,8 +5634,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5640,8 +5649,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5654,8 +5664,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5668,8 +5679,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5682,8 +5694,9 @@ SELECT 34 as id, 'Average Repair Duration' AS title,
   (SELECT avg(extract(epoch from (hmd.repair_completion_date - hmd.repair_commenced_date))/(3600*24))::numeric(8,1)
    FROM claim c, invoice i, hire_monitoring_detail hmd, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+     AND hmd.repair_commenced_date <= hmd.repair_completion_date
      AND c.hire_monitoring_detail_id = hmd.id
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
@@ -5706,7 +5719,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5718,7 +5731,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5730,7 +5743,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5742,7 +5755,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5754,7 +5767,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5766,7 +5779,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5778,7 +5791,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5790,7 +5803,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5802,7 +5815,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5814,7 +5827,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5826,7 +5839,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5838,7 +5851,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)
@@ -5850,7 +5863,7 @@ SELECT 35 as id, 'Total Value Of Claims Penalty Payments Paid' AS title,
   (SELECT coalesce(sum(i.hire_penalty_charge + i.repair_penalty_charge), 0)::numeric(8,2)
    FROM claim c, invoice i, chorganisation cho, workgroup w
    WHERE c.invoice_id=i.id
-     AND c.workgroup_id = w.id AND w.team like params.team
+     AND c.workgroup_id = w.id AND w.team = params.team
      AND c.status = 'ManualInvoicePaid'
      AND (c.insurer_id = params.insurerId OR params.insurerId = -1)
      AND (i.hire_penalty_charge > 0.0 OR i.repair_penalty_charge > 0.0)

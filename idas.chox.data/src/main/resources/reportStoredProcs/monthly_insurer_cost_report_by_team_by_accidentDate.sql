@@ -5284,6 +5284,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5295,6 +5296,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5306,6 +5308,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5317,6 +5320,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5328,6 +5332,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5339,6 +5344,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5350,6 +5356,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5361,6 +5368,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5372,6 +5380,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5383,6 +5392,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5394,6 +5404,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5405,6 +5416,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
@@ -5416,6 +5428,7 @@ select 35 as id, 'Average Repair Duration' as title,
    where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id 
         and c.incident_id = inc.id
         and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null
+        and hmd.repair_commenced_date <= hmd.repair_completion_date
         and c.chorganisation_id = cho.id and cho.insurer_upload_only=false
         and (c.insurer_id = params.insurerId or params.insurerId = -1)
         and (c.chorganisation_id = params.chorgId or params.chorgId = -1)
