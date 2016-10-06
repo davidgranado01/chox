@@ -126,7 +126,7 @@ public class NewClaim extends BaseActivity {
         }
 
         // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
-        if (choBand.isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+        if (choBand != null && choBand.isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
                 KeoghsRequest request  = keoghs.queue(claim, "Claim Upload");
                 LOG.debug("New Claim '{}' queued to Keoghs", claim.getChoReference());
