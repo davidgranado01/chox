@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
@@ -35,5 +36,21 @@ public class ClaimRejectionContestTest extends BaseTest {
 
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_REJECTION_CONTESTED, claim.getStatus());
+    }
+    
+    @Test
+    public void testManualClaimRejectionContest() throws Throwable {
+
+        Claim claim = new Claim();
+        claim.setClaimType(ClaimType.INSURER_CLAIM);
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        claim.setPreviousStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        ClaimRejectionContest activity = (ClaimRejectionContest) activityFactory.getActivity("contestRejectedClaim");
+
+
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
     }
 }

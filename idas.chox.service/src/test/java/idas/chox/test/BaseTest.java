@@ -105,4 +105,6 @@ public abstract class BaseTest {
     protected ThirdPartyService thirdPartyService;
     @Autowired
     protected HireMonitoringEcdService hireMonitoringEcdService;
+    @Autowired
+    protected InsurerHireMonitoringEcdService insurerHireMonitoringEcdService;
 }

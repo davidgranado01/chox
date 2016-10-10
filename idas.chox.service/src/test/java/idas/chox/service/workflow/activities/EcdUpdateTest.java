@@ -64,7 +64,7 @@ public class EcdUpdateTest extends BaseTest {
         activity.process(claim);
         
         List<HireMonitoringEcd> hireMonitoringEcds = hireMonitoringEcdService.getHireMonitoringEcdsByClaimId(claim.getId());
-        Assert.assertEquals(hireMonitoringEcds.size(), 1);
+        Assert.assertEquals(1, hireMonitoringEcds.size());
     }
     
 }
