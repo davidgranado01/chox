@@ -83,7 +83,7 @@ BEGIN
 --                 AND c.audit_review_id IS NOT NULL
                 AND (chorgId = -1 or c.chorganisation_id = chorgId)
                 AND c.insurer_id = insurerid
-                AND ar.audit_completed_date BETWEEN startdate::date AND enddate::date + interval '1 day';
+                AND ar.audit_completed_date BETWEEN startdate::date AND enddate::date;
 END
 ;
 $$ LANGUAGE plpgsql
