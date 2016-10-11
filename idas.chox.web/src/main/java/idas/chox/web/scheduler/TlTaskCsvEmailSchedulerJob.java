@@ -179,7 +179,7 @@ public class TlTaskCsvEmailSchedulerJob extends CsvEmailSchedulerJob {
                 results.add(line);
             } else {
                 //ignore row
-                LOG.info("Ignoring row {} - only has {} cells.", row, row.length);
+                LOG.debug("Ignoring row {} with {} cells.", row, row.length);
             }
         }
         return results;
