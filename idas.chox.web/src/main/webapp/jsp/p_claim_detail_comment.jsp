@@ -246,7 +246,7 @@
                             <label>&nbsp;&nbsp;Require CHO Review</label>
                         </s:if>
                         <s:elseif test="isCHO && insurerTaskManagementEnabled">
-                            <s:checkbox name="reviewRequired"/>
+                            <s:checkbox name="reviewRequired" id="requireReviewCheckId"/>
                             <label>&nbsp;Require Insurer Review</label>
                         </s:elseif>
                 </div>

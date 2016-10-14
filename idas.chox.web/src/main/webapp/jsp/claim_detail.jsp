@@ -1014,7 +1014,7 @@
 
         function expandClaimDetails(expand) {
             if (expand) {
-                document.getElementById("expandAllClaimId").onclick = function (){expandInsurerClaimDetails(false);};
+                document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(false);};
                 document.getElementById("expandAllClaimId").innerHTML = '-Collapse All';
                 $("#expandAllClaimId").attr("title", "Collapse All");
                 $("#customerDetailsRId").css("display", "block");
