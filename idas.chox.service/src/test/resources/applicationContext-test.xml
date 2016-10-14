@@ -115,6 +115,10 @@
                 <value>hbm/ClaimAuditReview.hbm.xml</value>
                 <value>hbm/KeoghsRequest.hbm.xml</value>
                 <value>hbm/KeoghsRequestScoreMessage.hbm.xml</value>
+                <value>hbm/InsurerBillingBand.hbm.xml</value>
+                <value>hbm/ChoBillingBand.hbm.xml</value>
+                <value>hbm/InsurerBillingBandMapping.hbm.xml</value>
+                <value>hbm/ChoBillingBandMapping.hbm.xml</value>
             </list>
         </property>
     </bean>

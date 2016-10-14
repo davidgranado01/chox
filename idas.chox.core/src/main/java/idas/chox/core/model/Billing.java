@@ -19,7 +19,7 @@ public class Billing extends Entity {
     private boolean manual;
     private boolean reconciled;
     private String triggerPoint;
-    private Set<BillingDetail> billingDetails = new HashSet<BillingDetail>(0);
+    private Set<BillingDetail> billingDetails = new HashSet<>(0);
 
     public String getScheduleName() {
         return scheduleName;
