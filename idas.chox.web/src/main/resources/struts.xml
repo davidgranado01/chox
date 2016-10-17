@@ -1255,17 +1255,9 @@
         </action>
 
        <!--Start Billing Bands -->
+       <!-- Insurer -->
         <action name="getInsurerBillingBandPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_billing_band_panel.jsp</result>
-        </action>
-        <action name="getChoBillingBandPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_cho_billing_band_panel.jsp</result>
-        </action>
-        <action name="getInsurerBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_insurer_billing_band_mapping_panel.jsp</result>
-        </action>
-        <action name="getChoBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_cho_billing_band_mapping_panel.jsp</result>
         </action>
         <action name="getInsurerBillingBands" class="idas.chox.web.actions.InsurerBillingBandAction" method="getBillingBands">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -1279,8 +1271,35 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-       <!--End Billing Bands -->
-       <!--Start INSURER BRE BAND -->
+
+       <!-- CHO -->
+        <action name="getChoBillingBandPage" class="idas.chox.web.actions.ChoBillingBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_cho_billing_band_panel.jsp</result>
+        </action>
+        <action name="getChoBillingBands" class="idas.chox.web.actions.ChoBillingBandAction" method="getBillingBands">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="addNewChoBillingBand" class="idas.chox.web.actions.ChoBillingBandAction" method="addNewChoBillingBand">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="deleteChoBillingBand" class="idas.chox.web.actions.ChoBillingBandAction" method="deleteChoBillingBand">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
+        <!-- Billing Band Mappings -->
+        <action name="getInsurerBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_billing_band_mapping_panel.jsp</result>
+        </action>
+        <action name="getChoBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_cho_billing_band_mapping_panel.jsp</result>
+        </action>
+
+        <!--End Billing Bands -->
+
+        <!--Start INSURER BRE BAND -->
         <action name="getInsurerBreBandPage" class="idas.chox.web.actions.BreBandDropDownAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
         </action>

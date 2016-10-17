@@ -44,13 +44,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getLiabilityStatuses(boolean withNull) {
         List<LookupItem> items = new ArrayList<>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
-            if (!withNull && s.getLiablityValue() == 0) {
-                continue;
-            }
-            else if (withNull && s.getLiablityValue() == 0) {
+            if (withNull && s.getLiablityValue() == 0) {
                 items.add(new LookupItem("<i>(Not Specified)</i>", Integer.toString(s.getLiablityValue())));
             }
-            else {
+            else if (withNull || s.getLiablityValue() != 0) {
                 items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
             }
         }
@@ -307,6 +304,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         if (currentUser.isCHOXAdmin()) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("status", true));
+            if (excludeManualCHO) {
+                 criteria.add(Restrictions.eq("insurerUploadOnly", false));
+            }
             return findByCriteria(criteria, true);
 
         } else if (currentUser.isAnInsurer()) {
@@ -543,16 +543,22 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
         } else if (getCurrentUser().isCHOXAdmin()) {
             for (FinalReviewMapping finalReviewMapping : FinalReviewMapping.getChoxAdminFinalReviewMappings()) {
-                if (finalReviewMapping.equals(FinalReviewMapping.CHO_TRUE)) {
-                    items.add(new LookupItem("Cho True", Integer.toString(finalReviewMapping.getValue())));
-                } else if (finalReviewMapping.equals(FinalReviewMapping.CHO_FALSE)) {
-                    items.add(new LookupItem("Cho False", Integer.toString(finalReviewMapping.getValue())));
-                } else if (finalReviewMapping.equals(FinalReviewMapping.INS_TRUE)) {
-                    items.add(new LookupItem("Ins True", Integer.toString(finalReviewMapping.getValue())));
-                } else if (finalReviewMapping.equals(FinalReviewMapping.INS_FALSE)) {
-                    items.add(new LookupItem("Ins False", Integer.toString(finalReviewMapping.getValue())));
-                } else {
-                    items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
+                switch (finalReviewMapping) {
+                    case CHO_TRUE:
+                        items.add(new LookupItem("Cho True", Integer.toString(finalReviewMapping.getValue())));
+                        break;
+                    case CHO_FALSE:
+                        items.add(new LookupItem("Cho False", Integer.toString(finalReviewMapping.getValue())));
+                        break;
+                    case INS_TRUE:
+                        items.add(new LookupItem("Ins True", Integer.toString(finalReviewMapping.getValue())));
+                        break;
+                    case INS_FALSE:
+                        items.add(new LookupItem("Ins False", Integer.toString(finalReviewMapping.getValue())));
+                        break;
+                    default:
+                        items.add(new LookupItem(finalReviewMapping.toString(), Integer.toString(finalReviewMapping.getValue())));
+                        break;
                 }
             }
         }

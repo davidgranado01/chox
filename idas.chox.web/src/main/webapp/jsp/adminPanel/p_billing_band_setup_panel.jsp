@@ -7,10 +7,8 @@
 
     Ext.onReady(function(){
 
-        if($("#tabIndex").val()!==null && $("#tabIndex").val()!==''){
-            billingBandSetupTabIndex = $("#tabIndex").val();
-        }
-
+        billingBandSetupTabIndex = 0;
+        
         billingBandSetupPanelTabs = new Ext.TabPanel({
             renderTo: 'billingSetupPanel',
             height:660,
@@ -25,6 +23,7 @@
                 {contentEl:'choBillingBandMappingTab', title:'CHO Billing Band Mapping', listeners: {activate: handleActivate}, autoLoad: choxUpdateEl({url:'/prv/p/getChoBillingBandMappingPage.action'})}
             ]
         });
+        billingBandSetupPanelTabs.setActiveTab(billingBandSetupTabIndex);
     });
 
     function handleActivate(tab){
@@ -33,6 +32,8 @@
     }
     
 </script>
+
+<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex"/>"/>
 
 <div id="chox-admin-holder">
 
