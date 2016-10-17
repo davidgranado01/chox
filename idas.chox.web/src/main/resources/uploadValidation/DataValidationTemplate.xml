@@ -429,15 +429,15 @@
     <customerdetail-usable>
         <data-description>usable</data-description>
         <data-type>char</data-type>
-        <data-mandatory-newClaim>t</data-mandatory-newClaim>
-        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
-        <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>t</data-mandatory-offHired>        
-        <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
-        <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
+        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>f</data-mandatory-newCollaborationClaim>
+        <data-mandatory-newInsurerInvoice>f</data-mandatory-newInsurerInvoice>
+        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-offHired>f</data-mandatory-offHired>        
+        <data-mandatory-hireMonitoring>f</data-mandatory-hireMonitoring>
+        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
+        <data-mandatory-newInsurerClaim>f</data-mandatory-newInsurerClaim>
     </customerdetail-usable>
 
     <customerdetail-total-loss>
