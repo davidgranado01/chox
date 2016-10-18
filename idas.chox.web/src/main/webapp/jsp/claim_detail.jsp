@@ -255,7 +255,7 @@
         );
         $.validator.addMethod( "checkWhiteSpace",
             function(value, element) {
-                if (value.match(/^ *$/) !== null){
+                if (value.match(/^ *$/) !== null && value!=""){
                     return false;
                 }
                 return true;
