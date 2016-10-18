@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.ChoBillingBand;
+import idas.chox.core.model.ChoBillingBandMapping;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.BillingBandService;
+import idas.chox.core.services.BillingBandMappingService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.ActionResponse;
@@ -32,6 +34,7 @@ public class ChoBillingBandAction  extends BaseAction {
     private LookupService lookupService;
     private ChorganisationService choService;
     private BillingBandService billingBandService;
+    private BillingBandMappingService billingBandMappingService;
     private List<BillingBandViewData> jsonData;
     private int billingChoId;
     private int billingBandId;
@@ -50,6 +53,10 @@ public class ChoBillingBandAction  extends BaseAction {
 
     public void setBillingBandService(BillingBandService billingBandService) {
         this.billingBandService = billingBandService;
+    }
+
+    public void setBillingBandMappingService(BillingBandMappingService billingBandMappingService) {
+        this.billingBandMappingService = billingBandMappingService;
     }
 
     public void setBillingChoId(int billingChoId) {
@@ -128,30 +135,43 @@ public class ChoBillingBandAction  extends BaseAction {
         actionResponse = new ActionResponse();
         setActionResponse(actionResponse);
 
-        ChoBillingBand band = new ChoBillingBand();
-        Chorganisation cho = choService.getChorganisation(billingChoId);
-        band.setChorganisation(cho);
-        band.setBandName(choBillingBandName);
-        band.setCostPerClaim(choCostPerClaim);
-        band.setExcludeSupplementary(choExcludeSupplementary);
-        band.setTriggerStatus(triggerPoint);
+        // Check Billing band name doesn't yet exist for insurer
+        ChoBillingBand band = billingBandService.getChoBillingBand(billingChoId, choBillingBandName);
+        if (band != null) {
+            actionResponse.AddError("A billing band with this name already exists for this CHO. Please try again using a different name.");
+        } else {
+            band = new ChoBillingBand();
+            Chorganisation cho = choService.getChorganisation(billingChoId);
+            band.setChorganisation(cho);
+            band.setBandName(choBillingBandName);
+            band.setCostPerClaim(choCostPerClaim);
+            band.setExcludeSupplementary(choExcludeSupplementary);
+            band.setTriggerStatus(triggerPoint);
         
-        try {
-            billingBandService.saveBillingBand(band);
-        } catch (Exception ex) {
-            LOG.warn("Error saving CHO Billing Band: {}", ex.getMessage());
-            actionResponse.AddError("An internal error occurred trying to save the CHO Billing Band.");
+            try {
+                billingBandService.saveBillingBand(band);
+            } catch (Exception ex) {
+                LOG.warn("Error saving CHO Billing Band: {}", ex.getMessage());
+                actionResponse.AddError("An internal error occurred trying to save the CHO Billing Band.");
+            }
         }
+        
         return SUCCESS;
     }
 
     public String deleteChoBillingBand() {
         actionResponse = new ActionResponse();
-        try {
-            billingBandService.deleteBillingBand(billingBandService.getChoBillingBand(billingBandId));
-        } catch (Exception ex) {
-            LOG.warn("Error deleting CHO Billing Band: {}", ex.getMessage());
-            actionResponse.AddError("An internal error occurred trying to delete the CHO Billing Band.");
+        //Check no mapping exists for this billing band
+        List<ChoBillingBandMapping> ibbm = billingBandMappingService.getChoBillingBandMappings(billingChoId, billingBandId);
+        if (ibbm.size() > 0) {
+            actionResponse.AddError("Cannot delete this CHO Billing Band as it is being used. Please remove all mappings for this band before deleting.");
+        } else {
+            try {
+                billingBandService.deleteBillingBand(billingBandService.getChoBillingBand(billingBandId));
+            } catch (Exception ex) {
+                LOG.warn("Error deleting CHO Billing Band: {}", ex.getMessage());
+                actionResponse.AddError("An internal error occurred trying to delete the CHO Billing Band.");
+            }
         }
         return SUCCESS;
     }

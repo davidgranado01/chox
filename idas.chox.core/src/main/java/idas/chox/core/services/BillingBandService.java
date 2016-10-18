@@ -12,8 +12,10 @@ import idas.chox.core.model.InsurerBillingBand;
 public interface  BillingBandService {
     List <InsurerBillingBand> getInsurerBillingBands();
     List <InsurerBillingBand> getInsurerBillingBands(int insurerId);
+    InsurerBillingBand getInsurerBillingBand(int insurerId, String bandName);
     List <ChoBillingBand> getChoBillingBands();
     List <ChoBillingBand> getChoBillingBands(int choId);
+    ChoBillingBand getChoBillingBand(int choId, String bandName);
     InsurerBillingBand getInsurerBillingBand(int id);
     ChoBillingBand getChoBillingBand(int id);
     void deleteBillingBand(InsurerBillingBand band);

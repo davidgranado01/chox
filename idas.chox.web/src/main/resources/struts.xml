@@ -1290,9 +1290,14 @@
         </action>
         
         <!-- Billing Band Mappings -->
-        <action name="getInsurerBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
+        <action name="getInsurerBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_billing_band_mapping_panel.jsp</result>
         </action>
+        <action name="loadInsurerBillingBands" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="loadInsurerBillingBands">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
+        </action>
+
         <action name="getChoBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_cho_billing_band_mapping_panel.jsp</result>
         </action>

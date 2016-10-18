@@ -15,7 +15,9 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerBillingBand;
+import idas.chox.core.model.InsurerBillingBandMapping;
 import idas.chox.core.model.LookupItem;
+import idas.chox.core.services.BillingBandMappingService;
 import idas.chox.core.services.BillingBandService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
@@ -32,6 +34,7 @@ public class InsurerBillingBandAction  extends BaseAction {
     private LookupService lookupService;
     private InsurerService insurerService;
     private BillingBandService billingBandService;
+    private BillingBandMappingService billingBandMappingService;
     private List<BillingBandViewData> jsonData;
     private int billingInsurerId;
     private int billingBandId;
@@ -50,6 +53,10 @@ public class InsurerBillingBandAction  extends BaseAction {
 
     public void setBillingBandService(BillingBandService billingBandService) {
         this.billingBandService = billingBandService;
+    }
+
+    public void setBillingBandMappingService(BillingBandMappingService billingBandMappingService) {
+        this.billingBandMappingService = billingBandMappingService;
     }
 
     public void setBillingInsurerId(int billingInsurerId) {
@@ -128,30 +135,42 @@ public class InsurerBillingBandAction  extends BaseAction {
         actionResponse = new ActionResponse();
         setActionResponse(actionResponse);
 
-        InsurerBillingBand band = new InsurerBillingBand();
-        Insurer insurer = insurerService.getInsurer(billingInsurerId);
-        band.setInsurer(insurer);
-        band.setBandName(insurerBillingBandName);
-        band.setCostPerClaim(insurerCostPerClaim);
-        band.setExcludeSupplementary(insurerExcludeSupplementary);
-        band.setTriggerStatus(triggerPoint);
+        // Check Billing band name doesn't yet exist for insurer
+        InsurerBillingBand band = billingBandService.getInsurerBillingBand(billingInsurerId, insurerBillingBandName);
+        if (band != null) {
+            actionResponse.AddError("A billing band with this name already exists for this insurer. Please try again using a different name.");
+        } else {
+            band = new InsurerBillingBand();
+            Insurer insurer = insurerService.getInsurer(billingInsurerId);
+            band.setInsurer(insurer);
+            band.setBandName(insurerBillingBandName);
+            band.setCostPerClaim(insurerCostPerClaim);
+            band.setExcludeSupplementary(insurerExcludeSupplementary);
+            band.setTriggerStatus(triggerPoint);
         
-        try {
-            billingBandService.saveBillingBand(band);
-        } catch (Exception ex) {
-            LOG.warn("Error saving Insurer Billing Band: {}", ex.getMessage());
-            actionResponse.AddError("An internal error occurred trying to save the Insurer Billing Band.");
+            try {
+                billingBandService.saveBillingBand(band);
+            } catch (Exception ex) {
+                LOG.warn("Error saving Insurer Billing Band: {}", ex.getMessage());
+                actionResponse.AddError("An internal error occurred trying to save the Insurer Billing Band.");
+            }
         }
         return SUCCESS;
     }
 
     public String deleteInsurerBillingBand() {
         actionResponse = new ActionResponse();
-        try {
-            billingBandService.deleteBillingBand(billingBandService.getInsurerBillingBand(billingBandId));
-        } catch (Exception ex) {
-            LOG.warn("Error deleting Insurer Billing Band: {}", ex.getMessage());
-            actionResponse.AddError("An internal error occurred trying to delete the Insurer Billing Band.");
+        //Check no mapping exists for this billing band
+        List<InsurerBillingBandMapping> ibbm = billingBandMappingService.getInsurerBillingBandMappings(billingInsurerId, billingBandId);
+        if (ibbm.size() > 0) {
+            actionResponse.AddError("Cannot delete this Insurer Billing Band as it is being used. Please remove all mappings for this band before deleting.");
+        } else {
+            try {
+                billingBandService.deleteBillingBand(billingBandService.getInsurerBillingBand(billingBandId));
+            } catch (Exception ex) {
+                LOG.warn("Error deleting Insurer Billing Band: {}", ex.getMessage());
+                actionResponse.AddError("An internal error occurred trying to delete the Insurer Billing Band.");
+            }
         }
         return SUCCESS;
     }

@@ -1,7 +1,6 @@
 package idas.chox.web.viewdata;
 
 import idas.chox.core.model.ChoBillingBand;
-import java.math.BigDecimal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

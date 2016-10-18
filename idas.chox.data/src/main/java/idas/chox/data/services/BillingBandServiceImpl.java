@@ -35,6 +35,15 @@ public class BillingBandServiceImpl extends SecureDataService implements Billing
     }
 
     @Override
+    public InsurerBillingBand getInsurerBillingBand(int insurerId, String bandName) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(InsurerBillingBand.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("bandName", bandName));
+        List result = findByCriteria(criteria);
+        return result.size() > 0 ? (InsurerBillingBand)result.get(0) : null;
+    }
+
+    @Override
     public List<ChoBillingBand> getChoBillingBands() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ChoBillingBand.class);
         
@@ -48,6 +57,15 @@ public class BillingBandServiceImpl extends SecureDataService implements Billing
         criteria.addOrder(Order.asc("bandName"));
         
         return findByCriteria(criteria);
+    }
+
+    @Override
+    public ChoBillingBand getChoBillingBand(int choId, String bandName) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(ChoBillingBand.class);
+        criteria.add(Restrictions.eq("chorganisation.id", choId));
+        criteria.add(Restrictions.eq("bandName", bandName));
+        List result = findByCriteria(criteria);
+        return result.size() > 0 ? (ChoBillingBand)result.get(0) : null;
     }
 
     @Override

@@ -154,6 +154,17 @@
     <bean id="billingChoDetailService" class="idas.chox.data.services.BillingChoDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="billingBandService" class="idas.chox.data.services.BillingBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="billingBandMappingService" class="idas.chox.data.services.BillingBandMappingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+        <property name="chorganisationService" ref="chorganisationService" />
+        <property name="insurerService" ref="insurerService" />
+    </bean>
     
     <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" scope="prototype">
         <property name="claimService" ref="claimService" />
