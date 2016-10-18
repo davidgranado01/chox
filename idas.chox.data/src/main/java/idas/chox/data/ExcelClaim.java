@@ -295,7 +295,7 @@ public class ExcelClaim {
         claimCustomerAverageDailyMileage = (String) data.get("customer_average_daily_mileage");
         claimCustomerDamage = (String) data.get("customer_damage");
         Boolean b = (Boolean) data.get("customer_is_usable");
-        claimCustomerIsUsable = b == null ? "" : b ? "Yes" : "No";
+        claimCustomerIsUsable = b == null ? "Unknown" : b ? "Yes" : "No";
         b = (Boolean) data.get("customer_is_total_loss");
         claimCustomerIsTotalLoss = b == null ? "" : b ? "Yes" : "No";
         claimCustomerInitialECD = (Date) data.get("customer_initial_ecd");
@@ -368,7 +368,7 @@ public class ExcelClaim {
         }
         Boolean isUsable = (Boolean) data.get("er_is_usable");
         if (isUsable == null) {
-            claimEngineerReportIsUsable = "";
+            claimEngineerReportIsUsable = "Unknown";
         }
         else {
             claimEngineerReportIsUsable = isUsable ? "Yes" : "No";

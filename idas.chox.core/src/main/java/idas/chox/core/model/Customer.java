@@ -595,9 +595,7 @@ public class Customer extends Entity implements Serializable {
     }
 
     public void setIsUsable(String isUsable) {
-        if (isUsable == null || "null".equalsIgnoreCase(isUsable)) {
-            this.isUsable = null;
-        } else if ("true".equalsIgnoreCase(isUsable)) {
+        if ("true".equalsIgnoreCase(isUsable)) {
             this.isUsable = Boolean.TRUE;
         } else if ("false".equalsIgnoreCase(isUsable)) {
             this.isUsable = Boolean.FALSE;
