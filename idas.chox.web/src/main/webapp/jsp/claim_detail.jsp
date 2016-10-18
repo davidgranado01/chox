@@ -250,16 +250,24 @@
                 if (composedDate>currentDate ){
                     return false;
                 }
-            return true;
-        }
-    );
+                return true;
+            }
+        );
+        $.validator.addMethod( "checkWhiteSpace",
+            function(value, element) {
+                if (value.match(/^ *$/) !== null){
+                    return false;
+                }
+                return true;
+            }
+        );
 
         $("#reviewDateForm").validate(
         {
             errorLabelContainer: "#reviewDateFormMessageBox",
             rules: {
 <s:if test="hasLastReviewDate">
-                lastReviewDate:{dateITA:true, checkLastReviewDate:true}
+                lastReviewDate:{dateITA:true, checkLastReviewDate:true, checkWhiteSpace:true}
 </s:if>
 <s:else>
                 lastReviewDate:{dateITA:true, checkLastReviewDate:true, required:true}
@@ -267,10 +275,10 @@
             },
             messages: {
 <s:if test="hasLastReviewDate">
-                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future"}
+                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", checkWhiteSpace:"The 'Last Review Date' cannot contain white space"}
 </s:if>
 <s:else>
-                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", required:"The 'Last Review Date' cannot be empty."}
+                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", required:"The 'Last Review Date' cannot be empty"}
 </s:else>
             }
         });
