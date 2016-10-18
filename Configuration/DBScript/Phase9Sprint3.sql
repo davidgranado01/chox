@@ -43,6 +43,8 @@ INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, check_manu
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
     VALUES ('activity.LastReviewDate.ClaimUnacknowledgedUnrouted', false, false, false, false);
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
+    VALUES ('activity.LastReviewDate.ClaimUpdatedByEngineer', false, false, false, false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
     VALUES ('activity.LastReviewDate.ContestedInvoiceReferredToCHO', false, false, false, false);
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
     VALUES ('activity.LastReviewDate.ContestedInvoiceReferredToInsurer', false, false, false, false);
@@ -72,7 +74,6 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name like 'activity.LastReviewDate.%';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name like 'activity.LastReviewDate.%';
-
 
 --
 -- CHOX-153: Ability To Reject A Manual Claim
