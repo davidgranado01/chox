@@ -13,7 +13,7 @@
         <tr>
             <td><label class="std-label-ro">Location</label></td>
             <td>&nbsp;</td>
-            <td width="378px" style="display:fixed;word-break:break-word;overflow-wrap:break-word;-ms-word-break:break-all;word-break:break-all;word-break:break-word;"><label class="std-data-ro"><s:property value="location" /></label></td>
+            <td width="378px" style="display:fixed;overflow-wrap:break-word;-ms-word-break:break-all;word-break:break-all;word-break:break-word;"><label class="std-data-ro"><s:property value="location" /></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Police Involved?</label></td>
@@ -28,3 +28,4 @@
         </table>
     </div>
 </fieldset>
+        
