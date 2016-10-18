@@ -294,8 +294,10 @@ public class ExcelClaim {
         claimCustomerSpecialRequirements = (String) data.get("customer_special_requirements");
         claimCustomerAverageDailyMileage = (String) data.get("customer_average_daily_mileage");
         claimCustomerDamage = (String) data.get("customer_damage");
-        claimCustomerIsUsable = ((Boolean) data.get("customer_is_usable")) ? "Yes" : "No";
-        claimCustomerIsTotalLoss = ((Boolean) data.get("customer_is_total_loss")) ? "Yes" : "No";
+        Boolean b = (Boolean) data.get("customer_is_usable");
+        claimCustomerIsUsable = b == null ? "" : b ? "Yes" : "No";
+        b = (Boolean) data.get("customer_is_total_loss");
+        claimCustomerIsTotalLoss = b == null ? "" : b ? "Yes" : "No";
         claimCustomerInitialECD = (Date) data.get("customer_initial_ecd");
         claimThirdPartyTitle = (String) data.get("tp_title");
         claimThirdPartyFirstName = (String) data.get("tp_first_name");

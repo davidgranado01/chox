@@ -276,6 +276,7 @@
         });
 
 </s:if>
+    expandClaimDetails(false);
     });
 
     function updateTabs() {
