@@ -2,27 +2,22 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-
-    var insBillingBand_mapping_gridviewJsonReader;
-    var insBillingBand_mapping_gridviewDataStore;
-    var insBillingBand_mapping_gridviewGrid;
-    var insBillingBand_mapping_gridviewData;
-
-    var insBillingBand_gridviewJsonReader;
-    var insBillingBand_choGridviewJsonReader;
-
+    var insBillingBand_a_gridviewJsonReader;
     var insBillingBand_a_gridviewDataStore;
     var insBillingBand_a_gridviewGrid;
     var insBillingBand_a_gridviewData;
 
+    var insBillingBand_s_gridviewJsonReader;
     var insBillingBand_s_gridviewDataStore;
     var insBillingBand_s_gridviewGrid;
     var insBillingBand_s_gridviewData;
+    
+    var billingBandStore;
     var billingBandCombo;
     var insurerCombo;
+    
     var selectedInsurerId = -1;
     var selectedBandId = -1;
-    var billingBandStore;
     
     Ext.onReady(function(){
 
@@ -62,16 +57,13 @@
                             this.clearValue();
                             this.reset();
                             selectedInsurerId = -1;
+                            selectedBandId = -1;
                             
                         }else {
                             selectedInsurerId = this.value;
+                            selectedBandId = -1;
                         }
                         onInsurerBillingBandMappingPageRefresh();
-                    },
-                    specialkey:function (el, e) {
-                            if(e.keyCode === e.ENTER) {
-                                e.preventDefault();
-                            }
                     }
                 }
             });
@@ -119,21 +111,16 @@
                             selectedBandId = this.value;
                         }
                         onInsurerBillingBandMappingPageRefresh();
-                    },
-                    specialkey:function (el, e) {
-                            if(e.keyCode === e.ENTER) {
-                                e.preventDefault();
-                            }
                     }
                 }
             });
 
     
-        insBillingBand_choGridviewJsonReader = new Ext.data.JsonReader({
+        insBillingBand_a_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
-            fields:
-                [
+            fields: [
+                {name:'id'},
                 {name:'chorganisationId'},
                 {name:'chorganisationName'},
                 {name:'claimType'},
@@ -141,11 +128,10 @@
             ]
         });
 
-        insBillingBand_gridviewJsonReader = new Ext.data.JsonReader({
+        insBillingBand_s_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
-            fields:
-                [
+            fields: [
                 {name:'id'},
                 {name:'chorganisationId'},
                 {name:'chorganisationName'},
@@ -156,12 +142,12 @@
 
         insBillingBand_a_gridviewData = new choxDataStore({
             url: '/prv/p/getAvailableInsurerBillingBandChorganisation.action',
-            reader:insBillingBand_choGridviewJsonReader
+            reader:insBillingBand_a_gridviewJsonReader
         });
 
         insBillingBand_s_gridviewData = new choxDataStore({
             url: '/prv/p/getSelectedInsurerBillingBandChorganisation.action',
-            reader:insBillingBand_gridviewJsonReader
+            reader:insBillingBand_s_gridviewJsonReader
         });
 
         insBillingBand_a_gridviewGrid = new Ext.grid.GridPanel({
@@ -173,9 +159,9 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Name", width: 180, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Claim Type", width: 180, dataIndex: 'claimTypeDesc', sortable: true, resizable: true},
-                {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 250, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Claim Type", width: 130, dataIndex: 'claimTypeDesc', sortable: true, resizable: true},
+                {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Add</a>";}}
             ],
             height:430,
@@ -191,9 +177,9 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Name", width: 180, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Claim Type", width: 180, dataIndex: 'claimTypeDesc', sortable: true, resizable: true},
-                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 220, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Claim Type", width: 130, dataIndex: 'claimTypeDesc', sortable: true, resizable: true},
+                {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:430,
@@ -204,44 +190,49 @@
     });
 
     function onInsurerBillingBandMappingPageRefresh(){
-        if (selectedInsurerId == -1) {
+        if (selectedInsurerId === -1) {
             // No insurer selected - clear band dropdown?
             billingBandCombo.reset();
-        } else { // we have an inurer selected
+            insBillingBand_a_gridviewData.removeAll(true);
+            insBillingBand_s_gridviewData.removeAll(true);
+            insBillingBand_a_gridviewGrid.view.refresh();
+            insBillingBand_s_gridviewGrid.view.refresh();
+        } else if (selectedBandId === -1) { // we have an inurer selected but no band
             loadInsurerBillingBandDropDown();
-        }
-        if (selectedBandId != -1) {
+            billingBandCombo.reset();
+            insBillingBand_a_gridviewData.removeAll(true);
+            insBillingBand_s_gridviewData.removeAll(true);
+            insBillingBand_a_gridviewGrid.view.refresh();
+            insBillingBand_s_gridviewGrid.view.refresh();
+        } else { // bith insurer and band selected
             insBillingBandMapping_loadGridViewList();
-        } else {
-            // Clear lists ?
         }
     }
 
     function insBillingBandMapping_loadGridViewList(){
-//        insBillingBand_a_gridviewData.load({params:{insurerId:selectedInsurerId,breBandId:selectedBandId}});
-//        insBillingBand_s_gridviewData.load({params:{insurerId:selectedInsurerId,breBandId:selectedBandId}});
+        insBillingBand_a_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedBandId}});
+        insBillingBand_s_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedBandId}});
     }
 
     function insBillingBand_recordOnclickAdd(grid, rowIndex, columnIndex, e){
-
-        if(columnIndex===1){
+        if(columnIndex===2){
             var gridView = insBillingBand_a_gridviewGrid.getStore().getAt(rowIndex);
             var chorganisationId = gridView.get("chorganisationId");
             var claimType = gridView.get("claimType");
-            var url = "/prv/p/doAddNewInsurerBillingBandChorganisationMapping.action";
-            var param = {"insurerId":selectedInsurerId, "chorganisationId":chorganisationId, "claimType":claimType};
-//            ajax.loadHtml2(url, param, afterBreBandMappingSubmit);
+            var url = "/prv/p/doAddInsurerBillingBandChorganisationMapping.action";
+            var param = {insurerId:selectedInsurerId, billingBandId:selectedBandId, chorganisationId:chorganisationId, claimTypeId:claimType};
+            ajax.loadHtml2(url, param, afterBillingBandMappingSubmit);
         }
     }
 
     function insBillingBand_recordOnclickRemove(grid, rowIndex, columnIndex, e){
 
         if(columnIndex===2){
-            var gridView = breband_s_gridviewGrid.getStore().getAt(rowIndex);
-            var breBandChorganisationId = gridView.get("id");
+            var gridView = insBillingBand_s_gridviewGrid.getStore().getAt(rowIndex);
+            var billingBandMappingId = gridView.get("id");
             var url = "/prv/p/doRemoveInsurerBillingBandChorganisationMapping.action";
-            var param = {"breBandChorganisationId":breBandChorganisationId};
-//            ajax.loadHtml2(url, param, afterBillingBandMappingSubmit);
+            var param = {billingBandMappingId:billingBandMappingId};
+            ajax.loadHtml2(url, param, afterBillingBandMappingSubmit);
         }
 
     }

@@ -1297,6 +1297,22 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getAvailableInsurerBillingBandChorganisation" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="getAvailableInsurerBillingBandChorganisation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="getSelectedInsurerBillingBandChorganisation" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="getSelectedInsurerBillingBandChorganisation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="doAddInsurerBillingBandChorganisationMapping" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="addInsurerBillingBandChorganisationMapping">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doRemoveInsurerBillingBandChorganisationMapping" class="idas.chox.web.actions.InsurerBillingBandMappingAction" method="removeInsurerBillingBandChorganisationMapping">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
 
         <action name="getChoBillingBandMappingPage" class="idas.chox.web.actions.InsurerBillingBandAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_cho_billing_band_mapping_panel.jsp</result>

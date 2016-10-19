@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.BreBand;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import idas.chox.core.services.BillingBandMappingService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author john
@@ -181,5 +184,39 @@ public class BillingBandMappingServiceImpl extends SecureDataService implements 
         
         return result;
     }
-    
+
+    @Override
+    public InsurerBillingBandMapping getInsurerBillingBandMapping(int insurerBillingBandMappingId) {
+        return (InsurerBillingBandMapping) get(InsurerBillingBandMapping.class, insurerBillingBandMappingId);
+    }
+
+    @Override
+    public ChoBillingBandMapping getChoBillingBandMapping(int choBillingBandMappingId) {
+        return (ChoBillingBandMapping) get(ChoBillingBandMapping.class, choBillingBandMappingId);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void saveInsurerBillingBandMapping(InsurerBillingBandMapping insurerBillingBandMapping) {
+        save(insurerBillingBandMapping);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void deleteInsurerBillingBandMapping(InsurerBillingBandMapping insurerBillingBandMapping) {
+        delete(insurerBillingBandMapping);
+    }
+  
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void saveChoBillingBandMapping(ChoBillingBandMapping choBillingBandMapping) {
+        save(choBillingBandMapping);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void deleteChoBillingBandMapping(ChoBillingBandMapping choBillingBandMapping) {
+        delete(choBillingBandMapping);
+    }
+  
 }
