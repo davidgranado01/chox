@@ -1,6 +1,8 @@
 package idas.chox.web.actions;
 
+import java.util.Arrays;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,6 +25,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
     private int vehicleClassId;
     private String oldVRN;
     private Boolean isUsableOriginal;
+    
     @Override
     protected Customer loadModel() {
 
@@ -39,8 +42,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
     @Override
     public String updateModel() {
         LOG.debug("Updating customer model: oldvrn={}, newvrn={}", oldVRN, model.getVehicleRegistration());
-//        if (hpiCheck == null)
-//            LOG.debug("hpiCheck is null");
+
         if (!oldVRN.equalsIgnoreCase(model.getVehicleRegistration())) {
             LOG.debug("VRN has changed - performing HPI check/retrieval");
             try {
@@ -70,7 +72,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
                 claimService.checkRepairBookedInDateAnomaly(claim);
                 // update model in session before calling super.updateModel as model version
                 // may have been increased when anomalous added or removed from claim.
-//                updateModelInSession(Arrays.asList(claim, claim.getHireMonitoringDetail(), model));
+                updateModelInSession(Arrays.asList(claim, claim.getHireMonitoringDetail(), model));
             
         }
         claim.setCustomer(model);
