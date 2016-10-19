@@ -164,9 +164,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public void checkRepairBookedInDateAnomaly(Claim claim) {
         try {
-            LOG.debug("Adding hire monitoring detail anomalies - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            LOG.debug("Adding hire monitoring detail anomalies - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail() == null ? "null" : claim.getHireMonitoringDetail().getVersion());
             notificationService.checkForAnomalies(claim, NotificationType.RepairBookedInDateAnomalousNotification.getType());
-            LOG.debug("Hire monitoring detail anomalies added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            LOG.debug("Hire monitoring detail anomalies added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail() == null ? "null" : claim.getHireMonitoringDetail().getVersion());
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
                 NotificationType.RepairBookedInDateAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
@@ -177,9 +177,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public void checkTotalLossAnomaly(Claim claim) {
         try {
-            LOG.debug("Adding total loss anomaly - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            LOG.debug("Adding total loss anomaly - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail() == null ? "null" : claim.getHireMonitoringDetail().getVersion());
             notificationService.checkForAnomalies(claim, NotificationType.TotalLossAnomalousNotification.getType());
-            LOG.debug("Hire total loss anomaly added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            LOG.debug("Hire total loss anomaly added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail() == null ? "null" : claim.getHireMonitoringDetail().getVersion());
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
                 NotificationType.TotalLossAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
