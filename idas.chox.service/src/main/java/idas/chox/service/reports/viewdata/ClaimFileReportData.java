@@ -394,7 +394,7 @@ public class ClaimFileReportData {
                             insurerHireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferCheckReceivedDate());
                         }
                         if (hmd.getRepairCompletionDate() != null) {
-                            insurerHireMonRepairCompletionDate = DateHelper.getLocalDateTimeFormat().format(hmd.getRepairCompletionDate());
+                            insurerHireMonRepairCompletionDate = DateHelper.getLocalDateFormat().format(hmd.getRepairCompletionDate());
                         }
                         insurerHireMonLabourRate = hmd.getLabourRate();
                         insurerHireMonLabourHours = hmd.getLabourHour();

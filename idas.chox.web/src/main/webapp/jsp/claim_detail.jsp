@@ -35,7 +35,7 @@
     var taskTabTitle = 'Tasks';
     var commentTabTitle = 'Notes';
     var reviewDateSelectionDlg;
-    var myLastReviewDate;
+    var reviewDateSelectionWin;
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
@@ -146,142 +146,101 @@
         </s:elseif>
             
 <s:if test="isInsurer">
-     var ieVersion = getIEVersion();
-
-      if (ieVersion > 0){
-        reviewDateSelectionDlg =  new Ext.Window({
-            applyTo:'reviewDateDlgHolder',
-            layout:'fit',
-            width:600,
-            height:285,
-            x: 440,
-            y: 200,
-            closeAction:'hide',
-            plain: false,
-            modal: true,
+        
+        var reviewItems = [{
+                xtype : 'hidden',
+                name : 'name',
+                value : 'lastReviewDate'
+            },{
+                xtype : 'label',
+                style: 'font:bold 12px tahoma',
+<s:if test="hasLastReviewDate">
+                html: 'Please enter a \'Last Review Date\' together with any relevant notes.<br>You may leave the this field empty to remove the current date set:'
+</s:if>
+<s:else>
+                text: 'Please enter a \'Last Review Date\' together with any relevant notes:'
+</s:else>
+            },{
+                xtype : 'label',
+                style: 'font:bold 12px tahoma',
+                html: '<br>&nbsp;<br>'
+            },{
+                xtype : 'datefield',
+                name : 'lastReviewDate',
+                format : 'd/m/Y',
+                maxValue: new Date(),
+                maxText: 'The \'Last Review Date\' cannot be in the future',
+                showWeekNumber: true,
+<s:if test="hasLastReviewDate">
+                labelStyle: 'align:right; width: 100;',
+                fieldLabel : 'Last Review Date',
+                allowBlank: true
+</s:if>
+<s:else>
+                labelStyle: 'align:right; width: 115;',
+                fieldLabel : 'Last Review Date <span class="mandatory">*</span>',
+                allowBlank: false
+</s:else>
+            },{
+                xtype : 'textarea',
+                width : 250,
+                name : 'lastReviewNote',
+                fieldLabel : 'Last Review Notes',
+<s:if test="hasLastReviewDate">
+                labelStyle: 'align:right; width: 100;',
+</s:if>
+<s:else>
+                labelStyle: 'align:right; width: 115;',
+</s:else>
+                allowBlank: true
+            }];
+        
+        reviewDateSelectionDlg =  new choxExtJsFormPanel({
+            autoHeight: true,
+            autoWidth: true,
+            frame:true,
             title: 'Last Review Date',
-            resizable : false,
-            items: new Ext.Panel({
-                applyTo: 'reviewDateSelectionPanel'
-            }),
+            buttonAlign : 'center',
+            items : reviewItems,
             buttons: [{
                 text:'Ok',
                 handler:function(){
-                    if($("form#reviewDateForm").valid()){
-                        reviewDateSelectionDlg.hide();
-                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                        choxJqueryHttpSubmit($("form#reviewDateForm"));
+                    if(reviewDateSelectionDlg.getForm().isValid()){
+                        reviewDateSelectionWin.hide();
+                        var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+                        var form = reviewDateSelectionDlg.getForm();
+                        var form = $('<form action="' + url + '" method="post">' +
+                            '<s:hidden name="name" value="lastReviewDate" />' +
+                            '<s:hidden name="lastReviewDate" value="' + reviewDateSelectionDlg.getForm().getValues()['lastReviewDate'] + '" />' +
+                            '<s:hidden name="lastReviewNote" value="' + reviewDateSelectionDlg.getForm().getValues()['lastReviewNote'] + '" />' +
+                            '</form>');
+                        $('body').append(form);
+                        Ext.get('claimDetailScreenDiv').mask("Reloading claim...");
+                        choxJqueryHttpSubmit($(form));
+
+
                     }
-                 }
-            },{
+                }
+                },{
                 text: 'Close',
                 handler: function(){
-                    // hide the error message box, which could be displayed,
-                    // so that it doesn't appear when we're opened again
-                    $("#reviewDateFormMessageBox").hide();
-                    reviewDateSelectionDlg.hide();
+                    reviewDateSelectionWin.hide();
                 }
             }]
-        });
-    }else{
-        reviewDateSelectionDlg =  new Ext.Window({
-            applyTo:'reviewDateDlgHolder',
+          });
+
+        reviewDateSelectionWin = new Ext.Window({
             layout:'fit',
-            width:525,
-            height:280,
-            x: 440,
-            y: 200,
-            closeAction:'hide',
-            plain: false,
-            modal: true,
-            title: 'Last Review Date',
+            autoHeight: true,
+            autoWidth: true,
+            closable:false,
             resizable : false,
-            items: new Ext.Panel({
-                applyTo: 'reviewDateSelectionPanel'
-            }),
-            buttons: [{
-                text:'Ok',
-                handler:function(){
-                    if($("form#reviewDateForm").valid()){
-                        reviewDateSelectionDlg.hide();
-                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                        choxJqueryHttpSubmit($("form#reviewDateForm"));
-                    }
-                 }
-            },{
-                text: 'Close',
-                handler: function(){
-                    // hide the error message box, which could be displayed,
-                    // so that it doesn't appear when we're opened again
-                    $("#reviewDateFormMessageBox").hide();
-                    reviewDateSelectionDlg.hide();
-                }
-            }]
-        });
-    }
-
-        myLastReviewDate = new Ext.form.DateField({
-            id: 'lastReviewDateId',
-            name: 'lastReviewDate',
-            validationEvent: false,
-            validateOnBlur: false,
-            renderTo: 'reviewDateSelectionHolder',
-            width: 95,
-            format: 'd/m/Y',
-            maxValue: new Date(),
-            maxText: 'Invalid',
-            showWeekNumber: true
+            modal: true,
+            items : [
+                reviewDateSelectionDlg
+            ]
         });
 
-        $.validator.addMethod( "checkLastReviewDate",
-            function(value, element) {
-                var composedDate = new Date();
-                var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(value);
-                if(matches != null){
-                    var d = matches[1];
-                    var m = matches[2] - 1;
-                    var y = matches[3];
-                    composedDate = new Date(y, m, d);
-                }
-                if ( value == "" ){
-                    return true;
-                }
-                var currentDate = new Date();
-                if (composedDate>currentDate ){
-                    return false;
-                }
-                return true;
-            }
-        );
-        $.validator.addMethod( "checkWhiteSpace",
-            function(value, element) {
-                if (value.match(/^ *$/) !== null && value!=""){
-                    return false;
-                }
-                return true;
-            }
-        );
-
-        $("#reviewDateForm").validate(
-        {
-            errorLabelContainer: "#reviewDateFormMessageBox",
-            rules: {
-<s:if test="hasLastReviewDate">
-                lastReviewDate:{dateITA:true, checkLastReviewDate:true, checkWhiteSpace:true}
-</s:if>
-<s:else>
-                lastReviewDate:{dateITA:true, checkLastReviewDate:true, required:true}
-</s:else>
-            },
-            messages: {
-<s:if test="hasLastReviewDate">
-                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", checkWhiteSpace:"The 'Last Review Date' cannot contain white space"}
-</s:if>
-<s:else>
-                lastReviewDate: {dateITA:"You must supply valid date format for 'Last Review Date'", checkLastReviewDate:"The 'Last Review Date' cannot be in the future", required:"The 'Last Review Date' cannot be empty"}
-</s:else>
-            }
-        });
 
 </s:if>
     expandClaimDetails(false);
@@ -518,11 +477,8 @@
     }
     
     function lastReviewDate() {
-        $("#reviewDateFormMessageBox").text("");
-        $("#lastReviewNoteId").val("");
-        $("#lastReviewDateId").val("");
-        myLastReviewDate.reset();
-        reviewDateSelectionDlg.show();
+        reviewDateSelectionDlg.getForm().reset();
+        reviewDateSelectionWin.show();
     }
     
     /***********************************************************************************
@@ -1337,39 +1293,5 @@
 
         <div id="taskTab" class="x-hide-display"></div>
         
-    <div id="reviewDateDlgHolder" class="x-hidden">
-        <div id="reviewDateSelectionPanel">
-            <form id="reviewDateForm" action="<%=request.getContextPath()%>/prv/processClaim.action" class="XXentity-form" method="POST">
-                <input name="name" type="hidden" value="lastReviewDate"/>
-                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <td colspan="3"><label><b>Please enter the Last Review Date together with any relevant notes:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label></td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<s:if test="hasLastReviewDate">
-                        <td><label>Last Review Date:</label></td>
-</s:if>
-<s:else>
-                        <td><label>Last Review Date <span class="mandatory">*</span>:</label></td>
-</s:else>
-                        <td><div id="reviewDateSelectionHolder"></div></td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><label>Last Review Notes:</label></td>
-                        <td style="text-align:left;">
-                           <textarea cols="50" rows="4" name="lastReviewNote" id="lastReviewNoteId"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td colspan="2"><div id="reviewDateFormMessageBox" class="action-error-msg"></div></td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </div>
-
     </div>
 </div>
