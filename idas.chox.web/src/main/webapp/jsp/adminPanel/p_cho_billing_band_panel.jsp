@@ -78,7 +78,7 @@
                 width: 145,
                 renderTo: 'choBillingTriggerDivId',
                 valueField: 'triggerStatus',
-                id: 'triggerPoint',
+                id: 'choTriggerPointId',
                 hiddenName: 'triggerPoint',
                 displayField:'trigger',
                 typeAhead: true,
@@ -251,12 +251,12 @@
 
     function validateChoBillingComboBox(){
     	var mesBox = $("#CDChoBillingMessageBox");
-    	if ($("#billingChoId").val() === "--- Please Select ---" || $("#triggerPoint").val() === "--- Please Select ---") {
+    	if ($("#billingChoId").val() === "--- Please Select ---" || $("#choTriggerPointId").val() === "--- Please Select ---") {
     		mesBox.empty();
     		if($("#billingChoId").val() === "--- Please Select ---") {
                     mesBox.append("Please select an 'CHO Name'\n<br/>").show();
                 }
-    		if($("#triggerPoint").val() === "--- Please Select ---") {
+    		if($("#choTriggerPointId").val() === "--- Please Select ---") {
                     mesBox.append("Please select a 'Trigger'").show();
                 }
     		return false;
