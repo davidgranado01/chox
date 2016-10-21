@@ -97,7 +97,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     @Override
     public void acknowledgeCommentById(int commentId){
         Comment comment = getComment(commentId);
-        if (comment.getReviewRequired() != null && comment.getReviewRequired()) {
+        if (comment.getReviewRequired() != null && comment.getReviewRequired() && comment.getTask() != null) {
             comment.getTask().setComplete(Boolean.TRUE);
             comment.getTask().setCompletedDate(new Date());
             comment.getTask().setCompletedBy(getCurrentUser());
