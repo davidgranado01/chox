@@ -5,7 +5,11 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Customer extends Entity implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(Customer.class);
 
     private Boolean isVehicleRegistrationexist = false;
     /**
@@ -579,6 +583,16 @@ public class Customer extends Entity implements Serializable {
         return isUsable;
     }
     
+    public void setIsUsableDesc(String isUsable) {
+        if ("yes".equalsIgnoreCase(isUsable)) {
+            this.isUsable = Boolean.TRUE;
+        } else if ("no".equalsIgnoreCase(isUsable)) {
+            this.isUsable = Boolean.FALSE;
+        } else {
+            this.isUsable = null;
+        }
+    }
+    
     public String getIsUsableDesc() {
 
         return this.isUsable == null ? "Unknown" : this.isUsable ? "Yes" : "No";
@@ -591,17 +605,12 @@ public class Customer extends Entity implements Serializable {
      * @param isUsable
      */
     public void setIsUsable(Boolean isUsable) {
-        this.isUsable = isUsable;
-    }
-
-    public void setIsUsable(String isUsable) {
-        if ("true".equalsIgnoreCase(isUsable)) {
-            this.isUsable = Boolean.TRUE;
-        } else if ("false".equalsIgnoreCase(isUsable)) {
-            this.isUsable = Boolean.FALSE;
+        if (isUsable == null) {
+LOG.info("Setting isUsable to null");
         } else {
-            this.isUsable = null;
+LOG.info("Setting isUsable to {}", isUsable);
         }
+        this.isUsable = isUsable;
     }
 
     /**

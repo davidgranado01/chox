@@ -1,13 +1,15 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Task;
 import idas.chox.core.services.TaskService;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
 
 public class AddNote extends BaseActivity {
 
@@ -17,6 +19,7 @@ public class AddNote extends BaseActivity {
     private int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
     private boolean reviewRequired;
     private TaskService taskService;
+    private boolean canCreateTask;
 
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
@@ -68,13 +71,21 @@ public class AddNote extends BaseActivity {
             LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getCurrentUser().getDisplayName(), getCurrentUser().getId());
             throw new Exception("Note can't be added. Insufficient priviliges!");
         }
+        
+        // Determine if an external task can be created on the claim
+        canCreateTask = false;
+        if (getCurrentUser().isAnInsurer() && claim.getChorganisation().isTaskManagementEnable()) {
+            canCreateTask = true;
+        } else if (getCurrentUser().isCHO() && claim.getInsurer().isTaskManagementEnable()) {
+            canCreateTask = true;
+        }
     }
 
     @Override
     @Secured ({"ROLE_INS", "ROLE_CHO"})
     protected void doProcess(Claim claim) {
         note = Comment.newComment(visibilityType, reviewRequired, comment.replaceAll("\n", "<br />"));
-        if (reviewRequired && visibilityType == 0) {
+        if (reviewRequired && visibilityType == 0 && canCreateTask) {
             // Create task for comment review required
             Task task = new Task();
             note.setTask(task);

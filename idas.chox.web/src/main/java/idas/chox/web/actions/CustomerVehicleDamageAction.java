@@ -91,15 +91,5 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
         return TabAccessibility.TAB_CLAIM_DETAIL;
     }
     
-    public void setIsUsable(String isUsable) {
-LOG.info("setIsUsable: {}", isUsable);
-        if ("Yes".equalsIgnoreCase(isUsable) || "True".equalsIgnoreCase(isUsable)) {
-            model.setIsUsable(Boolean.TRUE);
-        } else if ("No".equalsIgnoreCase(isUsable) || "False".equalsIgnoreCase(isUsable)) {
-            model.setIsUsable(Boolean.FALSE);
-        } else {
-            model.setIsUsable((Boolean)null);
-        }
-    }
 }
 

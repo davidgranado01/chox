@@ -241,11 +241,11 @@
                         </s:elseif>
                 </div>
                 <div class="chox-form-item" id="requireReviewId">
-                        <s:if test="isInsurer && choTaskManagementEnabled">
+                        <s:if test="isInsurer">
                         <s:checkbox name="reviewRequired" id="requireReviewCheckId"/>
                             <label>&nbsp;&nbsp;Require CHO Review</label>
                         </s:if>
-                        <s:elseif test="isCHO && insurerTaskManagementEnabled">
+                        <s:elseif test="isCHO">
                             <s:checkbox name="reviewRequired" id="requireReviewCheckId"/>
                             <label>&nbsp;Require Insurer Review</label>
                         </s:elseif>

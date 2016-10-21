@@ -25,11 +25,10 @@
         
         ui.ajaxForm(form, null, 'html');
         $("#CVDSucsessBox").fadeOut(10000);
-        $('select[name="isUsable"]').val('<s:property value='isUsable'/>');
+        $('select[name="isUsableDesc"]').val('<s:property value='isUsableDesc'/>');
     });
     
     function vehicleDamageSubmit() {
-//        $("form#formUpdateCustomerVehicleDamageForm").submit();
         choxJqueryHttpSubmit($("form#formUpdateCustomerVehicleDamageForm"));
         // Update Hire Monitoring Total Loss field
         if ($('#customerVehicleDamageisTotalLossId').is(':checked') === 1) {
@@ -58,10 +57,10 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Is Usable?</label>
-                <select name="isUsable" id="customerVehicleDamageisUsableId">
-                    <option value="">Unknown</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                <select name="isUsableDesc" id="customerVehicleDamageisUsableId">
+                    <option value="Unknown">Unknown</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                 </select>
             </div>
             <div class="chox-form-item">
