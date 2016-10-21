@@ -21,7 +21,6 @@ public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
     private JSONArray jObject;
     private int commentId;
-    private int claimId;
     private CommentService commentService;
 
     public void setCommentService(CommentService commentService) {
@@ -34,10 +33,6 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
     public void setCommentId(int commentId) {
         this.commentId = commentId;
-    }
-
-    public void setClaimId(int claimId) {
-        this.claimId = claimId;
     }
 
 
@@ -165,12 +160,12 @@ public class CommentAction extends ClaimModelAction<Comment> {
                     LOG.debug("Comment acknowledged.");
                     this.getActionResponse().AssignMessageResult("Note has been acknowledged.");                    
             } else {
-                LOG.warn("User trying to delete Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
-                this.getActionResponse().AssignMessageResult("No comment id found");
+                LOG.warn("User trying to acknowledge Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+                this.getActionResponse().AssignMessageResult("No comment found");
                 return ERROR;
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown deleting comment: {}", ex.getMessage());
+            LOG.error("Exception thrown acknowledgeding comment: {}", ex.getMessage());
             this.getActionResponse().AssignMessageResult(ex.getMessage());
             return ERROR;
         }
