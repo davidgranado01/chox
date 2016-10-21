@@ -172,12 +172,12 @@
                 maxText: 'The \'Last Review Date\' cannot be in the future',
                 showWeekNumber: true,
 <s:if test="hasLastReviewDate">
-                labelStyle: 'align:right; width: 100;',
+                labelStyle: 'align:right; width: 110;',
                 fieldLabel : 'Last Review Date',
                 allowBlank: true
 </s:if>
 <s:else>
-                labelStyle: 'align:right; width: 115;',
+                labelStyle: 'align:right; width: 120;',
                 fieldLabel : 'Last Review Date <span class="mandatory">*</span>',
                 allowBlank: false
 </s:else>
@@ -187,10 +187,10 @@
                 name : 'lastReviewNote',
                 fieldLabel : 'Last Review Notes',
 <s:if test="hasLastReviewDate">
-                labelStyle: 'align:right; width: 100;',
+                labelStyle: 'align:right; width: 110;',
 </s:if>
 <s:else>
-                labelStyle: 'align:right; width: 115;',
+                labelStyle: 'align:right; width: 120;',
 </s:else>
                 allowBlank: true
             }];
@@ -229,17 +229,36 @@
             }]
           });
 
-        reviewDateSelectionWin = new Ext.Window({
-            layout:'fit',
-            autoHeight: true,
-            autoWidth: true,
-            closable:false,
-            resizable : false,
-            modal: true,
-            items : [
-                reviewDateSelectionDlg
-            ]
-        });
+        if (getIEVersion() == 9) {
+            reviewDateSelectionWin = new Ext.Window({
+                layout:'fit',
+                height: 210,
+<s:if test="hasLastReviewDate">
+                width: 480,
+</s:if>
+<s:else>
+                width: 460,
+</s:else>
+                closable:false,
+                resizable : false,
+                modal: true,
+                items : [
+                    reviewDateSelectionDlg
+                ]
+            });
+        }else{
+            reviewDateSelectionWin = new Ext.Window({
+                layout:'fit',
+                autoHeight: true,
+                autoWidth: true,
+                closable:false,
+                resizable : false,
+                modal: true,
+                items : [
+                    reviewDateSelectionDlg
+                ]
+            });
+        }
 
 
 </s:if>
