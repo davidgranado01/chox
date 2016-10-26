@@ -595,7 +595,7 @@ public class Customer extends Entity implements Serializable {
     
     public String getIsUsableDesc() {
 
-        return this.isUsable == null ? "Unknown" : this.isUsable ? "Yes" : "No";
+        return this.isUsable == null ? "" : this.isUsable ? "Yes" : "No";
     }
 
 
