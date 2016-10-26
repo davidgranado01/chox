@@ -248,8 +248,6 @@
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },
                 adminHandlingCharge:{ required:true, number:true, min:0 },
                 ecdIncreaseTriggerPercentage:{ required:true, number:true, min:0, max:100},
-                scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
-                fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
@@ -270,8 +268,6 @@
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
-                scsAgreedBenefitShareValue:{ number:"'VX Agreed Benefit Share' must be numeric", min:"'VX Agreed Benefit Share' cannot be less than zero", max:"'VX Agreed Benefit Share' cannot be higher than 100%" },
-                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
                 minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
@@ -350,22 +346,8 @@
 
         }
 
-        var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
         doPageLoadCheck();
 
-        if (isFixedTransactionalFee) {
-            $("#fixedTransactionalFeeOpt").val("true");
-            $("#CCDFixedTransactionalFeeValue").show();
-            $("#CCDFixedTransactionalFeeManualValue").show();
-            $("#CCDScsAgreedBenefitShareValue").hide();
-            $("#CCDAhoAgreedBenefitValueDiv").hide();
-        } else {
-            $("#fixedTransactionalFeeOpt").val("false");
-            $("#CCDFixedTransactionalFeeValue").hide();
-            $("#CCDFixedTransactionalFeeManualValue").hide();
-            $("#CCDScsAgreedBenefitShareValue").show();
-            $("#CCDAhoAgreedBenefitValueDiv").show();
-        }
         
         displayAutoRoutingTpiAndSusbscriberFields();
         displayPaymentsTeamFields();
@@ -658,20 +640,6 @@
         return claimOwnershipEnable;
     }
 
-    function chargeMethodSelected(fixedTransactionalFee) {
-        if (fixedTransactionalFee === 'true') {
-            $("#CCDFixedTransactionalFeeValue").show();
-            $("#CCDFixedTransactionalFeeManualValue").show();
-            $("#CCDScsAgreedBenefitShareValue").hide();
-            $("#CCDAhoAgreedBenefitValueDiv").hide();
-        } else if (fixedTransactionalFee === 'false') {
-            $("#CCDFixedTransactionalFeeValue").hide();
-            $("#CCDFixedTransactionalFeeManualValue").hide();
-            $("#CCDScsAgreedBenefitShareValue").show();
-            $("#CCDAhoAgreedBenefitValueDiv").show();
-        }
-    }
-    
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
@@ -1231,25 +1199,6 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Admin Handling Charge (£)<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
-                            </div>
-                            <div class="chox-form-item">
-                                <label class="chox-form-std-label">
-                                    <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                                        <option value="false">VX Agreed Benefit Share (%)</option>
-                                        <option value="true">Fixed Transactional Fee (£)</option>
-                                    </select>
-                                </label>
-                                <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
-                                <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
-                            </div>
-    
-                            <div class="chox-form-item" id="CCDFixedTransactionalFeeManualValue">
-                                <label class="chox-form-std-label">Manual Fixed Transactional Fee (£)</label>
-                                <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="fixedTransactionalFeeManualValue" value="<s:property value="fixedTransactionalFeeManualValue" />"/>
-                            </div>
-                            <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
-                                <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
-                                <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
                             </div>
                             
                             <div class="chox-form-item">

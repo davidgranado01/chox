@@ -130,3 +130,32 @@ GRANT SELECT ON TABLE cho_billing_band_mapping TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE cho_billing_band_mapping_id_seq TO chox_user;
 
 
+ALTER TABLE insurer DROP COLUMN cho_agreed_benefit_value;
+ALTER TABLE insurer DROP COLUMN scs_agreed_benefit_share_value;
+ALTER TABLE insurer DROP COLUMN is_fixed_transactional_fee;
+ALTER TABLE insurer DROP COLUMN fixed_transactional_fee_value;
+
+ALTER TABLE chorganisation DROP COLUMN is_fixed_transactional_fee;
+ALTER TABLE chorganisation DROP COLUMN fixed_transactional_fee_value;
+
+DROP TABLE billing_cho_rate;
+
+ALTER TABLE billing_cho DROP COLUMN is_fixed_transactional_fee;
+ALTER TABLE billing_cho DROP COLUMN fixed_transactional_fee_value;
+ALTER TABLE billing_cho DROP COLUMN charge_rate;
+ALTER TABLE billing_cho_detail ADD COLUMN trigger_point character varying(22) NOT NULL default 'PaymentReceived';
+ALTER TABLE billing_cho_detail RENAME COLUMN received_date to trigger_date;
+
+
+ALTER TABLE billing_insurer_detail RENAME COLUMN received_date to trigger_date;
+ALTER TABLE billing_insurer_detail ADD COLUMN trigger_point character varying(22) NOT NULL default '';
+
+UPDATE billing_insurer_detail set trigger_point=bi.trigger_point
+FROM billing_insurer bi
+WHERE billing_insurer_detail.billing_insurer_id = bi.id;
+
+ALTER TABLE billing_insurer DROP COLUMN fixed_transaction;
+ALTER TABLE billing_insurer DROP COLUMN fixed_transaction_fee;
+ALTER TABLE billing_insurer DROP COLUMN benefit_share;
+ALTER TABLE billing_insurer DROP COLUMN benefit_value;
+ALTER TABLE billing_insurer DROP COLUMN trigger_point;

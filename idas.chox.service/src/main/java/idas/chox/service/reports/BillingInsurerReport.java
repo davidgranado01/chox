@@ -87,7 +87,7 @@ public class BillingInsurerReport implements Report {
                 .append("tp.policy_number, ")
                 .append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ")
                 .append("case when tp.first_name is null and tp.last_name is null then '-' when tp.first_name is null then tp.last_name when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ")
-                .append("at.update_date as received_date, ")
+                .append("at.update_date as trigger_date, ")
                 .append("bid.net_claim_cost as net_claim_cost, ")
                 .append("bid.vat_claim_cost as vat_claim_cost, ")
                 .append("bid.gross_claim_cost as gross_claim_cost ");
@@ -139,16 +139,6 @@ public class BillingInsurerReport implements Report {
             reportObject.setClaimUploadDateFrom(bi.getDateFrom());
             reportObject.setClaimUploadDateTo(bi.getDateTo());
             reportObject.setCountOfClaims(result.size());
-            if (bi.isFixedTransaction()) {
-                reportObject.setIsFixedTransactionFee(true);
-                reportObject.setFixedTransactionFee(bi.getFixedTransactionFee().doubleValue());
-            }
-            else {
-                reportObject.setIsFixedTransactionFee(false);
-                reportObject.setAgreedBenefitValue(bi.getBenefitValue().doubleValue());
-                reportObject.setScsBenefitShare(bi.getBenefitShare().doubleValue()/100.0);
-                reportObject.setTotalAgreedBenefit(bi.getBenefitValue().multiply(bi.getBenefitShare()).divide(new BigDecimal(100.0), 2,BigDecimal.ROUND_HALF_UP).doubleValue());
-            }
 
             reportParameters.put("reportObject", reportObject);
             reportParameters.put("reportRows", reportRows);

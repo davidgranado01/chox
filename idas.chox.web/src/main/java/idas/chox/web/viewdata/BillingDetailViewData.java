@@ -1,8 +1,6 @@
 package idas.chox.web.viewdata;
 
 
-import idas.chox.core.model.BillingDetail;
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -10,8 +8,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import idas.chox.core.model.BillingDetail;
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -33,7 +35,7 @@ public class BillingDetailViewData {
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
-        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
+        this.receivedDate = record.getReceivedDate()== null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }

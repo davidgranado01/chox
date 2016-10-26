@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.BillingCho;
-import idas.chox.core.model.BillingChoRate;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingChoReportObject;
@@ -75,7 +74,7 @@ public class BillingChoReport implements Report {
                 .append("cm.claim_number, ")
                 .append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ")
                 .append("cr.first_name || ' ' || cr.last_name as name, ")
-                .append("at.update_date as received_date, ")
+                .append("at.update_date as trigger_date, ")
                 .append("inv.total_to_pay, ")
                 .append("bcd.net_claim_cost, ")
                 .append("bcd.vat_net_claim_cost, ")
@@ -118,15 +117,6 @@ public class BillingChoReport implements Report {
             reportObject.setReportTitle("");
             reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
             reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
-            reportObject.setIsFixedTransactionalFee(bc.isFixedTransaction());
-            if (bc.isFixedTransaction()) {
-                LOG.debug("Fixed Transaction Fee is {}", bc.getFixedTransactionFee());
-                reportObject.setFixedTransactionFee(bc.getFixedTransactionFee());
-            }
-            else {
-                LOG.debug("Charge Rate is {}", bc.getChargeRate());
-                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 4, BigDecimal.ROUND_HALF_UP));
-            }
 
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("reportRows", reportRows);
@@ -173,36 +163,6 @@ public class BillingChoReport implements Report {
            throw e;
         }
         return bc;
-    }
-
-    public BigDecimal getChargeRate(int cho_organisation_id, int volume) throws Exception {
-        BillingChoRate billingChoRate;
-
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
-            criteria.createCriteria("chorganisation").add(Restrictions.eq("id", cho_organisation_id));
-            Criterion minVolume = Restrictions.le("minVolume", volume);
-            Criterion maxVolume = Restrictions.ge("maxVolume", volume);
-            Criterion isNull = Restrictions.isNull("maxVolume");
-
-            LogicalExpression and1 = Restrictions.and(minVolume, maxVolume);
-            LogicalExpression and2 = Restrictions.and(minVolume, isNull);
-
-            LogicalExpression or = Restrictions.or(and1, and2);
-            criteria.add(or);
-
-            List  myList =  baseDataService.findByCriteria(criteria);
-            if ( myList.size() != 1){
-                LOG.error("Multiple charge rates found for volume={}, choId={}", volume, cho_organisation_id);
-                throw new RuntimeException("Multipe/Or rate matches error");
-            }
-            billingChoRate = (BillingChoRate)myList.get(0);
-        } catch (Exception e) {
-           LOG.error("Exception thrown in getChargeRate for volume={} : {}", volume, e.getMessage());
-           throw e;
-        }
-
-        return billingChoRate.getFee();
     }
 
     @Override

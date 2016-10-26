@@ -22,17 +22,12 @@
     <property column="vat_no" name="vatNo" not-null="true"/>
     <property column="company_no" name="companyNo" not-null="true"/>
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
-    <property column="cho_agreed_benefit_value" name="choAgreedBenefitValue"/>
-    <property column="scs_agreed_benefit_share_value" name="scsAgreedBenefitShareValue"/>
-    <property column="fixed_transactional_fee_value" name="fixedTransactionalFeeValue"/>
-    <property column="fixed_transactional_fee_manual_value" name="fixedTransactionalFeeManualValue"/>
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_fnol_enable" name="fnolEnable"/>
     <property column="is_supervisor_enable" name="supervisorEnable"/>
     <property column="is_engineers_enable" name="engineersEnable"/>
-    <property column="is_fixed_transactional_fee" name="fixedTransactionalFee"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
     <property column="is_claim_locked" name="claimLocked"/>
     <property column="is_support_available" name="onlineSupportEnable"/>

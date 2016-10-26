@@ -1,15 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.BillingCho;
-import idas.chox.core.model.BillingChoDetail;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.services.BillingChoService;
-import idas.chox.core.util.DateHelper;
-
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,6 +21,16 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
+
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BillingCho;
+import idas.chox.core.model.BillingChoDetail;
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.services.BillingChoService;
+import idas.chox.core.util.DateHelper;
 
 public class BillingChoServiceImpl extends SecureDataService implements BillingChoService {
 
@@ -127,7 +127,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
      */
     @Override
     public List getBillingChos() {
-        List list = new ArrayList<BillingCho>();
+        List list = new ArrayList<>();
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingCho.class);
             criteria.addOrder(Order.desc("dateTo"));
@@ -140,7 +140,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     @Override
     public List searchBills(String choReference, String claimNumber) {
-        List list = new ArrayList<BillingCho>();
+        List list = new ArrayList<>();
 
         try {
             LOG.debug("Cho Ref: {}", choReference);
@@ -203,7 +203,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
         DetachedCriteria billingChoDetailCriteria = DetachedCriteria.forClass(BillingChoDetail.class)
                 .setProjection(Property.forName("claim.id"));
         
-        DetachedCriteria criteria = null;
+        DetachedCriteria criteria;
         if(excludeSupplmntInv){
             
              criteria = DetachedCriteria.forClass(Claim.class)
@@ -236,7 +236,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
             return findByCriteria(criteria2);
 
         } else {
-            return new ArrayList<Claim>();
+            return new ArrayList<>();
         }
     }
 

@@ -24,8 +24,6 @@
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
         <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
-        <property column="is_fixed_transactional_fee" name="fixedTransactionalFee"/>
-        <property column="fixed_transactional_fee_value" name="fixedTransactionalFeeValue"/>
         <property column="adjust_daily_rate_charge" name="adjustDailyRateCharge"/>
         <property column="daily_rate_charge_limit" name="dailyRateChargeLimit"/>
         <property column="is_task_management_enable" name="taskManagementEnable"/>

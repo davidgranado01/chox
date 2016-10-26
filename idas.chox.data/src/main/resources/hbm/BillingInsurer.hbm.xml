@@ -15,11 +15,6 @@
     <property column="date_to" name="dateTo"/>
     <property column="invoice_amount" name="invoiceAmount"/>
     <property column="amount_received" name="amountReceived"/>
-    <property column="benefit_value" name="benefitValue"/>
-    <property column="benefit_share" name="benefitShare"/>
-    <property column="fixed_transaction_fee" name="fixedTransactionFee"/>
-    <property column="fixed_transaction" name="fixedTransaction"/>
-    <property column="trigger_point" name="triggerPoint"/>
     <property column="manual" name="manual"/>
     <property column="reconciled" name="reconciled"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" lazy="false" name="createdBy"/>

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class BillingChoReportViewData {
     private String claimNumber;
     private String customerVRN;
     private String customerName;
-    private Date paymentReceivedDate;
+    private Date triggerDate;
     private BigDecimal totalToPay;
     private BigDecimal chargePercentageGrossAmount;
     private BigDecimal vatOnchargePercentageGrossAmount;
@@ -31,7 +32,7 @@ public class BillingChoReportViewData {
         result.setClaimNumber((String)data.get("claim_number"));
         result.setCustomerVRN((String)data.get("vehicle_registration"));
         result.setCustomerName((String)data.get("name".toLowerCase()));
-        result.setPaymentReceivedDate(getDate(data.get("received_date").toString()));
+        result.setTriggerDate(getDate(data.get("trigger_date").toString()));
         result.setTotalToPay((BigDecimal)data.get("total_to_pay"));
         result.setChargePercentageGrossAmount((BigDecimal)data.get("net_claim_cost"));
         result.setVatOnchargePercentageGrossAmount((BigDecimal)data.get("vat_net_claim_cost"));
@@ -70,12 +71,12 @@ public class BillingChoReportViewData {
         this.claimNumber = claimNumber;
     }
 
-    public Date getPaymentReceivedDate() {
-        return paymentReceivedDate;
+    public Date getTriggerDate() {
+        return triggerDate;
     }
 
-    public void setPaymentReceivedDate(Date paymentReceivedDate) {
-        this.paymentReceivedDate = paymentReceivedDate;
+    public void setTriggerDate(Date triggerDate) {
+        this.triggerDate = triggerDate;
     }
 
     public BigDecimal getTotalToPay() {
@@ -130,7 +131,7 @@ public class BillingChoReportViewData {
     public String toString() {
         return supplierReference + ", " +  claimNumber
                 + ", " + customerVRN + ", " + customerName + ", "
-                + paymentReceivedDate + ", " + totalToPay + ", "
+                + triggerDate + ", " + totalToPay + ", "
                 + chargePercentageGrossAmount + ", "
                 + vatOnchargePercentageGrossAmount + ", "
                 + totalchargePercentageGrossAmount;

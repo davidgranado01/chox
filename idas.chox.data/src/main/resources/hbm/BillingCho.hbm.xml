@@ -13,14 +13,11 @@
     <property column="date_from" name="dateFrom"/>
     <property column="date_to" name="dateTo"/>
     <property column="invoice_amount" name="invoiceAmount"/>
-    <property column="charge_rate" name="chargeRate"/>
     <property column="number_submitted" name="numberInvoicesSubmitted"/>
     <property column="number_received" name="numberPaymentsReceived"/>
     <property column="amount_received" name="amountReceived"/>
     <property column="manual" name="manual"/>
     <property column="reconciled" name="reconciled"/>
-    <property column="fixed_transactional_fee_value" name="fixedTransactionFee"/>
-    <property column="is_fixed_transactional_fee" name="fixedTransaction"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" lazy="false" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="created_date" name="createdDate"/>

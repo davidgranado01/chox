@@ -31,19 +31,6 @@ Chox.orgStore = new choxDataStore({
 });
 
 
-var triggerPointData = [
-            ['Payment Received'],
-            ['Invoice Payment Logged'],
-            ['Manual Invoice Paid']
-];
-
-
-Chox.triggerPointStore = new Ext.data.SimpleStore({
-            id: 0,
-            fields: ['triggerPointValue'],
-            data: triggerPointData
-        });
-        
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////ADD SCHEDULE  ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -313,10 +300,6 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             fieldLabel : 'To Date',
             format : 'd/m/Y',
             allowBlank: false
-        }, {
-            xtype : 'checkbox',
-            name : 'omitSupplementaryInvoice',
-            fieldLabel : 'Omit Supplementary Invoices'
         }];
         if ( Chox.billing.billingmode === 'insurer'){
             this.items[2] = {
@@ -332,22 +315,6 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
                 allowBlank: false,
                 triggerAction : 'all'
             };
-            this.items[7] = {
-                xtype : 'combo',
-                name : 'triggerPoint',
-                typeAhead : false,
-                fieldLabel : 'Billing Trigger Point',
-                mode : 'local',
-                store : Chox.triggerPointStore,
-                hiddenName : 'triggerPoint',
-                displayField : 'triggerPointValue',
-                valueField : 'triggerPointValue',
-                allowBlank: false,
-                selectOnFocus: true,
-                forceSelection: true,
-                editable: false,
-                triggerAction : 'all'
-            };
         }
         
         Chox.billing.BillingForm.superclass.initComponent.call(this);
@@ -358,7 +325,6 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
         text : 'Save',
         handler : function() {
             Ext.getCmp('billingTypeId').setValue(Chox.billing.billingmode);
-//            Ext.getCmp('billingNonceId').setValue(Chox.nonce);
             Ext.getCmp('billingCsrfId').setValue(csrfTokenValue);
             Ext.getCmp('refbillingform').getForm().submit( {
                 waitTitle :'Please wait',
@@ -366,7 +332,6 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
                 success : function(f, a) {
 
                     if ( a.result.success ){
-                        //Ext.getCmp('refbillingstore').reload();
                         cb.billingWindowObj.hide();
                         cb.bstore.reload();
                     }
@@ -663,10 +628,6 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     {
         name : 'manual',
         type : 'boolean'
-    },
-    {
-        name : 'triggerPoint',
-        type : 'string'
     }
     ]
     ),
@@ -684,8 +645,6 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
                 }
             });
         }
-    //        selectionchange : function(selmodel){
-    //        }
     }
 
 });
@@ -888,10 +847,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     },{
         header : 'Manual',
         dataIndex : 'manual',
-        width : 80
-    },{
-        header : 'Trigger Point',
-        dataIndex : 'triggerPoint',
         width : 80
     }],
 

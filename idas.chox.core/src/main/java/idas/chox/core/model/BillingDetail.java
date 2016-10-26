@@ -12,6 +12,7 @@ public class BillingDetail extends Entity {
     private Claim claim;
     private Date receivedDate;
     private String comment;
+    private String triggerPoint;
     private BigDecimal billAmount;
     private BigDecimal vatOnBillAmount;
     private BigDecimal grossBillAmount;
@@ -89,5 +90,13 @@ public class BillingDetail extends Entity {
 
     public void setBilling(Billing billing) {
         this.billing = billing;
+    }
+
+    public String getTriggerPoint() {
+        return triggerPoint;
+    }
+
+    public void setTriggerPoint(String triggerPoint) {
+        this.triggerPoint = triggerPoint;
     }
 }

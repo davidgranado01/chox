@@ -24,7 +24,6 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingChoDetailService;
-import idas.chox.core.services.BillingChoRateService;
 import idas.chox.core.services.BillingChoService;
 import idas.chox.core.services.BillingInsurerDetailService;
 import idas.chox.core.services.BillingInsurerService;
@@ -37,7 +36,6 @@ public class BillingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
     private static final String INSURER = "insurer";
-    private BillingChoRateService billingChoRateService;
     private BillingInsurerService billingInsurerService;
     private BillingInsurerDetailService billingInsurerDetailService;
     private BillingChoService billingChoService;
@@ -98,6 +96,7 @@ public class BillingService {
             BillingInsurerDetail detail = getBillingInsurerDetailService().getObject(detailId);
             detail.setComment(changedFields.get("comment").toString());
             detail.setReceivedDate((Date) changedFields.get("receivedDate"));
+            detail.setTriggerPoint((String) changedFields.get("triggerPoint"));
             detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
             detail.setReconciled((Boolean) changedFields.get("reconciled"));
             getBillingInsurerDetailService().updateObject(detail);
@@ -121,6 +120,7 @@ public class BillingService {
             BillingChoDetail detail = getBillingChoDetailService().getObject(detailId);
             detail.setComment(changedFields.get("comment").toString());
             detail.setReceivedDate((Date) changedFields.get("receivedDate"));
+            detail.setTriggerPoint((String) changedFields.get("triggerPoint"));
             detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
             detail.setReconciled((Boolean) changedFields.get("reconciled"));
             getBillingChoDetailService().updateObject(detail);
@@ -211,21 +211,8 @@ public class BillingService {
         }
         BillingInsurer bi = new BillingInsurer();
         bi.setTriggerPoint(triggerPoint);
-        BigDecimal billAmountNet;
-        if (insurer.isFixedTransactionalFee()) {
-            bi.setFixedTransaction(true);
-            if (triggerPoint.equals("Manual Invoice Paid")) {
-                bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeManualValue());
-            } else {
-                bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
-            }
-            billAmountNet = bi.getFixedTransactionFee();
-        } else {
-            bi.setFixedTransaction(false);
-            bi.setBenefitShare(insurer.getScsAgreedBenefitShareValue());
-            bi.setBenefitValue(insurer.getChoAgreedBenefitValue());
-            billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        }
+        BigDecimal billAmountNet = BigDecimal.ONE;
+
         LOG.debug("Net billing amount value: {}", billAmountNet);
         BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal billAmountGross = billAmountNet.add(billAmountVat);
@@ -295,26 +282,6 @@ public class BillingService {
         int numberInvoicesSubmitted = billingChoService.getNumberInvoicesSubmitted(dateFrom, dateTo, cho);
         LOG.debug("no of invoices submitted: {}", numberInvoicesSubmitted);
         bc.setNumberInvoicesSubmitted(numberInvoicesSubmitted);
-        if (cho.isFixedTransactionalFee()) {
-            bc.setFixedTransaction(true);
-            bc.setFixedTransactionFee(cho.getFixedTransactionalFeeValue());
-            LOG.debug("Using fixed transactional fee: {}", bc.getFixedTransactionFee());
-        } else {
-            bc.setFixedTransaction(false);
-            BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
-            if(rate.compareTo(BigDecimal.ZERO)==0){
-               LOG.debug("No fixed transactional fee assigned for this cho: {}", cho.getName());
-               hm.remove("success");
-               hm.put("success", Boolean.FALSE);
-               Map errors = new HashMap();
-               errors.put("scheduleName", "This CHO does not use a fixed transactional fee and no rate for this CHO is available in the CHO billing rates table. Either contact software support to add billing rates for this CHO or switch the billing method to 'Fixed Transactional Fee' in the CHO configuration admin panel.");
-               hm.put("errors", errors);
-               return hm;
-            }
-            LOG.debug("Using rate: {}", rate);
-            //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
-            bc.setChargeRate(rate);
-        }
         bc.setNumberPaymentsReceived(claimsInDate.size());
         bc.setCho(cho);
         bc.setScheduleName(scheduleName);
@@ -332,20 +299,11 @@ public class BillingService {
                     bcd.setClaim(claim);
                     BigDecimal toPay = claim.getInvoice().getTotalToPay();
                     LOG.debug("toPay: {}", toPay);
-                    if (bc.isFixedTransaction()) {
-                        LOG.debug("Fee: {}", bc.getFixedTransactionFee());
-                        bcd.setBillAmount(bc.getFixedTransactionFee());
-                        BigDecimal vatOnCharge = bc.getFixedTransactionFee().multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                        bcd.setVatOnBillAmount(vatOnCharge);
-                        bcd.setGrossBillAmount(bc.getFixedTransactionFee().add(vatOnCharge));
-                    } else {
-                        LOG.debug("rate: {}", bc.getChargeRate());
-                        BigDecimal percentageToPay = toPay.multiply(bc.getChargeRate()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                        BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                        bcd.setBillAmount(percentageToPay);
-                        bcd.setVatOnBillAmount(vatOnCharge);
-                        bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
-                    }
+                    BigDecimal percentageToPay = toPay.multiply(bc.getChargeRate()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    bcd.setBillAmount(percentageToPay);
+                    bcd.setVatOnBillAmount(vatOnCharge);
+                    bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
                     bcd.setAmountReceived(BigDecimal.ZERO);
                     detailSet.add(bcd);
                     inv = inv.add(bcd.getGrossBillAmount());
@@ -415,7 +373,7 @@ public class BillingService {
 
     public Map paymentReceivedInsurer(int billingId, String manual, String reconciled, double amountReceived) {
         if (manual != null && manual.equalsIgnoreCase("on")) {
-            LOG.debug("updating INUSRER payment manully");
+            LOG.debug("updating INSURER payment manully");
             return updateBillManualInsurer(billingId, amountReceived, reconciled);
         } else if (reconciled != null && reconciled.equalsIgnoreCase("on")) {
             LOG.debug("auto INSURER  reconcile payment");
@@ -431,7 +389,7 @@ public class BillingService {
             BillingInsurer bc = billingInsurerService.getObject(billingId);
             bc.setAmountReceived(new BigDecimal(amountReceived));
             bc.setManual(true);
-            bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on") ? true : false) : false);
+            bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on")) : false);
             billingInsurerService.updateObject(bc);
         } catch (RuntimeException re) {
             LOG.error("Error thrown in updateBillManualInsurer: {}", re.getMessage());
@@ -491,7 +449,7 @@ public class BillingService {
             BillingCho bc = billingChoService.getObject(billingId);
             bc.setAmountReceived(new BigDecimal(amountReceived));
             bc.setManual(true);
-            bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on") ? true : false) : false);
+            bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on")) : false);
             billingChoService.updateObject(bc);
         } catch (RuntimeException re) {
             LOG.error("Errorthrown in updateBillManualCho: {}", re.getMessage());
@@ -600,20 +558,6 @@ public class BillingService {
      */
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
-    }
-
-    /**
-     * @return the billingChoRateService
-     */
-    public BillingChoRateService getBillingChoRateService() {
-        return billingChoRateService;
-    }
-
-    /**
-     * @param billingChoRateService the billingChoRateService to set
-     */
-    public void setBillingChoRateService(BillingChoRateService billingChoRateService) {
-        this.billingChoRateService = billingChoRateService;
     }
 
     /**
