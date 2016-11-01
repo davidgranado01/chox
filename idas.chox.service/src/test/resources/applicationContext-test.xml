@@ -95,7 +95,6 @@
                 <value>hbm/BillingChoDetail.hbm.xml</value>
                 <value>hbm/BillingInsurer.hbm.xml</value>
                 <value>hbm/BillingInsurerDetail.hbm.xml</value>
-                <value>hbm/BillingChoRate.hbm.xml</value>
                 <value>hbm/Task.hbm.xml</value>
                 <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
                 <value>hbm/WebBordereau.hbm.xml</value>

@@ -8,7 +8,6 @@ import java.util.Set;
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
 
 public interface BillingChoService {
 
@@ -23,7 +22,7 @@ public interface BillingChoService {
 
     void deteteObject(BillingCho object);
 
-    List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho, boolean excludeSupplmntInv);
+    List<BillingChoDetail> findClaimsforSchedule(Date from, Date to, Chorganisation cho);
 
     Set<BillingChoDetail> getScheduleDetailList(final int id);
 

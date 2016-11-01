@@ -1,7 +1,6 @@
 package idas.chox.admin;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -95,12 +94,9 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setPostcode("POSTCODE");
         insurer.setWorkgroupEnable(false);
         insurer.setAdminHandlingCharge(BigDecimal.ZERO);
-        insurer.setChoAgreedBenefitValue(BigDecimal.ZERO);
         insurer.setClaimLocked(false);
         insurer.setClaimOwnershipEnable(false);
         insurer.setEngineersEnable(false);
-        insurer.setFixedTransactionalFee(false);
-        insurer.setFixedTransactionalFeeValue(BigDecimal.ZERO);
         insurer.setFnolEnable(false);
         insurer.setVehicleClassCeilings(null);
         insurer.setInvoiceWorkgroup(null);

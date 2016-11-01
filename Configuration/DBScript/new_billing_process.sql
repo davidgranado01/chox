@@ -143,16 +143,68 @@ DROP TABLE billing_cho_rate;
 ALTER TABLE billing_cho DROP COLUMN is_fixed_transactional_fee;
 ALTER TABLE billing_cho DROP COLUMN fixed_transactional_fee_value;
 ALTER TABLE billing_cho DROP COLUMN charge_rate;
-ALTER TABLE billing_cho_detail ADD COLUMN trigger_point character varying(22) NOT NULL default 'PaymentReceived';
-ALTER TABLE billing_cho_detail RENAME COLUMN received_date to trigger_date;
+
+ALTER TABLE billing_cho_detail ADD COLUMN trigger_point character varying(22);
+ALTER TABLE billing_cho_detail ADD COLUMN trigger_date timestamp without time zone;
+
+UPDATE billing_cho_detail set trigger_point = 'PaymentReceived';
+ALTER TABLE billing_cho_detail ALTER COLUMN trigger_point set NOT NULL;
+-- set trigger date
+UPDATE billing_cho_detail
+    SET trigger_date = at.created_date
+FROM  billing_cho bc, audit_trail at
+WHERE billing_cho_detail.billing_cho_id = bc.id
+  AND billing_cho_detail.claim_reference_id = at.claim_id
+  AND at.new_status = 'PaymentReceived'
+  AND at.created_date >= bc.date_from AND at.created_date <= bc.date_to
+  AND not exists (select * from audit_trail at2 where at2.claim_id=billing_cho_detail.claim_reference_id and at2.created_date >= bc.date_from AND at2.created_date <= bc.date_to
+                        and at2.created_date > at.created_date and at2.new_status = 'PaymentReceived');
+-- 16 records still have a null value, all from 2011. Try with removing restriction on billing schedule dates
+UPDATE billing_cho_detail
+    SET trigger_date = at.created_date
+FROM  billing_cho bc, audit_trail at
+WHERE billing_cho_detail.billing_cho_id = bc.id
+  AND billing_cho_detail.claim_reference_id = at.claim_id
+  AND at.new_status = 'PaymentReceived'
+  AND not exists (select * from audit_trail at2 where at2.claim_id=billing_cho_detail.claim_reference_id
+                        and at2.created_date > at.created_date and at2.new_status = 'PaymentReceived');
+-- Set any remaining to the day before the created date
+UPDATE billing_cho_detail
+    SET trigger_date = created_date - interval '1 day'
+WHERE trigger_date is null;
+
+ALTER TABLE billing_cho_detail ALTER COLUMN trigger_date set NOT NULL;
 
 
-ALTER TABLE billing_insurer_detail RENAME COLUMN received_date to trigger_date;
-ALTER TABLE billing_insurer_detail ADD COLUMN trigger_point character varying(22) NOT NULL default '';
+ALTER TABLE billing_insurer_detail ADD COLUMN trigger_point character varying(22);
+ALTER TABLE billing_insurer_detail ADD COLUMN trigger_date timestamp without time zone;
 
 UPDATE billing_insurer_detail set trigger_point=bi.trigger_point
 FROM billing_insurer bi
 WHERE billing_insurer_detail.billing_insurer_id = bi.id;
+ALTER TABLE billing_insurer_detail ALTER COLUMN trigger_point set NOT NULL;
+-- set trigger date
+UPDATE billing_insurer_detail
+    SET trigger_date = at.created_date
+FROM  billing_insurer bi, audit_trail at
+WHERE billing_insurer_detail.billing_insurer_id = bi.id
+  AND billing_insurer_detail.claim_reference_id = at.claim_id
+  AND at.new_status = replace(billing_insurer_detail.trigger_point, ' ', '')
+  AND at.created_date >= bi.date_from AND at.created_date <= bi.date_to
+  AND not exists (select * from audit_trail at2 where at2.claim_id=billing_insurer_detail.claim_reference_id and at2.created_date >= bi.date_from AND at2.created_date <= bi.date_to
+                        and at2.created_date > at.created_date and at2.new_status = replace(billing_insurer_detail.trigger_point, ' ', ''));
+
+UPDATE billing_insurer_detail
+    SET trigger_date = at.created_date
+FROM  billing_insurer bi, audit_trail at
+WHERE trigger_date is null
+  AND billing_insurer_detail.billing_insurer_id = bi.id
+  AND billing_insurer_detail.claim_reference_id = at.claim_id
+  AND at.new_status = replace(billing_insurer_detail.trigger_point, ' ', '')
+  AND not exists (select * from audit_trail at2 where at2.claim_id=billing_insurer_detail.claim_reference_id
+                        and at2.created_date > at.created_date and at2.new_status = replace(billing_insurer_detail.trigger_point, ' ', ''));
+
+ALTER TABLE billing_insurer_detail ALTER COLUMN trigger_date set NOT NULL;
 
 ALTER TABLE billing_insurer DROP COLUMN fixed_transaction;
 ALTER TABLE billing_insurer DROP COLUMN fixed_transaction_fee;

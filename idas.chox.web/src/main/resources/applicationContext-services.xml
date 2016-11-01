@@ -146,11 +146,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <!-- billing -->
-    <bean id="billingChoRateService" class="idas.chox.data.services.BillingChoRateServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
     <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="billingBandService" ref="billingBandService"/>
+        <property name="billingBandMappingService" ref="billingBandMappingService"/>
     </bean>
     <bean id="billingChoService" class="idas.chox.data.services.BillingChoServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -287,7 +286,6 @@
         <property name="lookupService" ref="lookupService"/>
         <property name="insurerService" ref="insurerService"/>
         <property name="chorganisationService" ref="chorganisationService"/>
-        <property name="billingChoRateService" ref="billingChoRateService"/>
         <property name="billingInsurerService" ref="billingInsurerService"/>
         <property name="billingChoService" ref="billingChoService"/>
         <property name="billingInsurerDetailService" ref="billingInsurerDetailService"/>

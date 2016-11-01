@@ -52,9 +52,9 @@ public class BillingAction extends BaseAction {
         List<BillingViewData> viewList = new ArrayList<>();
         List billingList;
         if ( billSearch){
-            billingList = billingService.searchBills(getBillingType(), choReference, claimNumber);
+            billingList = billingService.searchBills(billingType, choReference, claimNumber);
         }else{
-            billingList = billingService.getBillingList(getBillingType());
+            billingList = billingService.getBillingList(billingType);
         }
         for (Iterator iterator = billingList.iterator(); iterator.hasNext();) {
             Billing object = (Billing) iterator.next();
@@ -105,7 +105,7 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
-            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
+            Map hm = billingService.addBill(billingType, getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Returning json string: '{}'", jsonObject.toString());

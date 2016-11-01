@@ -1,7 +1,6 @@
 package idas.chox.service.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class BillingInsurerReport implements Report {
     public Map<String, Object> getReportParameters() throws Exception {
         Map<String, Object> reportParameters = new HashMap<>();
         try {
-            String billingStatus="PaymentReceived";
+//            String billingStatus="PaymentReceived";
             
             final String billingId = ((String[]) externalParameter.get("billingId"))[0];
             BillingInsurer bi = getBillingInsurer(Integer.parseInt(billingId));
@@ -70,15 +69,6 @@ public class BillingInsurerReport implements Report {
             List<BillingInsurerReportViewData> reportRows = new ArrayList<>();
 
             StringBuilder sb = new StringBuilder();
-
-            switch (bi.getTriggerPoint()) {
-                case "Manual Invoice Paid":
-                    billingStatus = "ManualInvoicePaid";
-                    break;
-                case "Invoice Payment Logged":
-                    billingStatus = "InvoicePaymentLogged";
-                    break;
-            }
             
             sb.append("select ")
                 .append("cm.cho_reference, ")
@@ -87,17 +77,15 @@ public class BillingInsurerReport implements Report {
                 .append("tp.policy_number, ")
                 .append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ")
                 .append("case when tp.first_name is null and tp.last_name is null then '-' when tp.first_name is null then tp.last_name when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ")
-                .append("at.update_date as trigger_date, ")
+                .append("bid.trigger_date as trigger_date, ")
+                .append("bid.trigger_point as trigger_point, ")
                 .append("bid.net_claim_cost as net_claim_cost, ")
                 .append("bid.vat_claim_cost as vat_claim_cost, ")
                 .append("bid.gross_claim_cost as gross_claim_cost ");
-            // to fetch total to pay liability after libility change
-                //sb.append("inv.total_to_pay ");
             sb.append("from ")
                 .append("claim as cm, ")
                 .append("billing_insurer as bi, ")
                 .append("billing_insurer_detail as bid, ")
-                .append("audit_trail as at, ")
                 .append("customer as cr, ")
                 .append("chorganisation as cho, ")
                 .append("third_party as tp ");
@@ -107,15 +95,9 @@ public class BillingInsurerReport implements Report {
                 .append("and cr.id = cm.customer_id ")
                 .append("and tp.id = cm.third_party_id ")
                 .append("and cm.id = at.claim_id ")
-                .append("and at.new_status='")
-                .append(billingStatus)
-                .append("' and at.created_date < bi.created_date ")
                 .append("and cm.chorganisation_id = cho.id ")
                 .append("and bi.id =  :p_billing_insurer_id ")
-                .append("and bid.billing_insurer_id =  :p_billing_insurer_id ")
-                .append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='")
-                .append(billingStatus)
-                .append("' and a.update_date > at.update_date and a.update_date < bi.created_date)");
+                .append("and bid.billing_insurer_id =  :p_billing_insurer_id");
 
             String query = sb.toString();
 

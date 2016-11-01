@@ -1,7 +1,6 @@
 package idas.chox.service.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +71,8 @@ public class BillingChoReport implements Report {
                 .append("cm.claim_number, ")
                 .append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ")
                 .append("cr.first_name || ' ' || cr.last_name as name, ")
-                .append("at.update_date as trigger_date, ")
+                .append("bcd.trigger_date as trigger_date, ")
+                .append("bcd.trigger_point as trigger_point, ")
                 .append("inv.total_to_pay, ")
                 .append("bcd.net_claim_cost, ")
                 .append("bcd.vat_net_claim_cost, ")
@@ -84,18 +82,14 @@ public class BillingChoReport implements Report {
                 .append("billing_cho as bc, ")
                 .append("billing_cho_detail as bcd, ")
                 .append("customer as cr, ")
-                .append("audit_trail as at, ")
                 .append("invoice as inv ");
             sb.append("where ")
                 .append("cm.id=bcd.claim_reference_id ")
                 .append("and cr.id = cm.customer_id ")
                 .append("and inv.id = cm.invoice_id ")
                 .append("and cm.id = at.claim_id ")
-                .append("and at.new_status='PaymentReceived' ")
-                .append("and at.created_date < bc.created_date ")
                 .append("and bc.id =  :p_billing_cho_id ")
-                .append("and bcd.billing_cho_id =  :p_billing_cho_id ")
-                .append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date > at.update_date and a.update_date < bc.created_date)");
+                .append("and bcd.billing_cho_id =  :p_billing_cho_id ");
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());

@@ -24,6 +24,7 @@ public class BillingChoReportViewData {
     private BigDecimal chargePercentageGrossAmount;
     private BigDecimal vatOnchargePercentageGrossAmount;
     private BigDecimal totalchargePercentageGrossAmount;
+
     public static BillingChoReportViewData getObject(Map data) {
 
         BillingChoReportViewData result = new BillingChoReportViewData();

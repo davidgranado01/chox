@@ -11,6 +11,7 @@ public class BillingDetail extends Entity {
     private static final long serialVersionUID = 2342966159416856075L;
     private Claim claim;
     private Date receivedDate;
+    private Date triggerDate;
     private String comment;
     private String triggerPoint;
     private BigDecimal billAmount;
@@ -50,6 +51,14 @@ public class BillingDetail extends Entity {
 
     public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
+    }
+
+    public Date getTriggerDate() {
+        return triggerDate;
+    }
+
+    public void setTriggerDate(Date triggerDate) {
+        this.triggerDate = triggerDate;
     }
 
     public String getComment() {

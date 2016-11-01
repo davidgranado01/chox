@@ -59,6 +59,7 @@
            
             Chox.billing.billingFormObj = new Chox.billing.BillingForm({
                 id:'refbillingform',
+                timeout:1800000,
                 url:Chox.appname + '/prv/p/addBill.action'
             });
             Chox.billing.billingWindowObj = new Chox.billing.billingWindow();

@@ -15,10 +15,7 @@
     var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
     var tasksTabAccessibility = <s:property value="tabAccessibility.tasksTabAccessibility" />;
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
-//    var invoiceTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
-
-//    var invoiceTabAccessibilityDisabled = invoiceTabAccessibility === 0;
     var claimDetailsDisabled = claimDetailTabAccessibility === 0;
     var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  === 0;
     var invoiceDetailsDisabled = invoiceDetailTabAccessibility === 0;
@@ -39,10 +36,7 @@
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-    Ext.onReady(function(){
-        
-//        changeBrandingCss();
-        
+    Ext.onReady(function(){        
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -263,7 +257,7 @@
 
 </s:if>
     expandClaimDetails(false);
-    });
+    }); // End of Ext.onReady()
 
     function updateTabs() {
         if (isChoxAdmin) {
@@ -380,7 +374,6 @@
     function claimReport(){
         var queryString = {'claimId' : <s:property value="id" />};
         generateReport(queryString); 
-//        window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
     }
 
     /***********************************************************************************
@@ -401,7 +394,6 @@
                     '<s:hidden name="name" value="revertClaim" />' +
                     '</form>');
                 $('body').append(form);
-//                $(form).submit();
                 choxJqueryHttpSubmit($(form));
             }
         });
@@ -416,7 +408,6 @@
                     '<s:hidden name="name" value="reopenClaim" />' +
                     '</form>');
                 $('body').append(form);
-//                $(form).submit();
                 choxJqueryHttpSubmit($(form));
             }
         });
@@ -424,7 +415,6 @@
 
     function pageRefresh(){
         loadClaimDetail(<s:property value="id" />);
-//        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />+"&nonce="+nonce;
     }
 
 
@@ -613,16 +603,6 @@
     function maskClaimdetailsPage(){
         Ext.get('claimDetailScreenDiv').mask("Loading search result ...");
     }
-
-//    function changeBrandingCss() {
-//        if (<s:property value="isCHO"/>) {
-//            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-seeTestTheme.css");
-//            $('.chox-form-container').css({"background":"#F1F5F5"});
-//        } else if (<s:property value="isInsurer"/>) {
-//            Ext.util.CSS.swapStyleSheet("theme","<%= request.getContextPath()%>/css/xtheme-gray.css");
-//            $('.chox-form-container').css({"background":"#fff"});
-//        }
-//    }
 
         function getIEVersion(){
             var ua = window.navigator.userAgent;

@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -25,16 +25,38 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoDetail;
+import idas.chox.core.model.ChoBillingBand;
+import idas.chox.core.model.ChoBillingBandMapping;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.BillingBandMappingService;
+import idas.chox.core.services.BillingBandService;
 import idas.chox.core.services.BillingChoService;
+import idas.chox.core.util.CalcHelper;
 import idas.chox.core.util.DateHelper;
+
 
 public class BillingChoServiceImpl extends SecureDataService implements BillingChoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingChoServiceImpl.class);
+    private BillingBandService billingBandService;
+    private BillingBandMappingService billingBandMappingService;
+    private AuditTrailService auditTrailService;
+    
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+    public void setBillingBandService(BillingBandService billingBandService) {
+        this.billingBandService = billingBandService;
+    }
+
+    public void setBillingBandMappingService(BillingBandMappingService billingBandMappingService) {
+        this.billingBandMappingService = billingBandMappingService;
+    }
 
     @Override
     public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int choId) {
@@ -183,61 +205,109 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     }
 
-    /* (non-Javadoc)
-     * @see idas.chox.data.services.BillingChoService#findClaimsBetween(java.util.Date, java.util.Date)
-     */
-//    public List findClaimsBetween(Date from, Date to) {
-//        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-//        criteria.add(Expression.ge("createdDate", from));
-//        criteria.add(Expression.le("createdDate", to));
-//        return findByCriteria(criteria);
-//    }
     @Override
-    public List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho, boolean excludeSupplmntInv) {
-        DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
-                .add(Restrictions.between("updateDate", from, to))
-                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-                .add(Restrictions.eq("reverted", Boolean.FALSE))
-                .setProjection(Property.forName("claim.id"));
-
-        DetachedCriteria billingChoDetailCriteria = DetachedCriteria.forClass(BillingChoDetail.class)
-                .setProjection(Property.forName("claim.id"));
+    public List<BillingChoDetail> findClaimsforSchedule(Date from, Date to, Chorganisation cho) {
+        List<BillingChoDetail> results = new ArrayList<>();
         
-        DetachedCriteria criteria;
-        if(excludeSupplmntInv){
+        // Get Insurer Billing Bands
+        List<ChoBillingBand> choBillingBands = billingBandService.getChoBillingBands(cho.getId());
+        
+        // For each Band, get CHOs mapped to band
+        for(ChoBillingBand band : choBillingBands) {
+            List<ChoBillingBandMapping> choBillingBandMappings = billingBandMappingService.getChoBillingBandMappings(cho.getId(), band.getId());
+            String triggerPoint;
             
-             criteria = DetachedCriteria.forClass(Claim.class)
-                .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
-                .add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(billingChoDetailCriteria))
-                .add(Restrictions.not(Restrictions.in("claimType", ClaimType.getSupplementaryInvoiceTypes())));
-//                .add(Restrictions.disjunction()
-//                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
-//                     .add(Restrictions.conjunction()
-//                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
-//                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
+            DetachedCriteria criteria;
+            DetachedCriteria auditCriteria;
+            DetachedCriteria billingChoDetailCriteria = DetachedCriteria.forClass(BillingChoDetail.class)
+                                                                .setProjection(Property.forName("claim.id"));
              
-        }else{
+            switch (band.getTriggerStatus()) {
+                case "ManualInvoicePaid":
+                    auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                            .add(Restrictions.between("updateDate", from, to))
+                            .add(Restrictions.eq("newStatus", ClaimStatus.MANUAL_INVOICE_PAID))
+                            .add(Restrictions.eq("reverted", Boolean.FALSE))
+                            .setProjection(Property.forName("claim.id"));
+                    triggerPoint = "Manual Invoice Paid";
+                    break;
+                case "PaymentReceived":
+                    auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                            .add(Restrictions.between("updateDate", from, to))
+                            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                            .add(Restrictions.eq("reverted", Boolean.FALSE))
+                            .setProjection(Property.forName("claim.id"));
+                    triggerPoint = "Payment Received";
+                    break;
+                case "AwaitingCarHireInfo":
+                    auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                            .add(Restrictions.between("updateDate", from, to))
+                            .add(Restrictions.eq("newStatus", ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO))
+                            .add(Restrictions.eq("reverted", Boolean.FALSE))
+                            .setProjection(Property.forName("claim.id"));
+                    triggerPoint = "Accepted Claims";
+                    break;
+                case "InvoicePaymentLogged":
+                    auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                            .add(Restrictions.between("updateDate", from, to))
+                            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED))
+                            .add(Restrictions.eq("reverted", Boolean.FALSE))
+                            .setProjection(Property.forName("claim.id"));
+                    triggerPoint = "Invoice Payment Logged";
+                    break;
+                default:
+                    // unknown trigger point
+                    LOG.error("Unknown trigger point: {}", band.getTriggerStatus());
+                    return results;
+            }
             
-              criteria = DetachedCriteria.forClass(Claim.class)
-                .setProjection(Projections.distinct(Projections.projectionList()
-                .add(Projections.property("id")))).add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(billingChoDetailCriteria));
+            for (ChoBillingBandMapping choBillingBandMapping : choBillingBandMappings) {
+                // Determine Claims for each mapping
+                criteria = DetachedCriteria.forClass(Claim.class)
+//                                    .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
+                                    .add(Restrictions.eq("insurer", choBillingBandMapping.getInsurer()))
+                                    .add(Restrictions.eq("chorganisation", cho))
+                                    .add(Restrictions.in("claimType", ClaimType.getClaimTypeList(choBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
+                                    .add(Property.forName("id").in(auditCriteria))
+                                    .add(Property.forName("id").notIn(billingChoDetailCriteria));
+                List<Claim> claims = findByCriteria(criteria);
+                                
+                // Now create a BillingInsurerDetail entry for each claim
+                for (Claim claim : claims) {
+                    BillingChoDetail billingChoDetail = new BillingChoDetail();
+                    billingChoDetail.setClaim(claim);
+                    billingChoDetail.setTriggerPoint(triggerPoint);
+                    try {
+                        billingChoDetail.setTriggerDate(getTriggerDate(claim, band.getTriggerStatus(), from, to));
+                    } catch (Exception ex) {
+                        LOG.error("Cannot set trigger date: {}", ex.getMessage());
+                    }
+                    billingChoDetail.setBillAmount(band.getCostPerClaim());
+                    billingChoDetail.setVatOnBillAmount(band.getCostPerClaim().multiply(CalcHelper.getVatRate(to)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    billingChoDetail.setGrossBillAmount(band.getCostPerClaim().add(billingChoDetail.getVatOnBillAmount()));
+                    billingChoDetail.setAmountReceived(BigDecimal.ZERO);
+                    
+                    results.add(billingChoDetail);
+                }
+            }
         }
+        
+        return results;
+    }
 
-
-        List<Integer> claimIds = findByCriteria(criteria);
-
-        LOG.debug("Found {} claim IDs matching schedule.", claimIds.size());
-        if (!claimIds.isEmpty()) {
-            DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class).add(Property.forName("id").in(claimIds));
-
-            return findByCriteria(criteria2);
-
-        } else {
-            return new ArrayList<>();
+    private Date getTriggerDate(Claim claim, String triggerStatus, Date from, Date to) throws Exception {
+        Date result;
+        List<AuditTrail> auditTrail = auditTrailService.getAuditTrailByClaim(claim.getId());
+        
+        for (AuditTrail auditEntry : auditTrail) {
+            if (auditEntry.getNewStatus().equals(triggerStatus) && !auditEntry.getReverted()
+                    && auditEntry.getCreatedDate().after(from) && auditEntry.getCreatedDate().before(to)) {
+                return auditEntry.getCreatedDate();
+            }
+     
         }
+        throw new Exception("Cannot find trigger date for claim '" + claim.getChoReference() + "' [id=" + claim.getId() + "] for status '" 
+                + triggerStatus + "{' between " + from.toString() + " and " + to.toString() + ".");
     }
 
     /* (non-Javadoc)
@@ -260,14 +330,6 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     @Override
     public int getNumberInvoicesSubmitted(Date dateFrom, Date dateTo, Chorganisation cho) {
-        /*        DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class)
-        .add(Restrictions.between("created_date", dateFrom, dateTo))
-        .setProjection(Property.forName("claim.invoice_id"));
-        
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-        .add(Restrictions.eq("chorganisation", cho))
-        .add(Property.forName("invoice_id").in(invoiceCriteria));
-         */
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class).add(Restrictions.eq("chorganisation", cho));
         criteria.createCriteria("invoice").add(Restrictions.between("createdDate", dateFrom, dateTo));
         int numberOfInvoicesSubmitted = findByCriteria(criteria).size();
