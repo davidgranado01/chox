@@ -605,11 +605,6 @@ public class Customer extends Entity implements Serializable {
      * @param isUsable
      */
     public void setIsUsable(Boolean isUsable) {
-        if (isUsable == null) {
-LOG.info("Setting isUsable to null");
-        } else {
-LOG.info("Setting isUsable to {}", isUsable);
-        }
         this.isUsable = isUsable;
     }
 
