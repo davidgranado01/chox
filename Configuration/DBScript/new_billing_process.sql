@@ -143,6 +143,8 @@ DROP TABLE billing_cho_rate;
 ALTER TABLE billing_cho DROP COLUMN is_fixed_transactional_fee;
 ALTER TABLE billing_cho DROP COLUMN fixed_transactional_fee_value;
 ALTER TABLE billing_cho DROP COLUMN charge_rate;
+ALTER TABLE billing_cho DROP COLUMN number_submitted;
+ALTER TABLE billing_cho DROP COLUMN number_received;
 
 ALTER TABLE billing_cho_detail ADD COLUMN trigger_point character varying(22);
 ALTER TABLE billing_cho_detail ADD COLUMN trigger_date timestamp without time zone;

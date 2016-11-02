@@ -18,6 +18,7 @@ public class BillingInsurerReportObject {
     private double fixedTransactionFee;
     private double totalAgreedBenefit;
     private String scheduleName;
+    private String insurerName;
 
     public String getScheduleName() {
         return scheduleName;
@@ -25,6 +26,14 @@ public class BillingInsurerReportObject {
 
     public void setScheduleName(String scheduleName) {
         this.scheduleName = scheduleName;
+    }
+
+    public String getInsurerName() {
+        return insurerName;
+    }
+
+    public void setInsurerName(String insurerName) {
+        this.insurerName = insurerName;
     }
 
     public double getFixedTransactionFee() {

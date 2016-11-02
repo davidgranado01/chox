@@ -1,8 +1,6 @@
 package idas.chox.data.services;
 
 
-import idas.chox.core.model.BillingInsurerDetail;
-import idas.chox.core.services.BillingInsurerDetailService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +12,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+
+import idas.chox.core.model.BillingInsurerDetail;
+import idas.chox.core.services.BillingInsurerDetailService;
 
 public class BillingInsurerDetailServiceImpl extends SecureDataService implements BillingInsurerDetailService{
     private static final Logger LOG = LoggerFactory.getLogger(BillingInsurerDetailServiceImpl.class);

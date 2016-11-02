@@ -73,23 +73,22 @@ public class BillingChoReport implements Report {
                 .append("cr.first_name || ' ' || cr.last_name as name, ")
                 .append("bcd.trigger_date as trigger_date, ")
                 .append("bcd.trigger_point as trigger_point, ")
-                .append("inv.total_to_pay, ")
+                .append("case when inv is null then null else inv.total_to_pay end, ")
                 .append("bcd.net_claim_cost, ")
                 .append("bcd.vat_net_claim_cost, ")
-                .append("bcd.gross_claim_cost ");
-            sb.append("from ")
-                .append("claim as cm, ")
-                .append("billing_cho as bc, ")
-                .append("billing_cho_detail as bcd, ")
+                .append("bcd.gross_claim_cost ")
+                .append("from ")
+                .append("claim as cm ")
+                .append("left outer join invoice inv on (cm.invoice_id = inv.id), ")
                 .append("customer as cr, ")
-                .append("invoice as inv ");
-            sb.append("where ")
-                .append("cm.id=bcd.claim_reference_id ")
-                .append("and cr.id = cm.customer_id ")
-                .append("and inv.id = cm.invoice_id ")
-                .append("and cm.id = at.claim_id ")
-                .append("and bc.id =  :p_billing_cho_id ")
-                .append("and bcd.billing_cho_id =  :p_billing_cho_id ");
+                .append("billing_cho as bc, ")
+                .append("billing_cho_detail as bcd ")
+                .append("where ")
+                .append("cm.customer_id = cr.id ")
+                .append("and cm.id = bcd.claim_reference_id ")
+                .append("and bcd.billing_cho_id =  bc.id ")
+                .append("and bc.id =  :p_billing_cho_id");
+            
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
@@ -109,8 +108,7 @@ public class BillingChoReport implements Report {
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("");
-            reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
-            reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
+            reportObject.setNumberOfClaimsBilled(reportRows.size());
 
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("reportRows", reportRows);

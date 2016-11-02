@@ -50,7 +50,6 @@ public class BillingInsurerReport implements Report {
     public Map<String, Object> getReportParameters() throws Exception {
         Map<String, Object> reportParameters = new HashMap<>();
         try {
-//            String billingStatus="PaymentReceived";
             
             final String billingId = ((String[]) externalParameter.get("billingId"))[0];
             BillingInsurer bi = getBillingInsurer(Integer.parseInt(billingId));
@@ -81,23 +80,21 @@ public class BillingInsurerReport implements Report {
                 .append("bid.trigger_point as trigger_point, ")
                 .append("bid.net_claim_cost as net_claim_cost, ")
                 .append("bid.vat_claim_cost as vat_claim_cost, ")
-                .append("bid.gross_claim_cost as gross_claim_cost ");
-            sb.append("from ")
+                .append("bid.gross_claim_cost as gross_claim_cost ")
+                .append("from ")
                 .append("claim as cm, ")
                 .append("billing_insurer as bi, ")
                 .append("billing_insurer_detail as bid, ")
                 .append("customer as cr, ")
                 .append("chorganisation as cho, ")
-                .append("third_party as tp ");
-                
-            sb.append("where ")
+                .append("third_party as tp ")
+                .append("where ")
                 .append("cm.id=bid.claim_reference_id ")
-                .append("and cr.id = cm.customer_id ")
-                .append("and tp.id = cm.third_party_id ")
-                .append("and cm.id = at.claim_id ")
+                .append("and cm.customer_id = cr.id ")
+                .append("and cm.third_party_id = tp.id ")
                 .append("and cm.chorganisation_id = cho.id ")
-                .append("and bi.id =  :p_billing_insurer_id ")
-                .append("and bid.billing_insurer_id =  :p_billing_insurer_id");
+                .append("and bid.billing_insurer_id =  bi.id ")
+                .append("and bi.id = :p_billing_insurer_id");
 
             String query = sb.toString();
 
@@ -117,6 +114,7 @@ public class BillingInsurerReport implements Report {
 
             BillingInsurerReportObject reportObject = new BillingInsurerReportObject();
             reportObject.setScheduleName(bi.getScheduleName());
+            reportObject.setInsurerName(bi.getInsurer().getName());
             reportObject.setCurrentDate(new Date());
             reportObject.setClaimUploadDateFrom(bi.getDateFrom());
             reportObject.setClaimUploadDateTo(bi.getDateTo());
