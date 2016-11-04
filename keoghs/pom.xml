@@ -116,9 +116,9 @@
                                 <wsdlFile>ADAPublicServicesDebug.wsdl</wsdlFile>
                             </wsdlFiles>
 <!--                            <wsdlLocation>/wsdl/*</wsdlLocation>-->
-<!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation>  -->
+                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation>
 <!--                            <wsdlLocation>https://ada-uat-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServicesDebug.svc?singleWsdl</wsdlLocation>  -->
-                            <wsdlLocation>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation>
+<!--                            <wsdlLocation>https://ada-ws.keoghs.co.uk/ADAWebServicesV1/ADAPublicServices.svc?singleWsdl</wsdlLocation> -->
                             <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServicesDebug.stale</staleFile>
 <!--                            <staleFile>${project.build.directory}/jaxws/stale/ADAPublicServices.stale</staleFile>-->
                             <!-- Keep generated files -->
