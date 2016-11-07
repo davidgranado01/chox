@@ -6,6 +6,7 @@
     var attachmentJsonReader;
     var attachmentData;
     var attachmentGrid;
+    var gridClickInProgress = false;
     
     Ext.onReady(function(){
 
@@ -213,6 +214,9 @@
 
     function attachmentOnClick(grid, rowIndex, columnIndex, e){
 
+        if (gridClickInProgress){return;}
+        gridClickInProgress = true;
+
         var attachment = attachmentGrid.getStore().getAt(rowIndex);
         var fileId = attachment.get("id");
 
@@ -222,6 +226,7 @@
         }else{
             deleteAttachment(fileId);
         }
+        setTimeout(function() {gridClickInProgress = false;}, 500);
     }
 
     function deleteAttachment(a){
