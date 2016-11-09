@@ -7,6 +7,7 @@
     var attachmentData;
     var attachmentGrid;
     var gridClickInProgress = false;
+    var timeoutId = -1;
     
     Ext.onReady(function(){
 
@@ -38,7 +39,7 @@
         attachmentData.setDefaultSort('createdDate', 'desc');
 
         attachmentGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:attachmentOnClick },
+            listeners:  {cellclick:attachmentOnClick},
             store: attachmentData,
             renderTo:'attachmentGrid',
             enableColumnMove: false,
@@ -47,7 +48,8 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
+                {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Attachment Type", width: 150, dataIndex: 'category', sortable: true, resizable: true},
                 {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
                 {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true,renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')},
@@ -106,7 +108,6 @@
                     '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml, .zip');
                     return;
                 }else{
-//                    $(form).ajaxSubmit(op);
                     choxJqueryAjaxSubmit($(form), op);
                 }
                 
@@ -140,7 +141,6 @@
 
         if (responseText.indexOf('You have been denied access') !==-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-//                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
                 logout();
                 return;
             });
@@ -213,20 +213,59 @@
     }
 
     function attachmentOnClick(grid, rowIndex, columnIndex, e){
-
+        if (columnIndex !== 0 && columnIndex !==4){return;}
         if (gridClickInProgress){return;}
         gridClickInProgress = true;
 
         var attachment = attachmentGrid.getStore().getAt(rowIndex);
         var fileId = attachment.get("id");
+        var fileName = attachment.get("fileName");
 
-        if(columnIndex!==4){
-            var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action?fileId=" + fileId+"&claimId="+<s:property value="claimId" />;
-            window.open(link,"","width=600,height=800,status=yes,menubar=no,scrollbars=1,resizable=1");
-        }else{
+        if (columnIndex === 4) {
             deleteAttachment(fileId);
+            gridClickInProgress = false;
+        }else{
+            if (timeoutId === -1) {
+                timeoutId = setTimeout(function() {
+                    if (!gridClickInProgress){timeoutId = -1; return;}
+                    gridClickInProgress = false;
+                    var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action";
+                    windowOpenInPost(link, fileName,"width=600,height=800,status=yes,toolbar=no,menubar=no,scrollbars=1,resizable=1",
+                        ['fileId','claimId'], [fileId,<s:property value="claimId" />]);
+                    timeoutId = -1;}, 500);
+                }
         }
-        setTimeout(function() {gridClickInProgress = false;}, 500);
+    }
+
+
+    function windowOpenInPost(actionUrl,windowName, windowFeatures, keyParams, valueParams) {
+
+        var mapForm = document.createElement("form");
+        var milliseconds = new Date().getTime();
+        windowName = windowName+milliseconds;
+        mapForm.target = windowName;
+        mapForm.method = "POST";
+        mapForm.action = actionUrl;
+
+        if (keyParams && valueParams && (keyParams.length == valueParams.length)){
+            for (var i = 0; i < keyParams.length; i++){
+                var mapInput = document.createElement("input");
+                mapInput.type = "hidden";
+                mapInput.name = keyParams[i];
+                mapInput.value = valueParams[i];
+                mapForm.appendChild(mapInput);
+            }
+            document.body.appendChild(mapForm);
+        }
+
+
+        map = window.open('', windowName, windowFeatures);
+
+        if (map) {
+            mapForm.submit();
+        } else {
+            alert('You must allow popups to display or download attachments.');
+        }
     }
 
     function deleteAttachment(a){

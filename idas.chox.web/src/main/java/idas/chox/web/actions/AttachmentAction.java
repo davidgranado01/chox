@@ -125,7 +125,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
-            List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
+            List<AttachmentViewData> viewDatas = new ArrayList<>();
             List<Attachment> result = attachmentService.getAttachmentsByClaim(claim.getId());
 
             for (Attachment attachment : result) {
@@ -204,8 +204,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown exporting attchment: {}", ex.getMessage());
-            setActionError(formErrorMessage(ex));
+            LOG.error("Exception thrown exporting attachment: {}", ex.getMessage(), ex);
+            setActionError("An internal error occurred trying to export this attachment. Please try again. If the problem persists, please contact CHOX Support.");
             return ERROR;
         }
 
