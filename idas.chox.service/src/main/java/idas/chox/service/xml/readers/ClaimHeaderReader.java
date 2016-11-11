@@ -870,7 +870,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         }
 
                         if (duplicateCustomerRefSuppInvClaims.size() == 1) {
-                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Orig. Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-number found, selecting to use the one marked with Orig. Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
                             LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-number found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());

@@ -99,7 +99,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                             Date time = DateHelper.getTimeFormat().parse(hireStartTime);
                             hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
                         } catch (Exception ex) {
-                            LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
+                            LOG.error("Exception thrown merging time '{}' into date '{}': {}", new Object[]{hireStartTime, hireStartDate, ex.getMessage()});
                             hireStartDateTime = hireStartDate;
                         }
                     } else {
