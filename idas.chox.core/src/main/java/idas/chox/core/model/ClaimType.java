@@ -166,14 +166,18 @@ public enum ClaimType {
                 case GTA:
                     return new ClaimType[]{ClaimType.GTA,
                         ClaimType.GTA_ORIGINAL_INVOICE};
+                    
                 case TPI:
                     return new ClaimType[]{ClaimType.TPI};
+                    
                 case SUBSCRIBER:
                     return new ClaimType[]{ClaimType.SUBSCRIBER,
                         ClaimType.SUBSCRIBER_ORIGINAL_INVOICE};
+                    
                 case FIXED_FEE:
                     return new ClaimType[]{ClaimType.FIXED_FEE,
                         ClaimType.FIXED_FEE_ORIGINAL_INVOICE};
+                    
                 case INSURER_VS_INSURER:
                     return new ClaimType[]{ClaimType.INSURER_VS_INSURER,
                         ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE};
@@ -183,6 +187,10 @@ public enum ClaimType {
                 case INSURER_UPLOAD:
                     return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD,
                         ClaimType.INSURER_ORIGINAL_INVOICE};
+                
+                case COLLABORATION_PROTOCOL:
+                    return new ClaimType[]{ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE};
+                    
                 default:
                     return new ClaimType[]{};
 
@@ -214,6 +222,9 @@ public enum ClaimType {
                     return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD,
                         ClaimType.INSURER_ORIGINAL_INVOICE,
                         ClaimType.INSURER_SUPPLEMENTARY_INVOICE};
+                case COLLABORATION_PROTOCOL:
+                    return new ClaimType[]{ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE};
+
                 default:
                     return new ClaimType[]{};
 
