@@ -17,7 +17,7 @@
     var insurerCombo;
     
     var selectedInsurerId = -1;
-    var selectedBandId = -1;
+    var selectedInsurerBandId = -1;
     
     Ext.onReady(function(){
 
@@ -57,11 +57,11 @@
                             this.clearValue();
                             this.reset();
                             selectedInsurerId = -1;
-                            selectedBandId = -1;
+                            selectedInsurerBandId = -1;
                             
                         }else {
                             selectedInsurerId = this.value;
-                            selectedBandId = -1;
+                            selectedInsurerBandId = -1;
                         }
                         onInsurerBillingBandMappingPageRefresh();
                     }
@@ -91,8 +91,8 @@
                 width: 145,
                 renderTo: 'insBillingBandDropDownDiv',
                 valueField: 'id',
-                id: 'selectedBandId',
-                hiddenName: 'selectedBandId',
+                id: 'selectedInsurerBandId',
+                hiddenName: 'selectedInsurerBandId',
                 displayField:'bandName',
                 typeAhead: true,
                 mode: 'local',
@@ -106,9 +106,9 @@
                         if(this.getRawValue() === "") {
                             this.clearValue();
                             this.reset();
-                            selectedBandId = -1;                            
+                            selectedInsurerBandId = -1;                            
                         }else {
-                            selectedBandId = this.value;
+                            selectedInsurerBandId = this.value;
                         }
                         onInsurerBillingBandMappingPageRefresh();
                     }
@@ -197,7 +197,7 @@
             insBillingBand_s_gridviewData.removeAll(true);
             insBillingBand_a_gridviewGrid.view.refresh();
             insBillingBand_s_gridviewGrid.view.refresh();
-        } else if (selectedBandId === -1) { // we have an inurer selected but no band
+        } else if (selectedInsurerBandId === -1) { // we have an inurer selected but no band
             loadInsurerBillingBandDropDown();
             billingBandCombo.reset();
             insBillingBand_a_gridviewData.removeAll(true);
@@ -210,8 +210,8 @@
     }
 
     function insBillingBandMapping_loadGridViewList(){
-        insBillingBand_a_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedBandId}});
-        insBillingBand_s_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedBandId}});
+        insBillingBand_a_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedInsurerBandId}});
+        insBillingBand_s_gridviewData.load({params:{insurerId:selectedInsurerId,billingBandId:selectedInsurerBandId}});
     }
 
     function insBillingBand_recordOnclickAdd(grid, rowIndex, columnIndex, e){
@@ -220,7 +220,7 @@
             var chorganisationId = gridView.get("chorganisationId");
             var claimType = gridView.get("claimType");
             var url = "/prv/p/doAddInsurerBillingBandChorganisationMapping.action";
-            var param = {insurerId:selectedInsurerId, billingBandId:selectedBandId, chorganisationId:chorganisationId, claimTypeId:claimType};
+            var param = {insurerId:selectedInsurerId, billingBandId:selectedInsurerBandId, chorganisationId:chorganisationId, claimTypeId:claimType};
             ajax.loadHtml2(url, param, afterBillingBandMappingSubmit);
         }
     }

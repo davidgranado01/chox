@@ -7,9 +7,9 @@
     var insBill_gridviewGrid;
     var insBill_gridviewData;
     var selectedInsurerId = -1;
-    var selectedTriggerId = -1;
+    var selectedInsurerTriggerId = -1;
     var insurerCombo;
-    var triggersCombo;
+    var insurerTriggersCombo;
     
     Ext.onReady(function(){
         var insurersJsonReader = new Ext.data.JsonReader({
@@ -73,12 +73,12 @@
             data: triggersData
         });
 
-        triggersCombo = new Ext.form.ComboBox({
+        insurerTriggersCombo = new Ext.form.ComboBox({
                 store: triggersStore,
                 width: 145,
                 renderTo: 'insurerBillingTriggerDivId',
                 valueField: 'triggerStatus',
-                id: 'triggerPoint',
+                id: 'insurerTriggerPoint',
                 hiddenName: 'triggerPoint',
                 displayField:'trigger',
                 typeAhead: true,
@@ -93,9 +93,9 @@
                         if(this.getRawValue() === "") {
                             this.clearValue();
                             this.reset();
-                            selectedTriggerId = -1;
+                            selectedInsurerTriggerId = -1;
                         }else {
-                            selectedTriggerId = this.value;
+                            selectedInsurerTriggerId = this.value;
                         }
                     },
                     specialkey:function (el, e) {
@@ -243,7 +243,7 @@
     
     function clearInsurerBillingBandFormValues() {
         insurerCombo.reset();
-        triggersCombo.reset();
+        insurerTriggersCombo.reset();
         $("#insurerBillingBandNameId").val('');
         $("#insurerCostPerClaimId").val('');
         $("#insurerExcludeSupplementaryId").attr('checked', false);
@@ -251,12 +251,12 @@
 
     function validateComboBox(){
     	var mesBox = $("#CDInsurerBillingMessageBox");
-    	if ($("#billingInsurerId").val() === "--- Please Select ---" || $("#triggerPoint").val() === "--- Please Select ---") {
+    	if ($("#billingInsurerId").val() === "--- Please Select ---" || $("#insurerTriggerPoint").val() === "--- Please Select ---") {
     		mesBox.empty();
     		if($("#billingInsurerId").val() === "--- Please Select ---") {
                     mesBox.append("Please select an 'Insurer Name'\n<br/>").show();
                 }
-    		if($("#triggerPoint").val() === "--- Please Select ---") {
+    		if($("#insurerTriggerPoint").val() === "--- Please Select ---") {
                     mesBox.append("Please select a 'Trigger'").show();
                 }
     		return false;
