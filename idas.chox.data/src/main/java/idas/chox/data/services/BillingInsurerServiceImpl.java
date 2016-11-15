@@ -92,7 +92,6 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         sb.append("where insurer_id = :pInsurerId ");
         
         String query = sb.toString();
-        LOG.debug(query);
         
         Map extParameters = new HashMap();
         extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
@@ -214,12 +213,13 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     @Override
     public List<BillingInsurerDetail> findClaimsforSchedule(Date from, Date to, Insurer insurer) {
         List<BillingInsurerDetail> results = new ArrayList<>();
-        
+        LOG.debug("Finding claims for '{}' from {} to {}", new Object[]{insurer.getName(), from.toString(), to.toString()});
         // Get Insurer Billing Bands
         List<InsurerBillingBand> insurerBillingBands = billingBandService.getInsurerBillingBands(insurer.getId());
         
         // For each Band, get CHOs mapped to band
         for(InsurerBillingBand band : insurerBillingBands) {
+            LOG.debug("Checking schedule {}", band.getBandName());
             List<InsurerBillingBandMapping> insurerBillingBandMappings = billingBandMappingService.getInsurerBillingBandMappings(insurer.getId(), band.getId());
             String triggerPoint;
             DetachedCriteria criteria;
@@ -267,6 +267,10 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             }
             
             for (InsurerBillingBandMapping insurerBillingBandMapping : insurerBillingBandMappings) {
+                LOG.debug("Checking mapping to '{}'", insurerBillingBandMapping.getChorganisation().getName());
+                for (ClaimType c : ClaimType.getClaimTypeList(insurerBillingBandMapping.getClaimType(), band.isExcludeSupplementary())) {
+                    LOG.debug("Looking for claim type: {}", c.toString());   
+                }
                 // Determine Claims for each mapping
                 criteria = DetachedCriteria.forClass(Claim.class)
 //                                    .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
@@ -276,7 +280,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Property.forName("id").in(auditCriteria))
                                     .add(Property.forName("id").notIn(billingInsurerDetailCriteria));
                 List<Claim> claims = findByCriteria(criteria);
-                                
+                LOG.debug("Found {} claims", claims.size());
                 // Now create a BillingInsurerDetail entry for each claim
                 for (Claim claim : claims) {
                     BillingInsurerDetail billingInsurerDetail = new BillingInsurerDetail();
@@ -297,6 +301,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             }
         }
         
+        LOG.debug("Return total of {} claims", results.size());
         return results;
     }
 
