@@ -95,7 +95,7 @@ WITH (
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE insurer_billing_band_mapping TO chox_user;
 GRANT SELECT ON TABLE insurer_billing_band_mapping TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE insurer_billing_band_mapping_id_seq TO chox_user;
-
+CREATE UNIQUE INDEX insurer_billing_band_mapping_ux ON insurer_billing_band_mapping(insurer_billing_band_id,chorganisation_id,claim_type);
 
 CREATE TABLE cho_billing_band_mapping (
     id serial NOT NULL,
@@ -128,7 +128,7 @@ WITH (
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cho_billing_band_mapping TO chox_user;
 GRANT SELECT ON TABLE cho_billing_band_mapping TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE cho_billing_band_mapping_id_seq TO chox_user;
-
+CREATE UNIQUE INDEX cho_billing_band_mapping_ux ON cho_billing_band_mapping(cho_billing_band_id,insurer_id,claim_type);
 
 ALTER TABLE insurer DROP COLUMN cho_agreed_benefit_value;
 ALTER TABLE insurer DROP COLUMN scs_agreed_benefit_share_value;
