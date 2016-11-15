@@ -12,8 +12,8 @@
     var insBillingBand_s_gridviewGrid;
     var insBillingBand_s_gridviewData;
     
-    var billingBandStore;
-    var billingBandCombo;
+    var insurerBillingBandStore;
+    var insurerBillingBandCombo;
     var insurerCombo;
     
     var selectedInsurerId = -1;
@@ -81,13 +81,13 @@
             ]
         });
 
-        billingBandStore  = new choxDataStore({
+        insurerBillingBandStore  = new choxDataStore({
             url: '/prv/p/loadInsurerBillingBands.action',
             reader:billingBandJsonReader
         });
         
-        billingBandCombo = new Ext.form.ComboBox({
-                store: billingBandStore,
+        insurerBillingBandCombo = new Ext.form.ComboBox({
+                store: insurerBillingBandStore,
                 width: 145,
                 renderTo: 'insBillingBandDropDownDiv',
                 valueField: 'id',
@@ -192,14 +192,14 @@
     function onInsurerBillingBandMappingPageRefresh(){
         if (selectedInsurerId === -1) {
             // No insurer selected - clear band dropdown?
-            billingBandCombo.reset();
+            insurerBillingBandCombo.reset();
             insBillingBand_a_gridviewData.removeAll(true);
             insBillingBand_s_gridviewData.removeAll(true);
             insBillingBand_a_gridviewGrid.view.refresh();
             insBillingBand_s_gridviewGrid.view.refresh();
         } else if (selectedInsurerBandId === -1) { // we have an inurer selected but no band
             loadInsurerBillingBandDropDown();
-            billingBandCombo.reset();
+            insurerBillingBandCombo.reset();
             insBillingBand_a_gridviewData.removeAll(true);
             insBillingBand_s_gridviewData.removeAll(true);
             insBillingBand_a_gridviewGrid.view.refresh();
@@ -238,7 +238,7 @@
     }
 
     function loadInsurerBillingBandDropDown() {
-        billingBandStore.load({params:{insurerId:selectedInsurerId}});
+        insurerBillingBandStore.load({params:{insurerId:selectedInsurerId}});
     }
         
     function afterBillingBandMappingSubmit(responseText, statusText) {
