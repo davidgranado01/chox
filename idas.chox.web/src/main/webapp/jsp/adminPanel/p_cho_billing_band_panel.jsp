@@ -62,9 +62,8 @@
             
         var triggersData = [
             ['Accepted Claims', 'AwaitingCarHireInfo'],
-            ['Payment Received', 'PaymentReceived'],
             ['Invoice Payment Logged', 'InvoicePaymentLogged'],
-            ['Manual Invoice Paid', 'ManualInvoicePaid']
+            ['Payment Received', 'PaymentReceived']
         ];
 
         var triggersStore = new Ext.data.SimpleStore({

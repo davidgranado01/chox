@@ -62,8 +62,8 @@
             
         var triggersData = [
             ['Accepted Claims', 'AwaitingCarHireInfo'],
-            ['Payment Received', 'PaymentReceived'],
             ['Invoice Payment Logged', 'InvoicePaymentLogged'],
+            ['Payment Received', 'PaymentReceived'],
             ['Manual Invoice Paid', 'ManualInvoicePaid']
         ];
 
