@@ -111,7 +111,7 @@ public class BillingAction extends BaseAction {
             LOG.debug("Returning json string: '{}'", jsonObject.toString());
         } catch (Exception e) {
 
-            LOG.error("Exception in addBill(): {}, {}", e.getMessage(),e);
+            LOG.error("Exception in addBill(): {}", e.getMessage(), e);
             throw e;
         }
         return SUCCESS;
