@@ -787,10 +787,12 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     columns:[cb.schSel,{
         header : Chox.billing.billingHeader1,
         dataIndex : 'column1',
+        sortable: true,
         width : 80
     },{
         header : 'Schedule Name',
         dataIndex : 'scheduleName',
+        sortable: true,
         width : 80
     },{
         header : 'From',
