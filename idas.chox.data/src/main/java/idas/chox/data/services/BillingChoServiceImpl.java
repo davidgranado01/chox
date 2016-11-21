@@ -274,7 +274,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                     .add(Restrictions.in("b.claimType", ClaimType.getClaimTypeList(choBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
                                     .add(Property.forName("b.customer").eqProperty("c2.customer"))
                                     .add(Property.forName("b.id").notIn(billingChoDetailCriteria))
-                                    .add(Restrictions.in("b.status", ClaimStatus.getCompletedStatus(true)))
+                                    .add(Restrictions.in("b.status", ClaimStatus.getClosedUnpaidStatus()))
                                     .setProjection(Projections.projectionList().add(Projections.property("b.id")));
                     
                     DetachedCriteria otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
@@ -282,6 +282,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                     .add(Restrictions.eq("c.chorganisation", cho))
                                     .add(Restrictions.eq("c.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(choBillingBandMapping.getClaimType())))
+                                    .add(Property.forName("c.customer").eqProperty("c2.customer"))
                                     .add(Restrictions.between("at.updateDate", from, to))
                                     .add(Restrictions.eq("at.reverted", Boolean.FALSE))
                                     .add(Restrictions.eq("at.newStatus", band.getTriggerStatus()))

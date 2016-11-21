@@ -276,7 +276,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Restrictions.in("b.claimType", ClaimType.getClaimTypeList(insurerBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
                                     .add(Property.forName("b.customer").eqProperty("c2.customer"))
                                     .add(Property.forName("b.id").notIn(billingInsurerDetailCriteria))
-                                    .add(Restrictions.in("b.status", ClaimStatus.getCompletedStatus(true)))
+                                    .add(Restrictions.in("b.status", ClaimStatus.getClosedUnpaidStatus()))
                                     .setProjection(Projections.projectionList().add(Projections.property("b.id")));
                     
                     DetachedCriteria otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
@@ -284,6 +284,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Restrictions.eq("c.insurer", insurer))
                                     .add(Restrictions.eq("c.chorganisation", insurerBillingBandMapping.getChorganisation()))
                                     .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
+                                    .add(Property.forName("c.customer").eqProperty("c2.customer"))
                                     .add(Restrictions.between("at.updateDate", from, to))
                                     .add(Restrictions.eq("at.reverted", Boolean.FALSE))
                                     .add(Restrictions.eq("at.newStatus", band.getTriggerStatus()))
