@@ -74,6 +74,12 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
 
+        if (ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
+            throw new AccessDeniedException("Cannot switch claim as it is marked as an original supplementary claim and can have supplementary invoices.");
+        } else if (ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+            throw new AccessDeniedException("Cannot switch claim as it is a supplementary invoice.");
+        }
+
         LOG.debug("insurer id is  '{}' ", insId);
         LOG.debug("insurer service class is {}", insurerService.toString());
         newInsurer = insurerService.getInsurer(insId);
