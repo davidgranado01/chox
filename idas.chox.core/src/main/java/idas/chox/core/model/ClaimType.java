@@ -206,7 +206,7 @@ public enum ClaimType {
                 case INSURER_INVOICE:
                 case INSURER_CLAIM:
                 case INSURER_UPLOAD:
-                    return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD,
+                    return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_INVOICE,
                         ClaimType.INSURER_ORIGINAL_INVOICE};
                 
                 case COLLABORATION_PROTOCOL:
@@ -240,7 +240,7 @@ public enum ClaimType {
                 case INSURER_INVOICE:
                 case INSURER_CLAIM:
                 case INSURER_UPLOAD:
-                    return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD,
+                    return new ClaimType[]{ClaimType.INSURER_CLAIM, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_INVOICE,
                         ClaimType.INSURER_ORIGINAL_INVOICE,
                         ClaimType.INSURER_SUPPLEMENTARY_INVOICE};
                 case COLLABORATION_PROTOCOL:
