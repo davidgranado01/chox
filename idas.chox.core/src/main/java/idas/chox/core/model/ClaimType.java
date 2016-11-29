@@ -118,6 +118,27 @@ public enum ClaimType {
         }
     }
 
+    public static ClaimType getOriginalSupplementaryClaimType(ClaimType originalClaimType) {
+        switch (originalClaimType) {
+            case GTA:
+                return GTA_ORIGINAL_INVOICE;
+            case INSURER_VS_INSURER:
+                return INSURER_VS_INSURER_ORIGINAL_INVOICE;
+            case SUBSCRIBER:
+                return SUBSCRIBER_ORIGINAL_INVOICE;
+            case FIXED_FEE:
+                return FIXED_FEE_ORIGINAL_INVOICE;
+            case INSURER_INVOICE:
+            case INSURER_CLAIM:
+            case INSURER_UPLOAD:
+                return INSURER_ORIGINAL_INVOICE;
+            case COLLABORATION_PROTOCOL:
+                return COLLABORATION_PROTOCOL_ORIGINAL_INVOICE;
+            default:
+                return null;
+        }
+    }
+
     public static boolean isGTA(ClaimType claimType) {
         return claimType == ClaimType.GTA
                 || claimType == ClaimType.GTA_ORIGINAL_INVOICE

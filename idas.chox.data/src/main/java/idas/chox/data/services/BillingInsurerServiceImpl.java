@@ -255,7 +255,23 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                         LOG.debug("Looking for claim type: {}", c.toString());   
                     }
                 }
-                criteria = DetachedCriteria.forClass(AuditTrail.class, "at")
+                if (band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO) && !band.isExcludeSupplementary()) {
+                    // If trigger point is Accepeted Claims and we are billing for supplementaries, then bill at AwaitingInvoiceData (first audit trail entry)
+                    criteria = DetachedCriteria.forClass(AuditTrail.class, "at")
+                                    .createAlias("claim", "claim", CriteriaSpecification.LEFT_JOIN)
+                                    .add(Restrictions.eq("claim.insurer", insurer))
+                                    .add(Restrictions.eq("claim.chorganisation", insurerBillingBandMapping.getChorganisation()))
+                                    .add(Restrictions.in("claim.claimType", ClaimType.getClaimTypeList(insurerBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
+                                    .add(Property.forName("claim.id").notIn(billingInsurerDetailCriteria))
+                                    .add(Restrictions.between("at.updateDate", from, to))
+                                    .add(Restrictions.eq("at.reverted", Boolean.FALSE))
+                                    .add(Restrictions.disjunction().add(Restrictions.eq("at.newStatus", band.getTriggerStatus()))
+                                            .add(Restrictions.conjunction().add(Restrictions.eq("at.newStatus", ClaimStatus.CLAIM_AWAITING_INVOICE_DATA))
+                                                                            .add(Restrictions.eq("at.originalStatus", ""))
+                                                                            .add(Restrictions.in("claim.claimType", ClaimType.getSupplementaryInvoiceTypes()))))
+                                    .setProjection(Projections.projectionList().add(Projections.property("at.claim")));
+                } else {
+                    criteria = DetachedCriteria.forClass(AuditTrail.class, "at")
                                     .createAlias("claim", "claim", CriteriaSpecification.LEFT_JOIN)
                                     .add(Restrictions.eq("claim.insurer", insurer))
                                     .add(Restrictions.eq("claim.chorganisation", insurerBillingBandMapping.getChorganisation()))
@@ -265,6 +281,8 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Restrictions.eq("at.reverted", Boolean.FALSE))
                                     .add(Restrictions.eq("at.newStatus", band.getTriggerStatus()))
                                     .setProjection(Projections.projectionList().add(Projections.property("at.claim")));
+                }
+
                 List<Claim> claims = findByCriteria(criteria);
                 LOG.debug("Found {} claims", claims.size());
 
@@ -273,13 +291,46 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                     DetachedCriteria closedOriginalClaims = DetachedCriteria.forClass(Claim.class, "b")
                                     .add(Restrictions.eq("b.insurer", insurer))
                                     .add(Restrictions.eq("b.chorganisation", insurerBillingBandMapping.getChorganisation()))
-                                    .add(Restrictions.in("b.claimType", ClaimType.getClaimTypeList(insurerBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
+                                    .add(Restrictions.eq("b.claimType", ClaimType.getOriginalSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
                                     .add(Property.forName("b.customer").eqProperty("c2.customer"))
                                     .add(Property.forName("b.id").notIn(billingInsurerDetailCriteria))
                                     .add(Restrictions.in("b.status", ClaimStatus.getClosedUnpaidStatus()))
                                     .setProjection(Projections.projectionList().add(Projections.property("b.id")));
                     
-                    DetachedCriteria otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
+                    DetachedCriteria otherSupplemetaries;
+
+                    if (band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                        otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
+                                    .createAlias("claim", "c", CriteriaSpecification.LEFT_JOIN)
+                                    .add(Restrictions.eq("c.insurer", insurer))
+                                    .add(Restrictions.eq("c.chorganisation", insurerBillingBandMapping.getChorganisation()))
+                                    .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
+                                    .add(Restrictions.not(Restrictions.in("c.status", ClaimStatus.getClosedUnpaidStatus())))
+                                    .add(Property.forName("c.customer").eqProperty("c2.customer"))
+                                    .add(Restrictions.le("at.updateDate", to))
+//                                    .add(Restrictions.between("at.updateDate", from, to))
+                                    .add(Restrictions.eq("at.reverted", Boolean.FALSE))
+                                    .add(Restrictions.eq("at.newStatus", ClaimStatus.CLAIM_AWAITING_INVOICE_DATA))
+                                    .add(Restrictions.or(Property.forName("c.id").in(billingInsurerDetailCriteria),
+                                                         Restrictions.ltProperty("at.updateDate", "at2.updateDate")))
+                                    .setProjection(Projections.projectionList().add(Projections.property("c.id")));
+
+                        criteria = DetachedCriteria.forClass(AuditTrail.class, "at2")
+                                    .createAlias("claim", "c2", CriteriaSpecification.LEFT_JOIN)
+                                    .add(Restrictions.eq("c2.insurer", insurer))
+                                    .add(Restrictions.eq("c2.chorganisation", insurerBillingBandMapping.getChorganisation()))
+                                    .add(Restrictions.eq("c2.claimType", ClaimType.getSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
+                                    .add(Restrictions.not(Restrictions.in("c2.status", ClaimStatus.getClosedUnpaidStatus())))
+                                    .add(Property.forName("c2.id").notIn(billingInsurerDetailCriteria))
+                                    .add(Restrictions.le("at2.updateDate", to))
+//                                    .add(Restrictions.between("at2.updateDate", from, to))
+                                    .add(Restrictions.eq("at2.reverted", Boolean.FALSE))
+                                    .add(Restrictions.eq("at2.newStatus", ClaimStatus.CLAIM_AWAITING_INVOICE_DATA))
+                                    .add(Subqueries.exists(closedOriginalClaims)) // original claim closed and not billed
+                                    .add(Subqueries.notExists(otherSupplemetaries))  // no other supplementary at trigger point before the one selected or billed
+                                    .setProjection(Projections.projectionList().add(Projections.property("claim")));
+                    } else {
+                        otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
                                     .createAlias("claim", "c", CriteriaSpecification.LEFT_JOIN)
                                     .add(Restrictions.eq("c.insurer", insurer))
                                     .add(Restrictions.eq("c.chorganisation", insurerBillingBandMapping.getChorganisation()))
@@ -291,23 +342,30 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Restrictions.or(Property.forName("c.id").in(billingInsurerDetailCriteria),
                                                          Restrictions.ltProperty("at.updateDate", "at2.updateDate")))
                                     .setProjection(Projections.projectionList().add(Projections.property("c.id")));
-                    
-                    criteria = DetachedCriteria.forClass(AuditTrail.class, "at2")
+
+                        criteria = DetachedCriteria.forClass(AuditTrail.class, "at2")
                                     .createAlias("claim", "c2", CriteriaSpecification.LEFT_JOIN)
                                     .add(Restrictions.eq("c2.insurer", insurer))
                                     .add(Restrictions.eq("c2.chorganisation", insurerBillingBandMapping.getChorganisation()))
                                     .add(Restrictions.eq("c2.claimType", ClaimType.getSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
                                     .add(Property.forName("c2.id").notIn(billingInsurerDetailCriteria))
-                                    .add(Restrictions.between("at2.updateDate", from, to))
+                                    .add(Restrictions.le("at2.updateDate", to))
+//                                    .add(Restrictions.between("at2.updateDate", from, to))
                                     .add(Restrictions.eq("at2.reverted", Boolean.FALSE))
                                     .add(Restrictions.eq("at2.newStatus", band.getTriggerStatus()))
                                     .add(Subqueries.exists(closedOriginalClaims)) // original claim closed and not billed
                                     .add(Subqueries.notExists(otherSupplemetaries))  // no other supplementary at trigger point before the one selected or billed
                                     .setProjection(Projections.projectionList().add(Projections.property("claim")));
+                    }
 
                     List<Claim> suppClaims = findByCriteria(criteria);
                     LOG.debug("Found {} supplementary claims with closed original invoice", suppClaims.size());
                     if (suppClaims.size() > 0) {
+                        if (LOG.isDebugEnabled()) {
+                            for (Claim c : suppClaims) {
+                                LOG.debug("Supplementary claim '{}' for {} will be added", c.getChoReference(), c.getChorganisation().getName());
+                            }
+                        }
                         claims.addAll(suppClaims);
                     }
                 }
@@ -318,7 +376,20 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                     billingInsurerDetail.setClaim(claim);
                     billingInsurerDetail.setTriggerPoint(triggerPoint);
                     try {
-                        billingInsurerDetail.setTriggerDate(getTriggerDate(claim, band.getTriggerStatus(), from, to));
+                        Date triggerDate;
+                        if (band.isExcludeSupplementary() && ClaimType.isSupplementaryInvoice(claim.getClaimType())  && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType()) && band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                            triggerDate= getTriggerDate(claim, ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, null, null);
+                        } else if (band.isExcludeSupplementary() && ClaimType.isSupplementaryInvoice(claim.getClaimType()) && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
+                            triggerDate= getTriggerDate(claim, band.getTriggerStatus(), null, null);
+                        } else if (ClaimType.isSupplementaryInvoice(claim.getClaimType())  && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType()) && band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                            triggerDate= getTriggerDate(claim, ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, from, to);
+                        } else {
+                            triggerDate= getTriggerDate(claim, band.getTriggerStatus(), from, to);
+                        }
+                        if (triggerDate.after(to)) {
+                            LOG.warn("Trigger date {} for claim {} as outside to-date of '{}'", new Object[]{triggerDate.toString(), claim.getChoReference(), to.toString()});
+                        }
+                        billingInsurerDetail.setTriggerDate(triggerDate);
                     } catch (Exception ex) {
                         LOG.error("Cannot set trigger date: {}", ex.getMessage());
                     }
@@ -342,14 +413,14 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         
         for (AuditTrail auditEntry : auditTrail) {
             if (auditEntry.getNewStatus().equals(triggerStatus) && !auditEntry.getReverted()
-                    && auditEntry.getCreatedDate().after(from) && auditEntry.getCreatedDate().before(to)) {
+                    && (from == null || auditEntry.getCreatedDate().after(from)) && (to == null || auditEntry.getCreatedDate().before(to))) {
                 return auditEntry.getCreatedDate();
             }
      
         }
         
         throw new Exception("Cannot find trigger date for claim '" + claim.getChoReference() + "' [id=" + claim.getId() + "] for status '" 
-                + triggerStatus + "{' between " + from.toString() + " and " + to.toString() + ".");
+                + triggerStatus + "{' between " + from + " and " + to + ".");
     }
 
     /* (non-Javadoc)
