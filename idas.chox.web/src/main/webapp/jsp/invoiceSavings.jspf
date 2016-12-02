@@ -51,12 +51,44 @@
         store.loadData(data);
 
         var itemsInGroup = [];
+        itemsInGroup.push({
+            xtype: 'label',
+//            itemCls: 'x-check-group-alt',
+//            text: "                                            <25%     25-50%     >50%",
+            html: "<25%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25-50%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>50%",
+//            fieldStyle: 'text-align: right;',
+            labelSeparator:'',
+            fieldLabel: " "
+            });
 
         store.each(function (record) {
+            var itemsInRuleGroup = [];
+            
+            itemsInRuleGroup.push({
+                hideLabel: true,
+//                boxLabel: record.data.ruleDescription,
+                name: record.data.ruleName,
+                inputValue: record.data.ruleName + ':1'
+            });
+            itemsInRuleGroup.push({
+                hideLabel: true,
+//                boxLabel: record.data.ruleDescription,
+                name: record.data.ruleName,
+                inputValue: record.data.ruleName + ':2'
+            });
+            itemsInRuleGroup.push({
+                hideLabel: true,
+//                boxLabel: record.data.ruleDescription,
+                name: record.data.ruleName,
+                inputValue: record.data.ruleName + ':3'
+            });
             itemsInGroup.push({
-                boxLabel: record.data.ruleDescription,
-                name: 'selectedRule',
-                inputValue: record.data.ruleName
+                    xtype: 'radiogroup',
+//            itemCls: 'x-check-group-alt',
+                    fieldLabel: record.data.ruleDescription,
+                    columns: 3,
+                    allowBlank: true,
+                    items: itemsInRuleGroup
             });
         });
 
@@ -65,14 +97,7 @@
             title: 'BRE Rule Failures',
             layout: 'form',
             collapsible: false,
-            items: [{
-                    xtype: 'radiogroup',
-//            itemCls: 'x-check-group-alt',
-                    hideLabel: true,
-                    columns: 1,
-                    allowBlank: false,
-                    items: itemsInGroup
-                }]
+            items: itemsInGroup
         };
 
 
@@ -80,7 +105,7 @@
             autoHeight: true,
             labelWidth: 210,
             frame: true,
-            title: '<div class="status-info">A saving of £<s:property value="invoiceSavingValue"/> was made on this invoice. Please select from the following failed Business Rules which rule primarily contributed to this saving.</div>',
+            title: '<div class="status-info">A saving of £<s:property value="invoiceSavingValue"/> was made on this invoice. Please select from the following failed Business Rules the approximate %age of the saving for any busness rule which contributed to this saving.</div>',
             buttonAlign: 'center',
             items: [
                 checkGroup
@@ -89,10 +114,27 @@
                     text: 'Ok',
                     handler: function () {
                         if (invoiceSavingsForm.getForm().isValid()) {
+                            var selectedRules = Ext.DomQuery.select("input[type='radio']:checked");
+                            var rules = '';
+                            Ext.each(selectedRules,function(selectedRule){
+                                var cmp = Ext.getCmp(selectedRule.id);
+                                rules = rules + ',' + cmp.inputValue;
+                                },this); //assigning the correct context
+                            if (rules.length ===0) {
+                                Ext.MessageBox.show({
+                                        title: 'Error',
+                                        msg: 'You must select at least one rule',
+                                        width: 300,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                });
+                                return;
+                            }
+                            rules = rules.substring(1);
                             invoiceSavingsWindow.hide();
                             invoiceSavingsForm.getForm().submit({
                                 method: 'POST',
-                                url: contextPath + '/prv/p/setInvoiceSavingsRule.action?name=invoiceSaving&ruleId=' + invoiceSavingsForm.getForm().getValues()['selectedRule'],
+                                url: contextPath + '/prv/p/setInvoiceSavingsRule.action?name=invoiceSaving&rules=' + rules,
                                 success: function (f, a) {
 
                                     if (a.result.success) {
@@ -117,6 +159,11 @@
                     handler: function () {
                         invoiceSavingsForm.getForm().reset();
                         invoiceSavingsWindow.hide();
+                    }
+                }, {
+                    text: 'Reset',
+                    handler: function () {
+                        invoiceSavingsForm.getForm().reset();
                     }
                 }]
 
