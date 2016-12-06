@@ -241,7 +241,6 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal collaborationFee;
     private Integer collaborationQty;
     private boolean paymentTeam;
-    private String invoiceSavingRule;
     private BigDecimal gtaDiscount = BigDecimal.ZERO;
 
     public BigDecimal getGtaDiscount() {
@@ -250,14 +249,6 @@ public class Invoice extends Entity implements Serializable {
 
     public void setGtaDiscount(BigDecimal gtaDiscount) {
         this.gtaDiscount = gtaDiscount;
-    }
-
-    public String getInvoiceSavingRule() {
-        return invoiceSavingRule;
-    }
-
-    public void setInvoiceSavingRule(String invoiceSavingRule) {
-        this.invoiceSavingRule = invoiceSavingRule;
     }
 
     public BigDecimal getRepairAdminFee() {

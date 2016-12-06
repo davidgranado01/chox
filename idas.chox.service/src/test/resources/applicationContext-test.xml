@@ -118,6 +118,7 @@
                 <value>hbm/ChoBillingBand.hbm.xml</value>
                 <value>hbm/InsurerBillingBandMapping.hbm.xml</value>
                 <value>hbm/ChoBillingBandMapping.hbm.xml</value>
+                <value>hbm/InvoiceSavingRule.hbm.xml</value>
             </list>
         </property>
     </bean>

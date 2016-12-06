@@ -146,5 +146,10 @@
         <property name="vehicleClassService" ref="vehicleClassService" />
     </bean>
     <bean id="lastReviewDate" class="idas.chox.service.workflow.activities.LastReviewDate" scope="prototype"/>
+    <bean id="invoiceSaving" class="idas.chox.service.workflow.activities.InvoiceSaving" scope="prototype">
+        <property name="chainActivity" ref="acceptInvoice" />
+        <property name="activityFactory" ref="activityFactory" />
+        <property name="invoiceSavingRuleService" ref="invoiceSavingRuleService" />
+    </bean>
 
 </beans>

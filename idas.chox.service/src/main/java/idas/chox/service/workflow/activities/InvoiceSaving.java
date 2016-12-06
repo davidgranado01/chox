@@ -1,14 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.InvoiceSavingRule;
+import idas.chox.core.services.InvoiceSavingRuleService;
 import idas.chox.service.workflow.ActivityFactory;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class InvoiceSaving extends BaseActivity {
 
@@ -16,6 +19,9 @@ public class InvoiceSaving extends BaseActivity {
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String rules;
     private ActivityFactory activityFactory;
+    private InvoiceSavingRuleService invoiceSavingRuleService;
+    private List<InvoiceSavingRule> invoiceSavingRules;
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameter Setters">
@@ -28,11 +34,16 @@ public class InvoiceSaving extends BaseActivity {
         this.activityFactory = activityFactory;
     }
 
+    public void setInvoiceSavingRuleService(InvoiceSavingRuleService invoiceSavingRuleService) {
+        this.invoiceSavingRuleService = invoiceSavingRuleService;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         // parse rules string
         int no50plus = 0;
         int no25plus = 0;
+        invoiceSavingRules = new ArrayList<>();
         
         List<String> selectedRules = Arrays.asList(rules.split("\\s*,\\s*"));
         if (selectedRules == null || selectedRules.isEmpty()) {
@@ -50,14 +61,49 @@ public class InvoiceSaving extends BaseActivity {
             } else if (no25plus > 4) {
                 throw new Exception("Cannot select more than four rules at 25-50%.");
             }
+            InvoiceSavingRule invoiceSavingRule = new InvoiceSavingRule();
+            invoiceSavingRule.setInvoice(claim.getInvoice());
+            invoiceSavingRule.setInvoiceSavingRule(tokens[0]);
+            invoiceSavingRule.setSavingGroup(Integer.valueOf(tokens[1]));
             LOG.debug("Selected rules: {}-{}", tokens[0], tokens[1].equals("1") ? "<25%":  tokens[1].equals("2") ? "25-50%" : " > 50%");
+            invoiceSavingRules.add(invoiceSavingRule);
         }
-        throw new Exception("Implementation not finished");
     }
 
     @Override
-    protected void doProcess(Claim claim) {
-//        claim.getInvoice().setInvoiceSavingRule(null);
+    protected void beforeProcess(Claim claim) throws Exception {
+        // Remove any existing savings rules on invoice
+        List<InvoiceSavingRule> invoiceSavingRulesToDelete;
+        
+        invoiceSavingRulesToDelete = invoiceSavingRuleService.getInvoiceSavingRules(claim.getInvoice());
+        
+        for (InvoiceSavingRule isr : invoiceSavingRulesToDelete) {
+            invoiceSavingRuleService.deleteInvoiceSavingRule(isr);
+            LOG.debug("   removing rule {}", isr.getInvoiceSavingRule());
+        }
+    }
+
+    @Override
+    protected void doProcess(Claim claim) throws Exception {
+        // First remove any existing savings rules on the invoice
+        List<InvoiceSavingRule> invoiceSavingRulesToDelete;
+        
+        invoiceSavingRulesToDelete = invoiceSavingRuleService.getInvoiceSavingRules(claim.getInvoice());
+        if (!invoiceSavingRulesToDelete.isEmpty()) {
+            LOG.error("Cannot save new rules as existing rules already exist.");
+            throw new Exception("Internal error occured trying to save the selected Invoice Saving Rules.");
+        }
+
+        for (InvoiceSavingRule invoiceSavingRule : invoiceSavingRules) {
+            try {
+                LOG.debug("   adding rule {}", invoiceSavingRule.getInvoiceSavingRule());
+                invoiceSavingRuleService.saveInvoiceSavingRule(invoiceSavingRule);
+            } catch (Exception ex) {
+                LOG.error("Exception thrown saving Invoice saving rule on invoice id={}: rule={}, group={}",
+                        new Object[]{invoiceSavingRule.getInvoice().getId(), invoiceSavingRule.getInvoiceSavingRule(),
+                                        invoiceSavingRule.getSavingGroup()});
+            }
+        }
     }
 
     @Override
