@@ -38,10 +38,10 @@ public class ClaimStatus {
     public static final String MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
     public static final String AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcome";
     public static final String MANUAL_INVOICE_UNASSIGNED = "ManualInvoiceUnassigned";
-    private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>(12);
-    private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>(1);
-    private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>(3);
-    private static final List<String> handlerOutstandingStatusList = new ArrayList<String>(10);
+    private static final List<String> invoiceWithInsurerStatuses = new ArrayList<>(12);
+    private static final List<String> awaitingLiabilityStatuses = new ArrayList<>(1);
+    private static final List<String> invoiceWithCHOStatuses = new ArrayList<>(3);
+    private static final List<String> handlerOutstandingStatusList = new ArrayList<>(10);
 
     static {
         invoiceWithInsurerStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
@@ -94,7 +94,7 @@ public class ClaimStatus {
     public static List<String> getAvailableStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
                                          boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
                                          boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
-        List<String> status = new ArrayList<String>();
+        List<String> status = new ArrayList<>();
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
         status.add(AWAITING_INVOICE_PAYMENT);
@@ -162,7 +162,7 @@ public class ClaimStatus {
     }
 
     public static List<String> getCompletedStatus(boolean isManualInvoiceAllowed) {
-        List<String> status = new ArrayList<String>();
+        List<String> status = new ArrayList<>();
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(INVOICE_PAYMENT_RECEIVED);
@@ -173,8 +173,16 @@ public class ClaimStatus {
         return status;
     }
 
+    public static List<String> getClosedUnpaidStatus() {
+        List<String> status = new ArrayList<>();
+        status.add(CLAIM_REJECTION_ACCEPTED);
+        status.add(INVOICE_REJECTED_ACCEPTED);
+        status.add(CLAIM_CLOSED);
+        return status;
+    }
+
     public static List<String> getInsurerOutstandingStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI, boolean usesInsurerUpload) {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
 
         if (usesWorkgroups) {
             results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
@@ -233,7 +241,7 @@ public class ClaimStatus {
     }
 
     public static List<String> getPenaltyChargeExclusionStatus() {
-        List<String> exclusionList = new ArrayList<String>();
+        List<String> exclusionList = new ArrayList<>();
         exclusionList.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         exclusionList.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         exclusionList.add(ClaimStatus.CLAIM_CLOSED);
@@ -263,7 +271,7 @@ public class ClaimStatus {
     
     public static List<String> getPreInvoiceStatus() {
         
-        List<String> preInvoiceStatus = new ArrayList<String>();
+        List<String> preInvoiceStatus = new ArrayList<>();
         preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
         preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_ROUTED);
         preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_UNASSIGNED);

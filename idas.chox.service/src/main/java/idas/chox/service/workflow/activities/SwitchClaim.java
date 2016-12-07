@@ -36,6 +36,11 @@ public class SwitchClaim extends BaseActivity {
             throw new AccessDeniedException("Cannot switch claim as no related insurer is defined.");
         }
         
+        if (ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
+            throw new AccessDeniedException("Cannot switch claim as it is marked as an original supplementary claim and can have supplementary invoices.");
+        } else if (ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
+            throw new AccessDeniedException("Cannot switch claim as it is a supplementary invoice.");
+        }
         Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims

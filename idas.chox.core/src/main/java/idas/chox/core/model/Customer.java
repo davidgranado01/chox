@@ -5,11 +5,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Customer extends Entity implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(Customer.class);
 
     private Boolean isVehicleRegistrationexist = false;
     /**

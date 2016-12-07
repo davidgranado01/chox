@@ -21,6 +21,7 @@
             $(target).html(data);
         });
     }
+
     
 </script>
 
@@ -50,6 +51,9 @@
                     </s:if>
                     <s:if test="adminAccessibility.isBillingAdminAccessibility">
                         <li><a href="javascript:renderBillingPanel('cho');">CHO Billing</a></li>
+                    </s:if>
+                    <s:if test="adminAccessibility.isBillingAdminAccessibility">
+                        <li><a href="javascript:renderAdminParameterPanel('BillingBand');">Billing Band Setup</a></li>
                     </s:if>
                 </ul>
             </div>

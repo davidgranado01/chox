@@ -1,7 +1,6 @@
 package idas.chox.service.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,15 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.BillingCho;
-import idas.chox.core.model.BillingChoRate;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingChoReportObject;
@@ -75,28 +71,24 @@ public class BillingChoReport implements Report {
                 .append("cm.claim_number, ")
                 .append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ")
                 .append("cr.first_name || ' ' || cr.last_name as name, ")
-                .append("at.update_date as received_date, ")
-                .append("inv.total_to_pay, ")
+                .append("bcd.trigger_date as trigger_date, ")
+                .append("bcd.trigger_point as trigger_point, ")
+                .append("case when inv is null then null else inv.total_to_pay end, ")
                 .append("bcd.net_claim_cost, ")
                 .append("bcd.vat_net_claim_cost, ")
-                .append("bcd.gross_claim_cost ");
-            sb.append("from ")
-                .append("claim as cm, ")
-                .append("billing_cho as bc, ")
-                .append("billing_cho_detail as bcd, ")
+                .append("bcd.gross_claim_cost ")
+                .append("from ")
+                .append("claim as cm ")
+                .append("left outer join invoice inv on (cm.invoice_id = inv.id), ")
                 .append("customer as cr, ")
-                .append("audit_trail as at, ")
-                .append("invoice as inv ");
-            sb.append("where ")
-                .append("cm.id=bcd.claim_reference_id ")
-                .append("and cr.id = cm.customer_id ")
-                .append("and inv.id = cm.invoice_id ")
-                .append("and cm.id = at.claim_id ")
-                .append("and at.new_status='PaymentReceived' ")
-                .append("and at.created_date < bc.created_date ")
-                .append("and bc.id =  :p_billing_cho_id ")
-                .append("and bcd.billing_cho_id =  :p_billing_cho_id ")
-                .append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date > at.update_date and a.update_date < bc.created_date)");
+                .append("billing_cho as bc, ")
+                .append("billing_cho_detail as bcd ")
+                .append("where ")
+                .append("cm.customer_id = cr.id ")
+                .append("and cm.id = bcd.claim_reference_id ")
+                .append("and bcd.billing_cho_id =  bc.id ")
+                .append("and bc.id =  :p_billing_cho_id");
+            
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
@@ -116,17 +108,7 @@ public class BillingChoReport implements Report {
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("");
-            reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
-            reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
-            reportObject.setIsFixedTransactionalFee(bc.isFixedTransaction());
-            if (bc.isFixedTransaction()) {
-                LOG.debug("Fixed Transaction Fee is {}", bc.getFixedTransactionFee());
-                reportObject.setFixedTransactionFee(bc.getFixedTransactionFee());
-            }
-            else {
-                LOG.debug("Charge Rate is {}", bc.getChargeRate());
-                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 4, BigDecimal.ROUND_HALF_UP));
-            }
+            reportObject.setNumberOfClaimsBilled(reportRows.size());
 
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("reportRows", reportRows);
@@ -173,36 +155,6 @@ public class BillingChoReport implements Report {
            throw e;
         }
         return bc;
-    }
-
-    public BigDecimal getChargeRate(int cho_organisation_id, int volume) throws Exception {
-        BillingChoRate billingChoRate;
-
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
-            criteria.createCriteria("chorganisation").add(Restrictions.eq("id", cho_organisation_id));
-            Criterion minVolume = Restrictions.le("minVolume", volume);
-            Criterion maxVolume = Restrictions.ge("maxVolume", volume);
-            Criterion isNull = Restrictions.isNull("maxVolume");
-
-            LogicalExpression and1 = Restrictions.and(minVolume, maxVolume);
-            LogicalExpression and2 = Restrictions.and(minVolume, isNull);
-
-            LogicalExpression or = Restrictions.or(and1, and2);
-            criteria.add(or);
-
-            List  myList =  baseDataService.findByCriteria(criteria);
-            if ( myList.size() != 1){
-                LOG.error("Multiple charge rates found for volume={}, choId={}", volume, cho_organisation_id);
-                throw new RuntimeException("Multipe/Or rate matches error");
-            }
-            billingChoRate = (BillingChoRate)myList.get(0);
-        } catch (Exception e) {
-           LOG.error("Exception thrown in getChargeRate for volume={} : {}", volume, e.getMessage());
-           throw e;
-        }
-
-        return billingChoRate.getFee();
     }
 
     @Override

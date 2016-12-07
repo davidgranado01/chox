@@ -88,7 +88,6 @@
                 address5:{ required:true, regex: "^\\s*[a-zA-Z,.\\s]+\\s*$" },
                 postcode:{ required:true },
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"},
-                fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 dailyRateChargeLimit:{number:true, min:1 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
@@ -107,7 +106,6 @@
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
-                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords' must be numeric", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
@@ -133,13 +131,6 @@
             ]
         });
 
-    <s:if test="fixedTransactionalFee" >
-            $("#fixedTransactionalFeeOpt").val("true");
-            $("#FixedTransactionalValueDiv").show();
-    </s:if><s:else >
-            $("#fixedTransactionalFeeOpt").val("false");
-            $("#FixedTransactionalValueDiv").hide();
-    </s:else>
 
     <s:if test="adjustDailyRateCharge" >
             $("#adjustDailyRateChargeOpt").val("true");
@@ -206,14 +197,6 @@
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
             });
-        }
-
-        function chargeMethodSelected(fixedTransactionalFee) {
-            if (fixedTransactionalFee === 'true') {
-                $("#FixedTransactionalValueDiv").show();
-            } else if (fixedTransactionalFee === 'false') {
-                $("#FixedTransactionalValueDiv").hide();
-            }
         }
 
         function dailyRateMethodSelected(adjustDailyRateCharge) {
@@ -472,17 +455,6 @@
                                           headerValue="--None--">
                                 </s:select>
                             </div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Use Fixed Transactional Fee?</label>
-                            <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
-                            </select>
-                        </div>
-                        <div class="chox-form-item" id="FixedTransactionalValueDiv">
-                            <label class="chox-form-std-label">Fixed Transactional Fee (£)</label>
-                            <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
-                        </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Allow Automatic Daily<br/>Rate Charge Adjustment?</label>
                             <select id="adjustDailyRateChargeOpt" name="adjustDailyRateCharge" onchange="javascript:dailyRateMethodSelected(this.options[this.selectedIndex].value);">

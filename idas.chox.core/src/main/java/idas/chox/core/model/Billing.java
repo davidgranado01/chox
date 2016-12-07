@@ -18,8 +18,7 @@ public class Billing extends Entity {
     private BigDecimal amountReceived;
     private boolean manual;
     private boolean reconciled;
-    private String triggerPoint;
-    private Set<BillingDetail> billingDetails = new HashSet<BillingDetail>(0);
+    private Set<BillingDetail> billingDetails = new HashSet<>(0);
 
     public String getScheduleName() {
         return scheduleName;
@@ -67,14 +66,6 @@ public class Billing extends Entity {
 
     public void setManual(boolean manual) {
         this.manual = manual;
-    }
-
-    public String getTriggerPoint() {
-        return triggerPoint;
-    }
-
-    public void setTriggerPoint(String triggerPoint) {
-        this.triggerPoint = triggerPoint;
     }
 
     public boolean isReconciled() {

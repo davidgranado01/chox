@@ -79,7 +79,6 @@
                 <value>hbm/BillingChoDetail.hbm.xml</value>
                 <value>hbm/BillingInsurer.hbm.xml</value>
                 <value>hbm/BillingInsurerDetail.hbm.xml</value>
-                <value>hbm/BillingChoRate.hbm.xml</value>
                 <value>hbm/Task.hbm.xml</value>
                 <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
                 <value>hbm/WebBordereau.hbm.xml</value>
@@ -91,6 +90,7 @@
                 <value>hbm/AuditEntry.hbm.xml</value>
                 <value>hbm/AdminFee.hbm.xml</value>
                 <value>hbm/SchedulerJob.hbm.xml</value>
+                <value>hbm/InsurerIntelligentNote.hbm.xml</value>
                 <value>hbm/AttachmentFile.hbm.xml</value>
                 <value>hbm/BreRules.hbm.xml</value>
                 <value>hbm/BrePenaltyBand.hbm.xml</value>
@@ -98,6 +98,10 @@
                 <value>hbm/ClaimAuditReview.hbm.xml</value>
                 <value>hbm/KeoghsRequest.hbm.xml</value>
                 <value>hbm/KeoghsRequestScoreMessage.hbm.xml</value>
+                <value>hbm/InsurerBillingBand.hbm.xml</value>
+                <value>hbm/ChoBillingBand.hbm.xml</value>
+                <value>hbm/InsurerBillingBandMapping.hbm.xml</value>
+                <value>hbm/ChoBillingBandMapping.hbm.xml</value>
             </list>
         </property>
     </bean>

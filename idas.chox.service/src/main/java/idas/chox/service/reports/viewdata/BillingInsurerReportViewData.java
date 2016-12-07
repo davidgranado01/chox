@@ -19,7 +19,7 @@ public class BillingInsurerReportViewData {
     private String thirdPartyPolicyNumber;
     private String thirdPartyVRN;
     private String thirdPartyName;
-    private Date paymentReceivedDate;
+    private Date triggerDate;
     private BigDecimal netClaimCost;
     private BigDecimal vatOnClaimCost;
     private BigDecimal grossClaimCost;
@@ -32,7 +32,7 @@ public class BillingInsurerReportViewData {
         result.setThirdPartyPolicyNumber(data.get("policy_number".toLowerCase()).toString());
         result.setThirdPartyVRN(data.get("vehicle_registration".toLowerCase()).toString());
         result.setThirdPartyName(data.get("name".toLowerCase()).toString());
-        result.setPaymentReceivedDate((Date)data.get("received_date".toLowerCase().toString()));
+        result.setTriggerDate((Date)data.get("trigger_date".toLowerCase().toString()));
         result.setSupplierName(data.get("cho_name".toLowerCase()).toString());
         result.setNetClaimCost((BigDecimal)data.get("net_claim_cost"));
         result.setVatOnClaimCost((BigDecimal)data.get("vat_claim_cost"));
@@ -123,15 +123,15 @@ public class BillingInsurerReportViewData {
     /**
      * @return the claimUploadDate
      */
-    public Date getPaymentReceivedDate() {
-        return paymentReceivedDate;
+    public Date getTriggerDate() {
+        return triggerDate;
     }
 
     /**
-     * @param claimUploadDate the claimUploadDate to set
+     * @param triggerDate the triggerDate to set
      */
-    public void setPaymentReceivedDate(Date paymentReceivedDate) {
-        this.paymentReceivedDate = paymentReceivedDate;
+    public void setTriggerDate(Date triggerDate) {
+        this.triggerDate = triggerDate;
     }
 
     /**

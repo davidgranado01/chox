@@ -199,7 +199,9 @@
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        The Workgroups that dictate where claims are routed to and therefore which users have access/visibility of the said claims is managed here.  Please note, it is not possible to remove a Workgroup where there is an open claim within the system that is assigned to the said Workgroup.
+        The Workgroups that dictate where claims are routed to and therefore which users have access/visibility of the
+        said claims is managed here.  Please note, it is not possible to remove a Workgroup where there is an open claim
+        within the system that is assigned to the said Workgroup.
     </div>
 
     <div class="grid-view-header">

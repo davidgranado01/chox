@@ -1,6 +1,5 @@
 package idas.chox.service.reports.viewdata;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -13,11 +12,7 @@ public class BillingChoReportObject {
     private Date createdDate;
     private String choName;
     private String reportTitle;
-    private int numberOfInvoicesSubmitted;
-    private int numberOfPaymentsReceived;
-    private BigDecimal chargeRate;
-    private BigDecimal fixedTransactionFee;
-    private Boolean isFixedTransactionalFee;
+    private int numberOfClaimsBilled;
     private String scheduleName;
 
     public String getScheduleName() {
@@ -99,54 +94,16 @@ public class BillingChoReportObject {
     }
 
     /**
-     * @return the numberOfInvoicesUploaded
+     * @return the numberOfClaimsBilled
      */
-    public int getNumberOfInvoicesSubmitted() {
-        return numberOfInvoicesSubmitted;
+    public int getNumberOfClaimsBilled() {
+        return numberOfClaimsBilled;
     }
 
     /**
-     * @param numberOfInvoicesUploaded the numberOfInvoicesUploaded to set
+     * @param numberOfClaimsBilled the numberOfInvoicesUploaded to set
      */
-    public void setNumberOfInvoicesSubmitted(int numberOfInvoicesSubmitted) {
-        this.numberOfInvoicesSubmitted = numberOfInvoicesSubmitted;
-    }
-
-    /**
-     * @return the chargeRate
-     */
-    public BigDecimal getChargeRate() {
-        return chargeRate;
-    }
-
-    /**
-     * @param chargeRate the chargeRate to set
-     */
-    public void setChargeRate(BigDecimal chargeRate) {
-        this.chargeRate = chargeRate;
-    }
-
-    public BigDecimal getFixedTransactionFee() {
-        return fixedTransactionFee;
-    }
-
-    public void setFixedTransactionFee(BigDecimal fixedTransactionFee) {
-        this.fixedTransactionFee = fixedTransactionFee;
-    }
-
-    public Boolean getIsFixedTransactionalFee() {
-        return isFixedTransactionalFee;
-    }
-
-    public void setIsFixedTransactionalFee(Boolean isFixedTransactionalFee) {
-        this.isFixedTransactionalFee = isFixedTransactionalFee;
-    }
-
-    public int getNumberOfPaymentsReceived() {
-        return numberOfPaymentsReceived;
-    }
-
-    public void setNumberOfPaymentsReceived(int numberOfPaymentsReceived) {
-        this.numberOfPaymentsReceived = numberOfPaymentsReceived;
+    public void setNumberOfClaimsBilled(int numberOfClaimsBilled) {
+        this.numberOfClaimsBilled = numberOfClaimsBilled;
     }
 }

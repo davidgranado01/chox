@@ -40,9 +40,6 @@ public class BillingAction extends BaseAction {
     private String choReference;
     private String claimNumber;
     private BillingService billingService;
-    private boolean excludeSupplmntInv;
-    private String omitSupplementaryInvoice;
-    private String triggerPoint;
 
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -52,12 +49,12 @@ public class BillingAction extends BaseAction {
 
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingGridData() {
-        List<BillingViewData> viewList = new ArrayList<BillingViewData>();
+        List<BillingViewData> viewList = new ArrayList<>();
         List billingList;
         if ( billSearch){
-            billingList = billingService.searchBills(getBillingType(), choReference, claimNumber);
+            billingList = billingService.searchBills(billingType, choReference, claimNumber);
         }else{
-            billingList = billingService.getBillingList(getBillingType());
+            billingList = billingService.getBillingList(billingType);
         }
         for (Iterator iterator = billingList.iterator(); iterator.hasNext();) {
             Billing object = (Billing) iterator.next();
@@ -72,7 +69,7 @@ public class BillingAction extends BaseAction {
 
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingDetailGridData() {
-        List<BillingDetailViewData> viewDetailList = new ArrayList<BillingDetailViewData>();
+        List<BillingDetailViewData> viewDetailList = new ArrayList<>();
         List billingDetailList = billingService.getBillingDetailList(billingType, billingId);
         LOG.debug("Billing details record size: {} ", billingDetailList.size());
         for (Iterator itorDetails = billingDetailList.iterator(); itorDetails.hasNext();) {
@@ -108,13 +105,13 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
-            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), excludeSupplmntInv, triggerPoint);
+            Map hm = billingService.addBill(billingType, getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Returning json string: '{}'", jsonObject.toString());
         } catch (Exception e) {
 
-            LOG.error("Exception in addBill(): {}, {}", e.getMessage(),e);
+            LOG.error("Exception in addBill(): {}", e.getMessage(), e);
             throw e;
         }
         return SUCCESS;
@@ -338,24 +335,5 @@ public class BillingAction extends BaseAction {
      */
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
-    }
-
-    public String getOmitSupplementaryInvoice() {
-        return omitSupplementaryInvoice;
-    }
-
-    public void setOmitSupplementaryInvoice(String omitSupplementaryInvoice) {
-        if (omitSupplementaryInvoice != null && omitSupplementaryInvoice.equalsIgnoreCase("on")){
-            this.excludeSupplmntInv = true;
-        }
-    }
-    
-
-    public String getTriggerPoint() {
-        return triggerPoint;
-    }
-
-    public void setTriggerPoint(String triggerPoint) {
-        this.triggerPoint = triggerPoint;
     }
 }

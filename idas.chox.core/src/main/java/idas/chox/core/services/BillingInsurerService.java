@@ -8,26 +8,23 @@ import java.util.Set;
 import idas.chox.core.model.Billing;
 import idas.chox.core.model.BillingInsurer;
 import idas.chox.core.model.BillingInsurerDetail;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 
 public interface BillingInsurerService {
 
-	Map checkObject(String scheduleName, Date dateFrom,
-			Date dateTo, int insurerId, String triggerPoint);
+    Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId);
 
-	BillingInsurer getObject(int id);
+    BillingInsurer getObject(int id);
 
-	Billing updateObject(BillingInsurer object);
+    Billing updateObject(BillingInsurer object);
 
-	List<BillingInsurer> getBillingInsurers();
+    List<BillingInsurer> getBillingInsurers();
 
-        void deleteObject(BillingInsurer object);
+    void deleteObject(BillingInsurer object);
 
-        List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer,
-                                          boolean excludeSupplmntInv, String triggerPoint);
+    List<BillingInsurerDetail> findClaimsforSchedule(Date from, Date to, Insurer insurer);
 
-	Set<BillingInsurerDetail> getScheduleDetailList(final int id);
+    Set<BillingInsurerDetail> getScheduleDetailList(final int id);
 
-        List searchBills(String choReference, String claimNumber);
+    List searchBills(String choReference, String claimNumber);
 }

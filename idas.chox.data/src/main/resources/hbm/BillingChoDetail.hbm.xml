@@ -11,6 +11,8 @@
     <many-to-one class="idas.chox.core.model.BillingCho" column="billing_cho_id" name="billing"/>
     <many-to-one class="idas.chox.core.model.Claim" column="claim_reference_id" name="claim"/>
     <property column="received_date" name="receivedDate"/>
+    <property column="trigger_date" name="triggerDate"/>
+    <property column="trigger_point" name="triggerPoint"/>
     <property column="comment" name="comment"/>
     <property column="net_claim_cost" name="billAmount"/>
     <property column="vat_net_claim_cost" name="vatOnBillAmount"/>

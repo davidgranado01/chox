@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,6 @@ import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.NodeRuleModel;
-import org.w3c.dom.Element;
 
 
 public class DataValidationParameter {
@@ -23,7 +22,7 @@ public class DataValidationParameter {
     private static final Logger LOG = LoggerFactory.getLogger(DataValidationParameter.class);
     private String validateFile;
     private Document doc;
-    private Map<String, NodeRuleModel> validationMap = new HashMap<String, NodeRuleModel>(170);
+    private final Map<String, NodeRuleModel> validationMap = new HashMap<>(170);
 
 
     private NodeRuleModel getDataValidationElement(String nodeName) throws IOException {

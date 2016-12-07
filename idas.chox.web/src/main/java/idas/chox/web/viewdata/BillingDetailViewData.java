@@ -1,8 +1,6 @@
 package idas.chox.web.viewdata;
 
 
-import idas.chox.core.model.BillingDetail;
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -10,8 +8,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import idas.chox.core.model.BillingDetail;
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -24,6 +26,8 @@ public class BillingDetailViewData {
     private BigDecimal itemAmount;
     private BigDecimal amountReceived;
     private String receivedDate;
+    private String triggerDate;
+    private String triggerPoint;
     private String comment;
     private boolean reconciled;
 
@@ -33,7 +37,9 @@ public class BillingDetailViewData {
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
-        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
+        this.receivedDate = record.getReceivedDate()== null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
+        this.triggerDate = record.getTriggerDate()== null ? "":DateHelper.getEXTDateTimeFormat().format(record.getTriggerDate());
+        this.triggerPoint = record.getTriggerPoint();
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }
@@ -50,7 +56,7 @@ public class BillingDetailViewData {
 
     public static List<Map> mapListFromJsonString(String json) throws ParseException{
     	JSONArray jay = JSONArray.fromObject( json );
-    	List<Map> list = new ArrayList<Map>();
+    	List<Map> list = new ArrayList<>();
     	for (Iterator iterator = jay.iterator(); iterator.hasNext();) {
 			JSONObject object = (JSONObject) iterator.next();
 			list.add( fromJSONObjectToMap(object) );
@@ -66,6 +72,8 @@ public class BillingDetailViewData {
     	map.put("billingDetailId",object.getInt("billingDetailId"));    	
     	map.put("comment", object.getString("comment"));    	
     	map.put("amountReceived", new BigDecimal(object.getDouble("amountReceived")));    	
+    	map.put("triggerPoint", object.getString("triggerPoint"));    	
+        map.put("triggerDate", DateHelper.getEXTDateTimeFormat().parse(object.getString("triggerDate")));
     	if ( object.getString("receivedDate").equals("")) {
             map.put("receivedDate",null);
     	}else{
@@ -86,9 +94,8 @@ public class BillingDetailViewData {
     	return detail;
     }
 
-    public BillingDetailViewData() {
-        
-    }
+    public BillingDetailViewData() {}
+
     /**
      * @return the id
      */
@@ -160,6 +167,20 @@ public class BillingDetailViewData {
     }
 
     /**
+     * @return the triggerDate
+     */
+    public String getTriggerDate() {
+        return triggerDate;
+    }
+
+    /**
+     * @param triggerDate the triggerDate to set
+     */
+    public void setTriggerDate(String triggerDate) {
+        this.triggerDate = triggerDate;
+    }
+
+    /**
      * @return the receivedDate
      */
     public String getReceivedDate() {
@@ -172,7 +193,6 @@ public class BillingDetailViewData {
     public void setReceivedDate(String receivedDate) {
         this.receivedDate = receivedDate;
     }
-
     /**
      * @return the reconciled
      */
@@ -199,5 +219,9 @@ public class BillingDetailViewData {
      */
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getTriggerPoint() {
+        return triggerPoint;
     }
 }
