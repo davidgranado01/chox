@@ -1423,7 +1423,7 @@
                         <div class="section-name">Invoice Saving</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="breInvoiceSavingActive" value="breInvoiceSavingActive" /></div><label class="chox-form-std-label"><b>Activate Invoice Saving to BRE Rule Assignment</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When activated, any savings made on the Total Gross to a contested invoice must be assigned to a failed business rule.</div>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When activated, any savings made on the Total Gross to a contested invoice can be assigned to the business rules that generated this saving.</div>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
