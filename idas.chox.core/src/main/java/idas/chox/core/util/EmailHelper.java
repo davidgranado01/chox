@@ -70,9 +70,9 @@ public class EmailHelper {
             props.put("mail.smtp.socketFactory.fallback", "false");
             // Set timeout on socket operations?
             // (see https://www.javacodegeeks.com/2014/06/javamail-can-be-evil-and-force-you-to-restart-your-app-server.html)
-            props.put("mail.smtp.connectiontimeout", "180000");
-            props.put("mail.smtp.timeout", "180000");
-            props.put("mail.smtp.writetimeout", "180000");
+            props.put("mail.smtp.connectiontimeout", "120000");
+            props.put("mail.smtp.timeout", "120000");
+            props.put("mail.smtp.writetimeout", "120000");
 
             Session session;
 

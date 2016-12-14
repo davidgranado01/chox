@@ -45,6 +45,9 @@ public class ImapMailReceiver {
 
         Properties props = System.getProperties();
         props.setProperty("mail.imaps.port", mailPort);
+        props.setProperty("mail.imaps.connectiontimeout", "180000");
+        props.setProperty("mail.imaps.timeout", "180000");
+        props.setProperty("mail.imaps.writetimeout", "180000");
         props.setProperty("mail.store.protocol", mailStoreProtocol);
         LOG.debug("Properties are not set. Properties will be set by default to: {}:{}", mailStoreProtocol, mailPort);
 
