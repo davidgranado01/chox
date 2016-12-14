@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 public class EmailHelper {
     private static final Logger LOG = LoggerFactory.getLogger(EmailHelper.class);
 
-    private static final String emailSubjectPrefix = "CHOX Support Email: ";
+    private static final String EMAIL_SUBJECT_PREFIX = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-    private static final boolean SMTP_authetication = true;
+    private static final boolean SMTP_AUTHENTICATION = true;
     private String smtpHostName;
     String smtpPort;
     String smtpEmailUser;
@@ -60,7 +60,6 @@ public class EmailHelper {
         }
         
         try {
-
             Properties props = new Properties();
             props.put("mail.smtp.host", smtpHostName);
             props.put("mail.smtp.auth", "true");
@@ -69,10 +68,15 @@ public class EmailHelper {
             props.put("mail.smtp.socketFactory.port", smtpPort);
             props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
             props.put("mail.smtp.socketFactory.fallback", "false");
+            // Set timeout on socket operations?
+            // (see https://www.javacodegeeks.com/2014/06/javamail-can-be-evil-and-force-you-to-restart-your-app-server.html)
+            props.put("mail.smtp.connectiontimeout", "180000");
+            props.put("mail.smtp.timeout", "180000");
+            props.put("mail.smtp.writetimeout", "180000");
 
             Session session;
 
-            if (SMTP_authetication) {
+            if (SMTP_AUTHENTICATION) {
                 Authenticator authenticator = getAuthenticator(smtpEmailUser, smtpEmailUserPassword);
                 session = Session.getInstance(props, authenticator);
             } else {
@@ -99,7 +103,7 @@ public class EmailHelper {
             if (subject.startsWith("CHOX Fraud Referral")) {
                 msg.setSubject(subject);
             } else {
-                msg.setSubject(emailSubjectPrefix + subject);
+                msg.setSubject(EMAIL_SUBJECT_PREFIX + subject);
             }
             msg.setContent(message, "text/plain");
             Transport.send(msg);
