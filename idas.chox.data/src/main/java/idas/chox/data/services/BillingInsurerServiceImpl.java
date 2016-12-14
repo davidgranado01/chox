@@ -336,7 +336,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                                     .add(Restrictions.eq("c.chorganisation", insurerBillingBandMapping.getChorganisation()))
                                     .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(insurerBillingBandMapping.getClaimType())))
                                     .add(Property.forName("c.customer").eqProperty("c2.customer"))
-                                    .add(Restrictions.between("at.updateDate", from, to))
+//                                    .add(Restrictions.between("at.updateDate", from, to))
                                     .add(Restrictions.eq("at.reverted", Boolean.FALSE))
                                     .add(Restrictions.eq("at.newStatus", band.getTriggerStatus()))
                                     .add(Restrictions.or(Property.forName("c.id").in(billingInsurerDetailCriteria),
