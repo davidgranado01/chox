@@ -33,7 +33,6 @@ public abstract class BaseActivity implements Activity {
     private Activity chainActivity;
     private String currentStatus;
     private String message;
-//    private Claim claim;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
     @Autowired
@@ -43,14 +42,6 @@ public abstract class BaseActivity implements Activity {
     @Autowired
     protected ClaimService claimService;
 
-//    public Claim getClaim() {
-//        return claim;
-//    }
-//
-//    @Override
-//    public void setClaim(Claim claim) {
-//        this.claim = claim;
-//    }
 
     public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
         this.activityEventGenerator = activityEventGenerator;

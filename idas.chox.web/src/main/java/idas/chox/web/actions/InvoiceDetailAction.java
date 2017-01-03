@@ -2564,7 +2564,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 price = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                 vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
             } catch (Exception e) {
-                LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}'", new Object[]{vehicleClass.getName(), age, getHireStart()});
+                LOG.trace("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}'", new Object[]{vehicleClass.getName(), age, getHireStart()});
             }
         }
         LOG.debug("Total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
@@ -2593,7 +2593,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     @Override
     public void validate() {
         if (claim != null) {
-            LOG.debug("inside attachment action validate method, claim is present and validation started");
+            LOG.debug("inside InvoiceDetailAction  validate method, claim is present and validation started");
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId())) {
                 LOG.error("InvoiceDetailAction validation failed, Attempt to access a claim that you do not own.");

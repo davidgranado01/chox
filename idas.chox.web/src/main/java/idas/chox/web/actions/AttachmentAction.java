@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.access.AccessDeniedException;
 
 import net.sf.json.JSONArray;
@@ -23,8 +26,6 @@ import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -157,12 +158,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 }
             }
 
-            LOG.debug("Deleting attachment (model='{}')...", model.getClass());
             if (attachmentService.deleteAtatchment(getAuthenticatedUser().getId(), model.getId())) {
-                LOG.debug("Attachment deleted.");
                 this.getActionResponse().AssignMessageResult("File has been deleted");
             } else {
-                LOG.info("User {} cannot delete attachment {}", getAuthenticatedUser().getDisplayName(), model.getId());
+                LOG.debug("User {} cannot delete attachment {}", getAuthenticatedUser().getDisplayName(), model.getId());
                 this.getActionResponse().AssignMessageResult("You do not have the necessary permissions to delete this attachment.");
                 setActionError("You do not have the necessary permissions to delete this attachment");
                 return ERROR;
@@ -204,7 +203,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown exporting attachment: {}", ex.getMessage(), ex);
+            LOG.warn("Exception thrown exporting attachment: {}", ex.getMessage());
             setActionError("An internal error occurred trying to export this attachment. Please try again. If the problem persists, please contact CHOX Support.");
             return ERROR;
         }
@@ -237,7 +236,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public List getAttachmentCategory() {
-        List attachmentCategory = new ArrayList<LookupItem>();
+        List attachmentCategory = new ArrayList<>();
         for (String s : AttachmentCategory.getAttachmentCategory()) {
             attachmentCategory.add(new LookupItem(s, s));
         }
@@ -351,7 +350,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     protected Attachment loadModel() {
 
         if (getFileId() > 0) {
-            LOG.debug("Loading Attachment model with fileId={}", getFileId());
             Attachment attachment = (Attachment) baseDataService.get(Attachment.class, getFileId());
             if (attachment != null && claim != null && attachment.getClaim().getId().equals(claim.getId())) {
                 return attachment;
@@ -360,7 +358,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 throw new AccessDeniedException("Attempt to access a attachment that you do not own.");
             }
         } else {
-            LOG.debug("No fileId(={}), returning new Attachment", getFileId());
             return new Attachment();
         }
     }
@@ -373,9 +370,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 LOG.error("AttachmentAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
-            LOG.debug("AttachmentAction validate success");
-        } else {
-            LOG.info(" AttachmentAction validation not done as claim is null");
         }
     }
 }

@@ -40,6 +40,7 @@ public class InvoiceSaving extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
         // parse rules string
         int no50plus = 0;
         int no25plus = 0;

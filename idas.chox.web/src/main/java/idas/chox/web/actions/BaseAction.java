@@ -475,10 +475,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public void setActionError(String actionError) {
-        if (actionError.length() == 0) {
+        if (actionError != null && actionError.length() == 0) {
             actionError = null;
             LOG.warn("Empty error string set for ActionError - setting to null.");
-        }
+        } 
         this.actionError = actionError;
     }
 
@@ -497,14 +497,19 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
 
     protected void handleException(Exception ex) {
-        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException || ex instanceof DataIntegrityViolationException
+        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || ex.getCause() instanceof StaleObjectStateException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
+            ex = new Exception("This claim was modified by another user - please try aain.", ex);
+        } else if (ex instanceof DataIntegrityViolationException) {
+            LOG.warn("Exception thrown: {}", ex.getMessage());
+            ex = new Exception("An internal error occurred - please try aain. If the problem persists, please contact CHOX support.", ex);
         } else if (ex instanceof AccessDeniedException) {
             LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
 //            throw (AccessDeniedException)ex;
         } else {
             LOG.trace("Exception is: {}", ex.getMessage());
+//            ex = new Exception("An internal error occurred - please try aain. If the problem persists, please contact CHOX support.", ex);
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);

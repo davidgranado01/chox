@@ -191,7 +191,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 this.getActionResponse().AssignMessageResult(getMessage());
             }
             setJsonData(jsonObject.toString());
-            updateRedirectionParamInSession();
+            removeRedirectionParamInSession();
+//            updateRedirectionParamInSession();
             return SUCCESS;
         } else {
             LOG.error("Cannot process null activity for claim '{}'", claim);
