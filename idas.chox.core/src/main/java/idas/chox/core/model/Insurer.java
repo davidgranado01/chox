@@ -89,8 +89,17 @@ public class Insurer extends Entity implements Serializable {
     private boolean acceptanceReasonEnable;
     private boolean enableKbbsDashboard;
     private boolean enableLouDates;
+    private boolean allowDefaultHMUpdates;
     private String kbbsManagerPassword;
     private String kbbsOperativePassword;
+
+    public boolean isAllowDefaultHMUpdates() {
+        return allowDefaultHMUpdates;
+    }
+
+    public void setAllowDefaultHMUpdates(boolean allowDefaultHMUpdates) {
+        this.allowDefaultHMUpdates = allowDefaultHMUpdates;
+    }
 
     public boolean isEnableLouDates() {
         return enableLouDates;

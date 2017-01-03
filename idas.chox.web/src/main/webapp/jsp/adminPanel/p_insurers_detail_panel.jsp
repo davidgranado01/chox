@@ -1262,6 +1262,10 @@
                                         id="kbbsInsurerOperativePasswordId" name="kbbsOperativePassword"
                                         value="<s:property value="kbbsOperativePassword" />" />
                             </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Allow default notification of HM updates</label>
+                                <s:checkbox name="allowDefaultHMUpdates" value="allowDefaultHMUpdates" />
+                            </div>
                         </fieldset>
                         
                         <div class="chox-form-button">
