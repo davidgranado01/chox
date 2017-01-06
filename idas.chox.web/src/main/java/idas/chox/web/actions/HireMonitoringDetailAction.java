@@ -135,7 +135,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
             claim.setHireMonitoringDetail(model);
 
-            if (model.isUpdateInsurer()) {
+            if (model.isUpdateInsurer() || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());
                 updated = true;
             }

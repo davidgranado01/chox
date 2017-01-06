@@ -15,15 +15,15 @@ public class TabAccessibility {
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
 
-    private short claimDetailTabAccessibility;
-    private short invoiceDetailTabAccessibility;
-    private short hireMonitoringTabAccessibility;
-    private short insurerHireMonitoringTabAccessibility;
-    private short historyTabAccessibility;
-    private short notesTabAccessibility;
-    private short tasksTabAccessibility;
-    private short paymentPackTabAccessibility;
-    private short auditTrailTabAccessibility;
+    private final short claimDetailTabAccessibility;
+    private final short invoiceDetailTabAccessibility;
+    private final short hireMonitoringTabAccessibility;
+    private final short insurerHireMonitoringTabAccessibility;
+    private final short historyTabAccessibility;
+    private final short notesTabAccessibility;
+    private final short tasksTabAccessibility;
+    private final short paymentPackTabAccessibility;
+    private final short auditTrailTabAccessibility;
 
     public TabAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim) {
         claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_CLAIM_DETAIL,
@@ -32,15 +32,17 @@ public class TabAccessibility {
                 user, claim);
         insurerHireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_INSURER_HIRE_MONITORING,
                 user, claim);
-        historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HISTORY,
-                user, claim);
-        if (historyTabAccessibility > 0 && claim.getInvoice() == null ) {
+        if (claim.getInvoice() == null) {
             historyTabAccessibility = 0;
+        } else {
+            historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HISTORY,
+                user, claim);            
         }
-        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_INVOICE_DETAIL,
-                user, claim);
-        if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null ) {
+        if (claim.getInvoice() == null) {
             invoiceDetailTabAccessibility = 0;
+        } else {
+            invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_INVOICE_DETAIL,
+                user, claim);            
         }
         paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_PAYMENT_PACK,
                 user, claim);

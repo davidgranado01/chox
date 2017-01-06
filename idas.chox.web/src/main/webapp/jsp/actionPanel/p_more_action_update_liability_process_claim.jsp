@@ -1,12 +1,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ include file="s_liability_validation.jspf" %>
+<script type="text/javascript">
+        
+    // $(function(){
+    Ext.onReady(function(){
+        $(function() {
+            $("#indemnityStance").val("<s:property value="indemnityStance" />");
+        });
+console.log("Set to 'indemnityStance'");
+    });
+</script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
         <fieldset class="x-fieldset">
-            <legend>Update Liability</legend>
+            <legend>Update Liability/Indemnity</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
@@ -44,7 +54,7 @@
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
-                                <td>
+                                <td align="right">
                                     <label>Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
@@ -66,6 +76,31 @@
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" cols="80" rows="3" name="claimReviewNotes" id="supportingLiabilityNotesId"><s:property value="claimReviewNotes" /></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <label>Indemnity Stance</label>
+                                </td>
+                                <td>
+                                    <select id="indemnityStance" name="indemnityStance" value="<s:property value="indemnityStance" />">
+                                        <option value="">-- Please Select--</option>
+                                        <option value="Dealing Under Article 75">Dealing Under Article 75</option>
+                                        <option value="Dealing Under Road Traffic Act">Dealing Under Road Traffic Act</option>
+                                        <option value="No Involvement">No Involvement</option>
+                                        <option value="Not Indemnifying">Not Indemnifying</option>
+                                        <option value="Pending Indemnity">Pending Indemnity</option>
+                                        <option value="Providing Indemnity">Providing Indemnity</option>
+                                    </select>
+                                </td>
+                                <td align="right">
+                                    <label>Reserve Value</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
                                 </td>
                             </tr>
                             <tr>

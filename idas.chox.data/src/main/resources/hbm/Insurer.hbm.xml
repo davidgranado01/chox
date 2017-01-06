@@ -84,6 +84,7 @@
     <property column="complete_routing" name="completeRoutingEnable" not-null="true"/>
     <property column="enable_kbbs_dashboard" name="enableKbbsDashboard" not-null="true"/>
     <property column="enable_lou_dates" name="enableLouDates" not-null="true"/>
+    <property column="enable_manual_lou_dates" name="enableManualLouDates" not-null="true"/>
     <property column="kbbs_manager_password" name="kbbsManagerPassword"/>
     <property column="kbbs_operative_password" name="kbbsOperativePassword"/>
     <property column="allow_default_hm_updates" name="allowDefaultHMUpdates"/>

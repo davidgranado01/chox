@@ -1396,9 +1396,6 @@
                 <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'/>
 
                 <div class="admin-bre-band-detail-holder">
-                   
-                    
-
                   <div class="admin-bre-band-detail-section">                 
                     <div class="section-heading">Insurer/CHO Configuration Parameters</div>
                     <div class="admin-bre-band-detail-section">
@@ -1413,38 +1410,26 @@
                     </div>
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Supplier Rates</div>
+                        <div class="section-name">Bespoke Configuration</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
-                    </div>
-                    <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Invoice Saving</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="breInvoiceSavingActive" value="breInvoiceSavingActive" /></div><label class="chox-form-std-label"><b>Activate Invoice Saving to BRE Rule Assignment</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When activated, any savings made on the Total Gross to a contested invoice can be assigned to the business rules that generated this saving.</div>
                         </div>
-                    </div>
-                    <div class="admin-bre-band-detail-section">
-                        <div class="section-name">GTA Discount</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="enableGtaDiscount" value="enableGtaDiscount" /></div><label class="chox-form-std-label"><b>Activate GTA Discount</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'When activated an automatic 2% Discount will be applied to the Hire Gross and be valid for 30 days from Invoice Upload. This will apply to GTA or Insurer Upload invoices only.</div>
                         </div>
-                    </div>
 <s:if test="insurerPaymentsTeamEnabled">                         
-                    <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Payments Team</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="paymentTeamActive" value="paymentTeamActive" /></div><label class="chox-form-std-label"><b>Use Payments Team</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable use of offshore 'Payments Team'</div>
                         </div>
-                    </div>
 </s:if>
 <s:if test="insurer.claimAuditReviewEnable">
-                    <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Claim Audit</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="enableClaimAudit" value="enableClaimAudit" onclick="toggleAuditProcessPercentageDiv()"/></div><label class="chox-form-std-label"><b>Enable Claim Audit</b></label>
                             <div class="chox-form-std-label-longer" style="padding-left: 12px;">When activated, upon moving to status Payment Received or Manual Invoice Paid, a random selection of claims (with a configurable percentage below) will be directed to a Claim Handler for completion of a claim audit.</div>
@@ -1455,8 +1440,14 @@
                             <input style="padding-left: 5px;" type="text" class="chox-ttxt" name="auditProcessPercentage" value="<s:property value='auditProcessPercentage' />" onkeyup="extractNumber(this,2,true);"/>
                             <div class="chox-form-std-label-longer" style="padding-left: 12px;">Please enter the percentage chance of an individual claim entering the Audit Process.</div>
                         </div>
-                    </div>
 </s:if>
+<s:if test="isChoxAdmin">
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="fraudCheckEnable" value="fraudCheckEnable" /></div><label class="chox-form-std-label"><b>Enable Fraud Check</b></label>
+                            <div class="chox-form-std-label-longer" style="padding-left: 12px;">Enable a Fraud Check to be run on Claims and Invoices.</div>
+                        </div>
+</s:if>
+                    </div>
 
 <s:if test="subscriberClaimsEnabled">                         
                     <div class="admin-bre-band-detail-section">
@@ -1501,13 +1492,6 @@
                     </div>
 </s:if>     
 <s:if test="isChoxAdmin">
-                    <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Fraud Check</div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="fraudCheckEnable" value="fraudCheckEnable" /></div><label class="chox-form-std-label"><b>Enable Fraud Check</b></label>
-                            <div class="chox-form-std-label-longer" style="padding-left: 12px;">Enable a Fraud Check to be run on Claims and Invoices.</div>
-                        </div>
-                    </div>
 
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Penalty Charges</div>

@@ -131,7 +131,7 @@ public class HireUpdate extends BaseActivity {
         if (isHireStartUpdate) {
             claimService.addOnHireTask(claim);
         }
-        if (updateInsurer) {
+        if (updateInsurer || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
         }
     }

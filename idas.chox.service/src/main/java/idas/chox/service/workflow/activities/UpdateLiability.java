@@ -22,9 +22,11 @@ public class UpdateLiability extends BaseActivity {
     private String claimNumber;
     private BigDecimal percentageLiabilityAccepted;
     private BigDecimal percentageLiabilityCho;
+    private BigDecimal indemnityAmount;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private String claimReviewNotes;
+    private String indemnityStance;
     // </editor-fold>
 
 
@@ -78,6 +80,23 @@ public class UpdateLiability extends BaseActivity {
                 && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         }
+        if (indemnityStance != null && !indemnityStance.isEmpty() && (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
+            claim.setIndemnityStance(indemnityStance);
+            // Add Note
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
+        } else if ((indemnityStance==null || indemnityStance.isEmpty()) && (claim.getIndemnityStance() != null || !claim.getIndemnityStance().isEmpty())) {
+            claim.setIndemnityStance(null);
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance has been removed"));
+        }
+        claim.setIndemnityAmount(indemnityAmount);
+    }
+
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
     }
 
 
@@ -159,8 +178,16 @@ public class UpdateLiability extends BaseActivity {
 		return claimReviewNotes;
 	}
 
+    public void setClaimReviewNotes(String claimReviewNotes) {
+	this.claimReviewNotes = claimReviewNotes;
+    }
 
-	public void setClaimReviewNotes(String claimReviewNotes) {
-		this.claimReviewNotes = claimReviewNotes;
-	}
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public void setIndemnityAmount(BigDecimal indemnityAmount) {
+        this.indemnityAmount = indemnityAmount;
+    }
+
 }

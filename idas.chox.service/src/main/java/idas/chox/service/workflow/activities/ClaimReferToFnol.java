@@ -41,6 +41,15 @@ public class ClaimReferToFnol extends BaseActivity {
     protected boolean claimRouted = false;
     protected boolean ownerAssigned = false;
     protected boolean claimNumberUpdated = false;
+    private String indemnityStance;
+
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
+    }
 
     public WebUser getClaimOwner() {
         return claimOwner;
@@ -237,6 +246,11 @@ public class ClaimReferToFnol extends BaseActivity {
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.newComment(0, new StringBuilder().append("Supporting Liability Notes: ").append(supportingLiabilityNotes).toString()));
+        }
+        if (indemnityStance != null && !indemnityStance.isEmpty() && (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
+            claim.setIndemnityStance(indemnityStance);
+            // Add Note
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);

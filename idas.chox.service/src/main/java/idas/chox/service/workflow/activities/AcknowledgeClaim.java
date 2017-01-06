@@ -33,11 +33,18 @@ public class AcknowledgeClaim extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     protected boolean liabilityUpdated = false;
     protected boolean claimNumberUpdated = false;
-    
+    private String indemnityStance;
 
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Parameter Getters and Setters">
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
+    }
 
-    // <editor-fold defaultstate="collapsed" desc="Parameters">
+    public String getIndemnityStance() {    
+        return indemnityStance;
+    }
+
     public void setIndemnityAmount(BigDecimal indemnityAmount) {
         this.indemnityAmount = indemnityAmount;
     }
@@ -49,7 +56,6 @@ public class AcknowledgeClaim extends BaseActivity {
             this.claimNumber = claimNumber;
         }
     }
-    // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
@@ -65,7 +71,6 @@ public class AcknowledgeClaim extends BaseActivity {
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
-    // </editor-fold>
 
     public String getAcceptanceReason() {
         return acceptanceReason;
@@ -107,6 +112,7 @@ public class AcknowledgeClaim extends BaseActivity {
     public LiabilityStatus getLiabilityStatus() {
         return liabilityStatus;
     }
+    // </editor-fold>
 
     @Override
     public boolean needsClaimLockedCheck() {
@@ -165,6 +171,13 @@ public class AcknowledgeClaim extends BaseActivity {
         if (ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
             claim.setRemainingSlaDays(null);
             claim.setRemainingSlaDaysInt(null);
+        }
+        
+        if (indemnityStance != null && !indemnityStance.isEmpty() &&
+                (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
+            claim.setIndemnityStance(indemnityStance);
+            // Add Note
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
         }
     }
 

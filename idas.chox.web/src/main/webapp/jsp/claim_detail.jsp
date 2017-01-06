@@ -660,12 +660,12 @@
                     </tr>
                     <tr>
                         <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityStatusLableId"><s:property value="liabilityStatus" /></span></label></td>
-                        <td><label class="chox-claim-header-label">Percentage Liability Agreed (Insurer)</label><label class="chox-claim-header-text"><span id="ClaimDetailsPercentageLiablityAggreedLableId"><s:property value="formattedInsLiab" />%</span></label></td>
-                        <td><label class="chox-claim-header-label">Percentage Liability Agreed (CHO)</label><label class="chox-claim-header-text"><s:property value="formattedChoLiab" />%</label></td>
+                        <td><label class="chox-claim-header-label">% Liability Agreed</label><label class="chox-claim-header-text"><span id="ClaimDetailsPercentageLiablityAggreedLableId"><s:property value="formattedLiability" /></span></label></td>
+                        <td><label class="chox-claim-header-label">Indemnity Stance </label><label class="chox-claim-header-text"><s:property value="indemnityStance" /></label></td>
                     </tr>
                     <tr>
                         <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityAggreedDateLableId"><s:property value="liabilityAgreedDate" /></span></label></td>
-                        <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
+                        <td><label class="chox-claim-header-label">Reserve Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
                         <td><label class="chox-claim-header-label">Claim Type</label><label class="chox-claim-header-text"><span id="ClaimDetailsClaimTypeLableId"><s:property value="claimType" /></span></label></td>
                     </tr>
                     <tr>

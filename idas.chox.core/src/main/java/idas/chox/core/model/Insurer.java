@@ -89,6 +89,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean acceptanceReasonEnable;
     private boolean enableKbbsDashboard;
     private boolean enableLouDates;
+    private boolean enableManualLouDates;
     private boolean allowDefaultHMUpdates;
     private String kbbsManagerPassword;
     private String kbbsOperativePassword;
@@ -107,6 +108,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setEnableLouDates(boolean enableLouDates) {
         this.enableLouDates = enableLouDates;
+    }
+
+    public boolean isEnableManualLouDates() {
+        return enableManualLouDates;
+    }
+
+    public void setEnableManualLouDates(boolean enableManualLouDates) {
+        this.enableManualLouDates = enableManualLouDates;
     }
 
     public boolean isEnableKbbsDashboard() {

@@ -153,8 +153,7 @@ function refreshDesc(id){
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Indemnity Value</label>
+                                    <label>Reserve Value</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>

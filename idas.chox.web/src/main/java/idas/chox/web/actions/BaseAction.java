@@ -188,7 +188,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean isInsurerLouDatesEnabled() {
         if (getIsInsurer()) {
-            return getAuthenticatedUser().getInsurer().isEnableLouDates();
+            return getAuthenticatedUser().getInsurer().isEnableLouDates() || getAuthenticatedUser().getInsurer().isEnableManualLouDates();
         }
 
         return false;

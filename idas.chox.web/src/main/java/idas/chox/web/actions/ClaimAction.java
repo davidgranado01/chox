@@ -1713,7 +1713,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isInsurerLouDates() {
-        return getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isEnableLouDates() && !ClaimType.isInsurerUpload(claim.getClaimType());
+        return getAuthenticatedUser().isAnInsurer() && ((getAuthenticatedUser().getInsurer().isEnableLouDates() && !ClaimType.isInsurerUpload(claim.getClaimType()))
+                || (getAuthenticatedUser().getInsurer().isEnableManualLouDates() && ClaimType.isInsurerUpload(claim.getClaimType())));
     }
 
     public boolean getIsInsurerInvoice() {
@@ -2219,13 +2220,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-    public BigDecimal getFormattedInsLiab() {
-        return claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityAccepted();
+    public String getFormattedLiability() {
+        return String.format("(Insurer) %s%% (CHO) %s%%", claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityAccepted().toPlainString(),
+                claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityCho().toPlainString());
     }
 
-    public BigDecimal getFormattedChoLiab() {
-        return claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityCho();
-    }
+//    public BigDecimal getFormattedInsLiab() {
+//        return claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityAccepted();
+//    }
+
+//    public BigDecimal getFormattedChoLiab() {
+//        return claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityCho();
+//    }
 
     public int getId() {
         return id;

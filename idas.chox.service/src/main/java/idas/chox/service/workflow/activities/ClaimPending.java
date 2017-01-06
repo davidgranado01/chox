@@ -19,6 +19,7 @@ public class ClaimPending extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimPending.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
+    private String indemnityStance;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isQuantumDispute;
@@ -64,8 +65,15 @@ public class ClaimPending extends BaseActivity {
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
 
     // </editor-fold>
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
+    }
+
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -141,7 +149,6 @@ public class ClaimPending extends BaseActivity {
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-
     }
 
     @Override
@@ -152,6 +159,11 @@ public class ClaimPending extends BaseActivity {
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.newComment(0, new StringBuilder().append("Supporting Liability Notes: ").append(supportingLiabilityNotes).toString()));
+        }
+        if (indemnityStance != null && !indemnityStance.isEmpty() && (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
+            claim.setIndemnityStance(indemnityStance);
+            // Add Note
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_PENDING);

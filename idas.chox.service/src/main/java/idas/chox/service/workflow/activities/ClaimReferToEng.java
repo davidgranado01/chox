@@ -19,6 +19,7 @@ public class ClaimReferToEng extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReferToEng.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
+    private String indemnityStance;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isInvoiceReviewRequired;
@@ -30,6 +31,14 @@ public class ClaimReferToEng extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     protected boolean liabilityUpdated = false;
     protected boolean claimNumberUpdated = false;
+
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
+    }
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
@@ -114,6 +123,11 @@ public class ClaimReferToEng extends BaseActivity {
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+        }
+        if (indemnityStance != null && !indemnityStance.isEmpty() && (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
+            claim.setIndemnityStance(indemnityStance);
+            // Add Note
+            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);

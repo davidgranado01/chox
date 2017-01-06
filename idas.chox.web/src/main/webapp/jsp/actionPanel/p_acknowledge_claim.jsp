@@ -162,7 +162,7 @@ function refreshDesc(id){
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
-                                <td>
+                                <td align="right">
                                     <label>Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
@@ -185,13 +185,24 @@ function refreshDesc(id){
                                 </td>
                             </tr>
                             <tr>
-                                <td width="20%">
-                                    <label>Indemnity Value</label>
+                                <td><label>Indemnity Stance</label></td>
+                                <td>
+                                    <select id="indemnityStance" name="indemnityStance">
+                                        <option value="">-- Please Select--</option>
+                                        <option value="Dealing Under Article 75">Dealing Under Article 75</option>
+                                        <option value="Dealing Under Road Traffic Act">Dealing Under Road Traffic Act</option>
+                                        <option value="No Involvement">No Involvement</option>
+                                        <option value="Not Indemnifying">Not Indemnifying</option>
+                                        <option value="Pending Indemnity">Pending Indemnity</option>
+                                        <option value="Providing Indemnity">Providing Indemnity</option>
+                                    </select>
+                                </td>
+                                <td width="20%" align="right">
+                                    <label>Reserve Value</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
                                 </td>
-                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>

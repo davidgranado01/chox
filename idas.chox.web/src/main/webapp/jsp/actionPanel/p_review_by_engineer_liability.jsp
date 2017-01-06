@@ -28,8 +28,8 @@
                     max :"'Liability Percentage Agreed (CHO)' Must Be Less Than Or Equal To 100."
                 },
                 indemnityAmount: {
-                    required:"You Must Supply A Valid 'Indemnity Value'",
-                    number:"You Must Supply A Numeric Value For 'Indemnity Value'"
+                    required:"You Must Supply A Valid 'Reserve Value'",
+                    number:"You Must Supply A Numeric Value For 'Reserve Value'"
                 }
             }
         });
@@ -132,7 +132,7 @@
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>Indemnity Value <span class="mandatory">*</span></label>
+                                    <label>Reserve Value <span class="mandatory">*</span></label>
                                 </td>
                                 <td>
                                     <input type="text" id="RBELindemnityAmountId" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>

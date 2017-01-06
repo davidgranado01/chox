@@ -38,6 +38,7 @@ public class ClaimFileReportData {
     private String customer;
     private String status;
     private String liabilityStatus;
+    private String indemnityStance;
     private String contactDate;
     private String claimOwner;
     private String supplierClaimOwner;
@@ -340,11 +341,17 @@ public class ClaimFileReportData {
             } else {
                 liabilityStatus = claim.getLiabilityStatus().toString();
             }
+            if (claim.getIndemnityStance() == null) {
+                indemnityStance = "";
+            } else {
+                indemnityStance = claim.getIndemnityStance();
+            }
             if (currentUser.isAnInsurer()) {
                 isInsurerOrAdmin = true;
                 isInsurer = true;
                 finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
-                if (currentUser.getInsurer().isEnableLouDates()) {
+                if ((ClaimType.isInsurerUpload(claim.getClaimType()) && currentUser.getInsurer().isEnableManualLouDates())
+                        || (!ClaimType.isInsurerUpload(claim.getClaimType()) && currentUser.getInsurer().isEnableLouDates())) {
                     isInsurerHireMonitoring = true;
                     InsurerHireMonitoringDetail hmd = claim.getInsurerHireMonitoringDetail();
                     if (hmd != null) {
@@ -863,6 +870,14 @@ public class ClaimFileReportData {
 
     public void setLiabilityStatus(String liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
+    }
+
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
     }
 
     public String getSolicitorEmail() {

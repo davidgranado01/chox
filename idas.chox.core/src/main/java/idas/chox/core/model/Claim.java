@@ -48,6 +48,7 @@ public class Claim extends Entity implements Serializable {
     private String previousStatus;
     private String remainingSlaDays;
     private String userMarkedWithSolicitor;
+    private String indemnityStance;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private BigDecimal percentageLiabilityCho;
@@ -89,6 +90,14 @@ public class Claim extends Entity implements Serializable {
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
+    }
+
+    public String getIndemnityStance() {
+        return indemnityStance;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
     }
 
     public boolean isSentToKeoghs() {

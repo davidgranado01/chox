@@ -76,7 +76,7 @@ public class ExtraAction {
         } else if (extraAction.equalsIgnoreCase(ESCALATE_UNASSIGNED_CLAIM)) {
             returnStr = "Re-assign Workgroup";
         } else if (extraAction.equalsIgnoreCase(UPDATE_LIABILITY)) {
-            returnStr = "Update Liability";
+            returnStr = "Update Liability/Indemnity";
         } else if (extraAction.equalsIgnoreCase(UPDATE_CLAIM_SUPPLIER_OWNER)) {
             returnStr = "Update Claim Owner";
         } else if (extraAction.equalsIgnoreCase(MAKE_INTERIM_PAYMENT)) {

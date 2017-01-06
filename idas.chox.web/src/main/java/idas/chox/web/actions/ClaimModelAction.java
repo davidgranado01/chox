@@ -135,6 +135,11 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         return model;
     }
 
+    public boolean getAllowUpdateInsurer() {
+        return !claim.getInsurer().isAllowDefaultHMUpdates();
+    }
+
+
     // <editor-fold defaultstate="collapsed" desc="Services">
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;

@@ -913,11 +913,15 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Insurer LOU Dates</label>
+                                        <label class="chox-form-std-label">Enable Insurer LOU Dates - Full CHOX</label>
                                         <s:checkbox name="enableLouDates" value="enableLouDates" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                                 <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Insurer LOU Dates - Manual CHOX</label>
+                                        <s:checkbox name="enableManualLouDates" value="enableManualLouDates" onclick="doPageLoadCheck(this);"/>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

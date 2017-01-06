@@ -563,7 +563,7 @@
                 <input type="button" id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox disabled='true' name="updateInsurer" /><label>Update Insurer</label>
             </s:if>
             <s:else>
-                <input type="button" id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="updateInsurer" /><label>Update Insurer</label>
+                <input type="button" id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/><s:if test="allowUpdateInsurer">&nbsp;&nbsp;&nbsp;<s:checkbox name="updateInsurer" /><label>Update Insurer</label></s:if>
             </s:else>
            </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg">
