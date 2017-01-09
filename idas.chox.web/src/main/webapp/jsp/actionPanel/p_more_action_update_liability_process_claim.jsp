@@ -8,7 +8,6 @@
         $(function() {
             $("#indemnityStance").val("<s:property value="indemnityStance" />");
         });
-console.log("Set to 'indemnityStance'");
     });
 </script>
 

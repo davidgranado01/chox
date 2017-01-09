@@ -111,14 +111,14 @@
 
                                 </td>
                                 <td>
-                                    <input type="text"  class="chox-ttxt-readonly" readonly name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />" onkeyup="extractNumber(this,2,false);"/>
+                                    <input type="text"  class="chox-ttxt-readonly" readonly name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
-                                <td>
+                                <td align="right">
                                     <label>
                                         Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt-readonly" readonly name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />" onkeyup="extractNumber(this,2,false);"/>
+                                    <input type="text" class="chox-ttxt-readonly-small" readonly name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
@@ -131,14 +131,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td width="20%">
-                                    <label>Reserve Value <span class="mandatory">*</span></label>
+                                <td><label>Indemnity Stance</label></td>
+                                <td>
+                                    <input type="text" class="chox-ttxt-readonly" readonly  name="showIndemnityStance"  value="<s:property value="indemnityStance" />"/>
+                                </td>
+                                <td width="20%" align="right">
+                                    <label>Reserve Value</label>
                                 </td>
                                 <td>
-                                    <input type="text" id="RBELindemnityAmountId" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
-                                </td>
-                                <td colspan="2">
-                                    <label></label>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
                                 </td>
                             </tr>
                             <tr>

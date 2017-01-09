@@ -8,8 +8,8 @@ Ext.onReady(function() {
     var rejectionDescField = new Ext.form.TextArea({
         name             : 'rejectionDescription',
         id               : 'rejecDescJspfId',
-        width            :  350,
-        height           :  80,
+        width            :  620,
+        height           :  47,
         allowBlank       :  false,
         renderTo         : 'rejectionDescJspfId',
         disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
@@ -53,7 +53,11 @@ Ext.onReady(function() {
         }
 
 </s:if>
+    $(function() {
+            $("#indemnityStance").val("<s:property value="indemnityStance" />");
+        });
 });
+
 var reasonOfRejectionDescReader = new Ext.data.JsonReader({
     fields:[{name:'id'},{name:'description'}]
 });
@@ -181,7 +185,7 @@ function refreshDesc(id){
                                     <label>Supporting Liability Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="3" name="supportingLiabilityNotes" id="supportingLiabilityNotesId"><s:property value="supportingLiabilityNotes" /></textarea>
+                                    <textarea class="chox-canote" rows="3" name="supportingLiabilityNotes" id="supportingLiabilityNotesId"><s:property value="supportingLiabilityNotes" /></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -229,7 +233,7 @@ function refreshDesc(id){
                                     <label>Claim Review Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="3" id="ACengineerClaimReviewNotesId" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                    <textarea class="chox-canote" cols="85" rows="3" id="ACengineerClaimReviewNotesId" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
                             <tr valign="top">

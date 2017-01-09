@@ -189,6 +189,14 @@ fieldset div
     background-color:#e4e4e4;
 }
 
+.chox-ttxt-readonly-small
+{
+    border: 1px solid #B5B8C8;
+    padding: 1px 3px;
+    width: 140px;
+    background-color:#e4e4e4;
+}
+
 .chox-ttxt-readonly-TakeVehicleToGarageDaysMobile{
     border: 1px solid #B5B8C8;
     padding: 1px 3px;
@@ -228,7 +236,7 @@ fieldset div
 {
     font-family:inherit;
     font-size:inherit;
-    width: 600px;
+    width: 622px;
 }
 
 .chox-tta
