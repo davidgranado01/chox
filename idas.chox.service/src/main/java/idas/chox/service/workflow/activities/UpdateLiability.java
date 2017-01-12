@@ -84,7 +84,7 @@ public class UpdateLiability extends BaseActivity {
             claim.setIndemnityStance(indemnityStance);
             // Add Note
             claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
-        } else if ((indemnityStance==null || indemnityStance.isEmpty()) && (claim.getIndemnityStance() != null || !claim.getIndemnityStance().isEmpty())) {
+        } else if ((indemnityStance==null || indemnityStance.isEmpty()) && claim.getIndemnityStance() != null) {
             claim.setIndemnityStance(null);
             claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance has been removed"));
         }
