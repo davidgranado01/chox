@@ -105,7 +105,7 @@
             autoHeight: true,
             labelWidth: 210,
             frame: true,
-            title: '<div class="status-info">A saving of £<s:property value="invoiceSavingValue"/> was made on this invoice. Please select from the following failed Business Rules the approximate %age of the saving for any business rule which contributed to this saving.</div>',
+            title: '<div class="status-info">A saving of £<s:property value="invoiceSavingValue"/> was made on this invoice. Please select from the following failed Business Rules the approximate percentage of the saving for any business rule which contributed to this saving.</div>',
             buttonAlign: 'center',
             items: [
                 checkGroup
