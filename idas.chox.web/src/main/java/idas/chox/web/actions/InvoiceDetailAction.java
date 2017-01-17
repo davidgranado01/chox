@@ -2657,13 +2657,20 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         LOG.debug("total extras {}", totalExtras);
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0)) {
+          try {
             if (ClaimType.isTPI(claim.getClaimType()) && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
-                setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+                try {
+                    setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+                } catch (Exception ex) {
+                    setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+                }
             } else {
                 setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
             }
             LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
-
+          } catch (Exception ex) {
+                hire_vat_used = Vat_Rate;
+          }
         } else {
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
             hire_vat_used = Vat_Rate;
