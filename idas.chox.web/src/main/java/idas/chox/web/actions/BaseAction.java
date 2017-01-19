@@ -500,16 +500,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || ex.getCause() instanceof StaleObjectStateException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
-            ex = new Exception("This claim was modified by another user - please try aain.", ex);
+            ex = new Exception("This claim was modified by another user - please try again.", ex);
         } else if (ex instanceof DataIntegrityViolationException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
-            ex = new Exception("An internal error occurred - please try aain. If the problem persists, please contact CHOX support.", ex);
+            ex = new Exception("An internal error occurred - please try again. If the problem persists, please contact CHOX support.", ex);
         } else if (ex instanceof AccessDeniedException) {
             LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
 //            throw (AccessDeniedException)ex;
         } else {
             LOG.trace("Exception is: {}", ex.getMessage());
-//            ex = new Exception("An internal error occurred - please try aain. If the problem persists, please contact CHOX support.", ex);
+//            ex = new Exception("An internal error occurred - please try again. If the problem persists, please contact CHOX support.", ex);
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
