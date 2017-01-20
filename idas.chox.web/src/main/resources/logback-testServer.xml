@@ -1,13 +1,13 @@
 <included>
     <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-springstruts.log</File>
+        <File>${catalina.base}/logs/idaschox-springstruts-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -20,7 +20,7 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error \(Test\)</Subject>
+        <Subject>CHOX Application Error \(Test PenTest\)</Subject>
         <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@valexa.com</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
@@ -38,13 +38,13 @@
     
     <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/webServices.log</File>
+        <File>${catalina.base}/logs/webServices-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -55,13 +55,13 @@
     </appender>
     <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
+        <File>${catalina.base}/logs/idaschox-ehCacheManager-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -73,13 +73,13 @@
     
     <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
+        <File>${catalina.base}/logs/idaschox-hibernate-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -91,13 +91,13 @@
     
     <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox.log</File>
+        <File>${catalina.base}/logs/idaschox-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -110,13 +110,13 @@
     
     <appender name="Q" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-quartz.log</File>
+        <File>${catalina.base}/logs/idaschox-quartz-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-quartz.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-quartz-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -128,13 +128,13 @@
     
     <appender name="MQ" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-activeMQ.log</File>
+        <File>${catalina.base}/logs/idaschox-activeMQ-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ-penTest.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -146,13 +146,13 @@
 
     <appender name="RD" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-requestDump.log</File>
+        <File>${catalina.base}/logs/idaschox-requestDump-penTest.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump.log.%i.zip</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump-penTest.log.%i.zip</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
