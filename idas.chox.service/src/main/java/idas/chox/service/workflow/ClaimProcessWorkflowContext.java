@@ -1,5 +1,6 @@
 package idas.chox.service.workflow;
 
+import com.google.common.eventbus.EventBus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.BreBandService;
@@ -16,7 +17,16 @@ public class ClaimProcessWorkflowContext implements WorkflowContext {
     private AutomaticRoutingService automaticRoutingService;
     private BreBandService breBandService;
     private ClaimService claimService;
+    private EventBus eventBus;
 
+    public EventBus getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
+    }
+    
     public ClaimService getClaimService() {
         return claimService;
     }

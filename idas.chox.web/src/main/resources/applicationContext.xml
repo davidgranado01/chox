@@ -223,5 +223,12 @@
         <property name="passwordParam" value="EXCEL"/>
         <property name="initialsParam" value="er"/>
     </bean>
-    
+
+<!--
+    <bean id="eventBus" class="com.google.common.eventbus.EventBus"/>
+    <bean id="eventBusPostProcessor" class="idas.chox.service.events.EventBusPostProcessor">
+        <property name="eventBus" ref="eventBus"/>
+    </bean>
+-->
+
 </beans>
