@@ -287,6 +287,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         if (!claim.getBreBand().isEnableGtaDiscount()) {
+            if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+            }
             LOG.debug("GTA discount not added as disabled in BRE band.");
             return;
         }
