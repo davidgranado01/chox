@@ -6,6 +6,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.TaskService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class InvoiceRejectionAccept extends BaseActivity {
 
@@ -41,7 +42,10 @@ public class InvoiceRejectionAccept extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

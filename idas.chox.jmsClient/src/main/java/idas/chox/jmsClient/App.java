@@ -1,6 +1,6 @@
 package idas.chox.jmsClient;
 
-import idas.chox.events.Event;
+import idas.chox.events.old.Event;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;

@@ -1,4 +1,4 @@
-package idas.chox.events;
+package idas.chox.events.old;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

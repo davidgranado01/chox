@@ -12,6 +12,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class PaymentNotReceived extends BaseActivity {
 
@@ -92,7 +93,10 @@ public class PaymentNotReceived extends BaseActivity {
      */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

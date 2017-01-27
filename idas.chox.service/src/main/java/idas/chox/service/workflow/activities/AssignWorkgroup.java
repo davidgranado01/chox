@@ -76,4 +76,5 @@ public class AssignWorkgroup extends BaseActivity {
     public void setWorkgroupId(int workgroupId) {
         this.workgroupId = workgroupId;
     }
+
 }

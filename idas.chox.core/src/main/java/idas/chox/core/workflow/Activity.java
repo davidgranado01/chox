@@ -14,6 +14,7 @@ public interface Activity {
     
     public String getMessage();
     
+    
     /*
      * this method is implemented in BaseActivity class and in default it return false.
      * this below method added to identify, from where the activity process is called eg.  (1. from the UI  2. from XML upload ) 

@@ -16,6 +16,7 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.NotificationService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class SwitchClaim extends BaseActivity {
     
@@ -125,7 +126,10 @@ public class SwitchClaim extends BaseActivity {
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged
          */
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         claim.setStatus(null);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

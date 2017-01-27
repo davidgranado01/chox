@@ -12,6 +12,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 
 public class NewSupplementaryInvoice extends BaseActivity {
@@ -60,7 +61,10 @@ public class NewSupplementaryInvoice extends BaseActivity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
 
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

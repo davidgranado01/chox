@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.TaskService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class ClaimRejectionAccept extends BaseActivity {
 
@@ -24,7 +25,10 @@ public class ClaimRejectionAccept extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

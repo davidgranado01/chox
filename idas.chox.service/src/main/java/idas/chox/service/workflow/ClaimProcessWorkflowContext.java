@@ -1,6 +1,7 @@
 package idas.chox.service.workflow;
 
-import com.google.common.eventbus.EventBus;
+import net.engio.mbassy.bus.MBassador;
+
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.BreBandService;
@@ -17,16 +18,17 @@ public class ClaimProcessWorkflowContext implements WorkflowContext {
     private AutomaticRoutingService automaticRoutingService;
     private BreBandService breBandService;
     private ClaimService claimService;
-    private EventBus eventBus;
+    private MBassador mBassador;
 
-    public EventBus getEventBus() {
-        return eventBus;
+    public MBassador getMBassador() {
+        return mBassador;
     }
 
-    public void setEventBus(EventBus eventBus) {
-        this.eventBus = eventBus;
+    public void setMBassador(MBassador mBassador) {
+        this.mBassador = mBassador;
     }
     
+    @Override
     public ClaimService getClaimService() {
         return claimService;
     }

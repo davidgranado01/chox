@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class ClaimRejectionContest extends BaseActivity {
     
@@ -53,7 +54,10 @@ public class ClaimRejectionContest extends BaseActivity {
                 }
             }
         }
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

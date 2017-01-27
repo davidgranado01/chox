@@ -24,7 +24,6 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
-import idas.chox.service.events.TestEvent;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
@@ -43,7 +42,6 @@ public abstract class BaseActivity implements Activity {
     protected ActivityEventGenerator activityEventGenerator;
     @Autowired
     protected ClaimService claimService;
-
 
     public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
         this.activityEventGenerator = activityEventGenerator;
@@ -193,8 +191,10 @@ public abstract class BaseActivity implements Activity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
 
-        activityEventGenerator.generate(claim, this);
-        ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new TestEvent(this.getClass().getName()));
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
+        
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

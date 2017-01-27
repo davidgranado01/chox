@@ -14,6 +14,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.keoghs.Keoghs;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class NewInvoice extends BaseActivity {
@@ -232,7 +233,10 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Processing next chain activity.");
@@ -335,4 +339,5 @@ public class NewInvoice extends BaseActivity {
             }
         }
     }
+
 }

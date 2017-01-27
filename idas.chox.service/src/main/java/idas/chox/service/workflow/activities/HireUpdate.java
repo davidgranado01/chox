@@ -13,6 +13,7 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.HireVehicleUpdatedNotification;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 
 public class HireUpdate extends BaseActivity {
@@ -127,7 +128,10 @@ public class HireUpdate extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) {
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         if (isHireStartUpdate) {
             claimService.addOnHireTask(claim);
         }

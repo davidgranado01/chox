@@ -14,7 +14,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.model.Auditable;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.FullAudit;
@@ -66,18 +65,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             }
         }
 
-        if (entity instanceof Invoice) {
-            Invoice invoice = (Invoice) entity;
-            InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
-            InvoiceOriginal invoiceOriginal = invoiceService.saveOriginalInvoice(invoice);
-            for (int i = 0; i < propertyNames.length; i++) {
-                if ("invoiceOriginal".equals(propertyNames[i])) {
-
-                    state[i] = invoiceOriginal;
-                    break;
-                }
-            }
-        } else if (entity instanceof HireMonitoringDetail) {
+        if (entity instanceof HireMonitoringDetail) {
 
             Integer indexOfInspectionBookedDate = null;
             Integer indexOfInspectionBookedDateLastModified = null;

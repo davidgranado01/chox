@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
-import idas.chox.events.EventRegister;
+import idas.chox.events.old.EventRegister;
 
 /**
  *

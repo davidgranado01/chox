@@ -8,6 +8,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.TaskService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class SubscriberClaimRejectionAccept extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriberClaimRejectionAccept.class);
@@ -48,7 +49,10 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

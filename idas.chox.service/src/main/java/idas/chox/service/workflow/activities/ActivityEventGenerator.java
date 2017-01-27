@@ -1,5 +1,8 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +11,12 @@ import org.springframework.aop.support.AopUtils;
 import idas.chox.core.model.Claim;
 import idas.chox.core.workflow.Activity;
 import idas.chox.data.events.EventGenerator;
+import idas.chox.events.BaseActivityEvent;
+import idas.chox.events.ClaimAcknowledgedEvent;
+import idas.chox.events.ClaimNumberUpdatedEvent;
+import idas.chox.events.ClaimRoutedEvent;
+import idas.chox.events.InvoiceCreatedEvent;
+import idas.chox.events.LiabilityUpdatedEvent;
 
 /**
  *
@@ -53,7 +62,62 @@ public class ActivityEventGenerator {
         }
     }
 
+    public List<BaseActivityEvent> getEvents(final Claim claim, Activity activity) {
+        ArrayList events = new ArrayList();
+        
+        String activityName = AopUtils.getTargetClass(activity).getSimpleName();
+        
+        switch(activityName) {
+            case "AcknowledgeClaim":
+                if (((AcknowledgeClaim) activity).liabilityUpdated) {
+                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((AcknowledgeClaim)activity).getLiabilityStatus()));
+                }
+                if (((AcknowledgeClaim) activity).claimNumberUpdated) {
+                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((AcknowledgeClaim)activity).getClaimNumber()));
+                }
+                events.add(new ClaimAcknowledgedEvent(claim, activityName));
+                break;
 
+            case "AssignWorkgroup":
+                events.add(new ClaimRoutedEvent(claim, activityName, ((AssignWorkgroup)activity).getWorkgroup().getId(), ((AssignWorkgroup)activity).getWorkgroup().getName()));
+                break;
+
+            case "NewInvoice":
+                if (((NewInvoice) activity).claimRouted) {
+                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                }
+//                if (((NewInvoice) activity).claimOwnerAssigned) {
+//                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (NewInvoice) activity, claim);
+//                }
+//                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (NewInvoice) activity, claim);
+//                if (((NewInvoice) activity).invoiceAccepted) {
+//                    ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (NewInvoice) activity, claim);
+//                }
+                events.add(new InvoiceCreatedEvent(claim, activityName));
+                break;
+
+            case "InsurerUpload":
+                if (((InsurerUpload) activity).claimRouted) {
+                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                }
+//                if (((InsurerUpload) activity).claimOwnerAssigned) {
+//                    ActivityEvent.INSURER_OWNER_ASSIGNED_EVENT.build(this, (InsurerUpload) activity, claim);
+//                }
+//                ActivityEvent.INVOICE_UPLOADED_EVENT.build(this, (InsurerUpload) activity, claim);
+//                ActivityEvent.INVOICE_SUBMITTED_EVENT.build(this, (InsurerUpload) activity, claim);
+                events.add(new InvoiceCreatedEvent(claim, activityName));
+                break;
+
+            default:
+                events.add(new BaseActivityEvent(claim, activityName));
+        }
+        
+        // Uncomment below to generate "original" events to activeMQ broker
+//        generate(claim, activity);
+
+        return events;
+    }
+    
     public void generate(final Claim claim, Activity activity) {
 //        activity.generateEvents(claim);
         

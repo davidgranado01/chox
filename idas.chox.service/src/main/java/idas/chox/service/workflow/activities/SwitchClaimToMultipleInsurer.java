@@ -19,6 +19,7 @@ import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.TaskService;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
@@ -174,7 +175,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         /*
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged

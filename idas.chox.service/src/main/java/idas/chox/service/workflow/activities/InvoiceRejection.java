@@ -7,6 +7,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class InvoiceRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejection.class);
@@ -60,7 +61,10 @@ public class InvoiceRejection extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
-        activityEventGenerator.generate(claim, this);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

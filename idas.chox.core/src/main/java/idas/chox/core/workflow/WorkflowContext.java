@@ -33,5 +33,4 @@ public interface WorkflowContext {
     
     public ClaimService getClaimService();
 
-
 }

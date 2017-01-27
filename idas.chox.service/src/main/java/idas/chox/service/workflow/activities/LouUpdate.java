@@ -13,6 +13,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.NotificationService;
 import idas.chox.data.notifications.HireUpdatedNotification;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 
 public class LouUpdate extends BaseActivity {
@@ -364,7 +365,10 @@ public class LouUpdate extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) {
-        activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+        });
         if (updateInsurer) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());
         }
