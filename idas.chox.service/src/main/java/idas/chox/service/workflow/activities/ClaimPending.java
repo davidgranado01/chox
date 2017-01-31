@@ -30,8 +30,8 @@ public class ClaimPending extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    protected boolean liabilityUpdated = false;
-    protected boolean claimNumberUpdated = false;
+    private boolean liabilityUpdated = false;
+    private boolean claimNumberUpdated = false;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -68,8 +68,15 @@ public class ClaimPending extends BaseActivity {
     public String getIndemnityStance() {
         return indemnityStance;
     }
+    public boolean isLiabilityUpdated() {
+        return liabilityUpdated;
+    }
 
     // </editor-fold>
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
+    }
+
     public void setIndemnityStance(String indemnityStance) {
         this.indemnityStance = indemnityStance;
     }

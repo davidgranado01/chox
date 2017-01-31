@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.listeners;
 
+import com.google.common.eventbus.Subscribe;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 
@@ -17,15 +18,23 @@ import idas.chox.events.BaseActivityEvent;
 public class BaseActivityListener extends SecureDataService {
     
     private static final Logger LOG = LoggerFactory.getLogger(BaseActivityListener.class);
-    
+    private boolean storeEvents;
+
+    public void setStoreEvents(boolean storeEvents) {
+        this.storeEvents = storeEvents;
+    }
+
     @Handler
-    public void handle(BaseActivityEvent event){
+    @Subscribe
+    public void handle(BaseActivityEvent event) {
         LOG.info("Activity Message received: {}", event);
-        try {
-            save(event);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown saving event: {}", ex.getMessage(), ex);
+        if (storeEvents) {
+            try {
+                save(event);
+            } catch (Exception ex) {
+                LOG.error("Exception thrown saving event: {}", ex.getMessage(), ex);
+            }
         }
-    } 
+    }
 
 }

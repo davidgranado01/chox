@@ -77,8 +77,8 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
-import idas.chox.service.workflow.activities.ActivityEventGenerator;
+import idas.chox.service.workflow.event.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 

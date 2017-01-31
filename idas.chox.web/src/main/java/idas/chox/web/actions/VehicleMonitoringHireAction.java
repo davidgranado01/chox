@@ -13,7 +13,7 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.HireVehicleUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *

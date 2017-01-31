@@ -130,7 +130,7 @@ public class HireUpdate extends BaseActivity {
     protected void afterProcess(Claim claim) {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (isHireStartUpdate) {
             claimService.addOnHireTask(claim);

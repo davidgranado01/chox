@@ -9,7 +9,8 @@ import idas.chox.core.model.Claim;
 public class InvoiceCreatedEvent extends BaseActivityEvent {
     public InvoiceCreatedEvent(){};
 
-    public InvoiceCreatedEvent(Claim claim, String activityName) {
+    public InvoiceCreatedEvent(final Claim claim, String activityName) {
         super(claim, activityName);
+        addInvoiceAttributes(claim);
     }
 }

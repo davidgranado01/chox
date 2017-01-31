@@ -19,10 +19,26 @@ public class NewTpiClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
     private boolean autoRoutedInvoice = false;
-    protected boolean newClaim = false;
-    protected boolean claimRouted = false;
-    protected boolean claimOwnerAssigned = false;
-    protected boolean invoiceAccepted = false;
+    private boolean newClaim = false;
+    private boolean claimRouted = false;
+    private boolean claimOwnerAssigned = false;
+    private boolean invoiceAccepted = false;
+
+    public boolean isNewClaim() {
+        return newClaim;
+    }
+
+    public boolean isClaimRouted() {
+        return claimRouted;
+    }
+
+    public boolean isClaimOwnerAssigned() {
+        return claimOwnerAssigned;
+    }
+
+    public boolean isInvoiceAccepted() {
+        return invoiceAccepted;
+    }
     
     public boolean isAutoRoutedInvoice() {
         return autoRoutedInvoice;
@@ -165,7 +181,7 @@ public class NewTpiClaim extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

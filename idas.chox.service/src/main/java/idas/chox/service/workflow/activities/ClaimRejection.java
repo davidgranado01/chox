@@ -36,8 +36,8 @@ public class ClaimRejection extends BaseActivity {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ReasonOfRejection reasonOfRejection;
-    protected boolean liabilityUpdated = false;
-    protected boolean claimNumberUpdated = false;
+    private boolean liabilityUpdated = false;
+    private boolean claimNumberUpdated = false;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -92,8 +92,15 @@ public class ClaimRejection extends BaseActivity {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
+    public boolean isLiabilityUpdated() {
+        return liabilityUpdated;
+    }
 
     // </editor-fold>
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
+    }
+
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -262,7 +269,7 @@ public class ClaimRejection extends BaseActivity {
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
 
         if (getChainActivity() != null) {

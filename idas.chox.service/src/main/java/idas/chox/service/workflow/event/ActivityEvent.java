@@ -1,4 +1,4 @@
-package idas.chox.service.workflow.activities;
+package idas.chox.service.workflow.event;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,6 +24,61 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
+import idas.chox.service.workflow.activities.AcknowledgeClaim;
+import idas.chox.service.workflow.activities.AddNote;
+import idas.chox.service.workflow.activities.AssignManualInvoiceOwner;
+import idas.chox.service.workflow.activities.AssignOwner;
+import idas.chox.service.workflow.activities.AssignSupplierOwner;
+import idas.chox.service.workflow.activities.AssignWorkgroup;
+import idas.chox.service.workflow.activities.AwaitingLitigationOutcome;
+import idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo;
+import idas.chox.service.workflow.activities.ClaimPending;
+import idas.chox.service.workflow.activities.ClaimReferToEng;
+import idas.chox.service.workflow.activities.ClaimReferToFnol;
+import idas.chox.service.workflow.activities.ClaimRegisterByFnol;
+import idas.chox.service.workflow.activities.ClaimRejection;
+import idas.chox.service.workflow.activities.ClaimRejectionAccept;
+import idas.chox.service.workflow.activities.ClaimRejectionContest;
+import idas.chox.service.workflow.activities.ClaimReviewByEng;
+import idas.chox.service.workflow.activities.CloseClaim;
+import idas.chox.service.workflow.activities.EcdUpdate;
+import idas.chox.service.workflow.activities.FullInvoicePaymentReceived;
+import idas.chox.service.workflow.activities.FullPaymentNotReceived;
+import idas.chox.service.workflow.activities.HireUpdate;
+import idas.chox.service.workflow.activities.InsurerUpload;
+import idas.chox.service.workflow.activities.InvoiceAccepted;
+import idas.chox.service.workflow.activities.InvoicePaymentLogged;
+import idas.chox.service.workflow.activities.InvoicePaymentReceived;
+import idas.chox.service.workflow.activities.InvoiceReferToCH;
+import idas.chox.service.workflow.activities.InvoiceReferToEng;
+import idas.chox.service.workflow.activities.InvoiceRejection;
+import idas.chox.service.workflow.activities.InvoiceRejectionAccept;
+import idas.chox.service.workflow.activities.InvoiceRejectionContest;
+import idas.chox.service.workflow.activities.InvoiceResubmit;
+import idas.chox.service.workflow.activities.MakeInterimPayment;
+import idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged;
+import idas.chox.service.workflow.activities.NewClaim;
+import idas.chox.service.workflow.activities.NewInvoice;
+import idas.chox.service.workflow.activities.NewSupplementaryInvoice;
+import idas.chox.service.workflow.activities.NewTpiClaim;
+import idas.chox.service.workflow.activities.PaymentNotReceived;
+import idas.chox.service.workflow.activities.ReopenClaim;
+import idas.chox.service.workflow.activities.ResolveLiability;
+import idas.chox.service.workflow.activities.RevertClaim;
+import idas.chox.service.workflow.activities.SlaExtension;
+import idas.chox.service.workflow.activities.SubscriberClaimRejectionAccept;
+import idas.chox.service.workflow.activities.SubscriberClaimToGta;
+import idas.chox.service.workflow.activities.SwitchCho;
+import idas.chox.service.workflow.activities.SwitchClaim;
+import idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer;
+import idas.chox.service.workflow.activities.UpdateCaseWithSolicitor;
+import idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal;
+import idas.chox.service.workflow.activities.UpdateInterimPaymentReceived;
+import idas.chox.service.workflow.activities.UpdateLiability;
+import idas.chox.service.workflow.activities.UpdateManualInvoiceAgreeQuantum;
+import idas.chox.service.workflow.activities.UpdateManualInvoiceContested;
+import idas.chox.service.workflow.activities.UpdateManualInvoicePaid;
+import idas.chox.service.workflow.activities.WorkgroupRouting;
 
 /**
  *
@@ -181,7 +236,7 @@ public enum ActivityEvent {
             generator.startEvent(claim, this.getName(), this.getEventId(), false, true);
             addInvoiceParameters(generator, claim);
             List<String> breResult = new ArrayList<>();
-            for (History history : History.New(activity.breResponse)) {
+            for (History history : History.New(activity.getBreResponse())) {
                 if (history.getType().equals("ERROR") && !history.getIsOld() && history.getIsPublic()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
                     breResult.add(result);
@@ -193,7 +248,7 @@ public enum ActivityEvent {
             generator.startEvent(claim, this.getName(), this.getEventId(), true, false);
             addInvoiceParameters(generator, claim);
             breResult = new ArrayList<>();
-            for (History history : History.New(activity.breResponse)) {
+            for (History history : History.New(activity.getBreResponse())) {
                 if (history.getType().equals("ERROR") && !history.getIsOld()) {
                     String result = history.getRuleId() + " : " + history.getType() + " - " + history.getNarrative();
                     breResult.add(result);

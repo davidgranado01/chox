@@ -367,7 +367,7 @@ public class LouUpdate extends BaseActivity {
     protected void afterProcess(Claim claim) {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (updateInsurer) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());

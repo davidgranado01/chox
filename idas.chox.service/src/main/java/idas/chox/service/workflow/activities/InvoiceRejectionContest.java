@@ -15,7 +15,7 @@ public class InvoiceRejectionContest extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejectionContest.class);
     private String supportingLiabilityNotes;
-    protected RulesEngineResponse breResponse = null;
+    public RulesEngineResponse breResponse = null;
 
     public String getSupportingLiabilityNotes() {
         return supportingLiabilityNotes;
@@ -67,7 +67,7 @@ public class InvoiceRejectionContest extends BaseActivity {
         LOG.debug("Claim saved and transaction logged.");
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (getChainActivity() != null) {
             LOG.debug("Processing chained activity...");

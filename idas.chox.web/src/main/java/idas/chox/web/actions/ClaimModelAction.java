@@ -17,8 +17,8 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
-import idas.chox.service.workflow.activities.ActivityEventGenerator;
+import idas.chox.service.workflow.event.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEventGenerator;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 

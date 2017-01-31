@@ -9,7 +9,7 @@
         <property name="businessRulesEngService" ref="businessRulesEngService" />
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="automaticRoutingService" ref="automaticRoutingService"/>
-        <property name="mBassador" ref="mBassador"/>
+        <property name="eventBus" ref="eventBus"/>
     </bean>
     <bean id="activityFactory" class="idas.chox.service.workflow.ActivityFactory" scope="prototype">
         <property name="workflowContext" ref="workflowContext"/>

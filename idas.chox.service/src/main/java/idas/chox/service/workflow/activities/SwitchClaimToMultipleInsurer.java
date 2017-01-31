@@ -177,7 +177,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         /*
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.

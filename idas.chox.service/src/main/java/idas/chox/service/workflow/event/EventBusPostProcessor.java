@@ -1,7 +1,7 @@
-package idas.chox.service;
+package idas.chox.service.workflow.event;
 
+import com.google.common.eventbus.Subscribe;
 import java.lang.reflect.Method;
-import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import org.slf4j.Logger;
@@ -14,28 +14,39 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  */
 public class EventBusPostProcessor implements BeanPostProcessor {
     private static final Logger log = LoggerFactory.getLogger(EventBusPostProcessor.class);
+    private boolean useGuava;
+
+    public void setUseGuava(boolean useGuava) {
+        this.useGuava = useGuava;
+    }
+
 
     
-    public static boolean containsListener(Object bean)
-    {
+    public static boolean containsListener(Object bean) {
         Listener listener = bean.getClass().getAnnotation(Listener.class);
         return listener != null;
     }
     
-    public static boolean containsHandler(Object bean)
-    {
+    public static boolean containsHandler(Object bean) {
         Method[] methods = bean.getClass().getMethods();
-        for(Method method : methods)
-        {
+        for(Method method : methods) {
             Handler handler = method.getAnnotation(Handler.class);
-            if(handler != null)
-            {
+            if(handler != null) {
                 return true;
             }
         }
         return false;
     }
-    
+    public static boolean containsSubscribe(Object bean) {
+        Method[] methods = bean.getClass().getMethods();
+        for(Method method : methods) {
+            Subscribe subscribe = method.getAnnotation(Subscribe.class);
+            if(subscribe != null) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
                   throws BeansException
@@ -47,20 +58,22 @@ public class EventBusPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName)
                   throws BeansException
     {
-        if(containsListener(bean)) {
-            mBassador.subscribe(bean);
+        if(!useGuava && containsListener(bean)) {
+            eventBus.registerListener(bean);
             log.info("Listener Bean registered to MBassador eventBus: {}", beanName);
-        }
-        else if(containsHandler(bean)) {
-            mBassador.subscribe(bean);
+        } else if(useGuava && containsSubscribe(bean)) {
+            eventBus.registerListener(bean);
+            log.info("Listener Bean registered to Guava eventBus: {}", beanName);
+        } else if(!useGuava && containsHandler(bean)) {
+            eventBus.registerListener(bean);
             log.info("Handler Bean registered to MBassador eventBus: {}", beanName);
         }
         return bean;
     }
 
-    private MBassador mBassador;
+    private EventBusWrapper eventBus;
         
-    public void setMBassador(MBassador mBassador) {
-        this.mBassador = mBassador;
+    public void setEventBus(EventBusWrapper eventBus) {
+        this.eventBus = eventBus;
     }
 }

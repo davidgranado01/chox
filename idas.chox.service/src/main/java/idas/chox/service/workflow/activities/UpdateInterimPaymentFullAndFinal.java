@@ -12,9 +12,21 @@ import idas.chox.core.model.Comment;
 public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
-    protected boolean invoiceAccepted = false;
-    protected boolean paymentLogged = false;
-    protected boolean claimReverted = false;
+    private boolean invoiceAccepted = false;
+    private boolean paymentLogged = false;
+    private boolean claimReverted = false;
+
+    public boolean isInvoiceAccepted() {
+        return invoiceAccepted;
+    }
+
+    public boolean isPaymentLogged() {
+        return paymentLogged;
+    }
+
+    public boolean isClaimReverted() {
+        return claimReverted;
+    }
     
     @Override
     protected void validate(Claim claim) throws Exception {

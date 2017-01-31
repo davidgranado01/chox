@@ -25,6 +25,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public abstract class BaseActivity implements Activity {
@@ -192,7 +193,7 @@ public abstract class BaseActivity implements Activity {
         LOG.debug("Claim saved & transaction logged.");
 
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         
         if (getChainActivity() != null) {

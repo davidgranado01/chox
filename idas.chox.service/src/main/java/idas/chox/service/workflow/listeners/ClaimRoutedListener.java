@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.listeners;
 
+import com.google.common.eventbus.Subscribe;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ public class ClaimRoutedListener {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRoutedListener.class);
     
     @Handler
+    @Subscribe
     public void handle(ClaimRoutedEvent event){
         LOG.info("ClaimRoutedEvent Message received: {}", event);
     } 

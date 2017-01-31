@@ -51,7 +51,7 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
 
         if (getChainActivity() != null) {

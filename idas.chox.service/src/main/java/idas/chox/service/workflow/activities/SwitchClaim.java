@@ -128,7 +128,7 @@ public class SwitchClaim extends BaseActivity {
          */
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         claim.setStatus(null);
         if (getChainActivity() != null) {

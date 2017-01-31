@@ -536,7 +536,7 @@ public class SaveOrSubmitClaimAuditReview extends BaseActivity {
         if (nameOfActivity.equals("submitClaimAuditReview")) {
 //            activityEventGenerator.generate(claim, this);
             activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-                ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+                ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
             });
         }
     }

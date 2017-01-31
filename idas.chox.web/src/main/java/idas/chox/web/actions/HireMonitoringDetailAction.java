@@ -14,7 +14,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.data.notifications.HireUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *

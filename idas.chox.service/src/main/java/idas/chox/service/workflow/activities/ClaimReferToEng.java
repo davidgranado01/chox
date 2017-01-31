@@ -29,8 +29,16 @@ public class ClaimReferToEng extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    protected boolean liabilityUpdated = false;
-    protected boolean claimNumberUpdated = false;
+    private boolean liabilityUpdated = false;
+    private boolean claimNumberUpdated = false;
+
+    public boolean isLiabilityUpdated() {
+        return liabilityUpdated;
+    }
+
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
+    }
 
     public String getIndemnityStance() {
         return indemnityStance;

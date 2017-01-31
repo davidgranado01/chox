@@ -69,7 +69,7 @@ public class ReopenClaim extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

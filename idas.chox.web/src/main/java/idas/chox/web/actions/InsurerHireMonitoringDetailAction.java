@@ -8,7 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.InsurerHireMonitoringDetail;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *

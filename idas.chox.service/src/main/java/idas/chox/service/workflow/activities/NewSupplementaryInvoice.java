@@ -18,8 +18,12 @@ import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 public class NewSupplementaryInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);
-    protected boolean isNewClaim = false;
+    private boolean isNewClaim = false;
     protected RulesEngineResponse breResponse = null;
+
+    public boolean isIsNewClaim() {
+        return isNewClaim;
+    }
 
     public RulesEngineResponse getBreResponse() {
         return breResponse;
@@ -63,7 +67,7 @@ public class NewSupplementaryInvoice extends BaseActivity {
 
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

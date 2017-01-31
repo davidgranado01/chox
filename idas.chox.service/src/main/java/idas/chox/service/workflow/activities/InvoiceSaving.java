@@ -112,7 +112,7 @@ public class InvoiceSaving extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         // If this is a manual claim, we now need to change the chained activity
         // [for non-manual claims, chained activity is acceptInvoice]

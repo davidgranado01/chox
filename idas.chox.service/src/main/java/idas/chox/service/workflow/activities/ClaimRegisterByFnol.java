@@ -10,7 +10,7 @@ public class ClaimRegisterByFnol extends BaseActivity {
 
     private String claimNumber;
     private String reasonForRejection;
-    protected boolean  claimNumberUpdated = false;
+    private boolean  claimNumberUpdated = false;
     
     @Override
     protected void doProcess(Claim claim) throws Exception {
@@ -31,6 +31,10 @@ public class ClaimRegisterByFnol extends BaseActivity {
             claim.addComment(Comment.newComment(1, reasonForRejection));
         }
         
+    }
+
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
     }
 
     public String getClaimNumber() {

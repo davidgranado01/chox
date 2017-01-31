@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.listeners;
 
+import com.google.common.eventbus.Subscribe;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 
@@ -25,6 +26,7 @@ public class InvoiceCreatedListener extends SecureDataService {
     
     
     @Handler
+    @Subscribe
     public void handle(InvoiceCreatedEvent event){
         LOG.info("InvoiceCreatedEvent Message received: {}", event);
         event.getClaim().getInvoice().setInvoiceOriginal(invoiceService.saveOriginalInvoice(event.getClaim().getInvoice()));

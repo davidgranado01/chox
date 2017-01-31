@@ -4,11 +4,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
        default-autowire="byName">
 
-    <bean id="mBassador" class="net.engio.mbassy.bus.MBassador" scope="singleton"/>
-    <bean id="eventBusPostProcessor" class="idas.chox.service.EventBusPostProcessor">
-        <property name="mBassador" ref="mBassador"/>
+    <bean id="mBassadorEventBus" class="net.engio.mbassy.bus.MBassador" scope="singleton"/>
+    <bean id="guavaEventBus" class="com.google.common.eventbus.EventBus" scope="singleton"/>
+    <bean id="eventBus" class="idas.chox.service.workflow.event.EventBusWrapper" scope="singleton">
+        <property name="useGuava" value="${events.guava}" />
+        <property name="mBassadorEventBus" ref="mBassadorEventBus"/>
+        <property name="guavaEventBus" ref="guavaEventBus"/>
     </bean>
-    <bean id="baseActivityListener" class="idas.chox.service.workflow.listeners.BaseActivityListener" scope="singleton"/>
+    <bean id="eventBusPostProcessor" class="idas.chox.service.workflow.event.EventBusPostProcessor">
+        <property name="useGuava" value="${events.guava}" />
+        <property name="eventBus" ref="eventBus"/>
+    </bean>
+    <bean id="baseActivityListener" class="idas.chox.service.workflow.listeners.BaseActivityListener" scope="singleton">
+        <property name="storeEvents" value="${events.log}" />
+    </bean>
     <bean id="claimRoutedListener" class="idas.chox.service.workflow.listeners.ClaimRoutedListener" scope="singleton"/>
     <bean id="invoiceCreatedListener" class="idas.chox.service.workflow.listeners.InvoiceCreatedListener" scope="singleton">
         <property name="invoiceService" ref="invoiceService"/>

@@ -47,7 +47,7 @@ public class InvoiceRejection extends BaseActivity {
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
     }
 
-    protected ReasonOfRejection getReasonOfRejection() {
+    public ReasonOfRejection getReasonOfRejection() {
         ReasonOfRejection reasonOfRejection = null;
         if (reasonOfRejectionId != null && reasonOfRejectionId > 0) {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
@@ -63,7 +63,7 @@ public class InvoiceRejection extends BaseActivity {
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
 
         if (getChainActivity() != null) {

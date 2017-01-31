@@ -33,8 +33,8 @@ public class AcknowledgeClaim extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    protected boolean liabilityUpdated = false;
-    protected boolean claimNumberUpdated = false;
+    private boolean liabilityUpdated = false;
+    private boolean claimNumberUpdated = false;
     private String indemnityStance;
 
     // </editor-fold>
@@ -115,6 +115,14 @@ public class AcknowledgeClaim extends BaseActivity {
         return liabilityStatus;
     }
     // </editor-fold>
+
+    public boolean isLiabilityUpdated() {
+        return liabilityUpdated;
+    }
+
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
+    }
 
     @Override
     public boolean needsClaimLockedCheck() {

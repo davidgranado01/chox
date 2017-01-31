@@ -11,13 +11,9 @@ public class LiabilityUpdatedEvent extends BaseActivityEvent {
     
     public LiabilityUpdatedEvent(){};
 
-    public LiabilityUpdatedEvent(Claim claim, String activityName, LiabilityStatus liabilityStatus) {
+    public LiabilityUpdatedEvent(final Claim claim, String activityName, String supportingNote) {
         super(claim, activityName);
-        this.addAttribute("liabilityStatus", liabilityStatus.toString());
-    }
-    
-    @Override
-    public String toString() {
-        return this.getActivityName() + "(" + this.getAttributes().get("liabilityStatus") + ")";
+        addAttribute("supportingNote", supportingNote);
+        this.addClaimLiabilityAttributes(claim);
     }
 }

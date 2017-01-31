@@ -11,7 +11,7 @@ import idas.chox.core.model.InsurerVehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ActivityEvent;
+import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *

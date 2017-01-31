@@ -26,11 +26,23 @@ public class NewInvoice extends BaseActivity {
     private UserService userService;
     private BrePenaltyBandService brePenaltyBandService;
     private boolean autoRoutedInvoice = false;
-    protected boolean claimRouted = false;
-    protected boolean claimOwnerAssigned = false;
-    protected boolean invoiceAccepted = false;
-    protected RulesEngineResponse breResponse = null;
+    private boolean claimRouted = false;
+    private boolean claimOwnerAssigned = false;
+    private boolean invoiceAccepted = false;
+    private RulesEngineResponse breResponse = null;
     private Keoghs keoghs;
+
+    public boolean isClaimRouted() {
+        return claimRouted;
+    }
+
+    public boolean isClaimOwnerAssigned() {
+        return claimOwnerAssigned;
+    }
+
+    public boolean isInvoiceAccepted() {
+        return invoiceAccepted;
+    }
 
     public void setKeoghs(Keoghs keoghs) {
         this.keoghs = keoghs;
@@ -235,7 +247,7 @@ public class NewInvoice extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getMBassador().post(event).now();
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {

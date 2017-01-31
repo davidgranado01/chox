@@ -29,9 +29,17 @@ public class InsurerUpload extends BaseActivity {
     private UserService userService;
     private boolean autoRoutedInvoice = false;
     private Keoghs keoghs;
-    protected boolean claimRouted = false;
-    protected boolean claimOwnerAssigned = false;
-    protected RulesEngineResponse breResponse;
+    private boolean claimRouted = false;
+    private boolean claimOwnerAssigned = false;
+    public RulesEngineResponse breResponse;
+
+    public boolean isClaimOwnerAssigned() {
+        return claimOwnerAssigned;
+    }
+
+    public boolean isClaimRouted() {
+        return claimRouted;
+    }
 
     public void setKeoghs(Keoghs keoghs) {
         this.keoghs = keoghs;

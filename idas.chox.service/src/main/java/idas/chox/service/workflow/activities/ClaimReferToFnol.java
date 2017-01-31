@@ -37,11 +37,27 @@ public class ClaimReferToFnol extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    protected boolean liabilityUpdated = false;
-    protected boolean claimRouted = false;
-    protected boolean ownerAssigned = false;
-    protected boolean claimNumberUpdated = false;
+    private boolean liabilityUpdated = false;
+    private boolean claimRouted = false;
+    private boolean ownerAssigned = false;
+    private boolean claimNumberUpdated = false;
     private String indemnityStance;
+
+    public boolean isLiabilityUpdated() {
+        return liabilityUpdated;
+    }
+
+    public boolean isClaimRouted() {
+        return claimRouted;
+    }
+
+    public boolean isOwnerAssigned() {
+        return ownerAssigned;
+    }
+
+    public boolean isClaimNumberUpdated() {
+        return claimNumberUpdated;
+    }
 
     public String getIndemnityStance() {
         return indemnityStance;

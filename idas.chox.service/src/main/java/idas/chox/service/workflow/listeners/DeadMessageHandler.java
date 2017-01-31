@@ -1,5 +1,7 @@
 package idas.chox.service.workflow.listeners;
 
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.Subscribe;
 import net.engio.mbassy.bus.common.DeadMessage;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
@@ -17,7 +19,11 @@ public class DeadMessageHandler {
 
         @Handler 
         public void handle(DeadMessage message) { 
-            LOG.error("Dead message received: {}", ((BaseActivityEvent)message.getMessage()));
+            LOG.error("MBassador Dead message received: {}", ((BaseActivityEvent)message.getMessage()));
+        } 
+        @Subscribe
+        public void handle(DeadEvent message) { 
+            LOG.error("Guava Dead message received: {}", ((BaseActivityEvent)message.getEvent()));
         } 
  
 }
