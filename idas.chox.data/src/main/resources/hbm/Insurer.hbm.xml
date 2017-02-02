@@ -88,6 +88,7 @@
     <property column="kbbs_manager_password" name="kbbsManagerPassword"/>
     <property column="kbbs_operative_password" name="kbbsOperativePassword"/>
     <property column="allow_default_hm_updates" name="allowDefaultHMUpdates"/>
+    <property column="enable_claim_matching" name="enableClaimMatching" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

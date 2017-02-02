@@ -48,6 +48,8 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private BrePenaltyBandService brePenaltyBandService;
     private boolean asCopy;
     private LookupService lookupService;
+    private int claimMatchingOwnerId = -1;
+    private int claimMatchingWorkgroupId = -1;
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -164,6 +166,16 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             }
             if (asCopy || !penaltyBandRecords.isEmpty()) {
                 updatePenaltyBands(asCopy);
+            }
+            if (claimMatchingOwnerId > 0 && this.adminInsurerService.getWebuserById(claimMatchingOwnerId) != null) {
+                model.setClaimMatchingOwner(this.adminInsurerService.getWebuserById(claimMatchingOwnerId));
+            } else {
+                model.setClaimMatchingOwner(null);
+            }
+            if (claimMatchingWorkgroupId > 0 && this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId) != null) {
+                model.setClaimMatchingWorkgroup(this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId));
+            } else {
+                model.setClaimMatchingWorkgroup(null);
             }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(Arrays.asList(model));
@@ -291,6 +303,41 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
     // </editor-fold>
 
+    public int getClaimMatchingOwnerId() {
+        return this.model.getClaimMatchingOwner() != null ? this.model.getClaimMatchingOwner().getId() : 0;
+    }
+
+    public String getClaimMatchingOwnerName() {
+        return this.model.getClaimMatchingOwner() != null ? this.model.getClaimMatchingOwner().getDisplayName() : "--- Please Select ---";
+    }
+
+    public void setClaimMatchingOwnerId(int claimMatchingOwnerId) {
+        this.claimMatchingOwnerId = claimMatchingOwnerId;
+    }
+
+    public int getClaimMatchingWorkgroupId() {
+        return this.model.getClaimMatchingWorkgroup()!= null ? this.model.getClaimMatchingWorkgroup().getId() : 0;
+    }
+
+    public String getClaimMatchingWorkgroupName() {
+        return this.model.getClaimMatchingWorkgroup() != null ? this.model.getClaimMatchingWorkgroup().getName() : "--- Please Select ---";
+    }
+
+    public void setClaimMatchingWorkgroupId(int claimMatchingWorkgroupId) {
+        this.claimMatchingWorkgroupId = claimMatchingWorkgroupId;
+    }
+    public boolean isWorkgroupsEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isWorkgroupEnable();
+    }
+    
+    public boolean isOwnershipEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isClaimOwnershipEnable();
+    }
+    
+    public boolean isClaimMatchingEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isEnableClaimMatching();
+    }
+    
     public boolean isSubscriberClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isAllowSubscriberClaims();
     }

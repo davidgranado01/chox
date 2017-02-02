@@ -91,8 +91,17 @@ public class Insurer extends Entity implements Serializable {
     private boolean enableLouDates;
     private boolean enableManualLouDates;
     private boolean allowDefaultHMUpdates;
+    private boolean enableClaimMatching;
     private String kbbsManagerPassword;
     private String kbbsOperativePassword;
+
+    public boolean isEnableClaimMatching() {
+        return enableClaimMatching;
+    }
+
+    public void setEnableClaimMatching(boolean enableClaimMatching) {
+        this.enableClaimMatching = enableClaimMatching;
+    }
 
     public boolean isAllowDefaultHMUpdates() {
         return allowDefaultHMUpdates;

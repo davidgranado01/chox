@@ -10,7 +10,15 @@
     var protocolVehicleCeilingEditSelectionDlg;
     var penaltyStartDateDatePicker;
     var penaltyClaimTypesCombo;
-    
+    var cm_wgrpJsonReader;
+    var cm_workgroupStore;
+    var cm_workgroupCombo;
+    var cm_claimOwnerReader;
+    var cm_claimOwnerStore;
+    var cm_claimOwnerCombo;
+    var cm_workgroupId=-1;
+    var cm_claimOwnerId=-1;
+
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -399,8 +407,134 @@
             width: 670
         });
         onPenaltyChargeBandPageRefresh();
+<s:if test="isChoxAdmin">
+<s:if test="workgroupsEnabled">
+            cm_wgrpJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            cm_workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+                params : {"orgId":'<s:property value="insurerId" />'},
+                reader: cm_wgrpJsonReader
+            });
+
+            cm_workgroupCombo = new Ext.form.ComboBox({
+                store: cm_workgroupStore,
+                width: 200,
+                renderTo: 'cm_workgroupDiv',
+                valueField: 'text',
+                id: 'cm_workgroupComboId',
+                hiddenName: 'claimMatchingWorkgroupId',
+                displayField:'value',
+                typeAhead: true,
+                mode: 'local',
+                editable:false,
+                triggerAction: 'all',
+                emptyText: '--- Please Select ---',
+                emptyValue: -1,
+                forceSelection: true,
+                listWidth: 200,
+                selectOnFocus: true,
+                listeners: {
+                    select:function() {
+                        if(this.getRawValue() === "") {
+                            this.clearValue();
+                            this.reset();
+                            cm_workgroupId = -1;
+                            doRenderCMClaimHandlerDropDown(cm_workgroupId);
+                        }else {
+                            cm_workgroupId=this.value;
+                            doRenderCMClaimHandlerDropDown(cm_workgroupId);
+                        }
+                    }
+                }
+            });
+
+        cm_workgroupStore.load({params : {"orgId":'<s:property value="insurerId" />'}});
+        cm_workgroupId = <s:property value="claimMatchingWorkgroupId"/>
+        if (cm_workgroupId > 0){
+            cm_workgroupCombo.setValue(cm_workgroupId);
+        }
+</s:if>
+<s:if test="ownershipEnabled">
+        cm_claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'name'}
+            ]
+        });
+
+        cm_claimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+            params : {"workgroupId":workgroupId, "insurerId":'<s:property value="insurerId"/>'},
+            reader : cm_claimOwnerReader
+        });
+
+        cm_claimOwnerCombo = new Ext.form.ComboBox({
+            store: cm_claimOwnerStore,
+            width: 200,
+            renderTo: 'cm_ownerDiv',
+            valueField: 'id',
+            id: 'cm_ownerComboId',
+            hiddenName: 'claimMatchingOwnerId',
+            displayField:'name',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 200,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            emptyValue: -1,
+            listeners: {
+                select: function () {
+                    if(this.getRawValue() === "") {
+                        this.clearValue();
+                        this.reset();
+                        cm_claimOwnerId = -1;
+                    }else {
+                        cm_claimOwnerId = this.value;
+                    }
+                }
+            }
+        });
+        
+        cm_claimOwnerStore.load({ params : {"workgroupId":cm_workgroupId, "insurerId":'<s:property value="insurerId"/>'}});
+        cm_claimOwnerId = <s:property value="claimMatchingOwnerId"/>
+        if (cm_claimOwnerId > 0){
+            cm_claimOwnerCombo.setValue(cm_claimOwnerId);
+        }
+</s:if>
+</s:if>
+
     });
-    
+
+    function doRenderCMClaimHandlerDropDown(workgroupId){
+    <s:if test="workgroupsEnabled && ownershipEnabled">
+        if (workgroupId>0){
+            cm_claimOwnerStore.removeAll();
+            cm_claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":<s:property value="insurerId"/>}});
+            cm_claimOwnerCombo.reset();
+            cm_claimOwnerId=-1;
+        }
+    </s:if>
+    <s:elseif test="ownershipEnabled">
+            cm_claimOwnerStore.removeAll();
+            cm_claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":<s:property value="insurerId"/>}});
+            cm_claimOwnerCombo.reset();
+            cm_claimOwnerId=-1;
+    </s:elseif>
+    }
+
     function createProtocolVehicleCeilingEditWindow() {
         if(!protocolVehicleCeilingEditSelectionDlg || protocolVehicleCeilingEditSelectionDlg===null){
             protocolVehicleCeilingEditSelectionDlg =  new Ext.Window({
@@ -1235,6 +1369,32 @@
            }
        }
 
+    function doClaimMatchingCheck(){
+        var claimMatchingEnable = false;
+        if($('form#formUpdateInsurerBreBandDetail input[name="claimMatchingEnable"]:checked').val()){
+            claimMatchingEnable = true;
+<s:if test="workgroupsEnabled">
+            $("#claimMatchingWorkgroupId").slideDown();
+            $("#claimMatchingDetailId").slideDown();
+</s:if>
+<s:else>
+            $("#claimMatchingWorkgroupId").hide();
+</s:else>
+<s:if test="ownershipEnabled">
+            $("#claimMatchingOwnerId").slideDown();
+            $("#claimMatchingDetailId").slideDown();
+</s:if>
+<s:else>
+            $("#claimMatchingOwnerId").hide();
+</s:else>
+        }else{
+            $("#claimMatchingWorkgroupId").hide();
+            $("#claimMatchingOwnerId").hide();
+            $("#claimMatchingDetailId").hide();
+        }
+        return claimMatchingEnable;
+    }
+
     function doGTAPenaltyChargeCheck(){
         var gtaPenaltiesEnable = false;
         if($('form#formUpdateInsurerBreBandDetail input[name="allowGTAPenaltyCharges"]:checked').val()){
@@ -1323,9 +1483,8 @@
         doTpiPenaltyChargeCheck();
         doManualInvoicePenaltyChargeCheck();
         doInsurervsInsurerPenaltyChargeCheck();
+        doClaimMatchingCheck()
 </s:if>
-        // reset the form.
-//        resetPVCCForm();
     }
     
     function toggleAuditProcessPercentageDiv() {
@@ -1692,6 +1851,31 @@
                             </div>
                         </div>
                     </div>
+<s:if test="claimMatchingEnabled">                         
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Claim Matching</div>
+                        <div class="status-info">
+                            When enabled, new claims to be checked against the Claim Matching database for the purposes of automatically matching and acknowledging a claim.
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox">
+                                <s:checkbox name="claimMatchingEnable" value="claimMatchingEnable" onclick="doClaimMatchingCheck();" />
+                            </div>
+                            <label class="chox-form-std-label"><b>Enable Claim Matching</b></label>
+                        </div>
+                        <div class="chox-form-item" id="claimMatchingWorkgroupId">
+                            <label class="chox-form-std-label1">Default Workgroup for Matched Invoices</label>
+                            <div id="cm_workgroupDiv"></div>
+                        </div>
+                        <div class="chox-form-item" id="claimMatchingOwnerId">
+                            <label class="chox-form-std-label1">Default Owner for Matched Invoices</label>
+                            <div id="cm_ownerDiv"></div>
+                        </div>
+                        <div class="admin-bre-band-detail-section" id="claimMatchingDetailId">
+                            <div class="status-info">Claim Matching Config to go here</div>
+                        </div>
+                    </div>
+</s:if>                            
 </s:if>                            
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Automated Tasks</div>

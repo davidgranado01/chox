@@ -181,8 +181,35 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal storageRecoveryNetCeiling = BigDecimal.ZERO;
     private boolean enableGtaDiscount;
     private boolean fraudCheckEnable;
+    private boolean claimMatchingEnable;
+    private Workgroup claimMatchingWorkgroup;
+    private WebUser claimMatchingOwner;
 
     public BreBand() {
+    }
+
+    public boolean isClaimMatchingEnable() {
+        return claimMatchingEnable;
+    }
+
+    public void setClaimMatchingEnable(boolean claimMatchingEnable) {
+        this.claimMatchingEnable = claimMatchingEnable;
+    }
+
+    public Workgroup getClaimMatchingWorkgroup() {
+        return claimMatchingWorkgroup;
+    }
+
+    public void setClaimMatchingWorkgroup(Workgroup claimMatchingWorkgroup) {
+        this.claimMatchingWorkgroup = claimMatchingWorkgroup;
+    }
+
+    public WebUser getClaimMatchingOwner() {
+        return claimMatchingOwner;
+    }
+
+    public void setClaimMatchingOwner(WebUser claimMatchingOwner) {
+        this.claimMatchingOwner = claimMatchingOwner;
     }
 
     public boolean isEnableGtaDiscount() {
