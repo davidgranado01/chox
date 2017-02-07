@@ -2,6 +2,7 @@ package idas.chox.web.viewdata;
 
 import idas.chox.core.model.ClaimMatchingBand;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
@@ -25,7 +26,7 @@ public class ClaimMatchingBandViewData {
         this.claimTypeId = object.getClaimType().getClaimTypeValue();
         this.claimTypeName = object.getClaimType().toString();
         this.autoAcknowledge = object.isAutoAcknowledge() ? "Yes" : "No";
-        this.minimumLiability = object.getLiabilityPercentage();
+        this.minimumLiability = object.getLiabilityPercentage().setScale(2);
         
         if (object.isbClass()){ vehicleClasses += ",B";}
         if (object.isCmClass()){ vehicleClasses += ",CM";}

@@ -528,7 +528,7 @@
                 {name:'id'},
                 {name:'claimTypeId'},
                 {name:'claimTypeName'},
-                {name:'minimumLiability'},
+                {name:'minimumLiability', type:'float'},
                 {name:'autoAcknowledge'},
                 {name:'vehicleClasses'},
                 {name:'createdDate', type: 'date', dateFormat:'d/m/Y'},
@@ -578,7 +578,7 @@
             columns: [
                 {header: "Claim Type", width: 130, dataIndex: 'claimTypeName', sortable: true, resizable: true,
                     renderer:function(value, p, r){return "<b>" + value + "</b>"; }},
-                {header: "Minimu Insurer Liability %", width: 135, dataIndex: 'minimumLiability', sortable: true, resizable: true},
+                {header: "Minimu Insurer Liability %", width: 135, dataIndex: 'minimumLiability', sortable: true, resizable: true, renderer:function(value, p, r){return value.toFixed(2)}},
                 {header: "Auto Acknowledge", width: 105, dataIndex: 'autoAcknowledge', sortable: false, resizable: true},
                 {header: "Customer Vehicle Classes", width: 250, dataIndex: 'vehicleClasses', sortable: false, resizable: true},
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value, p, r){
@@ -1084,7 +1084,26 @@
             newRecord.set('removed', 'false');
             claimMatchingBand_gridviewGrid.getStore().insert(0, newRecord);
             // reset the form details
+            claimMatchingClaimTypesCombo.reset();
             $('#claimMatchingLiability').val('');
+            $("#claimMatchingAutoAcknowledge").attr('checked', false);
+            $("#vehicleClassB").attr('checked', false);
+            $("#vehicleClassCM").attr('checked', false);
+            $("#vehicleClassCP").attr('checked', false);
+            $("#vehicleClassCS").attr('checked', false);
+            $("#vehicleClassCV").attr('checked', false);
+            $("#vehicleClassF").attr('checked', false);
+            $("#vehicleClassN").attr('checked', false);
+            $("#vehicleClassM").attr('checked', false);
+            $("#vehicleClassNT").attr('checked', false);
+            $("#vehicleClassP").attr('checked', false);
+            $("#vehicleClassPT").attr('checked', false);
+            $("#vehicleClassPV").attr('checked', false);
+            $("#vehicleClassRV").attr('checked', false);
+            $("#vehicleClassS").attr('checked', false);
+            $("#vehicleClassSP").attr('checked', false);
+            $("#vehicleClassT").attr('checked', false);
+            $("#vehicleClassU").attr('checked', false);
         }
     }
     function validateClaimMatchingForm(){
@@ -2046,7 +2065,7 @@
                                             </div>
                                             <div class="chox-form-item" >
                                                 <label class="chox-form-std-label2">Minimum Insurer Liability %<span class="mandatory">*</span></label>
-                                                <input id="claimMatchingLiability" style="width:50px"/>
+                                                <input id="claimMatchingLiability" style="width:50px" onkeyup="extractNumber(this,2,false);"/>
                                             </div>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label2">Auto Acknowledge</label>
