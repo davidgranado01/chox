@@ -90,6 +90,7 @@
                 <value>hbm/InsurerBillingBandMapping.hbm.xml</value>
                 <value>hbm/ChoBillingBandMapping.hbm.xml</value>
                 <value>hbm/InvoiceSavingRule.hbm.xml</value>
+                <value>hbm/ClaimMatchingBand.hbm.xml</value>
                 <value>hbm/events/BaseActivityEvent.hbm.xml</value>
                 <value>hbm/events/ClaimRoutedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceCreatedEvent.hbm.xml</value>

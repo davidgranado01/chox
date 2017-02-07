@@ -1198,7 +1198,6 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeChoAlias" class="idas.chox.web.actions.ChoAliasAction" method="removeChoAlias">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewChoAlias" class="idas.chox.web.actions.ChoAliasAction" method="addNewChoAlias">
@@ -1351,12 +1350,10 @@
             <result name="success">/jsp/adminPanel/p_insurer_breband_detail_panel.jsp</result>
         </action>
         <action name="updateInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="updateInsurerBreBand">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="deleteInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="deleteInsurerBreBand">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1390,7 +1387,6 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="deleteBreBandChorganisation">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1406,7 +1402,6 @@
             <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
         </action>
         <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="removeVehicleClassCeiling">
-            
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1419,13 +1414,15 @@
         <action name="getSelectedBreBandPenaltyBand" class="idas.chox.web.actions.BreBandPenaltyBandAction" method="getSelectedBreBandPenaltyBand">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getClaimMatchingBands" class="idas.chox.web.actions.ClaimMatchingBandAction" method="getClaimMatchingBands">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         
         <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="addNewVehicleClassCeiling">
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="updateVehicleClassCeiling">
-            
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1452,7 +1449,6 @@
         </action>
 
         <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1463,7 +1459,6 @@
         </action>
 
         <action name="deleteAutomaticRoutingDetailByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="deleteAutomaticRoutingDetailByPrice">
-            
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 

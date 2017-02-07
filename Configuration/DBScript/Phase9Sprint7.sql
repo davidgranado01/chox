@@ -134,3 +134,43 @@ ALTER TABLE bre_band ADD COLUMN enable_claim_matching boolean NOT NULL default f
 ALTER TABLE bre_band ADD COLUMN claim_matching_workgroup integer;
 ALTER TABLE bre_band ADD COLUMN claim_matching_owner integer;
 
+CREATE TABLE claim_matching_band (
+    id serial NOT NULL,
+    version integer,
+    bre_band_id integer NOT NULL,
+    claim_type integer NOT NULL,
+    liability_percentage numeric(5,2) NOT NULL,
+    auto_acknowledge boolean NOT NULL default false,
+    b_class boolean NOT NULL default false,
+    cm_class boolean NOT NULL default false,
+    cp_class boolean NOT NULL default false,
+    cs_class boolean NOT NULL default false,
+    cv_class boolean NOT NULL default false,
+    f_class boolean NOT NULL default false,
+    m_class boolean NOT NULL default false,
+    nt_class boolean NOT NULL default false,
+    p_class boolean NOT NULL default false,
+    pt_class boolean NOT NULL default false,
+    pv_class boolean NOT NULL default false,
+    rv_class boolean NOT NULL default false,
+    s_class boolean NOT NULL default false,
+    sp_class boolean NOT NULL default false,
+    t_class boolean NOT NULL default false,
+    u_class boolean NOT NULL default false,
+    created_by integer,
+    created_date timestamp without time zone NOT NULL default now(),
+    last_modified_by integer,
+    last_modified_date timestamp without time zone NOT NULL default now(),
+    CONSTRAINT claim_matching_band_pkey PRIMARY KEY (id),
+    CONSTRAINT claim_matching_band_fkey FOREIGN KEY (bre_band_id)
+        REFERENCES bre_band (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT claim_matching_created_by_fkey FOREIGN KEY (created_by)
+        REFERENCES web_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT claim_matching_last_modified_by_fkey FOREIGN KEY (last_modified_by)
+        REFERENCES web_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching_band TO chox_user;
+GRANT SELECT, UPDATE ON TABLE claim_matching_band_id_seq TO chox_user;

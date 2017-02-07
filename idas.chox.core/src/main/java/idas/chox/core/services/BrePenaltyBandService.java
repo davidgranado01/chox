@@ -5,7 +5,6 @@ import java.util.Date;
 
 import idas.chox.core.model.BrePenaltyBand;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimType;
 
 /**
  *

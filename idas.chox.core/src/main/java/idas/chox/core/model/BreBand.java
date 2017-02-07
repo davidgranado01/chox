@@ -164,6 +164,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
     private List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings;
     private List<BrePenaltyBand> brePenaltyBands;
+    private List<ClaimMatchingBand> claimMatchingBands;
     private boolean compoundAutomaticChargeCheckHpiLookup;
     private boolean compoundEstateChargeCheckHpiLookup;
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
@@ -1592,6 +1593,27 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         brePenaltyBand.setBreBand(this);
 
         brePenaltyBands.add(brePenaltyBand);
+    }
+
+    public List<ClaimMatchingBand> getClaimMatchingBands() {
+        return claimMatchingBands;
+    }
+
+    public void setClaimMatchingBands(List<ClaimMatchingBand> claimMatchingBands) {
+        this.claimMatchingBands = claimMatchingBands;
+    }
+
+    public void addClaimMatchingBand(ClaimMatchingBand claimMatchingBand) {
+        if (claimMatchingBand == null) {
+            return;
+        }
+        
+        if (claimMatchingBands == null) {
+            claimMatchingBands = new ArrayList<>();
+        } 
+        claimMatchingBand.setBreBand(this);
+
+        claimMatchingBands.add(claimMatchingBand);
     }
 
     public boolean isHireNetDoesNotExceedProtocolVehicleClassHireNetCeiling() {

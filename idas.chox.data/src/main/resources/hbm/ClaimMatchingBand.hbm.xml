@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.ClaimMatchingBand" table="claim_matching_band">
+    <cache usage="read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">claim_matching_band_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <many-to-one class="idas.chox.core.model.BreBand" column="bre_band_id" name="breBand"/>
+    <property column="claim_type" name="claimType"
+        type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
+    <property column="liability_percentage" name="liabilityPercentage" not-null="true"/>
+    <property column="auto_acknowledge" name="autoAcknowledge" not-null="true"/>
+    <property column="b_class" name="bClass" not-null="true"/>
+    <property column="cm_class" name="cmClass" not-null="true"/>
+    <property column="cp_class" name="cpClass" not-null="true"/>
+    <property column="cs_class" name="csClass" not-null="true"/>
+    <property column="cv_class" name="cvClass" not-null="true"/>
+    <property column="f_class" name="fClass" not-null="true"/>
+    <property column="m_class" name="mClass" not-null="true"/>
+    <property column="nt_class" name="ntClass" not-null="true"/>
+    <property column="p_class" name="pClass" not-null="true"/>
+    <property column="pt_class" name="ptClass" not-null="true"/>
+    <property column="pv_class" name="pvClass" not-null="true"/>
+    <property column="rv_class" name="rvClass" not-null="true"/>
+    <property column="s_class" name="sClass" not-null="true"/>
+    <property column="sp_class" name="spClass" not-null="true"/>
+    <property column="t_class" name="tClass" not-null="true"/>
+    <property column="u_class" name="uClass" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
+</hibernate-mapping>

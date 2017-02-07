@@ -354,6 +354,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="claimMatchingBandService" class="idas.chox.data.services.ClaimMatchingBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
