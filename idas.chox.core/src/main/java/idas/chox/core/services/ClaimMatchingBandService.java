@@ -1,9 +1,7 @@
 package idas.chox.core.services;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimType;
 
@@ -20,6 +18,6 @@ public interface ClaimMatchingBandService {
 
     ClaimMatchingBand getClaimMatchingBand(int claimMatchingBandId);
         
-    ClaimMatchingBand getClaimMatchingBand(int breBandId, ClaimType claimType, String vehicleClass, BigDecimal liabilityPercentage);
-
+    ClaimMatchingBand getClaimMatchingBand(int breBandId, ClaimType claimType, String vehicleClass);
+    List<ClaimMatchingBand> getClaimMatchingBands(int breBandId, ClaimType claimType, String vehicleClass);
 }

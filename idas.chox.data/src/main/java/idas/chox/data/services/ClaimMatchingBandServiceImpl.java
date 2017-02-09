@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimMatchingBandService;
@@ -46,11 +44,10 @@ public class ClaimMatchingBandServiceImpl extends SecureDataService implements C
     }
 
     @Override
-    public ClaimMatchingBand getClaimMatchingBand(int breBandId, ClaimType claimType, String vehicleClass, BigDecimal liabilityPercentage) {
+    public ClaimMatchingBand getClaimMatchingBand(int breBandId, ClaimType claimType, String vehicleClass) {
         DetachedCriteria claimMatchingBandCriteria = DetachedCriteria.forClass(ClaimMatchingBand.class);
         claimMatchingBandCriteria.add(Restrictions.eq("breBand.id", breBandId));
         claimMatchingBandCriteria.add(Restrictions.eq("claimType", claimType));
-        claimMatchingBandCriteria.add(Restrictions.ge("liabilityPercentage", liabilityPercentage));
         if (vehicleClass.startsWith("CM")){claimMatchingBandCriteria.add(Restrictions.eq("cmClass", true));}
         else if (vehicleClass.startsWith("CP")){claimMatchingBandCriteria.add(Restrictions.eq("cpClass", true));}
         else if (vehicleClass.startsWith("CS")){claimMatchingBandCriteria.add(Restrictions.eq("csClass", true));}
@@ -70,6 +67,31 @@ public class ClaimMatchingBandServiceImpl extends SecureDataService implements C
         claimMatchingBandCriteria.addOrder(Order.desc("liabilityPercentage"));
         List<ClaimMatchingBand> results = findByCriteria(claimMatchingBandCriteria);
         return results.isEmpty()? null : (ClaimMatchingBand)results.get(0);
+    }
+    
+    @Override
+    public List<ClaimMatchingBand> getClaimMatchingBands(int breBandId, ClaimType claimType, String vehicleClass) {
+        DetachedCriteria claimMatchingBandCriteria = DetachedCriteria.forClass(ClaimMatchingBand.class);
+        claimMatchingBandCriteria.add(Restrictions.eq("breBand.id", breBandId));
+        claimMatchingBandCriteria.add(Restrictions.eq("claimType", claimType));
+        if (vehicleClass.startsWith("CM")){claimMatchingBandCriteria.add(Restrictions.eq("cmClass", true));}
+        else if (vehicleClass.startsWith("CP")){claimMatchingBandCriteria.add(Restrictions.eq("cpClass", true));}
+        else if (vehicleClass.startsWith("CS")){claimMatchingBandCriteria.add(Restrictions.eq("csClass", true));}
+        else if (vehicleClass.startsWith("CV")){claimMatchingBandCriteria.add(Restrictions.eq("cvClass", true));}
+        else if (vehicleClass.startsWith("NT")){claimMatchingBandCriteria.add(Restrictions.eq("ntClass", true));}
+        else if (vehicleClass.startsWith("PT")){claimMatchingBandCriteria.add(Restrictions.eq("ptClass", true));}
+        else if (vehicleClass.startsWith("PV")){claimMatchingBandCriteria.add(Restrictions.eq("pvClass", true));}
+        else if (vehicleClass.startsWith("RV")){claimMatchingBandCriteria.add(Restrictions.eq("rvClass", true));}
+        else if (vehicleClass.startsWith("SP")){claimMatchingBandCriteria.add(Restrictions.eq("spClass", true));}
+        else if (vehicleClass.startsWith("B")){claimMatchingBandCriteria.add(Restrictions.eq("bClass", true));}
+        else if (vehicleClass.startsWith("F")){claimMatchingBandCriteria.add(Restrictions.eq("fClass", true));}
+        else if (vehicleClass.startsWith("M")){claimMatchingBandCriteria.add(Restrictions.eq("mClass", true));}
+        else if (vehicleClass.startsWith("P")){claimMatchingBandCriteria.add(Restrictions.eq("pClass", true));}
+        else if (vehicleClass.startsWith("S")){claimMatchingBandCriteria.add(Restrictions.eq("sClass", true));}
+        else if (vehicleClass.startsWith("T")){claimMatchingBandCriteria.add(Restrictions.eq("tClass", true));}
+        else if (vehicleClass.startsWith("UNATTACHED")){claimMatchingBandCriteria.add(Restrictions.eq("uClass", true));}
+        claimMatchingBandCriteria.addOrder(Order.desc("liabilityPercentage"));
+        return findByCriteria(claimMatchingBandCriteria);
     }
     
 }
