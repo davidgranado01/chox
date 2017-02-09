@@ -365,7 +365,7 @@ public class LouUpdate extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) {
         activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
-        if (updateInsurer) {
+        if (updateInsurer || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());
         }
     }

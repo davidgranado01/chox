@@ -77,7 +77,7 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
             activityEventGenerator.generate(claim, ActivityEvent.HIRE_VEHICLE_UPDATED_EVENT);
 
-            if (updateInsurer) {
+            if (updateInsurer || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireVehicleUpdatedNotification());
             }
             if (isHireStartUpdate) {
