@@ -110,7 +110,7 @@
                 <s:if test="isInsurer">
                     <s:checkbox disabled='true' id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </s:if>
-                <s:elseif test="allowUpdateInsurer">>
+                <s:elseif test="allowUpdateInsurer">
                     <s:checkbox id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </s:elseif>
             </div>
