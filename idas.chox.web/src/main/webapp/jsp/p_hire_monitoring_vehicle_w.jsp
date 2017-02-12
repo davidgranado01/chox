@@ -110,9 +110,9 @@
                 <s:if test="isInsurer">
                     <s:checkbox disabled='true' id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </s:if>
-                <s:else>
+                <s:elseif test="allowUpdateInsurer">
                     <s:checkbox id="hireMonitoringVehicleIsUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
-                </s:else>
+                </s:elseif>
             </div>
             <div id="HVDmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
             <div id="HVDSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>

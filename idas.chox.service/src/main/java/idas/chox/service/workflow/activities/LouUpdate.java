@@ -369,7 +369,7 @@ public class LouUpdate extends BaseActivity {
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
-        if (updateInsurer) {
+        if (updateInsurer || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireUpdatedNotification());
         }
     }

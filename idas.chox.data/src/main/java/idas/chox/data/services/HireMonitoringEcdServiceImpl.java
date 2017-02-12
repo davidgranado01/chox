@@ -92,7 +92,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
                         NotificationType.EcdAnomalousNotification.getType(), claim.getId(), claim.getVersion(), ex.getMessage(), ex});
         }
         
-        if (ecd.isUpdateInsurer()) {
+        if (ecd.isUpdateInsurer() || claim.getInsurer().isAllowDefaultHMUpdates()) {
             try {
                 notificationService.addNotification(claim, new EcdUpdatedNotification());
             } catch (Exception ex) {
