@@ -19,7 +19,7 @@
     <!-- Filters -->
     <filter>
         <filter-name>XSSFilter</filter-name>
-        <filter-class>idas.chox.web..security.XSSFilter</filter-class>
+        <filter-class>idas.chox.web.security.XSSFilter</filter-class>
     </filter>
 
     <filter>

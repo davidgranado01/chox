@@ -94,7 +94,7 @@ public class AdminUserService extends SecureDataService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
-        int minPasswordLength = 6;
+        int minPasswordLength = 8;
         WebUser webUser = userService.getWebUser(webUserId);
         if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
@@ -174,7 +174,7 @@ public class AdminUserService extends SecureDataService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public ActionResponse updateUserPassword(WebUser webUser) {
-        int minPasswordLength = 6;
+        int minPasswordLength = 8;
 
         if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();

@@ -646,10 +646,11 @@ public class UploadServiceBean {
             }
             // Add attachment
             LOG.debug("Adding attachment....");
-            if (!attachmentService.addAttachment(claim, b, fileName, b.length,
+            String status = attachmentService.addAttachment(claim, b, fileName, b.length,
                     attachment.getCategory().value(), attachment.getRemark(), attachment.isNotify(),
-                    securityInfoProvider.getIsINS(), whoCreated)) {
-                LOG.error("Error adding attachment received through web-service: claim={}", claim.getChoReference());
+                    securityInfoProvider.getIsINS(), whoCreated);
+            if (status != null) {
+                LOG.error("Error adding attachment received through web-service for claim '{}': {}", claim.getChoReference(), result);
                 throw new Exception("Unknown Error occurred, please try again.");
             } else {
                 result.setStatus(true);

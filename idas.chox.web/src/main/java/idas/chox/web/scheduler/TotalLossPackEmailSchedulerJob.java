@@ -74,12 +74,12 @@ public class TotalLossPackEmailSchedulerJob extends PdfEmailSchedulerJob {
                     
                     try {
                         ((SecureDataService)attachmentService).setSecurityInfoProvider(((SecureDataService)attachmentService).getSecurityInfoProvider());
-                        boolean result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
+                        String result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
                                 attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Total Loss pack has been uploaded for review.", true, false, "CHO");
-                        if (result) {
+                        if (result == null) {
                             statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim "+claim.getChoReference());
                         } else {
-                            statusString.insert(0, claim.getChoReference() + "\tFailed: An Internal Error Occurred");
+                            statusString.insert(0, claim.getChoReference() + "\t" + result);
                         }
                     } catch (Exception ex) {
                         statusString.insert(0, claim.getChoReference() + "\tAn Internal Error Occurred");

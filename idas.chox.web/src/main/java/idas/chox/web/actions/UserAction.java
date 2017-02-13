@@ -54,7 +54,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     }
 
     public int getMinPasswordLength() {
-        int minPasswordLength = 6;
+        int minPasswordLength = 8;
         int orgId = getCurrentUserOrganisationId();
         LOG.debug("Getting minimum password length");
         if (organisationTypeId == 2 && model != null && model.getInsurer() != null) { // Insurer
@@ -84,7 +84,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     
     public String getUserPasswordMessage() {
         LOG.debug("Getting user password message for orgtype={}, org={}", organisationTypeId, organisationId);
-        int minPasswordLength = 6;
+        int minPasswordLength = 8;
         if (organisationTypeId == 2 && insurerService != null) {
             minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
         }

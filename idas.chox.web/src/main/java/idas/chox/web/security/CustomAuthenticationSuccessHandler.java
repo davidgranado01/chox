@@ -205,6 +205,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 cookie = new Cookie("JD.Token", kbbsAuthenticationToken);
                 cookie.setPath("/");
                 cookie.setMaxAge(-1);
+                cookie.setHttpOnly(true);
+                cookie.setSecure(true);
                 response.addCookie(cookie);
             }
         }

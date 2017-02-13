@@ -72,12 +72,12 @@ public class TotalLossNotificationEmailSchedulerJob extends PdfEmailSchedulerJob
                     }
                     
                     try {
-                        boolean result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
+                        String result = attachmentService.addAttachment(claim, attachment.getIs(), attachment.getName(),
                                 attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_NOTIFICATION, "Notification from ERAC that the claim is a Total Loss.", false, false, "system");
-                        if (result) {
+                        if (result == null) {
                             statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim "+claim.getChoReference());
                         } else {
-                            statusString.insert(0, claim.getChoReference() + "\tFailed: An Internal Error Occurred");
+                            statusString.insert(0, claim.getChoReference() + "\t" + result);
                         }
                     } catch (Exception ex) {
                         statusString.insert(0, claim.getChoReference() + "\tAn Internal Error Occurred");

@@ -26,6 +26,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
+import idas.chox.core.util.VirusCheckerUtility;
 import idas.chox.data.events.ChoxEvent;
 
 public class AttachmentServiceImpl extends SecureDataService implements AttachmentService {
@@ -126,14 +127,17 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     }
 
     @Override
-    public boolean addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
-        boolean result = false;
+    public String addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
+        String result = null;
 
         byte fileContent[];
         try {
             fileContent = new byte[safeLongToInt(length)];
             streamIn.read(fileContent);
             streamIn.close();
+            if (VirusCheckerUtility.isVirusPresent(fileContent)) {
+                return "Error - Malware found in attachment";
+            }
             result = addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
         } catch (Exception ex) {
             LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
@@ -143,8 +147,9 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     }
 
     @Override
-    public boolean addAttachment(Claim claim, byte[] fileContent, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
+    public String addAttachment(Claim claim, byte[] fileContent, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
 
+        String result = "An Unkown Error occured, please try again.";
         boolean bFlag = false;
 
         LOG.debug("Can read file '{}' of length {}", filename, length);
@@ -154,7 +159,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         LOG.debug("Processing file {} of type {}", oldFileName, fileType);
         try {
             saveAttachement(claim, category, newFileName, remark, fileType, fileContent);
-            bFlag = true;
+            bFlag = true; result = null;
             LOG.debug("Attachment saved.");
             if (notify) {
                 Task task = new Task();
@@ -175,7 +180,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             LOG.error("Error processing file with length={}: ", length, ex);
         }
 
-        return bFlag;
+        return result;
     }
 
     private static int safeLongToInt(long l) {

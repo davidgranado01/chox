@@ -39,13 +39,17 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
             response.setHeader("Cache-control", "no-cache, no-store");
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Expires", "-1");
-            response.setHeader("X-XSS-Protection", "0");
+            response.setHeader("X-XSS-Protection", "1");
+//            response.setHeader("Content-Security-Policy", "default-src 'self';");
+//            response.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
 
         } else if (response != null && request != null) {
             response.setHeader("Expires", "-1");
-            response.setHeader("X-XSS-Protection", "0");
+            response.setHeader("X-XSS-Protection", "1");
+//            response.setHeader("Content-Security-Policy", "default-src 'self';");
+//            response.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
         }
-
+        
         return invocation.invoke();
     }
 }

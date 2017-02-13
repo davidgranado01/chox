@@ -297,9 +297,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 InputStream streamIn = new FileInputStream(attachmentFile);
 
                 
-                if (!attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
-                        category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated())) {
-                    this.getActionResponse().AddError("Unknown Error occurred, please try again.");
+                String result = attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
+                        category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated());
+                if (result != null) {
+                    this.getActionResponse().AddError(result);
                 } else {
                     updateModelInSession(Arrays.asList(claim));
                     if (notifyTask) {
