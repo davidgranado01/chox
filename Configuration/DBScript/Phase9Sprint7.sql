@@ -77,7 +77,7 @@ CREATE TABLE claim_matching (
     created_by integer NOT NULL,
     created_date timestamp without time zone NOT NULL DEFAULT now(),
     last_modified_by integer NOT NULL,
-    last_modified_date timestamp without time zone DEFAULT now()
+    last_modified_date timestamp without time zone DEFAULT now(),
     CONSTRAINT claim_matching_pkey PRIMARY KEY (id),
     CONSTRAINT claim_matching_insurer_fkey FOREIGN KEY (insurer_id)
         REFERENCES insurer (id) MATCH SIMPLE
@@ -97,6 +97,7 @@ GRANT SELECT ON TABLE claim_matching TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_matching_id_seq TO chox_user;
 
 CREATE TABLE claim_matching_import (
+    id serial NOT NULL,
     insurer_id integer NOT NULL,
     third_party_insurer character varying NOT NULL,
     insurer_claim_number character varying NOT NULL,

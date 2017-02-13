@@ -383,7 +383,7 @@
             width: 670
         });
         onPenaltyChargeBandPageRefresh();
-<s:if test="isChoxAdmin">
+<s:if test="isChoxAdmin && claimMatchingEnabled">
         // Add claim type drop-down menu
         var claimMatchingClaimTypesJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
