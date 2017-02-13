@@ -13,7 +13,7 @@
         }
         else
             var expires = "";
-        document.cookie = name + "=" + value + expires + "; path=/; domain=idaschox.com";
+        document.cookie = name + "=" + value + expires + ";httpOnly ;secure; path=/; domain=idaschox.com";
     }
 
 

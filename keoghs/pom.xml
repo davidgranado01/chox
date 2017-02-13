@@ -98,6 +98,9 @@
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
                             <arguments>-extension</arguments> 
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
                             <wsdlFiles>
                                 <wsdlFile>ADAPublicServices.wsdl</wsdlFile>
                                 <wsdlFile>ADAPublicServicesDebug.wsdl</wsdlFile>

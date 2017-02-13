@@ -42,6 +42,7 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
+import idas.chox.core.util.VirusCheckerUtility;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.BordereauParseStatus;
@@ -582,6 +583,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
 
         try {
+            if (VirusCheckerUtility.isVirusPresent(fileContent)) {
+                LOG.error("Virus detected in bordereau file : {}", uploadedFileFileName);
+                throw new AccessDeniedException("Virus detected");
+            }
             document = DocumentHelper.getDocumentFromFile(uploadedFile);
             if (document == null) {
                 LOG.error("Could not create document from file : {}", uploadedFile.getAbsolutePath());
@@ -605,6 +610,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
              */
             return true;
+        } catch (AccessDeniedException ex) {
+            throw ex;
+        } catch (Exception ex) {
+                LOG.error("Error checking xml bordereau for malware : {}", ex.getMessage());
+                setErrorMessage("Internal error checking xml for malware.");
+                return false;
         }
         bordereau.setValid(true);
         bordereauSchemaValidation.validate(document, bordereau, getCurrentUser());

@@ -231,7 +231,7 @@
                     gridClickInProgress = false;
                     var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action";
                     windowOpenInPost(link, fileName,"width=600,height=800,status=yes,toolbar=no,menubar=no,scrollbars=1,resizable=1",
-                        ['fileId','claimId'], [fileId,<s:property value="claimId" />]);
+                        ['fileId','claimId',csrfParameterName], [fileId,<s:property value="claimId" />,csrfTokenValue]);
                     timeoutId = -1;}, 500);
                 }
         }

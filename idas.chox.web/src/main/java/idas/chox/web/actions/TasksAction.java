@@ -18,6 +18,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,7 +134,7 @@ public class TasksAction extends BaseAction {
     }
 
     public void setChoReference(String choReference) {
-        this.choReference = choReference;
+        this.choReference = Jsoup.clean(choReference, Whitelist.none());
     }
 
     public void setLinkToClaim(boolean linkToClaim) {

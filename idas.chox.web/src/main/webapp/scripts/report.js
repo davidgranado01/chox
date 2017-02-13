@@ -2,6 +2,7 @@ var reportGenerationStatusIntervelId, directReportGenerationStatusIntervelId;
 var cancelled=false;
 function generateReport(queryString){
        
+       
     if ( find_MSIE_version() > 0 && find_MSIE_version() < 9 && !cancelled ){
         
         Ext.MessageBox.show({
@@ -12,8 +13,8 @@ function generateReport(queryString){
         });
         
         directReportGenerationStatusIntervelId = setTimeout(loadLiveDirectReportGenerationStatus, 1000);
-        window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
-            
+//        window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&" + Ext.urlEncode(queryString);
+        window.location = contextPath+'/prv/p/downloadExcelReport.action?reportName='+ reportName + "&" +"directDownload="+true + "&"  + csrfParameterName + "=" + csrfTokenValue + "&" + Ext.urlEncode(queryString);
     }else if ( !cancelled ) {
         choxExtAjaxRequest({
             url: '/prv/p/generateReportFile.action',
@@ -92,7 +93,8 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                 if(resp.isExportProcessFinished && !resp.exceptionThrown){
                     Ext.MessageBox.hide();
                     if (!cancelled && !resp.exportCancelled){
-                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action");
+//                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action").attr("name", csrfParameterName).val(csrfTokenValue);
+                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action?" + csrfParameterName + "=" + csrfTokenValue);
                         $("body").append($form);
                         $form.submit();
                     }

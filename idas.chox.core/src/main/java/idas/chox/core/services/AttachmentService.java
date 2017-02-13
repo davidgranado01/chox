@@ -14,9 +14,9 @@ public interface AttachmentService {
 
     boolean deleteAtatchment(int webUserId, int attachmentId);
 
-    boolean addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category,
+    String addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category,
                           String remark, boolean notify, boolean isInsurer, String whoCreated);
 
-    boolean addAttachment(Claim claim, byte[] fileContent, String filename, long length, String category,
+    String addAttachment(Claim claim, byte[] fileContent, String filename, long length, String category,
                           String remark, boolean notify, boolean isInsurer, String whoCreated);
 }

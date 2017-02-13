@@ -54,6 +54,9 @@
                         </goals>
                         <configuration>
                             <arguments>-extension</arguments> 
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
                             <!--wsdlFiles>
                                 <wsdlFile>test.idaschox.com_8443/services/UploadService.wsdl</wsdlFile>
                             </wsdlFiles -->
