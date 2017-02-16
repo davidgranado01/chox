@@ -122,14 +122,14 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         ((HireUpdate) activity).setUpdateInsurer(updateInsurer);
                         activity.process(claim);
                         statusString.append("Success: Updated.");
-                        LOG.debug("Updated claim '{}' ('{}') [row:{}]", new Object[]{referenceNumber, claim.getChoReference(), row});
+                        LOG.debug("Updated claim '{}' ('{}') [row:{}]", new Object[]{referenceNumber, claim==null ? "null" : claim.getChoReference(), row});
                     } catch (AccessDeniedException ex) {
                         statusString.append("Failed: No Access to Hire Update Activity (Invalid Claim Status '")
-                                .append(claim.getStatus()).append("')");
-                        LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job for claim '{}' [row:{}]", claim.getChoReference(), row);
+                                .append(claim==null ? "null" : claim.getStatus()).append("')");
+                        LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job for claim '{}' [row:{}]", claim==null ? "null" : claim.getChoReference(), row);
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred.");
-                        LOG.warn("Exception occurred when updating hire start via email scheduler job job for claim '{}' [row:{}]", claim.getChoReference(), row, ex);
+                        LOG.warn("Exception occurred when updating hire start via email scheduler job job for claim '{}' [row:{}]", claim==null ? "null" : claim.getChoReference(), row, ex);
                     }
                 } else {
                     LOG.debug("Failed Update of claim '{}' - {} [row:{}]", new Object[]{referenceNumber, statusString, row});

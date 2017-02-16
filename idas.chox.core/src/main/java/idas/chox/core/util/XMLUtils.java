@@ -32,6 +32,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +114,7 @@ public final class XMLUtils {
         if(nl.getLength()==0) {
             return null;
         }
-        return getElementText((Element)nl.item(0));
+        return Jsoup.clean(getElementText((Element)nl.item(0)), Whitelist.basic());
     }
 
 
