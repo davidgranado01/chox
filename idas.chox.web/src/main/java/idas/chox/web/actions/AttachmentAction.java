@@ -25,6 +25,8 @@ import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
@@ -83,7 +85,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public void setUploadFileName(String uploadFileName) {
-        this.uploadFileName = uploadFileName;
+        this.uploadFileName = Jsoup.clean(uploadFileName, Whitelist.basic());
     }
 
     public void setAttachmentFile(File attachmentFile) {

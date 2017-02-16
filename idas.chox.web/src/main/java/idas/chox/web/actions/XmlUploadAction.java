@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -134,7 +136,7 @@ public class XmlUploadAction extends BaseAction {
     }
 
     public void setUploadedFileFileName(String fileName) {
-        this.uploadedFileFileName = fileName;
+        this.uploadedFileFileName = Jsoup.clean(fileName, Whitelist.basic());
     }
 
     public File getUploadedFile() {
@@ -176,7 +178,6 @@ public class XmlUploadAction extends BaseAction {
     
     public String getJsonArrayData() {
         if (jObject != null) {
-//            LOG.debug("returning claimDetails from jobject total size is: {}", this.jObject.size());
             return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
         }
         return "";

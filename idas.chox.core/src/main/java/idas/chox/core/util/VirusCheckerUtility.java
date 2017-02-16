@@ -2,6 +2,8 @@ package idas.chox.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,40 +14,46 @@ import org.slf4j.LoggerFactory;
 public class VirusCheckerUtility {
     private static final Logger LOG = LoggerFactory.getLogger(VirusCheckerUtility.class);
 
-    private static final String clamscanLocation = "/usr/local/bin/clamscan";
+    private static final String CLAMSCAN_LOCATION = "/usr/local/bin/clamscan";
 
     public static boolean isVirusPresent(byte[] content) throws Exception {
 
         boolean fileDirty = true;
         Process clamscanProcess;
-        try {
-            clamscanProcess = Runtime.getRuntime().exec(new String[] { clamscanLocation, "-" });
+        
+        // Succeed if clamscan not present
+        if (!Files.exists(Paths.get(CLAMSCAN_LOCATION))) {
+            LOG.warn("Not scanning file as clamscan not found at location '{}',", CLAMSCAN_LOCATION);
+            fileDirty = false;
+        } else
+            try {
+                clamscanProcess = Runtime.getRuntime().exec(new String[] { CLAMSCAN_LOCATION, "-" });
 
-            StringBuilder out = new StringBuilder();
-            StringBuilder err = new StringBuilder();
+                StringBuilder out = new StringBuilder();
+                StringBuilder err = new StringBuilder();
 
-            ProcessReader p1 = new ProcessReader(out, clamscanProcess.getInputStream());
-            ProcessReader p2 = new ProcessReader(err, clamscanProcess.getErrorStream());
-            p1.start();
-            p2.start();
+                ProcessReader p1 = new ProcessReader(out, clamscanProcess.getInputStream());
+                ProcessReader p2 = new ProcessReader(err, clamscanProcess.getErrorStream());
+                p1.start();
+                p2.start();
 
-            clamscanProcess.getOutputStream().write(content);
-            clamscanProcess.getOutputStream().close();
-            int exitState = clamscanProcess.waitFor();
+                clamscanProcess.getOutputStream().write(content);
+                clamscanProcess.getOutputStream().close();
+                int exitState = clamscanProcess.waitFor();
 
-            switch (exitState) {
-            case 0:
-                fileDirty = false;
-                break;
-            case 1:
-                fileDirty = true;
-                break;
-            case 2:
-                throw new Exception("Error from clamscan: " + err.toString());
+                switch (exitState) {
+                case 0:
+                    fileDirty = false;
+                    break;
+                case 1:
+                    fileDirty = true;
+                    break;
+                case 2:
+                    throw new Exception("Error from clamscan: " + err.toString());
+                }
+            } catch (IOException | InterruptedException e) {
+                throw new Exception(e.getMessage());
             }
-        } catch (IOException | InterruptedException e) {
-            throw new Exception(e.getMessage());
-        }
         return fileDirty;
     }
 
