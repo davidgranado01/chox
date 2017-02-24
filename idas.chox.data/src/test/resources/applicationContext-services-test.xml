@@ -18,6 +18,14 @@
     <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="claimMatchingBandService" class="idas.chox.data.services.ClaimMatchingBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="claimMatchingService" class="idas.chox.data.services.ClaimMatchingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="breBandService" ref="breBandService"/>
+        <property name="claimMatchingBandService" ref="claimMatchingBandService" />
+    </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>

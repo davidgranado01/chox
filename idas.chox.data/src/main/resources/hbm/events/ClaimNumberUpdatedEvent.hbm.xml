@@ -9,7 +9,7 @@
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
-        <property column="activity_name" name="activityName"/>
+        <property column="activity_name" name="activityName" not-null="true"/>
         <property column="event_name" name="eventName" not-null="true"/>
         <property column="status" name="claimStatus" not-null="true"/>
         <property column="insurer_id" name="insurerId" not-null="true"/>

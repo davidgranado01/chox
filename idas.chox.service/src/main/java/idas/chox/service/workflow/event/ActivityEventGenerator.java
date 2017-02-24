@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.data.events.EventGenerator;
@@ -18,6 +19,7 @@ import idas.chox.events.ChoOwnerAssignedEvent;
 import idas.chox.events.ClaimAcknowledgedEvent;
 import idas.chox.events.ClaimAuditReviewUpdatedEvent;
 import idas.chox.events.ClaimClosedEvent;
+import idas.chox.events.ClaimMatchingEvent;
 import idas.chox.events.ClaimNumberUpdatedEvent;
 import idas.chox.events.ClaimPendingEvent;
 import idas.chox.events.ClaimReferredToEngEvent;
@@ -26,6 +28,7 @@ import idas.chox.events.ClaimRegisteredByFnolEvent;
 import idas.chox.events.ClaimRejectedEvent;
 import idas.chox.events.ClaimRejectionAcceptedEvent;
 import idas.chox.events.ClaimRejectionContestedEvent;
+import idas.chox.events.ClaimResubmittedEvent;
 import idas.chox.events.ClaimRevertedEvent;
 import idas.chox.events.ClaimReviewedByEngEvent;
 import idas.chox.events.ClaimRoutedEvent;
@@ -158,6 +161,15 @@ public class ActivityEventGenerator {
         }
     }
 
+    public List<BaseActivityEvent> getEvents(final Claim claim, UploadClaimXMLService activity) {
+        ArrayList events = new ArrayList();
+        String activityName = "UploadClaimXMLService";
+        events.add(new ClaimResubmittedEvent(claim, activityName));
+        // Uncomment below to generate "original" events to activeMQ broker
+//        generate(claim, activity);
+        return events;
+    }
+    
     public List<BaseActivityEvent> getEvents(final Claim claim, Activity activity) {
         ArrayList events = new ArrayList();
         
@@ -211,6 +223,10 @@ public class ActivityEventGenerator {
                 
             case "ClaimAwaitingCarHireInfo":
                     events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
+                break;
+                
+            case "ClaimMatching":
+                    events.add(new ClaimMatchingEvent(claim, activityName));
                 break;
                 
             case "ClaimPending":
@@ -468,7 +484,9 @@ public class ActivityEventGenerator {
                 break;
 
             case "WorkgroupRouting":
+                if (((WorkgroupRouting) activity).isRouted()) {
                     events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                }
                 break;
 
             case "NewSupplementaryInvoice":

@@ -63,7 +63,7 @@ public class UpdateLiability extends BaseActivity {
         }
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
+        claimService.updateLiabilityPayment(claim);
 
     }
 

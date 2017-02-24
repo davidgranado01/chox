@@ -17,6 +17,11 @@
 <!--         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/> -->
 <!--         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/> -->
     </bean>
+    <bean id="claimMatchingService" class="idas.chox.data.services.ClaimMatchingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="breBandService" ref="breBandService"/>
+        <property name="claimMatchingBandService" ref="claimMatchingBandService" />
+    </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -185,6 +190,7 @@
         <property name="taskService" ref="taskService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
+        <property name="eventBus" ref="eventBus"/>
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" scope="prototype">
         <property name="insurerService" ref="insurerService" />

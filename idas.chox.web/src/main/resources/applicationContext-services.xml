@@ -22,6 +22,14 @@
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
         <property name="eventService" ref="eventService" />
     </bean>
+    <bean id="claimMatchingBandService" class="idas.chox.data.services.ClaimMatchingBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="claimMatchingService" class="idas.chox.data.services.ClaimMatchingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="breBandService" ref="breBandService"/>
+        <property name="claimMatchingBandService" ref="claimMatchingBandService" />
+    </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -195,6 +203,7 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
         <property name="activityEventGenerator" ref="activityEventGenerator" />
+        <property name="eventBus" ref="eventBus"/>
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" scope="prototype">
         <property name="insurerService" ref="insurerService" />
@@ -351,10 +360,6 @@
     </bean>
     
     <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
-    <bean id="claimMatchingBandService" class="idas.chox.data.services.ClaimMatchingBandServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

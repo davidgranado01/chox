@@ -100,6 +100,16 @@
                 <value>hbm/ChoBillingBand.hbm.xml</value>
                 <value>hbm/InsurerBillingBandMapping.hbm.xml</value>
                 <value>hbm/ChoBillingBandMapping.hbm.xml</value>
+                <value>hbm/InvoiceSavingRule.hbm.xml</value>
+                <value>hbm/ClaimMatchingBand.hbm.xml</value>
+                <value>hbm/ClaimMatchingEntry.hbm.xml</value>
+                <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
+                <value>hbm/events/BaseActivityEvent.hbm.xml</value>
+                <value>hbm/events/ClaimRoutedEvent.hbm.xml</value>
+                <value>hbm/events/InvoiceCreatedEvent.hbm.xml</value>
+                <value>hbm/events/ClaimAcknowledgedEvent.hbm.xml</value>
+                <value>hbm/events/ClaimNumberUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/LiabilityUpdatedEvent.hbm.xml</value>
             </list>
         </property>
     </bean>

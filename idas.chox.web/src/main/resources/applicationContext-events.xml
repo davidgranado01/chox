@@ -18,9 +18,7 @@
     <bean id="baseActivityListener" class="idas.chox.service.workflow.listeners.BaseActivityListener" scope="singleton">
         <property name="storeEvents" value="${events.log}" />
     </bean>
-    <bean id="claimRoutedListener" class="idas.chox.service.workflow.listeners.ClaimRoutedListener" scope="singleton"/>
-    <bean id="invoiceCreatedListener" class="idas.chox.service.workflow.listeners.InvoiceCreatedListener" scope="singleton">
-        <property name="invoiceService" ref="invoiceService"/>
-    </bean>
+    <bean id="claimMatchingListener" class="idas.chox.service.workflow.listeners.ClaimMatchingListener" scope="singleton"/>
+    <bean id="invoiceCreatedListener" class="idas.chox.service.workflow.listeners.InvoiceCreatedListener" scope="singleton"/>
     <bean id="deadMessageHandler" class="idas.chox.service.workflow.listeners.DeadMessageHandler" scope="singleton"/>
 </beans>

@@ -30,6 +30,11 @@ public class WorkgroupRouting extends BaseActivity {
     private VehicleClassPriceService vehicleClassPriceService;
     private WorkgroupService workgroupService;
     private static final Map<Integer, Integer> workgoupMap = new ConcurrentHashMap(10);
+    private boolean routed = false;
+
+    public boolean isRouted() {
+        return routed;
+    }
     
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
         this.vehicleClassPriceService = vehicleClassPriceService;
@@ -49,11 +54,15 @@ public class WorkgroupRouting extends BaseActivity {
         return true;
     }
 
+
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        // Check not claim matched
+        if (claim.getMatchStatus() != 0) {
+            return;
+        }
 
         LOG.debug("Claim '{}' status is {}", claim.getChoReference(), claim.getStatus());
-        boolean routed = false;
         AutomaticRoutingStrategy routingStrategy = claim.getInsurer().getAutomaticRoutingStrategy();
         if (claim.getInsurer().isWorkgroupEnable()) {
             switch (routingStrategy) {

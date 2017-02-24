@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.ClaimMatchingImportEntry" table="claim_matching_import">
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">claim_matching_import_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <property column="insurer_name" name="insurerName"/>
+    <property column="claim_number" name="claimNumber"/>
+    <property column="third_party_vehicle_registration" name="thirdPartyVehicleRegistration"/>
+    <property column="incident_date" name="incidentDate"/>
+    <property column="liability_insurer" name="liabilityInsurer"/>
+    <property column="liability_stance" name="liabilityStance"/>
+    <property column="indemnity_stance" name="indemnityStance"/>
+    <property column="created_date" name="createdDate"/>
+  </class>
+</hibernate-mapping>

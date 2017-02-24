@@ -196,6 +196,12 @@ public abstract class BaseActivity implements Activity {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
         
+        // Warning: nasty hack! With the introduction of the event mechanism, we may not want to perform some chained events
+        // as they have been updated via an EventListener. Disable such chained activities here
+        if (this.getClass().getSimpleName().equals("NewClaim") && claim.getMatchStatus() == 3) {
+            LOG.debug("Ignoring next chain activity.");
+            return;
+        }
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

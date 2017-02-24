@@ -50,11 +50,11 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.workflow.ActivityFactory;
-import idas.chox.service.workflow.event.ActivityEvent;
 import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.service.workflow.activities.InsurerUpload;
 import idas.chox.service.workflow.activities.NewInvoice;
 import idas.chox.service.workflow.activities.NewSupplementaryInvoice;
+import idas.chox.service.workflow.event.EventBusWrapper;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
 
@@ -77,10 +77,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private TaskService taskService;
     private BordereauSchemaValidation bordereauSchemaValidation;
     protected ActivityEventGenerator activityEventGenerator;
-
+    private EventBusWrapper eventBus;
+    
     @Override
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public void setEventBus(EventBusWrapper eventBus) {
+        this.eventBus = eventBus;
     }
 
     public void setErrorMessage(String errorMessage) {
@@ -194,11 +199,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
-                    for (History history : History.New(breResponse)) {
-                        if (history.getType().equals("ERROR") && history.getIsPublic()) {
-                            claimResult.getBreMessage().add(history.getNarrative());
-                        }
-                    }
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEach((history) -> {
+                        claimResult.getBreMessage().add(history.getNarrative());
+                    });
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
@@ -210,11 +213,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
-                    for (History history : History.New(breResponse)) {
-                        if (history.getType().equals("ERROR") && history.getIsPublic()) {
-                            claimResult.getBreMessage().add(history.getNarrative());
-                        }
-                    }
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEach((history) -> {
+                        claimResult.getBreMessage().add(history.getNarrative());
+                    });
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
@@ -227,11 +228,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("supplementaryInsurerInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
-                    for (History history : History.New(breResponse)) {
-                        if (history.getType().equals("ERROR") && history.getIsPublic()) {
-                            claimResult.getBreMessage().add(history.getNarrative());
-                        }
-                    }
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEach((history) -> {
+                        claimResult.getBreMessage().add(history.getNarrative());
+                    });
                     LOG.debug("supplementaryInsurerInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
@@ -257,11 +256,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity = activityFactory.getActivity("newInvoice");
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
-                        for (History history : History.New(breResponse)) {
-                            if (history.getType().equals("ERROR") && history.getIsPublic()) {
-                                claimResult.getBreMessage().add(history.getNarrative());
-                            }
-                        }
+                        History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEach((history) -> {
+                            claimResult.getBreMessage().add(history.getNarrative());
+                        });
                         LOG.debug("NewInvoice activity completed.");
                     } else {
                         checkECD(claim);
@@ -269,11 +266,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity.setXmlActivityProcessing(true);
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
-                        for (History history : History.New(breResponse)) {
-                            if (history.getType().equals("ERROR")) {
-                                claimResult.getBreMessage().add(history.getNarrative());
-                            }
-                        }
+                        History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR"))).forEach((history) -> {
+                            claimResult.getBreMessage().add(history.getNarrative());
+                        });
 
                         LOG.debug("Insurer upload activity completed.");
 
@@ -309,19 +304,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.setXmlActivityProcessing(true);
                     activity.processInBatch(claimResult.getClaim());
                     RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
-                    for (History history : History.New(breResponse)) {
-                        if (history.getType().equals("ERROR")) {
-                            claimResult.getBreMessage().add(history.getNarrative());
-                        }
-                    }
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR"))).forEach((history) -> {
+                        claimResult.getBreMessage().add(history.getNarrative());
+                    });
 
                     LOG.debug("Insurer upload activity completed.");
 
                 } else {
-                    // If Claim has been updated but no activity has been called, we need to generate  a Claimupdate Event
+                    // If Claim has been updated but no activity has been called, we need to generate a ClaimResubmitted Event
                     if (claimResult.getProcessStatus().equals("Updated")) {
-                        LOG.debug("Processed bordereau and no activity ran but claim updated: generatung ClaimUpdatedEvent");
-                        activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
+                        LOG.debug("Processed bordereau and no activity ran but claim updated: generating ClaimUpdatedEvent");
+                        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {eventBus.post(event);
+        });
+//                        activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
                     }
                 }
 
@@ -382,15 +377,22 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         if (rentals != null && rentals.size() > 0) {
 
-            for (Element e : rentals) {
-
+            rentals.stream().map((e) -> {
                 ClaimResult claimResult = new ClaimResult();
                 claimResult.setElement(e);
+                return claimResult;
+            }).map((claimResult) -> {
                 claimResult.setCheckDataValid(true);
+                return claimResult;
+            }).map((claimResult) -> {
                 claimResult.setDataValid(true);
+                return claimResult;
+            }).map((claimResult) -> {
                 claimResult.setValid(true);
+                return claimResult;
+            }).forEach((claimResult) -> {
                 claimElements.add(claimResult);
-            }
+            });
         }
         return claimElements;
     }
@@ -692,44 +694,49 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
 
         try {
-            for (ClaimResult claimResult : claimResults) {
-
+            claimResults.stream().map((claimResult) -> {
                 if (doProcessBordereauResult(claimResult, choReferences)) {
                     xmlClaimsDetail.setValid(true);
                 } else {
                     xmlClaimsDetail.setValid(false);
                 }
-
+                return claimResult;
+            }).map((claimResult) -> {
                 xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
-
+                return claimResult;
+            }).map((claimResult) -> {
                 if (!claimResult.getMessage().isEmpty()) {
                     xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
                 } else {
                     xmlClaimsDetail.setMessage("");
                 }
-
+                return claimResult;
+            }).map((claimResult) -> {
                 if (!claimResult.getBreMessage().isEmpty()) {
                     xmlClaimsDetail.setBreFailureMessages(claimResult.getBreMessage().toString());
                 }
-
+                return claimResult;
+            }).map((claimResult) -> {
                 xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
-                if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
-                    xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-                    if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
-                        if (claimResult.isDuplicateClaimInSameXmlFile()) {
-                            xmlClaimsDetail.setClaimId(0);
-                            xmlClaimsDetail.setClaimStatus("N/A");
-                        } else {
-                            xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
-                            xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
-                        }
-                        evictClaim(claimResult.getClaim());
-                        LOG.debug("Claim evicted.");
-                    } else {
+                return claimResult;
+            }).filter((claimResult) -> (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null)).map((claimResult) -> {
+                xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+                return claimResult;
+            }).forEach((claimResult) -> {
+                if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                    if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                        xmlClaimsDetail.setClaimId(0);
                         xmlClaimsDetail.setClaimStatus("N/A");
+                    } else {
+                        xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                        xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
                     }
+                    evictClaim(claimResult.getClaim());
+                    LOG.debug("Claim evicted.");
+                } else {
+                    xmlClaimsDetail.setClaimStatus("N/A");
                 }
-            }
+            });
             LOG.debug("webService claim has been processed successfully.");
             return xmlClaimsDetail;
 
@@ -769,16 +776,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.debug("claim and histories is not null");
             String historiesMessage = "";
 
-            for (History h : claimResult.getClaim().getHistories()) {
-
-                if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
-                    String narrative = h.getNarrative().trim();
-                    if (!narrative.substring(narrative.length() - 1).equals(".")) {
-                        narrative = narrative + ".";
-                    }
-                    historiesMessage += narrative;
+            historiesMessage = claimResult.getClaim().getHistories().stream().filter((h) -> (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO()))).map((h) -> h.getNarrative().trim()).map((narrative) -> {
+                if (!narrative.substring(narrative.length() - 1).equals(".")) {
+                    narrative = narrative + ".";
                 }
-            }
+                return narrative;
+            }).map((narrative) -> narrative).reduce(historiesMessage, String::concat);
             xmlClaimsDetail.setBreFailureMessages(historiesMessage);
         } else {
             LOG.debug("claim and histories is null");

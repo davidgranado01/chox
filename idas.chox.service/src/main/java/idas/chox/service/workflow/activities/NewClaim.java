@@ -135,7 +135,7 @@ public class NewClaim extends BaseActivity {
             }
         }
     }
-
+    
     @Override
     protected String getCurrentStatus() {
         return "";

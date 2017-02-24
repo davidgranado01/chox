@@ -18,8 +18,13 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailSchedulerJob.class);
     protected ImapMailReceiver imapMailReceiver;
+    private boolean active;
 
     protected abstract void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException;
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
         this.imapMailReceiver = imapMailReceiver;
@@ -27,36 +32,38 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
 
     @Override
     protected void process(String emailSubject, SchedulerJob schedulerJob) throws MessagingException {
-        String sender = null;
-                List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(emailSubject);
-                LOG.debug("Total no of mails are {}.", listOfmails.size());
-                try {
-                for (Message message : listOfmails) {
+        if (!active) return;
 
-                    sender = mailUtil.getSender(message);
-                    if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
-                        LOG.debug("Sender '{}' is in privileged user list.", sender);
-                        try {
-                            processEmail(message, emailSubject, sender, schedulerJob.getBccReceivers(), schedulerJob.isReplyToSender());
-                        } catch (Exception ex) {
-                            LOG.error("Exception thrown while processing {} from sender {} with subject '{}'\n",
-                                    new Object[]{getClass().getSimpleName(), sender, emailSubject, ex});
-                            sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", "Exception thrown: " + ex.getMessage());
-                        } finally {
-                             message.setFlag(Flags.Flag.SEEN, true);
-                        }
-                    } else {
+        String sender;
+        List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(emailSubject);
+        LOG.debug("Total no of mails are {}.", listOfmails.size());
+        try {
+            for (Message message : listOfmails) {
+
+                sender = mailUtil.getSender(message);
+                if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
+                    LOG.debug("Sender '{}' is in privileged user list.", sender);
+                    try {
+                        processEmail(message, emailSubject, sender, schedulerJob.getBccReceivers(), schedulerJob.isReplyToSender());
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown while processing {} from sender {} with subject '{}'\n",
+                                new Object[]{getClass().getSimpleName(), sender, emailSubject, ex});
+                        sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", "Exception thrown: " + ex.getMessage());
+                    } finally {
                         message.setFlag(Flags.Flag.SEEN, true);
-                        LOG.info("{} request received from unauthorised user {}.", getClass().getSimpleName(), sender);
-                        sendMail(schedulerJob.getErrorMessageReceivers(), schedulerJob.getBccReceivers(),
-                                "Email with subject '" + emailSubject + "' request received from unauthorised user",
-                                emailSubject + " request received from unauthorised user '" + sender + "'. Allowed users are " + schedulerJob.getPrivilegedUsers());
                     }
+                } else {
+                    message.setFlag(Flags.Flag.SEEN, true);
+                    LOG.info("{} request received from unauthorised user {}.", getClass().getSimpleName(), sender);
+                    sendMail(schedulerJob.getErrorMessageReceivers(), schedulerJob.getBccReceivers(),
+                            "Email with subject '" + emailSubject + "' request received from unauthorised user",
+                            emailSubject + " request received from unauthorised user '" + sender + "'. Allowed users are " + schedulerJob.getPrivilegedUsers());
                 }
-                } catch (MessagingException ex) {
-                    throw ex;
-                } finally {
-                    imapMailReceiver.clean();
-                }
-     }
+            }
+        } catch (MessagingException ex) {
+            throw ex;
+        } finally {
+            imapMailReceiver.clean();
+        }
+    }
 }

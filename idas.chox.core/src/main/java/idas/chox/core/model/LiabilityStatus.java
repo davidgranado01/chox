@@ -22,6 +22,15 @@ public enum LiabilityStatus {
         this.description = description;
     }
 
+    public static LiabilityStatus getLiabilityStatus(String description) {
+        for (LiabilityStatus value : LiabilityStatus.values()) {
+            if (value.description.equals(description)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("No such Liability Status: " + description);
+    }
+    
     public int getLiablityValue() {
         return liablityValue;
     }

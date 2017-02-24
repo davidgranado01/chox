@@ -50,38 +50,30 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE event_attributes TO chox_user;
 GRANT SELECT ON TABLE event_attributes TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE event_attributes_id_seq TO chox_user;
 
-
-
 --
 -- CHOX-280: Create Claim Matching Table in DB
 --
+DROP TABLE IF EXISTS claim_matching;
 CREATE TABLE claim_matching (
     id serial NOT NULL,
     "version" integer NOT NULL,
-    insurer_id integer NOT NULL,
     claim_id integer,
-    third_party_insurer character varying NOT NULL,
-    insurer_claim_number character varying NOT NULL,
+    insurer_id integer,
+    insurer_name character varying NOT NULL,
+    claim_number character varying NOT NULL,
     third_party_vehicle_registration character varying NOT NULL,
     incident_date timestamp without time zone NOT NULL,
-    customer_vehicle_registration character varying NOT NULL,
-    liability_insurer numeric(5,2) NOT NULL,
-    liability_cho numeric(5,2) NOT NULL,
-    liability_status smallint,
-    liability_note character varying,
+    liability_insurer numeric(5,2),
+    liability_stance character varying NOT NULL,
     indemnity_stance character varying NOT NULL,
-    cho_name character varying,
-    fraud_status character varying,
-    solicitor_details character varying,
-    non_fault_contact_details character varying,
+    match_status smallint not null default 0,
     created_by integer NOT NULL,
     created_date timestamp without time zone NOT NULL DEFAULT now(),
     last_modified_by integer NOT NULL,
     last_modified_date timestamp without time zone DEFAULT now(),
-    CONSTRAINT claim_matching_pkey PRIMARY KEY (id),
     CONSTRAINT claim_matching_insurer_fkey FOREIGN KEY (insurer_id)
         REFERENCES insurer (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION,
+        ON UPDATE NO ACTION ON DELETE NO ACTION,    CONSTRAINT claim_matching_pkey PRIMARY KEY (id),
     CONSTRAINT claim_matching_webuser_created_fkey FOREIGN KEY (created_by)
         REFERENCES web_user (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -92,35 +84,32 @@ CREATE TABLE claim_matching (
 WITH (
     OIDS=FALSE
 );
+CREATE UNIQUE INDEX claim_matching_ux ON claim_matching(insurer_name,claim_number);
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching TO chox_user;
 GRANT SELECT ON TABLE claim_matching TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_matching_id_seq TO chox_user;
 
+DROP TABLE IF EXISTS claim_matching_import;
 CREATE TABLE claim_matching_import (
     id serial NOT NULL,
-    insurer_id integer NOT NULL,
-    third_party_insurer character varying NOT NULL,
-    insurer_claim_number character varying NOT NULL,
+    "version" integer NOT NULL default 0,
+    insurer_name character varying NOT NULL,
+    claim_number character varying NOT NULL,
     third_party_vehicle_registration character varying NOT NULL,
     incident_date timestamp without time zone NOT NULL,
-    customer_vehicle_registration character varying NOT NULL,
-    liability_insurer numeric(5,2) NOT NULL,
-    liability_cho numeric(5,2) NOT NULL,
-    liability_status smallint,
-    liability_note character varying,
     indemnity_stance character varying NOT NULL,
-    cho_name character varying,
-    fraud_status character varying,
-    solicitor_details character varying,
-    non_fault_contact_details character varying
+    liability_stance character varying NOT NULL,
+    liability_insurer numeric(5,2),
+    created_date timestamp without time zone NOT NULL DEFAULT now()
 )
 WITH (
     OIDS=FALSE
 );
+CREATE UNIQUE INDEX claim_matching_import_ux ON claim_matching_import(insurer_name,claim_number);
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching_import TO chox_user;
 GRANT SELECT ON TABLE claim_matching_import TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_matching_import_id_seq TO chox_user;
-
+-- psql -c "COPY claim_matching_import(insurer_name,third_party_vehicle_registration,incident_date,indemnity_stance,liability_stance,liability_insurer) FROM '/Users/john/lv-claimMatching.csv' delimiter ',' csv;" chox_p9s7
 --
 -- To remove on day 31
 --  delete from claim_matching where claim_id is null and now()::date - created_date::date > 30;
@@ -175,3 +164,46 @@ CREATE TABLE claim_matching_band (
 );
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching_band TO chox_user;
 GRANT SELECT, UPDATE ON TABLE claim_matching_band_id_seq TO chox_user;
+
+--
+-- Set-up Scheduler Job and user
+--
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver,
+                             error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version)
+    select 'claimMatcher.lv', 'Val1dusSmasher', 'CLAIM_MATCHING', 'no enaill subject for claim matching',
+         'john.dowson@valexa.com', 'john.dowson@valexa.com', 'john.dowson@valexa.com', 999, now(), 999, now(), 0;
+insert into web_user(email, first_name, last_name, password, created_by, created_date, last_modified_by, last_modified_date, insurer_id,
+                        status, is_expired, user_name, version, telephone, show_browser_warning, password_last_modified_date)
+    select 'john.dowson@valexa.com', 'Claim', 'Matcher', 'ac9ebb5c9eaa6f6674d68bb220f609c3', 999, now(), 999, now(), 26,
+                        true, false, 'claimMatcher.lv', 0, '07702 904147', false, now();
+
+insert into web_user_user_role(web_user_id, web_user_role_id, created_by, last_modified_by, version)
+    select w.id, r.id, 999,999,0 from web_user w, web_user_role r where w.user_name='claimMatcher.lv' and r.name='ROLE_INS';
+
+--
+-- Add accessibility for ClaimMatching actvity
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimPending',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimUnacknowledgedRouted',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimRejectionContested',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimUpdatedByEngineer',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+  values ('activity.ClaimMatching.ClaimReferredToFNOL',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHO', 2, id FROM accessibility WHERE name like 'activity.ClaimMatching.%';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS', 2, id FROM accessibility WHERE name like 'activity.ClaimMatching.%';
+
+--
+-- Add match status to claim
+--
+ALTER TABLE claim ADD COLUMN match_status integer not null default 0;

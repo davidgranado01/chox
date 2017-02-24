@@ -1971,6 +1971,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
             }
             claim.setLiability(liabilityStatus);
+            claim.setLiabilityStatusModifiedDate(new Date());
             Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);

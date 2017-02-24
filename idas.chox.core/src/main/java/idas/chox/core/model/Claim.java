@@ -81,6 +81,7 @@ public class Claim extends Entity implements Serializable {
     private List<History> histories;
     private List<Comment> comments;
     private int fraudCheckStatus;
+    private int matchStatus;
     private boolean sentToKeoghs;
     private boolean fraudResultAcknowledged;
     private KeoghsRequest keoghsRequest;
@@ -90,6 +91,15 @@ public class Claim extends Entity implements Serializable {
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
+        this.matchStatus = 0;
+    }
+
+    public int getMatchStatus() {
+        return matchStatus;
+    }
+
+    public void setMatchStatus(int matchStatus) {
+        this.matchStatus = matchStatus;
     }
 
     public String getIndemnityStance() {
