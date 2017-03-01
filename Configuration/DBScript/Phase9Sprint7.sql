@@ -238,3 +238,73 @@ INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_COM',1,id from accessibility where name ='filter.MatchedClaims';
 INSERT into accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_MI',1,id from accessibility where name ='filter.MatchedClaims';
+
+--
+-- Add accessibility for ClaimMatchedReview actvity
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimPending',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimUnacknowledgedRouted',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimRejectionContested',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimUpdatedByEngineer',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimReferredToFNOL',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimRejected',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.SubscriberClaimRejected',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimRejectionAccepted',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.AwaitingCarHireInfo',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.AwaitingInvoiceData',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceDataCalculationIncorrect',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceApprovedByBRE',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceEscalated',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceEscalatedToHandler',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ContestedInvoiceReferredToInsurer',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ContestedInvoiceReferredToCHO',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.AwaitingInvoicePayment',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoicePaymentLogged',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ClaimReferredToEngineer',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceReferredToClaimsHandler',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceReferredToEngineer',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.AwaitingLiabilityResolution',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.InvoiceUnassigned',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ManualInvoiceBREApproved',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ManualInvoiceBRERejected',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ManualInvoiceContested',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('activity.ClaimMatchedReview.ManualInvoiceUnassigned',FALSE,FALSE);
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name like 'activity.ClaimMatchedReview.%';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS', 2, id FROM accessibility WHERE name like 'activity.ClaimMatchedReview.%';

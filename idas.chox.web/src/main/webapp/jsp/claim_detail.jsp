@@ -891,6 +891,14 @@
         </div>
     </s:if>
 
+    <s:if test="matchedClaimRequiringReview">
+        <div id="matchedClaimRequiringReviewDiv">
+            <s:action namespace="/prv/p" executeResult="true" name="matchedClaimReview">
+                <s:param name="id"><s:property value="id" /></s:param>
+            </s:action>
+        </div>
+    </s:if>
+
 
     <script type="text/javascript">
     

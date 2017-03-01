@@ -601,6 +601,10 @@
             <result name="success">/jsp/actionPanel/p_more_action_update_interim_payment.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
+        <action name="matchedClaimReview" class="idas.chox.web.actions.ClaimAction" method="getMatchedClaimReview">
+            <result name="success">/jsp/actionPanel/p_matched_claim_review.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
         <action name="updatePaymentReceived" class="idas.chox.web.actions.ClaimAction" method="getUpdatePaymentReceived">
             <result name="success">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>

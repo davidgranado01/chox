@@ -22,6 +22,7 @@
     <bean id="claimMatching" class="idas.chox.service.workflow.activities.ClaimMatching" scope="prototype">
         <property name="claimMatchingBandService" ref="claimMatchingBandService" />
     </bean>
+    <bean id="claimMatchedReview" class="idas.chox.service.workflow.activities.ClaimMatchedReview" scope="prototype"/>
     <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" scope="prototype">
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
         <property name="workgroupService" ref="workgroupService" />

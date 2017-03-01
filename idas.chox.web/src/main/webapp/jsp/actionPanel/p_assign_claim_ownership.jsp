@@ -230,15 +230,18 @@
     function doAssignOwnershipRejectSubmit(){
         actionPanel.registerAction("rejectClaim");
         $("#OwnershippAssignmentMessageBox").text("");
-            if($("#reasonOfRejectionId").val() === "-1" || $("#rejecDescId").val() === "" ) {
-                 if($("#reasonOfRejectionId").val() === "-1")
+        if($("#reasonOfRejectionId").val() === "-1" || $("#rejecDescId").val() === "" ) {
+            if($("#reasonOfRejectionId").val() === "-1") {
                     $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
-                 if($("#rejecDescId").val() === "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") === -1 )
-                        $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
-            } else {
-                $("#OwnershippAssignmentMessageBox").text("").show();
-                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
             }
+            if($("#rejecDescId").val() === "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") === -1 ) {
+                    $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();
+            }
+        } else {
+            $("#OwnershippAssignmentMessageBox").text("").show();
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+        }
+        return false;
     }
     
     function rejectClaim(btn) {
@@ -246,6 +249,7 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
             choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
+        return false;
     }
 
     function doAssignOwnershipSubmit(){
@@ -254,6 +258,7 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
         }
+        return false;
     }
     
     var reasonOfRejectionDescReader = new Ext.data.JsonReader({

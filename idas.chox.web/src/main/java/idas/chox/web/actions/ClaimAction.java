@@ -824,6 +824,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return bFlag;
     }
+    public boolean getMatchedClaimRequiringReview() {
+        boolean bFlag = false;
+
+        if (claim.getMatchStatus() == 3 && claim.getInsurer().isEnableClaimMatching() && (getIsChoxAdmin() || this.getIsInsurer())) {
+            bFlag = true;
+        }
+
+        return bFlag;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="MORE ACTION - DROP DOWN">
@@ -898,6 +907,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             interimPaymentMade = null;
             interimPaymentReceived = null;
         }
+        return SUCCESS;
+    }
+
+    public String getMatchedClaimReview() {
+//        if (claim != null) {
+//        } else {
+//        }
         return SUCCESS;
     }
 

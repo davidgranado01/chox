@@ -13,15 +13,11 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimHandlerRoleUserDropDownAction.class);
-
     private List<IdLookupItem> claimhandlers = null;
-    private Set<Integer> workgroupId = new HashSet<Integer>();
-    private Set<Integer> insurerId = new HashSet<Integer>();
+    private Set<Integer> workgroupId = new HashSet<>();
+    private Set<Integer> insurerId = new HashSet<>();
     private UserService userService;
     private InsurerService insurerService;
 
@@ -64,23 +60,20 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     }
 
     public String getJsonData() {
-        LOG.debug("Returning json data from claimhandlers: {}", claimhandlers);
-
         JSONArray jsonArray;
         try {
             jsonArray = JSONArray.fromObject(claimhandlers);
         } catch (Exception ex) {
-            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+//            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return null;
         }
-        LOG.debug("Returning json data: {}", jsonArray.toString());
         return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
     }
 
     @Override
     public String execute() throws Exception {
 
-        claimhandlers = new ArrayList<IdLookupItem>();
+        claimhandlers = new ArrayList<>();
 
         if (getIsInsurer()) {
             insurerId.clear();
@@ -88,7 +81,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
         }
 
         if (insurerId != null) {
-            List<WebUser> users = new ArrayList<WebUser>();
+            List<WebUser> users = new ArrayList<>();
             for (Integer insId : insurerId) {
                 Insurer insurer = insurerService.getInsurer(insId);
                 if (insurer != null) {
@@ -106,7 +99,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     
     public String getAllClaimHandlers() throws Exception {
 
-        claimhandlers = new ArrayList<IdLookupItem>();
+        claimhandlers = new ArrayList<>();
 
         if (getIsInsurer()) {
             insurerId.clear();
@@ -114,7 +107,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
         }
 
         if (insurerId != null) {
-            List<WebUser> users = new ArrayList<WebUser>();
+            List<WebUser> users = new ArrayList<>();
             for (Integer insId : insurerId) {
                 Insurer insurer = insurerService.getInsurer(insId);
                 if (insurer != null) {
