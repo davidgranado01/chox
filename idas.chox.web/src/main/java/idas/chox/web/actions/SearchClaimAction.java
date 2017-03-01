@@ -180,6 +180,25 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return isVisible;
     }
     
+    public boolean isClaimMatchActive() {
+        return this.getModel().getClaimMatchValue() == null ? false :  this.getModel().getClaimMatchValue() > 0;
+    }
+
+    public boolean isMatchedClaimsCheckBoxVisible() {
+        boolean isVisible = false;
+        try {
+            Filter matchedClaims = filterService.getFilter("MatchedClaims");
+            for (Filter filter : getAvailableFilters()) {
+                if (filter.getKey().equals(matchedClaims.getKey())) {
+                    isVisible = true;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception while retrieving the MatchedClaims filter ", ex);
+        }
+        return isVisible;
+    }
+    
     public boolean isLiabilityStatusUpdateNotificationCheckBoxVisible() {
         boolean isVisible = false;
         try {

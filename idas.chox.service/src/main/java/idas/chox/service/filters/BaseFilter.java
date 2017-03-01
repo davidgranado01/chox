@@ -14,6 +14,7 @@ public abstract class BaseFilter implements Filter {
     private boolean isCheckOwnership = false;
     private boolean isCheckFnol = false;
     private boolean isCheckEngineers = false;
+    private boolean isCheckClaimMatching = false;
     private String queueDescription;
     @Autowired
     protected SecurityInfoProvider securityInfoProvider;
@@ -29,6 +30,15 @@ public abstract class BaseFilter implements Filter {
 
     public void setIsCheckEngineers(boolean isCheckEngineers) {
         this.isCheckEngineers = isCheckEngineers;
+    }
+
+    @Override
+    public boolean getIsCheckClaimMatching() {
+        return isCheckClaimMatching;
+    }
+
+    public void setIsCheckClaimMatching(boolean isCheckClaimMatching) {
+        this.isCheckClaimMatching = isCheckClaimMatching;
     }
 
     @Override

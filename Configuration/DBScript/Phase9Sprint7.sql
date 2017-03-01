@@ -1,6 +1,7 @@
 --
 -- Tables to hold new internal events
 --
+DROP TABLE IF EXISTS event_log;
 CREATE TABLE event_log (
     id serial NOT NULL,
     "version" integer NOT NULL,
@@ -33,6 +34,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE event_log TO chox_user;
 GRANT SELECT ON TABLE event_log TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE event_log_id_seq TO chox_user;
 
+DROP TABLE IF EXISTS event_attributes;
 CREATE TABLE event_attributes (
     id serial NOT NULL,
     event_log_id integer NOT NULL,
@@ -134,6 +136,7 @@ ALTER TABLE bre_band ADD COLUMN enable_claim_matching boolean NOT NULL default f
 ALTER TABLE bre_band ADD COLUMN claim_matching_workgroup integer;
 ALTER TABLE bre_band ADD COLUMN claim_matching_owner integer;
 
+DROP TABLE IF EXISTS claim_matching_band;
 CREATE TABLE claim_matching_band (
     id serial NOT NULL,
     version integer,
@@ -217,3 +220,21 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 -- Add match status to claim
 --
 ALTER TABLE claim ADD COLUMN match_status integer not null default 0;
+
+--
+-- Add permisions for new queue 'Matched Claims to be Reviewed'
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check)
+    values ('filter.MatchedClaims',TRUE,TRUE);
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.MatchedClaims';
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CH',1,id from accessibility where name ='filter.MatchedClaims';
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MNG',1,id from accessibility where name ='filter.MatchedClaims';
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CR',1,id from accessibility where name ='filter.MatchedClaims';
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_COM',1,id from accessibility where name ='filter.MatchedClaims';
+INSERT into accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MI',1,id from accessibility where name ='filter.MatchedClaims';

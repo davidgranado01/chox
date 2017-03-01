@@ -877,6 +877,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getClaimMatchValue() != null) {
+            criteria.add(Restrictions.eq("matchStatus", searchCriteria.getClaimMatchValue()));
+        }
+
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
 
             /* The SQL Query for the below criteria is:

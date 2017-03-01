@@ -9,13 +9,7 @@
         <property name="key" value="RejectedClaims"/>
         <property name="status" value="ClaimRejected"/>
         <property name="queueDescription" value="Claim notifications rejected by the Insurer"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="RejectedFixedFeeClaims" class="idas.chox.service.filters.FilterFixedFeeRejected" >
@@ -23,26 +17,14 @@
         <property name="key" value="RejectedFixedFeeClaims"/>
         <property name="status" value="ClaimRejected"/>
         <property name="queueDescription" value="Fixed Fee claim notifications rejected by the Insurer"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     <bean id="RejectedSubscriberClaims" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Rejected Subscriber Claims"/>
         <property name="key" value="RejectedSubscriberClaims"/>
         <property name="status" value="SubscriberClaimRejected"/>
         <property name="queueDescription" value="Subscriber claim notifications rejected by the Insurer"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="RejectedManualClaims" class="idas.chox.service.filters.FilterManualRejected" >
@@ -51,13 +33,7 @@
         <property name="status" value="ClaimRejected"/>
         <property name="isManualFilter" value="true"/>
         <property name="queueDescription" value="Manual claim notifications rejected by the Insurer"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.ClaimsAwaitingHireMonitoringInfoFilter" >
@@ -68,10 +44,6 @@
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="AwaitingInvoiceData" class="idas.chox.service.filters.ClaimsAwaitingInvoiceDataFilter" >
@@ -82,10 +54,6 @@
         <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
         
     <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated" >
@@ -95,10 +63,6 @@
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="IncorrectInvoiceDataCalculations" class="idas.chox.service.filters.FilterByStatus" >
@@ -106,13 +70,7 @@
         <property name="key" value="IncorrectInvoiceDataCalculations"/>
         <property name="status" value="InvoiceDataCalculationIncorrect"/>
         <property name="queueDescription" value="Claims where an invoice has been uploaded but there are calculation/rate issues with the invoice that need amending before the Insurer gets sight of the claim"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ContestedInvoicesReferredToCHO" class="idas.chox.service.filters.FilterByStatus" >
@@ -120,13 +78,7 @@
         <property name="key" value="ContestedInvoicesReferredToCHO"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
         <property name="queueDescription" value="Claims where the Insurer has reviewed the invoice and have comments in regards to quantum/payment which require review"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="CaseWithClientsSolicitor" class="idas.chox.service.filters.FilterByStatus" >
@@ -134,26 +86,14 @@
         <property name="key" value="CaseWithClientsSolicitor"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
         <property name="queueDescription" value="Claims that are with the Clients Solicitor"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied" >
         <property name="name" value= "Penalty Charges To Be Applied"/>
         <property name="key" value= "PenaltyChargesApplied"/>
-        <property name="queueDescription" value="Claims where penalty charges can be applied to the invoice due to the age of the invoice which has not yet been paid"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
+        <property name="queueDescription" value="Claims where penalty charges can be applied to the invoice due to the age of the invoice which has not yet been paid"/>        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="InvoicePaymentLogged" class="idas.chox.service.filters.FilterByStatus" >
@@ -161,13 +101,7 @@
         <property name="key" value="InvoicePaymentLogged"/>
         <property name="status" value="InvoicePaymentLogged"/>
         <property name="queueDescription" value="Claims where an Insurer has made full payment on the invoice and the payment should have been sent"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="InterimPayment" class="idas.chox.service.filters.FilterInterimPayment" >
@@ -177,10 +111,6 @@
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
         
     <bean id="AwaitingLitigationOutcome" class="idas.chox.service.filters.FilterByStatus" >
@@ -188,13 +118,7 @@
         <property name="key" value="AwaitingLitigationOutcome"/>
         <property name="status" value="AwaitingLitigationOutcome"/>
         <property name="queueDescription" value="Claims which will/are litigated by the CHO"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="NewClaimsToBeRouted" class="idas.chox.service.filters.FilterByStatus" >
@@ -202,13 +126,7 @@
         <property name="key" value="NewClaimsToBeRouted"/>
         <property name="status" value="ClaimUnacknowledgedUnrouted"/>
         <property name="queueDescription" value="New claims which require a Workgroup to be assigned"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="true"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus" >
@@ -217,12 +135,7 @@
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
         <property name="queueDescription" value="New claims which require a Claim Owner to be assigned"/>
         <property name="isFilterWorkGroup" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="true"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ClaimReferredToFNOL" class="idas.chox.service.filters.FilterByStatus" >
@@ -231,12 +144,7 @@
         <property name="status" value="ClaimReferredToFNOL"/>
         <property name="queueDescription" value="Claims which have been sent to FNOL for claim registration on the Insurer’s internal claim system"/>
         <property name="isFilterWorkGroup" value="true"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="true"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus" >
@@ -246,11 +154,6 @@
         <property name="queueDescription" value="Claims which require an Insurer to either acknowledge or reject a new claim notification and set the current liability stance"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ReSubmittedClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus" >
@@ -260,11 +163,6 @@
         <property name="queueDescription" value="New claim notifications which have previously been rejected to the CHO and the CHO have now responded with comments which require review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ClaimPending" class="idas.chox.service.filters.FilterByStatus" >
@@ -274,11 +172,6 @@
         <property name="queueDescription" value="Claims which are yet to be acknowledged/rejected and have been marked as pending by the Insurer as awaiting further information"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ClaimReferredToEngineer" class="idas.chox.service.filters.FilterByStatus" >
@@ -286,12 +179,6 @@
         <property name="key" value="ClaimReferredToEngineer"/>
         <property name="status" value="ClaimReferredToEngineer"/>
         <property name="queueDescription" value="New claims which have been referred by a Claims Handler to an Engineer for review"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="true"/>
     </bean>
     
@@ -302,10 +189,6 @@
         <property name="queueDescription" value="New claims which have been referred by a Claims Handler to an Engineer and the Engineer has returned the claim with comments"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
@@ -315,11 +198,6 @@
         <property name="queueDescription" value="Claims which are in hire/repair and the CHO has updated the claim e.g. LOU date update and which requires review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="InvoiceEscalatedToHandler" class="idas.chox.service.filters.FilterByStatus" >
@@ -329,11 +207,6 @@
         <property name="queueDescription" value="Claims where the invoice has failed one or more Claims Handler type business rules and is with a Claims Handler for review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus" >
@@ -341,12 +214,6 @@
         <property name="key" value="InvoicesReferredToEngineer"/>
         <property name="status" value="InvoiceReferredToEngineer"/>
         <property name="queueDescription" value="Claims with an invoice which has been reviewed by a Claims Handler and referred to an Engineer for review"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="true"/>
     </bean>
     
@@ -357,10 +224,6 @@
         <property name="queueDescription" value="Claims with an invoice which has been reviewed by an Engineer and referred to a Claims Handler for review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="true"/>
     </bean>
     
@@ -371,11 +234,6 @@
         <property name="queueDescription" value="Claims where the CHO has reviewed the invoice rejection and have added comments in regards to quantum/payment which require review"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="InvoicesApprovedByBRE" class="idas.chox.service.filters.FilterByStatus" >
@@ -385,11 +243,6 @@
         <property name="queueDescription" value="Claims with an invoice and the invoice has passed all of the business rules"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.AwaitingLiabilityResolution" >
@@ -399,11 +252,6 @@
         <property name="queueDescription" value="Claims which have been approved for payment on a quantum basis but liability has yet to be agreed"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ApprovedInvoicesAwaitingPayment" class="idas.chox.service.filters.FilterByStatus" >
@@ -413,11 +261,6 @@
         <property name="queueDescription" value="Claims where the invoice has been approved for payment and liability is resolved, a payment awaits"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="InvoicePaymentDispute" class="idas.chox.service.filters.FilterByStatus" >
@@ -427,24 +270,12 @@
         <property name="queueDescription" value="Claims where the invoice has been marked as paid by the Insurer but the CHO has indicated they have not received the full payment"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="PaymentTeam" class="idas.chox.service.filters.PaymentTeam" >
         <property name="name" value="Payments Team"/>
         <property name="key" value="PaymentTeam"/>
         <property name="queueDescription" value="Claims where the invoice has been approved for payment by the Payments Team and liability is resolved, a payment awaits"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="PaymentTeamDispute" class="idas.chox.service.filters.FilterByStatus" >
@@ -452,13 +283,6 @@
         <property name="key" value="PaymentTeamDispute"/>
         <property name="status" value="AwaitingInvoicePayment"/>
         <property name="queueDescription" value="Claims where the invoice has been marked as paid by the Insurer Payments Team but the CHO has indicated they have not received the full payment"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="InvoiceUnassigned" class="idas.chox.service.filters.FilterByStatus" >
@@ -466,13 +290,6 @@
         <property name="key" value="InvoiceUnassigned"/>
         <property name="status" value="InvoiceUnassigned"/>
         <property name="queueDescription" value="TPI claims which require a Claim Owner to be assigned"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ManualInvoicesToBeAssigned" class="idas.chox.service.filters.FilterByStatus" >
@@ -481,13 +298,8 @@
         <property name="status" value="ManualInvoiceUnassigned"/>
         <property name="queueDescription" value="Manual claims which require Workgroup/Claim Owner assignment"/>
         <property name="isManualFilter" value="true"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="true"/>
         <property name="isCheckOwnership" value="true"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ManualInvoiceBREApproved" class="idas.chox.service.filters.FilterByStatus" >
@@ -498,11 +310,6 @@
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
     <bean id="ManualInvoiceBRERejected" class="idas.chox.service.filters.FilterByStatus" >
@@ -513,11 +320,6 @@
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ManualInvoiceContested" class="idas.chox.service.filters.FilterByStatus" >
@@ -528,11 +330,6 @@
         <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="EscalatedInvoicesToSupervisor" class="idas.chox.service.filters.InvoiceEscalatedToSupervisor" >
@@ -540,12 +337,6 @@
         <property name="key" value="EscalatedInvoicesToSupervisor"/>
         <property name="queueDescription" value="Claims with an invoice, to be in this queue the invoice has either been contested a certain number of times or due to the age of the invoice"/>
         <property name="isFilterWorkGroup" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
      <bean id="FinalReviewCho" class="idas.chox.service.filters.FinalReview" >
@@ -555,11 +346,6 @@
         <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made, thus eliminating unnecessary claim touch points"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
      <bean id="FinalReviewIns" class="idas.chox.service.filters.FinalReview" >
@@ -569,11 +355,6 @@
         <property name="queueDescription" value="Claims which have an on-going liability dispute and a final stance has been made, thus eliminating unnecessary claim touch points"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
     
     <bean id="ClaimsRequiringAudit" class="idas.chox.service.filters.ClaimsRequiringAudit" >
@@ -583,10 +364,14 @@
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
-        <property name="isCheckFnol" value="false"/>
-        <property name="isCheckEngineers" value="false"/>
     </bean>
 
+     <bean id="MatchedClaims" class="idas.chox.service.filters.MatchedClaims" >
+        <property name="name" value="Matched Claims to be Reviewed"/>
+        <property name="key" value="MatchedClaims"/>
+        <property name="queueDescription" value="Claims which have been matched and require reserve to be set and claim reviewed"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isCheckClaimMatching" value="true"/>
+    </bean>
 </beans>

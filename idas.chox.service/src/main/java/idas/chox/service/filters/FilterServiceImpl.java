@@ -39,6 +39,9 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (!filter.getIsManualFilter() && filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
                             LOG.debug("Not adding queue '{}' as claim ownership not enabled.", filter.getName());
                             continue;
+                        } else if (filter.getIsCheckClaimMatching() && (webUser.isCHO() || (webUser.isAnInsurer() && !webUser.getInsurer().isEnableClaimMatching()))) {
+                            LOG.debug("Not adding queue '{}' as claim matching not enabled.", filter.getName());
+                            continue;
                         } else if (filter.getIsCheckFnol() && webUser.isAnInsurer() && !webUser.getInsurer().isFnolEnable()) {
                             LOG.debug("Not adding queue '{}' as FNOL not enabled.", filter.getName());
                             continue;

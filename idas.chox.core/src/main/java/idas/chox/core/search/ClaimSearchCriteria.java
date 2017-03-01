@@ -69,6 +69,7 @@ public class ClaimSearchCriteria implements Serializable {
     private String filterName;
     private Boolean caseWithClientsSolicitor;
     private int claimAuditValue;
+    private Integer claimMatchValue;
 
     @Override
     public String toString() {
@@ -604,6 +605,14 @@ public class ClaimSearchCriteria implements Serializable {
         this.claimAuditValue = claimAuditValue;
     }
     
+    public Integer getClaimMatchValue() {
+        return claimMatchValue;
+    }
+
+    public void setClaimMatchValue(Integer claimMatchValue) {
+        this.claimMatchValue = claimMatchValue;
+    }
+    
     public String getFilterName() {
         return filterName;
     }
@@ -620,9 +629,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getStatuses() != null) {
             StringBuilder returnString = new StringBuilder();
-            for (String c : getStatuses()) {
+            getStatuses().stream().forEach((c) -> {
                 returnString.append(c).append(",");
-            }
+            });
             return returnString.toString().isEmpty() ? "" : returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -636,9 +645,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getInsurerIds() != null && !getInsurerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getInsurerIds()) {
+            getInsurerIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -652,9 +661,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getSupplierIds() != null && !getSupplierIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getSupplierIds()) {
+            getSupplierIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -668,9 +677,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getWorkgroupIds() != null && !getWorkgroupIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getWorkgroupIds()) {
+            getWorkgroupIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -684,9 +693,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getSupplierClaimOwnerIds() != null && !getSupplierClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getSupplierClaimOwnerIds()) {
+            getSupplierClaimOwnerIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -700,9 +709,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getClaimOwnerIds() != null && !getClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getClaimOwnerIds()) {
+            getClaimOwnerIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -716,9 +725,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getClaimTypes() != null && !getClaimTypes().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (ClaimType c : getClaimTypes()) {
+            getClaimTypes().stream().forEach((c) -> {
                 returnString.append(c.getClaimTypeValue()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -732,9 +741,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getHireAndRepairSearchParamIds()!= null && !getHireAndRepairSearchParamIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getHireAndRepairSearchParamIds()) {
+            getHireAndRepairSearchParamIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -744,9 +753,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (approvedInvoiceOwnershipSearchParamIds != null && !approvedInvoiceOwnershipSearchParamIds.isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
+            getApprovedInvoiceOwnershipSearchParamIds().stream().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -760,9 +769,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getLiabilityStatuses() != null && !getLiabilityStatuses().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (LiabilityStatus s : getLiabilityStatuses()) {
+            getLiabilityStatuses().stream().forEach((s) -> {
                 returnString.append(s.getLiablityValue()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;

@@ -280,6 +280,24 @@
                 }
             });
             
+            var matchedClaimsCheckBox = new Ext.form.Checkbox({
+                name:'matchedClaims',
+                id:'matchedClaimsCheckBoxId',
+                disabled : !<s:property value="matchedClaimsCheckBoxVisible"/>,
+                hidden : !<s:property value="matchedClaimsCheckBoxVisible"/>,
+                value:'<s:property value="claimMatchValue"/>',
+                fieldLabel: 'Show Matched Claims to be Reviewed Only',
+                labelStyle: 'width:190px;margin-top:-5px',
+                checked: (<s:property value="claimMatchActive"/> > 0),
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+//                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+            
             var interimPaymentMadeCheckBox = new Ext.form.Checkbox({
                 name:'isInterimPaymentMade',
                 id:'interimPaymentMadeCheckBoxId',
@@ -1533,6 +1551,7 @@
                         penaltyChargesToBeAppliedCheckBox, 
                         liabilityStatusUpdateNotification,
                         escalatedToSupervisorCheckBox,
+                        matchedClaimsCheckBox,
                         anomaliesCheckBox,
                         caseWithClientsSolicitorCheckBox]
             };
@@ -1897,6 +1916,11 @@
             var escalatedToSupervisor = record.get('claimSearchCriteria').escalatedToSupervisor;
             if (escalatedToSupervisor) {
                 Ext.getCmp('escalatedToSupervisorCheckBoxId').setValue(true);
+            }
+            
+            var claimMatchValue = record.get('claimSearchCriteria').claimMatchValue;
+            if (claimMatchValue > 0) {
+                Ext.getCmp('matchedClaimsCheckBoxId').setValue(true);
             }
             
             var interimPaymentMade = record.get('claimSearchCriteria').interimPaymentMade;

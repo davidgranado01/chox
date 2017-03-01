@@ -45,6 +45,7 @@ public interface Filter {
     public static final String FILTER_CASE_WITH_SOLICITOR = "CaseWithClientsSolicitor";
     public static final String FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED = "ManualInvoicesToBeAssigned";
     public static final String FILTER_CLAIMS_REQUIRING_AUDIT = "ClaimsRequiringAudit";
+    public static final String FILTER_MATCHED_CLAIMS = "MatchedClaims";
 
     String getKey();
 
@@ -59,6 +60,7 @@ public interface Filter {
     boolean getIsCheckOwnership();
     boolean getIsCheckFnol();
     boolean getIsCheckEngineers();
+    boolean getIsCheckClaimMatching();
     boolean getIsManualFilter();
 
     ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria);
