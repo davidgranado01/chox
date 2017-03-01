@@ -31,7 +31,6 @@ import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Task;
 import idas.chox.core.model.TaskType;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
@@ -597,15 +596,16 @@ public class TasksAction extends BaseAction {
                         transformer.setColumnsToHide(new short[]{(short) 10});
                     }
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-                    InputStream is = new FileInputStream(templateFilePath);
-                    HSSFWorkbook workbook = transformer.transformXLS(is, excelMap);
-                    is.close();
+                    HSSFWorkbook workbook;
+                    try (InputStream is = new FileInputStream(templateFilePath)) {
+                        workbook = transformer.transformXLS(is, excelMap);
+                    }
                     LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
-                    OutputStream os = new FileOutputStream(reportFile);
-                    workbook.write(os);
-                    os.flush();
-                    LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
-                    os.close();
+                    try (OutputStream os = new FileOutputStream(reportFile)) {
+                        workbook.write(os);
+                        os.flush();
+                        LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                    }
                 } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report:", ex);
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());

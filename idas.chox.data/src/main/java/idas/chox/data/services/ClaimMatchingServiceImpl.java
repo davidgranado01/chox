@@ -73,7 +73,7 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
     public Claim getClaimMatch(Date incidentDate, String thirdPartyVehicleRehistration) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.not(Restrictions.in("claimType", ClaimType.getSupplementaryInvoiceTypes())));
-        criteria.createCriteria("customer").add(Restrictions.eq("vehicleRegistration", thirdPartyVehicleRehistration));
+        criteria.createCriteria("thirdParty").add(Restrictions.eq("vehicleRegistration", thirdPartyVehicleRehistration));
         // Match incident date on date only, ignoring time component
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(incidentDate);

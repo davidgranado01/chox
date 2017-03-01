@@ -16,7 +16,6 @@
         document.cookie = name + "=" + value + expires + ";httpOnly ;secure; path=/; domain=idaschox.com";
     }
 
-
     function getCookie(name) {
         var value = "; " + document.cookie;
         var parts = value.split("; " + name + "=");

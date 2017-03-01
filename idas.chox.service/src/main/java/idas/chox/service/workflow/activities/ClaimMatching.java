@@ -37,6 +37,11 @@ public class ClaimMatching extends BaseActivity {
             LOG.error("Claim matching not enabled for insurer for claim '{}' ({})", claim.getChoReference(), claim.getId());
             throw new Exception("Claim matching not enabled for insurer");
         }
+        
+        if (!claim.getBreBand().isClaimMatchingEnable()) {
+               LOG.error("Claim matching not enabled in BreBand for claim '{}' ({})", claim.getChoReference(), claim.getId());
+            throw new Exception("Claim matching not enabled in BreBand");
+        }
 
         claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(
                     claim.getBreBand().getId(),
@@ -54,19 +59,32 @@ public class ClaimMatching extends BaseActivity {
             claim.setClaimNumber(claimNumber);
         }
         if ((claim.getIndemnityStance() == null && indemnityStance != null) || !claim.getIndemnityStance().equals(indemnityStance)) {
-            claim.setIndemnityStance(indemnityStance);
-            // Add Note
-            claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
+            String stance = getIndemnityStanceFromString(indemnityStance.trim());
+            if (stance != null) {
+                claim.setIndemnityStance(stance);
+                // Add Note
+                claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
+            }
         }
         claim.setMatchStatus(1);
         
         if (liabilityInsurer != null && liabilityInsurer.compareTo(claimMatchingBand.getLiabilityPercentage()) >= 0) {
             // Full Claim Matched - set Liability
+            
             try {
-                claimService.setLiability(claim, LiabilityStatus.getLiabilityStatus(liabilityStance));
+                LiabilityStatus liabilityStatus = getLiabilityStatusFromStance(liabilityStance.trim());
+                if (liabilityStatus == LiabilityStatus.LIABILITY_ACCEPTED && liabilityInsurer.compareTo(new BigDecimal("100.00")) != 0) {
+                    LOG.error("Invalid Liability % provided for claim matching for 'Full Liability Accepted': " + liabilityInsurer);
+                    return;
+                }
+                if (liabilityStatus == LiabilityStatus.LIABILITY_REPUDIATED && liabilityInsurer.compareTo(BigDecimal.ZERO) != 0) {
+                    LOG.error("Invalid Liability % provided for claim matching for 'Liability Repudiated': " + liabilityInsurer);
+                    return;
+                }
+                claimService.setLiability(claim, liabilityStatus);
             } catch (IllegalArgumentException ex) {
-                LOG.error("Invalid Liability Stance: " + liabilityStance, ex);
-                throw new Exception("Invalid Claim Matching Liability Stance Provided", ex);
+                LOG.error("Invalid Liability Stance provided for claim matching: " + liabilityStance, ex);
+                return;
             }
             claim.setLiabilityPercentages(liabilityInsurer, (new BigDecimal("100.00")).subtract(liabilityInsurer));
             claim.setMatchStatus(2);
@@ -76,7 +94,38 @@ public class ClaimMatching extends BaseActivity {
             }
         }
     }
- 
+
+    private String getIndemnityStanceFromString(String stance) {
+        switch(stance) {
+                case "Dealing Under Article 75":
+                case "Dealing Under Road Traffic Act":
+                case "No Involvement":
+                case "Not Indemnifying":
+                case "Pending Indemnity":
+                case "Providing Indemnity":
+                    return stance;
+                default:
+                    return null;
+        }
+    }
+
+    private LiabilityStatus getLiabilityStatusFromStance(String stance) {
+        LiabilityStatus liabilityStatus;
+        
+        try {
+            liabilityStatus = LiabilityStatus.getLiabilityStatus(stance);
+        } catch (IllegalArgumentException ex) {
+            switch (stance) {
+                case "Liability Accepted":
+                    liabilityStatus = LiabilityStatus.LIABILITY_ACCEPTED;
+                    break;
+                default:
+                    throw ex;
+            }
+        }
+        return liabilityStatus;
+    }
+   
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());

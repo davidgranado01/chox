@@ -105,14 +105,24 @@ CREATE TABLE claim_matching_import (
 WITH (
     OIDS=FALSE
 );
-CREATE UNIQUE INDEX claim_matching_import_ux ON claim_matching_import(insurer_name,claim_number);
+CREATE INDEX claim_matching_import_ux ON claim_matching_import(insurer_name,claim_number);
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching_import TO chox_user;
 GRANT SELECT ON TABLE claim_matching_import TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_matching_import_id_seq TO chox_user;
--- psql -c "COPY claim_matching_import(insurer_name,third_party_vehicle_registration,incident_date,indemnity_stance,liability_stance,liability_insurer) FROM '/Users/john/lv-claimMatching.csv' delimiter ',' csv;" chox_p9s7
+--  To load data into import databae:
+--   Convert xlsx to csv: /usr/bin/xlsx2csv [inFile] [outFile]
+--   Import CSV file into database:
+--     psql -c "\copy claim_matching_import(claim_number,insurer_name,third_party_vehicle_registration,incident_date,indemnity_stance,
+--        liability_stance,liability_insurer) FROM '/Users/john/lv-claimMatching.csv' delimiter ',' csv header;" chox
+--   To delete already matched entries:
+--      delete already matched entries:
+--        delete from claim_matching_import cmi using claim_matching cm
+--        where cmi.insurer_claim_number = cm.insurer_claim_number
+--            and cmi.insurer_name = cm.insurer_name
+--            and cm.match_status != 0;
 --
--- To remove on day 31
---  delete from claim_matching where claim_id is null and now()::date - created_date::date > 30;
+--  To remove on day 31
+--    delete from claim_matching where claim_id is null and now()::date - last_modified_date::date > 30;
 -- (add to maintenance/nighly script)
 
 

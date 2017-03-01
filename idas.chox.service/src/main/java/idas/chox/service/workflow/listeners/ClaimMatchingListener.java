@@ -6,18 +6,20 @@ import net.engio.mbassy.listener.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimMatchingEntry;
 import idas.chox.core.services.ClaimMatchingBandService;
 import idas.chox.core.services.ClaimMatchingService;
-import idas.chox.events.ClaimResubmittedEvent;
+import idas.chox.events.ClaimRejectionContestedEvent;
+import idas.chox.events.ClaimReviewedByEngEvent;
 import idas.chox.events.NewClaimEvent;
+import idas.chox.events.SubscriberClaimRejectedToGtaEvent;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.ClaimMatching;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -60,8 +62,26 @@ public class ClaimMatchingListener {
 
     @Handler
     @Subscribe
-    public void handle(ClaimResubmittedEvent event){
-        LOG.debug("ClaimResubmittedEvent Message received in ClaimMatchingListener:{}", event);
+    public void handle(ClaimRejectionContestedEvent event){
+        LOG.debug("ClaimRejectionContestedEvent Message received in ClaimMatchingListener:{}", event);
+        if (event.getClaim().getInsurer().isEnableClaimMatching() && event.getClaim().getBreBand().isClaimMatchingEnable()) {
+            matchclaim(event.getClaim());
+        }
+    } 
+
+    @Handler
+    @Subscribe
+    public void handle(SubscriberClaimRejectedToGtaEvent event){
+        LOG.debug("SubscriberClaimRejectedToGtaEvent Message received in ClaimMatchingListener:{}", event);
+        if (event.getClaim().getInsurer().isEnableClaimMatching() && event.getClaim().getBreBand().isClaimMatchingEnable()) {
+            matchclaim(event.getClaim());
+        }
+    } 
+
+    @Handler
+    @Subscribe
+    public void handle(ClaimReviewedByEngEvent event){
+        LOG.debug("ClaimReviewedByEngEvent Message received in ClaimMatchingListener:{}", event);
         if (event.getClaim().getInsurer().isEnableClaimMatching() && event.getClaim().getBreBand().isClaimMatchingEnable()) {
             matchclaim(event.getClaim());
         }
@@ -79,7 +99,7 @@ public class ClaimMatchingListener {
             return;
         }
         ClaimMatchingEntry matchedClaim = claimMatchingService.getClaimMatchingEntry(claim.getIncident().getDate(),
-                    claim.getCustomer().getVehicleRegistration());
+                    claim.getThirdParty().getVehicleRegistration());
         if (matchedClaim == null) {
             LOG.debug("No claim match found for claim '{} with incident date {} and vehicle class '{}'",
                     new Object[]{claim.getIncident().getDate(), claim.getCustomer().getVehicleRegistration()});

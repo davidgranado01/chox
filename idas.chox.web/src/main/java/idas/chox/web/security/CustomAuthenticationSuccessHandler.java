@@ -198,9 +198,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 Cookie cookie = new Cookie("ASP.NET_Token", kbbsAuthenticationToken);
                 cookie.setDomain("idaschox.com");
                 cookie.setMaxAge(-1);
-//                cookie.setHttpOnly(true);
+                cookie.setHttpOnly(true);
                 cookie.setPath("/");
-//                cookie.setSecure(true);
+                cookie.setSecure(true);
                 response.addCookie(cookie);
                 cookie = new Cookie("JD.Token", kbbsAuthenticationToken);
                 cookie.setPath("/");
@@ -216,8 +216,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     }
 
     private void checkBrowserWarning(HttpServletRequest request,
-            HttpServletResponse response,
-            String targetUrl) throws IOException {
+        HttpServletResponse response,
+        String targetUrl) throws IOException {
         LOG.trace("checking Browser warning...with targetUrl: {}", targetUrl);
         if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
             LOG.debug("Browser warning activated with targetUrl='{}'", targetUrl);
