@@ -168,7 +168,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
                 Cookie cookies[] = request.getCookies();
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
-                        if (cookie.getName().equals("JD.Token")) {
+                        if (cookie.getName().equals("ASP.NET_Token")) {
                             kbbsToken = cookie.getValue();
                         }
                     }
