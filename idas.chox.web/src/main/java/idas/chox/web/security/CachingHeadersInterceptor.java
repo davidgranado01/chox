@@ -38,14 +38,24 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
             // back/forward buttons.
             response.setHeader("Cache-control", "no-cache, no-store");
             response.setHeader("Pragma", "no-cache");
-            response.setHeader("Expires", "-1");
+            response.setDateHeader("Expires", 0);
             response.setHeader("X-XSS-Protection", "1");
+            response.setHeader("X-Frame-Options", "DENY");
+            response.setHeader("X-Content-Type-Options", "nosniff");
+            if (request.isSecure()) {
+                response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+            }
 //            response.setHeader("Content-Security-Policy", "default-src 'self';");
 //            response.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
 
         } else if (response != null && request != null) {
-            response.setHeader("Expires", "-1");
+            response.setDateHeader("Expires", 0);
             response.setHeader("X-XSS-Protection", "1");
+            response.setHeader("X-Frame-Options", "DENY");
+            response.setHeader("X-Content-Type-Options", "nosniff");
+            if (request.isSecure()) {
+                response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+            }
 //            response.setHeader("Content-Security-Policy", "default-src 'self';");
 //            response.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';");
         }

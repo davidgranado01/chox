@@ -13,6 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -644,7 +647,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateClaimNumber() {
         try {
-            claim.setClaimNumber(claim.getClaimNumber().trim());
+            claim.setClaimNumber(Jsoup.clean(claim.getClaimNumber().trim(), Whitelist.none()));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {
@@ -660,7 +663,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateSupplierReferenceNumber() {
         try {
-            claim.setChoReference(claim.getChoReference().trim());
+            claim.setChoReference(Jsoup.clean(claim.getChoReference().trim(), Whitelist.none()));
             claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + originalChoReference + "' to '" + claim.getChoReference() + "'"));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.SUPPLIER_REFERENCE_UPDATED_EVENT);
@@ -677,7 +680,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateCustomerClaimNumber() {
         try {
-            claim.getCustomer().setClaimReference(customerClaimNumber.trim());
+            claim.getCustomer().setClaimReference(Jsoup.clean(customerClaimNumber.trim(), Whitelist.none()));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {

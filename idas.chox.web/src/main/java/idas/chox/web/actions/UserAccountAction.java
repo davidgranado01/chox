@@ -31,7 +31,7 @@ public class UserAccountAction extends BaseAction {
     }
 
     public int getMinPasswordLength() {
-        int minPasswordLength = 6;
+        int minPasswordLength = 8;
 
         if (webUser != null && webUser.isAnInsurer()) {
             LOG.debug("Insurer user: getting minimum password length for orgId={}", webUser.getInsurer().getId());

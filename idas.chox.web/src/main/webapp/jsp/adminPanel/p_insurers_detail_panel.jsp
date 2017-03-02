@@ -250,7 +250,7 @@
                 ecdIncreaseTriggerPercentage:{ required:true, number:true, min:0, max:100},
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
-                minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
+                minimumPasswordLength:{ required:true, number:true, min:8, max:32 },
                 maxLoginAttempts:{ required:true, number:true, min:0 },
                 blockTime:{ required:true, number:true, min:0 },
                 blockedMessage:{ required:true}
@@ -270,7 +270,7 @@
                 phone:{ regex:"'Telephone Number' must be numeric" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
-                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 8", max:"'Minimum Password Length' cannot be larger than 32" },
                 maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
                 blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"},
                 blockedMessage:{ required: "You must supply an 'Account blocked message'"}

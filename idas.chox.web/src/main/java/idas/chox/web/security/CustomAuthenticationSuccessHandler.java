@@ -198,16 +198,16 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 Cookie cookie = new Cookie("ASP.NET_Token", kbbsAuthenticationToken);
                 cookie.setDomain("idaschox.com");
                 cookie.setMaxAge(-1);
-//                cookie.setHttpOnly(true);
-                cookie.setPath("/");
-//                cookie.setSecure(true);
-                response.addCookie(cookie);
-                cookie = new Cookie("JD.Token", kbbsAuthenticationToken);
-                cookie.setPath("/");
-                cookie.setMaxAge(-1);
                 cookie.setHttpOnly(true);
+                cookie.setPath("/");
                 cookie.setSecure(true);
                 response.addCookie(cookie);
+//                Cookie cookie2 = new Cookie("JD.Token", kbbsAuthenticationToken);
+//                cookie2.setPath("/");
+//                cookie2.setMaxAge(-1);
+//                cookie2.setHttpOnly(true);
+//                cookie2.setSecure(true);
+//                response.addCookie(cookie2);
             }
         }
 
