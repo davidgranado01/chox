@@ -55,6 +55,7 @@ public class ClaimMatching extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         // Update Insurer Claim Number and Indemnity Stance
+        claim.setMatchStatus(1);
         if (claim.getClaimNumber()==null || !claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
         }
@@ -66,7 +67,6 @@ public class ClaimMatching extends BaseActivity {
                 claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
             }
         }
-        claim.setMatchStatus(1);
         
         if (liabilityInsurer != null && liabilityInsurer.compareTo(claimMatchingBand.getLiabilityPercentage()) >= 0) {
             // Full Claim Matched - set Liability

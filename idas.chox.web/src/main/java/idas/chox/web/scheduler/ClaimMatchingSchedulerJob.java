@@ -32,7 +32,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
         Insurer ins = getSecurityInfoProvider().getCurrentUser().getInsurer();
         
         if (!ins.isEnableClaimMatching()) {
-            LOG.error("Claim Matching not enabled for insurer '{}' but scheduler job is active", insurerName);
+            LOG.warn("Claim Matching not enabled for insurer '{}' but scheduler job is active", insurerName);
             return null;
         }
         
