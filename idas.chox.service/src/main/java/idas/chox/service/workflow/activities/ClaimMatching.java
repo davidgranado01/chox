@@ -30,27 +30,32 @@ public class ClaimMatching extends BaseActivity {
     private ClaimMatchingBandService claimMatchingBandService;
     private ClaimMatchingBand claimMatchingBand;
 
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-        if (!claim.getInsurer().isEnableClaimMatching()) {
-            LOG.error("Claim matching not enabled for insurer for claim '{}' ({})", claim.getChoReference(), claim.getId());
-            throw new Exception("Claim matching not enabled for insurer");
-        }
-        
-        if (!claim.getBreBand().isClaimMatchingEnable()) {
-               LOG.error("Claim matching not enabled in BreBand for claim '{}' ({})", claim.getChoReference(), claim.getId());
-            throw new Exception("Claim matching not enabled in BreBand");
-        }
-
-        claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(
-                    claim.getBreBand().getId(),
-                    claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
-        if (claimMatchingBand == null) {
-            LOG.error("No claim matching bound found for claim '{}' ({})", claim.getChoReference(), claim.getId());
-            throw new Exception("No Claim Matching Band Found");
-        }
-    }
+//    @Override
+//    protected void validate(Claim claim) throws Exception {
+//        super.validate(claim);
+        /* Below checks not needed as currently performed before this activity is called.
+         * Note that as this activity will match on both the claim_matching and claim_matching_import tables,
+         * the details of the matched claim are passed into this activity, hence one can assume that claim
+         * matching for the matched claim is active.
+         */
+//        if (!claim.getInsurer().isEnableClaimMatching()) {
+//            LOG.error("Claim matching not enabled for insurer for claim '{}' ({})", claim.getChoReference(), claim.getId());
+//            throw new Exception("Claim matching not enabled for insurer");
+//        }
+//        
+//        if (!claim.getBreBand().isClaimMatchingEnable()) {
+//               LOG.error("Claim matching not enabled in BreBand for claim '{}' ({})", claim.getChoReference(), claim.getId());
+//            throw new Exception("Claim matching not enabled in BreBand");
+//        }
+//
+//        claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(
+//                    claim.getBreBand().getId(),
+//                    claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
+//        if (claimMatchingBand == null) {
+//            LOG.error("No claim matching bound found for claim '{}' ({})", claim.getChoReference(), claim.getId());
+//            throw new Exception("No Claim Matching Band Found");
+//        }
+//    }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
