@@ -9,6 +9,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
@@ -19,8 +21,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimMatchingBandService;
 import idas.chox.core.services.ClaimMatchingService;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

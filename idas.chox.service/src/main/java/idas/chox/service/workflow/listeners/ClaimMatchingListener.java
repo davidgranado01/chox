@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimMatchingEntry;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimMatchingBandService;
 import idas.chox.core.services.ClaimMatchingService;
 import idas.chox.events.ClaimRejectionContestedEvent;
@@ -90,6 +91,10 @@ public class ClaimMatchingListener {
     
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void matchclaim(Claim claim) {
+        // Do not perform claim matching on supplementary claims
+        if (ClaimType.isSupplementaryInvoice(claim.getClaimType()) && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
+            return;
+        }
         LOG.debug("Attempting to claim match claim:{}", claim.getChoReference());
         ClaimMatchingBand claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(claim.getBreBand().getId(),
                     claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
