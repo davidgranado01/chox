@@ -110,6 +110,9 @@ public class SaveOrSubmitClaimAuditReviewTest extends BaseTest {
         activity.setHireLeakageId(2);
         activity.setTotalRepairCost(BigDecimal.ZERO);
         activity.setPenaltyChargesPaid(BigDecimal.ZERO);
+        activity.setHireLeakageCost(BigDecimal.ZERO);
+        activity.setExceededRepairCost(BigDecimal.ZERO);
+        activity.setNonABPGuidelineRepairLabourRate(BigDecimal.ZERO);
         activity.setStorageClaimedId(2);
         activity.setRecoveryClaimedId(2);
         activity.process(claim);

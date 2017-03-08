@@ -78,7 +78,25 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal repairMaterialsOriginal;
     private BigDecimal repairSpecialistOriginal;
     private boolean paymentTeam;
+    private String handlingInvoiceNo;
+    private String claimInvoiceNo;
 
+    public String getClaimInvoiceNo() {
+        return claimInvoiceNo;
+    }
+
+    public void setClaimInvoiceNo(String claimInvoiceNo) {
+        this.claimInvoiceNo = claimInvoiceNo;
+    }
+
+    public String getHandlingInvoiceNo() {
+        return handlingInvoiceNo;
+    }
+
+    public void setHandlingInvoiceNo(String handlingInvoiceNo) {
+        this.handlingInvoiceNo = handlingInvoiceNo;
+    }
+    
     public BigDecimal getRepairAdminFeeOriginal() {
         return repairAdminFeeOriginal;
     }

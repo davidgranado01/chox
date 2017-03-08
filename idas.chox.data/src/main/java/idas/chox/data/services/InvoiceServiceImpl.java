@@ -112,6 +112,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setHireRateChargedPerDayOriginal(inv.getHireRateChargedPerDay());
             invOriginal.setExcessAmountCollectedOriginal(inv.getExcessAmountCollected());
             invOriginal.setVatAmountCollectedOriginal(inv.getVatAmountCollected());
+            invOriginal.setHandlingInvoiceNo(inv.getHandlingInvoiceNo());
+            invOriginal.setClaimInvoiceNo(inv.getClaimInvoiceNo());
             invOriginal.setVersion(0);
             if (inv.getTotalToPay().compareTo(BigDecimal.ZERO) == 0 || inv.getFullTotalToPay().compareTo(BigDecimal.ZERO) == 0) {
                 invOriginal.setTotalToPayOriginal(inv.getFullTotalToPay().subtract(inv.getGtaDiscount()));

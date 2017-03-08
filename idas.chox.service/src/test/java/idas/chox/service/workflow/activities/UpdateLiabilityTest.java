@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,10 +31,11 @@ public class UpdateLiabilityTest extends BaseTest{
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
-     
+//        claim.setLiability(LiabilityStatus.LIABILITY_DISPUTED);
         UpdateLiability activity = (UpdateLiability) activityFactory.getActivity("updateLiability");
-        
+        activity.setLiabilityStatus(LiabilityStatus.LIABILITY_DISPUTED);
+        activity.setPercentageLiabilityAccepted(BigDecimal.ZERO);
+        activity.setPercentageLiabilityCho(BigDecimal.ZERO);
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION, claim.getStatus());
     }

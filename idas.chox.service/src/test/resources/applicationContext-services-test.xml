@@ -346,8 +346,8 @@
     <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="choxJmsEventSender" class="idas.chox.events.ChoxJmsEventSender" scope="singleton"/>
-    <bean id="eventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
+    <bean id="choxJmsEventSender" class="idas.chox.events.old.ChoxJmsEventSender" scope="singleton"/>
+    <bean id="eventRegister" class="idas.chox.events.old.ChoxEventRegister" scope="prototype">
         <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
         <property name="active" value="false"/>
     </bean>
@@ -357,11 +357,23 @@
     <bean id="eventService" class="idas.chox.data.services.EventService" scope="prototype">
         <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
-    <bean id="activityEventGenerator" class="idas.chox.service.workflow.activities.ActivityEventGenerator" scope="prototype">
+    <bean id="activityEventGenerator" class="idas.chox.service.workflow.event.ActivityEventGenerator" scope="prototype">
         <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
     <bean id="queue1JMSTemplate" class="org.easymock.EasyMock" factory-method="createMock">
         <constructor-arg index="0" value="org.springframework.jms.core.JmsTemplate" />
     </bean>
 <!--    <bean id="queue1JMSTemplate" class="org.springframework.jms.core.JmsTemplate"/>-->
+    <bean id="mBassadorEventBus" class="net.engio.mbassy.bus.MBassador" scope="singleton"/>
+    <bean id="guavaEventBus" class="com.google.common.eventbus.EventBus" scope="singleton"/>
+    <bean id="eventBus" class="idas.chox.service.workflow.event.EventBusWrapper" scope="singleton">
+        <property name="useGuava" value="false" />
+        <property name="mBassadorEventBus" ref="mBassadorEventBus"/>
+        <property name="guavaEventBus" ref="guavaEventBus"/>
+    </bean>
+    <bean id="eventBusPostProcessor" class="idas.chox.service.workflow.event.EventBusPostProcessor">
+        <property name="useGuava" value="false" />
+        <property name="eventBus" ref="eventBus"/>
+    </bean>
+    <bean id="invoiceCreatedListener" class="idas.chox.service.workflow.listeners.InvoiceCreatedListener" scope="singleton"/>
 </beans>

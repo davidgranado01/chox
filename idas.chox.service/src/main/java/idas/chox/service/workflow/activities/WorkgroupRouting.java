@@ -104,9 +104,10 @@ public class WorkgroupRouting extends BaseActivity {
                     }
                     break;
             }
-        } else { // No Workgroups
+        } else if (claim.getInsurer().isClaimOwnershipEnable()) { // No Workgroups, Claim Ownership activated
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        } else { // No Workgroups, No Claim Ownership
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            routed = true;
         }
         
         // If auto-routing stratigy one of POLICY, PRICE or CHO and the claim has not been routed and complete routing
@@ -131,12 +132,14 @@ public class WorkgroupRouting extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        getDataService().save(claim);
-        logTransaction(claim);
-//        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
+        if (routed) {
+            getDataService().save(claim);
+            logTransaction(claim);
+//            activityEventGenerator.generate(claim, this);
+            activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+                ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
+            });
+        }
 
         if (getChainActivity() != null) {
             getChainActivity().processInBatch(claim);

@@ -35,6 +35,8 @@
         <property column="gta_discount" name="gtaDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
+        <property column="handling_invoice_no" name="handlingInvoiceNo"/>
+        <property column="claim_invoice_no" name="claimInvoiceNo"/>
         <property column="collaboration_fee" name="collaborationFeeOriginal"/>
         <property column="collaboration_qty" name="collaborationQtyOriginal"/>
         <property column="miscellaneous_fee" name="miscellaneousFeeOriginal"/>

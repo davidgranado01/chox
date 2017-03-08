@@ -9,7 +9,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close"
         p:driverClassName="org.postgresql.Driver"
-        p:url="jdbc:postgresql://localhost:5432/chox"
+        p:url="jdbc:postgresql://localhost:5432/chox_p9s7"
         p:username="chox_user"
         p:password="ch0xpa33"/>
     

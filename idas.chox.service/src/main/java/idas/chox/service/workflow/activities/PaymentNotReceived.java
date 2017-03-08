@@ -17,7 +17,7 @@ import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 public class PaymentNotReceived extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(PaymentNotReceived.class);
-    private BigDecimal amountReceived = null;
+    private BigDecimal amountReceived = BigDecimal.ZERO;
     private BreBandService breBandService;
 
     public void setBreBandService(BreBandService breBandService) {
@@ -48,7 +48,7 @@ public class PaymentNotReceived extends BaseActivity {
 
             // Insurer has reverted back from InvoicePaymentLogged - add a note
             Comment comment;
-            if (amountReceived == null) {
+            if (amountReceived == null || amountReceived.compareTo(BigDecimal.ZERO) == 0) {
                 comment = Comment.newComment(0, "The claim was marked as 'Invoice Payment Logged' on "
                         + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                         + ", however the CHO has not received the payment. Please check the payment details in your claim system and if available add the cheque/BACS reference, date cashed, amount raised and reference the payment was sent under.");

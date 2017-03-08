@@ -523,4 +523,13 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
+     <bean id="MatchedClaims" class="idas.chox.service.filters.MatchedClaims" >
+        <property name="name" value="Matched Claims to be Reviewed"/>
+        <property name="key" value="MatchedClaims"/>
+        <property name="queueDescription" value="Claims which have been matched and require reserve to be set and claim reviewed"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isCheckClaimMatching" value="true"/>
+    </bean>
+
 </beans>
