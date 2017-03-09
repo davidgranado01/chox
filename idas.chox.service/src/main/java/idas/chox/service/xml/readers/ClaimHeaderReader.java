@@ -40,7 +40,7 @@ import idas.chox.service.xml.util.NodeHelper;
 public class ClaimHeaderReader extends BaseEntityReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
-    private static String existsLinkedChoErrorMsg = "This supplier reference already exists for linked CHO '%s'.";
+    private static final String existsLinkedChoErrorMsg = "This supplier reference already exists for linked CHO '%s'.";
     private static final String sectionName = "Claim Header";
     // PAGE PARAMETERS
     private Boolean managingRepair;
@@ -161,7 +161,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         LOG.debug("Processing Claim Header");
-
         Claim claim = new Claim();
         try {
             RentalStatus rentalStatus = RentalStatus.fromString(hireState);

@@ -13,12 +13,12 @@ public class RulesEngine {
     private List<IBusinessRule> businessRules;
 
     public RulesEngineResponse validate(Claim claim) {
-        LOG.debug("Validating claim '{}'", claim.getChoReference());
-        LOG.debug("Applying {} rules to claim", businessRules.size());
+        LOG.trace("Validating claim '{}'", claim.getChoReference());
+        LOG.trace("Applying {} rules to claim", businessRules.size());
         RulesEngineResponse response = new RulesEngineResponse();
         RuleEvaluation ev;
         for (IBusinessRule businessRule : businessRules) {
-            LOG.debug("Applying rule '{}' = {}", businessRule.getRuleId(), businessRule);
+            LOG.trace("Applying rule '{}' = {}", businessRule.getRuleId(), businessRule);
             try {
                 ev = businessRule.applyToClaim(claim);
             } catch (Exception ex) {

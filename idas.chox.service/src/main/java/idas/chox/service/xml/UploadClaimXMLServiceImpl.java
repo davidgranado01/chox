@@ -368,6 +368,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return true;
     }
 
+    
     @Override
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
         Element root = document.getDocumentElement();
@@ -376,23 +377,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         List<Element> rentals = XMLUtils.getElements(document, root, "rental");
 
         if (rentals != null && rentals.size() > 0) {
-
-            rentals.stream().map((e) -> {
+            for (Element e : rentals) {
                 ClaimResult claimResult = new ClaimResult();
                 claimResult.setElement(e);
-                return claimResult;
-            }).map((claimResult) -> {
                 claimResult.setCheckDataValid(true);
-                return claimResult;
-            }).map((claimResult) -> {
                 claimResult.setDataValid(true);
-                return claimResult;
-            }).map((claimResult) -> {
                 claimResult.setValid(true);
-                return claimResult;
-            }).forEach((claimResult) -> {
                 claimElements.add(claimResult);
-            });
+            }
+
         }
         return claimElements;
     }

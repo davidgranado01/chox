@@ -1,17 +1,16 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.bre.RulesEngineResponse;
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
-import idas.chox.core.services.BreBandService;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 
@@ -31,15 +30,15 @@ public class NewSupplementaryInvoice extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-
-        BreBandService breBandService = getWorkflowContext().getBreBandService();
         if (claim.getStatus() == null) {
             Claim originalSupplementaryInvoicedClaim = getWorkflowContext().getClaimService().getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
 //            claim.setSupplementaryInvoicedClaim(true); -- this is now set when original claim is cloned
             claim.setStatusModifiedDate(new Date());
-            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-            claim.setBreBand(choBand);
+            if (claim.getBreBand() == null) {
+                BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
             if (originalSupplementaryInvoicedClaim!=null) {
                 Comment comment = Comment.newComment(0, "This is a supplementary Invoice. The original claim's supplier reference is "+originalSupplementaryInvoicedClaim.getChoReference()+".");
                 claim.addComment(comment);
@@ -59,16 +58,17 @@ public class NewSupplementaryInvoice extends BaseActivity {
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-        getDataService().save(claim);
-        LOG.debug("Claim saved - logging transaction...");
-        logTransaction(claim);
-        LOG.debug("Claim saved & transaction logged.");
-
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
+
+        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+        getDataService().save(claim);
+        LOG.trace("Claim saved - logging transaction...");
+        logTransaction(claim);
+        LOG.trace("Claim saved & transaction logged.");
+
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

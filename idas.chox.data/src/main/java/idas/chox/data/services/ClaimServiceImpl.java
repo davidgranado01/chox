@@ -374,7 +374,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
         criteria.add(Restrictions.ne("id", claimId));
-        List result = findByCriteria(criteria);
+        List result = findByCriteriaFlushCommit(criteria);
         return ((Long) result.get(0)).intValue();
     }
 
@@ -578,7 +578,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
-        List result = findByCriteria(criteria);
+        List result = findByCriteriaFlushCommit(criteria);
 
         Integer totalCount = ((Long) result.get(0)).intValue();
 
@@ -1472,7 +1472,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         } else if (getSecurityInfoProvider().getIsINS()) {
             criteria.add(Restrictions.eq("insurer.id", getSecurityInfoProvider().getCurrentUser().getInsurer().getId()));
         }
-        List<Claim> claims = findByCriteria(criteria);
+        List<Claim> claims = findByCriteriaFlushCommit(criteria);
         if (claims.size() > 0) {
             return claims.get(0);
         } else {
@@ -1871,7 +1871,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
 
             LOG.debug("Overlapping query is: {}", criteria.toString());
-            List<Claim> claims = findByCriteria(criteria);
+            List<Claim> claims = this.findByCriteriaFlushCommit(criteria);
             if (claims.size() > 0) {
                 insurerClaimNumber = claims.get(0).getClaimNumber();
             }

@@ -55,7 +55,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     }
 
     private void constructBreValidateObject(Claim claim) {
-
         if (claim.getEngineerReport() == null) {
             EngineerReport engineerreport = new EngineerReport();
             engineerreport.setDays(0);
@@ -89,22 +88,22 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         if (choBand == null) {
             LOG.error("No BRE band available for claim '{}'", claim.getChoReference());
+            return null;
         }
-        LOG.debug("Got choBand: {}", choBand.getName());
+
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
         if (vehicleClassCeiling != null) {
             LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
         } else {
-            LOG.info("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass());
+            LOG.warn("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass().getName());
         }
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
 
         String oldStatus = claim.getStatus();
-        LOG.debug("Old claim status is '{}'", oldStatus);
+        LOG.trace("Old claim status is '{}'", oldStatus);
         constructBreValidateObject(claim);
-        LOG.debug("BRE validate object constructed");
-
+        LOG.trace("BRE validate object constructed");
         // Mark currrent BRE history as old (if claim exists)
         if (oldStatus != null && !oldStatus.isEmpty()) {
             LOG.debug("Marking history as old for claim '{}')", claim.getChoReference());
@@ -114,7 +113,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         LOG.debug("Validating claim...");
         RulesEngineResponse validationResult = validate(claim);
         LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
-        String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
+        String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable());
         if (ClaimType.isSupplementaryInvoice(claim.getClaimType())
             && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())
             && newClaimStatus.equals(ClaimStatus.INVOICE_ESCALATED)) {
@@ -134,7 +133,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private List<History> processBreErrorMessage(List<RuleEvaluation> results, ClaimResult claimResult) {
 
-        List<History> histories = new ArrayList<History>();
+        List<History> histories = new ArrayList<>();
 
         for (int iCount = 0; iCount < results.size(); iCount++) {
 

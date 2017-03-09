@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +17,11 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.test.BaseTest;
 
-public class SupplementaryInvoiceTest extends BaseTest{
+public class SupplementaryInvoiceTest extends BaseTest {
 
-    @Test
-    @Transactional
-    public void testNewSupplementaryInvoice() throws Exception {
+    @Before
+    public void setUpClass() throws Exception {
         List<ClaimResult> claimResults = loadBordereauResult("sstestclaim.xml");
-        System.out.println(">>>>> testNewClaim");
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
@@ -37,23 +36,30 @@ public class SupplementaryInvoiceTest extends BaseTest{
             activity = activityFactory.getActivity("awaitingCarHireInfo");
             activity.process(claim);
             Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, claim.getStatus());
-
-            claimResults = loadBordereauResult("sstestclaim.xml");
-            for (ClaimResult claimResult1 : claimResults) {
-                bordereauReader.execute(claimResult1);
-                claimResult1.getClaim().setInvoice(claimResult1.getInvoice());
-                claim = claimResult1.getClaim();
-
-                activity = activityFactory.getActivity("newInvoice");
-                activity.processInBatch(claim);
-            }
-
-            Assert.assertEquals(ClaimStatus.INVOICE_ESCALATED_TO_CH, claim.getStatus());
-
+            claimService.save(claim);
+            claimService.flush();
         }
 
-        claimResults = loadBordereauResult("sstestsupplementaryclaim.xml");
-        System.out.println(">>>>> testingSupplementaryClaim");
+        List<ClaimResult> claimResults2 = loadBordereauResult("sstestclaim.xml");
+        for (ClaimResult claimResult2 : claimResults2) {
+            bordereauReader.execute(claimResult2);
+            claimResult2.getClaim().setInvoice(claimResult2.getInvoice());
+            Claim claim = claimResult2.getClaim();
+
+            System.out.println("....processing newInvoice activity on claim '" + claim.getChoReference() + "' in status " + claim.getStatus() + "....");
+            Activity activity = activityFactory.getActivity("newInvoice");
+            activity.processInBatch(claim);
+            claimService.save(claim);
+//            claimService.flush();
+            Assert.assertEquals(ClaimStatus.INVOICE_ESCALATED_TO_CH, claim.getStatus());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewSupplementaryInvoice() throws Exception {
+
+        List<ClaimResult> claimResults = loadBordereauResult("sstestsupplementaryclaim.xml");
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
@@ -66,7 +72,7 @@ public class SupplementaryInvoiceTest extends BaseTest{
     }
 
     private List<ClaimResult> loadBordereauResult(String fileName) throws Exception {
-        List<ClaimResult> claimResults = null;
+        List<ClaimResult> claimResults;
         File file = new ClassPathResource(fileName).getFile();
         Document document = DocumentHelper.getDocumentFromFile(file);
         claimResults = this.uploadClaimXMLService.formClaimResults(document);

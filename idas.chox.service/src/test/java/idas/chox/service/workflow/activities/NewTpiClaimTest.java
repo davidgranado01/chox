@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
 
@@ -31,6 +32,7 @@ public class NewTpiClaimTest extends BaseTest {
     public void testMakeNewTotalInterimPayment1() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setClaimType(ClaimType.TPI);
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(null);
         claim.setTpiClaimStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
@@ -51,8 +53,10 @@ public class NewTpiClaimTest extends BaseTest {
     public void testMakeNewTotalInterimPayment2() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setClaimType(ClaimType.TPI);
         claim.setBreBand(new BreBand());
         claim.setInsurer(insurerService.getInsurer(3));
+        claim.getInsurer().setTpiAutoRoutingEnable(false);
         claim.setStatus(null);
         claim.setTpiClaimStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
         claim.setInvoice(invoiceService.getInvoice(999));
@@ -71,6 +75,7 @@ public class NewTpiClaimTest extends BaseTest {
     public void testMakeNewTotalInterimPayment3() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setClaimType(ClaimType.TPI);
         claim.setBreBand(new BreBand());
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setStatus(null);

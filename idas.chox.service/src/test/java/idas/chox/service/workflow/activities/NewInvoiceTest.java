@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -17,13 +18,11 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.util.DocumentHelper;
 
-public class NewInvoiceTest extends BaseTest{
+public class NewInvoiceTest extends BaseTest {
 
-    @Test
-    @Transactional
-    public void testNewInvoice() throws Exception {
+    @Before
+    public void setUpClass() throws Exception {
         List<ClaimResult> claimResults = loadBordereauResult("sstestclaim.xml");
-        System.out.println(">>>>> testNewClaim");
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
@@ -38,19 +37,23 @@ public class NewInvoiceTest extends BaseTest{
             activity = activityFactory.getActivity("awaitingCarHireInfo");
             activity.process(claim);
             Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, claim.getStatus());
+            claimService.save(claim);
+            claimService.flush();
+        }
+    }
 
-            claimResults = loadBordereauResult("sstestclaim.xml");
-            for (ClaimResult claimResult1 : claimResults) {
-                bordereauReader.execute(claimResult1);
-                claimResult1.getClaim().setInvoice(claimResult1.getInvoice());
-                claim = claimResult1.getClaim();
+    @Test
+    @Transactional
+    public void testNewInvoice() throws Exception {
+        List<ClaimResult> claimResults = loadBordereauResult("sstestclaim.xml");
+        for (ClaimResult claimResult1 : claimResults) {
+            bordereauReader.execute(claimResult1);
+            claimResult1.getClaim().setInvoice(claimResult1.getInvoice());
+            Claim claim = claimResult1.getClaim();
 
-                activity = activityFactory.getActivity("newInvoice");
-                activity.processInBatch(claim);
-            }
-
+            Activity activity = activityFactory.getActivity("newInvoice");
+            activity.processInBatch(claim);
             Assert.assertEquals(ClaimStatus.INVOICE_ESCALATED_TO_CH, claim.getStatus());
-
         }
 
     }

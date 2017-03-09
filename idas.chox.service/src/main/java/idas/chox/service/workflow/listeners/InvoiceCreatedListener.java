@@ -30,6 +30,7 @@ public class InvoiceCreatedListener extends SecureDataService {
     @Handler
     @Subscribe
     public void handle(InvoiceCreatedEvent event){
+System.out.println("InvoiceCreatedEvent Message received: " + event);
         LOG.info("InvoiceCreatedEvent Message received: {}", event);
         event.getClaim().getInvoice().setInvoiceOriginal(invoiceService.saveOriginalInvoice(event.getClaim().getInvoice()));
     } 

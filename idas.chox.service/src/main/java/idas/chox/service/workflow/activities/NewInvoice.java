@@ -130,7 +130,7 @@ public class NewInvoice extends BaseActivity {
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
         claimService.updateLiabilityPayment(claim);
 
-        
+
         // Set initial penalty band
         claimService.setInitialPenaltyBand(claim);
 

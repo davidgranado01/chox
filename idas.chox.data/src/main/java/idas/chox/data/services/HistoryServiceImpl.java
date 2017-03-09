@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,14 +10,11 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.BreRules;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.core.services.HistoryService;
-import java.util.ArrayList;
 
 public class HistoryServiceImpl extends SecureDataService implements HistoryService {
 
@@ -48,7 +46,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         criteria.addOrder(Order.desc("processDate"));
         criteria.addOrder(Order.asc("ruleId"));
 
-        histories = findByCriteria(criteria);
+        histories = findByCriteriaFlushCommit(criteria);
 
         return histories;
     }
@@ -76,7 +74,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         return breRules;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void markHistoryAsOldByClaim(Claim claim) {
         List<History> histories = getHistoryByClaim(claim.getId(), true, false);
@@ -84,7 +82,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         for (History history : histories) {
             if (!history.getIsOld()) {
                 history.setIsOld(true);
-                save(history);
+                saveFlushCommit(history);
             }
         }
     }

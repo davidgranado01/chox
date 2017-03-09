@@ -32,7 +32,7 @@ public class BordereauReader {
                     LOG.debug("No claim in claim result.");
                 }
                 for (Reader r : subEntityReaders) {
-                    LOG.debug("Processing using reader {}", r.getClass());
+                    LOG.debug("Processing using reader {}", r.getClass().getSimpleName());
                     try {
                             r.execute(claimResult);                            
                     }
