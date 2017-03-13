@@ -17,6 +17,7 @@ import idas.chox.core.services.ClaimMatchingBandService;
 import idas.chox.core.services.ClaimMatchingService;
 import idas.chox.events.ClaimRejectionContestedEvent;
 import idas.chox.events.ClaimReviewedByEngEvent;
+import idas.chox.events.ClaimSwitchedToGtaEvent;
 import idas.chox.events.NewClaimEvent;
 import idas.chox.events.SubscriberClaimRejectedToGtaEvent;
 import idas.chox.service.workflow.ActivityFactory;
@@ -52,6 +53,19 @@ public class ClaimMatchingListener {
     @Subscribe
     public void handle(NewClaimEvent event){
         LOG.debug("NewClaimEvent Message received in ClaimMatchingListener:{}", event);
+        try {
+        if (event.getClaim().getInsurer().isEnableClaimMatching() && event.getClaim().getBreBand().isClaimMatchingEnable()) {
+            matchclaim(event.getClaim());
+        }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown: {}", ex.getMessage(), ex);
+        }
+    } 
+
+    @Handler
+    @Subscribe
+    public void handle(ClaimSwitchedToGtaEvent event){
+        LOG.debug("ClaimSwitchedToGtaEvent Message received in ClaimMatchingListener:{}", event);
         try {
         if (event.getClaim().getInsurer().isEnableClaimMatching() && event.getClaim().getBreBand().isClaimMatchingEnable()) {
             matchclaim(event.getClaim());

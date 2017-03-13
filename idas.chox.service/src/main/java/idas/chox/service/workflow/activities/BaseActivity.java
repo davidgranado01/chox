@@ -186,15 +186,16 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
-        
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
         LOG.debug("Claim saved - logging transaction...");
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
+        
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
+        });
+        
 
         // Warning: nasty hack! With the introduction of the event mechanism, we may not want to perform some chained events
         // as they have been updated via an EventListener. Disable such chained activities here

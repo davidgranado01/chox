@@ -95,7 +95,7 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
                 ClaimStatus.CLAIM_UPDATE_BY_ENG)));
 
         List<Claim> matchedClaims = findByCriteria(criteria);
-        
+        LOG.debug("Found {} claims that match on incident date and third party vehicle reg - checking BRE band", matchedClaims.size());
         // Now need to check BRE Band to verify claim matching active for claim type and customer vehicle type, returning first matched claim
         for (Claim c : matchedClaims) {
             c.setBreBand(breBandService.getBreBand(c.getChorganisation().getId(), c.getInsurer().getId()));
@@ -108,6 +108,7 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
                 }
             }
         }
+        LOG.debug("No matched claims found.");
         return (Claim) null;
     }
 

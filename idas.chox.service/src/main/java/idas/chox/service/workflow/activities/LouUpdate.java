@@ -365,6 +365,7 @@ public class LouUpdate extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) {
+        getDataService().save(claim);
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);

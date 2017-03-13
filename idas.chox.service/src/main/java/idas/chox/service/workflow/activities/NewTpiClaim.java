@@ -180,6 +180,7 @@ public class NewTpiClaim extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
+        getDataService().save(claim);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
@@ -189,7 +190,6 @@ public class NewTpiClaim extends BaseActivity {
             getChainActivity().processInBatch(claim);
         } else {
             LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-            getDataService().save(claim);
             logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);            
         }
     }

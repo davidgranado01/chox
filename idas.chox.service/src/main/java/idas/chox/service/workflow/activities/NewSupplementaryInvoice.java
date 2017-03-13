@@ -58,16 +58,16 @@ public class NewSupplementaryInvoice extends BaseActivity {
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-//        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
-
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
         LOG.trace("Claim saved - logging transaction...");
         logTransaction(claim);
         LOG.trace("Claim saved & transaction logged.");
+
+//        activityEventGenerator.generate(claim, this);
+        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
+        });
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

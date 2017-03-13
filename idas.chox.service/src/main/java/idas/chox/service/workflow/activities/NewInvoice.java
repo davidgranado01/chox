@@ -245,6 +245,7 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        getDataService().save(claim);
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
@@ -256,7 +257,6 @@ public class NewInvoice extends BaseActivity {
             getChainActivity().processInBatch(claim);
         } else {
             LOG.debug("Saving Claim '{}' ", claim.getChoReference());
-            getDataService().save(claim);
             logTransaction(claim);
         }
     }
