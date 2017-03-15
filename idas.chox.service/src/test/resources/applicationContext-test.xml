@@ -155,6 +155,7 @@
                 <value>hbm/events/InvoiceAcceptedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceCreatedEvent.hbm.xml</value>
                 <value>hbm/events/InvoicePaidEvent.hbm.xml</value>
+                <value>hbm/events/InvoicePaymentReceivedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceReferredToCHEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceReferredToEngEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceRejectedEvent.hbm.xml</value>

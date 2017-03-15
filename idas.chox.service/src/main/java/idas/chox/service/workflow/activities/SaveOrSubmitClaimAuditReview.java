@@ -533,6 +533,8 @@ public class SaveOrSubmitClaimAuditReview extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) {
+//        getDataService().save(claim);
+//        getDataService().save(claimAuditReview);
         if (nameOfActivity.equals("submitClaimAuditReview")) {
 //            activityEventGenerator.generate(claim, this);
             activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {

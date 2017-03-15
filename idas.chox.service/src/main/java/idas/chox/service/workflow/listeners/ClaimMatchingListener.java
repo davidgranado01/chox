@@ -120,8 +120,8 @@ public class ClaimMatchingListener {
         ClaimMatchingEntry matchedClaim = claimMatchingService.getClaimMatchingEntry(claim.getIncident().getDate(),
                     claim.getThirdParty().getVehicleRegistration());
         if (matchedClaim == null) {
-            LOG.debug("No claim match found for claim '{} with incident date {} and vehicle class '{}'",
-                    new Object[]{claim.getIncident().getDate(), claim.getCustomer().getVehicleRegistration()});
+            LOG.debug("No claim match found for claim '{} with incident date {} and third party vehicle reg '{}'",
+                    new Object[]{claim.getChoReference(), claim.getIncident().getDate(), claim.getThirdParty().getVehicleRegistration()});
             return;
         }
         
