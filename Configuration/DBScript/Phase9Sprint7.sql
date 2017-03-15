@@ -7,7 +7,7 @@ CREATE TABLE event_log (
     "version" integer NOT NULL,
     activity_name character varying NOT NULL,
     event_name character varying NOT NULL,
-    status character varying NOT NULL,
+    status character varying,
     claim_id integer NOT NULL,
     chorganisation_id integer NOT NULL,
     insurer_id integer NOT NULL,
@@ -308,3 +308,10 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name like 'activity.ClaimMatchedReview.%';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS', 2, id FROM accessibility WHERE name like 'activity.ClaimMatchedReview.%';
+
+--
+-- Drop NOT NULL consytraints on claim.status and claim.status_modified_date
+-- This is needed as TPI claims are now saved before the NewTpiClaim activity is ran to set the correct status,
+-- due to the event generation mechanism
+alter table claim alter column status drop not null;
+alter table claim alter column status_modified_date drop not null;

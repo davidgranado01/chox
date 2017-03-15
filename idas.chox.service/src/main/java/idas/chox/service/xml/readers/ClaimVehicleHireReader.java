@@ -88,6 +88,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                 claimResult.getClaim().setVehicleHire(new VehicleHire());
                 isNewVehicleHire = true;
             }
+
             if (claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_CLAIM
                         || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_SUBSCRIBER_CLAIM
                         || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_FIXEDFEE_CLAIM
@@ -97,14 +98,17 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                         || claimResult.getClaimParseStatus() == ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) {
                 isNewClaim = true;
             }
+
             String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
                 VehicleClass vehicleClass;
                 vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, "vehicle-class");
                 claimResult.getClaim().getVehicleHire().setVehicleClass(vehicleClass);
             }
+
             String oldVrn = claimResult.getClaim().getVehicleHire().getVehicleRegistration();
             claimResult.getClaim().getVehicleHire().setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(element, "vehicle-registration")));
+
             // If the VRN changes, we need to update the HPI information
             if (oldVrn != null && oldVrn.length() > 0 && !oldVrn.equals(claimResult.getClaim().getVehicleHire().getVehicleRegistration())) {
                 // Perform HPI check
@@ -130,24 +134,27 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                     claimResult.getClaim().getVehicleHire().setHpiFirstRegistration(null);
                 }
             }
+
             claimResult.getClaim().getVehicleHire().setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
             claimResult.getClaim().getVehicleHire().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
             Date rentalStart = XmlHelper.getDateFromNode(element, "rental-start");
             LOG.debug("isNewVehicleHire={}, isNewClaim={}, rentalStart={}", new Object[]{isNewVehicleHire, isNewClaim, rentalStart});
+
             if ((isNewVehicleHire && !isNewClaim && rentalStart != null) ||
                     (!isNewVehicleHire && !isNewClaim && claimResult.getClaim().getVehicleHire().getRentalStart() == null
                         && rentalStart != null)) {
                 LOG.debug("Raise on hire task? Setting flag in claim result");
                 claimResult.setCheckForOnHireTask(true);
             }
+
             claimResult.getClaim().getVehicleHire().setRentalStart(rentalStart);
             claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getDateFromNode(element, "rental-end"));
 
             if ( ClaimType.isTPI(claimResult.getClaim().getClaimType())
-                        && claimResult.getClaim().getCustomer() != null) {
+                        && claimResult.getClaim().getCustomer() != null
+                        && claimResult.getClaim().getCustomer().getCourtesyCarEntitled() != null) {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
-            }
-            else {
+            } else {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(false);
             }
 
@@ -159,7 +166,6 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
             claimResult.getClaim().getVehicleHire().setDays(rentalDays);
             claimResult.getClaim().getVehicleHire().setCollectionReason(XmlHelper.getNodeValue(element, "collection-reason"));
-
         }
     }
 }

@@ -241,7 +241,6 @@ public abstract class BaseActivity implements Activity {
         LOG.debug("Logging transaction/audit trail for claim '{}'", claim.getChoReference());
         LOG.debug("Current status='{}', next status='{}'", currentStatus, nextStatus);
         if (!currentStatus.equalsIgnoreCase(nextStatus)) {
-            LOG.debug("Creating new audit trail record for currentStatus='{}', nextStatus='{}'", currentStatus, nextStatus);
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setClaim(claim);
             auditTrail.setNewStatus(nextStatus);
@@ -253,6 +252,8 @@ public abstract class BaseActivity implements Activity {
             auditTrail.setUpdateDate(currentDate);
             auditTrail.setUser(getCurrentUser());
             setPreviousTotalToPay(claim, auditTrail);
+            LOG.debug("Creating new audit trail record for currentStatus='{}', nextStatus='{}' (with interval {}): {}",
+                    new Object[]{currentStatus, nextStatus, timeInterval, currentDate.toString()});
             getDataService().save(auditTrail);
         }
     }

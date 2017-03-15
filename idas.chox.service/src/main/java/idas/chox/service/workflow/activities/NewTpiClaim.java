@@ -108,79 +108,83 @@ public class NewTpiClaim extends BaseActivity {
             claim.getInvoice().setPaymentTeam(true);
         }
 
-        if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-            LOG.debug("TPI Claim status is InvoiceDataCalculationsIncorrect.");
-            // move claim to next status
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
-            claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
-
-        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
-            LOG.debug("TPI Claim status is InvoiceApprovedByBRE.");
-            if (claim.getBreBand().isPaymentTeamActive()
-                    && ClaimType.isTPI(claim.getClaimType()) && claim.getInsurer().isTpiPaymentsTeamEnable()
-                    && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
-                invoiceAccepted = true; 
-            }
-            if (!autoRoutedInvoice) {
-                LOG.debug("Invoice not auto-routed so moving to InvoiceUnassigned");
+        switch (claim.getTpiClaimStatus()) {
+            case ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT:
+                LOG.debug("TPI Claim status is InvoiceDataCalculationsIncorrect.");
+                // move claim to next status
+                super.setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(super.getCurrentStatus());
+                claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+                break;
+            case ClaimStatus.INVOICE_APPROVED_BY_BRE:
+                LOG.debug("TPI Claim status is InvoiceApprovedByBRE.");
+                if (claim.getBreBand().isPaymentTeamActive()
+                        && ClaimType.isTPI(claim.getClaimType()) && claim.getInsurer().isTpiPaymentsTeamEnable()
+                        && (!claim.getInsurer().isWorkgroupEnable() || claim.getWorkgroup() == null || !claim.getWorkgroup().isStpExcluded())) {
+                    invoiceAccepted = true;
+                }
+                if (!autoRoutedInvoice) {
+                    LOG.debug("Invoice not auto-routed so moving to InvoiceUnassigned");
+                    // move claim to next status
+                    super.setCurrentStatus(claim.getStatus());
+                    claim.setPreviousStatus(super.getCurrentStatus());
+                    claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
+                } else {
+                    LOG.debug("Auto-routing invoice and moving to AwaitingInvoiceData");
+                    if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                        claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                        claimRouted = true;
+                    }
+                    if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                        claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                        if (claim.getInsurer().getInvoiceOwner().getTelephone() != null
+                                && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
+                            Comment comment = Comment.newComment(0, "Insurer Claims Handler is '"
+                                    + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: "
+                                    + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
+                            claim.addComment(comment);
+                        }
+                        claimOwnerAssigned = true;
+                    }
+                    // move claim to next status
+                    super.setCurrentStatus(claim.getStatus());
+                    claim.setPreviousStatus(super.getCurrentStatus());
+                    claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+                    getDataService().save(claim);
+                    logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);
+                    
+                    // move claim to next status
+                    super.setCurrentStatus(claim.getStatus());
+                    claim.setPreviousStatus(super.getCurrentStatus());
+                    
+                    //if BRE approves the invoice and TPI is selected it will go into following status
+                    if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                            || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                            || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                            || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
+                        claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                    } else {
+                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                    }
+                    invoiceAccepted = true;
+                }   break;
+            case ClaimStatus.INVOICE_ESCALATED:
+            case ClaimStatus.INVOICE_ESCALATED_TO_CH:
+                LOG.debug("TPI Claim status is InvoiceEscalated or InvoiceEscalatedToClaimsHandler - moving to InvoiceUnassigned");
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
-            } else {
-                LOG.debug("Auto-routing invoice and moving to AwaitingInvoiceData");
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
-                        claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
-                        claimRouted = true;
-                }
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
-                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
-                    if (claim.getInsurer().getInvoiceOwner().getTelephone() != null
-                            && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
-                        Comment comment = Comment.newComment(0, "Insurer Claims Handler is '"
-                                            + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: "
-                                                        + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
-                        claim.addComment(comment);
-                    }
-                    claimOwnerAssigned = true;
-                }
-                // move claim to next status
-                super.setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(super.getCurrentStatus());
-                claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-                getDataService().save(claim);
-                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);
-
-                // move claim to next status
-                super.setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(super.getCurrentStatus());
-
-                //if BRE approves the invoice and TPI is selected it will go into following status
-                if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
-                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-                } else {
-                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-                }
-                invoiceAccepted = true;
-            }
-        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)
-                    || claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
-            LOG.debug("TPI Claim status is InvoiceEscalated or InvoiceEscalatedToClaimsHandler - moving to InvoiceUnassigned");
-            // move claim to next status
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
-            claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
+                break;
+            default:
+                break;
         }
     }
 
+    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
-        getDataService().save(claim);
         activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
@@ -190,7 +194,8 @@ public class NewTpiClaim extends BaseActivity {
             getChainActivity().processInBatch(claim);
         } else {
             LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), -10);            
+            getDataService().save(claim);
+            logTransaction(claim, super.getCurrentStatus(), claim.getStatus());            
         }
     }
 

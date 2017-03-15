@@ -1,5 +1,6 @@
 package idas.chox.service.xml.util;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -21,17 +22,16 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.xmlValidation.NodeRuleModel;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.service.xml.validations.DataValidationParameter;
-import java.math.BigDecimal;
 
 public final class NodeHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
-    private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
-    private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
-    private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
-    private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
-    private static String IncorrectInsurerAlias = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
-    private static String IncorrectChorganisationAlias = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
+    private static final String MANDATORY_DATA_ERROR_MSG = "No '%s' information supplied for '%s'. Please re-submit with this information.";
+    private static final String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
+    private static final String INCORRECT_DATA_ERROR_MSG = "Invalid or incorrect character in '%s' for '%s'.";
+    private static final String MANDATORY_VEHICLE_CLASS_DATA_ERROR_MSG = "Selected Vehicle Class is invalid for '%s'";
+    private static final String INCORRECT_INSURER_ALIAS = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
+    private static final String INCORRECT_CHORGANISATION_ALIAS = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
     public static final String REG_BOOLEAN = "^[ynYN]";
@@ -69,8 +69,8 @@ public final class NodeHelper {
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
         if (value == null || value.trim().isEmpty()) {
             isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            claimResult.getMessage().add(String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
         } else {
 
             ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(value);
@@ -81,17 +81,17 @@ public final class NodeHelper {
 
                     if (!insurerChorganisationService.isMapped(insurerId, alias.getChorganisation().getId())) {
                         isValid = false;
-                        claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
+                        claimResult.getMessage().add(String.format(INCORRECT_CHORGANISATION_ALIAS, value));
                     }
 
                 } else {
                     isValid = false;
-                    claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
+                    claimResult.getMessage().add(String.format(INCORRECT_CHORGANISATION_ALIAS, value));
                 }
 
             } else {
                 isValid = false;
-                claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
+                claimResult.getMessage().add(String.format(INCORRECT_CHORGANISATION_ALIAS, value));
             }
 
         }
@@ -117,8 +117,8 @@ public final class NodeHelper {
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
         if (value.trim().isEmpty()) {
             isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            claimResult.getMessage().add(String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
         } else {
 
             InsurerAlias alias = insurerAliasService.getInsurerByAliasName(value);
@@ -130,17 +130,17 @@ public final class NodeHelper {
                     if (!insurerChorganisationService.isMapped(alias.getInsurer().getId(),
                             claimResult.getClaim().getChorganisation().getId())) {
                         isValid = false;
-                        claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
+                        claimResult.getMessage().add(String.format(INCORRECT_INSURER_ALIAS, value));
                     }
 
                 } else {
                     isValid = false;
-                    claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
+                    claimResult.getMessage().add(String.format(INCORRECT_INSURER_ALIAS, value));
                 }
 
             } else {
                 isValid = false;
-                claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
+                claimResult.getMessage().add(String.format(INCORRECT_INSURER_ALIAS, value));
             }
 
         }
@@ -228,13 +228,13 @@ public final class NodeHelper {
 
         if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            claimResult.getMessage().add(String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
         }
 
         if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
             isValid = false;
-            claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
+            claimResult.getMessage().add(String.format(INCORRECT_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
             LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
         }
 
@@ -284,9 +284,9 @@ public final class NodeHelper {
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
         if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            claimResult.getMessage().add(String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
             LOG.debug("Mandatory data error: '{}'",
-                    String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+                    String.format(MANDATORY_DATA_ERROR_MSG, val.getNodeDesc(), sectionName));
         }
 
         // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
@@ -297,7 +297,7 @@ public final class NodeHelper {
 
             if (vehicleClass == null && isDataMandatory(claimResult, val)) {
                 isValid = false;
-                claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
+                claimResult.getMessage().add(String.format(MANDATORY_VEHICLE_CLASS_DATA_ERROR_MSG, sectionName));
             }
         }
 

@@ -16,6 +16,7 @@ import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 import idas.chox.service.xml.util.NodeHelper;
+import java.util.Date;
 
 public class NewInvoice extends BaseActivity {
 
@@ -122,6 +123,12 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
+        // If the claim is TPI we need to set the status to 'AwaitingInvoiceData'
+        // This is now need as the claim is saved before the events are generated, and the claim status cannot be null
+//        if (ClaimType.isTPI(claim.getClaimType()) && claim.getStatus() == null) {
+//            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+//            claim.setStatusModifiedDate(new Date());
+//        }
         if (claim.getBreBand() == null) {
             BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
