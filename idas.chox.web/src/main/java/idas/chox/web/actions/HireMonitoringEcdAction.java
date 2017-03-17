@@ -102,6 +102,10 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
         this.iECDFormAccessRight = iECDFormAccessRight;
     }
 
+    public void setEcdFormAccessRight(Integer iECDFormAccessRight) {
+        this.iECDFormAccessRight = iECDFormAccessRight;
+    }
+
     public int getReasonOfDelayId() {
         return reasonOfDelayId;
     }

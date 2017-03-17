@@ -1228,7 +1228,7 @@
                                 <div>
                                     <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
                                         <s:param name="claimId"><s:property value="id" /></s:param>
-                                        <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
+                                        <s:param name="ecdFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
                                     </s:action>
                                 </div>
                                 <s:if test="!isInsurerInvoice" >
@@ -1264,7 +1264,7 @@
                                 <div>
                                     <s:action name="getInsurerHireMonitoringEcd" namespace="/prv/p" executeResult="true">
                                         <s:param name="claimId"><s:property value="id" /></s:param>
-                                        <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.insurerHireMonitoringTabAccessibility" /></s:param>
+                                        <s:param name="ecdFormAccessRight"><s:property value="tabAccessibility.insurerHireMonitoringTabAccessibility" /></s:param>
                                     </s:action>
                                 </div>
                                 <div>

@@ -62,13 +62,14 @@ public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHire
 
     }
 
-    public boolean isECDFormVisible() {
+    public boolean getIsECDFormVisible() {
 
         Boolean bFlag = false;
 
         if (iECDFormAccessRight == 2) {
             bFlag = true;
         }
+LOG.info("isECDFormVisible: {} (iECDFormAccessRight={})", bFlag, iECDFormAccessRight);
         return bFlag;
 
     }
@@ -101,6 +102,11 @@ public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHire
     }
 
     public void setIECDFormAccessRight(Integer iECDFormAccessRight) {
+        this.iECDFormAccessRight = iECDFormAccessRight;
+    }
+
+
+    public void setEcdFormAccessRight(Integer iECDFormAccessRight) {
         this.iECDFormAccessRight = iECDFormAccessRight;
     }
 
