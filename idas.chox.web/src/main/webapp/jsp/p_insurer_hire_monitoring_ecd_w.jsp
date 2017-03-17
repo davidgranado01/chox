@@ -161,7 +161,7 @@
     <fieldset class="x-fieldset partial">
         <legend>New/Revised ECD</legend>
         <div class="form-container" id="newInsurerRevisedECDWId">
-            <s:if test="eCDFormVisible">
+            <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">New ECD<span class="mandatory">*</span></label>
                     <span id="insurerEcdDatePH"></span>
