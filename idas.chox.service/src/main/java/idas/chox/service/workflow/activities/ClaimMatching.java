@@ -123,9 +123,18 @@ public class ClaimMatching extends BaseActivity {
         try {
             liabilityStatus = LiabilityStatus.getLiabilityStatus(stance);
         } catch (IllegalArgumentException ex) {
-            switch (stance) {
-                case "Liability Accepted":
+            switch (stance.toLowerCase()) {
+                case "liability accepted":
                     liabilityStatus = LiabilityStatus.LIABILITY_ACCEPTED;
+                    break;
+                case "insured at fault":
+                    liabilityStatus = LiabilityStatus.LIABILITY_ACCEPTED;
+                    break;
+                case "insured not at fault":
+                    liabilityStatus = LiabilityStatus.LIABILITY_REPUDIATED;
+                    break;
+                case "insured partially at fault":
+                    liabilityStatus = LiabilityStatus.LIABILITY_SPLIT;
                     break;
                 default:
                     throw ex;

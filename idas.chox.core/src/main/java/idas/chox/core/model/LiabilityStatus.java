@@ -24,7 +24,7 @@ public enum LiabilityStatus {
 
     public static LiabilityStatus getLiabilityStatus(String description) {
         for (LiabilityStatus value : LiabilityStatus.values()) {
-            if (value.description.equals(description)) {
+            if (value.description.toLowerCase().equals(description.toLowerCase())) {
                 return value;
             }
         }
