@@ -36,8 +36,10 @@
         <hibernate-ehcache.version>3.6.10.Final</hibernate-ehcache.version>
         <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
         
-        <!-- For Java 7 and 8, use the following driver -->
-        <postgresql-jdbc.version>9.3-1102-jdbc41</postgresql-jdbc.version>
+        <!-- For Java 7 use the following driver -->
+        <!--postgresql-jdbc.version>9.3-1102-jdbc41</postgresql-jdbc.version-->
+        <!-- For Java 8 use the following driver -->
+        <postgresql-jdbc.version>42.0.0</postgresql-jdbc.version>
 
         <!-- PostgreSQL Driver for Java 1.6 -->
 <!--        <postgresql-jdbc.version>9.3-1102-jdbc4</postgresql-jdbc.version>-->

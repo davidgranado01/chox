@@ -94,6 +94,9 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
                             <arguments>-extension</arguments> 
                             <wsdlFiles>
                                 <wsdlFile>ADAPublicServices.wsdl</wsdlFile>
