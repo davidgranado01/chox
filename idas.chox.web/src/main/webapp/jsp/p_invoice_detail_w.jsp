@@ -1450,9 +1450,9 @@
 
                                             <td>
                                                 <div class="chox-form-item">
-                                                    <s:if test="VehicleClassName!=VehicleClassNameOriginal&&(VehicleClassNameOriginal!=null)&&(VehicleClassNameOriginal!=\"UNATTACHED\")">
+                                                    <s:if test="vehicleClassName!=vehicleClassNameOriginal&&(vehicleClassNameOriginal!=null)&&(vehicleClassNameOriginal!=\"UNATTACHED\")">
                                                         <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                        <label class="chox-ttnum-smalll">(<s:property value="VehicleClassNameOriginal" />)</label>
+                                                        <label class="chox-ttnum-smalll">(<s:property value="vehicleClassNameOriginal" />)</label>
                                                     </s:if>
                                                 </div>
                                             </td>
@@ -1606,9 +1606,9 @@
 
                                             <td>
                                                 <div class="chox-form-item">
-                                                    <s:if test="VehicleClassName!=VehicleClassNameOriginal&&(VehicleClassNameOriginal!=null)&&(VehicleClassNameOriginal!=\"UNATTACHED\")">
+                                                    <s:if test="vehicleClassName!=vehicleClassNameOriginal&&(vehicleClassNameOriginal!=null)&&(vehicleClassNameOriginal!=\"UNATTACHED\")">
                                                         <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                        <label class="chox-ttnum-smalll">(<s:property value="VehicleClassNameOriginal" />)</label>
+                                                        <label class="chox-ttnum-smalll">(<s:property value="vehicleClassNameOriginal" />)</label>
                                                     </s:if>
                                                 </div>
                                             </td>

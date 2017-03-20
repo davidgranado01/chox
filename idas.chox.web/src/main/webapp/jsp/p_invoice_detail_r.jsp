@@ -537,9 +537,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="vehicleClass.name" /></label></td>
                                     <td>
-                                        <s:if test="VehicleClassName!=VehicleClassNameOriginal&&(VehicleClassNameOriginal!=null)">
+                                        <s:if test="vehicleClassName!=vehicleClassNameOriginal&&(vehicleClassNameOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassNameOriginal" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="vehicleClassNameOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>

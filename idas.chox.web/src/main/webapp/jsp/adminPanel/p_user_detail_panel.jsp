@@ -215,7 +215,7 @@
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />"/>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
 <input name="isWorkgroupEnabled" id="isWorkgroupEnabled" type="hidden" value="<s:property value="isWorkgroupEnabled" />"/>
-<input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />"/>
+<input name="currentUserOrganisationId" id="currentUserOrganisationId" type="hidden" value="<s:property value="currentUserOrganisationId" />"/>
 
 <div id="chox-admin-holder">
 
@@ -236,9 +236,9 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label" style="width: 260px;">Organisation Type</label>
                         <b>
-                            <s:if test="OrganisationTypeId==1">Valexa Organisation Users</s:if>
-                            <s:elseif test="OrganisationTypeId==2">Insurer Organisation Users</s:elseif>
-                            <s:elseif test="OrganisationTypeId==3">Credit Hire Organisation Users</s:elseif>
+                            <s:if test="organisationTypeId==1">Valexa Organisation Users</s:if>
+                            <s:elseif test="organisationTypeId==2">Insurer Organisation Users</s:elseif>
+                            <s:elseif test="organisationTypeId==3">Credit Hire Organisation Users</s:elseif>
                         </b>
                     </div>
 
@@ -249,9 +249,9 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label" style="width: 260px;">Company Name</label>
                             <b>
-                                <s:if test="OrganisationTypeId==1">Valexa</s:if>
-                                <s:elseif test="OrganisationTypeId==2"><s:property value="Insurer.name" /></s:elseif>
-                                <s:elseif test="OrganisationTypeId==3"><s:property value="Chorganisation.name" /></s:elseif>
+                                <s:if test="organisationTypeId==1">Valexa</s:if>
+                                <s:elseif test="organisationTypeId==2"><s:property value="Insurer.name" /></s:elseif>
+                                <s:elseif test="organisationTypeId==3"><s:property value="Chorganisation.name" /></s:elseif>
                             </b>
                         </div>
 
@@ -260,9 +260,9 @@
 
                         <!-- ADD NEW MODE !-->
 
-                        <s:if test="OrganisationTypeId==2">
+                        <s:if test="organisationTypeId==2">
 
-                            <s:if test="CurrentUserOrganisationId==1">
+                            <s:if test="currentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label" style="width: 260px;">Insurer Company<span class="mandatory">*</span></label>
@@ -281,14 +281,14 @@
 
                             </s:if>
                             <s:else>
-                                <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
+                                <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="currentUserOrganisationId" />">
                             </s:else>
 
                         </s:if>
 
-                        <s:if test="OrganisationTypeId==3">
+                        <s:if test="organisationTypeId==3">
 
-                            <s:if test="CurrentUserOrganisationId==1">
+                            <s:if test="currentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label" style="width: 260px;">Credit Hire Company<span class="mandatory">*</span></label>
@@ -306,7 +306,7 @@
                                 </div>
                             </s:if>
                             <s:else>
-                                <input name="supplierId" id="supplierId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
+                                <input name="supplierId" id="supplierId" type="hidden" value="<s:property value="currentUserOrganisationId" />">
                             </s:else>
 
                         </s:if>

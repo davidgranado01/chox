@@ -681,7 +681,7 @@
         var iOfferMadeDays = $("#CCDOfferMadeDays").val();
         var iCCDInspectionDelayDays = $("#CCDInspectionDelayDays").val();
         ttl = parseFloat(iReceiptOfFinalStatementChequeDays) + parseFloat(iOfferMadeDays) + parseFloat(iCCDInspectionDelayDays);
-        $("#iTtlLossAllowableTtlDuration").val(ttl);
+        $("#ttlLossAllowableTtlDuration").val(ttl);
     }
 
     function doRepairDurationRuleforMobileVehicleWithoutECD(){
@@ -698,8 +698,8 @@
             + parseFloat(iCCDIsMobileDayAllowance);
         iWeekendBufferDays = getWeekendBuffer(iLabourCostTotalDay);
         ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
-        $("#iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd").val(ttl);
-        $("#iWeekendBufferDays_mwoecd").val(iWeekendBufferDays);
+        $("#totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd").val(ttl);
+        $("#weekendBufferDays_mwoecd").val(iWeekendBufferDays);
     }
 
     function doRepairDurationRuleforNonMobileVehicleWithoutECD(){
@@ -716,8 +716,8 @@
             + parseFloat(iCCDIsNotMobileDayAllowance);
         iWeekendBufferDays = getWeekendBuffer(iLabourCostTotalDay);
         ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
-        $("#iTtlAllowableDaysforNonMobileVehicleWoECD").val(ttl);
-        $("#iWeekendBufferDays_nmwoecd").val(iWeekendBufferDays);
+        $("#ttlAllowableDaysforNonMobileVehicleWoECD").val(ttl);
+        $("#weekendBufferDays_nmwoecd").val(iWeekendBufferDays);
     }
 
     function getWeekendBuffer(iLabourCostTotalDay){
@@ -2228,7 +2228,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl. Loss Allowable Total Duration (Days)</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" value="0" id="iTtlLossAllowableTtlDuration" name="iTtlLossAllowableTtlDuration"/>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" value="0" id="ttlLossAllowableTtlDuration" name="ttlLossAllowableTtlDuration"/>
                         </div>
                     </div>
 
@@ -2321,11 +2321,11 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_mwoecd" name="iWeekendBufferDays_mwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt-readonly" id="weekendBufferDays_mwoecd" name="weekendBufferDays_mwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Mobile Vehicle Without ECD</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd"/>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd"/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -2374,11 +2374,11 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_nmwoecd" name="iWeekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt-readonly" id="weekendBufferDays_nmwoecd" name="weekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Non-Mobile Vehicle Without ECD</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTtlAllowableDaysforNonMobileVehicleWoECD" name="iTtlAllowableDaysforNonMobileVehicleWoECD"/>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="ttlAllowableDaysforNonMobileVehicleWoECD" name="ttlAllowableDaysforNonMobileVehicleWoECD"/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
