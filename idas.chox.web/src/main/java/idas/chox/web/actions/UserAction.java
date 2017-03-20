@@ -28,7 +28,7 @@ import idas.chox.web.viewdata.UserViewData;
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserAction.class);
-    private List<UserViewData> users = new ArrayList<UserViewData>();
+    private List<UserViewData> users = new ArrayList<>();
     private int organisationTypeId = -1;
     private int organisationId = -1;
     private int userRoleId = -1;
@@ -317,6 +317,11 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             if (getIsNew()) {
                 response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
             } else if (model.getStatus()){
+                // CHOX-313: if user was previously inactive, we need to clear the last login date
+                WebUser user = adminUserService.getUser(model.getId());
+                if (!user.getStatus()) {
+                    model.setLastLoginDate(null);
+                }
                 response = adminUserService.updateUser(model);
             } else { // user is in-active - check no open claims
                 if (claimService.isUserHasOpenClaim(model.getId(), model.getInsurer() != null ? true : false)) {

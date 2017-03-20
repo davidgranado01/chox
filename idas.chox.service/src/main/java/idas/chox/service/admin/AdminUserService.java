@@ -219,6 +219,10 @@ public class AdminUserService extends SecureDataService {
         }
         else {
             webUser.setStatus(!webUser.getStatus());
+            // CHOX-313: clear last_login_date when user activated
+            if (webUser.getStatus()) {
+                webUser.setLastLoginDate(null);
+            }
         }
 
         boolean isAllowUpdate = true;
