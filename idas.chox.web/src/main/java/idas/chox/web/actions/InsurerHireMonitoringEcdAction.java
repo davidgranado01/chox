@@ -69,7 +69,6 @@ public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHire
         if (iECDFormAccessRight == 2) {
             bFlag = true;
         }
-LOG.info("isECDFormVisible: {} (iECDFormAccessRight={})", bFlag, iECDFormAccessRight);
         return bFlag;
 
     }
