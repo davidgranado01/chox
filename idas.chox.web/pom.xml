@@ -559,14 +559,14 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-catalina</artifactId>
-            <version>7.0.64</version>
+            <version>8.5.11</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>se.jiderhamn</groupId>
             <artifactId>classloader-leak-prevention</artifactId>
-            <version>1.13.0</version>
+            <version>1.15.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
