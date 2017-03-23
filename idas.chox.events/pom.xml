@@ -73,7 +73,7 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>idas.chox</groupId>
             <artifactId>core</artifactId>
             <version>${chox.core.version}</version>
