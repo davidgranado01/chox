@@ -12,7 +12,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 
 public class ClaimMatchedReview extends BaseActivity {
-
     private int matchedWorkgroupIdField = -1;
     private int matchedClaimOwnerIdField = -1;
     private BigDecimal reserveValue;
@@ -25,13 +24,17 @@ public class ClaimMatchedReview extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
+        if (claim.getMatchStatus() == 4) {
+            throw new Exception("Claim match has already been reviewed");
+        }
+        
         if (claim.getMatchStatus() != 3) {
-            throw new Exception("Claim not matched and auto-acknowledged so cannot be reviewed");
+            throw new Exception("Claim was not matched and auto-acknowledged so cannot be reviewed");
         }
         
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
         ownershipEnabled = claim.getInsurer().isClaimOwnershipEnable();
-
+        
         if (workgroupsEnabled && matchedWorkgroupIdField <= 0) {
             throw new Exception("No workgroup selected");
         } else if (workgroupsEnabled) {
@@ -46,7 +49,7 @@ public class ClaimMatchedReview extends BaseActivity {
         }
 
         if (ownershipEnabled && matchedClaimOwnerIdField <= 0) {
-            throw new Exception("No Claim Owner selected.");
+            throw new Exception("No Claim Owner selected");
         } else if (ownershipEnabled) {
             claimOwner = (WebUser) getDataService().get(WebUser.class, matchedClaimOwnerIdField);
             if (claimOwner == null) {
@@ -62,7 +65,7 @@ public class ClaimMatchedReview extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        if (ownershipEnabled &&!Objects.equals(claim.getClaimOwner().getId(), claimOwner.getId())) {
+        if (ownershipEnabled && !Objects.equals(claim.getClaimOwner().getId(), claimOwner.getId())) {
             claim.setClaimOwner(claimOwner);
             if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
                 Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");

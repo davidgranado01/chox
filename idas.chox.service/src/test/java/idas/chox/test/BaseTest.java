@@ -48,6 +48,8 @@ public abstract class BaseTest {
     @Autowired
     protected BreBandService breBandService;
     @Autowired
+    protected ClaimMatchingBandService claimMatchingBandService;
+    @Autowired
     protected ClaimService claimService;
     @Autowired
     protected VehicleClassService vehicleClassService;

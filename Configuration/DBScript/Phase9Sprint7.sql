@@ -215,6 +215,8 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_CHO', 2, id FROM accessibility WHERE name like 'activity.ClaimMatching.%';
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS', 2, id FROM accessibility WHERE name like 'activity.ClaimMatching.%';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name like 'activity.ClaimMatching.%';
 
 --
 -- Add match status to claim

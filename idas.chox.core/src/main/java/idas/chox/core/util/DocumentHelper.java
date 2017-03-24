@@ -1,14 +1,16 @@
 package idas.chox.core.util;
 
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.*;
 import java.io.File;
 import java.io.InputStream;
+import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 public class DocumentHelper {
@@ -41,11 +43,11 @@ public class DocumentHelper {
                 throw e;
             } catch (SAXException e) {
                 // On Apache, this should be thrown when disallowing DOCTYPE
-                LOG.error("A DOCTYPE was passed into the XML document");
+                LOG.error("A DOCTYPE was passed into the XML document: {}", e.getMessage(), e);
                 throw e;
             } catch (IOException e) {
                 // XXE that points to a file that doesn't exist
-                LOG.error("IOException occurred, XXE may still possible: " + e.getMessage());
+                LOG.error("IOException occurred, XXE may still possible: {}", e.getMessage());
                 throw e;
             }
         }
@@ -78,11 +80,11 @@ public class DocumentHelper {
             throw e;
         } catch (SAXException e) {
             // On Apache, this should be thrown when disallowing DOCTYPE
-            LOG.error("A DOCTYPE was passed into the XML document");
+                LOG.error("A DOCTYPE was passed into the XML document: {}", e.getMessage(), e);
             throw e;
         } catch (IOException e) {
             // XXE that points to a file that doesn't exist
-            LOG.error("IOException occurred, XXE may still possible: " + e.getMessage());
+            LOG.error("IOException occurred, XXE may still possible: {}", e.getMessage());
             throw e;
         }
 

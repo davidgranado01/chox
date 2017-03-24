@@ -55,7 +55,7 @@ public class ClaimMatching extends BaseActivity {
                     claim.getBreBand().getId(),
                     claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
         if (claimMatchingBand == null) {
-            LOG.error("No claim matching bound found for claim '{}' ({})", claim.getChoReference(), claim.getId());
+            LOG.error("No claim matching band found for claim '{}' ({})", claim.getChoReference(), claim.getId());
             throw new Exception("No Claim Matching Band Found");
         }
     }
