@@ -20,15 +20,15 @@
         <slf4j.version>1.7.25</slf4j.version>
         <jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
         <commons-logging.version>1.2</commons-logging.version>
-        <aspectj.version>1.8.5</aspectj.version>
+        <aspectj.version>1.8.10</aspectj.version>
         
         <junit.version>4.10</junit.version>
         
         <commons-lang.version>3.1</commons-lang.version>
         
-        <logback-core.version>1.1.9</logback-core.version>
-        <logback-classic.version>1.1.9</logback-classic.version>
-        <logback-access.version>1.1.9</logback-access.version>
+        <logback-core.version>1.2.2</logback-core.version>
+        <logback-classic.version>1.2.2</logback-classic.version>
+        <logback-access.version>1.2.2</logback-access.version>
         
         <jsoup.version>1.8.1</jsoup.version>
         
