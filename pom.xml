@@ -39,7 +39,9 @@
         <!-- For Java 7 use the following driver -->
         <!--postgresql-jdbc.version>9.3-1102-jdbc41</postgresql-jdbc.version-->
         <!-- For Java 8 use the following driver -->
-        <postgresql-jdbc.version>42.0.0</postgresql-jdbc.version>
+        <!--postgresql-jdbc.version>42.0.0</postgresql-jdbc.version-->
+        <!-- For Java 8, pgjdbc-ng driver -->
+        <postgresql-jdbc.version>0.7.1</postgresql-jdbc.version>
 
         <!-- Hikari CP -->
         <hikari.version>2.6.1</hikari.version>
