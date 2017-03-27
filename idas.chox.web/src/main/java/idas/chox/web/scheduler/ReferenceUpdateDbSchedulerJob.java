@@ -24,13 +24,15 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
     @Override
     public final Map<Integer, List<String>> doJob() {
 
-        Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
+        Map<Integer, List<String>> xlsDataMap = new HashMap<>();
 
         List<QueuedTicket> queuedTickets = claimService.getQueuedTicket();
 
         try {
             if (queuedTickets.size() > 0) {
                 LOG.debug("total found QueuedTicket is {}", queuedTickets.size());
+                // Start new transaction?
+                handleHibernateTransactionIntricacies();
 
                 int i = 1;
                 for (QueuedTicket queuedTicket : queuedTickets) {
@@ -38,18 +40,24 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
                     int status = claimService.updateQueuedTicket(queuedTicket,
                             getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
                     String statusString;
-                    if (status == 0) {
-                        statusString = "Updated";
-                    } else if (status == 1) {
-                        statusString = "Failed - Ticket number already exists";
-                    } else if (status == 2) {
-                        statusString = "Failed - Reservation number doesn't exist";
-                    } else if (status == 3) {
-                        statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
-                    } else {
-                        statusString = "Failed - an internal error occurred";
+                    switch (status) {
+                        case 0:
+                            statusString = "Updated";
+                            break;
+                        case 1:
+                            statusString = "Failed - Ticket number already exists";
+                            break;
+                        case 2:
+                            statusString = "Failed - Reservation number doesn't exist";
+                            break;
+                        case 3:
+                            statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
+                            break;
+                        default:
+                            statusString = "Failed - an internal error occurred";
+                            break;
                     }
-                    List<String> cellStringList = new ArrayList<String>();
+                    List<String> cellStringList = new ArrayList<>();
                     cellStringList.add(queuedTicket.getOldReference());
                     cellStringList.add(queuedTicket.getNewReference());
                     cellStringList.add(statusString);
@@ -60,6 +68,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
                             new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(),
                                 statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
                 }
+                releaseHibernateSessionConditionally();
 
             } else {
                 LOG.debug("no queuedTickets found");

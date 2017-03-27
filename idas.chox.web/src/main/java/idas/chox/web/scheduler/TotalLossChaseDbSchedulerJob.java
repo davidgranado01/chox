@@ -21,6 +21,8 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
     public Map<Integer, List<String>> doJob() {
 
         try {
+            // Start new transaction?
+            handleHibernateTransactionIntricacies();
             ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
             List<Claim> claims = claimService.getTotalLossChaseClaims();
             if (claims != null && claims.size() > 0) {
@@ -39,6 +41,8 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
             }
         } catch (Exception ex) {
             LOG.warn("Exception thrown creating chase task: {}", ex.getMessage(), ex);
+        } finally {
+            releaseHibernateSessionConditionally();
         }
         return null;
     }

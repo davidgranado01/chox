@@ -43,6 +43,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
                 sender = mailUtil.getSender(message);
                 if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
                     LOG.debug("Sender '{}' is in privileged user list.", sender);
+                    handleHibernateTransactionIntricacies();
                     try {
                         processEmail(message, emailSubject, sender, schedulerJob.getBccReceivers(), schedulerJob.isReplyToSender());
                     } catch (Exception ex) {
@@ -51,6 +52,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
                         sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", "Exception thrown: " + ex.getMessage());
                     } finally {
                         message.setFlag(Flags.Flag.SEEN, true);
+                        releaseHibernateSessionConditionally();
                     }
                 } else {
                     message.setFlag(Flags.Flag.SEEN, true);

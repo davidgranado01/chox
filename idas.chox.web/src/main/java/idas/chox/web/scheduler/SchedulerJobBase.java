@@ -78,7 +78,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         String emailSubject;
         
         try {
-            handleHibernateTransactionIntricacies();
             List<SchedulerJob> schedulerJobs = getSchedulerJobs();
             if (schedulerJobs.isEmpty()) {
                 LOG.info("No active scheduler jobs of type '{}'", getClass().getSimpleName());
@@ -116,8 +115,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown calling Scheduler Job '{}': {}", getClass().getSimpleName(), ex.getMessage(), ex);
-        } finally {
-            releaseHibernateSessionConditionally();
         }
     }
     

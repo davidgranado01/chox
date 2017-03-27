@@ -36,11 +36,11 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
     public final Map<Integer, List<String>> doJob() {
         int noRequestsToQueue = maxQueuedRequests;
         try {
+            // Start new transaction?
+            handleHibernateTransactionIntricacies();
             LOG.debug("Checking status of submitted requests...");
             int noPendingRequests = keoghs.check();
             LOG.debug("Total of {} claims pending at Keoghs (maxQueuedRequests={})", noPendingRequests, maxQueuedRequests);
-            // Start new transaction?
-//                releaseHibernateSessionConditionally(); this.handleHibernateTransactionIntricacies();
             if ((maxQueuedRequests > 0 && noPendingRequests + maxQueuedRequests > maxPendingRequests)
                     || maxQueuedRequests < 0) {
                 noRequestsToQueue = maxPendingRequests - noPendingRequests;
@@ -55,6 +55,8 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
                         
         } catch (Exception ex) {
             LOG.error("Exception thrown checking Keoghs jobs: {}", ex.getMessage(), ex);
+        } finally {
+             releaseHibernateSessionConditionally();
         }
 
         return null;

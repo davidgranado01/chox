@@ -41,7 +41,9 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
             List<ClaimMatchingImportEntry> claimMatchingImportEntries = claimMatchingService.getClaimMatchingImportEntries(insurerName);
             LOG.debug("Found {} claim matching import entries", claimMatchingImportEntries.size());
             // Start new transaction?
-//                releaseHibernateSessionConditionally(); this.handleHibernateTransactionIntricacies();
+            if (claimMatchingImportEntries.size() > 0) {
+              handleHibernateTransactionIntricacies();
+            }
             for (ClaimMatchingImportEntry importEntry : claimMatchingImportEntries) {
                 matchStatus = 0;
                 // Find matching claim
@@ -93,7 +95,9 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                 LOG.debug("Deleting ClaimMatchingImportEntry");
                 claimMatchingService.delete(importEntry);
             }
-                        
+            if (claimMatchingImportEntries.size() > 0) {
+                releaseHibernateSessionConditionally();
+            }
         } catch (Exception ex) {
             LOG.error("Exception thrown checking fo claim matching: {}", ex.getMessage(), ex);
         }
