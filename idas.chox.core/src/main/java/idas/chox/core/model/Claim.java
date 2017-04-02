@@ -80,6 +80,7 @@ public class Claim extends Entity implements Serializable {
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
+    private List<Notification> notifications;
     private int fraudCheckStatus;
     private int matchStatus;
     private boolean sentToKeoghs;
@@ -527,6 +528,13 @@ public class Claim extends Entity implements Serializable {
         return hireMonitoringEcds;
     }
 
+    public List<Notification> getNotifications() {
+        if (notifications == null) {
+            notifications = new ArrayList<>();
+        }
+        return notifications;
+    }
+
     public List<InsurerHireMonitoringEcd> getInsurerHireMonitoringEcds() {
         if (insurerHireMonitoringEcds == null) {
             insurerHireMonitoringEcds = new ArrayList<>();
@@ -536,6 +544,10 @@ public class Claim extends Entity implements Serializable {
 
     public void setHireMonitoringEcds(List<HireMonitoringEcd> hireMonitoringEcds) {
         this.hireMonitoringEcds = hireMonitoringEcds;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public void addHireMonitoringEcd(HireMonitoringEcd ecd) {
