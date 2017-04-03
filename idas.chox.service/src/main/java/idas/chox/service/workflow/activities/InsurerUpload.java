@@ -161,12 +161,10 @@ public class InsurerUpload extends BaseActivity {
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
-        History.New(breResponse).stream().map((history) -> {
+        for (History history : History.New(breResponse)) {
             LOG.debug("Adding BRE history to claim '{}': {} - " + history.getNarrative(), claim.getChoReference(), history.getRuleId());
-            return history;
-        }).forEach((history) -> {
             claim.addHistory(history);
-        });
+        }
 
         claim.setStatusModifiedDate(new Date());
 

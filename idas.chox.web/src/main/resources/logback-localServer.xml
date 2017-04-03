@@ -1,18 +1,77 @@
 <included>
+    <appender name="Hibernate" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/hibernate.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/hibernate.log.%i</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                     <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="HibernateSQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/hibernateSQL.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/hibernateSQL.log.%i</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                     <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="Hikari" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/hikariCP.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/hikariCP.log.%i.zip</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                     <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-springstruts.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history 
             <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
             <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+            <totalSizeCap>20GB</totalSizeCap-->
         </rollingPolicy>
     </appender>
     
@@ -22,14 +81,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
@@ -39,14 +99,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
@@ -56,14 +117,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
@@ -73,14 +135,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
@@ -90,14 +153,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-quartz.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
@@ -113,14 +177,15 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
@@ -130,94 +195,98 @@
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump.log.%i.zip</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
+                <!-- keep 90 days' worth of history -->
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 5MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
-    <appender name="CYCLIC"
-		class="ch.qos.logback.core.read.CyclicBufferAppender">
-        <MaxSize>2048</MaxSize>
-    </appender>
-    
-
     <logger name="org.springframework.scheduling" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="DEBUG" additivity="false">
+    <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="idas.chox.keoghs" level="DEBUG" additivity="false">
+    <logger name="idas.chox.keoghs" level="INFO" additivity="false">
         <appender-ref ref="R"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache.cxf" level="INFO" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="net.sf.ehcache" level="WARN" additivity="false">
         <appender-ref ref="C"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.acegisecurity" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.hibernate" level="WARN" additivity="false">
         <appender-ref ref="H"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="net.sf.jxls" level="ERROR" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="com.opensymphony" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.quartz" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache.activemq" level="INFO" additivity="false">
         <appender-ref ref="MQ"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="R"/>
-        <appender-ref ref="CYCLIC" />
     </logger>
     <!-- Set following to DEBUG to log POST requests, to TRACE to log all requests and the POST response-->
     <logger name="idas.chox.web.RequestDumpFilter" level="INFO" additivity="false">
         <appender-ref ref="RD"/>
-        <appender-ref ref="CYCLIC" />
+    </logger>
+    <!-- Log Hibernate SQL -->
+    <logger name="org.hibernate.stat" additivity="false" level="DEBUG">
+        <appender-ref ref="Hibernate"/>
+    </logger>
+    <logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
+        <appender-ref ref="HibernateSQL"/>
+    </logger>
+    <!-- Log Hibernate SQL Parameters -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE" >
+        <appender-ref ref="HibernateSQL" />
+    </logger>
+    <!-- To also see extracted values, use the below logger on org.hibernate.type -->
+    <!--logger name="org.hibernate.type" level="ERROR" additivity="false">
+        <appender-ref ref="HibernateSQL"/>
+    </logger-->
+        
+    <!--logger name="org.hibernate" level="ERROR" additivity="false">
+        <appender-ref ref="HibernateSQL"/>
+    </logger-->
+
+    <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
+        <appender-ref ref="Hikari"/>
+    </logger>
+
+    <logger name="idas.chox.web.scheduler.SchedulerJobBase" additivity="false" level="DEBUG" >
+        <appender-ref ref="R" />
     </logger>
     <root level="INFO">
-        <appender-ref ref="stdout"/>
-        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="R"/>
     </root>
 </included>

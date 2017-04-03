@@ -237,9 +237,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     LOG.debug("claim invoice set to null");
                     delete(oldInvoice);
                     List<History> histories = claim.getHistories();
-                    histories.stream().forEach((history) -> {
+                    for (History history : histories) {
                         delete(history);
-                    });
+                    }
                     histories.clear();
                     LOG.debug("claim invoice and BRE history deleted");
                 }
@@ -551,9 +551,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         List<Claim> claims = new ArrayList<>();
 
-        resultMap.stream().forEach((m) -> {
+        for (HashMap m : resultMap) {
             claims.add((Claim) m.get("this"));
-        });
+        }
 
         LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
         return new SearchResult(claims, totalCount, null);
@@ -668,9 +668,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", workgroupId));
 
-        ClaimStatus.getInsurerClosedStatus(true).stream().forEach((sStatus) -> {
+        for ( String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
-        });
+        }
 
         return findByCriteria(criteria).size() > 0;
 
@@ -708,9 +708,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("claimOwner.id", UserId));
         }
 
-        ClaimStatus.getInsurerClosedStatus(true).stream().forEach((sStatus) -> {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
-        });
+        }
 
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
@@ -729,17 +729,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (isInsurer) {
             criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-            ClaimStatus.getInsurerClosedStatus(true).stream().forEach((sStatus) -> {
+            for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
                 criteria.add(Restrictions.ne("status", sStatus));
-            });
+            }
 
         }
         else {
             criteria.add(Restrictions.eq("supplierClaimOwner.id", userId));
 
-            ClaimStatus.getCompletedStatus(false).stream().forEach((sStatus) -> {
+            for (String sStatus : ClaimStatus.getCompletedStatus(false)) {
                 criteria.add(Restrictions.ne("status", sStatus));
-            });
+            }
         }
        
         if (findByCriteria(criteria).size() > 0) {
@@ -1229,9 +1229,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isShowOpenClaimsOnly()) {
-            ClaimStatus.getCompletedStatus(true).stream().forEach((status) -> {
+            for (String status : ClaimStatus.getCompletedStatus(true)) {
                 criteria.add(Restrictions.ne("status", status));
-            });
+            }
         }
 
         if (searchCriteria.getClaimTypes() != null && !searchCriteria.getClaimTypes().isEmpty()) {
@@ -1848,8 +1848,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private boolean isClaimInInsurerClosedStatus(Claim claim) {
-        if (ClaimStatus.getInsurerClosedStatus(true).stream().anyMatch((status) -> (claim.getStatus().equalsIgnoreCase(status)))) {
-            return true;
+        for (String status : ClaimStatus.getInsurerClosedStatus(true)) {
+            if (claim.getStatus().equalsIgnoreCase(status)) {
+                return true;
+            }
         }
 
         return false;

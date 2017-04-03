@@ -4,6 +4,7 @@ import java.util.Date;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
+import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
@@ -46,9 +47,9 @@ public class UpdateCaseWithSolicitor extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 //        getDataService().save(claim);
 //        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
+        }
     }
 
 }

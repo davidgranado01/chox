@@ -629,14 +629,15 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getStatuses() != null) {
             StringBuilder returnString = new StringBuilder();
-            getStatuses().stream().forEach((c) -> {
+            for (String c : getStatuses()) {
                 returnString.append(c).append(",");
-            });
+            }
             return returnString.toString().isEmpty() ? "" : returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
     }
 
+    
     /*
      * Please note this method will return only Insurer Ids from the
      * loaded(model) claimSearchCriteria and not from available Insurer Id.
@@ -645,9 +646,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getInsurerIds() != null && !getInsurerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getInsurerIds().stream().forEach((i) -> {
+            for (Integer i : getInsurerIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -661,9 +662,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getSupplierIds() != null && !getSupplierIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getSupplierIds().stream().forEach((i) -> {
+            for (Integer i : getSupplierIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -677,9 +678,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getWorkgroupIds() != null && !getWorkgroupIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getWorkgroupIds().stream().forEach((i) -> {
+            for (Integer i : getWorkgroupIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -693,9 +694,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getSupplierClaimOwnerIds() != null && !getSupplierClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getSupplierClaimOwnerIds().stream().forEach((i) -> {
+            for (Integer i : getSupplierClaimOwnerIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -709,9 +710,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getClaimOwnerIds() != null && !getClaimOwnerIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getClaimOwnerIds().stream().forEach((i) -> {
+            for (Integer i : getClaimOwnerIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -725,9 +726,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getClaimTypes() != null && !getClaimTypes().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getClaimTypes().stream().forEach((c) -> {
+            for (ClaimType c : getClaimTypes()) {
                 returnString.append(c.getClaimTypeValue()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -741,9 +742,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getHireAndRepairSearchParamIds()!= null && !getHireAndRepairSearchParamIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getHireAndRepairSearchParamIds().stream().forEach((i) -> {
+            for (Integer i : getHireAndRepairSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -753,9 +754,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (approvedInvoiceOwnershipSearchParamIds != null && !approvedInvoiceOwnershipSearchParamIds.isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getApprovedInvoiceOwnershipSearchParamIds().stream().forEach((i) -> {
+            for (Integer i : getApprovedInvoiceOwnershipSearchParamIds()) {
                 returnString.append(i.toString()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;
@@ -769,9 +770,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getLiabilityStatuses() != null && !getLiabilityStatuses().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            getLiabilityStatuses().stream().forEach((s) -> {
+            for (LiabilityStatus s : getLiabilityStatuses()) {
                 returnString.append(s.getLiablityValue()).append(",");
-            });
+            }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return null;

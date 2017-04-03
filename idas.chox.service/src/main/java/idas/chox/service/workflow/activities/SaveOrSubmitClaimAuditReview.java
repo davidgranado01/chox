@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimAuditReview;
 import idas.chox.core.services.VehicleClassService;
+import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -537,9 +538,9 @@ public class SaveOrSubmitClaimAuditReview extends BaseActivity {
 //        getDataService().save(claimAuditReview);
         if (nameOfActivity.equals("submitClaimAuditReview")) {
 //            activityEventGenerator.generate(claim, this);
-            activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
                 ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-            });
+            }
         }
     }
 }

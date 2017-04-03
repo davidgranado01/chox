@@ -24,12 +24,14 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
+import org.hibernate.jdbc.Work;
 
 /**
  *
  * @author Emmanuel
  */
 public class BaseDataService extends HibernateDaoSupport implements DataService {
+
     private static final Logger LOG = LoggerFactory.getLogger(BaseDataService.class);
 
     public List query(final String query) {
@@ -53,9 +55,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
                 q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
             } else if (parameters.get(parameterName) instanceof String) {
                 q.setString(parameterName, (String) parameters.get(parameterName));
-            }  else if (parameters.get(parameterName) instanceof Integer) {
+            } else if (parameters.get(parameterName) instanceof Integer) {
                 q.setInteger(parameterName, (int) parameters.get(parameterName));
-            }else {
+            } else {
                 q.setParameter(parameterName, parameters.get(parameterName));
             }
         }
@@ -73,9 +75,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
                 q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
             } else if (parameters.get(parameterName) instanceof String) {
                 q.setString(parameterName, (String) parameters.get(parameterName));
-            }  else if (parameters.get(parameterName) instanceof Integer) {
+            } else if (parameters.get(parameterName) instanceof Integer) {
                 q.setInteger(parameterName, (int) parameters.get(parameterName));
-            }else {
+            } else {
                 q.setParameter(parameterName, parameters.get(parameterName));
             }
         }
@@ -92,9 +94,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
                 q.setParameterList(parameterName, (Collection) parameters.get(parameterName));
             } else if (parameters.get(parameterName) instanceof String) {
                 q.setString(parameterName, (String) parameters.get(parameterName));
-            }  else if (parameters.get(parameterName) instanceof Integer) {
+            } else if (parameters.get(parameterName) instanceof Integer) {
                 q.setInteger(parameterName, (int) parameters.get(parameterName));
-            }else {
+            } else {
                 q.setParameter(parameterName, parameters.get(parameterName));
             }
 
@@ -117,39 +119,46 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         LOG.debug("Calling stored procedure applyAutoPenaltyCharge({}, {})....", userId, claimId);
         getCurrentSession().flush();
 
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            try {
-                s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
-            } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-            catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
+
     }
 
     public void callUpdateDashboard(final int userId) throws SQLException {
         LOG.debug("Calling stored procedure updatedashboard({})....", userId);
         getCurrentSession().flush();
-        
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            
-            try {
-                s.execute("select updateDashboard(" + userId + ")");
-            } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-            catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+
+                try {
+                    s.execute("select updateDashboard(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
     }
@@ -158,19 +167,22 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         LOG.debug("Calling stored procedure addMissingEcdTask({})....", userId);
         getCurrentSession().flush();
 
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            
-            try {
-                s.execute("select addMissingEcdTask(" + userId + ")");
-            } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-            catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+
+                try {
+                    s.execute("select addMissingEcdTask(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
     }
@@ -179,18 +191,21 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         LOG.debug("Calling stored procedure addInvoicePenaltyTask({})....", userId);
         getCurrentSession().flush();
 
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            try {
-                s.execute("select addInvoicePenaltyTask(" + userId + ")");
-            } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
-            catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select addInvoicePenaltyTask(" + userId + ")");
+                } // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+                catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
     }
@@ -199,37 +214,43 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         LOG.debug("Calling stored procedure update_user_service({})....", userId);
         getCurrentSession().flush();
 
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            try {
-                s.execute("select update_user_service(id) from insurer where status=true");
-                s.execute("select update_workgroup_service(id) from insurer where status=true");
-            } catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select update_user_service(id) from insurer where status=true");
+                    s.execute("select update_workgroup_service(id) from insurer where status=true");
+                } catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
     }
-    
+
     public void callUpdateRemainingSlaDays(int userId) throws SQLException {
         LOG.debug("Calling stored procedure updateRemainingSlaDays()....");
         getCurrentSession().flush();
 
-        getCurrentSession().doWork((Connection connection) -> {
-            Statement s = connection.createStatement();
-            try {
-                s.execute("select updateRemainingSlaDays()");
-            } catch (SQLException ex) {
-                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
-                    throw ex;
+        getCurrentSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                Statement s = connection.createStatement();
+                try {
+                    s.execute("select updateRemainingSlaDays()");
+                } catch (SQLException ex) {
+                    if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                        throw ex;
+                    }
+                } finally {
+                    getCurrentSession().flush();
+                    s.close();
                 }
-            } finally {
-                getCurrentSession().flush();
-                s.close();
             }
         });
     }
@@ -260,7 +281,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         } else {
             count = new Long("0");
         }
-            
+
         return count;
     }
 
@@ -270,14 +291,14 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         criteria.setProjection(null);
         return ((Long) totalCountResult.get(0)).intValue();
     }
-    
+
     public Date getTaskMinDueDate(Criteria criteria) {
         criteria.setProjection(Projections.min("dueDate"));
         List minDueDateResult = criteria.list();
         criteria.setProjection(null);
         return ((Date) minDueDateResult.get(0));
     }
-    
+
     public void addSort(Criteria criteria, String sort, String dir) {
         if (dir.equalsIgnoreCase("desc")) {
             criteria.addOrder(Order.desc(sort).ignoreCase());
@@ -285,7 +306,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             criteria.addOrder(Order.asc(sort).ignoreCase());
         }
     }
-    
+
     @Override
     public Object get(final Class c, final int id) {
 
@@ -302,7 +323,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     @Override
     public void saveFlushCommit(final Object object) {
         HibernateTemplate t = getHibernateTemplate();
-        
+
         t.setFlushMode(HibernateTemplate.FLUSH_COMMIT);
         t.saveOrUpdate(object);
     }
@@ -325,16 +346,16 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     public Session getCurrentSession() {
         return getSessionFactory().getCurrentSession();
     }
-    
+
     @Override
-    public void saveCollections(List<? extends Object> objects){
+    public void saveCollections(List<? extends Object> objects) {
         for (Iterator it = objects.iterator(); it.hasNext();) {
             getHibernateTemplate().saveOrUpdate(it.next());
         }
     }
-    
+
     @Override
-    public void deleteAll(List<? extends Entity> objects){
+    public void deleteAll(List<? extends Entity> objects) {
         getHibernateTemplate().deleteAll(objects);
     }
 }

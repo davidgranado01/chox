@@ -9,6 +9,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
+import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class InvoiceRejectionContest extends BaseActivity {
@@ -66,9 +67,9 @@ public class InvoiceRejectionContest extends BaseActivity {
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
         LOG.debug("Claim saved and transaction logged.");
 //        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
+        }
         if (getChainActivity() != null) {
             LOG.debug("Processing chained activity...");
             getChainActivity().setWorkflowContext(getProcessContext());

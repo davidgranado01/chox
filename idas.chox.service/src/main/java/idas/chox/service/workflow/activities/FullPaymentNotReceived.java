@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
+import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class FullPaymentNotReceived extends BaseActivity {
@@ -50,9 +51,9 @@ public class FullPaymentNotReceived extends BaseActivity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
 //        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
+        }
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

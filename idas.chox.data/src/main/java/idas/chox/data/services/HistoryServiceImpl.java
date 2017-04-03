@@ -80,12 +80,12 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         if (claim.getId() != null) {
             List<History> histories = getHistoryByClaim(claim.getId(), true, false);
 
-            histories.stream().filter((history) -> (!history.getIsOld())).map((history) -> {
-                history.setIsOld(true);
-                return history;
-            }).forEach((history) -> {
-                saveFlushCommit(history);
-            });
+            for (History history : histories) {
+                if (!history.getIsOld()) {
+                    history.setIsOld(true);
+                    saveFlushCommit(history);
+                }
+            }
         }
     }
 }

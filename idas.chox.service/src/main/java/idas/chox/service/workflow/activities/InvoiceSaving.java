@@ -11,6 +11,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.InvoiceSavingRule;
 import idas.chox.core.services.InvoiceSavingRuleService;
+import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
@@ -111,9 +112,9 @@ public class InvoiceSaving extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) throws Exception {
 //        activityEventGenerator.generate(claim, this);
-        activityEventGenerator.getEvents(claim, this).stream().forEach((event) -> {
+        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
+        }
         // If this is a manual claim, we now need to change the chained activity
         // [for non-manual claims, chained activity is acceptInvoice]
         if (ClaimType.isInsurerUpload(claim.getClaimType())) {
