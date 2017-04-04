@@ -99,7 +99,7 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
         // Now need to check BRE Band to verify claim matching active for claim type and customer vehicle type, returning first matched claim
         for (Claim c : matchedClaims) {
             c.setBreBand(breBandService.getBreBand(c.getChorganisation().getId(), c.getInsurer().getId()));
-            if (c.getBreBand().isClaimMatchingEnable()) {
+            if (c.getBreBand() != null && c.getBreBand().isClaimMatchingEnable() && c.getCustomer().getVehicleClass() != null) {
                 ClaimMatchingBand claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(
                     c.getBreBand().getId(),
                     c.getClaimType(), c.getCustomer().getVehicleClass().getName());
