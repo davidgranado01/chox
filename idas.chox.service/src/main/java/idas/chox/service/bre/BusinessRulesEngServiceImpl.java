@@ -95,7 +95,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         if (vehicleClassCeiling != null) {
             LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
         } else {
-            LOG.warn("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass().getName());
+            LOG.warn("Could not get vehicle class ceiling for claim '{}'", claim.getChoReference());
         }
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
