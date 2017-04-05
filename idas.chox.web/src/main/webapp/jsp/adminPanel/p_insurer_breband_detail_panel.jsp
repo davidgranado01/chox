@@ -578,7 +578,7 @@
             columns: [
                 {header: "Claim Type", width: 130, dataIndex: 'claimTypeName', sortable: true, resizable: true,
                     renderer:function(value, p, r){return "<b>" + value + "</b>"; }},
-                {header: "Minimu Insurer Liability %", width: 135, dataIndex: 'minimumLiability', sortable: true, resizable: true, renderer:function(value, p, r){return value.toFixed(2)}},
+                {header: "Minimum Insurer Liability %", width: 135, dataIndex: 'minimumLiability', sortable: true, resizable: true, renderer:function(value, p, r){return value.toFixed(2)}},
                 {header: "Auto Acknowledge", width: 105, dataIndex: 'autoAcknowledge', sortable: false, resizable: true},
                 {header: "Customer Vehicle Classes", width: 250, dataIndex: 'vehicleClasses', sortable: false, resizable: true},
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value, p, r){
