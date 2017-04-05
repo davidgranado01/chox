@@ -91,6 +91,42 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE claim_matching TO chox_user;
 GRANT SELECT ON TABLE claim_matching TO chox_mi;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE claim_matching_id_seq TO chox_user;
 
+create or replace function is_validTimestamp(s varchar) returns boolean as $$
+     begin
+       perform s::timestamp without time zone;
+       return true;
+     exception when others then
+       return false;
+     end;
+$$ language plpgsql;
+
+create or replace function is_validLiability(s varchar) returns boolean as $$
+     begin
+       perform s::numeric(5,2);
+       return true;
+     exception when others then
+       return false;
+     end;
+$$ language plpgsql;
+
+DROP TABLE IF EXISTS claim_matching_copy;
+CREATE TABLE claim_matching_copy (
+    id serial NOT NULL,
+    "version" integer NOT NULL default 0,
+    insurer_name character varying,
+    claim_number character varying,
+    third_party_vehicle_registration character varying,
+    incident_date character varying,
+    indemnity_stance character varying,
+    liability_stance character varying,
+    liability_insurer character varying
+)
+WITH (
+    OIDS=FALSE
+);
+CREATE INDEX claim_matching_copy_ux ON claim_matching_copy(insurer_name,claim_number);
+
+
 DROP TABLE IF EXISTS claim_matching_import;
 CREATE TABLE claim_matching_import (
     id serial NOT NULL,
