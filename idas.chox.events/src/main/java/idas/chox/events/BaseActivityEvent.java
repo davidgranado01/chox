@@ -967,14 +967,14 @@ public class BaseActivityEvent extends Entity implements Serializable {
         try {
             Invoice invoice = claim.getInvoice();
             if (invoice != null) {
-                addAttribute("invoiceHireGrossPaid", invoice.getHireGrossPaid().toPlainString());
-                addAttribute("invoiceRepairGrossPaid", invoice.getRepairGrossPaid().toPlainString());
-                addAttribute("invoiceEngineerFeeGrossPaid", invoice.getEngineerFeeGrossPaid().toPlainString());
-                addAttribute("invoiceTotalLossFeeGrossPaid", invoice.getTotalLossFeeGrossPaid().toPlainString());
-                addAttribute("invoiceStorageRecoveryGrossPaid", invoice.getStorageRecoveryGrossPaid().toPlainString());
-                addAttribute("invoiceHirePenaltyChargePaid", invoice.getHirePenaltyChargePaid().toPlainString());
-                addAttribute("invoiceRepairPenaltyChargePaid", invoice.getRepairPenaltyChargePaid().toPlainString());
-                addAttribute("invoiceFinalPayment", invoice.getFinalPayment().toPlainString());
+                addAttribute("invoiceHireGrossPaid", invoice.getHireGrossPaid() == null ? "null" : invoice.getHireGrossPaid().toPlainString());
+                addAttribute("invoiceRepairGrossPaid", invoice.getRepairGrossPaid() == null ? "null" : invoice.getRepairGrossPaid().toPlainString());
+                addAttribute("invoiceEngineerFeeGrossPaid", invoice.getEngineerFeeGrossPaid() == null ? "null" : invoice.getEngineerFeeGrossPaid().toPlainString());
+                addAttribute("invoiceTotalLossFeeGrossPaid", invoice.getTotalLossFeeGrossPaid() == null ? "null" : invoice.getTotalLossFeeGrossPaid().toPlainString());
+                addAttribute("invoiceStorageRecoveryGrossPaid", invoice.getStorageRecoveryGrossPaid() == null ? "null" : invoice.getStorageRecoveryGrossPaid().toPlainString());
+                addAttribute("invoiceHirePenaltyChargePaid", invoice.getHirePenaltyChargePaid() == null ? "null" : invoice.getHirePenaltyChargePaid().toPlainString());
+                addAttribute("invoiceRepairPenaltyChargePaid", invoice.getRepairPenaltyChargePaid() == null ? "null" : invoice.getRepairPenaltyChargePaid().toPlainString());
+                addAttribute("invoiceFinalPayment", invoice.getFinalPayment() == null ? "null" : invoice.getFinalPayment().toPlainString());
             } else {
                 addAttribute("invoiceHireGrossPaid", null);
                 addAttribute("invoiceRepairGrossPaid", null);
