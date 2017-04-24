@@ -91,6 +91,10 @@ public class ClaimMatching extends BaseActivity {
                     return;
                 }
                 claimService.setLiability(claim, liabilityStatus);
+                if (liabilityStatus == LiabilityStatus.LIABILITY_ACCEPTED || liabilityStatus == LiabilityStatus.PROCEED_WITHOUT_PREJUDICE
+                        || liabilityStatus == LiabilityStatus.LIABILITY_SPLIT) {
+                    claim.setLiabilityAgreedDate(new Date());
+                }
             } catch (IllegalArgumentException ex) {
                 LOG.error("Invalid Liability Stance provided for claim matching: " + liabilityStance, ex);
                 return;
