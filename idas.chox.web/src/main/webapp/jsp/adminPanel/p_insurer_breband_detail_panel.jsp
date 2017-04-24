@@ -922,13 +922,13 @@
         // If claim matching enabled, validate workgroup and owner drop-downs
         var formValid = true;
         if ($('form#formUpdateInsurerBreBandDetail input[name="claimMatchingEnable"]:checked').val()){
-<s:if test="workgroupsEnabled">
+<s:if test="ownershipEnabled">
             if ($("#cm_ownerComboId").val() === "--- Please Select ---") {
                 $("#CDInsurerBreBandmessageBox").append("You must supply a value for 'Default Owner for Matched Invoices'\n<br/>").show();
                 formValid = false;
             }
 </s:if>
-<s:if test="ownershipEnabled">
+<s:if test="workgroupsEnabled">
             if ($("#cm_workgroupComboId").val() === "--- Please Select ---") {
                 $("#CDInsurerBreBandmessageBox").append("You must supply a value for 'Default Workgroup for Matched Invoices'\n<br/>").show();
                 formValid = false;
