@@ -1981,6 +1981,7 @@
             var penaltyChargesToBeApplied = Ext.query('*[name$=isPenaltyChargeApplied]')[0].checked;
             var anomalies = Ext.query('*[name$=isAnomalies]')[0].checked;
             var escalatedToSupervisor = Ext.query('*[name$=escalatedToSupervisor]')[0].checked;
+            var claimMatchValue = Ext.query('*[name$=matchedClaims]')[0].checked;
             var interimPaymentMade = Ext.query('*[name$=isInterimPaymentMade]')[0].checked;
             var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
             var finalReviewValue = Ext.getCmp('finalReviewValuesSearchScreenComboId').getValue();
@@ -2023,6 +2024,7 @@
                 penaltyChargeApplied : penaltyChargesToBeApplied,
                 anomalies : anomalies, 
                 escalatedToSupervisor : escalatedToSupervisor,
+                claimMatchValue : claimMatchValue,
                 interimPaymentMade : interimPaymentMade,
                 liabilityStatuses : liabilityStatuses,
                 claimTypes : claimTypes,

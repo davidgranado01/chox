@@ -613,6 +613,14 @@ public class ClaimSearchCriteria implements Serializable {
         this.claimMatchValue = claimMatchValue;
     }
     
+    public void setClaimMatchValue(boolean claimMatchValue) {
+        if (claimMatchValue) {
+            this.claimMatchValue = 3;
+        } else {
+            this.claimMatchValue = null;
+        }
+    }
+    
     public String getFilterName() {
         return filterName;
     }
