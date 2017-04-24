@@ -252,7 +252,7 @@
                                     <label>Reserve Value (£):</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="reserveValue" id="MatchedIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
+                                    <input type="text" class="chox-ttxt" name="reserveValue" id="MatchedIndemityAmountId" value="<s:property value="indemnityAmount" />" onkeyup="extractNumber(this,2,true);"/>
                                 </td>
                                 <td></td>
                             </tr>
