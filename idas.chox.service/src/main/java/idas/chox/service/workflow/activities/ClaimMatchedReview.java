@@ -65,7 +65,7 @@ public class ClaimMatchedReview extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        if (ownershipEnabled && !Objects.equals(claim.getClaimOwner().getId(), claimOwner.getId())) {
+        if (ownershipEnabled && (claim.getClaimOwner() == null || claim.getClaimOwner().getId().intValue() != claimOwner.getId().intValue())) {
             claim.setClaimOwner(claimOwner);
             if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
                 Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
@@ -73,7 +73,7 @@ public class ClaimMatchedReview extends BaseActivity {
             }
         }
         
-        if (workgroupsEnabled && !Objects.equals(claim.getWorkgroup().getId(), workgroup.getId())) {
+        if (workgroupsEnabled && (claim.getWorkgroup() == null || claim.getWorkgroup().getId().intValue() != workgroup.getId().intValue())) {
             claim.setWorkgroup(workgroup);
             // Check STP status for new workgroup
             if (claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive() && !workgroup.isStpExcluded()
