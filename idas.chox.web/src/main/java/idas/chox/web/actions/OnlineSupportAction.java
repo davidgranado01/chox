@@ -1,15 +1,19 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.EmailHelper;
-
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.EmailHelper;
+
+
 public class OnlineSupportAction extends BaseAction {
+    static final Logger LOG = LoggerFactory.getLogger(OnlineSupportAction.class);
 
     private String iSupplierReference;
     private String iSubject;
@@ -21,19 +25,19 @@ public class OnlineSupportAction extends BaseAction {
     private static final String email_date_format = "dd MMMM yyyy";
     private static final String propertiesFile = "/application.properties";
 
-    public String getIEmail() {
+    public String getiEmail() {
         return iEmail;
     }
 
-    public void setIEmail(String iEmail) {
+    public void setiEmail(String iEmail) {
         this.iEmail = iEmail;
     }
 
-    public String getIPhone() {
+    public String getiPhone() {
         return iPhone;
     }
 
-    public void setIPhone(String iPhone) {
+    public void setiPhone(String iPhone) {
         this.iPhone = iPhone;
     }
 
@@ -46,27 +50,28 @@ public class OnlineSupportAction extends BaseAction {
         this.actionResult = actionResult;
     }
 
-    public String getIMessage() {
+    public String getiMessage() {
         return iMessage;
     }
 
-    public void setIMessage(String iMessage) {
+    public void setiMessage(String iMessage) {
         this.iMessage = iMessage;
     }
 
-    public String getISubject() {
+    public String getiSubject() {
         return iSubject;
     }
 
-    public void setISubject(String iSubject) {
+    public void setiSubject(String iSubject) {
         this.iSubject = iSubject;
     }
 
-    public String getISupplierReference() {
+
+    public String getiSupplierReference() {
         return iSupplierReference;
     }
 
-    public void setISupplierReference(String iSupplierReference) {
+    public void setiSupplierReference(String iSupplierReference) {
         this.iSupplierReference = iSupplierReference;
     }
 
@@ -90,6 +95,7 @@ public class OnlineSupportAction extends BaseAction {
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
 
         } catch (Exception ex) {
+            LOG.error("Exception thrown in online support action: {}", ex.getMessage(), ex);
             handleException(ex);
             this.getActionResponse().AddError("Please try again.");
         }
