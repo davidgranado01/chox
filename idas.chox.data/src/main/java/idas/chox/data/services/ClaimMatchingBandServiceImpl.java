@@ -45,6 +45,9 @@ public class ClaimMatchingBandServiceImpl extends SecureDataService implements C
 
     @Override
     public ClaimMatchingBand getClaimMatchingBand(int breBandId, ClaimType claimType, String vehicleClass) {
+        if (claimType == ClaimType.INSURER_CLAIM) {
+            claimType = ClaimType.INSURER_UPLOAD;
+        }
         DetachedCriteria claimMatchingBandCriteria = DetachedCriteria.forClass(ClaimMatchingBand.class);
         claimMatchingBandCriteria.add(Restrictions.eq("breBand.id", breBandId));
         claimMatchingBandCriteria.add(Restrictions.eq("claimType", claimType));
