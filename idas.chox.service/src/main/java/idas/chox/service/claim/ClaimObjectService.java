@@ -56,13 +56,7 @@ public class ClaimObjectService {
         try {
             // Create a shallow copy (see http://commons.apache.org/beanutils/api/org/apache/commons/beanutils/BeanUtilsBean.html)
             newClaim = (Claim) BeanUtils.cloneBean(claim);
-        } catch (IllegalAccessException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
-        } catch (InstantiationException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
-        } catch (InvocationTargetException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
-        } catch (NoSuchMethodException ex) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
             LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         }
 
@@ -110,6 +104,7 @@ public class ClaimObjectService {
         }
         newClaim.setInvoice(null);
         newClaim.setAttachments(null);
+        newClaim.setNotifications(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);
         newClaim.setKeoghsRequest(null);
