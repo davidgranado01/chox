@@ -139,7 +139,7 @@
     <customer-policy-usage>
         <data-description>Driver policy usage</data-description>
         <data-type></data-type>
-        <data-length>128</data-length>
+        <data-length>256</data-length>
     </customer-policy-usage>
 <!-- ### CLAIM > Mitigation Question ##################################### !-->
 

@@ -353,3 +353,8 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 -- due to the event generation mechanism
 alter table claim alter column status drop not null;
 alter table claim alter column status_modified_date drop not null;
+
+--
+-- CHOX-340: Update 'Policy Usage' character limits
+--
+ALTER TABLE customer ALTER COLUMN policy_usage TYPE character varying(256);
