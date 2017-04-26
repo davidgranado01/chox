@@ -484,7 +484,7 @@
             ]
         });
         cm_claimOwnerStore = new choxDataStore({
-            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action",
             params : {"workgroupId":workgroupId, "insurerId":'<s:property value="insurerId"/>'},
             reader : cm_claimOwnerReader
         });
