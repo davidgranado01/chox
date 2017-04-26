@@ -6,6 +6,7 @@ create or replace function contested_count_report
 returns table
 (
    "Supplier Reference" character varying(128),
+   "Insurer Name" character varying(128),
    "No. Contested to CHO" bigint,
    "No. Contested to Insurer" bigint,
    "Reason of Rejection" character varying(32),
@@ -18,7 +19,7 @@ DECLARE
 BEGIN 
 RETURN QUERY
 
-select cho_reference,
+select cho_reference, ins.name,
        (select count(*) from audit_trail a
         where a.claim_id=c.id and a.reverted=false
           and a.new_status='ContestedInvoiceReferredToCHO') as NoContestedToCHO,
@@ -71,8 +72,9 @@ select cho_reference,
            where c.id=c2.id and c2.status='ContestedInvoiceReferredToInsurer') 
        end ) as "Total time in Contested to Insurer",
        c.status as "Current Status"   
-from claim c, invoice i left outer join reason_of_rejection ror on (i.reason_of_rejection_id = ror.id)
+from claim c, insurer ins, invoice i left outer join reason_of_rejection ror on (i.reason_of_rejection_id = ror.id)
 where c.invoice_id = i.id
+  and c.insurer_id = ins.id
   and (c.chorganisation_id = choId or choId = -1)
   and (c.insurer_id = insId or insId = -1)
   and c.status in ('ContestedInvoiceReferredToCHO', 'ContestedInvoiceReferredToInsurer');

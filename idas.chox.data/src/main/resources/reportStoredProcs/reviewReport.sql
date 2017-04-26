@@ -1,7 +1,6 @@
-
--- DROP FUNCTION reviewReport(IN choId INTEGER, days INTEGER, status TEXT, dependsInvUploadDate BOOLEAN, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR);
+--DROP FUNCTION reviewReport(IN choId INTEGER, days INTEGER, status TEXT, dependsInvUploadDate BOOLEAN, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR);
 CREATE OR REPLACE FUNCTION reviewReport(IN choId INTEGER, days INTEGER, status TEXT, dependsInvUploadDate BOOLEAN, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR)
-  RETURNS TABLE("Supplier Reference" VARCHAR, "Insurer Claim Number" VARCHAR, "Insurer" VARCHAR, "Invoice Upload Date" TIMESTAMP, 
+  RETURNS TABLE("Supplier Reference" VARCHAR, "Insurer Claim Number" VARCHAR, "Insurer" VARCHAR, "Claim Type" VARCHAR, "Invoice Upload Date" TIMESTAMP, 
                 "Time Since Invoice Upload (Days)" INTEGER, "Current Status" VARCHAR, "Time In Current Status (Days)" INTEGER) AS
 $BODY$
 
@@ -23,6 +22,7 @@ SELECT
    c.cho_reference AS "Supplier Reference",
    c.claim_number AS "Insurer Claim Number",
    ins.name AS "Insurer",
+   getClaimType(c.claim_type) AS "Claim Type",
    i.created_date AS "Invoice Upload Date",
    (current_date - i.created_date::DATE) + 1 AS "Time Since Invoice Upload (Days)",
    a.new_status AS "Current Status",
@@ -53,6 +53,7 @@ SELECT
    c.cho_reference AS "Supplier Reference",
    c.claim_number AS "Insurer Claim Number",
    ins.name AS "Insurer",
+   getClaimType(c.claim_type) AS "Claim Type",
    i.created_date AS "Invoice Upload Date",
    (CURRENT_DATE - i.created_date::DATE) + 1 AS "Time Since Invoice Upload (Days)",
    a.new_status AS "Current Status",

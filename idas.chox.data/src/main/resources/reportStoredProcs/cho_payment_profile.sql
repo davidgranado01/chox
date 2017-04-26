@@ -7,6 +7,7 @@ returns table
 (
    Insurer character varying(128),
    "Supplier Reference" character varying(128),
+   "Claim Type" text,
    "Invoice Upload Month" text,
    "Insurer Claim Number" character varying(128),
    "Original Total To Pay" numeric(10,2),
@@ -26,7 +27,7 @@ startDate = dat::Date;
 endDate = dat1::Date;
 RETURN QUERY
 
-SELECT ins.name AS "Insurer",
+SELECT ins.name AS "Insurer", getClaimType(c.claim_type) AS "Claim Type",
        c.cho_reference AS "Supplier Reference",
        to_char(i.created_date, 'month') AS "Invoice Upload Month",
        c.claim_number AS "Insurer Claim Number",
