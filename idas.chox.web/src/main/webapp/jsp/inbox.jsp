@@ -62,8 +62,8 @@
         
         function setupActivityMonitor() {
             <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-                var pingServerUrl = '/prv/p/activityMonitoringAction.action';
-                var checkStatusIUrl = '/prv/p/checkViewingStatus.action';
+                var pingServerUrl = '/p/activityMonitoringAction.action';
+                var checkStatusIUrl = '/p/checkViewingStatus.action';
                 activityMonitor.setup(pingServerUrl, checkStatusIUrl,  <s:property value="activityMonitorRequestInterval"/>);
             </s:if>
         }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.json.JSONObject;
+
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.client.CookieStore;
@@ -26,14 +28,13 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import net.sf.json.JSONObject;
 
 import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
@@ -123,26 +124,26 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
-
-        List<WebUser> users;
+        List users;
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", selectedUserRole));
         criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
         criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
         criteria.add(Restrictions.eq("status", true));
         criteria.add(Restrictions.ne("id", user.getId()));
+        criteria.setProjection(Projections.rowCount());
 
         users = findByCriteria(criteria);
 
-        return users.size() > 0;
+        return ((Long) users.get(0)).intValue() > 0;
     }
 
     @Override
     public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
-        List<WebUser> users = new ArrayList<>();
-
-        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
@@ -154,22 +155,13 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("lastName"));
 
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> resultMap = criteria.list();
-
-        for (HashMap m : resultMap) {
-            users.add((WebUser) m.get("this"));
-        }
-
-        return users;
+        return findByCriteria(criteria);
     }
 
     @Override
     public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
-
-        List<WebUser> users = new ArrayList<>();
-
-        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
@@ -180,34 +172,21 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.addOrder(Order.asc("lastName"));
 
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> resultMap = criteria.list();
-
-        for (HashMap m : resultMap) {
-            users.add((WebUser) m.get("this"));
-        }
-
+        List<WebUser> users =  findByCriteria(criteria);    
         return users;
     }
 
     @Override
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
-        List<WebUser> users = new ArrayList<>();
 
-        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("lastName"));
 
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> resultMap = criteria.list();
-
-        for (HashMap m : resultMap) {
-            users.add((WebUser) m.get("this"));
-        }
-
-        return users;
+        return findByCriteria(criteria);
     }
 
     @Override
@@ -219,21 +198,25 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.add(Restrictions.eq("status", true));
         }
         if (organisationTypeId > 0) {
-            if (organisationTypeId == 2) {
-                if (organisationId > 0) {
-                    criteria.add(Restrictions.eq("insurer.id", organisationId));
-                } else {
-                    criteria.add(Restrictions.isNotNull("insurer.id"));
-                }
-            } else if (organisationTypeId == 3) {
-                if (organisationId > 0) {
-                    criteria.add(Restrictions.eq("chorganisation.id", organisationId));
-                } else {
-                    criteria.add(Restrictions.isNotNull("chorganisation.id"));
-                }
-            } else if (organisationTypeId == 1) {
-                criteria.add(Restrictions.isNull("insurer.id"));
-                criteria.add(Restrictions.isNull("chorganisation.id"));
+            switch (organisationTypeId) {
+                case 2:
+                    if (organisationId > 0) {
+                        criteria.add(Restrictions.eq("insurer.id", organisationId));
+                    } else {
+                        criteria.add(Restrictions.isNotNull("insurer.id"));
+                    }   break;
+                case 3:
+                    if (organisationId > 0) {
+                        criteria.add(Restrictions.eq("chorganisation.id", organisationId));
+                    } else {
+                        criteria.add(Restrictions.isNotNull("chorganisation.id"));
+                    }   break;
+                case 1:
+                    criteria.add(Restrictions.isNull("insurer.id"));
+                    criteria.add(Restrictions.isNull("chorganisation.id"));
+                    break;
+                default:
+                    break;
             }
 
             if (userRoleId > 0) {

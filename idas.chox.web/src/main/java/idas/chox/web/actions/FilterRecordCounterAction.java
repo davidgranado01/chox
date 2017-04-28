@@ -1,18 +1,21 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Filter;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.web.viewdata.FilterViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
-//import org.apache.commons.lang3.SerializationUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FilterRecordCounterAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
 

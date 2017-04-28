@@ -265,9 +265,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public List<Insurer> getInsurers() {
         if (insurers == null) {
             if (getIsInsurer()) {
-                return new ArrayList<>();
+                insurers = new ArrayList<>();
+            } else {
+                insurers = this.lookupService.getInsurers();
             }
-            insurers = this.lookupService.getInsurers();
         }
         return insurers;
     }

@@ -122,7 +122,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
     public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
             for (Chorganisation supplier : suppliers) {
                 luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
             }
@@ -140,7 +140,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
      public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
             for (Insurer insurer : insurers) {
                 luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
             }

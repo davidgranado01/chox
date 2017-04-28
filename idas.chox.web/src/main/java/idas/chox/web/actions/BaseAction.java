@@ -47,6 +47,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private BaseDataService baseDataService;
     private String message = null;
     private boolean showMessage = false;
+    private Boolean isCHO;
+    private Boolean isInsurer;
+    private Boolean isWorkgroupEnable;
+    private WebUser user;
 
     public Map<String, Object> getSession() {
         if (session == null) {
@@ -91,11 +95,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
             showMessage = true;
         }
     }
-    
+
     public boolean isShowMessage() {
         return showMessage;
     }
-    
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -106,11 +110,35 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public WebUser getAuthenticatedUser() {
-        return securityInfoProvider.getCurrentUser();
+        if (user == null) {
+            try {
+                if (getSession().containsKey("user")) {
+                    user = (WebUser) session.get("user");
+                } else {
+                    LOG.error("No user is session {}", getSession());
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception: {}", ex.getMessage(), ex);
+            }
+        }
+        return user;
     }
 
     public boolean getIsCHO() {
-        return securityInfoProvider.getIsCHO();
+        if (isCHO == null) {
+            try {
+                if (getSession().containsKey("isCHO")) {
+                    isCHO = (Boolean) session.get("isCHO");
+                } else {
+                    LOG.debug("No isCHO is session {}", getSession());
+                    isCHO = false;
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception: {}", ex.getMessage(), ex);
+                isCHO = false;
+            }
+        }
+        return isCHO;
     }
 
     public boolean getIsAdmin() {
@@ -137,7 +165,21 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public boolean getIsInsurer() {
-        return securityInfoProvider.getIsINS();
+        if (isInsurer == null) {
+            try {
+                if (getSession().containsKey("isInsurer")) {
+                    isInsurer = (Boolean) session.get("isInsurer");
+                    LOG.debug("Returning isInsurer={} is session {}", isInsurer, getSession());
+                } else {
+                    LOG.debug("No isInsurer is session {}", getSession());
+                    isInsurer = false;
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception: {}", ex.getMessage(), ex);
+                isInsurer = false;
+            }
+        }
+        return isInsurer;
     }
 
     public int getInvoiceLiabilityDisputeReasonId() {
@@ -145,13 +187,26 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public boolean getInsurerIsWorkgroupEnabled() {
-        if (!getIsInsurer()) {
-            LOG.debug("returning insurerIsWorkgroupEnabled: true (not insurer)");
-            return true;
-        } else {
-            LOG.debug("returning insurerIsWorkgroupEnabled: {}", getAuthenticatedUser().getInsurer().isWorkgroupEnable());
-            return getAuthenticatedUser().getInsurer().isWorkgroupEnable();
+        if (isWorkgroupEnable == null) {
+            if (!getIsInsurer()) {
+                LOG.debug("returning insurerIsWorkgroupEnabled: true (not insurer)");
+                isWorkgroupEnable = true;
+            } else {
+                try {
+                    if (getSession().containsKey("isWorkgroupEnable")) {
+                        isWorkgroupEnable = (Boolean) session.get("isWorkgroupEnable");
+                    } else {
+                        LOG.debug("No isWorkgroupEnable is session {}", getSession());
+                        isWorkgroupEnable = false;
+                    }
+                } catch (Exception ex) {
+                    LOG.error("Exception: {}", ex.getMessage(), ex);
+                    isWorkgroupEnable = false;
+                }
+            }
         }
+        LOG.debug("returning insurerIsWorkgroupEnabled: {}", isWorkgroupEnable);
+        return isWorkgroupEnable;
     }
 
     public boolean isInsurerUploadEnabled() {
@@ -229,20 +284,20 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
         return true;
     }
-    
+
     public boolean isKbbsDashboardEnabled() {
         if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isEnableKbbsDashboard();
         } else if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isEnableKbbsDashboard();
         }
-        
+
         return false;
     }
 
     public String getKbbsUsername() {
         String username = null;
-        
+
         if (getIsInsurer() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)) {
             username = "IMAN." + getAuthenticatedUser().getInsurer().getId().toString();
         } else if (getIsInsurer()) {
@@ -252,12 +307,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
         } else if (getIsCHO()) {
             username = "COPR." + getAuthenticatedUser().getChorganisation().getId().toString();
         }
-        
+
         return username;
     }
+
     public String getKbbsPassword() {
         String password = null;
-        
+
         if (getIsInsurer() && RoleHelper.isCheckSelectedRoleExist(getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)) {
             password = getAuthenticatedUser().getInsurer().getKbbsManagerPassword();
         } else if (getIsInsurer()) {
@@ -267,9 +323,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
         } else if (getIsCHO()) {
             password = getAuthenticatedUser().getChorganisation().getKbbsOperativePassword();
         }
-        
+
         return password;
     }
+
     public String getKbbsUniqueId() {
         return getAuthenticatedUser().getId().toString();
     }
@@ -478,7 +535,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         if (actionError != null && actionError.length() == 0) {
             actionError = null;
             LOG.warn("Empty error string set for ActionError - setting to null.");
-        } 
+        }
         this.actionError = actionError;
     }
 
@@ -494,7 +551,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) ? true
                 : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG));
     }
-
 
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
@@ -515,21 +571,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         getActionResponse().AddError(actionError);
     }
 
-
     protected String formErrorMessage(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
             return "Record was updated by another transaction/user, please try again.";
-        }
-        else if (ex instanceof DataIntegrityViolationException) {
+        } else if (ex instanceof DataIntegrityViolationException) {
             return "An entered value exceeds predefined limits - please correct and try again. If this problem persists, please contact CHOX Support.";
-        }
-        else if (ex instanceof AccessDeniedException) {
+        } else if (ex instanceof AccessDeniedException) {
             return "An internal access error occured - please try again. If this problem persists then please contact CHOX Support.";
-        }
-        else if (ex instanceof RuntimeException) {
+        } else if (ex instanceof RuntimeException) {
             return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
-        }
-        else if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
+        } else if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error: ", ex);
             return "";
         }
@@ -620,7 +671,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
     }
-    
+
     public void updateRedirectionParamInSession() {
         HashMap<String, String> map = new HashMap<>();
 //        map.put("redirect", true);
@@ -629,21 +680,20 @@ public class BaseAction extends ActionSupport implements SessionAware {
             synchronized (getSessionLock()) {
                 getSession().put("redirect", map);
             }
-        }
-        else if (actionError != null && !actionError.isEmpty()) {
+        } else if (actionError != null && !actionError.isEmpty()) {
             map.put("redirectErrorMsg", actionError);
             synchronized (getSessionLock()) {
                 getSession().put("redirect", map);
             }
         }
     }
-    
+
     public void removeRedirectionParamInSession() {
         synchronized (getSessionLock()) {
             getSession().remove("redirect");
         }
     }
-    
+
     public String getBrandingJsonString() {
         List<LookupItem> luItems = new ArrayList<>();
         for (Branding branding : Branding.values()) {
@@ -651,7 +701,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
-    
+
     public String getBrandingType() {
         if (getAuthenticatedUser().isAnInsurer()) {
             return getAuthenticatedUser().getInsurer().getBranding().getDescription();
@@ -661,9 +711,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return Branding.NO_BRANDING.getDescription();
         }
     }
-    
+
     public boolean isBrandingTypeClaim(Claim claim) {
-        
+
         if (getAuthenticatedUser().isCHO()) {
             if (getAuthenticatedUser().getChorganisation().getBranding() == Branding.FULL_BRANDING
                     || getAuthenticatedUser().getChorganisation().getBranding() == Branding.PARTIAL_BRANDING) {
@@ -683,5 +733,5 @@ public class BaseAction extends ActionSupport implements SessionAware {
             }
         }
         return false;
-    } 
+    }
 }

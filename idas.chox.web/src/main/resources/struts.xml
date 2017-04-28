@@ -55,6 +55,29 @@
                 </interceptor-ref>
                 <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
+            <interceptor-stack name="activityMonitoring">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="acegi"/>
+                <!-- Add interceptor to prevent caching -->
+                <interceptor-ref name="cachingHeadersInterceptor"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="choxExceptionLogger"/>
+            </interceptor-stack>
         </interceptors>
         
         <default-interceptor-ref name="authenticated" />
@@ -102,7 +125,15 @@
     </package>
     
     <package name="public-partial-package" namespace="/p" extends="home-package">
-        <default-interceptor-ref name="authenticated" />
+        <default-interceptor-ref name="activityMonitoring" />
+       <!-- Start Activity Monitor-->
+        <action name="activityMonitoringAction" class="idas.chox.web.actions.ActivityMonitoringAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="checkViewingStatus" class="idas.chox.web.actions.ActivityMonitoringAction" method="checkViewingStatus">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+       <!-- End Activity Monitor-->
     </package>
     
     
@@ -925,14 +956,6 @@
        <!-- End Comment Detail -->
        
 
-       <!-- Start Activity Monitor-->
-        <action name="activityMonitoringAction" class="idas.chox.web.actions.ActivityMonitoringAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="checkViewingStatus" class="idas.chox.web.actions.ActivityMonitoringAction" method="checkViewingStatus">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-       <!-- End Activity Monitor-->
        <!--Start Dashboard-->
         <action name="showInsurerBoardHeader" class="idas.chox.web.actions.DashboardAction" method="showInsurerBoardHeader">
             <result name="success">/jsp/dashboardPanel/insurer_board.jsp</result>
@@ -1200,6 +1223,7 @@
         </action>
         <action name="getQueues" class="idas.chox.web.actions.FilterRecordCounterAction" >
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="input">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeChoAlias" class="idas.chox.web.actions.ChoAliasAction" method="removeChoAlias">
             <result>/jsp/p_action_response_json_data.jsp</result>

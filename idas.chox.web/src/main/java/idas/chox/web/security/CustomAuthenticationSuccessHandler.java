@@ -205,6 +205,34 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
+        // Add orgId to session
+        if (user.isAnInsurer()) {
+            if (orgId < 0) {
+                orgId = user.getInsurer().getId();
+            }
+            LOG.debug("Adding insurer orgId {} to session {}", orgId, request.getSession());
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("insurerId", orgId);
+            request.getSession().setAttribute("isInsurer", Boolean.TRUE);
+            request.getSession().setAttribute("isCHO", Boolean.FALSE);
+            request.getSession().setAttribute("isWorkgroupEnable", user.getInsurer().isWorkgroupEnable());
+        } else if (user.isCHO()) {
+            if (orgId < 0) {
+                orgId = user.getChorganisation().getId();
+            }
+            LOG.debug("Adding cho orgId {} to session {}", orgId, request.getSession());
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("choId", orgId);
+            request.getSession().setAttribute("isInsurer", Boolean.FALSE);
+            request.getSession().setAttribute("isCHO", Boolean.TRUE);
+            request.getSession().setAttribute("isWorkgroupEnable", Boolean.FALSE);
+        } else {
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("isInsurer", Boolean.FALSE);
+            request.getSession().setAttribute("isCHO", Boolean.FALSE);
+            request.getSession().setAttribute("isWorkgroupEnable", Boolean.FALSE);
+        }
+        
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }

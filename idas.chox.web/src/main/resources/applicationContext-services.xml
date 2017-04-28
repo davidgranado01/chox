@@ -7,6 +7,9 @@
     <bean id="baseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="config" class="idas.chox.data.services.Config" scope="singleton">
+        <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
+    </bean>
     <bean id="claimService" class="idas.chox.data.services.ClaimServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>

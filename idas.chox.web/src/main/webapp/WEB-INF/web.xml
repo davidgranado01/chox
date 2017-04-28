@@ -29,7 +29,8 @@
         
     <filter>
         <filter-name>hibernateFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <!--filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class-->
+        <filter-class>idas.chox.web.security.OpenSessionInViewFilterWrapper</filter-class>
     </filter>
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
