@@ -272,15 +272,17 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                             if (claimMatchingViewData.getVehicleClasses().contains("SP")) {cm.setSpClass(true);}
                             if (claimMatchingViewData.getVehicleClasses().contains("B")) {cm.setbClass(true);}
                             if (claimMatchingViewData.getVehicleClasses().contains("F")) {cm.setfClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("M")) {cm.setmClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("T,")
-                                    || claimMatchingViewData.getVehicleClasses().endsWith("T")) {cm.settClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("P,")
-                                    || claimMatchingViewData.getVehicleClasses().endsWith("P")) {
+
+                            if (claimMatchingViewData.getVehicleClasses().contains(",M")
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("M")) {cm.setmClass(true);}
+                            if (claimMatchingViewData.getVehicleClasses().contains(",T")
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("T")) {cm.settClass(true);}
+                            if (claimMatchingViewData.getVehicleClasses().contains(",P")
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("P")) {
                                 cm.setpClass(true);
                             }
-                            if (claimMatchingViewData.getVehicleClasses().contains("S,")
-                                    || claimMatchingViewData.getVehicleClasses().endsWith("S")) {cm.setsClass(true);}
+                            if (claimMatchingViewData.getVehicleClasses().contains(",S")
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("S")) {cm.setsClass(true);}
                             if (claimMatchingViewData.getVehicleClasses().contains("UNATTACHED")) {cm.setuClass(true);}
                             cm.setBreBand(model);
                             model.addClaimMatchingBand(cm);
