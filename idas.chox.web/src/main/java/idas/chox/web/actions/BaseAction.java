@@ -61,7 +61,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 LOG.error("No session found.");
                 throw new RuntimeException("No session found.");
             } else {
-                LOG.warn("Session was null - retrieved from ActionContext: {}", session);
+                LOG.debug("Session was null - retrieved from ActionContext: {}", session);
             }
         }
         return session;
