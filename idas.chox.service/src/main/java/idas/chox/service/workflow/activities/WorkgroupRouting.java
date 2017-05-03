@@ -131,11 +131,12 @@ public class WorkgroupRouting extends BaseActivity {
 
     }
 
+    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        getDataService().save(claim);
+        logTransaction(claim);
         if (routed) {
-            getDataService().save(claim);
-            logTransaction(claim);
 //            activityEventGenerator.generate(claim, this);
         for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
                 ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
