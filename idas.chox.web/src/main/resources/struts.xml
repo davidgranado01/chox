@@ -47,9 +47,9 @@
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
-                <interceptor-ref name="validation">
+                <!--interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref>
+                </interceptor-ref-->
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -70,9 +70,9 @@
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
-                <interceptor-ref name="validation">
+                <!--interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref>
+                </interceptor-ref-->
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -1223,7 +1223,6 @@
         </action>
         <action name="getQueues" class="idas.chox.web.actions.FilterRecordCounterAction" >
             <result name="success">/jsp/p_jsonData.jsp</result>
-            <result name="input">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeChoAlias" class="idas.chox.web.actions.ChoAliasAction" method="removeChoAlias">
             <result>/jsp/p_action_response_json_data.jsp</result>
