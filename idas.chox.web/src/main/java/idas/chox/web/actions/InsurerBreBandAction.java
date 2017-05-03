@@ -277,12 +277,12 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                                     || claimMatchingViewData.getVehicleClasses().startsWith("M")) {cm.setmClass(true);}
                             if (claimMatchingViewData.getVehicleClasses().contains(",T")
                                     || claimMatchingViewData.getVehicleClasses().startsWith("T")) {cm.settClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains(",P")
-                                    || claimMatchingViewData.getVehicleClasses().startsWith("P")) {
+                            if (claimMatchingViewData.getVehicleClasses().contains(",P,")
+                                    || claimMatchingViewData.getVehicleClasses().endsWith(",P") || claimMatchingViewData.getVehicleClasses().equals("P")) {
                                 cm.setpClass(true);
                             }
-                            if (claimMatchingViewData.getVehicleClasses().contains(",S")
-                                    || claimMatchingViewData.getVehicleClasses().startsWith("S")) {cm.setsClass(true);}
+                            if (claimMatchingViewData.getVehicleClasses().contains(",S,")
+                                    || claimMatchingViewData.getVehicleClasses().endsWith(",S") || claimMatchingViewData.getVehicleClasses().equals("S")) {cm.setsClass(true);}
                             if (claimMatchingViewData.getVehicleClasses().contains("UNATTACHED")) {cm.setuClass(true);}
                             cm.setBreBand(model);
                             model.addClaimMatchingBand(cm);
