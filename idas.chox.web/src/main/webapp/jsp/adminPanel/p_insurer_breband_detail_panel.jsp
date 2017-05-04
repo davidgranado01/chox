@@ -258,7 +258,7 @@
                 {name:'text'},
                 {name:'value'}]
         });
-        var penaltyClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escape="false"/>');
+        var penaltyClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escapeHtml="false"/>');
         var penaltyClaimTypesStore = new Ext.data.Store({
             data : penaltyClaimTypes,
             reader : penaltyClaimTypesJsonReader
@@ -392,7 +392,7 @@
                 {name:'text'},
                 {name:'value'}]
         });
-        var claimMatchingClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escape="false"/>');
+        var claimMatchingClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escapeHtml="false"/>');
         var claimMatchingClaimTypesStore = new Ext.data.Store({
                 data : claimMatchingClaimTypes,
                 reader : claimMatchingClaimTypesJsonReader

@@ -2763,7 +2763,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getLinkedChoName() {
 
-        return claim.getChorganisation().getLinkedCho().getName();
+        return claim.getChorganisation().getLinkedCho() == null ? "" : claim.getChorganisation().getLinkedCho().getName();
 
     }
 

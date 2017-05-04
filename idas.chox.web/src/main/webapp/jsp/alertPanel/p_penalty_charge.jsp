@@ -14,7 +14,7 @@
         });
 
         var hirePenaltyPercentageStore = new Ext.data.Store({
-            data : Ext.util.JSON.decode('<s:property value="hirePenaltyPercentageJsonString" escape="false"/>'),
+            data : Ext.util.JSON.decode('<s:property value="hirePenaltyPercentageJsonString" escapeHtml="false"/>'),
             reader : hirePenaltyPercentageReader,
             listeners: {load: function() {this.insert(0, new Ext.data.Record({'value':'','text':'--- Please Select ---'}));}}
         });
@@ -66,7 +66,7 @@
         });
 
         var repairPenaltyPercentageStore = new Ext.data.Store({
-            data : Ext.util.JSON.decode('<s:property value="repairPenaltyPercentageJsonString" escape="false"/>'),
+            data : Ext.util.JSON.decode('<s:property value="repairPenaltyPercentageJsonString" escapeHtml="false"/>'),
             reader : repairPenaltyPercentageReader,
             listeners: {load: function() {this.insert(0, new Ext.data.Record({'value':'','text':'--- Please Select ---'}));}}
         });

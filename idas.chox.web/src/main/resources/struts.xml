@@ -1,4 +1,4 @@
-<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="false" />
@@ -26,9 +26,6 @@
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
-                <interceptor-ref name="passwordExpiredInterceptor"/>
-                <interceptor-ref name="contactDetailsInterceptor"/>
-                <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
                 <interceptor-ref name="alias"/>
                 <interceptor-ref name="i18n"/>
                 <interceptor-ref name="checkbox"/>
@@ -47,9 +44,9 @@
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
-                <!--interceptor-ref name="validation">
+                <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref-->
+                </interceptor-ref>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -70,9 +67,9 @@
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
-                <!--interceptor-ref name="validation">
+                <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref-->
+                </interceptor-ref>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -83,21 +80,10 @@
         <default-interceptor-ref name="authenticated" />
         
         <global-results>
-            <!--result name="invalid.token">/j_spring_security_logout</result-->
             <result name="invalid.token">/jsp/InvalidToken.jsp</result>
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
-            <result name="rsa.nocontactdetails" type="redirectAction">
-                <param name="actionName">addContactDetails</param>
-                <param name="namespace">/prv</param>
-                <param name="redirect">true</param>
-            </result>
-            <result name="password.expired" type="redirectAction">
-                <param name="actionName">openUserAccountRedirect</param>
-                <param name="namespace">/prv</param>
-                <param name="redirect">true</param>
-            </result>
         </global-results>
 
         <global-exception-mappings>
@@ -112,7 +98,7 @@
                 <param name="actionName">prv/inboxPage</param>
             </result>
         </action>
-        
+
         <action name="requestForgetPassword" class="idas.chox.web.actions.ForgetPasswordAction">
             <result name="success">/jsp/forget_password_request.jsp</result>
         </action>

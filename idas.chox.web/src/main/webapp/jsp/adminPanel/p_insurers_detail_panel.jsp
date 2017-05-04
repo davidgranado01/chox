@@ -167,7 +167,7 @@
             ]
         });
 
-        var automaticRoutingStrategies = Ext.util.JSON.decode('<s:property value="automaticRoutingStrategiesJsonString" escape="false"/>');
+        var automaticRoutingStrategies = Ext.util.JSON.decode('<s:property value="automaticRoutingStrategiesJsonString" escapeHtml="false"/>');
         automaticRoutingStore = new Ext.data.Store({
             data : automaticRoutingStrategies,
             reader : automaticRoutingReader

@@ -47,7 +47,7 @@ Ext.onReady(function() {
             blankText : 'Please Select a Reason'
         });
         
-        var acceptanceReasonsJsonString = '<s:property value="acceptanceReasonsJsonString" escape="false"/>';
+        var acceptanceReasonsJsonString = '<s:property value="acceptanceReasonsJsonString" escapeHtml="false"/>';
         if (acceptanceReasonsJsonString !== '') {
             acceptanceReasonsStore.loadData(Ext.util.JSON.decode(acceptanceReasonsJsonString));
         }
@@ -63,7 +63,7 @@ var reasonOfRejectionDescReader = new Ext.data.JsonReader({
 });
 
 var reasonOfRejectionDescStore = new Ext.data.Store({
-    data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+    data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escapeHtml="false"/>'),
     reader : reasonOfRejectionDescReader
 });
 

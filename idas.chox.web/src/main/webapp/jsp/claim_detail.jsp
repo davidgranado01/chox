@@ -53,13 +53,13 @@
         
         // mappedInsurersStore and switchClaimToMulInsForm are declared in claim_detail.js file.
         <s:if test="isInsurer != true">
-            var mappedInsurersJsonString = '<s:property value="insurersJsonString" escape="false"/>';
+            var mappedInsurersJsonString = '<s:property value="insurersJsonString" escapeHtml="false"/>';
             if (mappedInsurersJsonString !== '') {
                 mappedInsurersStore.loadData(Ext.util.JSON.decode(mappedInsurersJsonString));
             }
             switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'}]);
         </s:if>
-        var closeClaimReasonsJsonString = '<s:property value="closeClaimReasonsJsonString" escape="false"/>';
+        var closeClaimReasonsJsonString = '<s:property value="closeClaimReasonsJsonString" escapeHtml="false"/>';
         if (closeClaimReasonsJsonString !== '') {
             closeClaimReasonsStore.loadData(Ext.util.JSON.decode(closeClaimReasonsJsonString));
         }

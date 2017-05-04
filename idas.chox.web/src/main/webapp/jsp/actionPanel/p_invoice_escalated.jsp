@@ -72,7 +72,7 @@
     });
     
     var reasonOfRejectionDescStore = new Ext.data.Store({
-        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfInvoiceRejectionDesc" escape="false"/>'),
+        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfInvoiceRejectionDesc" escapeHtml="false"/>'),
         reader : reasonOfRejectionDescReader
     });
     

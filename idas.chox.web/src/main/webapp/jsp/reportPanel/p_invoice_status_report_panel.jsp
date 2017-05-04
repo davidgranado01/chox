@@ -22,7 +22,7 @@
                 ]
             });
 
-            var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+            var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escapeHtml="false"/>');
             var insurersStore = new Ext.data.Store({
                 data : myinsurers,
                 reader : insurersJsonReader
@@ -70,7 +70,7 @@
                 ]
             });
 
-            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escapeHtml="false"/>');
             var suppliersStore = new Ext.data.Store({
                 data : mysuppliers,
                 reader : suppliersJsonReader

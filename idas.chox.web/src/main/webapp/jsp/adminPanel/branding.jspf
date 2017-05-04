@@ -14,7 +14,7 @@
             ]
         });
                 
-        var brandingData = Ext.util.JSON.decode('<s:property value="brandingJsonString" escape="false"/>');
+        var brandingData = Ext.util.JSON.decode('<s:property value="brandingJsonString" escapeHtml="false"/>');
         
         var brandingStore = new Ext.data.Store({
             data : brandingData,

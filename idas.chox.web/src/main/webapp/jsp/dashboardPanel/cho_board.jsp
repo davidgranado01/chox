@@ -40,7 +40,7 @@
             });
 
             
-            var mychoinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+            var mychoinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escapeHtml="false"/>');
             var choInsurersStore = new Ext.data.Store({
                 data : mychoinsurers,
                 reader : choinsurersJsonReader

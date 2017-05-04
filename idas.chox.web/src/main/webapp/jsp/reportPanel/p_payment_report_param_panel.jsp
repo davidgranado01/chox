@@ -76,7 +76,7 @@
             ]
         });
 
-        var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+        var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escapeHtml="false"/>');
         var suppliersStore = new Ext.data.Store({
             data : mysuppliers,
             reader : suppliersJsonReader

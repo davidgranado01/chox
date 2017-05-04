@@ -561,7 +561,7 @@
                     ]
                 });
 
-                var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+                var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escapeHtml="false"/>');
                 var insurersStore = new Ext.data.Store({
                     data : myinsurers,
                     reader : insurersJsonReader
@@ -638,7 +638,7 @@
                     ]
                 });
 
-                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escapeHtml="false"/>');
                 var suppliersStore = new Ext.data.Store({
                     data : mysuppliers,
                     reader : suppliersJsonReader
@@ -984,7 +984,7 @@
                 ]
             });
 
-            var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escape="false"/>');
+            var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escapeHtml="false"/>');
             var statusesStore = new Ext.data.Store({
                 data : statuses,
                 reader : statusesJsonReader,
@@ -1066,7 +1066,7 @@
                 ]
             });
 
-            var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonStringWithNull" escape="false"/>');
+            var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonStringWithNull" escapeHtml="false"/>');
             var liabilityStatusesStore = new Ext.data.Store({
                 data : liabilityStatuses,
                 reader : liabilityStatusesJsonReader
@@ -1137,7 +1137,7 @@
                     {name:'value'}
                 ]
             });
-            var finalReviewValues = Ext.util.JSON.decode('<s:property value="finalReviewValuesJsonString" escape="false"/>');
+            var finalReviewValues = Ext.util.JSON.decode('<s:property value="finalReviewValuesJsonString" escapeHtml="false"/>');
             var finalReviewValuesStore = new Ext.data.Store({
                 data : finalReviewValues,
                 reader : finalReviewValuesJsonReader
@@ -1434,7 +1434,7 @@
                 ]
             });
 
-            var claimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+            var claimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escapeHtml="false"/>');
             var claimTypesStore = new Ext.data.Store({
                 data : claimTypes,
                 reader : claimTypesJsonReader
@@ -1679,34 +1679,6 @@
                 }
             });
            
-            var radioGroupPanel = new Ext.form.RadioGroup({
-                                    layout: 'hbox',
-                                    defaultType: 'button',
-                                    columns: 1,
-                                    width: 300,
-                                    height: 430,
-                                    autoScroll : true,
-                                    defaults: {
-                                        enableToggle: true,
-                                        toggleGroup: 'mygroup',
-                                        allowDepress: false
-                                    },
-                                    items: [
-                                        { text: 'Rejected Claims (61)', height : '30px'},
-                                        { text: 'Liability Status Update Notifications (326)', height : '30px'},
-                                        { text: 'Awaiting Litigation Outcome (21)', height : '30px'},
-                                        { text: 'Claims Awaiting Hire Monitoring Information (266)', height : '30px'},
-                                        { text: 'Awaiting Invoice Data (23)', height : '30px'},
-                                        { text: 'Incorrect Invoice Data Calculations (0)', height : '30px'},
-                                        { text: 'Contested Invoices Referred To CHO (45)', height : '30px'},
-                                        { text: 'Penalty Charges To Be Applied (130)', height : '30px'},
-                                        { text: 'Approved Invoices Awaiting Liability Resolution (79)', height : '30px'},
-                                        { text: 'Interim Payments To Be Received (15)', height : '30px'},
-                                        { text: 'Invoices With Final Review (0)', height : '30px'},
-                                        { text: 'Payments To Be Received (108)', height : '30px'}
-                                    ]
-                                });
-                                
             searchColumsPanel = new Ext.Panel({
                 layout : 'hbox',
                 width : 890,
@@ -1744,20 +1716,20 @@
                 layout : 'hbox',
                 items : [queueGrid, searchAndButtonPanel],
                 renderTo : 'searchPanel',
-                listeners:  {afterrender : loadQueueGrid}
+                listeners:  {afterrender : function() {queueDataStore.load();}}
             });
             
         });
 
-        function loadQueueGrid(/*searchScreenTrigger*/) {
-            queueDataStore.baseParams = getSearchParameters();
-            queueDataStore.load();
+//        function loadQueueGrid() {
+//            queueDataStore.baseParams = getSearchParameters();
+//            queueDataStore.load();
             /*if (searchScreenTrigger === true) {
                 queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
             } else {
                 queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
             }*/
-        }
+//        }
         
         function deSelectQueue() {
             var rowIndex = Ext.state.Manager.get("recentlyClickedQueueRowNumber");

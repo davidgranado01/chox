@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 
@@ -77,7 +77,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         boolean isCHO = false;
 
         currentAuthentication = authentication;
-        WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
+        PermissionedUser permissionedUser = (PermissionedUser) currentAuthentication.getPrincipal();
+        WebUser user = permissionedUser.getUser();
 //        MDC.put("userid", user.getDisplayName() + " " + user.getId());
 
         /*
@@ -232,14 +233,50 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             request.getSession().setAttribute("isCHO", Boolean.FALSE);
             request.getSession().setAttribute("isWorkgroupEnable", Boolean.FALSE);
         }
-        
+
+        // Check password not expired
+        int forcePasswordChangeDays = 0;
+
+        Date passwordLastModifiedDate = user.getPasswordLastModifiedDate();
+        long passwordNotChangedDays = DateHelper.getNumberOf24HourPeriodsBetween(passwordLastModifiedDate, new Date());
+
+        if (permissionedUser.getIsCHO()) {
+            forcePasswordChangeDays = user.getChorganisation().getForcePasswordChange();
+        } else if (permissionedUser.getIsINS()) {
+            forcePasswordChangeDays = user.getInsurer().getForcePasswordChange();
+        }
+        if (forcePasswordChangeDays > 0 && passwordNotChangedDays >= forcePasswordChangeDays) {
+            LOG.debug("Password is '{}' days old and password expirey is set to '{}' days - forcing password change.",
+                    passwordNotChangedDays, forcePasswordChangeDays);
+
+            user.setIsExpired(Boolean.TRUE);
+            user.setIsExpired(Boolean.TRUE); // Needed to update the permissioned user to get the expired message in the page
+
+        } else {
+            LOG.debug("No forced password change: password is '{}' days old, forced days set to '{}'", passwordNotChangedDays, forcePasswordChangeDays);
+        }
+
+        if (user.getIsExpired()) {
+            LOG.debug("User password expired");
+            getRedirectStrategy().sendRedirect(request, response, "/prv/openUserAccountRedirect.action?redirect=true");
+        }
+
+        // If RSA, check contact details
+        if (user.isAnInsurer() && user.getInsurer().getName().equals("RSA") && user.isClaimHandler()) {
+            LOG.debug("User is an RSA user");
+            if (user.getTelephone() == null || user.getTelephone().length() == 0) {
+                LOG.debug("User does not have any contact details - redirecting");
+                getRedirectStrategy().sendRedirect(request, response, "/prv/addContactDetails.action?redirect=true");
+            }
+        }
+
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
     private void checkBrowserWarning(HttpServletRequest request,
-        HttpServletResponse response,
-        String targetUrl) throws IOException {
+            HttpServletResponse response,
+            String targetUrl) throws IOException {
         LOG.trace("checking Browser warning...with targetUrl: {}", targetUrl);
         if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
             LOG.debug("Browser warning activated with targetUrl='{}'", targetUrl);

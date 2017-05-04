@@ -25,7 +25,7 @@ var reasonOfRejectionDescReader = new Ext.data.JsonReader({
 });
 
 var reasonOfRejectionDescStore = new Ext.data.Store({
-    data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+    data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escapeHtml="false"/>'),
     reader : reasonOfRejectionDescReader
 });
 

@@ -21,7 +21,7 @@
             ]
         });
 
-        var chos = Ext.util.JSON.decode('<s:property value="chosJsonString" escape="false"/>');
+        var chos = Ext.util.JSON.decode('<s:property value="chosJsonString" escapeHtml="false"/>');
         var choStore = new Ext.data.Store({
                 data : chos,
                 reader : chosJsonReader

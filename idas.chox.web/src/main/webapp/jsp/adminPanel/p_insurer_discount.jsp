@@ -67,7 +67,7 @@
             ]
         });
 
-        var insurerDiscountType = Ext.util.JSON.decode('<s:property value="insurerDiscountTypeJsonString" escape="false"/>');
+        var insurerDiscountType = Ext.util.JSON.decode('<s:property value="insurerDiscountTypeJsonString" escapeHtml="false"/>');
         var insurerDiscountTypeStore = new Ext.data.Store({
             data : insurerDiscountType,
             reader : insurerDiscountTypeJsonReader
@@ -83,7 +83,7 @@
                 {name:'value'}
             ]
         });
-        var insurerDiscountClaimType = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+        var insurerDiscountClaimType = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escapeHtml="false"/>');
         var insurerDiscountClaimTypeStore = new Ext.data.Store({
             data : insurerDiscountClaimType,
             reader : insurerDiscountClaimTypeJsonReader
@@ -99,7 +99,7 @@
             ]
         });
 
-        var insurerDiscountMysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+        var insurerDiscountMysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escapeHtml="false"/>');
         var insurerDiscountSuppliersStore = new Ext.data.Store({
             data : insurerDiscountMysuppliers,
             reader : insurerDiscountSuppliersJsonReader
