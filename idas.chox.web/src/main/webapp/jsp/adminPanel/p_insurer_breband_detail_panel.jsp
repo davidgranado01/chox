@@ -874,10 +874,12 @@
                 penaltyBandRecords[i] = item.data;
                 i++;
             });
+<s:if test="isChoxAdmin && claimMatchingEnabled">
             Ext.each(this.claimMatchingBand_gridviewStore.removedList, function(item){
                 claimMatchingRecords[i] = item.data;
                 i++;
             });
+</s:if>
             // add the updated/new records to the protocolVehicleClassCeilingRecords
             Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(), function(item){
                 protocolVehicleClassCeilingRecords[i] = item.data;
@@ -887,10 +889,12 @@
                 penaltyBandRecords[i] = item.data;
                 i++;
             });
+<s:if test="isChoxAdmin && claimMatchingEnabled">
             Ext.each(this.claimMatchingBand_gridviewStore.getModifiedRecords(), function(item){
                 claimMatchingRecords[i] = item.data;
                 i++;
             });
+</s:if>
         }
 
         //Empty the removed records list.
@@ -910,6 +914,8 @@
             var input = $("<input>").attr("name", "penaltyBandRecords").attr('type', "hidden").val(Ext.util.JSON.encode(penaltyBandRecords));
             $("form#formUpdateInsurerBreBandDetail").append($(input));
         }
+        var formValid = true;
+<s:if test="isChoxAdmin && claimMatchingEnabled">
         this.claimMatchingBand_gridviewStore.removedList = [];
         // add the claim matching records to the form dynamically. 
         if ($('input[name=claimMatchingRecords]').length > 0) { // If the input tag already exists then just add the value. 
@@ -920,7 +926,6 @@
         }
 
         // If claim matching enabled, validate workgroup and owner drop-downs
-        var formValid = true;
         if ($('form#formUpdateInsurerBreBandDetail input[name="claimMatchingEnable"]:checked').val()){
 <s:if test="ownershipEnabled">
             if ($("#cm_ownerComboId").val() === "--- Please Select ---") {
@@ -935,6 +940,7 @@
             }
 </s:if>
         }
+</s:if>
         if ($("form#formUpdateInsurerBreBandDetail").valid() && formValid) {
             choxJqueryHttpSubmit($("form#formUpdateInsurerBreBandDetail"));
         }

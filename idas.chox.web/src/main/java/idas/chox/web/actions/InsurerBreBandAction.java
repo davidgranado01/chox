@@ -186,7 +186,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (asCopy || !penaltyBandRecords.isEmpty()) {
                 updatePenaltyBands(asCopy);
             }
-            if (asCopy || !claimMatchingRecords.isEmpty()) {
+            if (asCopy || (claimMatchingRecords != null && !claimMatchingRecords.isEmpty())) {
                 updateClaimMatching(asCopy);
             }
             if (claimMatchingOwnerId > 0 && this.adminInsurerService.getWebuserById(claimMatchingOwnerId) != null) {
