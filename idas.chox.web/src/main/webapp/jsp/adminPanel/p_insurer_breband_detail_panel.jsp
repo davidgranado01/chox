@@ -859,11 +859,13 @@
                 penaltyBandRecords[i] = item.data;
                 i++;
             });
+<s:if test="isChoxAdmin && claimMatchingEnabled">
             // Add each claimMatching record to the claimMatchingRecords
             this.claimMatchingBand_gridviewStore.each(function(item){
                 claimMatchingRecords[i] = item.data;
                 i++;
             });
+</s:if>
         } else {
             // now add the removed records to the protocolVehicleClassCeilingRecords
             Ext.each(this.protocolVehicleClassCeiling_gridviewStore.removedList, function(item){
