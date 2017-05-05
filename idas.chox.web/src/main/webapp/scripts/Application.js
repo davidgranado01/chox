@@ -45,10 +45,12 @@ Ext.onReady(function() {
         
         this.on('beforeload', function(store,records,options) {
                 var temporaryParams = {};
-                if (isCsrfParamPresent()) {
+                if (isCsrfParamActive()) {
                     // http://edspencer.net/2008/08/27/how-extapply-works-and-how-to-avoid-big/
                     Ext.apply(temporaryParams, config.params, store.baseParams);
                     store.baseParams = Ext.apply(temporaryParams, csrfParam);
+                }else{
+                    store.baseParams = Ext.apply(temporaryParams, config.params, store.baseParams);
                 }
         }, this);
     };
@@ -57,7 +59,9 @@ Ext.onReady(function() {
     });
     
     choxExtJsFormPanel = function(config) {
-        var baseParams = Ext.apply({}, csrfParam, config.baseParams);
+        var baseParams;
+        if (isCsrfParamActive()) { baseParams = Ext.apply({}, csrfParam, config.baseParams);}
+        else {baseParams = Ext.apply({}, config.baseParams);}
         Ext.apply(this, config);
         choxExtJsFormPanel.superclass.constructor.call(this, {baseParams : baseParams});
     };
@@ -66,14 +70,24 @@ Ext.onReady(function() {
     });
 
     choxUpdateEl = function(config) {
-        isCsrfParamPresent();
-        return {
-            url:contextPath + config.url, 
-            method: 'POST',
-            params : Ext.apply({}, csrfParam, config.params),
-            scripts:true, 
-            text : config.text || '',
-            callback : config.callback
+        if (isCsrfParamActive()) {
+            return {
+                url:contextPath + config.url, 
+                method: 'POST',
+                params : Ext.apply({}, csrfParam, config.params),
+                scripts:true, 
+                text : config.text || '',
+                callback : config.callback
+            }
+        }else{
+            return {
+                url:contextPath + config.url, 
+                method: 'POST',
+                params : config.params,
+                scripts:true, 
+                text : config.text || '',
+                callback : config.callback
+            }
         }
     };
 
@@ -82,8 +96,11 @@ Ext.onReady(function() {
    
 });
 
+function isCsrfParamActive() {
+    return false;
+}
 function isCsrfParamPresent() {
-    return true;
+    if (!isCsrfParamActive()){return true;}
     if (!csrfParam ||!csrfParameterName || !csrfParam[csrfParameterName]) {
         Ext.MessageBox.show({
             title: 'Internal Error Occurred',
@@ -104,26 +121,8 @@ function logout() {
     var form = $('<form action="' + logoutURL + '" method="post">'+
                         '</form>');
                     $('body').append(form);
-//                    $(form).submit();
                     choxJqueryHttpSubmit($(form));
                     
-//    choxExtAjaxRequest({
-//        url: logoutURL,
-////        params: csrfParam,
-//        success: function(options, success, response) {
-//                    window.location = loginURL;
-//                 },
-//        failure: function(options, success, response) {
-//                    Ext.MessageBox.show({
-//                        title: 'Error',
-//                        msg: 'Logout Action Failed.',
-//                        width:300,
-//                        buttons: Ext.MessageBox.OK,
-//                        icon : Ext.MessageBox.ERROR
-//                    });
-//                    window.location = loginURL;
-//                 }
-//    });
 }
 
 // jquery way of submitting http form.
@@ -145,9 +144,12 @@ function loadClaimDetail(claimId) {
     if (Ext.get('claimDetailScreenDiv')) {
         Ext.get('claimDetailScreenDiv').mask("Loading Please Wait...");
     }
+    if (isCsrfParamActive()){
+        tempParams = Ext.apply(tempParams, csrfParam);
+    }
     var claimForm = new Ext.FormPanel({
         standardSubmit: true,
-        baseParams: Ext.apply(tempParams, csrfParam),
+        baseParams: tempParams,
         url: claimDetailPageUrl,
         renderTo : Ext.getBody( ),
         listeners:  {
@@ -174,9 +176,12 @@ function loadInbox(loadPreviouslyOpenedTabFromSession) {
     if (loadPreviouslyOpenedTabFromSession) {
         tempParams['showHistory'] = 1;
     } 
+    if (isCsrfParamActive()){
+        tempParams = Ext.apply(tempParams, csrfParam);
+    }
     var inboxForm = new Ext.FormPanel({
         standardSubmit: true,
-        baseParams: Ext.apply(tempParams, csrfParam),
+        baseParams: tempParams,
         url: inboxPageUrl,
         renderTo : Ext.getBody( ),
         listeners:  {
@@ -197,7 +202,12 @@ function loadInbox(loadPreviouslyOpenedTabFromSession) {
 
 function choxExtAjaxRequest(extAjaxconfig) {
     isCsrfParamPresent();
-    var params = Ext.apply({}, csrfParam, extAjaxconfig.params);
+    var params;
+    if (isCsrfParamActive()){
+        params = Ext.apply({}, csrfParam, extAjaxconfig.params);
+    }else{
+        params = Ext.apply({}, extAjaxconfig.params);
+    }
     extAjaxconfig.params = params;
     extAjaxconfig.url = contextPath + extAjaxconfig.url;
     Ext.Ajax.request(extAjaxconfig);
@@ -205,7 +215,12 @@ function choxExtAjaxRequest(extAjaxconfig) {
 
 function choxJqueryAjaxSubmit(form, config) {
     isCsrfParamPresent();
-    var params = Ext.apply({}, csrfParam, config.data);
+    var params;
+    if (isCsrfParamActive()){
+        params = Ext.apply({}, csrfParam, config.data);
+    }else{
+        params = Ext.apply({}, config.data);
+    }
     config.data = params;
     config.type = 'POST';
     form.ajaxSubmit(config);
@@ -213,7 +228,9 @@ function choxJqueryAjaxSubmit(form, config) {
 
 function choxJqueryHttpSubmit(form, callbackFunction) {
     isCsrfParamPresent();
-    var input = $("<input>").attr("type", "hidden").attr("name", csrfParameterName).val(csrfTokenValue);
-    form.append($(input));
+    if (isCsrfParamActive()){
+        var input = $("<input>").attr("type", "hidden").attr("name", csrfParameterName).val(csrfTokenValue);
+        form.append($(input));
+    }
     (callbackFunction) ? form.submit(callbackFunction) : form.submit();
 }
