@@ -10,8 +10,6 @@
     <constant name="struts.codebehind.action.defaultMethodName" value="index"/>
     <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
     <constant name="struts.action.extension" value="action" />
-<!--    <constant name="struts.multipart.parser" value="spring"/>
-    <bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest" name="spring"  class="idas.chox.web.SpringMultipartParser" scope="default"/>-->
 
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
@@ -495,14 +493,7 @@
         <action name="searchClaim" class="idas.chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/p_searchClaim.jsp</result>
         </action>
-        
-<!--        <action name="getFilterRecordCounters" class="idas.chox.web.actions.FilterRecordCounterAction">
-            <result>/jsp/p_get_filter_record_counters.jsp</result>
-        </action>-->
-<!--        <action name="getInboxTabPanel" class="idas.chox.web.actions.InboxAction" method="getInboxTabPanel">
-            <result>/jsp/p_inbox_tab_panel.jsp</result>
-        </action>-->
-        
+                
         <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction">
             <result>/jsp/p_task_panel.jsp</result>
         </action>
@@ -1008,15 +999,10 @@
        <!--End Support-->
        <!--Start User Account-->
         <action name="changePassword" class="idas.chox.web.actions.UserAccountAction" method="changePassword">
-            <!--result name="success">/jsp/p_user_change_password.jsp</result-->
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
-            <!--result name="success">/jsp/p_user_account.jsp</result-->
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="changeTelephone" class="idas.chox.web.actions.UserAccountAction" method="changeTelephone">
-            <!--result name="success">/jsp/p_action_response_json_data.jsp</result-->
-            <!--result name="success">/jsp/p_jsonData.jsp</result-->
-            <!--result name="success">/jsp/p_user_change_contact.jsp</result-->
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
@@ -1474,9 +1460,6 @@
         <action name="deleteAutomaticRoutingDetailByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="deleteAutomaticRoutingDetailByPrice">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-
-
-        
        <!-- END INSURER AUTOMATIC ROUTING  -->
 
         <action name="getClaimDetailCommentPage" class="idas.chox.web.actions.CommentAction" method="doRenderActionPage">
@@ -1495,7 +1478,6 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-        
         <action name="runFraudCheck" class="idas.chox.web.actions.ClaimActivityAction">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
