@@ -157,9 +157,12 @@
         <property name="poolName" value="hikariCP" />
         <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
         <property name="maximumPoolSize" value="${db.maxPoolSize}" />
+        <property name="autoCommit" value="true" /> 
+        <property name="idleTimeout" value="60000" /> <!-- default  600000 (10mins) -->
         <property name="maxLifetime" value="1800000" /> <!-- default 1800000 (30mins) -->
-        <property name="idleTimeout" value="600000" /> <!-- default  600000 (10mins) -->
-        <property name="leakDetectionThreshold" value="100000" /> <!-- default  0 (disabled) -->
+        <property name="connectionTimeout" value="30000" /> <!-- default  30000 (10mins) -->
+        <property name="leakDetectionThreshold" value="15000" /> <!-- default  0 (disabled) -->
+        <property name="registerMbeans" value="true" /> 
     </bean>
     
      <bean id="mainDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -178,6 +181,9 @@
         <property name="poolName" value="hikariReportCP" />
         <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
         <property name="maximumPoolSize" value="${db.maxReportPoolSize}" />
+        <property name="autoCommit" value="true" /> 
+        <property name="idleTimeout" value="60000" /> <!-- default  600000 (10mins) -->
+        <property name="maxLifetime" value="1800000" /> <!-- default 1800000 (30mins) -->
     </bean>
  
     <bean id="reportsDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -197,6 +203,7 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
                 <!--prop key="hibernate.connection.release_mode">after_statement</prop--> <!-- auto (default), after_transaction, after_statement  -->
 <!--                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>-->
                 <!-- <prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop> -->
@@ -214,6 +221,7 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
 <!--                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>-->
             </props>
         </property>
