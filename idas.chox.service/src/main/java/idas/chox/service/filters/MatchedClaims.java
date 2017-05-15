@@ -11,7 +11,7 @@ public class MatchedClaims extends BaseFilter {
     public ClaimSearchCriteria getClaimSearchCriteria(ClaimSearchCriteria claimSearchCriteria) {
 
         claimSearchCriteria.setShowOpenClaimsOnly(true);
-        claimSearchCriteria.setClaimMatchValue(3);
+        claimSearchCriteria.setClaimMatchValue(true);
         claimSearchCriteria.setManual(getIsManualFilter());
         claimSearchCriteria.setWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setOwnerShipCheck(getIsFilterOwnership());

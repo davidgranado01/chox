@@ -877,8 +877,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getClaimMatchValue() != null) {
-            criteria.add(Restrictions.eq("matchStatus", searchCriteria.getClaimMatchValue()));
+        if (searchCriteria.isClaimMatchValue()) {
+            criteria.add(Restrictions.eq("matchStatus", 3));
         }
 
         if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {

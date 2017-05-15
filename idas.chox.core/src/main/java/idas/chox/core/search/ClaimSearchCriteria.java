@@ -69,7 +69,7 @@ public class ClaimSearchCriteria implements Serializable {
     private String filterName;
     private Boolean caseWithClientsSolicitor;
     private int claimAuditValue;
-    private Integer claimMatchValue;
+    private boolean claimMatchValue;
 
     @Override
     public String toString() {
@@ -605,20 +605,12 @@ public class ClaimSearchCriteria implements Serializable {
         this.claimAuditValue = claimAuditValue;
     }
     
-    public Integer getClaimMatchValue() {
+    public boolean isClaimMatchValue() {
         return claimMatchValue;
     }
 
-    public void setClaimMatchValue(Integer claimMatchValue) {
-        this.claimMatchValue = claimMatchValue;
-    }
-    
     public void setClaimMatchValue(boolean claimMatchValue) {
-        if (claimMatchValue) {
-            this.claimMatchValue = 3;
-        } else {
-            this.claimMatchValue = null;
-        }
+        this.claimMatchValue = claimMatchValue;
     }
     
     public String getFilterName() {

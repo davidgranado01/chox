@@ -181,7 +181,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
     
     public boolean isClaimMatchActive() {
-        return this.getModel().getClaimMatchValue() == null ? false :  this.getModel().getClaimMatchValue() > 0;
+        return this.getModel().isClaimMatchValue();
     }
 
     public boolean isMatchedClaimsCheckBoxVisible() {
