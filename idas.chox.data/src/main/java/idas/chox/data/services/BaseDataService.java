@@ -16,15 +16,18 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jdbc.Work;
 import org.hibernate.transform.Transformers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
-import org.hibernate.jdbc.Work;
+import org.hibernate.FlushMode;
 
 /**
  *
@@ -262,7 +265,8 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public List findByCriteriaFlushCommit(final DetachedCriteria c) {
         HibernateTemplate t = getHibernateTemplate();
-        t.setFlushMode(HibernateTemplate.FLUSH_COMMIT);
+        t.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.COMMIT);
+//        t.setFlushMode(HibernateTemplate.FLUSH_COMMIT);
         return t.findByCriteria(c);
     }
 
@@ -323,8 +327,8 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     @Override
     public void saveFlushCommit(final Object object) {
         HibernateTemplate t = getHibernateTemplate();
-
-        t.setFlushMode(HibernateTemplate.FLUSH_COMMIT);
+        t.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.COMMIT);
+//        t.setFlushMode(HibernateTemplate.FLUSH_COMMIT);
         t.saveOrUpdate(object);
     }
 

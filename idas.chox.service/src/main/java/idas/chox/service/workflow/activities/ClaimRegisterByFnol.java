@@ -1,6 +1,6 @@
 package idas.chox.service.workflow.activities;
 
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;

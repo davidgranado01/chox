@@ -190,7 +190,7 @@
         <constructor-arg ref="hikariConfigReports" />
     </bean>
     
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="entityInterceptor">
             <ref bean="auditInterceptor"/>
         </property>
@@ -214,7 +214,7 @@
         </property>
     </bean>
     
-    <bean id="reportsSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="reportsSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
@@ -234,11 +234,11 @@
     </bean>
 
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <bean id="reportsTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="reportsTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="reportsSessionFactory"/>
     </bean>
     

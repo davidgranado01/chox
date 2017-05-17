@@ -13,7 +13,7 @@
         p:username="chox_user"
         p:password="ch0xpa33"/>
     
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
         </property>

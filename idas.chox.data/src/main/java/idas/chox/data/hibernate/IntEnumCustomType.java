@@ -7,11 +7,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
 
 /**
  *
  * @author abrar
+ * @param <E>
  */
 public class IntEnumCustomType <E extends Enum<E>> implements UserType {
     private Class<E> clazz = null;
@@ -50,9 +52,15 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
      * From the SMALLINT in the DB, get the enum.  Because there is no
      * Enum.valueOf(class,int) method, we have to iterate through the given enum.values()
      * in order to find the correct "int".
+     * @param resultSet
+     * @param names
+     * @param session
+     * @param owner
+     * @return 
+     * @throws java.sql.SQLException 
      */
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner)
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor session, Object owner)
         throws HibernateException, SQLException {
         final int val = resultSet.getShort(names[0]);
         E result = null;
@@ -63,9 +71,7 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
                         result = theEnumValues[i];
                     }
                 }
-            } catch (SecurityException e) {
-                result = null;
-            } catch (IllegalArgumentException e) {
+            } catch (SecurityException | IllegalArgumentException e) {
                 result = null;
             }
         }
@@ -75,10 +81,15 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
     /**
      * set the SMALLINT in the DB based on enum.ordinal() value, BEWARE this
      * could change.
+     * @param preparedStatement
+     * @param value
+     * @param index
+     * @param session
+     * @throws java.sql.SQLException
      */
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement,
-      Object value, int index) throws HibernateException, SQLException {
+      Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(index, Types.SMALLINT);
         } else {

@@ -3,7 +3,7 @@ package idas.chox.service.workflow.activities;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

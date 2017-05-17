@@ -16,7 +16,7 @@ import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -434,14 +434,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public String getCurrentUserDesc() {
-        WebUser user = getAuthenticatedUser();
-        String logInUserDesc = user.getFirstName() + " " + user.getLastName();
+        WebUser currentUser = getAuthenticatedUser();
+        String logInUserDesc = currentUser.getFirstName() + " " + currentUser.getLastName();
         String strOrgType = "";
 
         if (securityInfoProvider.getIsCHO()) {
-            strOrgType = user.getChorganisation().getName();
+            strOrgType = currentUser.getChorganisation().getName();
         } else if (securityInfoProvider.getIsINS()) {
-            strOrgType = user.getInsurer().getName();
+            strOrgType = currentUser.getInsurer().getName();
         }
 
         if (!strOrgType.equalsIgnoreCase("")) {

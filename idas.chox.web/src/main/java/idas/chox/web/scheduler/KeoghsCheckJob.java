@@ -10,8 +10,8 @@ import org.quartz.DisallowConcurrentExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -74,7 +74,8 @@ public class KeoghsCheckJob implements Runnable {
     }
 
     public void handleHibernateTransactionIntricacies() {
-        session = SessionFactoryUtils.getSession(sessionFactory, true);
+//        session = SessionFactoryUtils.getSession(sessionFactory, true);
+        session = sessionFactory.getCurrentSession();
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             try {
@@ -100,8 +101,9 @@ public class KeoghsCheckJob implements Runnable {
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
-        SessionFactoryUtils.closeSession(session);
-        SessionFactoryUtils.releaseSession(session, sessionFactory);
+        session.close();
+//        SessionFactoryUtils.closeSession(session);
+//        SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
 
     private void authenticateSender(String userName, String password) {

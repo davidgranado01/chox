@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

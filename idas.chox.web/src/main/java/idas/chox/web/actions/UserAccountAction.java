@@ -2,12 +2,14 @@ package idas.chox.web.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.hibernate.internal.util.StringHelper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.WebUser;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
-import org.hibernate.util.StringHelper;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class UserAccountAction extends BaseAction {
 
@@ -177,6 +179,7 @@ public class UserAccountAction extends BaseAction {
         this.newPassword = newPassword;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -185,6 +188,7 @@ public class UserAccountAction extends BaseAction {
         return StringHelper.isNotEmpty(message);
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }

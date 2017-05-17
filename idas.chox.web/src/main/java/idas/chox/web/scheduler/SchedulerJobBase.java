@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -195,7 +195,8 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     }
   
     public void handleHibernateTransactionIntricacies() {
-        session = SessionFactoryUtils.getSession(sessionFactory, true);
+//        session = SessionFactoryUtils.getSession(sessionFactory, true);
+        session = sessionFactory.getCurrentSession();
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             try {
@@ -221,8 +222,9 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
-        SessionFactoryUtils.closeSession(session);
-        SessionFactoryUtils.releaseSession(session, sessionFactory);
+        session.close();
+//        SessionFactoryUtils.closeSession(session);
+//        SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
