@@ -48,6 +48,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private String dir;
     private int totalCount;
     private boolean activeUsersOnly;
+    private boolean originalUserStatus;
 
     public String getDir() {
         return dir;
@@ -179,6 +180,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             if (objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminUserService.getUser(Integer.valueOf(objectId));
+                    originalUserStatus = model.getStatus();
                     addModelToSession(Arrays.asList(model));
                 }
             }
@@ -318,13 +320,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
             } else if (model.getStatus()){
                 // CHOX-313: if user was previously inactive, we need to clear the last login date
-                WebUser user = adminUserService.getUser(model.getId());
-                if (!user.getStatus()) {
+                if (!originalUserStatus) {
                     model.setLastLoginDate(null);
                 }
                 response = adminUserService.updateUser(model);
             } else { // user is in-active - check no open claims
-                if (claimService.isUserHasOpenClaim(model.getId(), model.getInsurer() != null ? true : false)) {
+                if (claimService.isUserHasOpenClaim(model.getId(), (model.getInsurer() != null))) {
                     response = new ActionResponse();
                     response.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
                 } else {
