@@ -145,88 +145,64 @@
         </constructor-arg>
     </bean>
     
-    <!-- HikariCP configuration for main datasource-->
-    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="url">${db.url}</prop>
-                <prop key="user">chox_user</prop>
-                <prop key="password">ch0xpa33</prop>
-            </props>
-        </property>
-        <property name="poolName" value="hikariCP" />
-        <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
-        <property name="maximumPoolSize" value="${db.maxPoolSize}" />
-        <property name="autoCommit" value="true" /> 
-        <property name="idleTimeout" value="60000" /> <!-- default  600000 (10mins) -->
-        <property name="maxLifetime" value="1800000" /> <!-- default 1800000 (30mins) -->
-        <property name="connectionTimeout" value="30000" /> <!-- default  30000 (10mins) -->
-        <property name="leakDetectionThreshold" value="15000" /> <!-- default  0 (disabled) -->
-        <property name="registerMbeans" value="true" /> 
-    </bean>
-    
-     <bean id="mainDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <constructor-arg ref="hikariConfig" />
-    </bean>
-
-    <!-- HikariCP configuration for Report/MI datasource-->
-    <bean id="hikariConfigReports" class="com.zaxxer.hikari.HikariConfig">
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="url">${db.url}</prop>
-                <prop key="user">chox_mi</prop>
-                <prop key="password">ch0xpa33</prop>
-            </props>
-        </property>
-        <property name="poolName" value="hikariReportCP" />
-        <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
-        <property name="maximumPoolSize" value="${db.maxReportPoolSize}" />
-        <property name="autoCommit" value="true" /> 
-        <property name="idleTimeout" value="60000" /> <!-- default  600000 (10mins) -->
-        <property name="maxLifetime" value="1800000" /> <!-- default 1800000 (30mins) -->
-    </bean>
- 
-    <bean id="reportsDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <constructor-arg ref="hikariConfigReports" />
-    </bean>
-    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="entityInterceptor">
             <ref bean="auditInterceptor"/>
         </property>
-        <property name="dataSource">
-            <ref bean="mainDataSource" />
-        </property>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
                 <prop key="hibernate.connection.autocommit">true</prop>
+                <prop key="hibernate.hikari.poolName">hikariCP</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
+                <prop key="hibernate.hikari.dataSource.serverName">localhost</prop>
+                <prop key="hibernate.hikari.dataSource.portNumber">5432</prop>
+                <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
+                <prop key="hibernate.hikari.dataSource.user">chox_user</prop>
+                <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
+                <prop key="hibernate.hikari.maximumPoolSize">${db.maxPoolSize}</prop>
+                <prop key="hibernate.hikari.autoCommit">true</prop>
+                <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->
+                <prop key="hibernate.hikari.maxLifetime">1800000</prop> <!-- default 1800000 (30mins) -->
+                <prop key="hibernate.hikari.connectionTimeout">30000</prop> <!-- default  30000 (10mins) -->
+                <prop key="hibernate.hikari.leakDetectionThreshold">5000</prop> <!-- default  0 (disabled) -->
+                <!--prop key="hibernate.hikari.registerMbeans">true</prop-->
                 <!--prop key="hibernate.connection.release_mode">after_statement</prop--> <!-- auto (default), after_transaction, after_statement  -->
-<!--                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>-->
-                <!-- <prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop> -->
+                <!--prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop-->
+                <!--prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop-->
             </props>
         </property>
         <property name="mappingResources">
-            <ref bean="mappingResource" /> 
+            <ref bean="mappingResource" />
         </property>
     </bean>
-    
+ 
     <bean id="reportsSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
                 <prop key="hibernate.connection.autocommit">true</prop>
-<!--                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>-->
+                <prop key="hibernate.hikari.poolName">hikariReportCP</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
+                <prop key="hibernate.hikari.dataSource.serverName">localhost</prop>
+                <prop key="hibernate.hikari.dataSource.portNumber">5432</prop>
+                <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
+                <prop key="hibernate.hikari.dataSource.user">chox_mi</prop>
+                <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
+                <prop key="hibernate.hikari.maximumPoolSize">${db.maxReportPoolSize}</prop>
+                <prop key="hibernate.hikari.autoCommit">true</prop>
+                <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->
+                <prop key="hibernate.hikari.maxLifetime">1800000</prop> <!-- default 1800000 (30mins) -->
+                <prop key="hibernate.hikari.connectionTimeout">30000</prop> <!-- default  30000 (10mins) -->
             </props>
-        </property>
-        <property name="dataSource">
-            <ref bean="reportsDataSource" />
         </property>
         <property name="mappingResources">
             <ref bean="mappingResource" />
@@ -269,13 +245,6 @@
         <!--property name="fullAuditService" ref="fullAuditService"/-->
     </bean>
 
-<!--    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-
-         one of the properties available; the maximum file size in bytes 
-        <property name="maxUploadSize" value="30000000"/>
-    </bean>-->
-
     <bean id="hpiCheck" class="idas.chox.core.hpi.Hpi" factory-method="getInstance">
         <property name="active" value="${hpi.active}"/>
         <property name="hpiUrl" value="http://xmlgate.hpi.co.uk/servlet/HpiGate1_0"/>
@@ -283,12 +252,5 @@
         <property name="passwordParam" value="EXCEL"/>
         <property name="initialsParam" value="er"/>
     </bean>
-
-<!--
-    <bean id="eventBus" class="com.google.common.eventbus.EventBus"/>
-    <bean id="eventBusPostProcessor" class="idas.chox.service.events.EventBusPostProcessor">
-        <property name="eventBus" ref="eventBus"/>
-    </bean>
--->
 
 </beans>
