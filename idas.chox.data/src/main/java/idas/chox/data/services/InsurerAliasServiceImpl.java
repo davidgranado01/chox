@@ -1,14 +1,16 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.InsurerAlias;
-import idas.chox.core.services.InsurerAliasService;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.InsurerAlias;
+import idas.chox.core.services.InsurerAliasService;
 
 public class InsurerAliasServiceImpl extends SecureDataService implements InsurerAliasService {
 
@@ -23,9 +25,9 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
 
     @Override
     public InsurerAlias getInsurerByAliasName(String aliasName) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
-        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("[^A-Za-z0-9]", "")));
+        criteria.add(Restrictions.ilike("aliasName", aliasName.replace("&amp;", "").replaceAll("[^A-Za-z0-9]", "")));
+//        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("[^A-Za-z0-9]", "")));
         InsurerAlias insurerAlias = (InsurerAlias) getByCriteria(criteria);
 
         return insurerAlias;
