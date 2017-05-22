@@ -275,7 +275,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getAllSuppliers();
+            suppliers = this.lookupService.getSuppliers(false);
         }
         return suppliers;
     }

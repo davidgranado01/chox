@@ -312,7 +312,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else if (currentUser.isAnInsurer()) {
             return getSuppliers(currentUser.getInsurer().getId(),excludeManualCHO);
         } else {
-            LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
+            LOG.debug("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
             return new ArrayList<>();
         }
     }
