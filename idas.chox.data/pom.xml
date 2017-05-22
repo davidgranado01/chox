@@ -119,7 +119,7 @@
         <!--dependency>
             <groupId>com.impossibl.pgjdbc-ng</groupId>
             <artifactId>pgjdbc-ng</artifactId>
-            <version>${postgresql-jdbc.version}</version>
+            <version>${postgresql-jdbc-ng.version}</version>
             <classifier>complete</classifier>
         </dependency-->
         <dependency>
