@@ -96,7 +96,7 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
         String insurerAliasName = XmlHelper.getNodeValue(element, "name");
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
-            claimResult.getClaim().getThirdParty().setInsurerBrand(insurerAliasName);
+            claimResult.getClaim().getThirdParty().setInsurerBrand(insurerAliasName.replaceAll("&amp;", "&"));
             InsurerAlias alias = insurerAliasService.getInsurerByAliasName(insurerAliasName);
             Insurer insurer = alias.getInsurer();
             claimResult.getClaim().getThirdParty().setInsurer(insurer);
