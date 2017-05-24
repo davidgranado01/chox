@@ -1722,15 +1722,15 @@
         });
         
 
-//        function loadQueueGrid() {
-//            queueDataStore.baseParams = getSearchParameters();
-//            queueDataStore.load();
-            /*if (searchScreenTrigger === true) {
-                queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
-            } else {
-                queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
-            }*/
-//        }
+        function loadQueueGrid() {
+            queueDataStore.baseParams = getSearchParameters();
+            queueDataStore.load();
+//            if (searchScreenTrigger === true) {
+//                queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
+//            } else {
+//                queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
+//            }
+        }
         
         function deSelectQueue() {
             var rowIndex = Ext.state.Manager.get("recentlyClickedQueueRowNumber");
