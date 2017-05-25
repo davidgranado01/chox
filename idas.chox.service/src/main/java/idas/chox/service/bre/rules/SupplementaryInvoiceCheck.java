@@ -43,7 +43,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
                 LOG.debug("Rule failed: {}", narrative);
             } else {
                 narrative = "This is a supplementary Invoice.";
-                LOG.error("Rule failed {} and could not find original Supplementary Claim for supplementary Invoice: {}", narrative,claim.getChoReference());
+                LOG.warn("Rule failed {} and could not find original Supplementary Claim for supplementary Invoice: {}", narrative,claim.getChoReference());
             }
 
         } else {

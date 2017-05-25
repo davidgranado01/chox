@@ -158,9 +158,7 @@
                 <prop key="hibernate.cache.use_query_cache">false</prop>
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariCP</prop>
-                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
-                <prop key="hibernate.hikari.dataSource.serverName">localhost</prop>
-                <prop key="hibernate.hikari.dataSource.portNumber">5432</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop>
                 <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_user</prop>
                 <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
@@ -191,9 +189,7 @@
                 <prop key="hibernate.cache.use_query_cache">false</prop>
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariReportCP</prop>
-                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
-                <prop key="hibernate.hikari.dataSource.serverName">localhost</prop>
-                <prop key="hibernate.hikari.dataSource.portNumber">5432</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop>
                 <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_mi</prop>
                 <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
