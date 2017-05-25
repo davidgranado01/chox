@@ -115,7 +115,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 if (getSession().containsKey("user")) {
                     user = (WebUser) session.get("user");
                 } else {
-                    LOG.error("No user is session {}", getSession());
+                    LOG.warn("No user is session: {}", getSession(), new Exception());
                 }
             } catch (Exception ex) {
                 LOG.error("Exception: {}", ex.getMessage(), ex);
