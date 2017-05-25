@@ -46,7 +46,7 @@
     <bean id="hikariAMQConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="dataSourceProperties">
             <props>
-                <prop key="database">${db.database}</prop>
+                <prop key="database">${db.name}</prop>
                 <prop key="user">chox_amq</prop>
                 <prop key="password">ch0xpa33</prop>
             </props>

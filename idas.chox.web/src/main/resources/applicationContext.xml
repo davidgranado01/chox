@@ -159,7 +159,7 @@
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariCP</prop>
                 <prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop>
-                <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
+                <prop key="hibernate.hikari.dataSource.database">${db.name}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_user</prop>
                 <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
                 <prop key="hibernate.hikari.maximumPoolSize">${db.maxPoolSize}</prop>
@@ -190,7 +190,7 @@
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariReportCP</prop>
                 <prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop>
-                <prop key="hibernate.hikari.dataSource.databaseName">${db.name}</prop>
+                <prop key="hibernate.hikari.dataSource.database">${db.name}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_mi</prop>
                 <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
                 <prop key="hibernate.hikari.maximumPoolSize">${db.maxReportPoolSize}</prop>
