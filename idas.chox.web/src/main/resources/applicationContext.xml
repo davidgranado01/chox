@@ -159,7 +159,7 @@
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariCP</prop>
                 <!--prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop-->
-                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSourcee</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
                 <!--prop key="hibernate.hikari.dataSource.database">${db.database}</prop-->
                 <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_user</prop>
@@ -192,7 +192,7 @@
                 <prop key="hibernate.connection.autocommit">true</prop>
                 <prop key="hibernate.hikari.poolName">hikariReportCP</prop>
                 <!--prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop-->
-                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSourcee</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
                 <!--prop key="hibernate.hikari.dataSource.database">${db.database}</prop-->
                 <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
                 <prop key="hibernate.hikari.dataSource.user">chox_mi</prop>
