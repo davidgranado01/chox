@@ -46,13 +46,15 @@
     <bean id="hikariAMQConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="dataSourceProperties">
             <props>
-                <prop key="database">${db.name}</prop>
+                <!--prop key="database">${db.database}</prop-->
+                <prop key="url">${db.url}</prop>
                 <prop key="user">chox_amq</prop>
                 <prop key="password">ch0xpa33</prop>
             </props>
         </property>
         <property name="poolName" value="hikariAMQCP" />
-        <property name="dataSourceClassName" value="com.impossibl.postgres.jdbc.PGDataSource" />
+        <!--property name="dataSourceClassName" value="com.impossibl.postgres.jdbc.PGDataSource" /-->
+        <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
         <property name="maximumPoolSize" value="${db.maxActiveMQPoolSize}" />
     </bean>
 
