@@ -14,7 +14,6 @@
     var processing = false;
     var selectedFileId;
     var selectedFileTotalClaims;
-    var intervelId;
     var totalRecordLoaded=0;
     var sm;
     var FILES_UPLOADED_TODAY_TITLE = 'Files Uploaded Today';
@@ -55,7 +54,7 @@
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                         totalRecordLoaded=0;
-                        intervelId=setInterval(loadLiveClaimData, 1500);
+                        setTimeout(loadLiveClaimData, 1000);
                         
                     }else{
                         xmlClaimsStatusData.removeAll();
@@ -121,7 +120,6 @@
                                                         buttons: Ext.MessageBox.OK,
                                                         icon : Ext.MessageBox.ERROR
                                                     });
-                                                    intervelId=window.clearInterval(intervelId);
                                                     processStatus=0;
                                                     uploadedFileGrid.getGridEl().unmask();
                                                     loadUploadedFiles();
@@ -153,7 +151,7 @@
                                         }
                                     }
                                 });
-                                intervelId=setInterval(loadLiveClaimData, 1500);
+                                setTimeout(loadLiveClaimData, 1000);
                             }else{
 
                                 if(sm.getSelected().get('valid')===false){
@@ -568,10 +566,10 @@
         if(selectedFileTotalClaims>totalRecordLoaded){
             processing = true;
             loadLiveProcessedClaimDetails(selectedFileId);
+            setTimeout(loadLiveClaimData, 1500);
         }else{
             setGridHeight(totalRecordLoaded);
             processing = false;
-            intervelId=window.clearInterval(intervelId);
             xmlClaimsStatusGrid.setTitle('All '+ totalRecordLoaded + ' Claims have been processed');
             totalRecordLoaded=0;
             processStatus=0;
