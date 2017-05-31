@@ -178,9 +178,9 @@ public class InsurerDashboardBuilder {
     private Map getQueryParameters() {
         Map queryParameters = new HashMap();
 
-        List<Integer> choIds = new ArrayList<Integer>();
-        List<Integer> workgroupIds = new ArrayList<Integer>();
-        List<Integer> claimOwnerIds = new ArrayList<Integer>();
+        List<Integer> choIds = new ArrayList<>();
+        List<Integer> workgroupIds = new ArrayList<>();
+        List<Integer> claimOwnerIds = new ArrayList<>();
 
         String choOrgIdRaw = null;
         
