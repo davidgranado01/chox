@@ -16,11 +16,13 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -171,7 +173,21 @@ public class RequestDumpFilter implements Filter {
             return this.bais.read(buf, off, len);
         }
 
-    }
+        @Override
+        public boolean isFinished() {
+            return bais.available() == 0;
+        }
+
+        @Override
+        public boolean isReady() {
+            return true;
+        }
+
+        @Override
+        public void setReadListener(ReadListener listener) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+ }
 
     public class BufferedResponseWrapper extends HttpServletResponseWrapper {
 
@@ -232,8 +248,8 @@ public class RequestDumpFilter implements Filter {
 
     public class ServletOutputStreamCopier extends ServletOutputStream {
 
-        private OutputStream outputStream;
-        private ByteArrayOutputStream copy;
+        private final OutputStream outputStream;
+        private final ByteArrayOutputStream copy;
 
         public ServletOutputStreamCopier(OutputStream outputStream) {
             this.outputStream = outputStream;
@@ -248,6 +264,16 @@ public class RequestDumpFilter implements Filter {
 
         public byte[] getCopy() {
             return copy.toByteArray();
+        }
+
+        @Override
+        public boolean isReady() {
+            return true;
+        }
+
+        @Override
+        public void setWriteListener(WriteListener listener) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }

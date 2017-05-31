@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,6 @@ import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.reports.ClaimsGridExportReport;
-import javax.servlet.http.HttpServletResponse;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -344,7 +345,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 try {
                     final XLSTransformer transformer = new XLSTransformer();
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-                    HSSFWorkbook workbook;
+                    Workbook workbook;
                     try (InputStream is = new FileInputStream(templateFilePath)) {
                         workbook = transformer.transformXLS(is, excelMap);
                     }

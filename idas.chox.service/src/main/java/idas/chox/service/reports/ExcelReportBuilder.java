@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import net.sf.jxls.exception.ParsePropertyException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import net.sf.jxls.transformer.XLSTransformer;
 
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReportBuilder implements ReportBuilder {
@@ -38,7 +41,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     }
 
     
-    public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook, boolean brandingLogo) {
+    public Workbook appendImage(Workbook resultWorkbook, boolean brandingLogo) {
 
         int col = 1, row = 0;
 
@@ -59,8 +62,8 @@ public class ExcelReportBuilder implements ReportBuilder {
 
             HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) col, row, (short) ++col, ++row);
             int index = resultWorkbook.addPicture(img_bytes.toByteArray(), HSSFWorkbook.PICTURE_TYPE_JPEG);
-            HSSFSheet sheet = resultWorkbook.getSheetAt(0);
-            HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+            Sheet sheet = resultWorkbook.getSheetAt(0);
+            Drawing patriarch = sheet.createDrawingPatriarch();
             patriarch.createPicture(anchor, index);
             anchor.setAnchorType(2);
 
@@ -81,13 +84,13 @@ public class ExcelReportBuilder implements ReportBuilder {
             if (columnsToHide != null) {
                 transformer.setColumnsToHide(columnsToHide);
             }
-            HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
+            Workbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             
             if (addLogo) {
                 resultWorkbook = appendImage(resultWorkbook, brandingLogo);
             }
             resultWorkbook.write(out);
-        } catch (Exception e) {
+        } catch (IOException | ParsePropertyException | InvalidFormatException e) {
             LOG.error("Exception creating report: " + e.getMessage(), e);
         }
         LOG.info("Report written to stream");

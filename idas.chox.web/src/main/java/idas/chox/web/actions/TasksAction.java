@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.springframework.security.access.annotation.Secured;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 
 import org.jsoup.Jsoup;
@@ -40,6 +40,8 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
+import net.sf.jxls.exception.ParsePropertyException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
  *
@@ -596,7 +598,7 @@ public class TasksAction extends BaseAction {
                         transformer.setColumnsToHide(new short[]{(short) 10});
                     }
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-                    HSSFWorkbook workbook;
+                    Workbook workbook;
                     try (InputStream is = new FileInputStream(templateFilePath)) {
                         workbook = transformer.transformXLS(is, excelMap);
                     }
@@ -606,7 +608,7 @@ public class TasksAction extends BaseAction {
                         os.flush();
                         LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
                     }
-                } catch (Exception ex) {
+                } catch (IOException | ParsePropertyException | InvalidFormatException ex) {
                     LOG.error("Exception thrown transforming report:", ex);
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                     synchronized (getSessionLock()) {

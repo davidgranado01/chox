@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -150,7 +151,7 @@ public class BillingInsurerReport implements Report {
         return new ExcelReportBuilder(){
 
             @Override
-            public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook, boolean brandingLogo) {
+            public Workbook appendImage(Workbook resultWorkbook, boolean brandingLogo) {
                 return resultWorkbook;
             }
 
