@@ -61,7 +61,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
                 if (getAuthenticatedUser() == null) {
                     LOG.warn("Error setting up filter '{}' when authenticated user is empty: ", filter.getName());
                 } else {
-                    LOG.error("Error setting up filter '{}': ", filter.getName(), ex);
+                    LOG.warn("Error setting up filter '{}' for user '{}': ", filter.getName(), getAuthenticatedUser().getDisplayName(), ex);
                 }
             }
             LOG.debug("    filter description: '{}'", filterViewData.getQueueNameWithCount());
