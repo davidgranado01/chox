@@ -162,7 +162,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return weekToDateInsurerBoardViewData;
     }
 
-    public DashBoardViewData getCData() {
+    public DashBoardViewData getCumulativeData() {
         return cumulativeInsurerBoardViewData;
     }
 
