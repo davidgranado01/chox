@@ -1,13 +1,13 @@
 <included>
     <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-springstruts-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-springstruts.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -19,7 +19,7 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error \(Test P9S7\)</Subject>
+        <Subject>CHOX Application Error \(Test\)</Subject>
         <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@valexa.com</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
@@ -37,13 +37,13 @@
     
     <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/webServices-p9s7.log</File>
+        <File>${catalina.base}/logs/webServices.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -53,13 +53,13 @@
     </appender>
     <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -70,13 +70,13 @@
     
     <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-hibernate-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -87,13 +87,13 @@
     
     <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log-p9s7.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -105,13 +105,13 @@
     
     <appender name="Q" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-quartz-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-quartz.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-quartz-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-quartz.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -122,13 +122,13 @@
     
     <appender name="MQ" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-activeMQ-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-activeMQ.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ-p9s7.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-activeMQ.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -139,13 +139,13 @@
 
     <appender name="RD" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-requestDump-p9s7.log</File>
+        <File>${catalina.base}/logs/idaschox-requestDump.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump-p9s7.log.%i.zip</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-requestDump.log.%i.zip</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
