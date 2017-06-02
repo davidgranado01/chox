@@ -10,7 +10,6 @@ import org.quartz.DisallowConcurrentExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,9 +73,14 @@ public class KeoghsCheckJob implements Runnable {
     }
 
     public void handleHibernateTransactionIntricacies() {
-//        session = SessionFactoryUtils.getSession(sessionFactory, true);
-        session = sessionFactory.getCurrentSession();
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException ex) {
+            LOG.debug("Exception thrown getting current session: {}", ex.getMessage());
+            session = sessionFactory.openSession();
+        }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             try {
                 hibernateTransaction = session.beginTransaction();
@@ -93,17 +97,14 @@ public class KeoghsCheckJob implements Runnable {
         if (hibernateTransaction != null && !hibernateTransaction.wasCommitted() && hibernateTransaction.isActive()) {
             hibernateTransaction.commit();
             LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
         } else {
-            LOG.debug("Hibernate Transaction not committed: {}", hibernateTransaction);
-            if (hibernateTransaction != null) {
-                LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
-            }
+            LOG.debug("Hibernate Transaction is null");
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
         session.close();
-//        SessionFactoryUtils.closeSession(session);
-//        SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
 
     private void authenticateSender(String userName, String password) {

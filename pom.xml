@@ -33,7 +33,7 @@
         
         <hibernate-core.version>4.3.11.Final</hibernate-core.version>
         <hibernate-ehcache.version>4.3.11.Final</hibernate-ehcache.version>
-        <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         
         <!-- For Java 7 use the following driver -->
         <postgresql-jdbc.version>9.3-1102-jdbc41</postgresql-jdbc.version>

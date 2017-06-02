@@ -227,6 +227,10 @@
         <appender-ref ref="R"/>
         <appender-ref ref="mail"/>
     </logger>
+    <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
+    <logger name="org.apache.commons.jexl2.JexlEngine" level="ERROR" additivity="false">
+        <appender-ref ref="R"/>
+    </logger>
     <root level="INFO">
         <appender-ref ref="stdout"/>
     </root>

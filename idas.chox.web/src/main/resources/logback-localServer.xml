@@ -245,32 +245,34 @@
         <appender-ref ref="RD"/>
     </logger>
     <!-- Log Hibernate SQL -->
-    <logger name="org.hibernate.stat" additivity="false" level="DEBUG">
+    <logger name="org.hibernate.stat" additivity="false" level="INFO">
         <appender-ref ref="Hibernate"/>
     </logger>
-    <logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
+    <logger name="org.hibernate.SQL" additivity="false" level="INFO">
         <appender-ref ref="HibernateSQL"/>
     </logger>
     <!-- Log Hibernate SQL Parameters -->
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE" >
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="INFO" >
         <appender-ref ref="HibernateSQL" />
     </logger>
     <!-- To also see extracted values, use the below logger on org.hibernate.type -->
-    <!--logger name="org.hibernate.type" level="ERROR" additivity="false">
+    <!--logger name="org.hibernate.type" level="DEBUG" additivity="false">
         <appender-ref ref="HibernateSQL"/>
     </logger-->
         
-    <!--logger name="org.hibernate" level="ERROR" additivity="false">
+    <!--logger name="org.hibernate" level="DEBUG" additivity="false">
         <appender-ref ref="HibernateSQL"/>
     </logger-->
+
+    <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
+    <logger name="org.apache.commons.jexl2.JexlEngine" level="ERROR" additivity="false">
+        <appender-ref ref="R"/>
+    </logger>
 
     <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
         <appender-ref ref="Hikari"/>
     </logger>
 
-    <logger name="idas.chox.web.scheduler.SchedulerJobBase" additivity="false" level="DEBUG" >
-        <appender-ref ref="R" />
-    </logger>
     <root level="INFO">
         <appender-ref ref="R"/>
     </root>

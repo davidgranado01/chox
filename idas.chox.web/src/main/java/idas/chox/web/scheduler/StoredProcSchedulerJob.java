@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.quartz.JobExecutionException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,7 +12,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -77,11 +77,22 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     }
 
     public void handleHibernateTransactionIntricacies() {
-//        session = SessionFactoryUtils.getSession(sessionFactory, true);
-        session = sessionFactory.getCurrentSession();
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException ex) {
+            LOG.debug("Exception thrown getting current session: {}", ex.getMessage());
+            session = sessionFactory.openSession();
+        }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-            hibernateTransaction = session.beginTransaction();
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
         }
     }
 
@@ -89,12 +100,14 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
         if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted()) {
             hibernateTransaction.commit();
             LOG.debug("Transaction committed.");
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
+        } else {
+            LOG.debug("Hibernate Transaction is null");
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
         session.close();
-//        SessionFactoryUtils.closeSession(session);
-//        SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
     
     public void setSessionFactory(SessionFactory sessionFactory) {
