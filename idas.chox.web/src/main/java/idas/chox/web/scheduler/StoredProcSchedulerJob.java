@@ -11,8 +11,8 @@ import org.hibernate.Transaction;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import idas.chox.data.services.BaseDataService;
@@ -77,7 +77,8 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     }
 
     public void handleHibernateTransactionIntricacies() {
-        session = SessionFactoryUtils.getSession(sessionFactory, true);
+//        session = SessionFactoryUtils.getSession(sessionFactory, true);
+        session = sessionFactory.getCurrentSession();
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             hibernateTransaction = session.beginTransaction();
@@ -91,8 +92,9 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
         }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
-        SessionFactoryUtils.closeSession(session);
-        SessionFactoryUtils.releaseSession(session, sessionFactory);
+        session.close();
+//        SessionFactoryUtils.closeSession(session);
+//        SessionFactoryUtils.releaseSession(session, sessionFactory);
     }
     
     public void setSessionFactory(SessionFactory sessionFactory) {

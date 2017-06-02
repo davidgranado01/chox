@@ -13,7 +13,7 @@
         p:username="sa"
         p:password=""/>
         
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
         </property>
@@ -158,7 +158,7 @@
     </bean>
     <bean id="securityInfoProvider" class="idas.chox.test.FakeSecurityInfoProvider" scope="prototype"/>
     <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>

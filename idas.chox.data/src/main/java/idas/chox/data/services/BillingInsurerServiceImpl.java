@@ -23,7 +23,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate4.HibernateCallback;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Billing;
@@ -431,8 +431,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         return (Set<BillingInsurerDetail>) getHibernateTemplate().execute(new HibernateCallback() {
 
             @Override
-            public Object doInHibernate(Session session) throws HibernateException,
-                    SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 LOG.debug("get schedule list");
                 BillingInsurer schedule = (BillingInsurer) session.get(BillingInsurer.class, id);
                 return schedule.getBillingDetails();

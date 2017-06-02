@@ -20,7 +20,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate4.HibernateCallback;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BillingCho;
@@ -415,7 +415,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
      
         }
         throw new Exception("Cannot find trigger date for claim '" + claim.getChoReference() + "' [id=" + claim.getId() + "] for status '" 
-                + triggerStatus + "{' between " + from.toString() + " and " + to.toString() + ".");
+                + triggerStatus + "{' between " + (from == null ? "(null)" : from.toString()) + " and " + (to == null ? "(null)" : to.toString() + "."));
     }
 
     /* (non-Javadoc)
@@ -426,8 +426,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
         return (Set<BillingChoDetail>) getHibernateTemplate().execute(new HibernateCallback() {
 
             @Override
-            public Object doInHibernate(Session session) throws HibernateException,
-                    SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 LOG.debug("get schedule list");
                 BillingCho schedule = (BillingCho) session.get(BillingCho.class, id);
                 //log.debug("size in dao"+schedule.getBillingChoDetails().size());
