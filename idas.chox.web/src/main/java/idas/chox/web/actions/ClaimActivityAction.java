@@ -182,7 +182,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 this.getActionResponse().AssignMessageResult(getMessage());
                 setJsonData("{\"success\":\"True\",\"message\":\"" + getMessage() + "\"}");
             } else {
-                setJsonData("{\"success\":\"True\"\"}");
+                setJsonData("{\"success\":\"True\"}");
             }
             removeRedirectionParamInSession();
 //            updateRedirectionParamInSession();
