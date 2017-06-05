@@ -202,7 +202,7 @@ public class WebUser extends Entity implements Serializable {
     }
 
     public Set<Integer> getWorkgroupIds() {
-        Set<Integer> ids = new HashSet<Integer>();
+        Set<Integer> ids = new HashSet<>();
         Iterator itr = workgroups.iterator();
 
         while (itr.hasNext()) {

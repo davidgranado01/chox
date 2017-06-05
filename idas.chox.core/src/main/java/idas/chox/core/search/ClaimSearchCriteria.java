@@ -634,7 +634,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().isEmpty() ? "" : returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
 
     
@@ -651,7 +651,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
 
     /*
@@ -667,7 +667,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
 
     /*
@@ -683,7 +683,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
     
     /*
@@ -699,7 +699,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
     
      /*
@@ -715,7 +715,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
     
     /*
@@ -731,7 +731,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
     
     /*
@@ -747,7 +747,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
     
     public String getApprovedInvoiceOwnershipSearchParamAsString() {
@@ -759,7 +759,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
         
     /*
@@ -775,7 +775,7 @@ public class ClaimSearchCriteria implements Serializable {
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return null;
+        return "";
     }
 
 }
