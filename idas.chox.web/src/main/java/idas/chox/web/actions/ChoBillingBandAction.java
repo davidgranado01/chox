@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.opensymphony.xwork2.Action.SUCCESS;
-
-import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -97,7 +97,14 @@ public class ChoBillingBandAction  extends BaseAction {
         for (Chorganisation cho : chos) {
             luItems.add(new LookupItem(cho.getId().toString(), cho.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Mapped CHO luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
     
 
@@ -126,8 +133,14 @@ public class ChoBillingBandAction  extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(jsonData);
-        return "{totalCount:" + this.jsonData.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(jsonData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting jsonData to json string.");
+        }
+        return "{totalCount:" + this.jsonData.size() + ",results:" + jsonString + "}";
     }
     
     @Secured ({"ROLE_CHOX_ADMIN"})

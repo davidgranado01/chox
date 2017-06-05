@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.services.ChorganisationAliasService;
@@ -144,8 +145,14 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.credithireorganisation);
-        return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(credithireorganisation);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting credithireorganisation to json string.");
+        }
+        return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jsonString + "}";
     }
 
     public String getObjectId() {

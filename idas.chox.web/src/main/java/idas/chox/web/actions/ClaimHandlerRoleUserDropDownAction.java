@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
@@ -60,14 +61,13 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jsonArray;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         try {
-            jsonArray = JSONArray.fromObject(claimhandlers);
-        } catch (Exception ex) {
-//            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
-            return null;
+            jsonString = mapper.writeValueAsString(claimhandlers);
+        } catch (JsonProcessingException ex) {
         }
-        return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
+        return "{totalCount:" + claimhandlers.size() + ",results:" + jsonString + "}";
     }
 
     @Override

@@ -13,8 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.access.annotation.Secured;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.sf.jxls.exception.ParsePropertyException;
+import net.sf.jxls.transformer.XLSTransformer;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 
@@ -24,8 +29,8 @@ import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONArray;
-import net.sf.jxls.transformer.XLSTransformer;
+import org.springframework.security.access.annotation.Secured;
+
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
@@ -40,8 +45,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
-import net.sf.jxls.exception.ParsePropertyException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
  *
@@ -54,7 +57,8 @@ public class TasksAction extends BaseAction {
     private TaskService taskService;
     private ClaimService claimService;
     private List<Task> tasks;
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
     private boolean hideCompleted;
     private boolean showAssignedTasksOnly;
     private int selectedTaskId;
@@ -182,7 +186,7 @@ public class TasksAction extends BaseAction {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:").append(jObject.toString()).append("}").toString();
+            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:").append(jObject).append("}").toString();
             return jsonString;
         }
         return "";
@@ -212,7 +216,15 @@ public class TasksAction extends BaseAction {
         }
 
         LOG.debug("total task size is {}", totalCount);
-        this.jObject = JSONArray.fromObject(viewData);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(viewData);
+            jObjectSize = viewData.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewData for sorted tasks to json string.");
+            jObject = null;
+        }
         return SUCCESS;
     }
 
@@ -256,7 +268,14 @@ public class TasksAction extends BaseAction {
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
-        this.jObject = JSONArray.fromObject(viewData);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(viewData);
+            jObjectSize = viewData.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewData for sorted visible tasks to json string.");
+        }
         return SUCCESS;
     }
 
@@ -284,7 +303,14 @@ public class TasksAction extends BaseAction {
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
-        this.jObject = JSONArray.fromObject(viewData);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(viewData);
+            jObjectSize = viewData.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewData for tasksByClaim to json string.");
+        }
         return SUCCESS;
     }
 
@@ -317,7 +343,14 @@ public class TasksAction extends BaseAction {
                 
         }
 
-        this.jObject = JSONArray.fromObject(viewData);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(viewData);
+            jObjectSize = viewData.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewData for visible tasksByClaim to json string.");
+        }
         return SUCCESS;
     }
 

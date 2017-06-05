@@ -1,15 +1,19 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.IdLookupItem;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.UserService;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
 
 /**
  *
@@ -47,26 +51,26 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
 
     public String getJsonData() {
 
-        JSONArray jsonArray;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         try {
-            jsonArray = JSONArray.fromObject(claimhandlers);
-        } catch (Exception ex) {
-            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
-            return null;
+            jsonString = mapper.writeValueAsString(claimhandlers);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimhandlers to json string.");
         }
-        LOG.trace("Returning json data: {}", jsonArray.toString());
-        return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
+        LOG.trace("Returning json data: {}", jsonString);
+        return "{totalCount:" + claimhandlers.size() + ",results:" + jsonString + "}";
     }
 
     @Override
     public String execute() throws Exception {
         LOG.debug("Executing in action {}", this);
-        claimhandlers = new ArrayList<IdLookupItem>();
+        claimhandlers = new ArrayList<>();
         
         if (getIsCHO()) {
             LOG.debug("CHO - adding chorg id '{}'", getAuthenticatedUser().getChorganisation().getId());
             if (supplierId == null) {
-                supplierId = new HashSet<Integer>();
+                supplierId = new HashSet<>();
             } else {
                 supplierId.clear();
             }
@@ -74,11 +78,11 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
         }
 
         if (supplierId != null) {
-            List<WebUser> users = new ArrayList<WebUser>();
+            List<WebUser> users = new ArrayList<>();
             for (Integer suppId : supplierId) {
                 users.addAll(userService.getOprUsersByChorganisation(suppId));
             }
-            List items = new ArrayList<IdLookupItem>();
+            List items = new ArrayList<>();
 
             for (WebUser user : users) {
                 items.add(new IdLookupItem(user.getId(), user.getDisplayName()));

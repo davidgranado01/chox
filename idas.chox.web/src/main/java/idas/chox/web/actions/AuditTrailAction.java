@@ -3,10 +3,11 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.services.AuditTrailService;
@@ -25,8 +26,14 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
     }
 
     public String getJsonArrayData() {
-        JSONArray jObject = JSONArray.fromObject(this.auditTrail);
-        return "{totalCount:" + this.auditTrail.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(auditTrail);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting auditTrail to json string.");
+        }
+        return "{totalCount:" + this.auditTrail.size() + ",results:" + jsonString + "}";
     }
 
     public List<AuditTrailViewData> getAuditTrail() {
@@ -49,7 +56,7 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
             auditTrailData = this.service.getFullAuditTrailByClaim(claimId, true);
         }
         
-        auditTrail = new ArrayList<AuditTrailViewData>();
+        auditTrail = new ArrayList<>();
         
         for (AuditTrail h : auditTrailData) {
             auditTrail.add(new AuditTrailViewData(h));

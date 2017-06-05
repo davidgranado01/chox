@@ -466,10 +466,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 }
 
             } else {
-                LOG.warn("Invalid rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", hireState);
+                LOG.warn("Invalid status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", claim.getStatus());
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.");
+                claimResult.getMessage().add("For 'Off Hired' invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' or 'AwaitingInvoiceData' status.");
                 claim.setChoReference(choReferenceNumber);
 
             }
@@ -478,10 +478,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
             /*
              *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
              */
-            LOG.warn("Invalid new claim rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", hireState);
+//            LOG.warn("Invalid new claim rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", claim.getStatus());
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For 'Off Hired' claims/invoices to be uploaded the claims must already exists in the system.");
+            claimResult.getMessage().add("For 'Off Hired' invoices to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 

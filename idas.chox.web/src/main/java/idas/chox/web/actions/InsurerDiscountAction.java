@@ -7,17 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
-
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import idas.chox.core.model.*;
 import idas.chox.core.services.InsurerDiscountService;
@@ -99,13 +99,26 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Suppliers list to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getClaimTypesJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
-        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
-        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(claimTypesList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting ClaimTypes list to json string.");
+        }
+        return "{totalCount:" + claimTypesList.size() + ", results:" + jsonString + "}";
     }
 
     public String getInsurerDiscountTypeJsonString() {
@@ -113,7 +126,14 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
             luItems.add(new LookupItem(insurerDiscountType.toString(), Integer.toString(insurerDiscountType.getInsurerDiscountTypeValue())));
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting InsurerDiscountType list to json string.");
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + jsonString + "}";
     }
     
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
@@ -147,9 +167,15 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
                 result.put("errors",error);
             }
         }
-        JSONObject jsonObject = JSONObject.fromObject(result);
-        setJsonData(jsonObject.toString());
-        LOG.debug("Returning json string: '{}'", jsonObject.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerDiscountService to json string.");
+        }
+        setJsonData(jsonString);
+        LOG.debug("Returning json string: '{}'", jsonString);
         return SUCCESS;
     }
 
@@ -168,7 +194,14 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
             viewList.add(dvd);
         }
 
-        setJsonData("{totalCount:" + viewList.size() + ", results:" + JSONArray.fromObject(viewList).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(viewList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting InsurerDiscountViewData list to json string.");
+        }
+        setJsonData("{totalCount:" + viewList.size() + ", results:" + jsonString + "}");
         return SUCCESS;
     }
 
@@ -182,17 +215,20 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
                 }
                 checkVersion(Arrays.asList(model));
                 Map hm = insurerDiscountService.deleteInsurerDiscount(model);
-                JSONObject jsonObject = JSONObject.fromObject(hm);
-                setJsonData(jsonObject.toString());
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = null;
+                try {
+                    jsonString = mapper.writeValueAsString(hm);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting InsurerDiscount map to json string.");
+                }
+                setJsonData(jsonString);
                 LOG.debug("Back from deleteInsurerDiscount");
             }
 
         } catch (Exception ex) {
-            Map hm = new HashMap();
             LOG.error("Exception in deleteInsurerDiscount: ", ex);
-            hm.put("success", Boolean.FALSE);
-            JSONObject jsonObject = JSONObject.fromObject(hm);
-            setJsonData(jsonObject.toString());
+            setJsonData("{\"success\":\"False\"}");
         }
         return SUCCESS;
     }

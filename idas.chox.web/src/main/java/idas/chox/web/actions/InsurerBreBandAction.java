@@ -6,12 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
@@ -459,14 +459,25 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     
     public String getClaimTypesJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
-        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
-        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(claimTypesList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimTypesList to json string.");
+        }
+        return "{totalCount:" + claimTypesList.size() + ", results:" + jsonString + "}";
     }
     
     public String getClaimTypesForInsurerJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(adminInsurerService.getInsurer(insurerId));
-        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
-        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(claimTypesList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimTypesList to json string.");
+        }
+        return "{totalCount:" + claimTypesList.size() + ", results:" + jsonString + "}";
     }
 }
-

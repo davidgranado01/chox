@@ -3,10 +3,11 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +32,12 @@ public class BreBandProtocolVehicleClassCeilingAction extends BaseAction impleme
     private double repairNetCeiling = 0.00;
     private String objectId;
     private ProtocolVehicleClassCeiling model;
-    private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
+    private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<>();
     private AdminInsurerService adminInsurerService;
     private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
 
     public boolean getIsNew() {
-
-        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
-            return true;
-        }
-        return false;
+        return objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0;
     }
 
     @Override
@@ -63,8 +60,14 @@ public class BreBandProtocolVehicleClassCeilingAction extends BaseAction impleme
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.vehicleClassCeilingViewData);
-        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(vehicleClassCeilingViewData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting vehicleClassCeilingViewData to json string.");
+        }
+        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">

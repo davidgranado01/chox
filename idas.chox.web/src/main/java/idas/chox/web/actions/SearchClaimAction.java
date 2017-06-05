@@ -3,10 +3,10 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.hibernate.internal.util.StringHelper;
@@ -60,14 +60,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public List<LookupItem> getClaimStatusesAsLookupItem() {
         if (claimStatusesLookupItem == null) {
             claimStatusesLookupItem = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
-                                    getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
-                                    getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(),
-                                    isInsurerUploadEnabled(), getIsSubscriberEnabled());
+                    getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
+                    getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(),
+                    isInsurerUploadEnabled(), getIsSubscriberEnabled());
         }
         return claimStatusesLookupItem;
     }
-    
- 
+
     public List<LookupItem> getClaimTypesAsLookupItem() {
         if (claimTypesLookupItem == null) {
             claimTypesLookupItem = this.lookupService.getClaimTypes(getAuthenticatedUser());
@@ -75,48 +74,77 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return claimTypesLookupItem;
     }
 
-    
     public List<LookupItem> getLiabilityStatusesAsLookupItem() {
         return getLiabilityStatusesAsLookupItem(false);
     }
-    
+
     public List<LookupItem> getLiabilityStatusesAsLookupItem(boolean withNull) {
         if (liabilityStatusesLookupItem == null) {
             liabilityStatusesLookupItem = this.lookupService.getLiabilityStatuses(withNull);
         }
         return liabilityStatusesLookupItem;
     }
-    
+
     public List<LookupItem> getFinalReviewValuesAsLookupItem() {
         if (finalReviewValuesLookupItem == null) {
             finalReviewValuesLookupItem = this.lookupService.getFinalReviewValues();
         }
         return finalReviewValuesLookupItem;
     }
-    
+
     public String getFinalReviewValuesJsonString() {
-        String finalReviewValuesJson = JSONArray.fromObject(getFinalReviewValuesAsLookupItem()).toString();
-        return "{totalCount:" + finalReviewValuesLookupItem.size() + ", results:" + finalReviewValuesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(getFinalReviewValuesAsLookupItem());
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting finalReviewValuesLookupItem to json string.");
+        }
+        return "{totalCount:" + finalReviewValuesLookupItem.size() + ", results:" + jsonString + "}";
     }
-    
+
     public String getStatusesJsonString() {
-        String statusesJson = JSONArray.fromObject(getClaimStatusesAsLookupItem()).toString();
-        return "{totalCount:" + claimStatusesLookupItem.size() + ", results:" + statusesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(getClaimStatusesAsLookupItem());
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimStatusesLookupItem to json string.");
+        }
+        return "{totalCount:" + claimStatusesLookupItem.size() + ", results:" + jsonString + "}";
     }
 
     public String getClaimTypesJsonString() {
-        String claimTypesJson = JSONArray.fromObject(getClaimTypesAsLookupItem()).toString();
-        return "{totalCount:" + claimTypesLookupItem.size() + ", results:" + claimTypesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(getClaimTypesAsLookupItem());
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting ClaimTypesAsLookupItem to json string.");
+        }
+        return "{totalCount:" + claimTypesLookupItem.size() + ", results:" + jsonString + "}";
     }
 
     public String getLiabilityStatusesJsonString() {
-        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem(false)).toString();
-        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + liabilityStatusesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(getLiabilityStatusesAsLookupItem(false));
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting LiabilityStatusesAsLookupItem to json string.");
+        }
+        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + jsonString + "}";
     }
 
     public String getLiabilityStatusesJsonStringWithNull() {
-        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem(true)).toString();
-        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + liabilityStatusesJson + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(getLiabilityStatusesAsLookupItem(true));
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting LiabilityStatusesAsLookupItem to json string.");
+        }
+        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + jsonString + "}";
     }
 
     public String getInsurersJsonString() {
@@ -124,7 +152,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Insurers luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getSuppliersJsonString() {
@@ -132,7 +167,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting supplier luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public boolean isAnomaliesCheckBoxVisible() {
@@ -149,7 +191,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isPaymentDisputeCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -164,7 +206,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isEscalatedToSupervisorCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -179,7 +221,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isClaimMatchActive() {
         return this.getModel().isClaimMatchValue();
     }
@@ -198,7 +240,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isLiabilityStatusUpdateNotificationCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -213,7 +255,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isCaseWithClientsSolicitorCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -227,7 +269,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isPenaltyChargesToBeAppliedCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -246,7 +288,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public boolean isInterimPaymentMadeCheckBoxVisible() {
         boolean isVisible = false;
         try {
@@ -261,7 +303,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return isVisible;
     }
-    
+
     public List<Insurer> getInsurers() {
         if (insurers == null) {
             if (getIsInsurer()) {
@@ -300,8 +342,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 viewData.add(new ClaimGridViewData(c, getAuthenticatedUser()));
             }
 
-            JSONArray jsonArray = JSONArray.fromObject(viewData);
-            return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(viewData);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting viewData to json string.");
+            }
+            return "{totalCount:" + this.getTotalCount() + ",results:" + jsonString + "}";
 
         } catch (Exception ex) {
             LOG.error("Exception converting results to view data: {}", ex.getMessage(), ex);
@@ -322,11 +370,11 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         if (canLoadData) {
             LOG.debug("In doSearchClaim().");
-            
+
             if (claimSearchCriteria.getSort() == null || claimSearchCriteria.getSort().isEmpty()) {
                 claimSearchCriteria.setSort("created");
             }
-            
+
             if (claimSearchCriteria.getDir() == null || claimSearchCriteria.getDir().isEmpty()) {
                 claimSearchCriteria.setDir("desc");
             }
@@ -341,7 +389,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 results = new ArrayList<>();
                 return SUCCESS;
             }
-            
+
             if (claimSearchCriteria.getFilterName() != null && !StringHelper.isEmpty(claimSearchCriteria.getFilterName())) {
                 Filter filter = filterService.getFilter(claimSearchCriteria.getFilterName());
                 filter.getClaimSearchCriteria(claimSearchCriteria);
@@ -350,7 +398,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             synchronized (getSessionLock()) {
                 getSession().put("searchCriteria", claimSearchCriteria);
             }
-           
+
             LOG.debug("Calling search claim service");
             if (claimSearchCriteria == null) {
                 LOG.debug("Claim search criteria is null.");
@@ -375,12 +423,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     private void mergeClaimSearchCriteria(ClaimSearchCriteria c) {
 
-        if(c != null){
+        if (c != null) {
             Integer start = claimSearchCriteria.getStart();
             Integer limit = claimSearchCriteria.getLimit();
             String sort = claimSearchCriteria.getSort();
             String dir = claimSearchCriteria.getDir();
-    
+
             c.setStart(start);
             c.setLimit(limit);
             c.setSort(sort);
@@ -401,10 +449,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     @Override
     public void prepare() throws Exception {
 
-        if (claimSearchCriteria == null) { 
+        if (claimSearchCriteria == null) {
             if (loadSearchPanelSelectionFromSession && getSession() != null && getSession().containsKey("searchCriteria")) {
                 claimSearchCriteria = (ClaimSearchCriteria) getSession().get("searchCriteria");
-            } else { 
+            } else {
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
@@ -414,7 +462,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public String getActionResult() {
         return actionResult;
     }
-    
+
     private List<Filter> getAvailableFilters() {
         if (filters == null) {
             filters = filterService.getAvailableFilters(this.getAuthenticatedUser());
@@ -425,5 +473,5 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
     }
-    
+
 }

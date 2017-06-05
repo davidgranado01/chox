@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.Chorganisation;
@@ -45,9 +46,15 @@ public class UserRoleAction extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.userroles);
-        LOG.debug("Returning user roles: {}", jObject.toString());
-        return "{totalCount:" + this.userroles.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(userroles);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimhandlers to json string.");
+        }
+        LOG.debug("Returning user roles: {}", jsonString);
+        return "{totalCount:" + this.userroles.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">

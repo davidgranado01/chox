@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
@@ -411,11 +412,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     paramMap.put("Password", password);
                     extraDataMap.put("UniqueId", user.getId());
                     paramMap.put("ExtraData", extraDataMap);
-                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
-                    StringEntity requestEntity = new StringEntity(jsonObject.toString());
-
+                    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                    String jsonString = ow.writeValueAsString(paramMap);
+                    StringEntity requestEntity = new StringEntity(jsonString);
                     requestEntity.setContentType("application/json");
-                    LOG.debug("Setting HTTP POST entity to '{}'", jsonObject.toString());
+                    LOG.debug("Setting HTTP POST entity to '{}'", jsonString);
                     httppost.setEntity(requestEntity);
                     httppost.addHeader("Origin", "https://www.idaschox.com");
 
@@ -436,9 +437,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                         int statusCode = kbbsResponse.getStatusLine().getStatusCode();
                         if (statusCode == HttpStatus.SC_OK) {
                             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                            String content = responseHandler.handleResponse(kbbsResponse);
-                            JSONObject json = JSONObject.fromObject(content);
-                            String authenticationToken = json.getString("AuthenticationToken");
+//                            String content = responseHandler.handleResponse(kbbsResponse);
+//                            JSONObject json = JSONObject.fromObject(content);
+//                            String authenticationToken = json.getString("AuthenticationToken");
+                            String authenticationToken = kbbsResponse.getHeaders("AuthenticationToken")[0].getValue();
+//                            String authenticationToken = json.getString("AuthenticationToken");
                             LOG.debug("----------------------------------------");
                             LOG.debug("KBBS AuthenticationToken for user '{}': {}", user.getFullName(), authenticationToken);
                             LOG.debug("----------------------------------------");
@@ -459,11 +462,13 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     HttpPost httppost = new HttpPost(KBBS_INVALIDATE_URL);
                     Map paramMap = new HashMap();
                     paramMap.put("AuthenticationToken", token);
-                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
-                    StringEntity requestEntity = new StringEntity(jsonObject.toString());
+//                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
+                    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                    String jsonString = ow.writeValueAsString(paramMap);
+                    StringEntity requestEntity = new StringEntity(jsonString);
 
                     requestEntity.setContentType("application/json");
-                    LOG.debug("Setting HTTP POST entity to '{}'", jsonObject.toString());
+                    LOG.debug("Setting HTTP POST entity to '{}'", jsonString);
                     httppost.setEntity(requestEntity);
                     httppost.addHeader("Origin", "https://www.idaschox.com");
 
@@ -483,8 +488,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                         if (statusCode == HttpStatus.SC_OK) {
                             ResponseHandler<String> responseHandler = new BasicResponseHandler();
                             String content = responseHandler.handleResponse(kbbsResponse);
-                            JSONObject json = JSONObject.fromObject(content);
-                            String result = json.toString();
+//                            JSONObject json = JSONObject.fromObject(content);
+                            String result = ow.writeValueAsString(content);
                             LOG.debug("KBBS Invalidate Token Result: {}", result);
                             return result;
                         }

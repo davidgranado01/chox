@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,10 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.services.VehicleClassCeilingService;
@@ -31,16 +30,12 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
     private double repairNetCeiling = 0.00;
     private String objectId;
     private VehicleClassCeiling model;
-    private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
+    private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<>();
     private AdminInsurerService adminInsurerService;
     private VehicleClassCeilingService vehicleClassCeilingService;
 
     public boolean getIsNew() {
-
-        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
-            return true;
-        }
-        return false;
+        return objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0;
     }
 
     @Override
@@ -63,8 +58,14 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.vehicleClassCeilingViewData);
-        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(vehicleClassCeilingViewData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting vehicleClassCeilingViewData to json string.");
+        }
+        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -199,8 +200,7 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
         LOG.debug("Checking removal for insurerID={}, vehicleClassCeilingId={}", insId, vehicleClassCeilingId);
         List<VehicleClassCeiling> ceilingList = adminInsurerService.getVehicleClassCeilingByInsurer(insId);
 
-        for (Iterator<VehicleClassCeiling> i = ceilingList.iterator(); i.hasNext(); ) {
-            VehicleClassCeiling vcc = i.next();
+        for (VehicleClassCeiling vcc : ceilingList) {
             if (vcc.getId() == vehicleClassCeilingId)
                 return true;
             LOG.debug("No match with {}", vcc.getId());

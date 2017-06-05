@@ -1,19 +1,22 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.model.AutomaticRoutingPrice;
-import idas.chox.service.admin.AdminInsurerService;
-import idas.chox.core.model.IdLookupItem;
-import idas.chox.web.viewdata.InsurerAutomaticRoutingByPriceViewData;
-import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+
+import idas.chox.core.model.AutomaticRoutingPrice;
+import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.InsurerAutomaticRoutingByPriceViewData;
+import idas.chox.service.ActionResponse;
 
 /**
  *
@@ -28,7 +31,7 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     private int automaticRoutingId = -1;
     private int workgroupId = -1;
     private AdminInsurerService adminInsurerService;
-    private List<InsurerAutomaticRoutingByPriceViewData> insurerAutomaticRoutingsByPrice = new ArrayList<InsurerAutomaticRoutingByPriceViewData>();
+    private List<InsurerAutomaticRoutingByPriceViewData> insurerAutomaticRoutingsByPrice = new ArrayList<>();
 
     /**
      * @return the model
@@ -47,8 +50,14 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
 
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerAutomaticRoutingsByPrice);
-        return "{totalCount:" + this.insurerAutomaticRoutingsByPrice.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(insurerAutomaticRoutingsByPrice);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerAutomaticRoutingsByPrice to json string.");
+        }
+        return "{totalCount:" + this.insurerAutomaticRoutingsByPrice.size() + ",results:" + jsonString + "}";
     }
 
 
@@ -81,7 +90,7 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
             throw new AccessDeniedException("Illegal access detected.");
         }
 
-        List items = new ArrayList<IdLookupItem>();
+        List items = new ArrayList<>();
         try {
             items = adminInsurerService.getAvailableWorkgroups(this.insurerId, true);
         } catch (Exception ex) {

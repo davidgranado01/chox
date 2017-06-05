@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts2.ServletActionContext;
@@ -515,8 +516,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public String getActionResponseString() {
-        JSONObject jsonObject = JSONObject.fromObject(getActionResponse());
-        return jsonObject.toString();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String actionResponseString = null;
+        try {
+            actionResponseString = ow.writeValueAsString(getActionResponse());
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting actionResponse '{}' to String: {}", getActionResponse(), ex.getMessage(), ex);
+        }
+        return actionResponseString;
     }
 
     public String getActionResult() {
@@ -699,7 +706,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         for (Branding branding : Branding.values()) {
             luItems.add(new LookupItem(branding.getDescription(), branding.getbrandingValue().toString()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String luItemsString = null;
+        try {
+            luItemsString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting branding lut to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + luItemsString + "}");
     }
 
     public String getBrandingType() {

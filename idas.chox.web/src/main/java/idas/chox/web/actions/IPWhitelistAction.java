@@ -9,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import idas.chox.core.model.IPWhitelist;
 import idas.chox.core.services.ChorganisationService;
@@ -129,10 +129,10 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
     public String getIPWhitelists() {
 
         try {
-            ipWhitelistViewData = new ArrayList<IPWhitelistViewData>();
+            ipWhitelistViewData = new ArrayList<>();
 
             if (orgId > 0) {
-                List<IPWhitelist> ipWhitelists = new ArrayList<IPWhitelist>();
+                List<IPWhitelist> ipWhitelists = new ArrayList<>();
                 if (orgType == 2) { // insurer
                     ipWhitelists = ipWhitelistService.getIPWhitelistsByOrgId(orgId, false, true);
                 } else if (orgType == 3) { // cho
@@ -141,14 +141,21 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
                 for (IPWhitelist iPWhitelist : ipWhitelists) {
                     ipWhitelistViewData.add(new IPWhitelistViewData(iPWhitelist));
                 }
-                setJsonData("{totalCount:" + this.ipWhitelistViewData.size() + ",results:" + JSONArray.fromObject(ipWhitelistViewData).toString() + "}");
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = null;
+                try {
+                    jsonString = mapper.writeValueAsString(ipWhitelistViewData);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting IPWhitelist to json string.");
+                }
+//                setJsonData("{totalCount:" + this.ipWhitelistViewData.size() + ",results:" + JSONArray.fromObject(ipWhitelistViewData).toString() + "}");
+                setJsonData("{\"totalCount\":\"" + this.ipWhitelistViewData.size() + "\",\"results\":\"" + jsonString + "\"}");
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown when getting whitelist", ex);
             result.put("success", Boolean.FALSE);
             result.put("error", "Unexpected error occurred, Please contact Chox support.");
-            JSONObject jsonObject = JSONObject.fromObject(result);
-            setJsonData(jsonObject.toString());
+            setJsonData("{\"success\":\"False\",\"error\":\"Unexpected error occurred, Please contact Chox support.\"}");
         }
         return SUCCESS;
     }
@@ -171,8 +178,14 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
             result.put("success", Boolean.FALSE);
             result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
-        JSONObject jsonObject = JSONObject.fromObject(result);
-        setJsonData(jsonObject.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting IPWhitelist list to json string.");
+        }
+        setJsonData(jsonString);
         return SUCCESS;
     }
 
@@ -194,8 +207,14 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
             result.put("success", Boolean.FALSE);
             result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
-        JSONObject jsonObject = JSONObject.fromObject(result);
-        setJsonData(jsonObject.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting IPWhitelist list to json string.");
+        }
+        setJsonData(jsonString);
         return SUCCESS;
     }
 
@@ -213,15 +232,19 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
             result.put("success", Boolean.FALSE);
             result.put("error", "Unexpected error occurred, Please contact Chox support.");
         }
-        JSONObject jsonObject = JSONObject.fromObject(result);
-        setJsonData(jsonObject.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting IPWhitelist list to json string.");
+        }
+        setJsonData(jsonString);
         return SUCCESS;
     }
     
     private boolean isNewModelValide() {
-        if (model.getIpAddress() != null && !"".equals(model.getIpAddress().trim()) 
-                && model.getDescription() != null && !"".equals(model.getDescription().trim()))
-            return true;
-        return false;
+        return model.getIpAddress() != null && !"".equals(model.getIpAddress().trim()) 
+                && model.getDescription() != null && !"".equals(model.getDescription().trim());
     }
 }

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.jsoup.Jsoup;
@@ -28,9 +31,6 @@ import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.enums.AuditReviewClaimType;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
@@ -93,7 +93,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ApplicationAccessibility applicationAccessibility;
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
-    private JSONArray jObject;
+    private String jObjectString;
+    private int jObjectStringSize;
     private List vehicleClasses;
     private List<ReasonOfRejection> reasonOfClaimRejections;
     private List<ReasonOfRejection> reasonOfClaimRejectionsRestricted;
@@ -2480,7 +2481,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return reasons;
     }
 
-    public JSONArray getJsonReasonOfClaimRejectionDesc() {
+    public String getJsonReasonOfClaimRejectionDesc() {
         if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
@@ -2488,7 +2489,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (ReasonOfRejection ror : reasonOfClaimRejections) {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
-        return JSONArray.fromObject(rorItems);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(rorItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting ReasonOfClaimRejection list to json string.");
+        }
+        return jsonString;
     }
 
     public List<ReasonOfRejection> getReasonOfInvoiceRejections() {
@@ -2498,7 +2506,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return reasonOfInvoiceRejections;
     }
 
-    public JSONArray getJsonReasonOfInvoiceRejectionDesc() {
+    public String getJsonReasonOfInvoiceRejectionDesc() {
         if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
@@ -2506,7 +2514,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
-        return JSONArray.fromObject(rorItems);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(rorItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting ReasonOfInvoiceRejection list to json string.");
+        }
+        return jsonString;
     }
 
     public String getHireMonitoringEcds() {
@@ -2519,16 +2534,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             viewDatas.add(new HireMonitoringEcdViewData(h, seq));
             seq++;
         }
-
-        jObject = JSONArray.fromObject(viewDatas);
+        jObjectStringSize = viewDatas.size();
+//        jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObjectString = mapper.writeValueAsString(viewDatas);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting HireMonitoringEcds list to json string.");
+        }
 
         return SUCCESS;
     }
 
     public String getJsonArrayData() {
 
-        if (jObject != null) {
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+        if (jObjectString != null) {
+            return "{totalCount:" + jObjectStringSize + ",results:" + jObjectString + "}";
         }
         return "";
 
@@ -2861,7 +2882,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (Insurer insurer : mappedInsurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Insurers list to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getCloseClaimReasonsJsonString() {
@@ -2869,7 +2897,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (ReasonOfRejection reason : closeClaimReasons) {
             luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting CloseClaimReasons list to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getAcceptanceReasonsJsonString() {
@@ -2877,7 +2912,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (ReasonOfRejection reason : acceptanceReasons) {
             luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting AcceptanceReasons list to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getRepairPenaltyPercentageJsonString() {
@@ -2926,7 +2968,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.error("No BRE Penalty Band defined for claim '{}' with claim type '{}' and hire start '{}'", new Object[]{claim.getChoReference(), claim.getClaimType(), hireStart});
             luItems = new ArrayList<>(0);
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting RepairPenaltyPercentage list to json string.");
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + jsonString + "}";
     }
 
     public String getHirePenaltyPercentageJsonString() {
@@ -2975,7 +3024,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.error("No BRE Penalty Band defined for claim '{}' with claim type '{}' and hire start '{}'", new Object[]{claim.getChoReference(), claim.getClaimType(), hireStart});
             luItems = new ArrayList<>(0);
         }
-        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting HirePenaltyPercentage list to json string.");
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + jsonString + "}";
     }
 
     public int getNextPenaltyWindow() {
@@ -3085,18 +3141,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyAmount() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("repairPenaltyAmount", claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage));
-        setJsonData(jsonObject.toString());
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("success", Boolean.TRUE);
+//        jsonObject.put("repairPenaltyAmount", claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage));
+//        setJsonData(jsonObject.toString());
+        setJsonData("{\"success\":\"True\",\"repairPenaltyAmount\":\"" + claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage) + "\"}");
         return SUCCESS;
     }
 
     public String getHirePenaltyAmount() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("hirePenaltyAmount", claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage));
-        setJsonData(jsonObject.toString());
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("success", Boolean.TRUE);
+//        jsonObject.put("hirePenaltyAmount", claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage));
+//        setJsonData(jsonObject.toString());
+        setJsonData("{\"success\":\"True\",\"hirePenaltyAmount\":\"" + claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage) + "\"}");
         return SUCCESS;
     }
 
@@ -3330,7 +3388,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getJsonBreRuleFailures() {
         List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
-        this.jObject = JSONArray.fromObject(breRules);
+//        this.jObject = JSONArray.fromObject(breRules);
+        jObjectStringSize = breRules.size();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObjectString = mapper.writeValueAsString(breRules);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting HireMonitoringEcds list to json string.");
+        }
 
         return SUCCESS;
     }

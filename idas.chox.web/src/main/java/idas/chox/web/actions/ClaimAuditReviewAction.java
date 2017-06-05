@@ -1,13 +1,16 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.enums.AuditReviewClaimType;
 import idas.chox.core.model.LookupItem;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
 
 public class ClaimAuditReviewAction extends BaseAction {
 
@@ -28,8 +31,14 @@ public class ClaimAuditReviewAction extends BaseAction {
         for (AuditReviewClaimType auditReviewClaimType : AuditReviewClaimType.values()) {
             luItems.add(new LookupItem(auditReviewClaimType.getValue().toString(), auditReviewClaimType.getDescription()));
         }
-        JSONArray jsonArray = JSONArray.fromObject(luItems);
-        setJsonData("{totalCount:" + AuditReviewClaimType.values().length + ",results:" + jsonArray.toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerAutomaticRoutingsByPrice to json string.");
+        }
+        setJsonData("{totalCount:" + AuditReviewClaimType.values().length + ",results:" + jsonString + "}");
         return SUCCESS;
     }
 

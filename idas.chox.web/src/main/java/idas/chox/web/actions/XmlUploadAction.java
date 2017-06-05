@@ -11,14 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.sf.jxls.exception.ParsePropertyException;
+import net.sf.jxls.transformer.XLSTransformer;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
-import net.sf.json.JSONArray;
-import net.sf.jxls.transformer.XLSTransformer;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
@@ -42,7 +47,7 @@ public class XmlUploadAction extends BaseAction {
     private ChorganisationService chorganisationService;
     private BordereauService bordereauService;
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
-    private JSONArray jObject;
+    private String jObject;
     private boolean uploadFlag;
     private File uploadedFile;
     private String uploadedFileFileName;
@@ -178,7 +183,7 @@ public class XmlUploadAction extends BaseAction {
     
     public String getJsonArrayData() {
         if (jObject != null) {
-            return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + totalCount + ",results:" + jObject + "}";
         }
         return "";
     }
@@ -250,7 +255,13 @@ public class XmlUploadAction extends BaseAction {
         for (BordereauWithoutFile bordereau : uploadedFileList) {
             viewDatas.add(new BordereauViewData(bordereau));
         }
-        this.jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObject = mapper.writeValueAsString(viewDatas);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting UploadedFiles to json string.");
+            jObject = null;
+        }
         totalCount = searchResult.getTotalCount();
         return SUCCESS;
     }
@@ -311,8 +322,14 @@ public class XmlUploadAction extends BaseAction {
                     for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
                         claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
                     }
-                    this.jObject = JSONArray.fromObject(claimsDetailsViewData);
-                    totalCount = this.jObject.size();
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        jObject = mapper.writeValueAsString(claimsDetailsViewData);
+                    } catch (JsonProcessingException ex) {
+                        LOG.error("Error converting claimsDetailsViewData to json string.");
+                        jObject = null;
+                    }
+                    totalCount = this.claimsDetailsViewData.size();
                     return SUCCESS;
             } else {
                 LOG.error("User trying to access bordereau of different org : file name='{}', user name='{}', user org='{}', bordereau org='{}'",
@@ -388,7 +405,7 @@ public class XmlUploadAction extends BaseAction {
                 setErrorMessage("No record have been selected.");
                 return ERROR;
             }
-        } catch (Exception ex) {
+        } catch (IOException | ParsePropertyException | InvalidFormatException ex) {
             LOG.error("Error Generating Report : ", ex);
             setErrorMessage("Error Generating Report. Please report to chox support.");
             return ERROR;

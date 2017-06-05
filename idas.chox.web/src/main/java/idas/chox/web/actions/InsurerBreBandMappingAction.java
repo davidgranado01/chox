@@ -3,13 +3,14 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
@@ -40,8 +41,14 @@ public class InsurerBreBandMappingAction extends BaseAction {
     }
 
     public void setJsonData(Object object, Integer recordSize) {
-        JSONArray jObject = JSONArray.fromObject(object);
-        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting object to json string.");
+        }
+        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">

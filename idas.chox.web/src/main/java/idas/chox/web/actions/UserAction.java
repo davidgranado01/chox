@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
-
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.WebUser;
@@ -163,8 +163,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.users);
-        return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(users);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting users to json string.");
+        }
+        return "{totalCount:" + totalCount + ",results:" + jsonString + "}";
     }
 
     public int getCurrentUserOrganisationId() {

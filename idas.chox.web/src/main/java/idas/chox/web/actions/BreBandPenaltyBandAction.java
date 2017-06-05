@@ -3,15 +3,15 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.annotation.Secured;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-import net.sf.json.JSONArray;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.web.viewdata.BrePenaltyBandViewData;
 import idas.chox.core.model.BrePenaltyBand;
@@ -53,8 +53,14 @@ public class BreBandPenaltyBandAction extends BaseAction implements ModelDriven<
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.brePenaltyBandViewData);
-        return "{totalCount:" + this.brePenaltyBandViewData.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(brePenaltyBandViewData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting brePenaltyBandViewData to json string.");
+        }
+        return "{totalCount:" + this.brePenaltyBandViewData.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">

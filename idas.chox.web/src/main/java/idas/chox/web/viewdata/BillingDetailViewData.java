@@ -40,18 +40,8 @@ public class BillingDetailViewData {
         this.receivedDate = record.getReceivedDate()== null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
         this.triggerDate = record.getTriggerDate()== null ? "":DateHelper.getEXTDateTimeFormat().format(record.getTriggerDate());
         this.triggerPoint = record.getTriggerPoint();
-        this.comment = record.getComment();
+        this.comment = record.getComment() == null || record.getComment().equals("null") ? "" : record.getComment();
         this.reconciled = record.isReconciled();
-    }
-    // Check and remove if not used
-    public static List<BillingDetailViewData> fromJSONString(String jsonStr){
-    	JSONArray json = JSONArray.fromObject( jsonStr );
-    	List<BillingDetailViewData> list = new ArrayList();
-    	for (Iterator iterator = json.iterator(); iterator.hasNext();) {
-			JSONObject object = (JSONObject) iterator.next();
-			list.add( fromJSONObject(object) );
-		}
-    	return list;
     }
 
     public static List<Map> mapListFromJsonString(String json) throws ParseException{
@@ -66,7 +56,7 @@ public class BillingDetailViewData {
     }
 
 
-    public static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
+    private static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
     	Map map = new HashMap();
         map.put("reconciled", object.getBoolean("reconciled"));
     	map.put("billingDetailId",object.getInt("billingDetailId"));    	
@@ -80,7 +70,11 @@ public class BillingDetailViewData {
             try {
                 map.put("receivedDate", DateHelper.getDBDateTimeFormat().parse(object.getString("receivedDate").replace('T', ' ')));
             } catch (ParseException p) {
-                map.put("receivedDate", DateHelper.getLocalDateTimeFormat().parse(object.getString("receivedDate")));
+                try {
+                    map.put("receivedDate", DateHelper.getLocalDateTimeFormat().parse(object.getString("receivedDate")));
+                } catch (ParseException pe) {
+                    map.put("receivedDate", DateHelper.getEXTDateTimeFormat().parse(object.getString("receivedDate")));
+                }
             }
         }
     	return map;

@@ -3,17 +3,17 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
-
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Workgroup;
 import idas.chox.service.ActionResponse;
@@ -51,8 +51,14 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.workgroups);
-        return "{totalCount:" + this.workgroups.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(workgroups);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting workgroups to json string.");
+        }
+        return "{totalCount:" + workgroups.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -116,7 +122,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         try {
 
             List<Workgroup> workgroupDatas = adminInsurerService.getInsurerWorkgroups(this.insurerId);
-            this.workgroups = new ArrayList<WorkgroupViewData>();
+            this.workgroups = new ArrayList<>();
             for (Workgroup h : workgroupDatas) {
                 this.workgroups.add(new WorkgroupViewData(h));
             }

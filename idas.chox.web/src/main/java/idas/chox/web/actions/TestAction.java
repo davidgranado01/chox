@@ -1,8 +1,11 @@
 package idas.chox.web.actions;
 
-import idas.chox.data.services.BaseDataService;
 import java.util.List;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import idas.chox.data.services.BaseDataService;
 
 /**
  *
@@ -48,8 +51,13 @@ public class TestAction extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jsonArray = JSONArray.fromObject(result);
-        return "{totalCount:" + result.size() + ",results:" + jsonArray.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+        }
+        return "{totalCount:" + result.size() + ",results:" + jsonString + "}";
     }
 }
  

@@ -3,9 +3,12 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.VehicleClass;
@@ -13,13 +16,11 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ProtocolVehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassCeilingService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class VehicleClassDropDownAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(VehicleClassDropDownAction.class);
-    protected List<VehicleClass> vehicleClasses = new ArrayList<VehicleClass>();
+    protected List<VehicleClass> vehicleClasses = new ArrayList<>();
     protected int insurerId;
     private int breBandId;
     protected VehicleClassCeilingService vehicleClassCeilingService;
@@ -97,20 +98,25 @@ public class VehicleClassDropDownAction extends BaseAction {
     }
     
     public String getJsonData() {
-        JSONArray jsonArray;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         try {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(vehicleClasses.size());
+            List<LookupItem> luItems = new ArrayList<>(vehicleClasses.size());
             for (VehicleClass vehicleClass : vehicleClasses) {
                 LOG.debug("Adding VehicleClass to Lookup: {}, {}", vehicleClass.getId().toString(), vehicleClass.getName());
                 luItems.add(new LookupItem(vehicleClass.getId().toString(), vehicleClass.getName()));
             }
-            jsonArray = JSONArray.fromObject(luItems);
+            try {
+                jsonString = mapper.writeValueAsString(luItems);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting luItems to json string.");
+            }
         } catch (Exception ex) {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return null;
         }
-        LOG.debug("Returning json data: {}", jsonArray.toString());
-        return "{totalCount:" + vehicleClasses.size() + ",results:" + jsonArray.toString() + "}";
+        LOG.debug("Returning json data: {}", jsonString);
+        return "{totalCount:" + vehicleClasses.size() + ",results:" + jsonString + "}";
     }
     
     public void setLookupService(LookupService lookupService) {

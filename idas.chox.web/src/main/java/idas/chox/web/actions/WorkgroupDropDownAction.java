@@ -5,11 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.access.AccessDeniedException;
 
 import static com.opensymphony.xwork2.Action.SUCCESS;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.LookupItem;
@@ -18,14 +22,11 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.WorkgroupService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class WorkgroupDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupDropDownAction.class);
 
-    private List<Workgroup> workgroups = new ArrayList<Workgroup>();
-    private Set<Integer> orgId = new HashSet<Integer>();
+    private List<Workgroup> workgroups = new ArrayList<>();
+    private Set<Integer> orgId = new HashSet<>();
     private LookupService service;
     private int claimId;
     private WorkgroupService workgroupService;
@@ -80,20 +81,25 @@ public class WorkgroupDropDownAction extends BaseAction {
     public String getJsonData() {
         LOG.debug("Returning json data from workgroups: {}", workgroups);
 
-        JSONArray jsonArray;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         try {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(workgroups.size());
+            List<LookupItem> luItems = new ArrayList<>(workgroups.size());
             for (Workgroup workgroup : workgroups) {
                 LOG.debug("Adding Workgroup to Lookup: {}, {}", workgroup.getId().toString(), workgroup.getName());
                 luItems.add(new LookupItem(workgroup.getId().toString(), workgroup.getName()));
             }
-            jsonArray = JSONArray.fromObject(luItems);
+            try {
+                jsonString = mapper.writeValueAsString(luItems);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting luItems to json string.");
+            }
         } catch (Exception ex) {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return null;
         }
-        LOG.debug("Returning json data: {}", jsonArray.toString());
-        return "{totalCount:" + workgroups.size() + ",results:" + jsonArray.toString() + "}";
+        LOG.debug("Returning json data: {}", jsonString);
+        return "{totalCount:" + workgroups.size() + ",results:" + jsonString + "}";
     }
 
     // Get the active workgroups + the current claims in-active workgroup.

@@ -1,5 +1,17 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.service.ActionResponse;
@@ -7,13 +19,9 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
 import idas.chox.web.viewdata.InsurerChorganisationViewData;
-import java.util.ArrayList;
-import net.sf.json.JSONArray;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 
 public class InsurerChorganisationAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerChorganisationAction.class);
 
     private int insurerId;
     private int insurerChorganisationId;
@@ -30,8 +38,14 @@ public class InsurerChorganisationAction extends BaseAction {
     }
 
     public void setJsonData(Object object, Integer recordSize) {
-        JSONArray jObject = JSONArray.fromObject(object);
-        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting object to json string.");
+        }
+        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jsonString + "}";
     }
 
     public String getJsonData() {
@@ -103,7 +117,7 @@ public class InsurerChorganisationAction extends BaseAction {
 
         try {
             List<Chorganisation> chorganisationData = this.adminInsurerService.getAvailableChorganisationsByInsurer(this.insurerId);
-            List<ChorganisationViewData> credithireorganisation = new ArrayList<ChorganisationViewData>();
+            List<ChorganisationViewData> credithireorganisation = new ArrayList<>();
 
             for (Chorganisation h : chorganisationData) {
                 credithireorganisation.add(new ChorganisationViewData(h));
@@ -119,7 +133,7 @@ public class InsurerChorganisationAction extends BaseAction {
     }
 
     private List<InsurerChorganisationViewData> parsetChoViewDataList(List<InsurerChorganisation> objects) {
-        List<InsurerChorganisationViewData> insurerChorgs = new ArrayList<InsurerChorganisationViewData>();
+        List<InsurerChorganisationViewData> insurerChorgs = new ArrayList<>();
         for (InsurerChorganisation h : objects) {
             insurerChorgs.add(new InsurerChorganisationViewData(h));
         }

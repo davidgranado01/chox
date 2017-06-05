@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import idas.chox.core.model.History;
 import idas.chox.service.security.TabAccessibility;
@@ -12,7 +13,8 @@ import idas.chox.web.viewdata.HistoryViewData;
 
 public class HistoryAction extends ClaimModelAction<History> {
 
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -20,7 +22,7 @@ public class HistoryAction extends ClaimModelAction<History> {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
         }
         return "";
     }
@@ -31,7 +33,7 @@ public class HistoryAction extends ClaimModelAction<History> {
      */
     public String getHistory() {
 
-        List<HistoryViewData> histories = new ArrayList<HistoryViewData>();
+        List<HistoryViewData> histories = new ArrayList<>();
 
         for (History h : claim.getHistories()) {
 
@@ -44,7 +46,13 @@ public class HistoryAction extends ClaimModelAction<History> {
 
         Collections.sort(histories);
         
-        this.jObject = JSONArray.fromObject(histories);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObject = mapper.writeValueAsString(histories);
+            jObjectSize = histories.size();
+        } catch (JsonProcessingException ex) {
+            jObject = null;
+        }
         return SUCCESS;
     }
 

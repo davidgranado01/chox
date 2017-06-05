@@ -3,7 +3,8 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
@@ -84,8 +85,13 @@ public class BreBandDropDownAction extends BaseAction {
                 insurerBreBands.add(new InsurerBreBandViewData(h));
             }
 
-            JSONArray jsonArray = JSONArray.fromObject(insurerBreBands);
-            setJsonData("{totalCount:" + insurerBreBands.size() + ",results:" + jsonArray.toString() + "}");
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(insurerBreBands);
+            } catch (JsonProcessingException ex) {
+            }
+            setJsonData("{totalCount:" + insurerBreBands.size() + ",results:" + jsonString + "}");
 
         } catch (Exception ex) {
             handleException(ex);

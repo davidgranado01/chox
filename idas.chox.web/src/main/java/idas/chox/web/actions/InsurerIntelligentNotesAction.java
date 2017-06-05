@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
-
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.InsurerIntelligentNote;
 import idas.chox.core.model.IntelligentNote;
@@ -32,7 +33,7 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
     private AdminInsurerService adminInsurerService;
     private int insurerId = -1;
     private int insurerInteligentNoteId = -1;
-    private List<InsurerIntelligentNoteViewData> insurerIntelligentNoteViewData = new ArrayList<InsurerIntelligentNoteViewData>();
+    private List<InsurerIntelligentNoteViewData> insurerIntelligentNoteViewData = new ArrayList<>();
     
     @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
@@ -60,8 +61,14 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
     }
     
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(insurerIntelligentNoteViewData);
-        return "{totalCount:" + this.getInsurerIntelligentNoteViewData().size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(insurerIntelligentNoteViewData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerIntelligentNoteViewData to json string.");
+        }
+        return "{totalCount:" + this.getInsurerIntelligentNoteViewData().size() + ",results:" + jsonString + "}";
     }
     
     @Secured ({"ROLE_CHOX_ADMIN"})

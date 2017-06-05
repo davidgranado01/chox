@@ -3,23 +3,22 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
-
 import idas.chox.core.model.AutomaticRoutingPolicy;
-import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
-import org.hibernate.StaleObjectStateException;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRoutingPolicy>, Preparable {
 
@@ -32,7 +31,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private AutomaticRoutingPolicy model;
     private AutomaticRoutingService automaticRoutingService;
     
-    private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
+    private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<>();
     private AdminInsurerService adminInsurerService;
 
 
@@ -56,8 +55,14 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerAutomaticRoutings);
-        return "{totalCount:" + this.insurerAutomaticRoutings.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(insurerAutomaticRoutings);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerAutomaticRoutings to json string.");
+        }
+        return "{totalCount:" + this.insurerAutomaticRoutings.size() + ",results:" + jsonString + "}";
     }
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -178,7 +183,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
             throw new AccessDeniedException("Illegal access detected.");
         }
 
-        List items = new ArrayList<IdLookupItem>();
+        List items = new ArrayList<>();
         try {
             items = adminInsurerService.getAvailableWorkgroups(this.insurerId, true);
         } catch (Exception ex) {

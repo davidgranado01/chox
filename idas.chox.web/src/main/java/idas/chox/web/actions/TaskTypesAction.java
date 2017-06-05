@@ -1,13 +1,17 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.model.TaskType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.LookupItem;
+import idas.chox.core.model.TaskType;
 
 /**
  *
@@ -16,7 +20,8 @@ import org.slf4j.LoggerFactory;
 public class TaskTypesAction  extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(TaskTypesAction.class);
     private List<LookupItem> taskTypesLI;
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
     private int visibility;
     private String visibilityRole;
 
@@ -31,7 +36,7 @@ public class TaskTypesAction  extends BaseAction {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            String jsonString = "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            String jsonString = "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
             LOG.debug("Returning json string: '{}'", jsonString);
             return jsonString;
         }
@@ -39,7 +44,7 @@ public class TaskTypesAction  extends BaseAction {
     }
 
     public String getTaskTypes() {
-        taskTypesLI = new ArrayList<LookupItem>();
+        taskTypesLI = new ArrayList<>();
         Map<String, String> taskTypes;
         boolean isCHO = getIsCHO();
         LOG.debug("Getting task types for visibility={} and isCHO={}", visibility, isCHO);
@@ -61,7 +66,15 @@ public class TaskTypesAction  extends BaseAction {
             taskTypesLI.add(new LookupItem(entry.getKey(), entry.getValue()));
         }
 
-        this.jObject = JSONArray.fromObject(taskTypesLI);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(taskTypesLI);
+            jObjectSize = taskTypesLI.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting taskTypes to json string.");
+            jObject = null;
+        }
 
         return SUCCESS;
     }

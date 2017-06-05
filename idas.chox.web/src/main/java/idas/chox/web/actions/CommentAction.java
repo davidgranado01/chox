@@ -3,11 +3,12 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
@@ -18,15 +19,17 @@ import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.core.util.DateHelper;
 
 public class CommentAction extends ClaimModelAction<Comment> {
+
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
     private int commentId;
     private CommentService commentService;
 
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
-    
+
     public int getCommentId() {
         return commentId;
     }
@@ -35,10 +38,9 @@ public class CommentAction extends ClaimModelAction<Comment> {
         this.commentId = commentId;
     }
 
-
     public String getJsonArrayData() {
         if (jObject != null) {
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
         }
         return "";
     }
@@ -49,7 +51,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
     public String getComments() {
 
-        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
+        List<CommentViewData> viewDatas = new ArrayList<>();
 
         //Claim claim = claimService.getClaim(claimId);
         List<Comment> comments = claim.getComments();
@@ -61,16 +63,24 @@ public class CommentAction extends ClaimModelAction<Comment> {
             if (c.getRaisedBy() != null) {
                 c.setCreatedBy(c.getRaisedBy());
             }
-            viewDatas.add(new CommentViewData(c,getAuthenticatedUser()));
+            viewDatas.add(new CommentViewData(c, getAuthenticatedUser()));
         }
 
-        this.jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObject = mapper.writeValueAsString(viewDatas);
+            jObjectSize = viewDatas.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting comments to json string.");
+            jObjectSize = 0;
+            jObject = null;
+        }
         return SUCCESS;
     }
 
     public String getCommentsForReview() {
 
-        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
+        List<CommentViewData> viewDatas = new ArrayList<>();
 
         if (claim == null) {
             claim = claimService.getClaim(claimId);
@@ -83,16 +93,23 @@ public class CommentAction extends ClaimModelAction<Comment> {
                     || c.getReviewRequired() == null || !c.getReviewRequired()) {
                 continue;
             }
-            CommentViewData cvd = new CommentViewData(c,getAuthenticatedUser());
+            CommentViewData cvd = new CommentViewData(c, getAuthenticatedUser());
             if (cvd.getReviewRequired().equals("Required")) {
                 viewDatas.add(cvd);
             }
         }
 
-        this.jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObject = mapper.writeValueAsString(viewDatas);
+            jObjectSize = viewDatas.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting comments to json string.");
+            jObjectSize = 0;
+            jObject = null;
+        }
         return SUCCESS;
     }
-
 
     @Override
     String getTabName() {
@@ -107,26 +124,26 @@ public class CommentAction extends ClaimModelAction<Comment> {
             return new Comment();
         }
     }
-    
+
     public String deleteComment() {
         LOG.debug("Deleting comment...");
         try {
             if (model.getId() != null) {
                 WebUser user = model.getCreatedBy();
-                if (getAuthenticatedUser().isCHOXAdmin() 
-                        || ((getAuthenticatedUser().getId().compareTo(user.getId())==0 
-                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())   
-                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
-                            && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
+                if (getAuthenticatedUser().isCHOXAdmin()
+                        || ((getAuthenticatedUser().getId().compareTo(user.getId()) == 0
+                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHO_MNG) && user.isCHO())
+                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
+                        && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
 
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
                     this.getActionResponse().AssignMessageResult("Note has been deleted.");
                     // Generate NoteDeleted Event - removed as not needed
 //                    activityEventGenerator.generate(claim, model, ActivityEvent.NOTE_DELETED_EVENT);
-                    
+
                 } else {
-                    
+
                     if (getAuthenticatedUser().getId().compareTo(user.getId()) == 0
                             && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) >= 5) {
                         LOG.warn("User trying to delete Comment which they created more than 5 mins ago.");
@@ -156,9 +173,9 @@ public class CommentAction extends ClaimModelAction<Comment> {
         try {
             if (model.getId() != null) {
 
-                    commentService.acknowledgeCommentById(model.getId());
-                    LOG.debug("Comment acknowledged.");
-                    this.getActionResponse().AssignMessageResult("Note has been acknowledged.");                    
+                commentService.acknowledgeCommentById(model.getId());
+                LOG.debug("Comment acknowledged.");
+                this.getActionResponse().AssignMessageResult("Note has been acknowledged.");
             } else {
                 LOG.warn("User trying to acknowledge Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
                 this.getActionResponse().AssignMessageResult("No comment found");
@@ -181,8 +198,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
             LOG.debug("CommentAction validate success");
-        }
-        else {
+        } else {
             LOG.debug(" CommentAction validation is not done as claim is null");
         }
     }
@@ -202,6 +218,5 @@ public class CommentAction extends ClaimModelAction<Comment> {
     public boolean isChoTaskManagementEnabled() {
         return claim.getChorganisation().isTaskManagementEnable();
     }
-
 
 }

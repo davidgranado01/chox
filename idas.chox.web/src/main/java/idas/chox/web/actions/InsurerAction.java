@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.AutomaticRoutingStrategy;
 import idas.chox.core.model.Insurer;
@@ -89,8 +89,14 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurer);
-        return "{totalCount:" + this.insurer.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(insurer);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurer to json string.");
+        }
+        return "{totalCount:" + insurer.size() + ",results:" + jsonString + "}";
     }
 
     @Override
@@ -242,7 +248,13 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     
     public String getAutomaticRoutingStrategiesJsonString() {
         List<LookupItem> automaticRoutingStrategiesList = lookupService.getAutomaticRoutingStrategies();
-        String automaticRoutingStrategiesJson = JSONArray.fromObject(automaticRoutingStrategiesList).toString();
+        String automaticRoutingStrategiesJson = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            automaticRoutingStrategiesJson = mapper.writeValueAsString(automaticRoutingStrategiesList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurer to json string.");
+        }
         return "{totalCount:" + automaticRoutingStrategiesList.size() + ", results:" + automaticRoutingStrategiesJson + "}";
     }
 

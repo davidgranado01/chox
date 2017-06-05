@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts2.interceptor.ParameterAware;
-
-import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
@@ -20,14 +23,10 @@ import idas.chox.service.dashboard.ChoDashboardBuilder;
 import idas.chox.service.dashboard.DashBoardViewData;
 import idas.chox.service.dashboard.InsurerDashboardBuilder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class DashboardAction extends BaseAction implements ParameterAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DashboardAction.class);
-    
 
     private DashBoardViewData monthToDateInsurerBoardViewData;
     private DashBoardViewData weekToDateInsurerBoardViewData;
@@ -35,14 +34,13 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private BaseDataService baseDataService;
     private LookupService lookupService;
     private UserService userService;
-   // private List suppliers;
-   // private List insurers;
+    // private List suppliers;
+    // private List insurers;
     private Map extParameters;
     private Long numberOfActiveUser;
     private Long numberOfClaimPending;
     private List<Chorganisation> suppliers;
     private List<Insurer> insurers;
-    
 
     public String getLastProcessDate() {
 
@@ -81,7 +79,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             cumulativeInsurerBoardViewData = builder.getCumulative();
 
         } catch (Exception ex) {
-            LOG.error("Exception",ex);
+            LOG.error("Exception", ex);
         }
 
         return SUCCESS;
@@ -97,7 +95,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
         } catch (Exception ex) {
-            LOG.error("Exception",ex);
+            LOG.error("Exception", ex);
         }
         return SUCCESS;
     }
@@ -122,13 +120,19 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
     public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
-            for (Chorganisation supplier : suppliers) {
-                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
-            }
-           
-           LOG.debug("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
+        for (Chorganisation supplier : suppliers) {
+            luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Supplier luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public List getInsurers() {
@@ -139,15 +143,21 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return insurers;
     }
 
-     public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
-            for (Insurer insurer : insurers) {
-                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
-            }
+    public String getInsurersJsonString() {
+        List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
+        for (Insurer insurer : insurers) {
+            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Insurer luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
-
 
     @Override
     public void setParameters(Map extParameters) {
@@ -179,9 +189,9 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
     public boolean isUploadEnabled() {
-        if(this.getAuthenticatedUser().isAnInsurer()){
+        if (this.getAuthenticatedUser().isAnInsurer()) {
             return this.getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled();
-        }else{
+        } else {
             return false;
         }
     }

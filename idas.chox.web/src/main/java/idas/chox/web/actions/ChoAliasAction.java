@@ -2,16 +2,23 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChoAliasViewData;
-import org.springframework.security.access.annotation.Secured;
 
 public class ChoAliasAction extends BaseAction implements ModelDriven<ChorganisationAlias>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(ChoAliasAction.class);
 
     private int choId = -1;
     private int choAliasId = -1;
@@ -35,14 +42,20 @@ public class ChoAliasAction extends BaseAction implements ModelDriven<Chorganisa
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.choAliases);
-        return "{totalCount:" + this.choAliases.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(choAliases);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting choAliases to json string.");
+        }
+        return "{totalCount:" + this.choAliases.size() + ",results:" + jsonString + "}";
     }
 
     @Override
     public void prepare() throws Exception {
 
-        if (Integer.valueOf(this.choAliasId) <= 0) {
+        if (this.choAliasId <= 0) {
             model = new ChorganisationAlias();
         } else {
             model = adminChorganisationService.getChorganisationAlias(choAliasId);
@@ -86,7 +99,7 @@ public class ChoAliasAction extends BaseAction implements ModelDriven<Chorganisa
         try {
 
             List<ChorganisationAlias> choAliasData = adminChorganisationService.getChorganisationAliases(this.choId);
-            choAliases = new ArrayList<ChoAliasViewData>();
+            choAliases = new ArrayList<>();
 
             for (ChorganisationAlias h : choAliasData) {
                 choAliases.add(new ChoAliasViewData(h));

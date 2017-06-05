@@ -3,10 +3,10 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +26,17 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
     private ClaimService claimService;
     private List<FilterViewData> filterViewDatas = new ArrayList<>();
     private ClaimSearchCriteria claimSearchCriteria;
-//    private boolean syncWithSearchCriteria = true;
 
     public String getJsonData() {
         try {
-            JSONArray jObject = JSONArray.fromObject(filterViewDatas);
-            return "{totalCount:" + filterViewDatas.size() + ",results:" + jObject.toString() + "}";
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(filterViewDatas);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting filterViewDatas to json string.");
+            }
+            return "{totalCount:" + filterViewDatas.size() + ",results:" + jsonString + "}";
         } catch(Exception ex) {
             LOG.error("exception occured:", ex);
             return null;

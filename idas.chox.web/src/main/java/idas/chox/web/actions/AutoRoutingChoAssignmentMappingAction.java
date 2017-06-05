@@ -3,7 +3,8 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,14 @@ public class AutoRoutingChoAssignmentMappingAction extends BaseAction {
     }
 
     public void setJsonData(Object object, Integer recordSize) {
-        JSONArray jObject = JSONArray.fromObject(object);
-        this.jsonData = "{totalCount:" + recordSize + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting object to json string.");
+        }
+        this.jsonData = "{totalCount:" + recordSize + ",results:" + jsonString + "}";
     }
     
     public String getJsonData() {

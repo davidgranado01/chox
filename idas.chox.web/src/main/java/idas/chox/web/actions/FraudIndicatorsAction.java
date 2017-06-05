@@ -4,18 +4,20 @@ import idas.chox.core.model.Claim;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.KeoghsRequestScoreMessage;
 import idas.chox.core.services.ClaimService;
 import idas.chox.web.viewdata.FraudIndicatorsViewData;
 
 public class FraudIndicatorsAction extends BaseAction {
-//    private static final Logger LOG = LoggerFactory.getLogger(FraudIndicatorsAction.class);
-    private JSONArray jObject;
+    private static final Logger LOG = LoggerFactory.getLogger(FraudIndicatorsAction.class);
+    private String jObject;
+    private int jObjectSize;
     private int claimId;
     private static ClaimService claimService;
 
@@ -29,7 +31,7 @@ public class FraudIndicatorsAction extends BaseAction {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
         }
         return "";
     }
@@ -46,7 +48,14 @@ public class FraudIndicatorsAction extends BaseAction {
             viewDatas.add(new FraudIndicatorsViewData(sm));
         }
 
-        this.jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jObject = mapper.writeValueAsString(viewDatas);
+            jObjectSize = viewDatas.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Fraud luItems to json string.");
+            jObject = null;
+        }
         return SUCCESS;
     }
 

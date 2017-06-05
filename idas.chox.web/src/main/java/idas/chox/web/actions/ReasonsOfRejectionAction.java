@@ -4,12 +4,15 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.annotation.Secured;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-import net.sf.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.ReasonOfRejectionService;
@@ -19,8 +22,7 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.ReasonOfRejectionViewData;
 
 public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<ReasonOfRejection>, Preparable {
-    
-//    private static final Logger LOG = LoggerFactory.getLogger(ReasonsOfRejectionAction.class);
+        private static final Logger LOG = LoggerFactory.getLogger(ReasonsOfRejectionAction.class);
 
     private int insurerId = -1;
     private String activeType;
@@ -28,7 +30,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     private String type;
     private int reasonOfRejectionId = -1;
     private ReasonOfRejection model;
-    private List<ReasonOfRejectionViewData> reasonOfRejectionViewData = new ArrayList<ReasonOfRejectionViewData>();
+    private List<ReasonOfRejectionViewData> reasonOfRejectionViewData = new ArrayList<>();
     private ReasonOfRejectionService reasonOfRejectionService;
     private AdminInsurerService adminInsurerService;
     
@@ -132,26 +134,30 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
         try {
             if (this.reasonOfRejectionId > 0 && activeType != null) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReason(reasonOfRejectionId);
-                if(activeType.equals("gtaActive")) {
-                    ror.setGtaActive(!ror.isGtaActive());
-                }
-                else if(activeType.equals("collaborationActive")) {
-                    ror.setCollaborationActive(!ror.isCollaborationActive());
-                }
-                else if(activeType.equals("insurerVsInsurerActive")) {
-                    ror.setInsurerVsInsurerActive(!ror.isInsurerVsInsurerActive());
-                }
-                else if(activeType.equals("subscriberActive")) {
-                    ror.setSubscriberActive(!ror.isSubscriberActive());
-                }
-                else if(activeType.equals("fixedFeeActive")) {
-                    ror.setFixedFeeActive(!ror.isFixedFeeActive());
-                }
-                else if(activeType.equals("tpiActive")) {
-                    ror.setTpiActive(!ror.isTpiActive());
-                }
-                else if(activeType.equals("insurerUploadActive")) {
-                    ror.setInsurerUploadActive(!ror.isInsurerUploadActive());
+                switch (activeType) {
+                    case "gtaActive":
+                        ror.setGtaActive(!ror.isGtaActive());
+                        break;
+                    case "collaborationActive":
+                        ror.setCollaborationActive(!ror.isCollaborationActive());
+                        break;
+                    case "insurerVsInsurerActive":
+                        ror.setInsurerVsInsurerActive(!ror.isInsurerVsInsurerActive());
+                        break;
+                    case "subscriberActive":
+                        ror.setSubscriberActive(!ror.isSubscriberActive());
+                        break;
+                    case "fixedFeeActive":
+                        ror.setFixedFeeActive(!ror.isFixedFeeActive());
+                        break;
+                    case "tpiActive":
+                        ror.setTpiActive(!ror.isTpiActive());
+                        break;
+                    case "insurerUploadActive":
+                        ror.setInsurerUploadActive(!ror.isInsurerUploadActive());
+                        break;
+                    default:
+                        break;
                 }
                 ActionResponse response;
                 response = adminInsurerService.updateReasonOfRejectionActive(ror);
@@ -182,9 +188,16 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     }
     
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.getReasonOfRejectionViewData());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        List<ReasonOfRejectionViewData> vd = getReasonOfRejectionViewData();
+        try {
+            jsonString = mapper.writeValueAsString(vd);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting ReasonOfRejectionViewData to json string.");
+        }
 
-        return MessageFormat.format("'{'totalCount:{0},results:{1}'}'", String.valueOf(this.getReasonOfRejectionViewData().size()), jObject.toString());
+        return MessageFormat.format("'{'totalCount:{0},results:{1}'}'", String.valueOf(vd.size()), jsonString);
     }
 
     public int getInsurerId() {

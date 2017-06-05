@@ -1,14 +1,13 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.opensymphony.xwork2.Action.SUCCESS;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -36,8 +35,8 @@ public class InboxAction extends BaseAction {
     private LookupService lookupService;
     private ClaimService claimService;
     private String batchUpdateAction;
-    private List<Integer> selectedClaimIdList = new ArrayList<Integer>();;
-//    private int showHistory;
+    private List<Integer> selectedClaimIdList = new ArrayList<>();
+    ;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
@@ -67,7 +66,7 @@ public class InboxAction extends BaseAction {
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
     }
-    
+
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
@@ -75,7 +74,6 @@ public class InboxAction extends BaseAction {
 //    public int getShowHistory() {
 //        return showHistory;
 //    }
-
     public boolean isShowSplash() {
         if (!getAuthenticatedUser().isShowSplash()) {
             return false;
@@ -98,7 +96,6 @@ public class InboxAction extends BaseAction {
 //            this.showHistory = showHistory;
 //        }
 //    }
-
     @Override
     public String execute() throws Exception {
         return SUCCESS;
@@ -121,11 +118,11 @@ public class InboxAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getInboxTabPanel() {
         return SUCCESS;
     }
-    
+
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
             menuAccessibility = new MenuAccessibility(applicationAccessibility, getAuthenticatedUser());
@@ -133,12 +130,14 @@ public class InboxAction extends BaseAction {
         return menuAccessibility;
     }
 
-    /*********** START - BATCH UPDATE ACCESS RIGHT **************/
+    /**
+     * ********* START - BATCH UPDATE ACCESS RIGHT *************
+     */
     public String checkBatchUpdateStatus() {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
         List<String> statusAllow = applicationAccessibility.getAllowedStatusesForBatchUpdate(batchUpdateAction, super.getAuthenticatedUser());
-        List<String> insurerName = new ArrayList<String>();
+        List<String> insurerName = new ArrayList<>();
 
         for (Integer id : selectedClaimIdList) {
 
@@ -153,7 +152,7 @@ public class InboxAction extends BaseAction {
                     return SUCCESS;
                 }
                 // in case we have manual invoice workgroup and ownership batch update enabled
-                if (batchUpdateAction.equals("updateClaimWorkgroupAndOwner") 
+                if (batchUpdateAction.equals("updateClaimWorkgroupAndOwner")
                         && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups()) {
                     return SUCCESS;
                 }
@@ -164,16 +163,16 @@ public class InboxAction extends BaseAction {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
-            
-            if (batchUpdateAction.equalsIgnoreCase("routeClaims") 
-                    && (!claim.getInsurer().isWorkgroupEnable() 
-                        || (ClaimStatus.isManualStatus(claim.getStatus()) 
-                            && ((!claim.getInsurer().isEnableManualInvoiceWorkgroups()) 
-                                || (claim.getInsurer().isClaimOwnershipEnable() || claim.getInsurer().isEnableManualInvoiceOwnership()))))) {
+
+            if (batchUpdateAction.equalsIgnoreCase("routeClaims")
+                    && (!claim.getInsurer().isWorkgroupEnable()
+                    || (ClaimStatus.isManualStatus(claim.getStatus())
+                    && ((!claim.getInsurer().isEnableManualInvoiceWorkgroups())
+                    || (claim.getInsurer().isClaimOwnershipEnable() || claim.getInsurer().isEnableManualInvoiceOwnership()))))) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
-            
+
             // Remove 'Update Claim(s) To Invoice Payment Logged' option for manual claims
             //   - his is lazy and should really be achieved by fine tuning the accessibilities entries
             if (batchUpdateAction.equalsIgnoreCase("logInvoicePayment") && ClaimType.isInsurerUpload(claim.getClaimType())) {
@@ -197,7 +196,7 @@ public class InboxAction extends BaseAction {
                 && batchUpdateAction.equalsIgnoreCase("routeClaims")
                 && !insurerName.isEmpty()
                 && (!insurerName.contains(claim.getInsurer().getName())
-                    || !claim.getInsurer().isWorkgroupEnable())) {
+                || !claim.getInsurer().isWorkgroupEnable())) {
             return true;
         } else {
             if (insurerName.isEmpty()) {
@@ -206,12 +205,11 @@ public class InboxAction extends BaseAction {
             return false;
         }
     }
-    
+
     // Below functionality implemented for bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
     public String getUniqueWorkgroupId() {
-        List<Integer> workgrouId = new ArrayList<Integer>();
-        for (Iterator<Integer> it = selectedClaimIdList.iterator(); it.hasNext();) {
-            Integer id = it.next();
+        List<Integer> workgrouId = new ArrayList<>();
+        for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
             if (claim.getWorkgroup() == null || (!workgrouId.isEmpty() && !workgrouId.contains(claim.getWorkgroup().getId()))) {
                 setJsonData("{workgroupId:-1}");
@@ -251,7 +249,12 @@ public class InboxAction extends BaseAction {
         return SUCCESS;
     }
 
-    /*********** END - BATCH UPDATE ACCESS RIGHT **************/
+    /**
+     * ********* END - BATCH UPDATE ACCESS RIGHT *************
+     */
+
+
+
 //    public Integer getTab() {
 //        if (getSession().containsKey("tabIndex")) {
 //            LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
@@ -261,6 +264,7 @@ public class InboxAction extends BaseAction {
 //            return 0;
 //        }
 //    }
+    
 
     // This is to avoid showing the 'Task' tab as default active tab when the user logs in. 
     public int getPreSelectedActiveTab() {
@@ -273,7 +277,7 @@ public class InboxAction extends BaseAction {
         }
         return activeTab;
     }
-    
+
     public ApplicationAccessibility getApplicationAccessibility() {
         return applicationAccessibility;
     }
@@ -313,11 +317,11 @@ public class InboxAction extends BaseAction {
 
     public boolean getIsDashboardUser() {
         return (RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MNG)
-                        && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MI))
-                || ( RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MNG)
-                        && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MI));
+                && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_MI))
+                || (RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MNG)
+                && RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_CHO_MI));
     }
-  
+
     public boolean getIsComUser() {
         return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_COM);
     }
@@ -341,70 +345,58 @@ public class InboxAction extends BaseAction {
     }
 
     public String getSuppliersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+        List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getName(), supplier.getId().toString()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting supplier luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
     public String getInsurersJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+        List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getName(), insurer.getId().toString()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
-    }
-    
-    public String getClaimTypesJsonString() {
-        List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
-        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
-        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
-    }
-    
-    public boolean getEnableManualInvoiceWorkgroups() {
-        if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
-           return false;
-        } 
-        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups();
-    }
-    
-    public boolean getEnableManualInvoiceOwnership() {
-        if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
-            return false;
-         } 
-        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership();
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting Insurer luItems to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
 
-//    public int getFilterOrgId() {
-//        if (getSession().containsKey("filterOrgId")) {
-//            return (Integer) getSession().get("filterOrgId");
-//        } else {
-//            return -1;
-//        }
-//    }
-//
-//    public int getFilterClaimTypeId() {
-//        if (getSession().containsKey("filterClaimTypeId")) {
-//            return (Integer) getSession().get("filterClaimTypeId");
-//        } else {
-//            return -1;
-//        }
-//    }
-//
-//    public String getGridTitle() {
-//        if (getSession().containsKey("gridTitle")) {
-//            return (String) getSession().get("gridTitle");
-//        } else {
-//            return "";
-//        }
-//    }
-//
-//    public String getFilterKey() {
-//        if (getSession().containsKey("filterKey")) {
-//            return (String) getSession().get("filterKey");
-//        } else {
-//            return "";
-//        }
-//    }
+    public String getClaimTypesJsonString() {
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(claimTypesList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimTypesList to json string.");
+        }
+        return "{totalCount:" + claimTypesList.size() + ", results:" + jsonString + "}";
+    }
+
+    public boolean getEnableManualInvoiceWorkgroups() {
+        if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()) {
+            return false;
+        }
+        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups();
+    }
+
+    public boolean getEnableManualInvoiceOwnership() {
+        if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()) {
+            return false;
+        }
+        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership();
+    }
 }

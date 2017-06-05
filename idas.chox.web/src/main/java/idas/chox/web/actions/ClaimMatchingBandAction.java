@@ -3,10 +3,10 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-
-import net.sf.json.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +54,14 @@ public class ClaimMatchingBandAction extends BaseAction implements ModelDriven<C
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.claimMatchingBandViewData);
-        return "{totalCount:" + this.claimMatchingBandViewData.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(claimMatchingBandViewData);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting claimMatchingBandViewData to json string.");
+        }
+        return "{totalCount:" + this.claimMatchingBandViewData.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">

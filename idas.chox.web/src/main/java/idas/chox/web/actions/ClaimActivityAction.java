@@ -12,8 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-import net.sf.json.JSONObject;
-
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.BreBandService;
@@ -154,7 +152,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     @Override
     public String execute() {
-        JSONObject jsonObject = new JSONObject();
         if (activity != null) {
             LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'",
                 new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference()});
@@ -169,36 +166,30 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 // Lets return an error for now rather than re-throwing the exception
 // Once the reason for this happening so often is determined, the code should be reverted to re-throw the exception
 //                throw (ex);
-                jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("errors", ex.getMessage());
-                setJsonData(jsonObject.toString());
+                setJsonData("\"success\":\"False\",\"errors\":\"" + ex.getMessage() + "\"");
                 handleException(ex);
                 updateRedirectionParamInSession();
                 return ERROR;
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity: {}", ex.getMessage());
-                jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("errors", ex.getMessage());
-                setJsonData(jsonObject.toString());
+                setJsonData("\"success\":\"False\",\"errors\":\"" + ex.getMessage() + "\"");
                 handleException(ex);
                 updateRedirectionParamInSession();
                 return ERROR;
             }
             LOG.trace("claim activity returning success");
-            jsonObject.put("success", Boolean.TRUE);
             if (getMessage() != null) {
-                jsonObject.put("message", getMessage());
                 this.getActionResponse().AssignMessageResult(getMessage());
+                setJsonData("{\"success\":\"True\",\"message\":\"" + getMessage() + "\"}");
+            } else {
+                setJsonData("{\"success\":\"True\"\"}");
             }
-            setJsonData(jsonObject.toString());
             removeRedirectionParamInSession();
 //            updateRedirectionParamInSession();
             return SUCCESS;
         } else {
             LOG.error("Cannot process null activity for claim '{}'", claim);
-            jsonObject.put("success", Boolean.FALSE);
-            jsonObject.put("errors", "An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.");
-            setJsonData(jsonObject.toString());
+            setJsonData("{\"success\":\"True\",\"message\":\"An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.\"}");
             this.getActionResponse().AddError("An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.");
         }
 

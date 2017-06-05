@@ -1,18 +1,21 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.IdLookupItem;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserWorkgroupViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
-import org.hibernate.StaleObjectStateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
 
 public class UserWorkgroupAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(UserWorkgroupAction.class);
@@ -31,8 +34,14 @@ public class UserWorkgroupAction extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.userworkgroups);
-        return "{totalCount:" + this.userworkgroups.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(userworkgroups);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting userworkgroups to json string.");
+        }
+        return "{totalCount:" + this.userworkgroups.size() + ",results:" + jsonString + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -94,7 +103,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     public String getUserWorkgroups() {
         List<WebUserWorkgroup> userworkgroupData = adminUserService.getUserWorkgroupsByUserId(webUserId);
-        userworkgroups = new ArrayList<UserWorkgroupViewData>();
+        userworkgroups = new ArrayList<>();
 
         for (WebUserWorkgroup h : userworkgroupData) {
             userworkgroups.add(new UserWorkgroupViewData(h));
@@ -105,7 +114,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER"})
     public List getAvailableWorkgroups() {
-        List items = new ArrayList<IdLookupItem>();
+        List items = new ArrayList<>();
         try {
             items = adminUserService.getWorkgroups(this.webUserId);
         } catch (Exception ex) {

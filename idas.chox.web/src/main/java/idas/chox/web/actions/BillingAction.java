@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Date;
 import java.text.ParseException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import idas.chox.core.model.Billing;
 import idas.chox.core.model.BillingDetail;
@@ -63,7 +63,14 @@ public class BillingAction extends BaseAction {
             viewList.add(bvd);
         }
 
-        setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(viewList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewList list to json string.");
+        }
+        setJsonData("{results:" + jsonString + "}");
         return SUCCESS;
     }
 
@@ -76,7 +83,14 @@ public class BillingAction extends BaseAction {
             BillingDetail object = (BillingDetail) itorDetails.next();
             viewDetailList.add(new BillingDetailViewData(object));
         }
-        setJsonData("{results:" + JSONArray.fromObject(viewDetailList).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(viewDetailList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewList list to json string.");
+        }
+        setJsonData("{results:" + jsonString + "}");
         return SUCCESS;
     }
 
@@ -86,17 +100,21 @@ public class BillingAction extends BaseAction {
         List<Map> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
         billingService.updateBillingDetail(billingId, billingType,lm);
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("message", "saved");
-        setJsonData(jsonObject.toString());
+        setJsonData("{\"success\":\"True\",\"message\":\"saved\"}");
         return SUCCESS;
     }
 
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingOrgData() {
         List viewList = billingService.getOrgList(getBillingType());
-        setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(viewList);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewList to json string.");
+        }
+        setJsonData("{results:" + jsonString + "}");
         return SUCCESS;
     }
 
@@ -106,9 +124,15 @@ public class BillingAction extends BaseAction {
         try {
             LOG.debug("Add billing schedule");
             Map hm = billingService.addBill(billingType, getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
-            JSONObject jsonObject = JSONObject.fromObject(hm);
-            setJsonData(jsonObject.toString());
-            LOG.debug("Returning json string: '{}'", jsonObject.toString());
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(hm);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting bill map to json string.");
+            }
+            setJsonData(jsonString);
+            LOG.debug("Returning json string: '{}'", jsonString);
         } catch (Exception e) {
 
             LOG.error("Exception in addBill(): {}", e.getMessage(), e);
@@ -123,8 +147,14 @@ public class BillingAction extends BaseAction {
         try {
             LOG.debug("Delete billing schedule");
             Map hm = billingService.deleteBill(billingType, billingId);
-            JSONObject jsonObject = JSONObject.fromObject(hm);
-            setJsonData(jsonObject.toString());
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(hm);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting bill map to json string.");
+            }
+            setJsonData(jsonString);
             LOG.debug("Back from delete schedule");
         } catch (RuntimeException re) {
 
@@ -141,8 +171,14 @@ public class BillingAction extends BaseAction {
             LOG.debug(billingType + "^^^^^^^^" + billingId + "^^^^^^^^" + manual + "^^^^^^^^" + reconciled + "^^^^^^^^" + amountReceived);
             Map hm = billingService.paymentReceived(billingType, billingId, manual, reconciled, amountReceived);
 
-            JSONObject jsonObject = JSONObject.fromObject(hm);
-            setJsonData(jsonObject.toString());
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(hm);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting bill map to json string.");
+            }
+            setJsonData(jsonString);
         } catch (RuntimeException re) {
 
             LOG.error("Exception in paymentReceived: {}", re.getMessage());

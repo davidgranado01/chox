@@ -3,7 +3,8 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,12 +101,22 @@ public class ActivityMonitoringAction extends BaseAction {
     }
 
     public String getJsonData() {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         if (method.equalsIgnoreCase("checkViewingStatus")) {
-            JSONArray jObject = JSONArray.fromObject(this.statuses);
-            return "{isValid:true,totalCount:" + this.statuses.size() + ",results:" + jObject.toString() + "}";
+            try {
+                jsonString = mapper.writeValueAsString(statuses);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting choAliases to json string.");
+            }
+            return "{isValid:true,totalCount:" + statuses.size() + ",results:" + jsonString + "}";
         } else {
-            JSONArray jObject = JSONArray.fromObject(this.usersViewingThisClaim);
-            return "{isValid:true,totalCount:" + this.usersViewingThisClaim.size() + ",results:" + jObject.toString() + "}";
+            try {
+                jsonString = mapper.writeValueAsString(usersViewingThisClaim);
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting usersViewingThisClaim to json string.");
+            }
+            return "{isValid:true,totalCount:" + usersViewingThisClaim.size() + ",results:" + jsonString + "}";
         }
     }
 

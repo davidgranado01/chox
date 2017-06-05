@@ -1,19 +1,19 @@
 package idas.chox.web.actions;
 
-import static com.opensymphony.xwork2.Action.SUCCESS;
-import idas.chox.core.model.ClaimType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerBillingBand;
 import idas.chox.core.model.InsurerBillingBandMapping;
@@ -87,7 +87,14 @@ public class InsurerBillingBandMappingAction  extends BaseAction {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting LookupItem to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
     }
     
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -191,25 +198,38 @@ public class InsurerBillingBandMappingAction  extends BaseAction {
     }
    
     public String getJsonData() {
-        JSONArray jObject;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         int size;
         
         switch (jsonDataType) {
             case 1:
                 size = availableMappings.size();
-                jObject = JSONArray.fromObject(availableMappings);
+                try {
+                    jsonString = mapper.writeValueAsString(availableMappings);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting availableMappings to json string.");
+                }
                 break;
             case 2:
                 size = selectedMappings.size();
-                jObject = JSONArray.fromObject(selectedMappings);
+                try {
+                    jsonString = mapper.writeValueAsString(selectedMappings);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting selectedMappings to json string.");
+                }
                 break;
             default:
                 size = jsonData.size();
-                jObject = JSONArray.fromObject(jsonData);
+                 try {
+                    jsonString = mapper.writeValueAsString(jsonData);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting jsonString to json string.");
+                }
                 break;
         }
         jsonDataType = 0;
-        return "{totalCount:" + size + ",results:" + jObject.toString() + "}";
+        return "{totalCount:" + size + ",results:" + jsonString + "}";
     }
 
     @Secured({"ROLE_CHOX_ADMIN"})

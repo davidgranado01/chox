@@ -3,6 +3,9 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,7 +16,6 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfDelayService;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import net.sf.json.JSONArray;
 
 /**
  *
@@ -21,7 +23,8 @@ import net.sf.json.JSONArray;
  */
 public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHireMonitoringEcd> {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerHireMonitoringEcdAction.class);
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
 
     private ReasonOfDelayService reasonOfDelayService;
     private Integer iECDFormAccessRight;
@@ -131,7 +134,15 @@ public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHire
             seq++;
         }
 
-        jObject = JSONArray.fromObject(viewDatas);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jObject = mapper.writeValueAsString(viewDatas);
+            jObjectSize = viewDatas.size();
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewDatas to json string.");
+            jObject = null;
+        }
 
         return SUCCESS;
     }
@@ -139,7 +150,7 @@ public class InsurerHireMonitoringEcdAction extends ClaimModelAction<InsurerHire
     public String getJsonArrayData() {
 
         if (jObject != null) {
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
         }
         return "";
 

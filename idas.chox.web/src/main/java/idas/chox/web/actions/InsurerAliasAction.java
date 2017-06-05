@@ -2,16 +2,23 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAliasViewData;
-import org.springframework.security.access.annotation.Secured;
 
 public class InsurerAliasAction extends BaseAction implements ModelDriven<InsurerAlias>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerAliasAction.class);
 
     private int insurerId = -1;
     private int insurerAliasId = -1;
@@ -35,14 +42,20 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerAliases);
-        return "{totalCount:" + this.insurerAliases.size() + ",results:" + jObject.toString() + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(insurerAliases);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting insurerAliases to json string.");
+        }
+        return "{totalCount:" + insurerAliases.size() + ",results:" + jsonString + "}";
     }
 
     @Override
     public void prepare() throws Exception {
 
-        if (Integer.valueOf(this.insurerAliasId) <= 0) {
+        if (this.insurerAliasId <= 0) {
             model = new InsurerAlias();
         } else {
             model = adminInsurerService.getInsurerAlias(this.insurerAliasId);
@@ -89,7 +102,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         try {
 
             List<InsurerAlias> insurerAliasData = adminInsurerService.getInsurerAliases(this.insurerId);
-            insurerAliases = new ArrayList<InsurerAliasViewData>();
+            insurerAliases = new ArrayList<>();
 
             for (InsurerAlias h : insurerAliasData) {
                 insurerAliases.add(new InsurerAliasViewData(h));

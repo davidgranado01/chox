@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.security.access.AccessDeniedException;
-
-import net.sf.json.JSONArray;
 
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
@@ -34,7 +35,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private static final Logger LOG = LoggerFactory.getLogger(AttachmentAction.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int fileId;
-    private JSONArray jObject;
+    private String jObject;
+    private int jObjectSize;
     private InputStream fileStream;
     private String contentDisposition;
     private String contentType;
@@ -118,8 +120,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            LOG.debug("Returning attachments for grid:\n{}\n", jObject.toString());
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            LOG.debug("Returning attachments for grid:\n{}\n", jObject);
+            return "{totalCount:" + jObjectSize + ",results:" + jObject + "}";
         }
         return "";
     }
@@ -135,7 +137,14 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 viewDatas.add(new AttachmentViewData(attachment));
             }
 
-            this.jObject = JSONArray.fromObject(viewDatas);
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                jObject = mapper.writeValueAsString(viewDatas);
+                jObjectSize = viewDatas.size();
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting claimTypesList to json string.");
+                jObject = null; jObjectSize=0;
+            }
             return SUCCESS;
         } catch (Exception ex) {
             LOG.error("Exception thrown getting attachments: {}", ex.getMessage());
