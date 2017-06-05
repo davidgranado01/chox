@@ -1,16 +1,16 @@
 package idas.chox.web.viewdata;
 
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.BillingDetail;
 import idas.chox.core.util.DateHelper;
@@ -20,6 +20,7 @@ import idas.chox.core.util.DateHelper;
  * @author abrar
  */
 public class BillingDetailViewData {
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(BillingDetailViewData.class);
     private int billingDetailId;
     private String scheduleName;
     private String claimReferenceId;
@@ -44,49 +45,18 @@ public class BillingDetailViewData {
         this.reconciled = record.isReconciled();
     }
 
-    public static List<Map> mapListFromJsonString(String json) throws ParseException{
-    	JSONArray jay = JSONArray.fromObject( json );
-    	List<Map> list = new ArrayList<>();
-    	for (Iterator iterator = jay.iterator(); iterator.hasNext();) {
-			JSONObject object = (JSONObject) iterator.next();
-			list.add( fromJSONObjectToMap(object) );
-		}
+    public static List<Map<String, String>> mapListFromJsonString(String json) throws ParseException{
+        ObjectMapper mapper = new ObjectMapper();
+        List<Map<String, String>> ll = null;
+        try {
+            ll = mapper.readValue(json, new TypeReference<List<Map<String, String>>>(){});
+        } catch (IOException ex) {
+            LOG.error("Error converting json string '{}' to object: {}", json, ex.getMessage());
 
-    	return list;
-    }
-
-
-    private static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
-    	Map map = new HashMap();
-        map.put("reconciled", object.getBoolean("reconciled"));
-    	map.put("billingDetailId",object.getInt("billingDetailId"));    	
-    	map.put("comment", object.getString("comment"));    	
-    	map.put("amountReceived", new BigDecimal(object.getDouble("amountReceived")));    	
-    	map.put("triggerPoint", object.getString("triggerPoint"));    	
-        map.put("triggerDate", DateHelper.getEXTDateTimeFormat().parse(object.getString("triggerDate")));
-    	if ( object.getString("receivedDate").equals("")) {
-            map.put("receivedDate",null);
-    	}else{
-            try {
-                map.put("receivedDate", DateHelper.getDBDateTimeFormat().parse(object.getString("receivedDate").replace('T', ' ')));
-            } catch (ParseException p) {
-                try {
-                    map.put("receivedDate", DateHelper.getLocalDateTimeFormat().parse(object.getString("receivedDate")));
-                } catch (ParseException pe) {
-                    map.put("receivedDate", DateHelper.getEXTDateTimeFormat().parse(object.getString("receivedDate")));
-                }
-            }
         }
-    	return map;
+        return ll;
     }
 
-    public static BillingDetailViewData fromJSONObject(JSONObject object ){
-    	BillingDetailViewData detail = new BillingDetailViewData();
-    	detail.setBillingDetailId(object.getInt("billingDetailId"));
-    	detail.setAmountReceived(object.containsValue("")  ? null : BigDecimal.valueOf(object.getDouble("amountReceived")));
-    	detail.setComment(object.getString("comment"));
-    	return detail;
-    }
 
     public BillingDetailViewData() {}
 

@@ -97,7 +97,7 @@ public class BillingAction extends BaseAction {
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateBillingDetail() throws ParseException  {
 
-        List<Map> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
+        List<Map<String, String>> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
         billingService.updateBillingDetail(billingId, billingType,lm);
 
         setJsonData("{\"success\":\"True\",\"message\":\"saved\"}");

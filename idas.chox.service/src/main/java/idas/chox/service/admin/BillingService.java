@@ -1,6 +1,7 @@
 package idas.chox.service.admin;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +22,6 @@ import idas.chox.core.model.BillingDetail;
 import idas.chox.core.model.BillingInsurer;
 import idas.chox.core.model.BillingInsurerDetail;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingChoDetailService;
 import idas.chox.core.services.BillingChoService;
@@ -30,7 +30,7 @@ import idas.chox.core.services.BillingInsurerService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.util.CalcHelper;
+import idas.chox.core.util.DateHelper;
 
 public class BillingService {
 
@@ -81,7 +81,7 @@ public class BillingService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
-    public void updateBillingDetail(int billingId, String type, List<Map> lm) {
+    public void updateBillingDetail(int billingId, String type, List<Map<String, String>> lm) {
         if (type.equals(INSURER)) {
             updateBillingInsurerDetail(billingId, lm);
         } else {
@@ -89,17 +89,37 @@ public class BillingService {
         }
     }
 
-    public void updateBillingInsurerDetail(int billingId, List<Map> list) {
+    public void updateBillingInsurerDetail(int billingId, List<Map<String, String>> list) {
 
         for (Map changedFields : list) {
-            int detailId = (Integer) changedFields.get("billingDetailId");
+            int detailId = Integer.valueOf((String)changedFields.get("billingDetailId"));
             BillingInsurerDetail detail = getBillingInsurerDetailService().getObject(detailId);
-            detail.setComment(changedFields.get("comment").toString());
-            detail.setReceivedDate((Date) changedFields.get("receivedDate"));
-            detail.setTriggerDate((Date) changedFields.get("triggerDate"));
-            detail.setTriggerPoint((String) changedFields.get("triggerPoint"));
-            detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
-            detail.setReconciled((Boolean) changedFields.get("reconciled"));
+            detail.setComment((String)changedFields.get("comment"));
+            Date receivedDate = null;
+            try {
+                receivedDate = DateHelper.getEXTDateTimeFormat().parse((String)changedFields.get("receivedDate"));
+            } catch (ParseException p) {
+                try {
+                    receivedDate = DateHelper.getDBDateTimeFormat().parse(((String)changedFields.get("receivedDate")).replace('T', ' '));
+                } catch (ParseException ex) {
+                    try {
+                        receivedDate = DateHelper.getLocalDateTimeFormat().parse((String)changedFields.get("receivedDate"));
+                    } catch (ParseException ex1) {
+                        LOG.warn("Cannot convert string '{}' to receivedDate", (String)changedFields.get("receivedDate"));
+                    }
+                }
+            }
+            detail.setReceivedDate(receivedDate);
+            Date triggerDate = null;
+            try {
+                triggerDate = DateHelper.getEXTDateTimeFormat().parse((String)changedFields.get("triggerDate"));
+            } catch (ParseException p) {
+                LOG.warn("Cannot convert string '{}' to triggerDate", (String)changedFields.get("triggerDate"));
+            }
+            detail.setTriggerDate(triggerDate);
+            detail.setTriggerPoint((String)changedFields.get("triggerPoint"));
+            detail.setAmountReceived(new BigDecimal((String)changedFields.get("amountReceived")));
+            detail.setReconciled(Boolean.valueOf((String)changedFields.get("reconciled")));
             getBillingInsurerDetailService().updateObject(detail);
         }
         BillingInsurer is = getBillingInsurerService().getObject(billingId);
@@ -114,17 +134,37 @@ public class BillingService {
         getBillingInsurerService().updateObject(is);
     }
 
-    public void updateBillingChoDetail(int billingId, List<Map> list) {
+    public void updateBillingChoDetail(int billingId, List<Map<String, String>> list) {
 
         for (Map changedFields : list) {
-            int detailId = (Integer) changedFields.get("billingDetailId");
+            int detailId = Integer.valueOf((String)changedFields.get("billingDetailId"));
             BillingChoDetail detail = getBillingChoDetailService().getObject(detailId);
-            detail.setComment(changedFields.get("comment").toString());
-            detail.setReceivedDate((Date) changedFields.get("receivedDate"));
-            detail.setTriggerDate((Date) changedFields.get("triggerDate"));
-            detail.setTriggerPoint((String) changedFields.get("triggerPoint"));
-            detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
-            detail.setReconciled((Boolean) changedFields.get("reconciled"));
+            detail.setComment((String)changedFields.get("comment"));
+            Date receivedDate = null;
+            try {
+                receivedDate = DateHelper.getEXTDateTimeFormat().parse((String)changedFields.get("receivedDate"));
+            } catch (ParseException p) {
+                try {
+                    receivedDate = DateHelper.getDBDateTimeFormat().parse(((String)changedFields.get("receivedDate")).replace('T', ' '));
+                } catch (ParseException ex) {
+                    try {
+                        receivedDate = DateHelper.getLocalDateTimeFormat().parse((String)changedFields.get("receivedDate"));
+                    } catch (ParseException ex1) {
+                        LOG.warn("Cannot convert string '{}' to receivedDate", (String)changedFields.get("receivedDate"));
+                    }
+                }
+            }
+            detail.setReceivedDate(receivedDate);
+            Date triggerDate = null;
+            try {
+                triggerDate = DateHelper.getEXTDateTimeFormat().parse((String)changedFields.get("triggerDate"));
+            } catch (ParseException p) {
+                LOG.warn("Cannot convert string '{}' to triggerDate", (String)changedFields.get("triggerDate"));
+            }
+            detail.setTriggerDate(triggerDate);
+            detail.setTriggerPoint((String)changedFields.get("triggerPoint"));
+            detail.setAmountReceived(new BigDecimal((String)changedFields.get("amountReceived")));
+            detail.setReconciled(Boolean.valueOf((String)changedFields.get("reconciled")));
             getBillingChoDetailService().updateObject(detail);
         }
         BillingCho is = getBillingChoService().getObject(billingId);
