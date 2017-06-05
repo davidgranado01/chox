@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -69,7 +68,7 @@ public class KeoghsRequestServiceImpl extends SecureDataService implements Keogh
 //        criteria.createCriteria("claim").add(Restrictions.eq("fraudCheckStatus", 1));
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(KeoghsRequest.class)
                 .add(Restrictions.isNull("resultStatus"))
-                .createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
+                .createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("c.fraudCheckStatus", 1));
         criteria.addOrder(Order.desc("createdDate"));
         if (maxRequests > 0) {

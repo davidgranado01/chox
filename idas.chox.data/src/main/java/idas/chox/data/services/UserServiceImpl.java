@@ -26,7 +26,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -127,7 +126,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
         List users;
         
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class)
+                .createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.workgroups", "wgs", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("role.name", selectedUserRole));
         criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
         criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
@@ -144,11 +145,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
-            criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+            criteria.createAlias("this.workgroups", "wgs", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             criteria.add(Restrictions.in("wgs.id", selectedWorkgroupId));
         }
 
@@ -162,11 +163,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     @Override
     public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
-            criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+            criteria.createAlias("this.workgroups", "wgs", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             criteria.add(Restrictions.in("wgs.id", selectedWorkgroupId));
         }
 
@@ -181,7 +182,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-        criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         criteria.add(Restrictions.eq("status", true));
@@ -221,7 +222,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             }
 
             if (userRoleId > 0) {
-                criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
                 criteria.add(Restrictions.eq("role.id", userRoleId));
             }
         }

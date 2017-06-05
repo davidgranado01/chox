@@ -673,7 +673,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             visibilityRole.addAll(visibilityRole4);
 
             // remove any related tasks
-            criteria.createAlias("relatedTask", "t2", CriteriaSpecification.LEFT_JOIN);
+            criteria.createAlias("relatedTask", "t2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             
             Criterion relatedTaskRestriction;
             
@@ -703,22 +703,22 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             
             if (sort != null && sort.equalsIgnoreCase("choReference")) {
                 // left join on claim used here to sort the task by choReference.
-                criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
             
             if (sort != null && sort.equalsIgnoreCase("raisedBy")) {
                 // left join on claim used here to sort the task by choReference.
-                criteria.createAlias("this.raisedBy", "w", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.raisedBy", "w", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
             if (sort != null && sort.equalsIgnoreCase("insurerOwner")) {
                 // left join on claim used here to sort the task by choReference.
-                criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
-                criteria.createAlias("c.claimOwner", "w", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
+                criteria.createAlias("c.claimOwner", "w", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
             if (sort != null && sort.equalsIgnoreCase("choOwner")) {
                 // left join on claim used here to sort the task by choReference.
-                criteria.createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN);
-                criteria.createAlias("c.supplierClaimOwner", "w", CriteriaSpecification.LEFT_JOIN);
+                criteria.createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
+                criteria.createAlias("c.supplierClaimOwner", "w", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
             
             criteria.setFirstResult(start);

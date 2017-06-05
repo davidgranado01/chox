@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -68,6 +67,7 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
+import javax.persistence.criteria.JoinType;
         
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -752,18 +752,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Claim.class)
-                .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.claimAuditReview", "ar", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+                .createAlias("this.invoice", "iv", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.customer", "cs", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.workgroup", "wg", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.thirdParty", "tp", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.vehicleHire", "vh", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.chorganisation", "cho", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.createdBy", "cb", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.claimOwner", "co", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.supplierClaimOwner", "sco", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.hireMonitoringDetail", "hmd", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.claimAuditReview", "ar", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                .createAlias("this.insurer", "ins", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
 
         // For filter's workgroup check we need to set the restriction param to the searchCriteria, so that this restriction will be populated to the search panel when queue is clicked.
         if (searchCriteria.isWorkgroupCheck() && !searchCriteria.isManual()) {
@@ -1077,8 +1077,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE)));
                 // Don't show claims for CHOs that do not allow penalty charges (from BRE band)
                 DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "bbo")
-                        .createAlias("bbo.breBand", "bb", CriteriaSpecification.LEFT_JOIN)
-                        .createAlias("bb.insurer", "ins2", CriteriaSpecification.LEFT_JOIN)
+                        .createAlias("bbo.breBand", "bb", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                        .createAlias("bb.insurer", "ins2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                         .add(Restrictions.eq("ins2.id", getCurrentUser().getInsurer().getId()))
                         .add(Restrictions.eq("bb.allowManualInvoicePenaltyCharges", Boolean.FALSE));
 
@@ -1090,7 +1090,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
                 // Get the id's of the BRE Bands mapped to this CHO
                 DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
-                        .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                        .createAlias("brebandorganisation.chorganisation", "cho", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                         .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
                 bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
 
@@ -1875,8 +1875,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && claim.getVehicleHire().getVehicleRegistration().length() > 0
                 && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                    .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                    .createAlias("this.customer", "cust", CriteriaSpecification.LEFT_JOIN);
+                    .createAlias("this.vehicleHire", "vh", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                    .createAlias("this.customer", "cust", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
 
             criteria.add(Restrictions.ne("choReference", claim.getChoReference()));
             // Ignore blank customer claim numbers (i.e. they should not prevent an overlap match) - bug#1887

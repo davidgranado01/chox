@@ -1,7 +1,6 @@
 package idas.chox.data.services;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,8 +17,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.orm.hibernate4.HibernateCallback;
 
 import idas.chox.core.model.AuditTrail;
@@ -37,9 +38,6 @@ import idas.chox.core.services.BillingBandService;
 import idas.chox.core.services.BillingChoService;
 import idas.chox.core.util.CalcHelper;
 import idas.chox.core.util.DateHelper;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Subqueries;
 
 
 public class BillingChoServiceImpl extends SecureDataService implements BillingChoService {
@@ -222,7 +220,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
             
             DetachedCriteria criteria;
             DetachedCriteria billingChoDetailCriteria = DetachedCriteria.forClass(BillingChoDetail.class)
-                                                                .createAlias("claim", "c", CriteriaSpecification.LEFT_JOIN)
+                                                                .createAlias("claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                                                 .add(Restrictions.eq("c.chorganisation", cho))
                                                                 .setProjection(Property.forName("c.id"));
              
@@ -256,7 +254,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 if (band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO) && !band.isExcludeSupplementary()) {
                     // If trigger point is Accepeted Claims and we are billing for supplementaries, then bill at AwaitingInvoiceData (first audit trail entry)
                     criteria = DetachedCriteria.forClass(AuditTrail.class, "at")
-                                    .createAlias("claim", "claim", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "claim", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("claim.chorganisation", cho))
                                     .add(Restrictions.eq("claim.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.in("claim.claimType", ClaimType.getClaimTypeList(choBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
@@ -270,7 +268,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                     .setProjection(Projections.projectionList().add(Projections.property("at.claim")));
                 } else {
                     criteria = DetachedCriteria.forClass(AuditTrail.class, "at")
-                                    .createAlias("claim", "claim", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "claim", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("claim.chorganisation", cho))
                                     .add(Restrictions.eq("claim.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.in("claim.claimType", ClaimType.getClaimTypeList(choBillingBandMapping.getClaimType(), band.isExcludeSupplementary())))
@@ -298,7 +296,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                         
                     if (band.getTriggerStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
                         otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
-                                    .createAlias("claim", "c", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("c.chorganisation", cho))
                                     .add(Restrictions.eq("c.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(choBillingBandMapping.getClaimType())))
@@ -313,7 +311,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                     .setProjection(Projections.projectionList().add(Projections.property("c.id")));
 
                         criteria = DetachedCriteria.forClass(AuditTrail.class, "at2")
-                                    .createAlias("claim", "c2", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "c2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("c2.chorganisation", cho))
                                     .add(Restrictions.eq("c2.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.eq("c2.claimType", ClaimType.getSupplementaryClaimType(choBillingBandMapping.getClaimType())))
@@ -328,7 +326,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                     .setProjection(Projections.projectionList().add(Projections.property("claim")));
                     } else {
                         otherSupplemetaries = DetachedCriteria.forClass(AuditTrail.class, "at")
-                                    .createAlias("claim", "c", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("c.chorganisation", cho))
                                     .add(Restrictions.eq("c.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.eq("c.claimType", ClaimType.getSupplementaryClaimType(choBillingBandMapping.getClaimType())))
@@ -340,7 +338,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                                                          Restrictions.ltProperty("at.updateDate", "at2.updateDate")))
                                     .setProjection(Projections.projectionList().add(Projections.property("c.id")));
                         criteria = DetachedCriteria.forClass(AuditTrail.class, "at2")
-                                    .createAlias("claim", "c2", CriteriaSpecification.LEFT_JOIN)
+                                    .createAlias("claim", "c2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
                                     .add(Restrictions.eq("c2.chorganisation", cho))
                                     .add(Restrictions.eq("c2.insurer", choBillingBandMapping.getInsurer()))
                                     .add(Restrictions.eq("c2.claimType", ClaimType.getSupplementaryClaimType(choBillingBandMapping.getClaimType())))
