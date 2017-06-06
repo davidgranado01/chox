@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.struts2.interceptor.ParameterAware;
+import org.apache.struts2.interceptor.HttpParametersAware;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +33,15 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ReportAccessibility;
+import java.util.HashMap;
+import java.util.HashSet;
+import org.apache.struts2.dispatcher.HttpParameters;
 
-public class ReportAction extends BaseAction implements ParameterAware {
+public class ReportAction extends BaseAction implements HttpParametersAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportAction.class);
     private String actionResult;
-    private Map parametersMap;
+    private Map<String, Object> parametersMap;
     private InputStream reportStream;
     private String reportName;
     private BaseDataService baseDataService;
@@ -143,6 +145,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
             reportFile.deleteOnExit();
             LOG.info("Generating report '{}' to file '{}'...", reportName, reportFile.getAbsolutePath());
             fos = new FileOutputStream(reportFile);
+            synchronized (getSessionLock()) {
+                Map<String, Object> session = getSession();
+                session.put("reportFileLocation", reportFile.getAbsolutePath());
+            }
             report.build().writeTo(fos);
             fos.flush();
             fos.close();
@@ -153,44 +159,54 @@ public class ReportAction extends BaseAction implements ParameterAware {
             if (fos != null) {
                 try {
                     fos.close();
+                    if (reportFile != null) reportFile.delete();
                 } catch (IOException ex2) {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
             synchronized (getSessionLock()) {
-                getSession().put("exceptionThrown", true);
+                Map<String, Object> session = getSession();
+                if (session == null || session.get("reportFileLocation")==null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+                    LOG.info("Report generation '{}' threw exception but cancelled - not updating session", reportFile);
+                } else {
+                    session.put("exceptionThrown", true);
+                }
             }
+            return ERROR;
         } catch (Exception ex) {
             LOG.error("Exception in generation of report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
             if (fos != null) {
                 try {
                     fos.close();
+                    if (reportFile != null) reportFile.delete();
                 } catch (IOException ex2) {
                     LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
                 }
             }
             synchronized (getSessionLock()) {
-                getSession().put("exceptionThrown", true);
+                Map<String, Object> session = getSession();
+                if (session == null || session.get("reportFileLocation")==null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+                    LOG.info("Report generation '{}' threw exception but cancelled - not updating session", reportFile);
+                } else {
+                    session.put("exceptionThrown", true);
+                }
             }
+            return ERROR;
         }
 
-        LOG.trace("Updating session with report generation result");
+        // If reportFile in session is different tha the one we are using, the report has been cancelled and we can ignore
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
-            if (session != null && ! (session.get("exceptionThrown")==null ? Boolean.FALSE : (Boolean)session.get("exceptionThrown"))
-                    && ! (session.get("cancelExportOperation")==null ? Boolean.TRUE : (Boolean)session.get("cancelExportOperation"))) {
-                if (reportFile != null) {
-                    session.put("reportFileLocation", reportFile.getAbsolutePath());
-                    session.put("cancelExportOperation", false);
-                    session.put("isExportFinished", true);
-                    LOG.debug("Export finished,details added to session - report file written to: {}", reportFile.getAbsolutePath());
-                } else {
-                    LOG.error("Cannot add null reportFileLocation to session");
-                }
-            } else {
-                    LOG.debug("Exception thrown or report generation cancelled (or session null: {})", session);
+            if (session == null || session.get("reportFileLocation")==null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+                LOG.info("Report generation '{}' finished but cancelled - not updating session", reportFile);
+                reportFile.delete();
+                return SUCCESS;
             }
+            LOG.trace("Updating session with report generation finished result");
+            session.put("cancelExportOperation", false);
+            session.put("isExportFinished", true);
         }
+ 
         return SUCCESS;
     }
 
@@ -242,8 +258,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
                 }
-//                session.remove("reportFileLocation");
-//                session.remove("isExportFinished");
                 session.remove("exceptionThrown");
                 session.remove("cancelExportOperation");
             } else {
@@ -278,8 +292,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String cancelExportOperation() {
-        LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
         synchronized (getSessionLock()) {
+            LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
             Map<String, Object> session = getSession();
             session.put("cancelExportOperation", Boolean.TRUE);
             if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
@@ -295,14 +309,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(luItems);
-        } catch (JsonProcessingException ex) {
-            LOG.error("Error converting Suppliers luItems to json string.");
-        }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public String getInsurersJsonString() {
@@ -310,14 +317,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(luItems);
-        } catch (JsonProcessingException ex) {
-            LOG.error("Error converting Insurers luItems to json string.");
-        }
-        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + jsonString + "}");
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}");
     }
 
     public void setReportName(String report) {
@@ -329,9 +329,12 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     @Override
-    public void setParameters(Map parametersMap) {
-        this.parametersMap = parametersMap;
-        this.parametersMap.put("CurrentUser", this.getAuthenticatedUser());
+    public void setParameters(HttpParameters httParameters) {
+        parametersMap = new HashMap<>(httParameters.size()+1);
+        for (String key : httParameters.keySet()) {
+            parametersMap.put(key, httParameters.get(key).getObject());
+        }
+        parametersMap.put("CurrentUser", this.getAuthenticatedUser());
     }
 
     public InputStream getReportStream() {
