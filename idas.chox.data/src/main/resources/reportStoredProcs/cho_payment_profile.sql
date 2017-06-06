@@ -27,8 +27,9 @@ startDate = dat::Date;
 endDate = dat1::Date;
 RETURN QUERY
 
-SELECT ins.name AS "Insurer", getClaimType(c.claim_type) AS "Claim Type",
+SELECT ins.name AS "Insurer",
        c.cho_reference AS "Supplier Reference",
+       getClaimType(c.claim_type) AS "Claim Type",
        to_char(i.created_date, 'month') AS "Invoice Upload Month",
        c.claim_number AS "Insurer Claim Number",
        io.total_to_pay AS "Original Total To Pay",

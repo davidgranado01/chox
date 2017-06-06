@@ -1,6 +1,6 @@
 --DROP FUNCTION reviewReport(IN choId INTEGER, days INTEGER, status TEXT, dependsInvUploadDate BOOLEAN, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR);
 CREATE OR REPLACE FUNCTION reviewReport(IN choId INTEGER, days INTEGER, status TEXT, dependsInvUploadDate BOOLEAN, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR)
-  RETURNS TABLE("Supplier Reference" VARCHAR, "Insurer Claim Number" VARCHAR, "Insurer" VARCHAR, "Claim Type" VARCHAR, "Invoice Upload Date" TIMESTAMP, 
+  RETURNS TABLE("Supplier Reference" VARCHAR, "Insurer Claim Number" VARCHAR, "Insurer" VARCHAR, "Claim Type" TEXT, "Invoice Upload Date" TIMESTAMP, 
                 "Time Since Invoice Upload (Days)" INTEGER, "Current Status" VARCHAR, "Time In Current Status (Days)" INTEGER) AS
 $BODY$
 
