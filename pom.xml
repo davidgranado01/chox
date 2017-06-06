@@ -41,7 +41,7 @@
         <!--postgresql-jdbc.version>9.4-1202-jdbc42</postgresql-jdbc.version-->
         <!--postgresql-jdbc.version>42.1.1</postgresql-jdbc.version-->
         <!-- For Java 8, pgjdbc-ng driver -->
-        <postgresql-jdbc-ng.version>0.7.1</postgresql-jdbc-ng.version>
+        <postgresql-jdbc-ng.version>0.7</postgresql-jdbc-ng.version> <!-- use 0.7.1 for Java 8 -->
 
 
         <!-- Hikari CP -->
