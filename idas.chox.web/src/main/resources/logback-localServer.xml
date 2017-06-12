@@ -1,13 +1,13 @@
 <included>
-    <appender name="Hibernate" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="chox" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/hibernate.log</File>
+        <File>${catalina.base}/logs/idaschox.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/hibernate.log.%i</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -15,7 +15,24 @@
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
     </appender>
-    
+
+    <appender name="Hibernate" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <!-- or whenever the file size reaches 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
     <appender name="HibernateSQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/hibernateSQL.log</File>
@@ -50,7 +67,7 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SpringStruts" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-springstruts.log</File>
         <encoder>
@@ -67,7 +84,7 @@
         </rollingPolicy>
     </appender>
     
-    <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="WebServices" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/webServices.log</File>
         <encoder>
@@ -84,58 +101,7 @@
         </rollingPolicy>
     </appender>
     
-    <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
-        <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-    
-    <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
-        <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-    
-    <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox.log</File>
-        <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-    
-    <appender name="Q" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="Quartz" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-quartz.log</File>
         <encoder>
@@ -192,59 +158,66 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="org.springframework.scheduling" level="INFO" additivity="false">
-        <appender-ref ref="Q"/>
-    </logger>
-    <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
-        <appender-ref ref="Q"/>
-    </logger>
-    <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="INFO" additivity="false">
-        <appender-ref ref="Q"/>
-    </logger>
-    <logger name="org.apache" level="WARN" additivity="false">
-        <appender-ref ref="S"/>
-    </logger>
     <logger name="idas.chox.web.ws" level="INFO" additivity="false">
-        <appender-ref ref="W"/>
-    </logger>
-    <logger name="idas.chox.keoghs" level="INFO" additivity="false">
-        <appender-ref ref="R"/>
+        <appender-ref ref="WebServices"/>
     </logger>
     <logger name="org.apache.cxf" level="INFO" additivity="false">
-        <appender-ref ref="W"/>
+        <appender-ref ref="WebServices"/>
     </logger>
-    <logger name="net.sf.ehcache" level="WARN" additivity="false">
-        <appender-ref ref="C"/>
+    <logger name="org.apache.struts2" level="INFO" additivity="false">
+        <appender-ref ref="SpringStruts"/>
     </logger>
     <logger name="org.acegisecurity" level="WARN" additivity="false">
-        <appender-ref ref="S"/>
-    </logger>
-    <logger name="org.hibernate" level="WARN" additivity="false">
-        <appender-ref ref="H"/>
+        <appender-ref ref="SpringStruts"/>
     </logger>
     <logger name="net.sf.jxls" level="ERROR" additivity="false">
-        <appender-ref ref="S"/>
+        <appender-ref ref="SpringStruts"/>
     </logger>
     <logger name="com.opensymphony" level="WARN" additivity="false">
-        <appender-ref ref="S"/>
+        <appender-ref ref="SpringStruts"/>
     </logger>
     <logger name="org.springframework" level="WARN" additivity="false">
-        <appender-ref ref="S"/>
-    </logger>
-    <logger name="org.quartz" level="INFO" additivity="false">
-        <appender-ref ref="Q"/>
+        <appender-ref ref="SpringStruts"/>
     </logger>
     <logger name="org.apache.activemq" level="INFO" additivity="false">
         <appender-ref ref="MQ"/>
     </logger>
+    <logger name="org.quartz" level="INFO" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
+    <logger name="idas.chox.web.scheduler.StoredProcSchedulerJob" level="INFO" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
+    <logger name="org.springframework.scheduling" level="INFO" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
+    <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
+    <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="INFO" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
-        <appender-ref ref="R"/>
+        <appender-ref ref="chox"/>
+    </logger>
+    <logger name="idas.chox.keoghs" level="INFO" additivity="false">
+        <appender-ref ref="chox"/>
+    </logger>
+    <logger name="net.sf.ehcache" level="WARN" additivity="false">
+        <appender-ref ref="chox"/>
+    </logger>
+    <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
+    <logger name="org.apache.commons.jexl2.JexlEngine" level="ERROR" additivity="false">
+        <appender-ref ref="chox"/>
     </logger>
     <!-- Set following to DEBUG to log POST requests, to TRACE to log all requests and the POST response-->
     <logger name="idas.chox.web.RequestDumpFilter" level="INFO" additivity="false">
         <appender-ref ref="RD"/>
     </logger>
     <!-- Log Hibernate SQL -->
+    <logger name="org.hibernate" level="INFO" additivity="false">
+        <appender-ref ref="Hibernate"/>
+    </logger>
     <logger name="org.hibernate.stat" additivity="false" level="INFO">
         <appender-ref ref="Hibernate"/>
     </logger>
@@ -260,20 +233,11 @@
         <appender-ref ref="HibernateSQL"/>
     </logger-->
         
-    <!--logger name="org.hibernate" level="DEBUG" additivity="false">
-        <appender-ref ref="HibernateSQL"/>
-    </logger-->
-
-    <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
-    <logger name="org.apache.commons.jexl2.JexlEngine" level="ERROR" additivity="false">
-        <appender-ref ref="R"/>
-    </logger>
-
     <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
         <appender-ref ref="Hikari"/>
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="R"/>
+        <appender-ref ref="chox"/>
     </root>
 </included>
