@@ -209,6 +209,33 @@
         </property>
     </bean>
 
+    <bean id="quartzSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+                <prop key="hibernate.hikari.poolName">hikariQuartzCP</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">com.impossibl.postgres.jdbc.PGDataSource</prop>
+                <!--prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop-->
+                <prop key="hibernate.hikari.dataSource.database">${db.database}</prop>
+                <!--prop key="hibernate.hikari.dataSource.url">${db.url}</prop-->
+                <prop key="hibernate.hikari.dataSource.user">chox_quartz</prop>
+                <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
+                <prop key="hibernate.hikari.maximumPoolSize">${db.maxQuartzPoolSize}</prop>
+                <prop key="hibernate.hikari.autoCommit">true</prop>
+                <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->
+                <prop key="hibernate.hikari.maxLifetime">1800000</prop> <!-- default 1800000 (30mins) -->
+            </props>
+        </property>
+        <property name="mappingResources">
+            <ref bean="mappingResource" />
+        </property>
+    </bean>
+
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -218,7 +245,12 @@
         <property name="sessionFactory" ref="reportsSessionFactory"/>
     </bean>
     
+    <bean id="quartzTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+    </bean>
+    
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <tx:annotation-driven transaction-manager="quartzTransactionManager" proxy-target-class="true" />
     
     <tx:advice id="reportTransactionAdvice" transaction-manager="reportsTransactionManager">
         <tx:attributes>

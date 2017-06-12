@@ -262,44 +262,44 @@
     
     <!--  Stored Procedure call: addMissingEcdTask -->
     <bean id="addMissingEcdTaskJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="addMissingEcdTask"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
     <!--  Stored Procedure call: addMissingEcdTask -->
     <bean id="addInvoicePenaltyTaskJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="addInvoicePenaltyTask"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
     <!--  Stored Procedure call: applyAutoPenaltyCharge -->
     <bean id="applyAutoPenaltyChargeJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="applyAutoPenaltyCharge"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
     <!--  Stored Procedure call: updateDashboard -->
     <bean id="updateDashboardJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="updateDashboard"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
     
     <!--  Stored Procedure call: updateWorkflowTables -->
     <bean id="updateWorkflowTablesJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="updateWorkflowTables"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
     <!--  Stored Procedure call: updateRemainingSlaDays -->
     <bean id="updateRemainingSlaDaysJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
-        <property name="baseDataService" ref="baseDataService" />
+        <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="updateRemainingSlaDays"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
     <bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
