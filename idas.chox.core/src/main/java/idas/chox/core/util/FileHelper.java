@@ -24,7 +24,7 @@ public class FileHelper {
 
     public static Boolean isFileValid(File file){
         Boolean bFlag = false;
-        if(file.canRead() && file.isFile() && file.exists()){
+        if(file != null && file.isFile() && file.exists() && file.canRead()){
             bFlag = true;
         }
         return bFlag;
@@ -75,11 +75,9 @@ public class FileHelper {
 
         int result = 1;
 
-        if(file.length() <= 0){
+        if(file == null || file.length() <= 0){
             result = 0;
-        }
-
-        if(file.length() > MAX_FILE_SIZE_ALLOW){
+        } else if(file.length() > MAX_FILE_SIZE_ALLOW){
             result = -1;
         }
         return result;
