@@ -26,7 +26,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     @Override
     public InsurerAlias getInsurerByAliasName(String aliasName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
-        criteria.add(Restrictions.ilike("aliasName", aliasName.replace("&amp;", "").replaceAll("[^A-Za-z0-9]", "")));
+        criteria.add(Restrictions.ilike("aliasName", aliasName.replace("&amp;", "").replace("&gt;", "").replace("&lt;", "").replaceAll("[^A-Za-z0-9]", "")));
 //        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("[^A-Za-z0-9]", "")));
         InsurerAlias insurerAlias = (InsurerAlias) getByCriteria(criteria);
 
