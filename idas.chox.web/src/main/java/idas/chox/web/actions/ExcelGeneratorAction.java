@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -212,7 +214,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private boolean generateXML(List<Integer> claimIds) throws Exception {
-        
+        boolean cancelled = false;
         ClaimsGridExportReport gridExportReport = new ClaimsGridExportReport();
         gridExportReport.setDataService(dataService);
         gridExportReport.setReportDataService(reportDataService);
@@ -364,34 +366,21 @@ public class ExcelGeneratorAction extends BaseAction {
                 }
             }
         };
-
-        Thread t = new Thread(r);
-        t.setDaemon(true);
-        t.start();
+        ExecutorService executor = (ExecutorService )ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
 
         synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);
         }
-
+        Future<?> future = executor.submit(r);
+        
         try {
-            while (!isExportClaimOperationCancelled()) {
-                Thread.sleep(200);
-                if (!t.isAlive()) {
-                    LOG.debug("writing to file operation finished existing from the loop ");
-                    break;
-                }
+            while (!isExportClaimOperationCancelled() && !future.isDone()) {
+                Thread.sleep(100);
             }
 
             if (isExportClaimOperationCancelled()) {
+                cancelled = true;
                 LOG.debug("writing to file operation cancelled. in thread {}", Thread.currentThread().getId());
-                t.interrupt();
-                t.stop();
-                t.join();
-                if (!t.isAlive()) {
-                    LOG.debug("writing to xls thread is dead after cancelling the operation... ");
-                } else {
-                    LOG.debug("writing to xls thread is still alive even after cancelling the operation... ");
-                }
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
@@ -403,14 +392,14 @@ public class ExcelGeneratorAction extends BaseAction {
 
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
-            if (session.get("exceptionThrown") != null) {
+            if (!cancelled && session.get("exceptionThrown") != null) {
                 session.put("numberOfClaimsProcessed", null);
                 session.put("cancelExportOperation", false);
                 session.put("isExportFinished", true);
                 session.put("reportFileLocation", reportFile.getAbsolutePath());
                 session.put("writingToFile", false);
             }
-            else {
+            else if (!cancelled) {
                 throw new Exception("Error Generating Report.");
             }
         }

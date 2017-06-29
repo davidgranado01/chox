@@ -7,6 +7,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:applicationContext*.xml</param-value>
     </context-param>
+    <context-param>
+        <param-name>nr-chox_executors</param-name>
+        <param-value>20</param-value>
+    </context-param>
    
     <!-- Listeners -->
    <listener>
@@ -14,6 +18,10 @@
     </listener>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>idas.chox.web.ExecutorContextListener</listener-class>
     </listener>
 
     <!-- Filters -->
