@@ -12,6 +12,9 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,6 @@ import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
@@ -307,7 +308,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             } else {
                 InputStream streamIn = new FileInputStream(attachmentFile);
 
-                
                 String result = attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
                         category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated());
                 if (result != null) {
