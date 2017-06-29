@@ -79,6 +79,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private BordereauSchemaValidation bordereauSchemaValidation;
     protected ActivityEventGenerator activityEventGenerator;
     private EventBusWrapper eventBus;
+    private String clamscanLocation;
     
     @Override
     public String getErrorMessage() {
@@ -91,6 +92,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public void setClamscanLocation(String clamscanLocation) {
+        this.clamscanLocation = clamscanLocation;
     }
 
     @Override
@@ -594,7 +599,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
 
         try {
-            if (VirusCheckerUtility.isVirusPresent(fileContent)) {
+            if (VirusCheckerUtility.isVirusPresent(fileContent, clamscanLocation)) {
                 LOG.error("Virus detected in bordereau file : {}", uploadedFileFileName);
                 throw new AccessDeniedException("Virus detected");
             }

@@ -37,7 +37,13 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     protected TaskService taskService;
     protected UserService userService;
     private EventService eventService;
+    private String clamscanLocation;
 
+    public void setClamscanLocation(String clamscanLocation) {
+        this.clamscanLocation = clamscanLocation;
+    }
+
+    
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
@@ -135,7 +141,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             fileContent = new byte[safeLongToInt(length)];
             streamIn.read(fileContent);
             streamIn.close();
-            if (VirusCheckerUtility.isVirusPresent(fileContent)) {
+            if (VirusCheckerUtility.isVirusPresent(fileContent, clamscanLocation)) {
                 return "Error - Malware found in attachment";
             }
             result = addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);

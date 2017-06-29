@@ -2,8 +2,10 @@ package idas.chox.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,20 +16,18 @@ import org.slf4j.LoggerFactory;
 public class VirusCheckerUtility {
     private static final Logger LOG = LoggerFactory.getLogger(VirusCheckerUtility.class);
 
-    private static final String CLAMSCAN_LOCATION = "/usr/local/bin/clamscan";
-
-    public static boolean isVirusPresent(byte[] content) throws Exception {
+    public static boolean isVirusPresent(byte[] content, String clamscanLocation) throws Exception {
 
         boolean fileDirty = true;
         Process clamscanProcess;
         
         // Succeed if clamscan not present
-        if (!Files.exists(Paths.get(CLAMSCAN_LOCATION))) {
-            LOG.warn("Not scanning file as clamscan not found at location '{}',", CLAMSCAN_LOCATION);
+        if (!Files.exists(Paths.get(clamscanLocation))) {
+            LOG.warn("Not scanning file as clamscan not found at location '{}',", clamscanLocation);
             fileDirty = false;
         } else
             try {
-                clamscanProcess = Runtime.getRuntime().exec(new String[] { CLAMSCAN_LOCATION, "-" });
+                clamscanProcess = Runtime.getRuntime().exec(new String[] { clamscanLocation, "-" });
 
                 StringBuilder out = new StringBuilder();
                 StringBuilder err = new StringBuilder();
