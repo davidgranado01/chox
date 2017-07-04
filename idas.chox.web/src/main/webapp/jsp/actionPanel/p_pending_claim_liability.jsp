@@ -244,10 +244,10 @@ function refreshDesc(id){
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="PCLRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" id="PCLAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="PCLRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <input type="button" id="PCLAcknowledgeButtonId" value="Acknowledge" onclick="return doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" id="PCLReferToEngineerButtonId"value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                        <input type="button" id="PCLReferToEngineerButtonId"value="Refer To Engineer" onclick="return doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>
                                 </td>
                             </tr>
