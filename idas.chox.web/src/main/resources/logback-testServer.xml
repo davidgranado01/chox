@@ -103,6 +103,23 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="Hikari" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/hikariCP.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
+            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/hikariCP.log.%i</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <!-- or whenever the file size reaches 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
     <appender name="Quartz" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-quartz.log</File>
@@ -236,6 +253,9 @@
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="chox"/>
         <appender-ref ref="mail"/>
+    </logger>
+    <logger name="com.zaxxer.hikari" level="INFO" additivity="false">
+        <appender-ref ref="Hikari"/>
     </logger>
     <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
     <logger name="org.apache.commons.jexl2.JexlEngine" level="ERROR" additivity="false">
