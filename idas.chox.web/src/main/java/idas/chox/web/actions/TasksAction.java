@@ -186,11 +186,13 @@ public class TasksAction extends BaseAction {
     }
 
     public String getJsonArrayData() {
+        String jsonString;
         if (jObject != null) {
-            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:").append(jObject).append("}").toString();
-            return jsonString;
+            jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:").append(jObject).append("}").toString();
+        } else { // returning count only
+            jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",colorCode:'").append(colorCode).append("',results:[]}").toString();
         }
-        return "";
+        return jsonString;
     }
 
     public String getSortedTasks() {
@@ -277,6 +279,35 @@ public class TasksAction extends BaseAction {
         } catch (JsonProcessingException ex) {
             LOG.error("Error converting viewData for sorted visible tasks to json string.");
         }
+        return SUCCESS;
+    }
+
+    public String getVisibleTaskCount() {
+        boolean showInsurerRole = false;
+
+        tasks = null;
+        jObject = null;
+        
+        if (getIsInsurer() || getIsChoxAdmin()) {
+            showInsurerRole = true;
+        }
+
+        List<TaskViewData> viewData = new ArrayList<>();
+        LOG.debug("Calling taskService to get visible tas counts");
+        if (hideCompleted) {
+            if (this.getIsCHO()) {
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+            } else {
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+            }
+        } else {
+            if (this.getIsCHO()) {
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+            } else {
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+            }
+        }
+
         return SUCCESS;
     }
 

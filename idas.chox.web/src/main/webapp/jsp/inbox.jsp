@@ -420,7 +420,7 @@
                 return;
             }
             choxExtAjaxRequest({
-                        url: '/prv/p/getVisibleTasks.action',
+                        url: '/prv/p/getVisibleTaskCount.action',
                         success : function(response, opts) {
                             var resp = Ext.decode(response.responseText);
                             if (resp && tabs) {

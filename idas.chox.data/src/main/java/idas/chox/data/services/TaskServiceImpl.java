@@ -52,6 +52,19 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
+    public int getAllVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+        WebUser webUser = null;
+        if (webUserId > 0) {
+            webUser = (WebUser) get(WebUser.class, webUserId);
+            if (webUser == null) {
+                LOG.warn("No such user found with id={}", webUserId);
+                throw new IllegalArgumentException("No such user.");
+            }
+        }
+        return getTaskCount(webUser, false, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+    }
+
+    @Override
     public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir) {
         return getTasks(null, true, false, false, start, limit, sort, dir, true);
     }
@@ -59,6 +72,19 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     @Override
     public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
         return getTasks(webUserId, true, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+    }
+
+    @Override
+    public int getIncompleteVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+        WebUser webUser = null;
+        if (webUserId > 0) {
+            webUser = (WebUser) get(WebUser.class, webUserId);
+            if (webUser == null) {
+                LOG.warn("No such user found with id={}", webUserId);
+                throw new IllegalArgumentException("No such user.");
+            }
+        }
+        return getTaskCount(webUser, true, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     @Override
@@ -326,6 +352,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
     }
 
+    private int getTaskCount(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+        SearchResult result = getTasks(user, incompleteOnly, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+        
+        return result.getTotalCount();
+    }
+    
     private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
 
         boolean isCHO = false;

@@ -492,6 +492,10 @@
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         
+        <action name="getVisibleTaskCount" class="idas.chox.web.actions.TasksAction" method="getVisibleTaskCount">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        
         <action name="getClaimTasks" class="idas.chox.web.actions.TasksAction" method="getTasksByClaim">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
