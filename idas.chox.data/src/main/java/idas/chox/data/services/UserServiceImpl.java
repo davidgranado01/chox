@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import java.util.Set;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderIterator;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.client.CookieStore;
@@ -436,20 +439,33 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
                     try (CloseableHttpResponse kbbsResponse = httpclient.execute(httppost, context)) {
                         int statusCode = kbbsResponse.getStatusLine().getStatusCode();
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("KBBS Response (code {}): {}", statusCode, kbbsResponse.toString());
+                            HeaderIterator it = kbbsResponse.headerIterator();
+                            while (it.hasNext()) {
+                                Header h = it.nextHeader();
+                                LOG.debug("Header: {} = {}", h.getName(), h.getValue());
+                            }
+                        }
                         if (statusCode == HttpStatus.SC_OK) {
                             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-//                            String content = responseHandler.handleResponse(kbbsResponse);
-//                            JSONObject json = JSONObject.fromObject(content);
-//                            String authenticationToken = json.getString("AuthenticationToken");
-                            String authenticationToken = kbbsResponse.getHeaders("AuthenticationToken")[0].getValue();
-//                            String authenticationToken = json.getString("AuthenticationToken");
+                            String content = responseHandler.handleResponse(kbbsResponse);
+                            LOG.debug("Content: {}", content);
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode jNode = mapper.readTree(content);
+                            JsonNode authenticationTokenNode = jNode.get("AuthenticationToken");
+                            LOG.debug("authenticationTokenNode: {}", authenticationTokenNode.textValue());
+                            String authenticationToken = authenticationTokenNode.textValue();
+
                             LOG.debug("----------------------------------------");
                             LOG.debug("KBBS AuthenticationToken for user '{}': {}", user.getFullName(), authenticationToken);
                             LOG.debug("----------------------------------------");
-                            return authenticationToken;
+                            return authenticationToken == null || authenticationToken.isEmpty() ? null : authenticationToken;
                         }
                     } catch (IOException | ParseException e) {
                         LOG.error("Error Parsing response from KBBS authentication: {}", e.getMessage(), e);
+                    } catch (Exception ex) {
+                        LOG.error("Error Parsing response from KBBS authentication: {}", ex.getMessage(), ex);
                     }
                 }
             }
