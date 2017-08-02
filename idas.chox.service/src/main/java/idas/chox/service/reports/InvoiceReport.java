@@ -34,7 +34,7 @@ public class InvoiceReport implements Report {
     }
     
     public InvoiceReport() {
-        reportParameterNames = new ArrayList<String>();
+        reportParameterNames = new ArrayList<>();
     }
 
     @Override
@@ -50,8 +50,8 @@ public class InvoiceReport implements Report {
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
 
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
-        Map<String, Object> paramMap = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
 
         try {
 
@@ -108,7 +108,7 @@ public class InvoiceReport implements Report {
             String rptCreditHireVat = "";
 
             // GET CREDIT HIRE INFORMAITON
-            if (!supplierId.equalsIgnoreCase("") && supplierId != null) {
+            if (supplierId != null && !supplierId.equalsIgnoreCase("")) {
                 creditHireId = Integer.parseInt(supplierId);
                 if (creditHireId > 0) {
                     Chorganisation chorganisation = getChorganisation(supplierId);
@@ -125,25 +125,21 @@ public class InvoiceReport implements Report {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Select invoice.*,percentage_liability_accepted,percentage_liability_cho from rpt_claim_invoice invoice ");
+            sb.append("select * from rpt_claim_invoice ");
             sb.append("where insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
-            if (dataStart != null) {
-                sb.append("and date_trunc('day', invoice.created_date) >= :pInvUploadDateFrom ");
-                paramMap.put("pInvUploadDateFrom", dataStart);
-            }
+            sb.append("and date_trunc('day', created_date) >= :pInvUploadDateFrom ");
+            paramMap.put("pInvUploadDateFrom", dataStart);
 
-            if (dataEnd != null) {
-                sb.append("and date_trunc('day', invoice.created_date) <= :pInvUploadDateTo ");
-                paramMap.put("pInvUploadDateTo", dataEnd);
-            }
+            sb.append("and date_trunc('day', created_date) <= :pInvUploadDateTo ");
+            paramMap.put("pInvUploadDateTo", dataEnd);
 
             if (SupplierRefs.length() > 0) {
-                sb.append("and invoice.cho_reference in (").append(SupplierRefs).append(") ");
+                sb.append("and cho_reference in (").append(SupplierRefs).append(") ");
             }
 
             if (iWorkgroupId > 0) {
-                sb.append("and invoice.workgroup_id = ").append(iWorkgroupId).append(" ");
+                sb.append("and workgroup_id = ").append(iWorkgroupId).append(" ");
             }
 
             sb.append("order by cho_reference asc");
@@ -153,7 +149,7 @@ public class InvoiceReport implements Report {
 
             List result = reportDataService.getReportData(query, paramMap);
 
-            List<PaymentReport> payments = new ArrayList<PaymentReport>();
+            List<PaymentReport> payments = new ArrayList<>();
 
             for (Object o : result) {
                 Map data = (Map) o;
