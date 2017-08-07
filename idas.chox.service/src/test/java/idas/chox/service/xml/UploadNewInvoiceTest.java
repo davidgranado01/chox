@@ -2,6 +2,7 @@ package idas.chox.service.xml;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import junit.framework.Assert;
 
@@ -36,25 +37,22 @@ public class UploadNewInvoiceTest extends BaseTest {
     }
 
     @Before
-    @Transactional
+    @Transactional(readOnly = false)
     public void initialize() throws Exception {
-
-        List<String> choReferences = new ArrayList<String>();
         //upload 7 new claims
         String fileName = "UnitTest-NewClaim_Base.xml";
         File testFile = new ClassPathResource(fileName).getFile();
-        Document document = DocumentHelper.getDocumentFromFile(testFile);
-        List<ClaimResult> claimResults = uploadClaimXMLService.formClaimResults(document);
-        Assert.assertEquals(1, claimResults.size());
-
-        for (ClaimResult claimResult : claimResults) {
-            bordereauReader.execute(claimResult);
-            Assert.assertEquals(ClaimParseStatus.NEW_CLAIM, claimResult.getClaimParseStatus());
-            uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences);
-        }
-
+        boolean uploadStatus = uploadClaimXMLService.saveUploadedFile(testFile, fileName);
+        Assert.assertTrue(uploadStatus);
+        
+        Integer id = (bordereauService.getBordereauByFileName(fileName)).getId();
+        Assert.assertNotNull(id);
+        
+        boolean processStatus = uploadClaimXMLService.processFile(id, new HashMap());
+        Assert.assertTrue(processStatus); 
     }
 
+    
     @Test
     @Transactional
     public void updateInvoiceTest() throws Exception {
@@ -66,7 +64,7 @@ public class UploadNewInvoiceTest extends BaseTest {
 
         String fileName = "UnitTest-NewClaim_01.xml";
         File testFile = new ClassPathResource(fileName).getFile();
-        List<String> choReferences = new ArrayList<String>();
+        List<String> choReferences = new ArrayList<>();
 
         Document document = DocumentHelper.getDocumentFromFile(testFile);
         List<ClaimResult> claimResults = uploadClaimXMLService.formClaimResults(document);

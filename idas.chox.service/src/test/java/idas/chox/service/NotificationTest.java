@@ -1,9 +1,9 @@
 package idas.chox.service;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -12,28 +12,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.model.Notification;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.DocumentHelper;
-import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.data.notifications.NotificationType;
 import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.test.BaseTest;
 
 public class NotificationTest extends BaseTest {
 
-    private List<ClaimResult> claimResults;
-    private static final String path = "andy.20090825.1test.xml";
+    private static final String PATH = "andy.20090825.1test.xml";
     
     @Before
     public void setUpClass() throws Exception {
         fakeSecurityInfoProvider.setIsCHO(true);
-        claimResults = loadBordereauResult(path);
+        loadBordereauResult(PATH);
     }
 
     @After
@@ -42,16 +40,11 @@ public class NotificationTest extends BaseTest {
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void testECDUpdatedNotification() throws Exception {
         
-        Claim claim = claimResults.get(0).getClaim();
-        claim.setClaimNumber("0001");
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim claim = claimService.getClaimByCHOReferenceNumber("CF125341");
         
-        claimService.save(claim);
-
         EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
         activity.setReasonOfDelayId(1);
         activity.setEcdDate(new Date());
@@ -60,19 +53,16 @@ public class NotificationTest extends BaseTest {
         activity.setSequence(1);
         activity.process(claim);
 
-        
-        Assert.assertEquals(notificationService.getNotifications(claim.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(claim.getId()).get(0).getMessage().equals("ECD Update"));
+        List<Notification> notifications = claim.getNotifications();
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("ECD Update"));
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void testAnomalousECDNotification() throws Exception {
 
-        Claim claim = claimResults.get(0).getClaim();
-        claim.setClaimNumber("0001");
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim claim = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
         activity.setReasonOfDelayId(1);
@@ -81,11 +71,10 @@ public class NotificationTest extends BaseTest {
         activity.setUpdateInsurer(true);
         activity.setSequence(1);
         activity.process(claim);
-        
-        notificationService.checkForAnomalies(claim, NotificationType.EcdAnomalousNotification.getType());
-        
-        Assert.assertEquals(notificationService.getNotifications(claim.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(claim.getId()).get(0).getMessage().equals("ECD Update"));
+                
+        List<Notification> notifications = claim.getNotifications();
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("ECD Update"));
     }
 
 /*
@@ -124,12 +113,10 @@ public class NotificationTest extends BaseTest {
 */
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testAnomalousMonitorigDetailNotification() throws Exception {
 
-        Claim c = claimResults.get(0).getClaim();
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim c = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
         hmd.setClaim(c);
@@ -153,20 +140,19 @@ public class NotificationTest extends BaseTest {
         claimService.save(c);
         notificationService.checkForAnomalies(c, NotificationType.TotalLossAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("The CHO has indicated the claim is now a Total Loss"));
+        List<Notification> notifications = c.getNotifications();
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("The CHO has indicated the claim is now a Total Loss"));
     }
     
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testDetectSundayAnomalous() throws Exception {
 
         Date date = DateHelper.getLocalDateFormat().parse("27/01/2013");
         
-        Claim c = claimResults.get(0).getClaim();
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim c = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
         hmd.setClaim(c);
@@ -186,20 +172,19 @@ public class NotificationTest extends BaseTest {
         claimService.checkRepairBookedInDateAnomaly(c);
         notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
+        List<Notification> notifications = c.getNotifications();
+        Assert.assertEquals(2, notifications.size()); 
+        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
         
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testDetectWeekdayAnomalous() throws Exception {
 
         Date date = DateHelper.getLocalDateFormat().parse("24/01/2013");
         
-        Claim c = claimResults.get(0).getClaim();
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim c = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
         hmd.setClaim(c);
@@ -218,19 +203,18 @@ public class NotificationTest extends BaseTest {
         claimService.checkRepairBookedInDateAnomaly(c);
         notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 0); 
+        List<Notification> notifications = c.getNotifications();
+        Assert.assertEquals(0, notifications.size()); 
         
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testDetectSaturdayAnomalous() throws Exception {
 
         Date date = DateHelper.getLocalDateFormat().parse("26/01/2013");
         
-        Claim c = claimResults.get(0).getClaim();
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim c = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
         hmd.setClaim(c);
@@ -249,20 +233,19 @@ public class NotificationTest extends BaseTest {
         claimService.checkRepairBookedInDateAnomaly(c);
         notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("Repair booked in on Saturday and the CHO's Customer's vehicle was driveable."));
+        List<Notification> notifications = c.getNotifications();
+        Assert.assertEquals(2, notifications.size()); 
+        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Saturday and the CHO's Customer's vehicle was driveable."));
         
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testDetectFridayAnomalous() throws Exception {
 
         Date date = DateHelper.getLocalDateFormat().parse("25/01/2013");
         
-        Claim c = claimResults.get(0).getClaim();
-        Assert.assertNotNull(claimResults);
-        Assert.assertTrue(claimResults.size() > 0);
+        Claim c = claimService.getClaimByCHOReferenceNumber("CF125341");
         
         HireMonitoringDetail hmd = new HireMonitoringDetail();
         hmd.setClaim(c);
@@ -282,24 +265,25 @@ public class NotificationTest extends BaseTest {
         claimService.checkRepairBookedInDateAnomaly(c);
         notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
-        Assert.assertEquals(notificationService.getNotifications(c.getId()).size(), 1); 
-        Assert.assertTrue(notificationService.getNotifications(c.getId()).get(0).getMessage().equals("Repair booked in on Friday and the CHO's Customer's vehicle was driveable."));
+        List<Notification> notifications = c.getNotifications();
+        Assert.assertEquals(2, notifications.size()); 
+        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Friday and the CHO's Customer's vehicle was driveable."));
         
     }
     
     
 
-    private List<ClaimResult> loadBordereauResult(String path) throws Exception {
-        File file = new ClassPathResource(path).getFile();
-        int totalProcessed = 0;
-        List<String> choReferences = new ArrayList<String>();
-        Document document = DocumentHelper.getDocumentFromFile(file);
-        List<ClaimResult> claimResults = this.uploadClaimXMLService.formClaimResults(document);
-        for (ClaimResult claimResult : claimResults) {
-            if (this.uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences)) {
-                totalProcessed++;
-            }
-        }
-        return claimResults;
+    private boolean loadBordereauResult(String path) throws Exception {
+        File testFile = new ClassPathResource(path).getFile();
+        boolean uploadStatus = uploadClaimXMLService.saveUploadedFile(testFile, path);
+        Assert.assertTrue(uploadStatus);
+        
+        Integer id = (bordereauService.getBordereauByFileName(path)).getId();
+        Assert.assertNotNull(id);
+        
+        boolean processStatus = uploadClaimXMLService.processFile(id, new HashMap());
+        Assert.assertTrue(processStatus); 
+
+        return processStatus;
     }
 }

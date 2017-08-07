@@ -35,7 +35,6 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     }
 
     
-    @Transactional
     private Claim getTestClaim() {
         Claim claim = new Claim();
         claim.setChorganisation(chorganisationService.getChorganisation(1006));
@@ -55,6 +54,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testSkipped_GTA() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.GTA);
@@ -68,6 +68,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_Insurer() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.INSURER_VS_INSURER);
@@ -81,6 +82,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_InsurerUpload() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.INSURER_INVOICE);
@@ -94,6 +96,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_ruleoff() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setSubscriberCheckRejectedClaims(false);
@@ -106,6 +109,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_notRejectedAndAgreed() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);

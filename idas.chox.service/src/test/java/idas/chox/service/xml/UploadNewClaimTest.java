@@ -1,7 +1,7 @@
 package idas.chox.service.xml;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import junit.framework.Assert;
 
@@ -36,27 +36,24 @@ public class UploadNewClaimTest extends BaseTest {
     }
     
     @Before
-    @Transactional
+    @Transactional(readOnly = false)
     public void initialize() throws Exception {
-
         //upload 7 new claims
         String fileName = "UnitTest-NewClaim_Base.xml";
         File testFile = new ClassPathResource(fileName).getFile();
-        Document document = DocumentHelper.getDocumentFromFile(testFile);
-        List<ClaimResult> claimResults = this.uploadClaimXMLService.formClaimResults(document);
-        Assert.assertEquals(1, claimResults.size());
-
-        for (ClaimResult claimResult : claimResults) {
-            bordereauReader.execute(claimResult);
-            Assert.assertEquals(ClaimParseStatus.NEW_CLAIM, claimResult.getClaimParseStatus());
-            uploadClaimXMLService.doProcessBordereauResult(claimResult, new ArrayList<String>(0));
-        }
-       
-
+        boolean uploadStatus = uploadClaimXMLService.saveUploadedFile(testFile, fileName);
+        Assert.assertTrue(uploadStatus);
+        
+        Integer id = (bordereauService.getBordereauByFileName(fileName)).getId();
+        Assert.assertNotNull(id);
+        
+        boolean processStatus = uploadClaimXMLService.processFile(id, new HashMap());
+        Assert.assertTrue(processStatus); 
     }
 
+    
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void updateClaimsTest() throws Exception {
         
         Claim claim1BeforeUpload = claimService.getClaimByCHOReferenceNumber("CF125341");

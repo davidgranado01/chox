@@ -33,7 +33,6 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
     }
 
     
-    @Transactional
     private Claim getTestClaim() {
         Claim claim = new Claim();
 
@@ -76,6 +75,7 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
     }
    
     @Test
+    @Transactional
     public void testPassed() throws IOException {
         getTestClaim();
         
@@ -111,6 +111,7 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testFailed() throws IOException {
         getTestClaim();
         
