@@ -22,7 +22,7 @@ public class VirusCheckerUtility {
         Process clamscanProcess;
         
         // Succeed if clamscan not present
-        if (!Files.exists(Paths.get(clamscanLocation))) {
+        if (clamscanLocation == null || !Files.exists(Paths.get(clamscanLocation))) {
             LOG.warn("Not scanning file as clamscan not found at location '{}',", clamscanLocation);
             fileDirty = false;
         } else
