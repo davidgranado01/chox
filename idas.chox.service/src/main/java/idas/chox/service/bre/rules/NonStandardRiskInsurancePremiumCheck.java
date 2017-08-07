@@ -24,7 +24,8 @@ public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getBreBand().isNonStandardRiskInsurancePremiumCheck()) {
+                && claim.getBreBand().isNonStandardRiskInsurancePremiumCheck() && claim.getInvoice().getNonStandardInsurancePremiumFee() != null
+                && claim.getBreBand().getNonStandardInsurancePremiumCeilingTolerance() != null) {
 
             boolean success = true;
 
