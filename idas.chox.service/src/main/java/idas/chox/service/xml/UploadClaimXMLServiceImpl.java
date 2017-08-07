@@ -504,7 +504,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         } catch (Exception ex) {
             LOG.error("Error thrown while getting claims from brodereau with id={} ", bordereau.getId(), ex);
             setErrorMessage("An unexpected error occurred while processing this Bordereau.");
-            setBordreauProcessFilureStatus(bordereau);
+            setBordreauProcessFailureStatus(bordereau);
             return false;
         }
         /*
@@ -540,7 +540,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
             setErrorMessage("An unexpected error has occurred - please report to CHOX support.");
-            setBordreauProcessFilureStatus(bordereau);
+            setBordreauProcessFailureStatus(bordereau);
             return false;
         }
 
@@ -852,7 +852,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereauService.saveBordereau(bordereau);
     }
 
-    private void setBordreauProcessFilureStatus(Bordereau bordereau) {
+    private void setBordreauProcessFailureStatus(Bordereau bordereau) {
         bordereau.setStatus("Error");
         bordereau.setBeingProcessed(false);
         bordereau.setProcessed(true);
