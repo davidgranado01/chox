@@ -1,0 +1,680 @@
+2017-07-28 12:08:06,114 INFO o.a.j.u.JMeterUtils: Setting Locale to en_US
+2017-07-28 12:08:06,129 INFO o.a.j.JMeter: Loading user properties from: /home/chox/Software/apache-jmeter-3.2/bin/user.properties
+2017-07-28 12:08:06,130 INFO o.a.j.JMeter: Loading system properties from: /home/chox/Software/apache-jmeter-3.2/bin/system.properties
+2017-07-28 12:08:06,135 INFO o.a.j.JMeter: Copyright (c) 1998-2017 The Apache Software Foundation
+2017-07-28 12:08:06,135 INFO o.a.j.JMeter: Version 3.2 r1790748
+2017-07-28 12:08:06,135 INFO o.a.j.JMeter: java.version=1.8.0_131
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: os.name=Linux
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: os.arch=amd64
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: os.version=2.6.18-308.1.1.el5
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: file.encoding=UTF-8
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: Max memory     =2147483648
+2017-07-28 12:08:06,136 INFO o.a.j.JMeter: Available Processors =8
+2017-07-28 12:08:06,141 INFO o.a.j.JMeter: Default Locale=English (United States)
+2017-07-28 12:08:06,141 INFO o.a.j.JMeter: JMeter  Locale=English (United States)
+2017-07-28 12:08:06,141 INFO o.a.j.JMeter: JMeterHome=/home/chox/Software/apache-jmeter-3.2
+2017-07-28 12:08:06,142 INFO o.a.j.JMeter: user.dir  =/home/chox/choxLoadTests
+2017-07-28 12:08:06,142 INFO o.a.j.JMeter: PWD       =/home/chox/choxLoadTests
+2017-07-28 12:08:06,147 INFO o.a.j.JMeter: IP: 81.187.97.167 Name: dev-uk02.idasnetwork.com FullName: dev-uk02.idasnetwork.com
+2017-07-28 12:08:06,149 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'/home/chox/choxLoadTests/prodResults-5.7-test1b'
+2017-07-28 12:08:06,152 INFO o.a.j.s.FileServer: Default base='/home/chox/choxLoadTests'
+2017-07-28 12:08:06,152 INFO o.a.j.s.FileServer: Set new base='/home/chox/choxLoadTests'
+2017-07-28 12:08:06,271 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2017-07-28 12:08:06,287 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2017-07-28 12:08:06,293 INFO o.a.j.s.SaveService: Using SaveService properties version 3.2
+2017-07-28 12:08:06,300 INFO o.a.j.s.SaveService: Loading file: CHOX_Load_INS_CHO_TEST_5.7.jmx
+2017-07-28 12:08:06,410 INFO o.a.j.p.h.c.CacheManager: Will only cache the following methods: [GET]
+2017-07-28 12:08:06,413 INFO o.a.j.p.h.c.CookieManager: Settings: Delete null: true Check: true Allow variable: true Save: false Prefix: COOKIE_
+2017-07-28 12:08:06,517 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-07-28 12:08:06,517 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-07-28 12:08:06,517 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-07-28 12:08:06,517 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-07-28 12:08:06,518 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2017-07-28 12:08:06,518 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2017-07-28 12:08:08,100 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
+2017-07-28 12:08:08,101 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /home/chox/Software/apache-jmeter-3.2/bin/proxyserver.jks
+2017-07-28 12:08:08,179 INFO o.a.j.JMeter: Creating summariser <summary>
+2017-07-28 12:08:08,186 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2017-07-28 12:08:08,186 INFO o.a.j.r.d.ReportGenerator: Will generate report at end of test from  results file: 25_Threads_chox_prodTEST_5.7.jtl
+2017-07-28 12:08:08,186 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: /home/chox/Software/apache-jmeter-3.2/bin/reportgenerator.properties
+2017-07-28 12:08:08,187 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2017-07-28 12:08:08,194 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction : {} is empty, not APDEX per transaction customization
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2017-07-28 12:08:08,198 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2017-07-28 12:08:08,199 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2017-07-28 12:08:08,199 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2017-07-28 12:08:08,206 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,206 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,206 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,206 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,207 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,207 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,207 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,207 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,208 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-07-28 12:08:08,209 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2017-07-28 12:08:08,209 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2017-07-28 12:08:08,210 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2017-07-28 12:08:08,216 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2017-07-28 12:08:08,217 INFO o.a.j.s.SampleEvent: List of sample_variables: [jsessionid, bordereauFileId, username]
+2017-07-28 12:08:08,217 INFO o.a.j.s.SampleEvent: List of sample_variables: [jsessionid, bordereauFileId, username]
+2017-07-28 12:08:08,221 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2017-07-28 12:08:08,221 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2017-07-28 12:08:08,809 INFO o.a.j.JMeter: Running test (1501240088809)
+2017-07-28 12:08:08,897 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : CHO Action Thread Group
+2017-07-28 12:08:08,897 INFO o.a.j.e.StandardJMeterEngine: Starting 25 threads for group CHO Action Thread Group.
+2017-07-28 12:08:08,897 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:08,898 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=25 ramp-up=600 perThread=24000.0 delayedStart=false
+2017-07-28 12:08:08,936 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2017-07-28 12:08:08,937 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2017-07-28 12:08:08,937 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2017-07-28 12:08:08,937 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2017-07-28 12:08:08,956 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-1
+2017-07-28 12:08:08,967 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv Alias: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv@93740343
+2017-07-28 12:08:09,231 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2017-07-28 12:08:09,231 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 2 : CHO Bordereau Upload Thread Group
+2017-07-28 12:08:09,231 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group CHO Bordereau Upload Thread Group.
+2017-07-28 12:08:09,231 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:09,231 INFO o.a.j.t.ThreadGroup: Starting thread group... number=2 threads=1 ramp-up=500 perThread=500000.0 delayedStart=false
+2017-07-28 12:08:09,233 INFO o.a.j.t.ThreadGroup: Started thread group number 2
+2017-07-28 12:08:09,233 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 3 : Activity Monitoring Users
+2017-07-28 12:08:09,233 INFO o.a.j.e.StandardJMeterEngine: Starting 20 threads for group Activity Monitoring Users.
+2017-07-28 12:08:09,233 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:09,233 INFO o.a.j.t.ThreadGroup: Starting thread group... number=3 threads=20 ramp-up=600 perThread=30000.0 delayedStart=false
+2017-07-28 12:08:09,235 INFO o.a.j.t.JMeterThread: Thread started: CHO Bordereau Upload Thread Group 2-1
+2017-07-28 12:08:09,236 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/CHO_UPLOAD.csv Alias: /home/chox/choxLoadTests/CHO_Files/CHO_UPLOAD.csv@91402135
+2017-07-28 12:08:09,237 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-1
+2017-07-28 12:08:09,253 INFO o.a.j.t.ThreadGroup: Started thread group number 3
+2017-07-28 12:08:09,253 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 4 : Check Viewing Status Users
+2017-07-28 12:08:09,253 INFO o.a.j.e.StandardJMeterEngine: Starting 20 threads for group Check Viewing Status Users.
+2017-07-28 12:08:09,253 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:09,253 INFO o.a.j.t.ThreadGroup: Starting thread group... number=4 threads=20 ramp-up=600 perThread=30000.0 delayedStart=false
+2017-07-28 12:08:09,260 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-1
+2017-07-28 12:08:09,261 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv Alias: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv@1408279755
+2017-07-28 12:08:09,530 INFO o.a.j.t.ThreadGroup: Started thread group number 4
+2017-07-28 12:08:09,530 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 5 : Insurer Action Thread Group
+2017-07-28 12:08:09,530 INFO o.a.j.e.StandardJMeterEngine: Starting 25 threads for group Insurer Action Thread Group.
+2017-07-28 12:08:09,530 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:09,530 INFO o.a.j.t.ThreadGroup: Starting thread group... number=5 threads=25 ramp-up=600 perThread=24000.0 delayedStart=false
+2017-07-28 12:08:09,559 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-1
+2017-07-28 12:08:09,564 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/INS_Files/InsUsers.csv Alias: /home/chox/choxLoadTests/INS_Files/InsUsers.csv@1390301622
+2017-07-28 12:08:09,956 INFO o.a.j.t.ThreadGroup: Started thread group number 5
+2017-07-28 12:08:09,957 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 6 : Insurer Manual Bordereau Upload Thread Group
+2017-07-28 12:08:09,957 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group Insurer Manual Bordereau Upload Thread Group.
+2017-07-28 12:08:09,957 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-07-28 12:08:09,957 INFO o.a.j.t.ThreadGroup: Starting thread group... number=6 threads=1 ramp-up=500 perThread=500000.0 delayedStart=false
+2017-07-28 12:08:09,958 INFO o.a.j.t.ThreadGroup: Started thread group number 6
+2017-07-28 12:08:09,958 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2017-07-28 12:08:09,959 INFO o.a.j.t.JMeterThread: Thread started: Insurer Manual Bordereau Upload Thread Group 6-1
+2017-07-28 12:08:09,959 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/INS_Files/ManualInsUsers.csv Alias: /home/chox/choxLoadTests/INS_Files/ManualInsUsers.csv@1335986006
+2017-07-28 12:08:10,130 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = dev-uk02.idasnetwork.com
+2017-07-28 12:08:10,137 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2017-07-28 12:08:10,325 INFO o.a.j.p.h.s.LazySchemeSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2017-07-28 12:08:10,378 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2017-07-28 12:08:10,378 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2017-07-28 12:08:10,765 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2017-07-28 12:08:10,767 INFO o.a.j.u.SSLManager: KeyStore created OK
+2017-07-28 12:08:10,767 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2017-07-28 12:08:11,165 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv Alias: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv@1642679791
+2017-07-28 12:08:11,732 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-07-28 12:08:11,874 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:08:12,159 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-07-28 12:08:12,159 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-07-28 12:08:12,159 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-07-28 12:08:13,286 WARN c.h.c.r.e.LoggingCSSParseErrorHandler: [1426:17] Unexpected rule '@charset': charset rule in the middle of the file is not allowed!
+2017-07-28 12:08:19,405 INFO o.a.j.s.FileServer: Stored: INS_Files/ijb1-Auxillis_Invoice_11072017.xml
+2017-07-28 12:08:21,668 INFO o.a.j.s.FileServer: Stored: CHO_Files/e298kq-2017-07-12-JT-A.xml
+2017-07-28 12:08:30,096 INFO o.a.j.r.Summariser: summary +     43 in 00:00:21 =    2.0/s Avg:   750 Min:    43 Max:  4655 Err:     0 (0.00%) Active: 6 Started: 6 Finished: 0
+2017-07-28 12:08:32,958 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-2
+2017-07-28 12:08:33,584 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-2
+2017-07-28 12:08:36,827 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:08:39,241 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-2
+2017-07-28 12:08:39,269 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-2
+2017-07-28 12:08:56,967 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-3
+2017-07-28 12:08:57,603 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-3
+2017-07-28 12:09:00,037 INFO o.a.j.r.Summariser: summary +    110 in 00:00:30 =    3.7/s Avg:  1012 Min:     9 Max: 37345 Err:     0 (0.00%) Active: 12 Started: 12 Finished: 0
+2017-07-28 12:09:00,038 INFO o.a.j.r.Summariser: summary =    153 in 00:00:51 =    3.0/s Avg:   938 Min:     9 Max: 37345 Err:     0 (0.00%)
+2017-07-28 12:09:01,926 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:09:09,242 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-3
+2017-07-28 12:09:09,276 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-3
+2017-07-28 12:09:20,976 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-4
+2017-07-28 12:09:21,623 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-4
+2017-07-28 12:09:30,035 INFO o.a.j.r.Summariser: summary +    163 in 00:00:30 =    5.4/s Avg:   258 Min:     6 Max:  5202 Err:     0 (0.00%) Active: 16 Started: 16 Finished: 0
+2017-07-28 12:09:30,035 INFO o.a.j.r.Summariser: summary =    316 in 00:01:21 =    3.9/s Avg:   587 Min:     6 Max: 37345 Err:     0 (0.00%)
+2017-07-28 12:09:39,243 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-4
+2017-07-28 12:09:39,307 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-4
+2017-07-28 12:09:44,989 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-5
+2017-07-28 12:09:45,639 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-5
+2017-07-28 12:09:49,035 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:10:00,045 INFO o.a.j.r.Summariser: summary +    237 in 00:00:30 =    7.9/s Avg:   295 Min:     4 Max:  4798 Err:     0 (0.00%) Active: 20 Started: 20 Finished: 0
+2017-07-28 12:10:00,046 INFO o.a.j.r.Summariser: summary =    553 in 00:01:51 =    5.0/s Avg:   462 Min:     4 Max: 37345 Err:     0 (0.00%)
+2017-07-28 12:10:05,643 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-2
+2017-07-28 12:10:05,643 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-2
+2017-07-28 12:10:09,004 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-6
+2017-07-28 12:10:09,244 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-5
+2017-07-28 12:10:09,314 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-5
+2017-07-28 12:10:09,653 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-6
+2017-07-28 12:10:09,665 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/INS_Files/LoadTestAtt.jpg
+2017-07-28 12:10:30,019 INFO o.a.j.r.Summariser: summary +    287 in 00:00:30 =    9.6/s Avg:   411 Min:     5 Max: 18755 Err:     0 (0.00%) Active: 23 Started: 24 Finished: 1
+2017-07-28 12:10:30,019 INFO o.a.j.r.Summariser: summary =    840 in 00:02:21 =    5.9/s Avg:   445 Min:     4 Max: 37345 Err:     0 (0.00%)
+2017-07-28 12:10:33,017 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-7
+2017-07-28 12:10:33,667 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-7
+2017-07-28 12:10:36,904 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:10:39,244 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-6
+2017-07-28 12:10:39,321 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-6
+2017-07-28 12:10:54,244 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=gb_Q0-B6RmfXG2jLWMsPmfToPPooKXzATPFr6CxECWA6Wmfo9EbcyjGo0vcV5ZMRlJa1B0k1lPfvhQtk5YxZPxJdOnQFXjtx9fDA2fvdV4Ar0lkp3HrNqYfdphXcNn6Qgxsvtuypck2Crq3pfADLKTeASTZuql7E2HAhzwD88H4lgHnofbLiFi7dx5wEV9TRd8LjHc16cAge16bRYI2v0JJxSCY4YaeCaXYhpjXylTJyLfdngtz88mc_c6FCBdONP4QN_BtEqiWBu6P1nq8JhW9wTgP5aBIgyWjmkt-hUr97bWudGEEp7hGUY0-QNu3daACh2ANgPomodtEuD5n1xg2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:10:57,031 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-8
+2017-07-28 12:10:57,681 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-8
+2017-07-28 12:11:00,203 INFO o.a.j.r.Summariser: summary +    341 in 00:00:30 =   11.3/s Avg:   701 Min:     5 Max: 124222 Err:     0 (0.00%) Active: 29 Started: 30 Finished: 1
+2017-07-28 12:11:00,204 INFO o.a.j.r.Summariser: summary =   1181 in 00:02:51 =    6.9/s Avg:   519 Min:     4 Max: 124222 Err:     0 (0.00%)
+2017-07-28 12:11:01,200 INFO o.a.j.s.FileServer: Stored: INS_Files/lv22358-HH_notifications_13072017.xml
+2017-07-28 12:11:09,245 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-7
+2017-07-28 12:11:09,328 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-7
+2017-07-28 12:11:16,315 INFO o.a.j.s.FileServer: Stored: CHO_Files/jl1-chox.xml
+2017-07-28 12:11:21,044 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-9
+2017-07-28 12:11:21,695 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-9
+2017-07-28 12:11:22,213 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=UbECyHAyXHiGp33n5kMziMZKpjoVhswHe314Paxe0woGZtyz7JpYrc1KVXzBXPuUEXarJg5xqBPnx48hA9NK2hVI4fiO-vfAZAcosPEgf9HH2SlP96I1Cai2Vodv8KCOVZnWNz0UTJa5ns2ebcpwDQnien_HYCedfuMYouo2nYWFzEL8BzVLTSefRvuHXtNDYAlE3cEnZCBRMsteaSei28ya81m5y0U0YVuM5bAeaCUMm0eEbwk3vxyHUDIWpKnXaBV-4ICVU6FAhJIGkGF1OHx-5BeyQYLyYbFbncqG__MIuAlA9NUiEULDXegwexGkzeoC--4AxX1evPo6RNeGvA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:11:23,742 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/TestImage.jpg
+2017-07-28 12:11:30,155 INFO o.a.j.r.Summariser: summary +    358 in 00:00:30 =   12.0/s Avg:   891 Min:     4 Max: 122999 Err:     0 (0.00%) Active: 33 Started: 34 Finished: 1
+2017-07-28 12:11:30,155 INFO o.a.j.r.Summariser: summary =   1539 in 00:03:21 =    7.6/s Avg:   605 Min:     4 Max: 124222 Err:     0 (0.00%)
+2017-07-28 12:11:39,246 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-8
+2017-07-28 12:11:39,341 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-8
+2017-07-28 12:11:45,057 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-10
+2017-07-28 12:11:45,708 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-10
+2017-07-28 12:12:03,295 INFO o.a.j.r.Summariser: summary +    257 in 00:00:33 =    7.8/s Avg:   919 Min:     3 Max: 19116 Err:     1 (0.39%) Active: 37 Started: 38 Finished: 1
+2017-07-28 12:12:03,295 INFO o.a.j.r.Summariser: summary =   1796 in 00:03:54 =    7.7/s Avg:   650 Min:     3 Max: 124222 Err:     1 (0.06%)
+2017-07-28 12:12:09,070 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-11
+2017-07-28 12:12:09,246 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-9
+2017-07-28 12:12:09,357 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-9
+2017-07-28 12:12:09,721 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-11
+2017-07-28 12:12:21,310 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-1
+2017-07-28 12:12:21,310 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-1
+2017-07-28 12:12:30,016 INFO o.a.j.r.Summariser: summary +    343 in 00:00:27 =   12.8/s Avg:  1949 Min:     3 Max: 63809 Err:     2 (0.58%) Active: 40 Started: 42 Finished: 2
+2017-07-28 12:12:30,016 INFO o.a.j.r.Summariser: summary =   2139 in 00:04:21 =    8.2/s Avg:   858 Min:     3 Max: 124222 Err:     3 (0.14%)
+2017-07-28 12:12:33,083 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-12
+2017-07-28 12:12:33,734 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-12
+2017-07-28 12:12:34,206 INFO o.a.j.s.FileServer: Stored: INS_Files/a46230-201703032268.xml
+2017-07-28 12:12:37,986 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:12:39,247 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-10
+2017-07-28 12:12:39,361 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-10
+2017-07-28 12:12:48,013 INFO o.a.j.s.FileServer: Stored: CHO_Files/jack.singleton3-13.07.2017_Invoices.xml
+2017-07-28 12:12:57,095 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-13
+2017-07-28 12:12:57,748 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-13
+2017-07-28 12:13:00,003 INFO o.a.j.r.Summariser: summary +    438 in 00:00:30 =   14.6/s Avg:   706 Min:     4 Max: 29085 Err:     0 (0.00%) Active: 46 Started: 48 Finished: 2
+2017-07-28 12:13:00,003 INFO o.a.j.r.Summariser: summary =   2577 in 00:04:51 =    8.8/s Avg:   832 Min:     3 Max: 124222 Err:     3 (0.12%)
+2017-07-28 12:13:03,309 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=2uyJR3aNN-v7qfcz6gNvLpXd8q7qFUn5QWCycopBa0oVUQ4yTi9mmuS83bi9figWkcqrcWXoQZSNTZpO-ps1xiPbq3HB4j0ozbOPqxL-rvdy1TUpUOZ1m0lgSpLkmD1RA7cOScbn1Yb0bq4SvUFWnmoyYV5xc1k3F9qZmtkGvbZ8u-0xq7qRbCak6QBuBNi3MrWoooQx_eTbbuKXCNs92kB1m0Ramo0j2wC0FE_NIZaIXEsBbku4Rse-yfmJXcUqWB3jLEdIkQdcdArnil4jpenkslG0JDaRlDzQihqXMgDeYzWmj7TTxuu5fpoUTYVN7AAqgj_sB2wVDFRUlrkcpA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:13:09,249 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-11
+2017-07-28 12:13:09,368 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-11
+2017-07-28 12:13:12,304 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-4
+2017-07-28 12:13:12,304 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-4
+2017-07-28 12:13:20,070 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-5
+2017-07-28 12:13:20,070 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-5
+2017-07-28 12:13:21,108 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-14
+2017-07-28 12:13:21,760 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-14
+2017-07-28 12:13:25,951 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:13:31,108 INFO o.a.j.r.Summariser: summary +    473 in 00:00:31 =   15.2/s Avg:   887 Min:     3 Max: 92282 Err:     0 (0.00%) Active: 48 Started: 52 Finished: 4
+2017-07-28 12:13:31,108 INFO o.a.j.r.Summariser: summary =   3050 in 00:05:22 =    9.5/s Avg:   841 Min:     3 Max: 124222 Err:     3 (0.10%)
+2017-07-28 12:13:39,249 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-12
+2017-07-28 12:13:39,374 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-12
+2017-07-28 12:13:45,121 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-15
+2017-07-28 12:13:45,772 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-15
+2017-07-28 12:13:48,340 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:13:49,563 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:13:52,847 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-9
+2017-07-28 12:13:52,847 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-9
+2017-07-28 12:13:54,245 INFO o.a.j.s.FileServer: Stored: INS_Files/qajj-Auxillis_Invoices_11042017.xml
+2017-07-28 12:14:00,035 INFO o.a.j.r.Summariser: summary +    463 in 00:00:29 =   16.0/s Avg:  1327 Min:     4 Max: 119995 Err:     1 (0.22%) Active: 51 Started: 56 Finished: 5
+2017-07-28 12:14:00,035 INFO o.a.j.r.Summariser: summary =   3513 in 00:05:51 =   10.0/s Avg:   905 Min:     3 Max: 124222 Err:     4 (0.11%)
+2017-07-28 12:14:09,136 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-16
+2017-07-28 12:14:09,249 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-13
+2017-07-28 12:14:09,381 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-13
+2017-07-28 12:14:09,782 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-16
+2017-07-28 12:14:30,038 INFO o.a.j.r.Summariser: summary +    317 in 00:00:30 =   10.6/s Avg:  2344 Min:     3 Max: 100050 Err:     1 (0.32%) Active: 55 Started: 60 Finished: 5
+2017-07-28 12:14:30,038 INFO o.a.j.r.Summariser: summary =   3830 in 00:06:21 =   10.0/s Avg:  1024 Min:     3 Max: 124222 Err:     5 (0.13%)
+2017-07-28 12:14:33,147 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-17
+2017-07-28 12:14:33,791 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-17
+2017-07-28 12:14:39,211 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:14:39,250 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-14
+2017-07-28 12:14:39,389 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-14
+2017-07-28 12:14:42,220 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=OMc2C_5BaPNfme_KZg3z73Aq-I89WJ_s_WEES_4DysG_rhA4-LwhhdBSMXgue4BfuuEErBDDJ2gdtWGIIfm4VH_zwupGHwfcJ-FHV2AeWjv2Mf_hmSjY9ulS2Rr22zRNh7Q-UnMe5S4XcbRq0GOKicJjCmAVIpt28CJ9s4x494g3Fj40O8eDz7ToN7giHnYExCR5t-J_BM1IzM8VQzcttmutXXhkYbGgdqCJxCClZ-rmpbz_85UuKmQhgj_jXnRdnAiizQEx_j3DS_IO_PyRSMtTJhXFuUBa2Oj-FqnojIfiv_jt_NtGYV9AWWxIHIYlmwUr3UHViNd6o7jU7gV-Ng2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:14:43,782 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=nU51sz1vK8ibO2-AKihh0QOT6RbBPdzi5XErlfI1lhPZxzxXgAP6IFbiz5n5bMpUr2mQnaOWJ_TBgrqxa109-6ldrxJkv7Y-lRaRJGtQNUPNMccmZbnNXsbxV5k9PhlGHR6M3ua5DtW24--nX8E5WOaF-a19XRZIfDhOrOoDZlFe1DnZ5AlAvABnpL7-jWoAuO1zogYmcJlN2wx_idxtzljM3cAT2uW0YWPIs3bkzGhyunVyh2Ins7ZePCxgCFHmiWh5kxxeOEG2fT2We6qjjDEDhpG6SB92FdAi5OPCw7iTondrFpU8Sk-6w38ArLF2ca4C9tIVaXao_ZxChvfceg2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:14:49,126 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-6
+2017-07-28 12:14:49,126 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-6
+2017-07-28 12:14:57,159 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-18
+2017-07-28 12:14:57,801 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-18
+2017-07-28 12:15:00,076 INFO o.a.j.r.Summariser: summary +    543 in 00:00:30 =   18.1/s Avg:  1672 Min:     3 Max: 85661 Err:     0 (0.00%) Active: 60 Started: 66 Finished: 6
+2017-07-28 12:15:00,077 INFO o.a.j.r.Summariser: summary =   4373 in 00:06:51 =   10.6/s Avg:  1104 Min:     3 Max: 124222 Err:     5 (0.11%)
+2017-07-28 12:15:00,302 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-4
+2017-07-28 12:15:00,302 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-4
+2017-07-28 12:15:04,171 INFO o.a.j.s.FileServer: Stored: CHO_Files/jordant-chox13072017.xml
+2017-07-28 12:15:09,251 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-15
+2017-07-28 12:15:09,397 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-15
+2017-07-28 12:15:21,171 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-19
+2017-07-28 12:15:21,811 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-19
+2017-07-28 12:15:25,722 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-7
+2017-07-28 12:15:25,722 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-7
+2017-07-28 12:15:26,027 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:15:30,002 INFO o.a.j.r.Summariser: summary +    586 in 00:00:30 =   19.6/s Avg:   981 Min:     3 Max: 74936 Err:     0 (0.00%) Active: 62 Started: 70 Finished: 8
+2017-07-28 12:15:30,002 INFO o.a.j.r.Summariser: summary =   4959 in 00:07:21 =   11.2/s Avg:  1090 Min:     3 Max: 124222 Err:     5 (0.10%)
+2017-07-28 12:15:39,252 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-16
+2017-07-28 12:15:39,404 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-16
+2017-07-28 12:15:45,183 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-20
+2017-07-28 12:15:45,891 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-20
+2017-07-28 12:15:49,079 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-3
+2017-07-28 12:15:49,079 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-3
+2017-07-28 12:15:59,476 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=XTMxt7NfYKNn-amAHwSpW5lIaT8JSvxInTljLbkstqp5Dz9L7E16xKGcX8KWlqq7KDaYEA-ATHBQg6iUDVxwew8EkVhyH7VwMbqqzxSrfV3wFXWpeQOy-oCZ-8jcwvMaGBYaDfjz3izwBSaw57_SIuOwwP8EtQoysfS1hCiFjG6N-0bl7whN98CG11pGk9MeORHEr8RITR-k93v5IHZ_JYfO73Myh9l3eyrsfy97EJllroKLV-R7ekvhBtrZdCw-fj1_9_DSgaLg3bwxCbPiZgX7mkQmQFbNCAsFFQ3s5aY8rNt-pvrbkAiUVtMG1c223iW9f5EKkheAKPdJTVqHKQ2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:16:00,200 INFO o.a.j.r.Summariser: summary +    485 in 00:00:30 =   16.1/s Avg:  1606 Min:     3 Max: 100297 Err:     1 (0.21%) Active: 65 Started: 74 Finished: 9
+2017-07-28 12:16:00,201 INFO o.a.j.r.Summariser: summary =   5444 in 00:07:51 =   11.5/s Avg:  1136 Min:     3 Max: 124222 Err:     6 (0.11%)
+2017-07-28 12:16:09,195 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-21
+2017-07-28 12:16:09,253 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-17
+2017-07-28 12:16:09,419 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-17
+2017-07-28 12:16:09,700 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-4
+2017-07-28 12:16:09,700 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-4
+2017-07-28 12:16:09,930 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-21
+2017-07-28 12:16:12,934 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:16:21,083 INFO o.a.j.s.FileServer: Stored: INS_Files/lv21513-1107_HH_master_attempt.xml
+2017-07-28 12:16:30,027 INFO o.a.j.r.Summariser: summary +    505 in 00:00:30 =   16.9/s Avg:  1534 Min:     3 Max: 70738 Err:     0 (0.00%) Active: 68 Started: 78 Finished: 10
+2017-07-28 12:16:30,027 INFO o.a.j.r.Summariser: summary =   5949 in 00:08:21 =   11.9/s Avg:  1170 Min:     3 Max: 124222 Err:     6 (0.10%)
+2017-07-28 12:16:33,207 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-22
+2017-07-28 12:16:33,278 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-2
+2017-07-28 12:16:33,278 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-2
+2017-07-28 12:16:33,940 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-22
+2017-07-28 12:16:39,253 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-18
+2017-07-28 12:16:39,431 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-18
+2017-07-28 12:16:45,483 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=M-89GXRTwBbOdfhJZtcws_Avwbt8BdDz2CbO9QdhdCaj6YZLtcrT8e6xRATdwFEBwShLLdgezj-LlJkJupigsQuWQYLypwSGsL9Lo5Mv_HQitK9uCmjxuuYEM3o4JhpNfE9197LH2J2Sba091vqGzU0DNrr05b0bJtelzfU7UG1krcXJVQqcQsr4bLCq9dYg4GyL_LgyyKd2gsdMjnGyRVn6jFz9d3VfHRfnX3XznwAafcJFh8Cdd3FtaF0AlD5gLeOXe_W57q82YM-Xbjtr0VmTe7s6eIA5bVcGvHLdQRpoaxgECXN1nozlnFsflb-oQo-P-tXFkOs87JivD5xtOQ2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:16:57,219 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-23
+2017-07-28 12:16:57,948 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-23
+2017-07-28 12:17:00,086 INFO o.a.j.r.Summariser: summary +    424 in 00:00:30 =   14.1/s Avg:  1992 Min:     4 Max: 101673 Err:     1 (0.24%) Active: 73 Started: 84 Finished: 11
+2017-07-28 12:17:00,086 INFO o.a.j.r.Summariser: summary =   6373 in 00:08:51 =   12.0/s Avg:  1224 Min:     3 Max: 124222 Err:     7 (0.11%)
+2017-07-28 12:17:09,254 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-19
+2017-07-28 12:17:09,498 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-19
+2017-07-28 12:17:14,083 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:17:21,231 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-24
+2017-07-28 12:17:21,958 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-24
+2017-07-28 12:17:22,431 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-10
+2017-07-28 12:17:22,431 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-10
+2017-07-28 12:17:24,062 INFO o.a.j.s.FileServer: Stored: CHO_Files/stephen.gilligan-04-07-17.xml
+2017-07-28 12:17:30,099 INFO o.a.j.r.Summariser: summary +    542 in 00:00:30 =   18.1/s Avg:  1693 Min:     3 Max: 75998 Err:     0 (0.00%) Active: 76 Started: 88 Finished: 12
+2017-07-28 12:17:30,099 INFO o.a.j.r.Summariser: summary =   6915 in 00:09:21 =   12.3/s Avg:  1261 Min:     3 Max: 124222 Err:     7 (0.10%)
+2017-07-28 12:17:39,255 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-20
+2017-07-28 12:17:39,532 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-20
+2017-07-28 12:17:45,243 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-25
+2017-07-28 12:17:45,968 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-25
+2017-07-28 12:18:00,073 INFO o.a.j.r.Summariser: summary +    599 in 00:00:30 =   20.0/s Avg:  1424 Min:     3 Max: 70441 Err:     0 (0.00%) Active: 80 Started: 92 Finished: 12
+2017-07-28 12:18:00,074 INFO o.a.j.r.Summariser: summary =   7514 in 00:09:51 =   12.7/s Avg:  1274 Min:     3 Max: 124222 Err:     7 (0.09%)
+2017-07-28 12:18:11,599 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-10
+2017-07-28 12:18:11,599 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-10
+2017-07-28 12:18:18,972 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=iS7jpE55hpzLDPwjFIOM0S9ibHgWc2r458Zfw78uCp9QpLal1IkTe0q5lNA-HmD12KN0mzQ0-DLH7A0wOHrDXps9_BokO8a3UZSmrWxyMwWwJhhSf30RIiqP_1zE_R8ZLSsrKy4-RiJqks4ZGIfybTFpR49tgqOYRSWEEj4TXn5WSNeWkmHhBOig2aCVx1Xgu2KNzRL30CEHzNTNMxj0pS2nYJgYibNuSda3Fr0dwDtCBiviBEQ0R37tNLdSX-NxyaD4bn-wsxWf_vhbn8iSxb0vg5phRWM2DPk_2Rim4oazim8goQ2jqdNExUItnBN0o0i53AodQ-5HmeWJFR7oEQ2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:18:30,198 INFO o.a.j.r.Summariser: summary +    564 in 00:00:30 =   18.7/s Avg:  2143 Min:     3 Max: 114536 Err:     1 (0.18%) Active: 79 Started: 92 Finished: 13
+2017-07-28 12:18:30,199 INFO o.a.j.r.Summariser: summary =   8078 in 00:10:21 =   13.0/s Avg:  1335 Min:     3 Max: 124222 Err:     8 (0.10%)
+2017-07-28 12:18:36,253 INFO o.a.j.s.FileServer: Stored: INS_Files/lv21207-06072017_HH_payment_bordereau_to_do.xml
+2017-07-28 12:18:50,781 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-5
+2017-07-28 12:18:50,781 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-5
+2017-07-28 12:18:51,365 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-14
+2017-07-28 12:18:51,365 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-14
+2017-07-28 12:19:00,064 INFO o.a.j.r.Summariser: summary +    580 in 00:00:30 =   19.4/s Avg:  1736 Min:     3 Max: 119994 Err:     2 (0.34%) Active: 77 Started: 92 Finished: 15
+2017-07-28 12:19:00,064 INFO o.a.j.r.Summariser: summary =   8658 in 00:10:51 =   13.3/s Avg:  1362 Min:     3 Max: 124222 Err:    10 (0.12%)
+2017-07-28 12:19:01,735 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-12
+2017-07-28 12:19:01,735 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-12
+2017-07-28 12:19:30,448 INFO o.a.j.r.Summariser: summary +    411 in 00:00:30 =   13.5/s Avg:  2320 Min:     4 Max: 100603 Err:     1 (0.24%) Active: 76 Started: 92 Finished: 16
+2017-07-28 12:19:30,449 INFO o.a.j.r.Summariser: summary =   9069 in 00:11:22 =   13.3/s Avg:  1405 Min:     3 Max: 124222 Err:    11 (0.12%)
+2017-07-28 12:19:59,383 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-11
+2017-07-28 12:19:59,383 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-11
+2017-07-28 12:20:00,059 INFO o.a.j.r.Summariser: summary +    509 in 00:00:30 =   17.2/s Avg:  2863 Min:     3 Max: 120043 Err:     1 (0.20%) Active: 75 Started: 92 Finished: 17
+2017-07-28 12:20:00,059 INFO o.a.j.r.Summariser: summary =   9578 in 00:11:51 =   13.5/s Avg:  1483 Min:     3 Max: 124222 Err:    12 (0.13%)
+2017-07-28 12:20:07,337 INFO o.a.j.s.FileServer: Stored: CHO_Files/thomas.beech-12-07-17.xml
+2017-07-28 12:20:30,017 INFO o.a.j.r.Summariser: summary +    474 in 00:00:30 =   15.8/s Avg:  2641 Min:     3 Max: 112240 Err:     1 (0.21%) Active: 75 Started: 92 Finished: 17
+2017-07-28 12:20:30,018 INFO o.a.j.r.Summariser: summary =  10052 in 00:12:21 =   13.6/s Avg:  1537 Min:     3 Max: 124222 Err:    13 (0.13%)
+2017-07-28 12:20:59,596 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-13
+2017-07-28 12:20:59,596 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-13
+2017-07-28 12:21:00,008 INFO o.a.j.r.Summariser: summary +    547 in 00:00:30 =   18.2/s Avg:  1567 Min:     3 Max: 90334 Err:     0 (0.00%) Active: 74 Started: 92 Finished: 18
+2017-07-28 12:21:00,008 INFO o.a.j.r.Summariser: summary =  10599 in 00:12:51 =   13.7/s Avg:  1539 Min:     3 Max: 124222 Err:    13 (0.12%)
+2017-07-28 12:21:11,582 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-16
+2017-07-28 12:21:11,582 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-16
+2017-07-28 12:21:27,887 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-16
+2017-07-28 12:21:27,887 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-16
+2017-07-28 12:21:30,122 INFO o.a.j.r.Summariser: summary +    502 in 00:00:30 =   16.7/s Avg:  1241 Min:     3 Max: 25599 Err:     0 (0.00%) Active: 72 Started: 92 Finished: 20
+2017-07-28 12:21:30,123 INFO o.a.j.r.Summariser: summary =  11101 in 00:13:21 =   13.9/s Avg:  1525 Min:     3 Max: 124222 Err:    13 (0.12%)
+2017-07-28 12:22:01,061 INFO o.a.j.r.Summariser: summary +    348 in 00:00:31 =   11.2/s Avg:  3334 Min:     4 Max: 110135 Err:     2 (0.57%) Active: 72 Started: 92 Finished: 20
+2017-07-28 12:22:01,062 INFO o.a.j.r.Summariser: summary =  11449 in 00:13:52 =   13.8/s Avg:  1580 Min:     3 Max: 124222 Err:    15 (0.13%)
+2017-07-28 12:22:30,007 INFO o.a.j.r.Summariser: summary +    415 in 00:00:29 =   14.3/s Avg:  3363 Min:     3 Max: 82925 Err:     0 (0.00%) Active: 72 Started: 92 Finished: 20
+2017-07-28 12:22:30,007 INFO o.a.j.r.Summariser: summary =  11864 in 00:14:21 =   13.8/s Avg:  1643 Min:     3 Max: 124222 Err:    15 (0.13%)
+2017-07-28 12:23:00,470 INFO o.a.j.r.Summariser: summary +    487 in 00:00:30 =   16.0/s Avg:  1666 Min:     3 Max: 37093 Err:     0 (0.00%) Active: 72 Started: 92 Finished: 20
+2017-07-28 12:23:00,470 INFO o.a.j.r.Summariser: summary =  12351 in 00:14:52 =   13.9/s Avg:  1644 Min:     3 Max: 124222 Err:    15 (0.12%)
+2017-07-28 12:23:10,739 INFO o.a.j.s.FileServer: Stored: CHO_Files/e357nc-2017-07-13-AB-A.xml
+2017-07-28 12:23:14,332 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-19
+2017-07-28 12:23:14,332 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-19
+2017-07-28 12:23:22,498 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-13
+2017-07-28 12:23:22,498 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-13
+2017-07-28 12:23:27,630 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-23
+2017-07-28 12:23:27,630 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-23
+2017-07-28 12:23:30,055 INFO o.a.j.r.Summariser: summary +    567 in 00:00:30 =   19.2/s Avg:  1480 Min:     3 Max: 119992 Err:     1 (0.18%) Active: 69 Started: 92 Finished: 23
+2017-07-28 12:23:30,056 INFO o.a.j.r.Summariser: summary =  12918 in 00:15:21 =   14.0/s Avg:  1636 Min:     3 Max: 124222 Err:    16 (0.12%)
+2017-07-28 12:23:30,344 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-7
+2017-07-28 12:23:30,345 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-7
+2017-07-28 12:23:47,391 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-22
+2017-07-28 12:23:47,391 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-22
+2017-07-28 12:23:49,516 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=YWkJU7ENySaUVGlPefXnPutjqE4ayOokM-UVhD1fPAzto0le_PDnW6qo9Xiy9u0UxoDYvaQc1knQnX5itWzVqzaB49n16EYMrwuvysPQJq5KtKGrY6HHRsfoSrT_4bHtgz0X-R7fT84au6pJJgaBhji_KrrebuR61TfQ6oHraJS4CBkTpkorBzihFVVpxao2NhITh0X3Kos8rvfHY8RAsbKveuYOE3reE3sqDGcIMyFLsHUtsWG5mbzIW4StW27P35okBony5ERCLpYZ0gPmAWCjWFhLuS2Y3fgHIKLxDj8JSkOJijPaVV7LNG01-RaqOe1EsChdm48v1v3lsXlO2w2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:24:00,040 INFO o.a.j.r.Summariser: summary +    601 in 00:00:30 =   20.0/s Avg:  1261 Min:     3 Max: 206812 Err:     1 (0.17%) Active: 67 Started: 92 Finished: 25
+2017-07-28 12:24:00,040 INFO o.a.j.r.Summariser: summary =  13519 in 00:15:51 =   14.2/s Avg:  1620 Min:     3 Max: 206812 Err:    17 (0.13%)
+2017-07-28 12:24:05,947 INFO o.a.j.s.FileServer: Stored: INS_Files/lv21513-1307_HH-master.xml
+2017-07-28 12:24:23,572 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-24
+2017-07-28 12:24:23,572 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-24
+2017-07-28 12:24:30,081 INFO o.a.j.r.Summariser: summary +    601 in 00:00:30 =   20.0/s Avg:  1048 Min:     3 Max: 119993 Err:     1 (0.17%) Active: 66 Started: 92 Finished: 26
+2017-07-28 12:24:30,082 INFO o.a.j.r.Summariser: summary =  14120 in 00:16:21 =   14.4/s Avg:  1595 Min:     3 Max: 206812 Err:    18 (0.13%)
+2017-07-28 12:24:31,835 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-15
+2017-07-28 12:24:31,835 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-15
+2017-07-28 12:24:40,153 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-13
+2017-07-28 12:24:40,153 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-13
+2017-07-28 12:24:40,636 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-18
+2017-07-28 12:24:40,636 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-18
+2017-07-28 12:24:41,464 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-12
+2017-07-28 12:24:41,464 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-12
+2017-07-28 12:24:43,440 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-11
+2017-07-28 12:24:43,440 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-11
+2017-07-28 12:25:00,060 INFO o.a.j.r.Summariser: summary +    477 in 00:00:30 =   15.9/s Avg:  1237 Min:     3 Max: 45759 Err:     0 (0.00%) Active: 61 Started: 92 Finished: 31
+2017-07-28 12:25:00,060 INFO o.a.j.r.Summariser: summary =  14597 in 00:16:51 =   14.4/s Avg:  1584 Min:     3 Max: 206812 Err:    18 (0.12%)
+2017-07-28 12:25:00,607 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-3
+2017-07-28 12:25:00,607 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-3
+2017-07-28 12:25:02,327 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-25
+2017-07-28 12:25:02,327 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-25
+2017-07-28 12:25:17,879 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-2
+2017-07-28 12:25:17,880 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-2
+2017-07-28 12:25:28,837 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-20
+2017-07-28 12:25:28,837 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-20
+2017-07-28 12:25:30,120 INFO o.a.j.r.Summariser: summary +    441 in 00:00:30 =   14.7/s Avg:  1907 Min:     4 Max: 120121 Err:     2 (0.45%) Active: 57 Started: 92 Finished: 35
+2017-07-28 12:25:30,120 INFO o.a.j.r.Summariser: summary =  15038 in 00:17:21 =   14.4/s Avg:  1593 Min:     3 Max: 206812 Err:    20 (0.13%)
+2017-07-28 12:26:01,122 INFO o.a.j.r.Summariser: summary +    405 in 00:00:31 =   13.1/s Avg:  1308 Min:     3 Max: 33445 Err:     0 (0.00%) Active: 57 Started: 92 Finished: 35
+2017-07-28 12:26:01,123 INFO o.a.j.r.Summariser: summary =  15443 in 00:17:52 =   14.4/s Avg:  1586 Min:     3 Max: 206812 Err:    20 (0.13%)
+2017-07-28 12:26:12,075 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:26:20,489 INFO o.a.j.s.FileServer: Stored: INS_Files/mkl1-CF_12072017.xml
+2017-07-28 12:26:22,171 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-25
+2017-07-28 12:26:22,171 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-25
+2017-07-28 12:26:25,721 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-18
+2017-07-28 12:26:25,721 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-18
+2017-07-28 12:26:30,241 INFO o.a.j.r.Summariser: summary +    496 in 00:00:29 =   17.0/s Avg:  1012 Min:     3 Max: 56057 Err:     0 (0.00%) Active: 55 Started: 92 Finished: 37
+2017-07-28 12:26:30,242 INFO o.a.j.r.Summariser: summary =  15939 in 00:18:21 =   14.5/s Avg:  1568 Min:     3 Max: 206812 Err:    20 (0.13%)
+2017-07-28 12:27:00,308 INFO o.a.j.r.Summariser: summary +    501 in 00:00:30 =   16.7/s Avg:   801 Min:     3 Max: 46920 Err:     0 (0.00%) Active: 55 Started: 92 Finished: 37
+2017-07-28 12:27:00,308 INFO o.a.j.r.Summariser: summary =  16440 in 00:18:51 =   14.5/s Avg:  1544 Min:     3 Max: 206812 Err:    20 (0.12%)
+2017-07-28 12:27:08,343 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:27:15,983 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-5
+2017-07-28 12:27:15,983 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-5
+2017-07-28 12:27:16,005 INFO o.a.j.s.FileServer: Stored: INS_Files/ijb1-Auxillis_13072017.xml
+2017-07-28 12:27:18,277 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-21
+2017-07-28 12:27:18,277 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-21
+2017-07-28 12:27:20,582 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-10
+2017-07-28 12:27:20,582 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-10
+2017-07-28 12:27:30,045 INFO o.a.j.r.Summariser: summary +    476 in 00:00:30 =   16.0/s Avg:   631 Min:     3 Max: 32042 Err:     0 (0.00%) Active: 52 Started: 92 Finished: 40
+2017-07-28 12:27:30,046 INFO o.a.j.r.Summariser: summary =  16916 in 00:19:21 =   14.6/s Avg:  1519 Min:     3 Max: 206812 Err:    20 (0.12%)
+2017-07-28 12:27:31,946 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-8
+2017-07-28 12:27:31,946 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-8
+2017-07-28 12:27:36,511 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-24
+2017-07-28 12:27:36,511 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-24
+2017-07-28 12:28:00,180 INFO o.a.j.r.Summariser: summary +    390 in 00:00:30 =   12.9/s Avg:  1272 Min:     3 Max: 118900 Err:     0 (0.00%) Active: 50 Started: 92 Finished: 42
+2017-07-28 12:28:00,180 INFO o.a.j.r.Summariser: summary =  17306 in 00:19:51 =   14.5/s Avg:  1513 Min:     3 Max: 206812 Err:    20 (0.12%)
+2017-07-28 12:28:07,836 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-11
+2017-07-28 12:28:07,836 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-11
+2017-07-28 12:28:29,207 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-8
+2017-07-28 12:28:29,207 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-8
+2017-07-28 12:28:30,044 INFO o.a.j.r.Summariser: summary +    328 in 00:00:30 =   11.0/s Avg:  1675 Min:     3 Max: 43354 Err:     0 (0.00%) Active: 48 Started: 92 Finished: 44
+2017-07-28 12:28:30,045 INFO o.a.j.r.Summariser: summary =  17634 in 00:20:21 =   14.4/s Avg:  1516 Min:     3 Max: 206812 Err:    20 (0.11%)
+2017-07-28 12:28:38,192 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-20
+2017-07-28 12:28:38,192 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-20
+2017-07-28 12:29:00,144 INFO o.a.j.r.Summariser: summary +    346 in 00:00:30 =   11.5/s Avg:   958 Min:     3 Max: 26218 Err:     0 (0.00%) Active: 47 Started: 92 Finished: 45
+2017-07-28 12:29:00,144 INFO o.a.j.r.Summariser: summary =  17980 in 00:20:51 =   14.4/s Avg:  1505 Min:     3 Max: 206812 Err:    20 (0.11%)
+2017-07-28 12:29:15,592 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:29:27,453 INFO o.a.j.s.FileServer: Stored: INS_Files/gsbi-Auxillis_Invoice_04072017.xml
+2017-07-28 12:29:30,026 INFO o.a.j.r.Summariser: summary +    391 in 00:00:30 =   13.1/s Avg:  1028 Min:     3 Max: 82780 Err:     0 (0.00%) Active: 47 Started: 92 Finished: 45
+2017-07-28 12:29:30,027 INFO o.a.j.r.Summariser: summary =  18371 in 00:21:21 =   14.3/s Avg:  1495 Min:     3 Max: 206812 Err:    20 (0.11%)
+2017-07-28 12:29:37,318 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-1
+2017-07-28 12:29:37,318 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-1
+2017-07-28 12:29:45,938 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-22
+2017-07-28 12:29:45,938 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-22
+2017-07-28 12:30:00,037 INFO o.a.j.r.Summariser: summary +    396 in 00:00:30 =   13.2/s Avg:   809 Min:     3 Max: 30221 Err:     0 (0.00%) Active: 45 Started: 92 Finished: 47
+2017-07-28 12:30:00,037 INFO o.a.j.r.Summariser: summary =  18767 in 00:21:51 =   14.3/s Avg:  1481 Min:     3 Max: 206812 Err:    20 (0.11%)
+2017-07-28 12:30:18,097 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-15
+2017-07-28 12:30:18,097 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-15
+2017-07-28 12:30:19,978 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-9
+2017-07-28 12:30:19,978 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-9
+2017-07-28 12:30:30,028 INFO o.a.j.r.Summariser: summary +    317 in 00:00:30 =   10.6/s Avg:   981 Min:     3 Max: 44380 Err:     0 (0.00%) Active: 43 Started: 92 Finished: 49
+2017-07-28 12:30:30,029 INFO o.a.j.r.Summariser: summary =  19084 in 00:22:21 =   14.2/s Avg:  1473 Min:     3 Max: 206812 Err:    20 (0.10%)
+2017-07-28 12:31:00,108 INFO o.a.j.r.Summariser: summary +    344 in 00:00:30 =   11.4/s Avg:   664 Min:     3 Max: 28359 Err:     0 (0.00%) Active: 43 Started: 92 Finished: 49
+2017-07-28 12:31:00,108 INFO o.a.j.r.Summariser: summary =  19428 in 00:22:51 =   14.2/s Avg:  1458 Min:     3 Max: 206812 Err:    20 (0.10%)
+2017-07-28 12:31:30,073 INFO o.a.j.r.Summariser: summary +    307 in 00:00:30 =   10.2/s Avg:   723 Min:     2 Max: 17263 Err:     0 (0.00%) Active: 43 Started: 92 Finished: 49
+2017-07-28 12:31:30,073 INFO o.a.j.r.Summariser: summary =  19735 in 00:23:21 =   14.1/s Avg:  1447 Min:     2 Max: 206812 Err:    20 (0.10%)
+2017-07-28 12:31:30,496 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-12
+2017-07-28 12:31:30,496 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-12
+2017-07-28 12:31:35,871 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-23
+2017-07-28 12:31:35,871 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-23
+2017-07-28 12:31:36,281 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-15
+2017-07-28 12:31:36,281 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-15
+2017-07-28 12:31:43,525 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-17
+2017-07-28 12:31:43,525 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-17
+2017-07-28 12:31:46,414 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-17
+2017-07-28 12:31:46,414 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-17
+2017-07-28 12:32:00,014 INFO o.a.j.r.Summariser: summary +    328 in 00:00:30 =   11.0/s Avg:   803 Min:     3 Max: 119991 Err:     1 (0.30%) Active: 38 Started: 92 Finished: 54
+2017-07-28 12:32:00,015 INFO o.a.j.r.Summariser: summary =  20063 in 00:23:51 =   14.0/s Avg:  1436 Min:     2 Max: 206812 Err:    21 (0.10%)
+2017-07-28 12:32:30,007 INFO o.a.j.r.Summariser: summary +    288 in 00:00:30 =    9.6/s Avg:   806 Min:     3 Max: 119994 Err:     1 (0.35%) Active: 38 Started: 92 Finished: 54
+2017-07-28 12:32:30,008 INFO o.a.j.r.Summariser: summary =  20351 in 00:24:21 =   13.9/s Avg:  1427 Min:     2 Max: 206812 Err:    22 (0.11%)
+2017-07-28 12:33:00,183 INFO o.a.j.r.Summariser: summary +    279 in 00:00:30 =    9.2/s Avg:  2699 Min:     3 Max: 530727 Err:     0 (0.00%) Active: 38 Started: 92 Finished: 54
+2017-07-28 12:33:00,183 INFO o.a.j.r.Summariser: summary =  20630 in 00:24:51 =   13.8/s Avg:  1444 Min:     2 Max: 530727 Err:    22 (0.11%)
+2017-07-28 12:33:00,561 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-16
+2017-07-28 12:33:00,561 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-16
+2017-07-28 12:33:11,682 INFO o.a.j.s.FileServer: Stored: CHO_Files/andyd-CHOX893.xml
+2017-07-28 12:33:30,034 INFO o.a.j.r.Summariser: summary +    302 in 00:00:30 =   10.1/s Avg:   471 Min:     3 Max: 25458 Err:     0 (0.00%) Active: 37 Started: 92 Finished: 55
+2017-07-28 12:33:30,034 INFO o.a.j.r.Summariser: summary =  20932 in 00:25:21 =   13.8/s Avg:  1430 Min:     2 Max: 530727 Err:    22 (0.11%)
+2017-07-28 12:33:36,537 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-3
+2017-07-28 12:33:36,537 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-3
+2017-07-28 12:33:44,378 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-19
+2017-07-28 12:33:44,378 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-19
+2017-07-28 12:33:47,145 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-18
+2017-07-28 12:33:47,146 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-18
+2017-07-28 12:34:00,030 INFO o.a.j.r.Summariser: summary +    254 in 00:00:30 =    8.5/s Avg:   212 Min:     3 Max: 12154 Err:     0 (0.00%) Active: 34 Started: 92 Finished: 58
+2017-07-28 12:34:00,030 INFO o.a.j.r.Summariser: summary =  21186 in 00:25:51 =   13.7/s Avg:  1416 Min:     2 Max: 530727 Err:    22 (0.10%)
+2017-07-28 12:34:05,533 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-1
+2017-07-28 12:34:05,534 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-1
+2017-07-28 12:34:08,134 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-21
+2017-07-28 12:34:08,134 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-21
+2017-07-28 12:34:13,575 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-17
+2017-07-28 12:34:13,576 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-17
+2017-07-28 12:34:21,401 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-2
+2017-07-28 12:34:21,401 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-2
+2017-07-28 12:35:04,242 INFO o.a.j.r.Summariser: summary +    134 in 00:01:04 =    2.1/s Avg:  2073 Min:     3 Max: 119992 Err:     2 (1.49%) Active: 30 Started: 92 Finished: 62
+2017-07-28 12:35:04,242 INFO o.a.j.r.Summariser: summary =  21320 in 00:26:55 =   13.2/s Avg:  1420 Min:     2 Max: 530727 Err:    24 (0.11%)
+2017-07-28 12:35:30,191 INFO o.a.j.r.Summariser: summary +      3 in 00:00:26 =    0.1/s Avg: 113329 Min: 99996 Max: 119997 Err:     3 (100.00%) Active: 30 Started: 92 Finished: 62
+2017-07-28 12:35:30,191 INFO o.a.j.r.Summariser: summary =  21323 in 00:27:21 =   13.0/s Avg:  1436 Min:     2 Max: 530727 Err:    27 (0.13%)
+2017-07-28 12:35:55,026 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-3
+2017-07-28 12:35:55,027 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-3
+2017-07-28 12:36:00,796 INFO o.a.j.r.Summariser: summary +    145 in 00:00:31 =    4.7/s Avg: 12977 Min:     4 Max: 99439 Err:     0 (0.00%) Active: 29 Started: 92 Finished: 63
+2017-07-28 12:36:00,796 INFO o.a.j.r.Summariser: summary =  21468 in 00:27:52 =   12.8/s Avg:  1514 Min:     2 Max: 530727 Err:    27 (0.13%)
+2017-07-28 12:36:25,730 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-4
+2017-07-28 12:36:25,730 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-4
+2017-07-28 12:36:30,097 INFO o.a.j.r.Summariser: summary +    138 in 00:00:29 =    4.7/s Avg:  4032 Min:     2 Max: 35050 Err:     4 (2.90%) Active: 28 Started: 92 Finished: 64
+2017-07-28 12:36:30,097 INFO o.a.j.r.Summariser: summary =  21606 in 00:28:21 =   12.7/s Avg:  1530 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:37:00,733 INFO o.a.j.r.Summariser: summary +    145 in 00:00:31 =    4.7/s Avg:  1177 Min:     2 Max: 56135 Err:     0 (0.00%) Active: 28 Started: 92 Finished: 64
+2017-07-28 12:37:00,733 INFO o.a.j.r.Summariser: summary =  21751 in 00:28:52 =   12.6/s Avg:  1527 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:37:20,446 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-5
+2017-07-28 12:37:20,446 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-5
+2017-07-28 12:37:30,048 INFO o.a.j.r.Summariser: summary +    182 in 00:00:29 =    6.2/s Avg:  1343 Min:     3 Max: 86828 Err:     0 (0.00%) Active: 27 Started: 92 Finished: 65
+2017-07-28 12:37:30,048 INFO o.a.j.r.Summariser: summary =  21933 in 00:29:21 =   12.5/s Avg:  1526 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:37:37,333 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-6
+2017-07-28 12:37:37,333 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-6
+2017-07-28 12:38:00,363 INFO o.a.j.r.Summariser: summary +    187 in 00:00:30 =    6.2/s Avg:   500 Min:     3 Max:  6845 Err:     0 (0.00%) Active: 26 Started: 92 Finished: 66
+2017-07-28 12:38:00,363 INFO o.a.j.r.Summariser: summary =  22120 in 00:29:52 =   12.3/s Avg:  1517 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:38:08,865 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-7
+2017-07-28 12:38:08,865 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-7
+2017-07-28 12:38:26,155 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-8
+2017-07-28 12:38:26,155 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-8
+2017-07-28 12:38:30,129 INFO o.a.j.r.Summariser: summary +    192 in 00:00:30 =    6.5/s Avg:  1474 Min:     3 Max: 117284 Err:     0 (0.00%) Active: 24 Started: 92 Finished: 68
+2017-07-28 12:38:30,129 INFO o.a.j.r.Summariser: summary =  22312 in 00:30:21 =   12.3/s Avg:  1517 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:38:30,742 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-14
+2017-07-28 12:38:30,743 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-14
+2017-07-28 12:39:00,404 INFO o.a.j.r.Summariser: summary +    180 in 00:00:30 =    5.9/s Avg:   283 Min:     4 Max:  5912 Err:     0 (0.00%) Active: 23 Started: 92 Finished: 69
+2017-07-28 12:39:00,404 INFO o.a.j.r.Summariser: summary =  22492 in 00:30:52 =   12.1/s Avg:  1507 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:39:30,417 INFO o.a.j.r.Summariser: summary +    175 in 00:00:30 =    5.8/s Avg:   671 Min:     4 Max:  9780 Err:     0 (0.00%) Active: 23 Started: 92 Finished: 69
+2017-07-28 12:39:30,418 INFO o.a.j.r.Summariser: summary =  22667 in 00:31:22 =   12.0/s Avg:  1501 Min:     2 Max: 530727 Err:    31 (0.14%)
+2017-07-28 12:39:30,418 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-9
+2017-07-28 12:39:30,418 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-9
+2017-07-28 12:39:47,348 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-7
+2017-07-28 12:39:47,348 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-7
+2017-07-28 12:39:50,221 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-6
+2017-07-28 12:39:50,221 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-6
+2017-07-28 12:40:00,122 INFO o.a.j.r.Summariser: summary +    139 in 00:00:30 =    4.7/s Avg:  4678 Min:     3 Max: 558059 Err:     0 (0.00%) Active: 20 Started: 92 Finished: 72
+2017-07-28 12:40:00,122 INFO o.a.j.r.Summariser: summary =  22806 in 00:31:51 =   11.9/s Avg:  1520 Min:     2 Max: 558059 Err:    31 (0.14%)
+2017-07-28 12:40:30,401 INFO o.a.j.r.Summariser: summary +    140 in 00:00:30 =    4.6/s Avg:  1089 Min:     3 Max: 54916 Err:     0 (0.00%) Active: 20 Started: 92 Finished: 72
+2017-07-28 12:40:30,401 INFO o.a.j.r.Summariser: summary =  22946 in 00:32:22 =   11.8/s Avg:  1517 Min:     2 Max: 558059 Err:    31 (0.14%)
+2017-07-28 12:41:00,251 INFO o.a.j.r.Summariser: summary +    112 in 00:00:30 =    3.8/s Avg:  1189 Min:     3 Max: 54393 Err:     0 (0.00%) Active: 20 Started: 92 Finished: 72
+2017-07-28 12:41:00,251 INFO o.a.j.r.Summariser: summary =  23058 in 00:32:51 =   11.7/s Avg:  1516 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:41:18,353 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-12
+2017-07-28 12:41:18,353 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-12
+2017-07-28 12:41:28,679 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-1
+2017-07-28 12:41:28,679 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-1
+2017-07-28 12:41:29,289 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-10
+2017-07-28 12:41:29,290 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-10
+2017-07-28 12:41:29,333 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-14
+2017-07-28 12:41:29,333 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-14
+2017-07-28 12:41:30,744 INFO o.a.j.r.Summariser: summary +    120 in 00:00:30 =    3.9/s Avg:  1183 Min:     3 Max: 57643 Err:     0 (0.00%) Active: 16 Started: 92 Finished: 76
+2017-07-28 12:41:30,745 INFO o.a.j.r.Summariser: summary =  23178 in 00:33:22 =   11.6/s Avg:  1514 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:41:36,286 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-11
+2017-07-28 12:41:36,286 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-11
+2017-07-28 12:41:49,021 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-8
+2017-07-28 12:41:49,021 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-8
+2017-07-28 12:42:00,230 INFO o.a.j.r.Summariser: summary +    107 in 00:00:29 =    3.6/s Avg:  1062 Min:     4 Max: 76436 Err:     0 (0.00%) Active: 14 Started: 92 Finished: 78
+2017-07-28 12:42:00,230 INFO o.a.j.r.Summariser: summary =  23285 in 00:33:51 =   11.5/s Avg:  1512 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:42:12,260 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:42:21,983 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-15
+2017-07-28 12:42:21,983 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-15
+2017-07-28 12:42:23,204 INFO o.a.j.s.FileServer: Stored: CHO_Files/andyn-Protocol_Invoiced_130717.xml
+2017-07-28 12:42:30,124 INFO o.a.j.r.Summariser: summary +    105 in 00:00:30 =    3.5/s Avg:  4390 Min:     4 Max: 398107 Err:     0 (0.00%) Active: 13 Started: 92 Finished: 79
+2017-07-28 12:42:30,125 INFO o.a.j.r.Summariser: summary =  23390 in 00:34:21 =   11.3/s Avg:  1525 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:42:35,213 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-9
+2017-07-28 12:42:35,213 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-9
+2017-07-28 12:42:53,841 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-16
+2017-07-28 12:42:53,841 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-16
+2017-07-28 12:43:00,073 INFO o.a.j.r.Summariser: summary +     81 in 00:00:30 =    2.7/s Avg:  1483 Min:     3 Max: 71306 Err:     0 (0.00%) Active: 11 Started: 92 Finished: 81
+2017-07-28 12:43:00,073 INFO o.a.j.r.Summariser: summary =  23471 in 00:34:51 =   11.2/s Avg:  1525 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:43:20,483 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-13
+2017-07-28 12:43:20,483 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-13
+2017-07-28 12:43:30,400 INFO o.a.j.r.Summariser: summary +     57 in 00:00:30 =    1.9/s Avg:  2797 Min:     3 Max: 55392 Err:     0 (0.00%) Active: 10 Started: 92 Finished: 82
+2017-07-28 12:43:30,400 INFO o.a.j.r.Summariser: summary =  23528 in 00:35:22 =   11.1/s Avg:  1528 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:43:45,016 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-17
+2017-07-28 12:43:45,016 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-17
+2017-07-28 12:43:48,602 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-6
+2017-07-28 12:43:48,602 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-6
+2017-07-28 12:43:57,087 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-18
+2017-07-28 12:43:57,087 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-18
+2017-07-28 12:44:02,034 INFO o.a.j.r.Summariser: summary +     61 in 00:00:32 =    1.9/s Avg:  2207 Min:     4 Max: 48211 Err:     0 (0.00%) Active: 7 Started: 92 Finished: 85
+2017-07-28 12:44:02,034 INFO o.a.j.r.Summariser: summary =  23589 in 00:35:53 =   11.0/s Avg:  1529 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:44:30,618 INFO o.a.j.r.Summariser: summary +     20 in 00:00:29 =    0.7/s Avg:  1167 Min:     4 Max: 16112 Err:     0 (0.00%) Active: 7 Started: 92 Finished: 85
+2017-07-28 12:44:30,618 INFO o.a.j.r.Summariser: summary =  23609 in 00:36:22 =   10.8/s Avg:  1529 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:44:33,923 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-19
+2017-07-28 12:44:33,923 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-19
+2017-07-28 12:44:38,812 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=_NRIpkbjbrZFTnISBe9pIIQWI-S-tg1hO0X-So-h9VRNvRI0SI2yHQivdCF8v30y7vlHRI4v2pnTkjkiG3c9cUKAY7l-dIWpUjtYHrK0rc6RaND9v12U9U-b28nw4LQzUPbCe4Qdkx3Z-jvuQD05UcN1h4JXhcqxaUO815SlNS9T2v1QBNnWnJUj5zbp4zH7J0NwPtdDgYf47_myXygWjwF8Ez2BSf1LQsrYax-DOybv6CMBPtvx3duweVX72C7y7X1FG1ONT4JEky469LTrC6TCBm6rTxJCVfvOd0N9WZo5qQ2Pxd9LF8xU8JvaN5n7IZrywrOAz73KC2qWbqe4Nw2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:44:46,688 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-20
+2017-07-28 12:44:46,688 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-20
+2017-07-28 12:44:57,482 INFO o.a.j.s.FileServer: Stored: CHO_Files/e155nh-2017-07-12-RK-A.xml
+2017-07-28 12:45:01,714 INFO o.a.j.r.Summariser: summary +     42 in 00:00:31 =    1.4/s Avg:  6896 Min:     4 Max: 86346 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:45:01,714 INFO o.a.j.r.Summariser: summary =  23651 in 00:36:53 =   10.7/s Avg:  1539 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:45:30,650 INFO o.a.j.r.Summariser: summary +     31 in 00:00:29 =    1.1/s Avg:  3576 Min:    15 Max: 36519 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:45:30,650 INFO o.a.j.r.Summariser: summary =  23682 in 00:37:22 =   10.6/s Avg:  1541 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:46:05,873 INFO o.a.j.r.Summariser: summary +     20 in 00:00:35 =    0.6/s Avg:  4164 Min:     8 Max: 43964 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:46:05,874 INFO o.a.j.r.Summariser: summary =  23702 in 00:37:57 =   10.4/s Avg:  1544 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:46:30,042 INFO o.a.j.r.Summariser: summary +     13 in 00:00:24 =    0.5/s Avg:  9340 Min:    28 Max: 57046 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:46:30,042 INFO o.a.j.r.Summariser: summary =  23715 in 00:38:21 =   10.3/s Avg:  1548 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:46:38,076 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:47:00,320 INFO o.a.j.r.Summariser: summary +     42 in 00:00:30 =    1.4/s Avg:  1857 Min:     8 Max: 46341 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:47:00,320 INFO o.a.j.r.Summariser: summary =  23757 in 00:38:52 =   10.2/s Avg:  1548 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:47:30,962 INFO o.a.j.r.Summariser: summary +     32 in 00:00:31 =    1.0/s Avg:  1453 Min:    16 Max: 25747 Err:     0 (0.00%) Active: 5 Started: 92 Finished: 87
+2017-07-28 12:47:30,962 INFO o.a.j.r.Summariser: summary =  23789 in 00:39:22 =   10.1/s Avg:  1548 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:47:59,128 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-19
+2017-07-28 12:47:59,128 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-19
+2017-07-28 12:48:00,565 INFO o.a.j.r.Summariser: summary +     29 in 00:00:30 =    1.0/s Avg:  2671 Min:    15 Max: 56984 Err:     0 (0.00%) Active: 4 Started: 92 Finished: 88
+2017-07-28 12:48:00,565 INFO o.a.j.r.Summariser: summary =  23818 in 00:39:52 =   10.0/s Avg:  1550 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:48:14,613 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=LkjMd7HJ116pOg6w-t1CUckUIlofV_p7T1ZDop0y4kJqd05PL_wWWLjS7caa6iTrMo1IwayB8yWhUIrCaVxIPvXkxc3Y4YZopk_9N_7ccqRCddEymR5Vv8pKkzSVm8q_6t2nkTEc29WGhN6xn8yh38W-GYyLGOgXg2atl8IuYhmTAxj2A0-cMfWRR06-hDoCeeEhMkKa-QjTQqNJlOCLfN9AgzpjyOGEmOJtdi2_sTHdU9kZMHnny7eSRTHMqttZ1j-zfe0uMjxGSXmyxgKqelnpXmQIgHp0NMaA0uq82AD0OK_rNsC1yENuPawPi3zxwfykEfqduYxeKRzttTbxUg2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:48:31,454 INFO o.a.j.r.Summariser: summary +     30 in 00:00:31 =    1.0/s Avg:  2455 Min:     5 Max: 59992 Err:     0 (0.00%) Active: 4 Started: 92 Finished: 88
+2017-07-28 12:48:31,454 INFO o.a.j.r.Summariser: summary =  23848 in 00:40:23 =    9.8/s Avg:  1551 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:49:00,974 INFO o.a.j.r.Summariser: summary +     18 in 00:00:30 =    0.6/s Avg:  4907 Min:    36 Max: 37531 Err:     0 (0.00%) Active: 4 Started: 92 Finished: 88
+2017-07-28 12:49:00,974 INFO o.a.j.r.Summariser: summary =  23866 in 00:40:52 =    9.7/s Avg:  1553 Min:     2 Max: 558059 Err:    31 (0.13%)
+2017-07-28 12:49:15,475 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=yhKC-aSAoP1H8qGY8OoyFp1zFWZaJMHpbNsU7JHd0iYyPfATFEcEwevIZiQ5fXAAtRzS1NJlGvgzQXB8ELGsODfuxyJbUEAjkIjlY3u_5oTlMlFl9WCI0OI1xRWTR0FQ7kQJ1MD_64qciuyTYj7KETY2wFm9KYp-5VNmdaqCpune4hh-s6wBeYQV7eEiMu5u94myZYUhafk6S1lwv8kdj34M5y4ax8nDQmiVspUYaFSaS-fOd7qg1PRz-RoKUAXVS_kjT4FFL41IB3HYVMVDKEICGEC8TMtzGBeVieLsvmP2hnT0z25L0wWS6nRi2S1KceX2RRWfzgd2hXzH1_qHZg2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:49:15,724 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-20
+2017-07-28 12:49:15,724 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-20
+2017-07-28 12:49:33,432 INFO o.a.j.r.Summariser: summary +     23 in 00:00:32 =    0.7/s Avg:  6143 Min:     9 Max: 119994 Err:     1 (4.35%) Active: 3 Started: 92 Finished: 89
+2017-07-28 12:49:33,432 INFO o.a.j.r.Summariser: summary =  23889 in 00:41:25 =    9.6/s Avg:  1558 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:50:00,126 INFO o.a.j.r.Summariser: summary +     16 in 00:00:27 =    0.6/s Avg:  5272 Min:    26 Max: 32306 Err:     0 (0.00%) Active: 3 Started: 92 Finished: 89
+2017-07-28 12:50:00,126 INFO o.a.j.r.Summariser: summary =  23905 in 00:41:51 =    9.5/s Avg:  1560 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:51:01,555 INFO o.a.j.r.Summariser: summary +     29 in 00:01:01 =    0.5/s Avg:  2088 Min:     2 Max: 20473 Err:     0 (0.00%) Active: 3 Started: 92 Finished: 89
+2017-07-28 12:51:01,555 INFO o.a.j.r.Summariser: summary =  23934 in 00:42:53 =    9.3/s Avg:  1561 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:51:31,921 INFO o.a.j.r.Summariser: summary +     26 in 00:00:30 =    0.9/s Avg:  1741 Min:     5 Max: 40254 Err:     0 (0.00%) Active: 3 Started: 92 Finished: 89
+2017-07-28 12:51:31,922 INFO o.a.j.r.Summariser: summary =  23960 in 00:43:23 =    9.2/s Avg:  1561 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:52:00,082 INFO o.a.j.r.Summariser: summary +     18 in 00:00:28 =    0.6/s Avg:  7652 Min:     5 Max: 132786 Err:     0 (0.00%) Active: 3 Started: 92 Finished: 89
+2017-07-28 12:52:00,082 INFO o.a.j.r.Summariser: summary =  23978 in 00:43:51 =    9.1/s Avg:  1566 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:52:03,380 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=Q7XIkJAJr1jljUpyhYU2jo_aBX_f7lzzVEH8-1ugVUBUee2jWEv7x02aIoZZEVi43HdVmDi55IGXy9bsmT32JfMExbDo0zgcD4_FyCr8t3Kvx8cv5kxOIlp-OD_hnfUVJOg_oAjZlnMkyiqNwFm7XCURO0QGKTz0wes1FacD306aFY8f5ZHvdMr_u6bY1dFeK8fwQ0K1ZX3ciyzTsZBDzqDuQUl0j2AzI_eAITXA58xFeoRFIKJWt-dR2dPQcEevlcr1dRcqVszjpFzvyKSur67VWxWKQLPWkUv2A_W1JbkaDvAgcFrzOL5fPUvPljEr3OPNxbKcNlRPPOq7dXEUbA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:52:08,745 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-14
+2017-07-28 12:52:08,745 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-14
+2017-07-28 12:52:32,804 INFO o.a.j.r.Summariser: summary +     13 in 00:00:33 =    0.4/s Avg:  2139 Min:     4 Max: 25591 Err:     0 (0.00%) Active: 2 Started: 92 Finished: 90
+2017-07-28 12:52:32,804 INFO o.a.j.r.Summariser: summary =  23991 in 00:44:24 =    9.0/s Avg:  1566 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:52:49,817 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:53:28,046 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:53:32,098 INFO o.a.j.r.Summariser: summary +     23 in 00:00:59 =    0.4/s Avg:  7275 Min:     8 Max: 91657 Err:     0 (0.00%) Active: 2 Started: 92 Finished: 90
+2017-07-28 12:53:32,099 INFO o.a.j.r.Summariser: summary =  24014 in 00:45:23 =    8.8/s Avg:  1571 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:54:05,140 INFO o.a.j.r.Summariser: summary +      3 in 00:00:33 =    0.1/s Avg:  9262 Min:   468 Max: 21904 Err:     0 (0.00%) Active: 2 Started: 92 Finished: 90
+2017-07-28 12:54:05,141 INFO o.a.j.r.Summariser: summary =  24017 in 00:45:56 =    8.7/s Avg:  1572 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:54:07,214 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-07-28 12:54:30,384 INFO o.a.j.r.Summariser: summary +      9 in 00:00:25 =    0.4/s Avg:  9472 Min:     9 Max: 65642 Err:     0 (0.00%) Active: 2 Started: 92 Finished: 90
+2017-07-28 12:54:30,384 INFO o.a.j.r.Summariser: summary =  24026 in 00:46:22 =    8.6/s Avg:  1575 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:55:23,819 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Manual Bordereau Upload Thread Group 6-1
+2017-07-28 12:55:23,819 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Manual Bordereau Upload Thread Group 6-1
+2017-07-28 12:58:34,455 INFO o.a.j.r.Summariser: summary +     31 in 00:04:04 =    0.1/s Avg:  8290 Min:     8 Max: 51649 Err:     0 (0.00%) Active: 1 Started: 92 Finished: 91
+2017-07-28 12:58:34,456 INFO o.a.j.r.Summariser: summary =  24057 in 00:50:26 =    8.0/s Avg:  1584 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:59:30,220 INFO o.a.j.r.Summariser: summary +      6 in 00:00:56 =    0.1/s Avg:  7449 Min:    21 Max: 43305 Err:     0 (0.00%) Active: 1 Started: 92 Finished: 91
+2017-07-28 12:59:30,221 INFO o.a.j.r.Summariser: summary =  24063 in 00:51:21 =    7.8/s Avg:  1585 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:59:52,751 INFO o.a.j.t.JMeterThread: Thread is done: CHO Bordereau Upload Thread Group 2-1
+2017-07-28 12:59:52,751 INFO o.a.j.t.JMeterThread: Thread finished: CHO Bordereau Upload Thread Group 2-1
+2017-07-28 12:59:52,751 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2017-07-28 12:59:52,751 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/CHO_UPLOAD.csv@91402135
+2017-07-28 12:59:52,752 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv@1642679791
+2017-07-28 12:59:52,752 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/INS_Files/ManualInsUsers.csv@1335986006
+2017-07-28 12:59:52,753 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv@1408279755
+2017-07-28 12:59:52,753 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/INS_Files/InsUsers.csv@1390301622
+2017-07-28 12:59:52,753 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv@93740343
+2017-07-28 12:59:52,754 INFO o.a.j.r.Summariser: summary +      5 in 00:00:23 =    0.2/s Avg:  3550 Min:    26 Max: 13007 Err:     0 (0.00%) Active: 0 Started: 92 Finished: 92
+2017-07-28 12:59:52,754 INFO o.a.j.r.Summariser: summary =  24068 in 00:51:44 =    7.8/s Avg:  1586 Min:     2 Max: 558059 Err:    32 (0.13%)
+2017-07-28 12:59:52,754 INFO o.a.j.JMeter: Generating Dashboard
+2017-07-28 12:59:52,754 INFO o.a.j.r.d.ReportGenerator: Flushing result collector before report Generation
+2017-07-28 12:59:52,781 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2017-07-28 12:59:54,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2017-07-28 12:59:54,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2017-07-28 12:59:54,641 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2017-07-28 12:59:54,641 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2017-07-28 12:59:54,669 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2017-07-28 12:59:54,671 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2017-07-28 12:59:54,671 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2017-07-28 12:59:54,671 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2017-07-28 12:59:54,906 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2017-07-28 12:59:54,909 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2017-07-28 12:59:54,909 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2017-07-28 12:59:54,909 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2017-07-28 12:59:55,054 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2017-07-28 12:59:55,055 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 168476 samples
+2017-07-28 12:59:55,055 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2017-07-28 12:59:55,056 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2017-07-28 12:59:55,071 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2017-07-28 12:59:55,076 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2017-07-28 12:59:55,139 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2017-07-28 12:59:55,177 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2017-07-28 12:59:55,258 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2017-07-28 12:59:55,260 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2017-07-28 12:59:55,262 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2017-07-28 12:59:55,263 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 340452 samples
+2017-07-28 12:59:55,263 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 72954 samples
+2017-07-28 12:59:55,263 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 24318 samples
+2017-07-28 12:59:55,264 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 24318 samples produced in 2s 448 ms on channel 0
+2017-07-28 12:59:55,264 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2017-07-28 12:59:55,268 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: /home/chox/choxLoadTests/prodResults-5.7-test1b
+2017-07-28 12:59:55,532 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: /home/chox/choxLoadTests/prodResults-5.7-test1b, creating folder structure
+2017-07-28 12:59:55,953 INFO o.a.j.JMeter: Dashboard generated
