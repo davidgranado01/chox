@@ -20,7 +20,6 @@ import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.Notification;
 import idas.chox.core.util.DateHelper;
-import idas.chox.data.notifications.NotificationType;
 import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.test.BaseTest;
 
@@ -56,6 +55,12 @@ public class NotificationTest extends BaseTest {
         List<Notification> notifications = claim.getNotifications();
         Assert.assertEquals(1, notifications.size()); 
         Assert.assertTrue(notifications.get(0).getMessage().equals("ECD Update"));
+
+        // Alternatively, need to flush to get notifications directly from notificationService
+        this.sessionFactory.getObject().getCurrentSession().flush();
+        notifications = notificationService.getNotifications(claim.getId());
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("ECD Update"));
     }
     
     @Test
@@ -78,8 +83,8 @@ public class NotificationTest extends BaseTest {
     }
 
 /*
- *   Hire UPdate anomaly now generated in Action class only.....
- *      Probably better, in the long run, to move hire monitoring updates to an activity - TODO
+ *   Hire Update anomaly now generated in Action class only.....
+ *      Probably better to move hire monitoring updates to an activity - TODO
     @Test
     @Transactional
     public void testHireMonitorigDetailNotification() throws Exception {
@@ -138,7 +143,7 @@ public class NotificationTest extends BaseTest {
         hireMonitoringDetailService.saveHireMonitoringDetail(hmd);
         c.setHireMonitoringDetail(hmd);
         claimService.save(c);
-        notificationService.checkForAnomalies(c, NotificationType.TotalLossAnomalousNotification.getType());
+        claimService.checkTotalLossAnomaly(c);
         
         List<Notification> notifications = c.getNotifications();
         Assert.assertEquals(1, notifications.size()); 
@@ -170,11 +175,10 @@ public class NotificationTest extends BaseTest {
         claimService.save(c);
         
         claimService.checkRepairBookedInDateAnomaly(c);
-        notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
         List<Notification> notifications = c.getNotifications();
-        Assert.assertEquals(2, notifications.size()); 
-        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
         
     }
     
@@ -201,7 +205,6 @@ public class NotificationTest extends BaseTest {
         c.setHireMonitoringDetail(hmd);
         claimService.save(c);
         claimService.checkRepairBookedInDateAnomaly(c);
-        notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
         List<Notification> notifications = c.getNotifications();
         Assert.assertEquals(0, notifications.size()); 
@@ -231,11 +234,10 @@ public class NotificationTest extends BaseTest {
         c.setHireMonitoringDetail(hmd);
         claimService.save(c);
         claimService.checkRepairBookedInDateAnomaly(c);
-        notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
         List<Notification> notifications = c.getNotifications();
-        Assert.assertEquals(2, notifications.size()); 
-        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Saturday and the CHO's Customer's vehicle was driveable."));
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("Repair booked in on Saturday and the CHO's Customer's vehicle was driveable."));
         
     }
     
@@ -263,11 +265,10 @@ public class NotificationTest extends BaseTest {
         c.setHireMonitoringDetail(hmd);
         claimService.save(c);
         claimService.checkRepairBookedInDateAnomaly(c);
-        notificationService.checkForAnomalies(c, NotificationType.RepairBookedInDateAnomalousNotification.getType());
         
         List<Notification> notifications = c.getNotifications();
-        Assert.assertEquals(2, notifications.size()); 
-        Assert.assertTrue(notifications.get(1).getMessage().equals("Repair booked in on Friday and the CHO's Customer's vehicle was driveable."));
+        Assert.assertEquals(1, notifications.size()); 
+        Assert.assertTrue(notifications.get(0).getMessage().equals("Repair booked in on Friday and the CHO's Customer's vehicle was driveable."));
         
     }
     

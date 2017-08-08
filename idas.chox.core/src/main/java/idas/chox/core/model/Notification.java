@@ -53,7 +53,7 @@ public class Notification extends Entity {
     /**
      * @param message the message to set
      */
-    public void setMessage(String message) {
+    public final void setMessage(String message) {
         this.message = message;
     }
 

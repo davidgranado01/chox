@@ -535,6 +535,12 @@ public class Claim extends Entity implements Serializable {
         return notifications;
     }
 
+    public List<Notification> addNotification(Notification notification) {
+        notification.setClaim(this);
+        getNotifications().add(notification);
+        return notifications;
+    }
+
     public List<InsurerHireMonitoringEcd> getInsurerHireMonitoringEcds() {
         if (insurerHireMonitoringEcds == null) {
             insurerHireMonitoringEcds = new ArrayList<>();

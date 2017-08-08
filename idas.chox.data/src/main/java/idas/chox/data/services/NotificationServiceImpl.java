@@ -31,7 +31,9 @@ public class NotificationServiceImpl extends SecureDataService implements Notifi
         LOG.debug("Adding notification to claim with id={}", claim.getId(), notification.getType());
         try {
             notification.setClaim(claim);
-            this.save(new Notification(notification));
+            Notification n = new Notification(notification);
+            claim.addNotification(n);
+            this.save(n);
             LOG.debug("Added notification to claim '{}': {}", claim.getChoReference(), notification.getType());
         } catch (Exception ex) {
             LOG.error("Error thrown adding notification: {}", ex.getMessage(), ex);
