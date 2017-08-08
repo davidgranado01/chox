@@ -35,6 +35,7 @@ public class FullInvoicePaymentReceivedTest extends BaseTest {
         Chorganisation cho = chorganisationService.getChorganisation(1006);
         claim.setChorganisation(cho);
         Invoice invoice = invoiceService.getInvoice(999);
+        Assert.assertNotNull(invoice);
         claim.setInvoice(invoice);
         Activity activity = activityFactory.getActivity("fullInvoicePaymentReceived");
 
