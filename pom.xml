@@ -36,13 +36,11 @@
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         
         <!-- For Java 7 use the following driver -->
-        <postgresql-jdbc.version>9.3-1102-jdbc41</postgresql-jdbc.version>
+        <postgresql-jdbc.version>42.1.4.jre7</postgresql-jdbc.version>
         <!-- For Java 8 use the following driver -->
-        <!--postgresql-jdbc.version>9.4-1202-jdbc42</postgresql-jdbc.version-->
-        <!--postgresql-jdbc.version>42.1.1</postgresql-jdbc.version-->
+        <!--postgresql-jdbc.version>42.1.4</postgresql-jdbc.version-->
         <!-- For Java 8, pgjdbc-ng driver -->
         <postgresql-jdbc-ng.version>0.7</postgresql-jdbc-ng.version> <!-- use 0.7.1 for Java 8 -->
-
 
         <!-- Hikari CP -->
         <hikari.version>2.4.12</hikari.version> <!-- 2.6.2 for java 8 -->
