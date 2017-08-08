@@ -3,7 +3,6 @@ package idas.chox.service.workflow.activities;
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import junit.framework.Assert;
 
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -21,10 +19,9 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
-import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.test.BaseTest;
+import java.util.HashMap;
 
 public class InsurerUploadTest extends BaseTest {
 
@@ -70,32 +67,28 @@ public class InsurerUploadTest extends BaseTest {
     }
     
     @Test
-    @Transactional
+    @Transactional(readOnly = false)
     public void testInsurerUpload() throws Exception {
         Chorganisation chorganisation = chorganisationService.getChorganisation(1006);
         chorganisation.setInsurerUploadOnly(true);
         Insurer insurer = insurerService.getInsurer(3);
         insurer.setInvoiceUploadEnabled(true);
-        List<ClaimResult> claimResults = loadBordereauResult("insurerUpload.xml");
-        System.out.println(">>>>> testNewClaim");
-        for (ClaimResult claimResult : claimResults) {
-            bordereauReader.execute(claimResult);
-            Claim claim = claimResult.getClaim();
-
-            claim.setChorganisation(chorganisationService.getChorganisation(1006));
-            claim.setInsurer(insurerService.getInsurerByName("RSA"));
-            claim.setInvoice(claimResult.getInvoice());
-            Activity activity = activityFactory.getActivity("insurerUpload");
-            activity.process(claim);
-            Assert.assertEquals(ClaimStatus.MANUAL_INVOICE_APPROVED, claim.getStatus());
-        }
+        
+        Claim claimBeforeUpload = claimService.getClaimByCHOReferenceNumber("MANUALINS");
+        Assert.assertNull(claimBeforeUpload);
+        
+        File testFile = new ClassPathResource("insurerUpload.xml").getFile();
+        boolean uploadStatus = uploadClaimXMLService.saveUploadedFile(testFile, "insurerUpload.xml");
+        Assert.assertTrue(uploadStatus);
+        
+        Integer id = (bordereauService.getBordereauByFileName("insurerUpload.xml")).getId();
+        Assert.assertNotNull(id);
+        
+        boolean processStatus = uploadClaimXMLService.processFile(id, new HashMap());
+        Assert.assertTrue(processStatus); 
+        Claim claimAfterUpload = claimService.getClaimByCHOReferenceNumber("MANUALINS");
+        Assert.assertEquals(ClaimStatus.MANUAL_INVOICE_APPROVED, claimAfterUpload.getStatus());
 
     }
 
-    private List<ClaimResult> loadBordereauResult(String fileName) throws Exception {
-        File file = new ClassPathResource(fileName).getFile();
-        Document document = DocumentHelper.getDocumentFromFile(file);
-        List<ClaimResult> claimResults = this.uploadClaimXMLService.formClaimResults(document);
-        return claimResults;
-    }
 }
