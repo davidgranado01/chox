@@ -30,7 +30,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowVehicleClassCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new VehicleClassCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -72,7 +72,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowUnroadworthyVehicleCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new UnroadworthyVehicleCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -94,7 +94,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowTotalLossVehicleCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new TotalLossVehicleCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -133,7 +133,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowCHOManagingRepairCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new CHOManagingRepairCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -153,7 +153,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowVehicleClassAboveSCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new VehicleClassAboveSCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -186,7 +186,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowFrontalDamageCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new FrontalDamageCheckNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -211,7 +211,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowNeedForSPandPClassCheckWithoutECDNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new NeedForSPandPClassCheckWithoutECDNote());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
@@ -267,7 +267,7 @@ public class IntelligentNoteTest extends BaseTest {
         Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
         claim.getCustomer().setInitialECD(null);
 
-        ArrayList<HireMonitoringEcd> hm = new ArrayList<HireMonitoringEcd>();
+        ArrayList<HireMonitoringEcd> hm = new ArrayList<>();
         HireMonitoringEcd hmEcd = new HireMonitoringEcd();
         hmEcd.setClaim(claim);
         hmEcd.setEcdDate(new Date());
@@ -280,7 +280,7 @@ public class IntelligentNoteTest extends BaseTest {
     
     @Test
     public void testCanShowHireCommenced48hSinceNotificationCheckNote() throws Exception {
-        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        List<IntelligentNote> intelligentNotes = new ArrayList<>();
         intelligentNotes.add(new HireCommenced48hSinceNotificationCheck());
         displayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
