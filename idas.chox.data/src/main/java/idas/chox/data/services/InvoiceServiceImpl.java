@@ -2,6 +2,8 @@ package idas.chox.data.services;
 
 
 import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
@@ -16,8 +18,6 @@ import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
@@ -29,7 +29,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         this.claimService = claimService;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly=false, propagation=Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInvoiceForXMLUploader(final ClaimResult claimResult) {
 
@@ -47,14 +47,14 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         return (Invoice) get(Invoice.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly=false, propagation=Propagation.REQUIRED, value="transactionManager")
     @Override
     public void saveInvoice(Invoice invoice) {
 
         save(invoice);
     }
     
-    @Transactional(readOnly = false, value="transactionManager")
+    @Transactional(readOnly=false, propagation=Propagation.REQUIRED, value="transactionManager")
     @Override
     public InvoiceOriginal saveOriginalInvoice(Invoice inv) {
         try {
@@ -139,7 +139,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     }
 
     @Override
-    @Transactional(readOnly = false, value="transactionManager")
+    @Transactional(readOnly=false, propagation=Propagation.REQUIRED, value="transactionManager")
     public void deleteOriginalInvoice(Invoice invoice) {
         try {
             delete(invoice.getInvoiceOriginal());
