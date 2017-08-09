@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -77,7 +78,7 @@ public class HireUpdate extends BaseActivity {
             throw new Exception("Hire Start Date is null. Can not update Hire Start.");
         }
         if (hireStartTime != null) {
-            String hireStartTimeClean = Jsoup.clean(hireStartTime, Whitelist.basic());
+            String hireStartTimeClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(hireStartTime, Whitelist.basic()));
             if (!hireStartTimeClean.equals(hireStartTime)) {
                 LOG.warn("Hire Start Time contains forbidden content - possible XSS attack: {}", hireStartTime);
                 throw new Exception("Hire Start Time contains forbidden content");

@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.jsoup.Jsoup;
@@ -114,7 +115,7 @@ public final class XMLUtils {
         if(nl.getLength()==0) {
             return null;
         }
-        return Jsoup.clean(getElementText((Element)nl.item(0)), Whitelist.basic());
+        return StringEscapeUtils.unescapeHtml4(Jsoup.clean(getElementText((Element)nl.item(0)), Whitelist.basic()));
     }
 
 

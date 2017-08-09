@@ -2,6 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jsoup.Jsoup;
@@ -65,7 +66,7 @@ public class Task extends Entity implements Serializable {
     }
 
     public void setDescription(String description) {
-        this.description = Jsoup.clean(description, Whitelist.basic());
+        this.description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(description, Whitelist.basic()));
     }
 
     public Date getDueDate() {

@@ -3,6 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -67,7 +68,7 @@ public class ClaimAuditReview extends Entity implements Serializable {
 
     public void setPenaltyChargeAvoidableNote(String penaltyChargeAvoidableNote) {
         if (penaltyChargeAvoidableNote != null) {
-            this.penaltyChargeAvoidableNote = Jsoup.clean(penaltyChargeAvoidableNote, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false));
+            this.penaltyChargeAvoidableNote = StringEscapeUtils.unescapeHtml4(Jsoup.clean(penaltyChargeAvoidableNote, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false)));
         } else {
             this.penaltyChargeAvoidableNote = penaltyChargeAvoidableNote;
         }

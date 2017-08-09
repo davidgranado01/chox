@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -143,13 +145,13 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
                 LOG.error("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
                 throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
-            if (!this.workgroupName.equals(Jsoup.clean(this.workgroupName, Whitelist.none()))) {
+            if (!this.workgroupName.equals(StringEscapeUtils.unescapeHtml4(Jsoup.clean(this.workgroupName, Whitelist.none())))) {
                 throw new Exception("Illegal characters found in Workgroup name");
             }
-            if (!this.workgroupSite.equals(Jsoup.clean(this.workgroupSite, Whitelist.none()))) {
+            if (!this.workgroupSite.equals(StringEscapeUtils.unescapeHtml4(Jsoup.clean(this.workgroupSite, Whitelist.none())))) {
                 throw new Exception("Illegal characters found in Workgroup Site");
             }
-            if (!this.workgroupTeam.equals(Jsoup.clean(this.workgroupTeam, Whitelist.none()))) {
+            if (!this.workgroupTeam.equals(StringEscapeUtils.unescapeHtml4(Jsoup.clean(this.workgroupTeam, Whitelist.none())))) {
                 throw new Exception("Illegal characters found in Workgroup Team");
             }
             model.setName(this.workgroupName);

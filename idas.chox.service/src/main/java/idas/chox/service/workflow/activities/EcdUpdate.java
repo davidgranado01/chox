@@ -4,6 +4,8 @@ package idas.chox.service.workflow.activities;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -103,7 +105,7 @@ public class EcdUpdate extends BaseActivity {
             LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
-        String supportingNoteClean = Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false));
+        String supportingNoteClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false)));
 //        if (!supportingNote.equals(supportingNoteClean)) {
 //            LOG.warn("Supporting note contains forbidden content - possible XSS attack: [clean] '{}' != '{}'", supportingNoteClean, supportingNote);
 //            throw new Exception("Supporting note contains forbidden content");

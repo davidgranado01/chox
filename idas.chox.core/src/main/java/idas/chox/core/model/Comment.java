@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,7 +30,7 @@ public class Comment extends Entity implements Serializable {
     }
 
     public void setComment(String comment) {
-        this.comment = Jsoup.clean(comment, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false));
+        this.comment = StringEscapeUtils.unescapeHtml4(Jsoup.clean(comment, "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false)));
     }
 
     public Claim getClaim() {

@@ -7,6 +7,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jsoup.nodes.Document.OutputSettings;
@@ -86,7 +87,7 @@ public class InsurerEcdUpdate extends BaseActivity {
             LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
-        String supportingNoteClean = Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false));
+        String supportingNoteClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false)));
 //        if (!supportingNote.equals(supportingNoteClean)) {
 //            LOG.warn("Supporting note contains forbidden content - possible XSS attack: [clean] '{}' != '{}'", supportingNoteClean, supportingNote);
 //            throw new Exception("Supporting note contains forbidden content");

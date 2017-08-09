@@ -648,7 +648,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateClaimNumber() {
         try {
-            claim.setClaimNumber(Jsoup.clean(claim.getClaimNumber().trim(), Whitelist.none()));
+            claim.setClaimNumber(StringEscapeUtils.unescapeHtml4(Jsoup.clean(claim.getClaimNumber().trim(), Whitelist.none())));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {
@@ -664,7 +664,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateSupplierReferenceNumber() {
         try {
-            claim.setChoReference(Jsoup.clean(claim.getChoReference().trim(), Whitelist.none()));
+            claim.setChoReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(claim.getChoReference().trim(), Whitelist.none())));
             claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + originalChoReference + "' to '" + claim.getChoReference() + "'"));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.SUPPLIER_REFERENCE_UPDATED_EVENT);
@@ -681,7 +681,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateCustomerClaimNumber() {
         try {
-            claim.getCustomer().setClaimReference(Jsoup.clean(customerClaimNumber.trim(), Whitelist.none()));
+            claim.getCustomer().setClaimReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(customerClaimNumber.trim(), Whitelist.none())));
             this.claimService.updateClaim(claim);
             activityEventGenerator.generate(claim, ActivityEvent.CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT);
         } catch (Exception ex) {

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -229,7 +230,7 @@ public class LouUpdate extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         if (repairerName != null) {
-            String repairerNameClean = Jsoup.clean(repairerName, Whitelist.basic());
+            String repairerNameClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(repairerName, Whitelist.basic()));
             if (!repairerNameClean.equals(repairerName)) {
                 LOG.warn("Repairer name contains forbidden content - possible XSS attack: '{}'!='{}'", repairerName, repairerNameClean);
                 repairerName = repairerNameClean;
@@ -237,7 +238,7 @@ public class LouUpdate extends BaseActivity {
             }
         }
         if (imeName != null) {
-            String imeNameClean = Jsoup.clean(imeName, Whitelist.basic());
+            String imeNameClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(imeName, Whitelist.basic()));
             if (!imeNameClean.equals(imeName)) {
                 LOG.warn("IME Name contains forbidden content - possible XSS attack: '{}'!='{}'", imeName, imeNameClean);
                 imeName = imeNameClean;
@@ -245,7 +246,7 @@ public class LouUpdate extends BaseActivity {
             }
         }
         if (nonProvisionReason != null) {
-            String nonProvisionReasonClean = Jsoup.clean(nonProvisionReason, Whitelist.basic());
+            String nonProvisionReasonClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(nonProvisionReason, Whitelist.basic()));
             if (!nonProvisionReasonClean.equals(nonProvisionReason)) {
                 LOG.warn("Non-provision reason contains forbidden content - possible XSS attack: '{}'!='{}'", nonProvisionReason, nonProvisionReasonClean);
                 nonProvisionReason = nonProvisionReasonClean;

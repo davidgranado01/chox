@@ -3,6 +3,8 @@ package idas.chox.service.workflow.activities;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -295,7 +297,7 @@ public class TlTaskCreation extends BaseActivity {
         }
 
         if (imsReference != null) {
-            String clean = Jsoup.clean(imsReference, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(imsReference, Whitelist.basic()));
             if (!clean.equals(imsReference)) {
                 LOG.warn("IMS Reference contains forbidden content - possible XSS attack: '{}'!='{}'", imsReference, clean);
                 imsReference = clean;
@@ -305,7 +307,7 @@ public class TlTaskCreation extends BaseActivity {
             imsReference=empty;
         }
         if (registrationNumber != null) {
-            String clean = Jsoup.clean(registrationNumber, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(registrationNumber, Whitelist.basic()));
             if (!clean.equals(registrationNumber)) {
                 LOG.warn("Registration Number contains forbidden content - possible XSS attack: '{}'!='{}'", registrationNumber, clean);
                 registrationNumber = clean;
@@ -315,7 +317,7 @@ public class TlTaskCreation extends BaseActivity {
             registrationNumber=empty;
         }
         if (make != null) {
-            String clean = Jsoup.clean(make, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(make, Whitelist.basic()));
             if (!clean.equals(make)) {
                 LOG.warn("Make contains forbidden content - possible XSS attack: '{}'!='{}'", make, clean);
                 make = clean;
@@ -325,7 +327,7 @@ public class TlTaskCreation extends BaseActivity {
             make=empty;
         }
         if (model != null) {
-            String clean = Jsoup.clean(model, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(model, Whitelist.basic()));
             if (!clean.equals(model)) {
                 LOG.warn("Model contains forbidden content - possible XSS attack: '{}'!='{}'", model, clean);
                 model = clean;
@@ -335,7 +337,7 @@ public class TlTaskCreation extends BaseActivity {
             model=empty;
         }
         if (chassisNumber != null) {
-            String clean = Jsoup.clean(chassisNumber, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(chassisNumber, Whitelist.basic()));
             if (!clean.equals(chassisNumber)) {
                 LOG.warn("Chassis Number contains forbidden content - possible XSS attack: '{}'!='{}'", chassisNumber, clean);
                 chassisNumber = clean;
@@ -345,7 +347,7 @@ public class TlTaskCreation extends BaseActivity {
             chassisNumber=empty;
         }
         if (preAccidentValue != null) {
-            String clean = Jsoup.clean(preAccidentValue, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(preAccidentValue, Whitelist.basic()));
             if (!clean.equals(preAccidentValue)) {
                 LOG.warn("Pre Accident Value contains forbidden content - possible XSS attack: '{}'!='{}'", preAccidentValue, clean);
                 preAccidentValue = clean;
@@ -355,7 +357,7 @@ public class TlTaskCreation extends BaseActivity {
             preAccidentValue=empty;
         }
         if (salvageAmount != null) {
-            String clean = Jsoup.clean(salvageAmount, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(salvageAmount, Whitelist.basic()));
             if (!clean.equals(salvageAmount)) {
                 LOG.warn("Salvage Amount contains forbidden content - possible XSS attack: '{}'!='{}'", salvageAmount, clean);
                 salvageAmount = clean;
@@ -365,7 +367,7 @@ public class TlTaskCreation extends BaseActivity {
             salvageAmount=empty;
         }
         if (salvageCategory != null) {
-            String clean = Jsoup.clean(salvageCategory, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(salvageCategory, Whitelist.basic()));
             if (!clean.equals(salvageCategory)) {
                 LOG.warn("Salvage Category contains forbidden content - possible XSS attack: '{}'!='{}'", salvageCategory, clean);
                 salvageCategory = clean;
@@ -375,7 +377,7 @@ public class TlTaskCreation extends BaseActivity {
             salvageCategory=empty;
         }
         if (amountToPay != null) {
-            String clean = Jsoup.clean(amountToPay, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(amountToPay, Whitelist.basic()));
             if (!clean.equals(amountToPay)) {
                 LOG.warn("Amount To Pay contains forbidden content - possible XSS attack: '{}'!='{}'", amountToPay, clean);
                 amountToPay = clean;
@@ -385,7 +387,7 @@ public class TlTaskCreation extends BaseActivity {
             amountToPay=empty;
         }
         if (thirdPartyName != null) {
-            String clean = Jsoup.clean(thirdPartyName, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(thirdPartyName, Whitelist.basic()));
             if (!clean.equals(thirdPartyName)) {
                 LOG.warn("Third Party Name contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyName, clean);
                 thirdPartyName = clean;
@@ -395,7 +397,7 @@ public class TlTaskCreation extends BaseActivity {
             thirdPartyName=empty;
         }
         if (thirdPartyReg != null) {
-            String clean = Jsoup.clean(thirdPartyReg, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(thirdPartyReg, Whitelist.basic()));
             if (!clean.equals(thirdPartyReg)) {
                 LOG.warn("Third Party Reg contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyReg, clean);
                 thirdPartyReg = clean;
@@ -405,7 +407,7 @@ public class TlTaskCreation extends BaseActivity {
             thirdPartyReg=empty;
         }
         if (thirdPartyClaimNumber != null) {
-            String clean = Jsoup.clean(thirdPartyClaimNumber, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(thirdPartyClaimNumber, Whitelist.basic()));
             if (!clean.equals(thirdPartyClaimNumber)) {
                 LOG.warn("Third Party Claim Number contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyClaimNumber, clean);
                 thirdPartyClaimNumber = clean;
@@ -415,7 +417,7 @@ public class TlTaskCreation extends BaseActivity {
             thirdPartyClaimNumber=empty;
         }
         if (thirdPartyAgentName != null) {
-            String clean = Jsoup.clean(thirdPartyAgentName, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(thirdPartyAgentName, Whitelist.basic()));
             if (!clean.equals(thirdPartyAgentName)) {
                 LOG.warn("Third Party Agent Name contains forbidden content - possible XSS attack: '{}'!='{}'", thirdPartyAgentName, clean);
                 thirdPartyAgentName = clean;
@@ -425,7 +427,7 @@ public class TlTaskCreation extends BaseActivity {
             thirdPartyAgentName=empty;
         }
         if (title != null) {
-            String clean = Jsoup.clean(title, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(title, Whitelist.basic()));
             if (!clean.equals(title)) {
                 LOG.warn("Title contains forbidden content - possible XSS attack: '{}'!='{}'", title, clean);
                 title = clean;
@@ -435,7 +437,7 @@ public class TlTaskCreation extends BaseActivity {
             title=empty;
         }
         if (driverFirstName != null) {
-            String clean = Jsoup.clean(driverFirstName, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(driverFirstName, Whitelist.basic()));
             if (!clean.equals(driverFirstName)) {
                 LOG.warn("Driver First Name contains forbidden content - possible XSS attack: '{}'!='{}'", driverFirstName, clean);
                 driverFirstName = clean;
@@ -445,7 +447,7 @@ public class TlTaskCreation extends BaseActivity {
             driverFirstName=empty;
         }
         if (driverLastName != null) {
-            String clean = Jsoup.clean(driverLastName, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(driverLastName, Whitelist.basic()));
             if (!clean.equals(driverLastName)) {
                 LOG.warn("Driver Last Name contains forbidden content - possible XSS attack: '{}'!='{}'", driverLastName, clean);
                 driverLastName = clean;
@@ -455,7 +457,7 @@ public class TlTaskCreation extends BaseActivity {
             driverLastName=empty;
         }
         if (payee != null) {
-            String clean = Jsoup.clean(payee, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(payee, Whitelist.basic()));
             if (!clean.equals(payee)) {
                 LOG.warn("Payee contains forbidden content - possible XSS attack: '{}'!='{}'", payee, clean);
                 payee = clean;
@@ -465,7 +467,7 @@ public class TlTaskCreation extends BaseActivity {
             payee=empty;
         }
         if (line1 != null) {
-            String clean = Jsoup.clean(line1, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(line1, Whitelist.basic()));
             if (!clean.equals(line1)) {
                 LOG.warn("Line1 contains forbidden content - possible XSS attack: '{}'!='{}'", line1, clean);
                 line1 = clean;
@@ -475,7 +477,7 @@ public class TlTaskCreation extends BaseActivity {
             line1=empty;
         }
         if (line2 != null) {
-            String clean = Jsoup.clean(line2, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(line2, Whitelist.basic()));
             if (!clean.equals(line2)) {
                 LOG.warn("Line2 contains forbidden content - possible XSS attack: '{}'!='{}'", line2, clean);
                 line2 = clean;
@@ -485,7 +487,7 @@ public class TlTaskCreation extends BaseActivity {
             line2=empty;
         }
         if (town != null) {
-            String clean = Jsoup.clean(town, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(town, Whitelist.basic()));
             if (!clean.equals(town)) {
                 LOG.warn("Town contains forbidden content - possible XSS attack: '{}'!='{}'", town, clean);
                 town = clean;
@@ -495,7 +497,7 @@ public class TlTaskCreation extends BaseActivity {
             town=empty;
         }
         if (postcode != null) {
-            String clean = Jsoup.clean(postcode, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(postcode, Whitelist.basic()));
             if (!clean.equals(postcode)) {
                 LOG.warn("Postcode contains forbidden content - possible XSS attack: '{}'!='{}'", postcode, clean);
                 postcode = clean;
@@ -505,7 +507,7 @@ public class TlTaskCreation extends BaseActivity {
             postcode=empty;
         }
         if (vehicleStatus != null) {
-            String clean = Jsoup.clean(vehicleStatus, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(vehicleStatus, Whitelist.basic()));
             if (!clean.equals(vehicleStatus)) {
                 LOG.warn("Vehicle Status contains forbidden content - possible XSS attack: '{}'!='{}'", vehicleStatus, clean);
                 vehicleStatus = clean;
@@ -515,7 +517,7 @@ public class TlTaskCreation extends BaseActivity {
             vehicleStatus=empty;
         }
         if (area1Severity != null) {
-            String clean = Jsoup.clean(area1Severity, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(area1Severity, Whitelist.basic()));
             if (!clean.equals(area1Severity)) {
                 LOG.warn("Area 1 Severity contains forbidden content - possible XSS attack: '{}'!='{}'", area1Severity, clean);
                 area1Severity = clean;
@@ -525,7 +527,7 @@ public class TlTaskCreation extends BaseActivity {
             area1Severity=empty;
         }
         if (area1Damage != null) {
-            String clean = Jsoup.clean(area1Damage, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(area1Damage, Whitelist.basic()));
             if (!clean.equals(area1Damage)) {
                 LOG.warn("Area 1 Damage contains forbidden content - possible XSS attack: '{}'!='{}'", area1Damage, clean);
                 area1Damage = clean;
@@ -535,7 +537,7 @@ public class TlTaskCreation extends BaseActivity {
             area1Damage=empty;
         }
         if (area2Severity != null) {
-            String clean = Jsoup.clean(area2Severity, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(area2Severity, Whitelist.basic()));
             if (!clean.equals(area2Severity)) {
                 LOG.warn("Area 2 Severity contains forbidden content - possible XSS attack: '{}'!='{}'", area2Severity, clean);
                 area2Severity = clean;
@@ -545,7 +547,7 @@ public class TlTaskCreation extends BaseActivity {
             area2Severity=empty;
         }
         if (area2Damage != null) {
-            String clean = Jsoup.clean(area2Damage, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(area2Damage, Whitelist.basic()));
             if (!clean.equals(area2Damage)) {
                 LOG.warn("Area 2 Damage contains forbidden content - possible XSS attack: '{}'!='{}'", area2Damage, clean);
                 area2Damage = clean;
@@ -555,7 +557,7 @@ public class TlTaskCreation extends BaseActivity {
             area2Damage=empty;
         }
         if (totalLossDate != null) {
-            String clean = Jsoup.clean(totalLossDate, Whitelist.basic());
+            String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(totalLossDate, Whitelist.basic()));
             if (!clean.equals(totalLossDate)) {
                 LOG.warn("Total Loss Date contains forbidden content - possible XSS attack: '{}'!='{}'", totalLossDate, clean);
                 totalLossDate = clean;

@@ -12,6 +12,8 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -88,7 +90,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public void setUploadFileName(String uploadFileName) {
-        this.uploadFileName = Jsoup.clean(uploadFileName, Whitelist.basic());
+        this.uploadFileName = StringEscapeUtils.unescapeHtml4(Jsoup.clean(uploadFileName, Whitelist.basic()));
     }
 
     public void setAttachmentFile(File attachmentFile) {

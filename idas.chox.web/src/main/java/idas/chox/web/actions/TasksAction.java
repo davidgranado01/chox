@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.transformer.XLSTransformer;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
@@ -140,7 +141,7 @@ public class TasksAction extends BaseAction {
     }
 
     public void setChoReference(String choReference) {
-        this.choReference = Jsoup.clean(choReference, Whitelist.none());
+        this.choReference = StringEscapeUtils.unescapeHtml4(Jsoup.clean(choReference, Whitelist.none()));
     }
 
     public void setLinkToClaim(boolean linkToClaim) {

@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -15,11 +16,11 @@ public class Attachment extends Entity implements Serializable {
     private boolean deleted;
 
     public String getCategory() {
-        return Jsoup.clean(category, Whitelist.none());
+        return StringEscapeUtils.unescapeHtml4(Jsoup.clean(category, Whitelist.none()));
     }
 
     public void setCategory(String category) {
-        this.category = Jsoup.clean(category, Whitelist.none());
+        this.category = StringEscapeUtils.unescapeHtml4(Jsoup.clean(category, Whitelist.none()));
     }
 
     public AttachmentFile getAttachment() {
@@ -59,7 +60,7 @@ public class Attachment extends Entity implements Serializable {
     }
 
     public void setRemarks(String remarks) {
-        this.remarks = Jsoup.clean(remarks, Whitelist.none());
+        this.remarks = StringEscapeUtils.unescapeHtml4(Jsoup.clean(remarks, Whitelist.none()));
     }
 
     public boolean isDeleted() {

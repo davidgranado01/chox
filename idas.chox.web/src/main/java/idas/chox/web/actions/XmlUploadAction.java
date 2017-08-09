@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.transformer.XLSTransformer;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -141,7 +143,7 @@ public class XmlUploadAction extends BaseAction {
     }
 
     public void setUploadedFileFileName(String fileName) {
-        this.uploadedFileFileName = Jsoup.clean(fileName, Whitelist.basic());
+        this.uploadedFileFileName = StringEscapeUtils.unescapeHtml4(Jsoup.clean(fileName, Whitelist.basic()));
     }
 
     public File getUploadedFile() {

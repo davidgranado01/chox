@@ -2,6 +2,7 @@ package idas.chox.web.ws;
 
 import javax.jws.WebService;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
     @Override
     public Result paymentReceived(String supplierReference) {
-        String clean = Jsoup.clean(supplierReference, Whitelist.basic());
+        String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supplierReference, Whitelist.basic()));
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
         return uploadServiceBean.paymentReceived(clean);
@@ -47,7 +48,7 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
     @Override
     public Result closeClaim(String supplierReference) {
-        String clean = Jsoup.clean(supplierReference, Whitelist.basic());
+        String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supplierReference, Whitelist.basic()));
 
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
@@ -56,7 +57,7 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
     @Override
     public Result reopenClaim(String supplierReference) {
-        String clean = Jsoup.clean(supplierReference, Whitelist.basic());
+        String clean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supplierReference, Whitelist.basic()));
 
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
@@ -65,9 +66,9 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
     
     @Override
     public Result updateECD(EcdParam ecdParam) {
-        ecdParam.setDelayReason(Jsoup.clean(ecdParam.getDelayReason(), Whitelist.basic()));
-        ecdParam.setSupplierReference(Jsoup.clean(ecdParam.getSupplierReference(), Whitelist.basic()));
-        ecdParam.setSupportingNote(Jsoup.clean(ecdParam.getSupportingNote(), Whitelist.basic()));
+        ecdParam.setDelayReason(StringEscapeUtils.unescapeHtml4(Jsoup.clean(ecdParam.getDelayReason(), Whitelist.basic())));
+        ecdParam.setSupplierReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(ecdParam.getSupplierReference(), Whitelist.basic())));
+        ecdParam.setSupportingNote(StringEscapeUtils.unescapeHtml4(Jsoup.clean(ecdParam.getSupportingNote(), Whitelist.basic())));
         
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
@@ -77,9 +78,9 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
     
     @Override
     public Result addNote(Note note) {
-        note.setComment(Jsoup.clean(note.getComment(), Whitelist.basic()));
-        note.setSupplierReference(Jsoup.clean(note.getSupplierReference(), Whitelist.basic()));
-        note.setVisibility(Jsoup.clean(note.getVisibility(), Whitelist.basic()));
+        note.setComment(StringEscapeUtils.unescapeHtml4(Jsoup.clean(note.getComment(), Whitelist.basic())));
+        note.setSupplierReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(note.getSupplierReference(), Whitelist.basic())));
+        note.setVisibility(StringEscapeUtils.unescapeHtml4(Jsoup.clean(note.getVisibility(), Whitelist.basic())));
         
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
@@ -88,10 +89,10 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
     @Override
     public Result addAttachment(Attachment attachment) {
-        attachment.setFileType(Jsoup.clean(attachment.getFileType(), Whitelist.basic()));
-        attachment.setFilename(Jsoup.clean(attachment.getFilename(), Whitelist.basic()));
-        attachment.setRemark(Jsoup.clean(attachment.getRemark(), Whitelist.basic()));
-        attachment.setSupplierReference(Jsoup.clean(attachment.getSupplierReference(), Whitelist.basic()));
+        attachment.setFileType(StringEscapeUtils.unescapeHtml4(Jsoup.clean(attachment.getFileType(), Whitelist.basic())));
+        attachment.setFilename(StringEscapeUtils.unescapeHtml4(Jsoup.clean(attachment.getFilename(), Whitelist.basic())));
+        attachment.setRemark(StringEscapeUtils.unescapeHtml4(Jsoup.clean(attachment.getRemark(), Whitelist.basic())));
+        attachment.setSupplierReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(attachment.getSupplierReference(), Whitelist.basic())));
         
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         
