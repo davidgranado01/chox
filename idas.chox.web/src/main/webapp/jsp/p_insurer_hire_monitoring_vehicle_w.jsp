@@ -7,8 +7,18 @@
     
     Ext.onReady(function() {
 
-        ui.unvalidatedDateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'insurerRentalMonitoringStartPH');
-
+        var rentalStartDatePicker = new Ext.form.DateField({
+            name: 'rentalStart',
+            id: 'insurerRentalStartId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="rentalStart" />',
+            renderTo: 'insurerRentalMonitoringStartPH'
+        });
+        
         var rentalStartTimPicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             id : 'insurerRentalStartTimePickerHMVId',

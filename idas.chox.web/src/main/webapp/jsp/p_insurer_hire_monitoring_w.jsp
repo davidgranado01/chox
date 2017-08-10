@@ -5,18 +5,125 @@
         
     // $(function(){
     Ext.onReady(function(){
-
-        var repairBookInDatePicker = ui.unvalidatedDateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','insurerRepairBookInDatePH');
-        var repairAuthorisedDatePicker = ui.unvalidatedDateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','insurerRepairAuthorisedDatePH');
-        var repairCommencedDatePicker = ui.unvalidatedDateField('repairCommencedDate','<s:date format="dd/MM/yyyy" name="repairCommencedDate" />','insurerRepairCommencedDatePH');
-        var inspectionBookedDateDatePicker = ui.unvalidatedDateField('inspectionBookedDate','<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />','insurerInspectionBookedDatePH');
-        var inspectionDateDatePicker = ui.unvalidatedDateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','insurerInspectionDatePH');
-        var repairCompletionDateDatePicker = ui.unvalidatedDateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','insurerRepairCompletionDatePH');
-        var totalLossOfferMadeDatePicker = ui.unvalidatedDateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','insurerTotalLossOfferMadeDatePH');
-        var totalLossOfferAcceptedDatePicker = ui.unvalidatedDateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />','insurerTotalLossOfferAcceptedDatePH');
-        var totalLossOfferCheckIssuedDatePicker = ui.unvalidatedDateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','insurerTotalLossOfferCheckIssuedDatePH');
-        var totalLossOfferCheckReceivedDatePicker = ui.unvalidatedDateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />','insurerTotalLossOfferCheckReceivedDatePH');
-
+        var repairBookInDatePicker = new Ext.form.DateField({
+            name: 'repairBookInDate',
+            id: 'insurerRepairBookInDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="repairBookInDate" />',
+            renderTo: 'insurerRepairBookInDatePH'
+        });
+        
+        var repairAuthorisedDatePicker = new Ext.form.DateField({
+            name: 'repairAuthorisedDate',
+            id: 'insurerRepairAuthorisedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />',
+            renderTo: 'insurerRepairAuthorisedDatePH'
+        });
+        
+        var repairCommencedDatePicker = new Ext.form.DateField({
+            name: 'repairCommencedDate',
+            id: 'insurerRepairCommencedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="repairCommencedDate" />',
+            renderTo: 'insurerRepairCommencedDatePH'
+        });
+        
+        var inspectionBookedDateDatePicker = new Ext.form.DateField({
+            name: 'inspectionBookedDate',
+            id: 'insurerInspectionBookedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />',
+            renderTo: 'insurerInspectionBookedDatePH'
+        });
+        
+        var inspectionDateDatePicker = new Ext.form.DateField({
+            name: 'inspectionDate',
+            id: 'insurerInspectionDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="inspectionDate" />',
+            renderTo: 'insurerInspectionDatePH'
+        });
+        
+        var repairCompletionDateDatePicker = new Ext.form.DateField({
+            name: 'repairCompletionDate',
+            id: 'insurerIepairCompletionDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="repairCompletionDate" />',
+            renderTo: 'insurerRepairCompletionDatePH'
+        });
+        
+        var totalLossOfferMadeDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferMadeDate',
+            id: 'insurerTotalLossOfferMadeDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />',
+            renderTo: 'insurerTotalLossOfferMadeDatePH'
+        });
+        
+        var totalLossOfferAcceptedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferAcceptedDate',
+            id: 'insurerTotalLossOfferAcceptedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />',
+            renderTo: 'insurerTotalLossOfferAcceptedDatePH'
+        });
+        
+        var totalLossOfferCheckIssuedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferCheckIssuedDate',
+            id: 'insurerTotalLossOfferCheckIssuedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />',
+            renderTo: 'insurerTotalLossOfferCheckIssuedDatePH'
+        });
+        
+        var totalLossOfferCheckReceivedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferCheckReceivedDate',
+            id: 'insurerTotalLossOfferCheckReceivedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />',
+            renderTo: 'insurerTotalLossOfferCheckReceivedDatePH'
+        });
         
         var form = $("form#formUpdateInsurerHireMonitoringDetail");
 
