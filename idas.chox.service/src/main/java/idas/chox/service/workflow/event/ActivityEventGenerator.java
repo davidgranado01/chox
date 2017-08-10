@@ -122,10 +122,10 @@ import idas.chox.service.workflow.activities.WorkgroupRouting;
  * @author John
  */
 public class ActivityEventGenerator {
-
+    
     private static final Logger LOG = LoggerFactory.getLogger(ActivityEventGenerator.class);
     private EventGenerator eventGenerator;
-
+    
     public void setEventGenerator(EventGenerator eventGenerator) {
         this.eventGenerator = eventGenerator;
     }
@@ -134,9 +134,11 @@ public class ActivityEventGenerator {
     public void startEvent(Claim claim, String name, int id, boolean insurerOnly, boolean choOnly) throws Exception {
         eventGenerator.startEvent(claim, name, id, insurerOnly, choOnly);
     }
+
     public void startEvent(Claim claim, String name, int id) throws Exception {
         startEvent(claim, name, id, false, false);
     }
+
     public void addParameter(String name, Object value) {
         eventGenerator.addParameter(name, value);
     }
@@ -145,7 +147,6 @@ public class ActivityEventGenerator {
         eventGenerator.completeEvent(claim);
     }
     
-
     public void generate(final Claim claim, ActivityEvent event) {
         try {
             event.build(this, claim);
@@ -153,14 +154,14 @@ public class ActivityEventGenerator {
             LOG.error("Error generating events for event '{}' : {}\n", new Object[]{event, ex.getMessage(), ex});
             return;
         }
-
+        
         try {
             eventGenerator.sendEvents();
         } catch (Exception ex) {
             LOG.error("Error sending generated events for activity '{}' : {}", event, ex.getMessage());
         }
     }
-
+    
     public List<BaseActivityEvent> getEvents(final Claim claim, UploadClaimXMLService activity) {
         ArrayList events = new ArrayList();
         String activityName = "UploadClaimXMLService";
@@ -175,347 +176,350 @@ public class ActivityEventGenerator {
         
         String activityName = AopUtils.getTargetClass(activity).getSimpleName();
         
-        switch(activityName) {
-            case "AcknowledgeClaim":
-                if (((AcknowledgeClaim) activity).isLiabilityUpdated()) {
-                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((AcknowledgeClaim)activity).getSupportingLiabilityNotes()));
-                }
-                if (((AcknowledgeClaim) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((AcknowledgeClaim)activity).getClaimNumber()));
-                }
-                events.add(new ClaimAcknowledgedEvent(claim, activityName));
-                break;
-
-            case "AssignWorkgroup":
-                events.add(new ClaimRoutedEvent(claim, activityName, ((AssignWorkgroup)activity).getWorkgroup().getId(), ((AssignWorkgroup)activity).getWorkgroup().getName()));
-                break;
-
-            case "NewInvoice":
-                if (((NewInvoice) activity).isClaimRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                if (((NewInvoice) activity).isClaimOwnerAssigned()) {
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                }
-                events.add(new InvoiceCreatedEvent(claim, activityName));
-                events.add(new InvoiceSubmittedEvent(claim, activityName));
-                if (((NewInvoice) activity).isInvoiceAccepted()) {
-                    events.add(new InvoiceAcceptedEvent(claim, activityName));
-                }
-                break;
-
-            case "AddNote":
-                events.add(new NoteAddedEvent(claim, activityName, ((AddNote)activity).getComment(), ((AddNote)activity).isReviewRequired(), ((AddNote)activity).getVisibilityType()));
-                break;
-
-            case "AssignManualInvoiceOwner":
-            case "AssignOwner":
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                break;
+        try {
+            switch (activityName) {
+                case "AcknowledgeClaim":
+                    if (((AcknowledgeClaim) activity).isLiabilityUpdated()) {
+                        events.add(new LiabilityUpdatedEvent(claim, activityName, ((AcknowledgeClaim) activity).getSupportingLiabilityNotes()));
+                    }
+                    if (((AcknowledgeClaim) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((AcknowledgeClaim) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimAcknowledgedEvent(claim, activityName));
+                    break;
                 
-            case "AssignSupplierOwner":
+                case "AssignWorkgroup":
+                    events.add(new ClaimRoutedEvent(claim, activityName, ((AssignWorkgroup) activity).getWorkgroup().getId(), ((AssignWorkgroup) activity).getWorkgroup().getName()));
+                    break;
+                
+                case "NewInvoice":
+                    if (((NewInvoice) activity).isClaimRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    if (((NewInvoice) activity).isClaimOwnerAssigned()) {
+                        events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    }
+                    events.add(new InvoiceCreatedEvent(claim, activityName));
+                    events.add(new InvoiceSubmittedEvent(claim, activityName));
+                    if (((NewInvoice) activity).isInvoiceAccepted()) {
+                        events.add(new InvoiceAcceptedEvent(claim, activityName));
+                    }
+                    break;
+                
+                case "AddNote":
+                    events.add(new NoteAddedEvent(claim, activityName, ((AddNote) activity).getComment(), ((AddNote) activity).isReviewRequired(), ((AddNote) activity).getVisibilityType()));
+                    break;
+                
+                case "AssignManualInvoiceOwner":
+                case "AssignOwner":
+                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    break;
+                
+                case "AssignSupplierOwner":
                     events.add(new ChoOwnerAssignedEvent(claim, activityName));
-                break;
+                    break;
                 
-            case "AwaitingLitigationOutcome":
+                case "AwaitingLitigationOutcome":
                     events.add(new AwaitingLitigationOutcomeEvent(claim, activityName));
-                break;
+                    break;
                 
-            case "ClaimAwaitingCarHireInfo":
+                case "ClaimAwaitingCarHireInfo":
                     events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
-                break;
+                    break;
                 
-            case "ClaimMatching":
+                case "ClaimMatching":
                     events.add(new ClaimMatchingEvent(claim, activityName));
-                break;
+                    break;
                 
-            case "ClaimPending":
-                if (((ClaimPending) activity).isLiabilityUpdated()) {
-                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimPending)activity).getSupportingLiabilityNotes()));
-                }
-                if (((ClaimPending) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimPending)activity).getClaimNumber()));
-                }
-                events.add(new ClaimPendingEvent(claim, activityName));
-                break;
-
-            case "ClaimReferToEng":
-                if (((ClaimReferToEng) activity).isLiabilityUpdated()) {
-                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimReferToEng)activity).getSupportingLiabilityNotes()));
-                }
-                if (((ClaimReferToEng) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimReferToEng)activity).getClaimNumber()));
-                }
-                events.add(new ClaimReferredToEngEvent(claim, activityName));
-                break;
-
-            case "ClaimReferToFnol":
-                if (((ClaimReferToFnol) activity).isClaimRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                if (((ClaimReferToFnol) activity).isOwnerAssigned()) {
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                }
-                if (((ClaimReferToFnol) activity).isLiabilityUpdated()) {
-                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimReferToFnol)activity).getSupportingLiabilityNotes()));
-                }
-                if (((ClaimReferToFnol) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimReferToFnol)activity).getClaimNumber()));
-                }
-                events.add(new ClaimReferredToFnolEvent(claim, activityName));
-                break;
-
-            case "ClaimRegisterByFnol":
-                if (((ClaimRegisterByFnol) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimRegisterByFnol)activity).getClaimNumber()));
-                }
-                events.add(new ClaimRegisteredByFnolEvent(claim, activityName));
-                break;
-
-            case "ClaimRejection":
-                if (((ClaimRejection) activity).isLiabilityUpdated()) {
-                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimRejection)activity).getSupportingLiabilityNotes()));
-                }
-                if (((ClaimRejection) activity).isClaimNumberUpdated()) {
-                    events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimRejection)activity).getClaimNumber()));
-                }
-                events.add(new ClaimRejectedEvent(claim, activityName, ((ClaimRejection)activity).getRejectionDescription(), ((ClaimRejection)activity).getSupportingLiabilityNotes()));
-                break;
-
-            case "ClaimRejectionAccept":
-                events.add(new ClaimRejectionAcceptedEvent(claim, activityName));
-                break;
-
-            case "ClaimRejectionContest":
-                events.add(new ClaimRejectionContestedEvent(claim, activityName));
-                break;
-
-            case "ClaimReviewByEng":
-                events.add(new ClaimReviewedByEngEvent(claim, activityName));
-                break;
-
-            case "CloseClaim":
-                events.add(new ClaimClosedEvent(claim, activityName));
-                break;
-
-            case "EcdUpdate":
-                events.add(new EcdUpdatedEvent(claim, activityName, DateHelper.getLocalDateFormat().format(((EcdUpdate)activity).getEcdDate()),
-                        ((EcdUpdate)activity).getReason(), ((EcdUpdate)activity).getSupportingNote()));
-                break;
-
-            case "HireUpdate":
-                events.add(new HireVehicleUpdatedEvent(claim, activityName));
-                break;
-
-            case "FullInvoicePaymentReceived":
-                events.add(new FullPaymentReceivedEvent(claim, activityName));
-                break;
-
-            case "FullPaymentNotReceived":
-                events.add(new FullPaymentNotReceivedEvent(claim, activityName, ((FullPaymentNotReceived)activity).getInterimPaymentReceived().toPlainString()));
-                break;
-
-            case "InsurerUpload":
-                if (((InsurerUpload) activity).isClaimRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                if (((InsurerUpload) activity).isClaimOwnerAssigned()) {
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                }
-                events.add(new InvoiceUploadedEvent(claim, activityName));
-                events.add(new InvoiceSubmittedEvent(claim, activityName));
-                events.add(new InvoiceCreatedEvent(claim, activityName));
-                break;
-
-            case "InvoiceAccepted":
-            case "UpdateManualInvoiceAgreeQuantum":
-                events.add(new InvoiceAcceptedEvent(claim, activityName));
-                break;
-
-            case "InvoicePaymentLogged":
-                events.add(new InvoicePaidEvent(claim, activityName));
-                break;
-
-            case "InvoicePaymentReceived":
-                events.add(new InvoicePaymentReceivedEvent(claim, activityName));
-                break;
-
-            case "InvoiceReferToCH":
-                events.add(new InvoiceReferredToCHEvent(claim, activityName));
-                break;
-
-            case "InvoiceReferToEng":
-                events.add(new InvoiceReferredToEngEvent(claim, activityName));
-                break;
-
-            case "InvoiceRejection":
-                events.add(new InvoiceRejectedEvent(claim, activityName, ((InvoiceRejection)activity).getReasonOfRejection().getRorName(),
-                            ((InvoiceRejection)activity).getRejectionDescription()));
-                break;
-
-            case "InvoiceRejectionAccept":
-                events.add(new InvoiceRejectionAcceptedEvent(claim, activityName, ((InvoiceRejectionAccept)activity).getSupportingLiabilityNotes()));
-                break;
-
-            case "InvoiceRejectionContest":
-                events.add(new InvoiceRejectionContestedEvent(claim, activityName, ((InvoiceRejectionContest)activity).getSupportingLiabilityNotes()));
-                events.add(new InvoiceSubmittedEvent(claim, activityName));
-                break;
-
-            case "InvoiceResubmit":
-                if (((InvoiceResubmit) activity).isClaimRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                if (((InvoiceResubmit) activity).isClaimOwnerAssigned()) {
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                }
-                events.add(new InvoiceSubmittedEvent(claim, activityName));
-                if (((InvoiceResubmit) activity).isInvoiceAccepted()) {
-                    events.add(new InvoiceAcceptedEvent(claim, activityName));
-                }
-                break;
-
-            case "MakeInterimPayment":
-                events.add(new InterimPaymentUpdatedEvent(claim, activityName, ((MakeInterimPayment)activity).getAdditionalInterimPayment().toPlainString(),
-                        ((MakeInterimPayment)activity).getNewTotalInterimPayment().toPlainString()));
-                break;
-
-            case "UpdateInterimPaymentReceived":
-                events.add(new InterimPaymentReceivedEvent(claim, activityName, ((UpdateInterimPaymentReceived)activity).getPartialInterimPayment().toPlainString()));
-                break;
-
-            case "UpdateInterimPaymentFullAndFinal":
-                if (((UpdateInterimPaymentFullAndFinal) activity).isClaimReverted()) {
-                    events.add(new ClaimRevertedEvent(claim, activityName));
-                }
-                if (((UpdateInterimPaymentFullAndFinal) activity).isInvoiceAccepted()) {
-                    events.add(new InvoiceAcceptedEvent(claim, activityName));
-                }
-                if (((UpdateInterimPaymentFullAndFinal) activity).isPaymentLogged()) {
-                    events.add(new InvoicePaidEvent(claim, activityName));
-                }
-                events.add(new InterimPaymentAcceptedAsFinalEvent(claim, activityName, claim.getInvoice().getInterimPaymentReceived().toPlainString()));
-                break;
-
-            case "MoveToInvoicePaymentLogged":
-                events.add(new InvoicePaidEvent(claim, activityName));
-                break;
-
-            case "NewClaim":
-                events.add(new NewClaimEvent(claim, activityName));
-                break;
-
-            case "NewTpiClaim":
-                events.add(new LiabilityUpdatedEvent(claim, activityName, "Initial Liability set on TPI claim"));
-                if (((NewTpiClaim) activity).isNewClaim()) {
-                    events.add(new NewClaimEvent(claim, activityName));
-                    events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
-                }
-                if (((NewTpiClaim) activity).isClaimRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                if (((NewTpiClaim) activity).isClaimOwnerAssigned()) {
-                    events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                }
-                events.add(new InvoiceSubmittedEvent(claim, activityName));
-                if (((NewTpiClaim) activity).isInvoiceAccepted()) {
-                    events.add(new InvoiceAcceptedEvent(claim, activityName));
-                }
-                break;
-
-            case "PaymentNotReceived":
-                events.add(new FullPaymentNotReceivedEvent(claim, activityName, ((PaymentNotReceived)activity).getAmountReceived().toPlainString()));
-                break;
-
-            case "ReopenClaim":
-                events.add(new ClaimRevertedEvent(claim, activityName));
-                break;
-
-            case "ResolveLiability":
-                events.add(new LiabilityUpdatedEvent(claim, activityName, ((ResolveLiability)activity).getEngineerClaimReviewNotes()));
-                break;
-
-            case "UpdateLiability":
-                events.add(new LiabilityUpdatedEvent(claim, activityName, ((UpdateLiability)activity).getClaimReviewNotes()));
-                break;
-
-            case "RevertClaim":
-                events.add(new ClaimRevertedEvent(claim, activityName));
-                break;
-
-            case "SlaExtension":
-                events.add(new SlaExtensionGrantedEvent(claim, activityName, String.valueOf(((SlaExtension)activity).getSlaExtDays())));
-                break;
-
-            case "SubscriberClaimRejectionAccept":
-                if (((SubscriberClaimRejectionAccept) activity).isHireCarInfoProvided()) {
-                    events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
-                    events.add(new SubscriberClaimRejectedToGtaEvent(claim, activityName));
-                } else {
+                case "ClaimPending":
+                    if (((ClaimPending) activity).isLiabilityUpdated()) {
+                        events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimPending) activity).getSupportingLiabilityNotes()));
+                    }
+                    if (((ClaimPending) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimPending) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimPendingEvent(claim, activityName));
+                    break;
+                
+                case "ClaimReferToEng":
+                    if (((ClaimReferToEng) activity).isLiabilityUpdated()) {
+                        events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimReferToEng) activity).getSupportingLiabilityNotes()));
+                    }
+                    if (((ClaimReferToEng) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimReferToEng) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimReferredToEngEvent(claim, activityName));
+                    break;
+                
+                case "ClaimReferToFnol":
+                    if (((ClaimReferToFnol) activity).isClaimRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    if (((ClaimReferToFnol) activity).isOwnerAssigned()) {
+                        events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    }
+                    if (((ClaimReferToFnol) activity).isLiabilityUpdated()) {
+                        events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimReferToFnol) activity).getSupportingLiabilityNotes()));
+                    }
+                    if (((ClaimReferToFnol) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimReferToFnol) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimReferredToFnolEvent(claim, activityName));
+                    break;
+                
+                case "ClaimRegisterByFnol":
+                    if (((ClaimRegisterByFnol) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimRegisterByFnol) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimRegisteredByFnolEvent(claim, activityName));
+                    break;
+                
+                case "ClaimRejection":
+                    if (((ClaimRejection) activity).isLiabilityUpdated()) {
+                        events.add(new LiabilityUpdatedEvent(claim, activityName, ((ClaimRejection) activity).getSupportingLiabilityNotes()));
+                    }
+                    if (((ClaimRejection) activity).isClaimNumberUpdated()) {
+                        events.add(new ClaimNumberUpdatedEvent(claim, activityName, ((ClaimRejection) activity).getClaimNumber()));
+                    }
+                    events.add(new ClaimRejectedEvent(claim, activityName, ((ClaimRejection) activity).getRejectionDescription(), ((ClaimRejection) activity).getSupportingLiabilityNotes()));
+                    break;
+                
+                case "ClaimRejectionAccept":
                     events.add(new ClaimRejectionAcceptedEvent(claim, activityName));
-                }
-                break;
-
-            case "SubscriberClaimToGta":
-                    events.add(new ClaimSwitchedToGtaEvent(claim, activityName));
-                break;
-
-            case "SwitchClaim":
-                events.add(new ClaimClosedEvent(claim, activityName, ((SwitchClaim)activity).getOldInsurer().getId()));
-                events.add(new NewClaimEvent(claim, activityName));
-                break;
-
-            case "SwitchCho":
-                events.add(new SwitchChoEvent(claim, activityName, ((SwitchCho)activity).getOldCho().getId(), ((SwitchCho)activity).getOldCho().getName(), claim.getChorganisation().getName()));
-                events.add(new NewClaimEvent(claim, activityName));
-                break;
-
-            case "SwitchClaimToMultipleInsurer":
-                events.add(new ClaimClosedEvent(claim, activityName, ((SwitchClaimToMultipleInsurer)activity).getOldInsurer().getId()));
-                events.add(new NewClaimEvent(claim, activityName));
-                break;
-
-            case "UpdateManualInvoiceContested":
-                events.add(new InvoiceRejectedEvent(claim, activityName));
-                break;
-
-            case "UpdateManualInvoicePaid":
-                events.add(new InvoicePaidEvent(claim, activityName));
-                break;
-
-            case "WorkgroupRouting":
-                if (((WorkgroupRouting) activity).isRouted()) {
-                    events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
-                }
-                break;
-
-            case "NewSupplementaryInvoice":
-                if (((NewSupplementaryInvoice) activity).isIsNewClaim()) {
+                    break;
+                
+                case "ClaimRejectionContest":
+                    events.add(new ClaimRejectionContestedEvent(claim, activityName));
+                    break;
+                
+                case "ClaimReviewByEng":
+                    events.add(new ClaimReviewedByEngEvent(claim, activityName));
+                    break;
+                
+                case "CloseClaim":
+                    events.add(new ClaimClosedEvent(claim, activityName));
+                    break;
+                
+                case "EcdUpdate":
+                    events.add(new EcdUpdatedEvent(claim, activityName, DateHelper.getLocalDateFormat().format(((EcdUpdate) activity).getEcdDate()),
+                            ((EcdUpdate) activity).getReason(), ((EcdUpdate) activity).getSupportingNote()));
+                    break;
+                
+                case "HireUpdate":
+                    events.add(new HireVehicleUpdatedEvent(claim, activityName));
+                    break;
+                
+                case "FullInvoicePaymentReceived":
+                    events.add(new FullPaymentReceivedEvent(claim, activityName));
+                    break;
+                
+                case "FullPaymentNotReceived":
+                    events.add(new FullPaymentNotReceivedEvent(claim, activityName, ((FullPaymentNotReceived) activity).getInterimPaymentReceived().toPlainString()));
+                    break;
+                
+                case "InsurerUpload":
+                    if (((InsurerUpload) activity).isClaimRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    if (((InsurerUpload) activity).isClaimOwnerAssigned()) {
+                        events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    }
+                    events.add(new InvoiceUploadedEvent(claim, activityName));
+                    events.add(new InvoiceSubmittedEvent(claim, activityName));
+                    events.add(new InvoiceCreatedEvent(claim, activityName));
+                    break;
+                
+                case "InvoiceAccepted":
+                case "UpdateManualInvoiceAgreeQuantum":
+                    events.add(new InvoiceAcceptedEvent(claim, activityName));
+                    break;
+                
+                case "InvoicePaymentLogged":
+                    events.add(new InvoicePaidEvent(claim, activityName));
+                    break;
+                
+                case "InvoicePaymentReceived":
+                    events.add(new InvoicePaymentReceivedEvent(claim, activityName));
+                    break;
+                
+                case "InvoiceReferToCH":
+                    events.add(new InvoiceReferredToCHEvent(claim, activityName));
+                    break;
+                
+                case "InvoiceReferToEng":
+                    events.add(new InvoiceReferredToEngEvent(claim, activityName));
+                    break;
+                
+                case "InvoiceRejection":
+                    events.add(new InvoiceRejectedEvent(claim, activityName, ((InvoiceRejection) activity).getReasonOfRejection().getRorName(),
+                            ((InvoiceRejection) activity).getRejectionDescription()));
+                    break;
+                
+                case "InvoiceRejectionAccept":
+                    events.add(new InvoiceRejectionAcceptedEvent(claim, activityName, ((InvoiceRejectionAccept) activity).getSupportingLiabilityNotes()));
+                    break;
+                
+                case "InvoiceRejectionContest":
+                    events.add(new InvoiceRejectionContestedEvent(claim, activityName, ((InvoiceRejectionContest) activity).getSupportingLiabilityNotes()));
+                    events.add(new InvoiceSubmittedEvent(claim, activityName));
+                    break;
+                
+                case "InvoiceResubmit":
+                    if (((InvoiceResubmit) activity).isClaimRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    if (((InvoiceResubmit) activity).isClaimOwnerAssigned()) {
+                        events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    }
+                    events.add(new InvoiceSubmittedEvent(claim, activityName));
+                    if (((InvoiceResubmit) activity).isInvoiceAccepted()) {
+                        events.add(new InvoiceAcceptedEvent(claim, activityName));
+                    }
+                    break;
+                
+                case "MakeInterimPayment":
+                    events.add(new InterimPaymentUpdatedEvent(claim, activityName, ((MakeInterimPayment) activity).getAdditionalInterimPayment() == null ? "" : ((MakeInterimPayment) activity).getAdditionalInterimPayment().toPlainString(),
+                            ((MakeInterimPayment) activity).getNewTotalInterimPayment() == null ? "" : ((MakeInterimPayment) activity).getNewTotalInterimPayment().toPlainString()));
+                    break;
+                
+                case "UpdateInterimPaymentReceived":
+                    events.add(new InterimPaymentReceivedEvent(claim, activityName, ((UpdateInterimPaymentReceived) activity).getPartialInterimPayment().toPlainString()));
+                    break;
+                
+                case "UpdateInterimPaymentFullAndFinal":
+                    if (((UpdateInterimPaymentFullAndFinal) activity).isClaimReverted()) {
+                        events.add(new ClaimRevertedEvent(claim, activityName));
+                    }
+                    if (((UpdateInterimPaymentFullAndFinal) activity).isInvoiceAccepted()) {
+                        events.add(new InvoiceAcceptedEvent(claim, activityName));
+                    }
+                    if (((UpdateInterimPaymentFullAndFinal) activity).isPaymentLogged()) {
+                        events.add(new InvoicePaidEvent(claim, activityName));
+                    }
+                    events.add(new InterimPaymentAcceptedAsFinalEvent(claim, activityName, claim.getInvoice().getInterimPaymentReceived().toPlainString()));
+                    break;
+                
+                case "MoveToInvoicePaymentLogged":
+                    events.add(new InvoicePaidEvent(claim, activityName));
+                    break;
+                
+                case "NewClaim":
                     events.add(new NewClaimEvent(claim, activityName));
-                    events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
-                }
-                break;
-
-            case "SwitchFromPaymentsTeam":
-                events.add(new InvoiceSwitchedFromPaymentsTeamEvent(claim, activityName));
-                break;
-
-            case "UpdateCaseWithSolicitor":
-                events.add(new UpdateCaseWithSolicitorEvent(claim, activityName, String.valueOf(((UpdateCaseWithSolicitor)activity).isCaseWithSolicitor())));
-                break;
-
-            case "SaveOrSubmitClaimAuditReview":
-                events.add(new ClaimAuditReviewUpdatedEvent(claim, activityName));
-                break;
-
-            default:
-                events.add(new BaseActivityEvent(claim, activityName));
-                break;
+                    break;
+                
+                case "NewTpiClaim":
+                    events.add(new LiabilityUpdatedEvent(claim, activityName, "Initial Liability set on TPI claim"));
+                    if (((NewTpiClaim) activity).isNewClaim()) {
+                        events.add(new NewClaimEvent(claim, activityName));
+                        events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
+                    }
+                    if (((NewTpiClaim) activity).isClaimRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    if (((NewTpiClaim) activity).isClaimOwnerAssigned()) {
+                        events.add(new InsurerOwnerAssignedEvent(claim, activityName));
+                    }
+                    events.add(new InvoiceSubmittedEvent(claim, activityName));
+                    if (((NewTpiClaim) activity).isInvoiceAccepted()) {
+                        events.add(new InvoiceAcceptedEvent(claim, activityName));
+                    }
+                    break;
+                
+                case "PaymentNotReceived":
+                    events.add(new FullPaymentNotReceivedEvent(claim, activityName, ((PaymentNotReceived) activity).getAmountReceived().toPlainString()));
+                    break;
+                
+                case "ReopenClaim":
+                    events.add(new ClaimRevertedEvent(claim, activityName));
+                    break;
+                
+                case "ResolveLiability":
+                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((ResolveLiability) activity).getEngineerClaimReviewNotes()));
+                    break;
+                
+                case "UpdateLiability":
+                    events.add(new LiabilityUpdatedEvent(claim, activityName, ((UpdateLiability) activity).getClaimReviewNotes()));
+                    break;
+                
+                case "RevertClaim":
+                    events.add(new ClaimRevertedEvent(claim, activityName));
+                    break;
+                
+                case "SlaExtension":
+                    events.add(new SlaExtensionGrantedEvent(claim, activityName, String.valueOf(((SlaExtension) activity).getSlaExtDays())));
+                    break;
+                
+                case "SubscriberClaimRejectionAccept":
+                    if (((SubscriberClaimRejectionAccept) activity).isHireCarInfoProvided()) {
+                        events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
+                        events.add(new SubscriberClaimRejectedToGtaEvent(claim, activityName));
+                    } else {
+                        events.add(new ClaimRejectionAcceptedEvent(claim, activityName));
+                    }
+                    break;
+                
+                case "SubscriberClaimToGta":
+                    events.add(new ClaimSwitchedToGtaEvent(claim, activityName));
+                    break;
+                
+                case "SwitchClaim":
+                    events.add(new ClaimClosedEvent(claim, activityName, ((SwitchClaim) activity).getOldInsurer().getId()));
+                    events.add(new NewClaimEvent(claim, activityName));
+                    break;
+                
+                case "SwitchCho":
+                    events.add(new SwitchChoEvent(claim, activityName, ((SwitchCho) activity).getOldCho().getId(), ((SwitchCho) activity).getOldCho().getName(), claim.getChorganisation().getName()));
+                    events.add(new NewClaimEvent(claim, activityName));
+                    break;
+                
+                case "SwitchClaimToMultipleInsurer":
+                    events.add(new ClaimClosedEvent(claim, activityName, ((SwitchClaimToMultipleInsurer) activity).getOldInsurer().getId()));
+                    events.add(new NewClaimEvent(claim, activityName));
+                    break;
+                
+                case "UpdateManualInvoiceContested":
+                    events.add(new InvoiceRejectedEvent(claim, activityName));
+                    break;
+                
+                case "UpdateManualInvoicePaid":
+                    events.add(new InvoicePaidEvent(claim, activityName));
+                    break;
+                
+                case "WorkgroupRouting":
+                    if (((WorkgroupRouting) activity).isRouted()) {
+                        events.add(new ClaimRoutedEvent(claim, activityName, claim.getWorkgroup().getId(), claim.getWorkgroup().getName()));
+                    }
+                    break;
+                
+                case "NewSupplementaryInvoice":
+                    if (((NewSupplementaryInvoice) activity).isIsNewClaim()) {
+                        events.add(new NewClaimEvent(claim, activityName));
+                        events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
+                    }
+                    break;
+                
+                case "SwitchFromPaymentsTeam":
+                    events.add(new InvoiceSwitchedFromPaymentsTeamEvent(claim, activityName));
+                    break;
+                
+                case "UpdateCaseWithSolicitor":
+                    events.add(new UpdateCaseWithSolicitorEvent(claim, activityName, String.valueOf(((UpdateCaseWithSolicitor) activity).isCaseWithSolicitor())));
+                    break;
+                
+                case "SaveOrSubmitClaimAuditReview":
+                    events.add(new ClaimAuditReviewUpdatedEvent(claim, activityName));
+                    break;
+                
+                default:
+                    events.add(new BaseActivityEvent(claim, activityName));
+                    break;
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown generating events for activity '{}': {}", activityName, ex.getMessage(), ex);
         }
-        
+
         // Uncomment below to generate "original" events to activeMQ broker
 //        generate(claim, activity);
-
         return events;
     }
     
@@ -524,7 +528,7 @@ public class ActivityEventGenerator {
         
         String activityName = AopUtils.getTargetClass(activity).getSimpleName();
         LOG.debug("Generating events for activity {}", activityName);
-
+        
         try {
             if (activityName.equalsIgnoreCase("AcknowledgeClaim")) {
                 LOG.debug("AcknowledgeClaim activity found");
@@ -535,7 +539,7 @@ public class ActivityEventGenerator {
                     ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT.build(this, claim);
                 }
                 ActivityEvent.CLAIM_ACKNOWLEDGED_EVENT.build(this, (AcknowledgeClaim) activity, claim);
-            }  else if (activityName.equalsIgnoreCase("AddNote")) {
+            } else if (activityName.equalsIgnoreCase("AddNote")) {
                 LOG.debug("AddNote activity found");
                 ActivityEvent.NOTE_ADDED_EVENT.build(this, (AddNote) activity, claim);
             } else if (activityName.equalsIgnoreCase("AssignManualInvoiceOwner")) {
@@ -619,7 +623,7 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("EcdUpdate")) {
                 LOG.debug("EcdUpdate activity found");
                 ActivityEvent.ECD_UPDATED_EVENT.build(this, (EcdUpdate) activity, claim);
-            }  else if (activityName.equalsIgnoreCase("HireUpdate")) {
+            } else if (activityName.equalsIgnoreCase("HireUpdate")) {
                 LOG.debug("HireUpdate activity found");
                 ActivityEvent.HIRE_VEHICLE_UPDATED_EVENT.build(this, (HireUpdate) activity, claim);
             } else if (activityName.equalsIgnoreCase("FullInvoicePaymentReceived")) {
@@ -642,7 +646,7 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("InvoiceAccepted")) {
                 LOG.debug("InvoiceAccepted activity found");
                 ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (InvoiceAccepted) activity, claim);
-            }  else if (activityName.equalsIgnoreCase("UpdateManualInvoiceAgreeQuantum")) {
+            } else if (activityName.equalsIgnoreCase("UpdateManualInvoiceAgreeQuantum")) {
                 LOG.debug("UpdateManualInvoiceAgreeQuantum activity found");
                 ActivityEvent.INVOICE_ACCEPTED_EVENT.build(this, (UpdateManualInvoiceAgreeQuantum) activity, claim);
             } else if (activityName.equalsIgnoreCase("InvoicePaymentLogged")) {
@@ -721,7 +725,7 @@ public class ActivityEventGenerator {
                 ActivityEvent.LIABILITY_UPDATED_EVENT.build(this, (NewTpiClaim) activity, claim);
                 if (((NewTpiClaim) activity).isNewClaim()) {
                     ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewTpiClaim) activity, claim);
-                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewTpiClaim) activity, claim);            
+                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewTpiClaim) activity, claim);                    
                 }
                 if (((NewTpiClaim) activity).isClaimRouted()) {
                     ActivityEvent.CLAIM_ROUTED_EVENT.build(this, (NewTpiClaim) activity, claim);
@@ -772,10 +776,10 @@ public class ActivityEventGenerator {
                 LOG.debug("SwitchClaim activity found");
                 ActivityEvent.CLAIM_CLOSED_EVENT.build(this, (SwitchClaim) activity, claim);
                 ActivityEvent.NEW_CLAIM_EVENT.build(this, (SwitchClaim) activity, claim);
-            }  else if (activityName.equalsIgnoreCase("SwitchCho")) {
+            } else if (activityName.equalsIgnoreCase("SwitchCho")) {
                 LOG.debug("SwitchCho activity found");
                 ActivityEvent.SWITCH_CHO_EVENT.build(this, (SwitchCho) activity, claim);
-            }else if (activityName.equalsIgnoreCase("SwitchClaimToMultipleInsurer")) {
+            } else if (activityName.equalsIgnoreCase("SwitchClaimToMultipleInsurer")) {
                 LOG.debug("SwitchClaimToMultipleInsurer activity found");
                 ActivityEvent.CLAIM_CLOSED_EVENT.build(this, (SwitchClaimToMultipleInsurer) activity, claim);
                 ActivityEvent.NEW_CLAIM_EVENT.build(this, (SwitchClaimToMultipleInsurer) activity, claim);
@@ -791,7 +795,7 @@ public class ActivityEventGenerator {
             } else if (activityName.equalsIgnoreCase("NewSupplementaryInvoice")) {
                 if (((NewSupplementaryInvoice) activity).isIsNewClaim()) {
                     ActivityEvent.NEW_CLAIM_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);
-                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);            
+                    ActivityEvent.HIRE_CAR_INFO_PROVIDED_EVENT.build(this, (NewSupplementaryInvoice) activity, claim);                    
                 }
             } else if (activityName.equalsIgnoreCase("SwitchFromPaymentsTeam")) {
                 LOG.debug("SwitchFromPaymentsTeam activity found");
@@ -809,7 +813,7 @@ public class ActivityEventGenerator {
             LOG.error("Error generating events for activity '{}' : {}\n", new Object[]{activityName, ex.getMessage(), ex});
             return;
         }
-
+        
         try {
             eventGenerator.sendEvents();
         } catch (Exception ex) {
