@@ -1,3 +1,5 @@
+--DROP FUNCTION paymentBordereau(IN insId INTEGER, IN choIds INTEGER[], IN startPeriod VARCHAR, IN endPeriod VARCHAR);
+
 CREATE OR REPLACE FUNCTION paymentBordereau(
     IN insId INTEGER,
     IN choIds INTEGER[],
@@ -16,9 +18,7 @@ RETURNS TABLE(  "Insurer" VARCHAR,
     "Date Invoiced" DATE,
     "Hire Gross (Inc LPPs)" numeric(8,2),
     "Repair Gross (Inc LPPs)" numeric(8,2),
-    "Engineer Fee Gross" numeric(8,2),
     "Storage Recovery Gross (inc total loss fees)" numeric(8,2),
-    "Total Loss Fee" numeric(8,2),
     "Total Gross" numeric(8,2),
     "Liability % Agreed (Insurer)" numeric(5,2),
     "Claimant Title" VARCHAR,
@@ -70,10 +70,8 @@ AS $BODY$
             getLiabilityStatus(c.liability_status) as "Liability Status",
             inv.created_date::DATE as "Date Invoiced",
             ((inv.hire_gross + inv.hire_penalty_charge)*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Hire Gross (Inc LPPs)",
-            ((inv.repair_gross + inv.repair_penalty_charge)*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Repair Gross (Inc LPPs)",
-            (engineer_fee_gross*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Engineer Fee Gross",
-            (storage_recovery_gross*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Storage Recovery Gross (inc total loss fees)", 
-            (total_loss_gross*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Total Loss Fee",
+            ((inv.repair_gross + inv.repair_penalty_charge + inv.engineer_fee_gross)*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Repair Gross (Inc LPPs)",
+            ((storage_recovery_gross + total_loss_gross)*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Storage Recovery Gross (inc total loss fees)", 
             (total_gross*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Total Gross",
             c.percentage_liability_accepted as "Liability % Agreed (Insurer)",
             cu.title as "Claimant Title",
@@ -123,3 +121,5 @@ GRANT EXECUTE ON FUNCTION paymentBordereau(IN insIds INTEGER, IN choIds INTEGER[
 TO chox_mi;
 
 /* select * from paymentBordereau(26, null, '2017-06-26', '2017-06-27'); */
+/* \copy (select * from paymentBordereau(26, null, '2017-06-26', '2017-06-27')) TO '${DUMPFILE}' (format CSV); */
+/* \copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV); */
