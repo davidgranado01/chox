@@ -18,6 +18,8 @@
 
     <properties>
         <cxf.version>2.7.17</cxf.version>
+        <asm.version>5.2</asm.version> <!-- was 5.0.2 -->
+        <cglib.version>3.2.5</cglib.version> <!-- was 3.1 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
@@ -30,8 +32,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -475,7 +477,17 @@
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-javamail_1.4_spec</artifactId>
                 </exclusion>
+                <exclusion> <!-- exclude version 3 of asm -->
+                    <groupId>asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <!-- add direct dependency for ASM (version 5) -->
+        <dependency> 
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -561,7 +573,7 @@
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP-java7</artifactId>
+            <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
             <exclusions>
                 <exclusion>
