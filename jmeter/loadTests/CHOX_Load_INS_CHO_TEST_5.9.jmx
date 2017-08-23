@@ -15,13 +15,13 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="tNumberCHO" elementType="Argument">
             <stringProp name="Argument.name">tNumberCHO</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
             <stringProp name="Argument.desc">Thread (User) number</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="rampUpCHO" elementType="Argument">
             <stringProp name="Argument.name">rampUpCHO</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
             <stringProp name="Argument.desc">Time (in seconds) to get all threads running</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -39,12 +39,12 @@
           </elementProp>
           <elementProp name="tNumberINS" elementType="Argument">
             <stringProp name="Argument.name">tNumberINS</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="rampUpINS" elementType="Argument">
             <stringProp name="Argument.name">rampUpINS</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="generalUserActivityLoopCountINS" elementType="Argument">
@@ -75,7 +75,7 @@
           </elementProp>
           <elementProp name="claimExportPercentage" elementType="Argument">
             <stringProp name="Argument.name">claimExportPercentage</stringProp>
-            <stringProp name="Argument.value">10.0</stringProp>
+            <stringProp name="Argument.value">20.0</stringProp>
             <stringProp name="Argument.desc">The %age of generalUserActivityLoops to perform claim export</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -87,25 +87,25 @@
           </elementProp>
           <elementProp name="activityRampUp" elementType="Argument">
             <stringProp name="Argument.name">activityRampUp</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">Time (in seconds) to start users</stringProp>
           </elementProp>
           <elementProp name="noActivityUsers" elementType="Argument">
             <stringProp name="Argument.name">noActivityUsers</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.value">35</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">The number of users calling activityMonitoringAction</stringProp>
           </elementProp>
           <elementProp name="noCheckUsers" elementType="Argument">
             <stringProp name="Argument.name">noCheckUsers</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.value">30</stringProp>
             <stringProp name="Argument.desc">The number of users calling checkViewingStatus</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="noActivityLoop" elementType="Argument">
             <stringProp name="Argument.name">noActivityLoop</stringProp>
-            <stringProp name="Argument.value">15</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">The number of different claims for each user to monitor</stringProp>
           </elementProp>
@@ -117,46 +117,31 @@
           </elementProp>
           <elementProp name="noActivityCalls" elementType="Argument">
             <stringProp name="Argument.name">noActivityCalls</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.value">24</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">The number of activity monitoring requests to make per claim (one every 5s, 12 per minute)</stringProp>
           </elementProp>
           <elementProp name="noCheckCalls" elementType="Argument">
             <stringProp name="Argument.name">noCheckCalls</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.value">18</stringProp>
             <stringProp name="Argument.desc">The number of check viewing status requests to make per queue (one every 5s, 12 per minute)</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="bordereauThreadsCHO" elementType="Argument">
-            <stringProp name="Argument.name">bordereauThreadsCHO</stringProp>
+          <elementProp name="bordereauThreads" elementType="Argument">
+            <stringProp name="Argument.name">bordereauThreads</stringProp>
             <stringProp name="Argument.value">1</stringProp>
             <stringProp name="Argument.desc">The number of CHO users uploading bordereau</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="bordereauRampUpCHO" elementType="Argument">
-            <stringProp name="Argument.name">bordereauRampUpCHO</stringProp>
-            <stringProp name="Argument.value">500</stringProp>
+          <elementProp name="bordereauRampUp" elementType="Argument">
+            <stringProp name="Argument.name">bordereauRampUp</stringProp>
+            <stringProp name="Argument.value">60</stringProp>
             <stringProp name="Argument.desc">Time (in seconds) to get all CHO bordereau threads running</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="bordereauUploadLoopCHO" elementType="Argument">
-            <stringProp name="Argument.name">bordereauUploadLoopCHO</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="bordereauThreadsINS" elementType="Argument">
-            <stringProp name="Argument.name">bordereauThreadsINS</stringProp>
-            <stringProp name="Argument.value">1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="bordereauRampUpINS" elementType="Argument">
-            <stringProp name="Argument.name">bordereauRampUpINS</stringProp>
-            <stringProp name="Argument.value">500</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="bordereauUploadLoopINS" elementType="Argument">
-            <stringProp name="Argument.name">bordereauUploadLoopINS</stringProp>
-            <stringProp name="Argument.value">20</stringProp>
+          <elementProp name="bordereauUploadLoop" elementType="Argument">
+            <stringProp name="Argument.name">bordereauUploadLoop</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="Due_Date" elementType="Argument">
@@ -187,22 +172,16 @@
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">Gaussian Random Timer Constant Delay Offset</stringProp>
           </elementProp>
-          <elementProp name="uploadDelayCHO" elementType="Argument">
-            <stringProp name="Argument.name">uploadDelayCHO</stringProp>
-            <stringProp name="Argument.value">150000</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">Bordereau upload delay in ms</stringProp>
-          </elementProp>
-          <elementProp name="uploadDelayINS" elementType="Argument">
-            <stringProp name="Argument.name">uploadDelayINS</stringProp>
-            <stringProp name="Argument.value">150000</stringProp>
+          <elementProp name="uploadDelay" elementType="Argument">
+            <stringProp name="Argument.name">uploadDelay</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">Bordereau upload delay in ms</stringProp>
           </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <CacheManager guiclass="CacheManagerGui" testclass="CacheManager" testname="HTTP Cache Manager" enabled="false">
+      <CacheManager guiclass="CacheManagerGui" testclass="CacheManager" testname="HTTP Cache Manager" enabled="true">
         <boolProp name="clearEachIteration">false</boolProp>
         <boolProp name="useExpires">false</boolProp>
       </CacheManager>
@@ -221,12 +200,13 @@
         <stringProp name="HTTPSampler.domain">${baseUrl}</stringProp>
         <stringProp name="HTTPSampler.port">${port}</stringProp>
         <stringProp name="HTTPSampler.protocol">https</stringProp>
-        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
+        <boolProp name="HTTPSampler.image_parser">true</boolProp>
+        <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
-        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
-        <stringProp name="HTTPSampler.connect_timeout">2000</stringProp>
-        <stringProp name="HTTPSampler.response_timeout">120000</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout">10000</stringProp>
+        <stringProp name="HTTPSampler.response_timeout">240000</stringProp>
       </ConfigTestElement>
       <hashTree/>
       <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="Gaussian Random Timer" enabled="true">
@@ -11400,15 +11380,15 @@
         </DebugSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="CHO Bordereau Upload Thread Group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Bordereau Upload Thread Group" enabled="true">
         <stringProp name="TestPlan.comments">Authenticate the users and upload the bordereau.</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${bordereauUploadLoopCHO}</stringProp>
+          <stringProp name="LoopController.loops">${bordereauUploadLoop}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${bordereauThreadsCHO}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">${bordereauRampUpCHO}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${bordereauThreads}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${bordereauRampUp}</stringProp>
         <longProp name="ThreadGroup.start_time">1500884254000</longProp>
         <longProp name="ThreadGroup.end_time">1500884254000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -11417,7 +11397,7 @@
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="username Config" enabled="true">
-          <stringProp name="filename">${scriptPath}CHO_Files/CHO_UPLOAD.csv</stringProp>
+          <stringProp name="filename">${scriptPath}uploaders.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">username,bordereauFile</stringProp>
           <stringProp name="delimiter">,</stringProp>
@@ -11437,14 +11417,14 @@
           <boolProp name="CounterConfig.per_user">false</boolProp>
         </CounterConfig>
         <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Delay Bordereu Upload Per 10 Loops (If Controller)" enabled="true">
-          <stringProp name="IfController.condition">${bordereauUploadCounter} == 10</stringProp>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Delay Bordereu Upload Per 5 Loops (If Controller)" enabled="true">
+          <stringProp name="IfController.condition">&quot;${bordereauUploadCounter}&quot; == &quot;5&quot;</stringProp>
           <boolProp name="IfController.evaluateAll">true</boolProp>
         </IfController>
         <hashTree>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="bordereauUploadDelayCHO" enabled="true">
             <stringProp name="TestPlan.comments">Delay after number of defined</stringProp>
-            <stringProp name="ConstantTimer.delay">${uploadDelayCHO}</stringProp>
+            <stringProp name="ConstantTimer.delay">${uploadDelay}</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Page" enabled="true">
@@ -11676,7 +11656,7 @@
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout">30000</stringProp>
-          <stringProp name="HTTPSampler.response_timeout">100000</stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
@@ -11774,8 +11754,8 @@
           <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="bordereauFileId Extractor" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">bordereauFileId</stringProp>
-            <stringProp name="RegexExtractor.regex">File is waiting to be processed(.+?)&quot;id&quot;:(.+?),</stringProp>
-            <stringProp name="RegexExtractor.template">$2$</stringProp>
+            <stringProp name="RegexExtractor.regex">&quot;id&quot;:(.+?),&quot;status&quot;:&quot;Waiting to be Processed&quot;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
             <stringProp name="RegexExtractor.default">-1</stringProp>
             <stringProp name="RegexExtractor.match_number">1</stringProp>
             <stringProp name="Sample.scope">all</stringProp>
@@ -11805,7 +11785,7 @@
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout">5000</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout">30000</stringProp>
           <stringProp name="HTTPSampler.response_timeout">1800000</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
@@ -11820,7 +11800,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="File Processed  Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="2073378034">isValid</stringProp>
+              <stringProp name="206273026">&quot;isValid&quot; : true</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -35714,452 +35694,6 @@ vars.put(&quot;claimIds&quot;, claimIds);
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Insurer Manual Bordereau Upload Thread Group" enabled="true">
-        <stringProp name="TestPlan.comments">Authenticate the users and upload the bordereau. The user&apos; session ID is written to a CSV file to be used by the following thread groups to both process the bordereau and monitor the processing</stringProp>
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${bordereauUploadLoopINS}</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${bordereauThreadsINS}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">${bordereauRampUpINS}</stringProp>
-        <longProp name="ThreadGroup.start_time">1499938416000</longProp>
-        <longProp name="ThreadGroup.end_time">1499938416000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-          <stringProp name="CounterConfig.start">0</stringProp>
-          <stringProp name="CounterConfig.end">10</stringProp>
-          <stringProp name="CounterConfig.incr">1</stringProp>
-          <stringProp name="CounterConfig.name">bordereauUploadCounter</stringProp>
-          <stringProp name="CounterConfig.format">0</stringProp>
-          <boolProp name="CounterConfig.per_user">false</boolProp>
-        </CounterConfig>
-        <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Delay Bordereu Upload Per 10 Loops (If Controller)" enabled="true">
-          <stringProp name="IfController.condition">${bordereauUploadCounter} == 10</stringProp>
-          <boolProp name="IfController.evaluateAll">true</boolProp>
-        </IfController>
-        <hashTree>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="bordereauUploadDelayINS" enabled="true">
-            <stringProp name="TestPlan.comments">Delay after number of defined</stringProp>
-            <stringProp name="ConstantTimer.delay">${uploadDelayINS}</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Page" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments"/>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">${CONTEXT}/login.action</stringProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Page" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/login.action</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree/>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Manual Ins Users" enabled="true">
-          <stringProp name="filename">${scriptPath}INS_Files/ManualInsUsers.csv</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">username,bordereauFile</stringProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.thread</stringProp>
-          <boolProp name="ignoreFirstLine">false</boolProp>
-        </CSVDataSet>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Authenticate" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="j_username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${username}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">j_username</stringProp>
-              </elementProp>
-              <elementProp name="j_password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">C0mpliance</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">j_password</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/j_spring_security_check</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.image_parser">true</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout">5000</stringProp>
-          <stringProp name="HTTPSampler.response_timeout">60000</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Upload Panel Request" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/prv/p/XmlUpload.action</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Uploaded Bordereau List Request" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="start" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">start</stringProp>
-              </elementProp>
-              <elementProp name="limit" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">10</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">limit</stringProp>
-              </elementProp>
-              <elementProp name="sort" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">createdDate</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">sort</stringProp>
-              </elementProp>
-              <elementProp name="dir" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">DESC</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">dir</stringProp>
-              </elementProp>
-              <elementProp name="days" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">6</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">days</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/prv/p/getUploadedfiles.action</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response contains totalCount Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-731385813">totalCount</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Upload Bordereau Request" enabled="true">
-          <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
-            <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="${bordereauFile}" elementType="HTTPFileArg">
-                <stringProp name="File.path">${bordereauFile}</stringProp>
-                <stringProp name="File.paramname">uploadedFile</stringProp>
-                <stringProp name="File.mimetype">text/xml</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="nonce" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${nonce}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">nonce</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/prv/p/uploadNewClaimsFile.action</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout">30000</stringProp>
-          <stringProp name="HTTPSampler.response_timeout">100000</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="File Uploaded Successfully Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-32250179">File has been uploaded successfully</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Uploaded Bordereau List Request" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="start" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">start</stringProp>
-              </elementProp>
-              <elementProp name="limit" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">10</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">limit</stringProp>
-              </elementProp>
-              <elementProp name="sort" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">createdDate</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">sort</stringProp>
-              </elementProp>
-              <elementProp name="dir" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">DESC</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">dir</stringProp>
-              </elementProp>
-              <elementProp name="days" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">6</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">days</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/prv/p/getUploadedfiles.action</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response contains totalCount Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-731385813">totalCount</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="bordereauFileId Extractor" enabled="true">
-            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-            <stringProp name="RegexExtractor.refname">bordereauFileId</stringProp>
-            <stringProp name="RegexExtractor.regex">File is waiting to be processed(.+?)&quot;id&quot;:(.+?),</stringProp>
-            <stringProp name="RegexExtractor.template">$2$</stringProp>
-            <stringProp name="RegexExtractor.default">-1</stringProp>
-            <stringProp name="RegexExtractor.match_number">1</stringProp>
-            <stringProp name="Sample.scope">all</stringProp>
-          </RegexExtractor>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Process Bordereau Request" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="bordereauId" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${bordereauFileId}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">bordereauId</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/prv/p/processUploadedFile.action</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout">5000</stringProp>
-          <stringProp name="HTTPSampler.response_timeout">1800000</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="OK Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="File Processed  Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="2073378034">isValid</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT}/j_spring_security_logout</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="TestPlan.comments">Detected the start of a redirect chain</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
-          <boolProp name="displayJMeterProperties">false</boolProp>
-          <boolProp name="displayJMeterVariables">true</boolProp>
-          <boolProp name="displaySystemProperties">false</boolProp>
-        </DebugSampler>
-        <hashTree/>
-      </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
@@ -36200,68 +35734,163 @@ vars.put(&quot;claimIds&quot;, claimIds);
       <boolProp name="WorkBench.save">true</boolProp>
     </WorkBench>
     <hashTree>
-      <ProxyControl guiclass="ProxyControlGui" testclass="ProxyControl" testname="HTTP(S) Test Script Recorder" enabled="true">
-        <stringProp name="ProxyControlGui.port">8888</stringProp>
-        <collectionProp name="ProxyControlGui.exclude_list">
-          <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
-          <stringProp name="-2135475220">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)[\?;].*</stringProp>
+      <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.MergeResultsGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Merge Results" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">results/java8-5.9-merged/CHOX_Load_INS_CHO_TEST_5.9-merged.csv</stringProp>
+        <longProp name="interval_grouping">500</longProp>
+        <boolProp name="graph_aggregated">false</boolProp>
+        <stringProp name="include_sample_labels"></stringProp>
+        <stringProp name="exclude_sample_labels"></stringProp>
+        <stringProp name="start_offset"></stringProp>
+        <stringProp name="end_offset"></stringProp>
+        <boolProp name="include_checkbox_state">false</boolProp>
+        <boolProp name="exclude_checkbox_state">false</boolProp>
+        <collectionProp name="MergeResultsControlGui.data">
+          <collectionProp name="1556738026">
+            <stringProp name="277551558">/Users/john/Projects/Netbeans/chox/jmeter/loadTests/CHOX_Load_INS_CHO_TEST_5.9-java7.csv</stringProp>
+            <stringProp name="-2083218983">Java 7</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="-261236836">CHOX v8.6</stringProp>
+            <stringProp name="1237">false</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="1237">false</stringProp>
+          </collectionProp>
+          <collectionProp name="-1031600245">
+            <stringProp name="278475079">/Users/john/Projects/Netbeans/chox/jmeter/loadTests/CHOX_Load_INS_CHO_TEST_5.9-java8.csv</stringProp>
+            <stringProp name="-2083218982">Java 8</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="-1940494753">CHOX v8.6.1</stringProp>
+            <stringProp name="1237">false</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="1237">false</stringProp>
+          </collectionProp>
+          <collectionProp name="-990528667">
+            <stringProp name="-52703132">/Users/john/Projects/Netbeans/chox/jmeter/loadTests/CHOX_Load_INS_CHO_TEST_5.9-java8-p8s9.csv</stringProp>
+            <stringProp name="-2083218982">Java 8</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="-261236836">CHOX v8.6</stringProp>
+            <stringProp name="1237">false</stringProp>
+            <stringProp name="0"></stringProp>
+            <stringProp name="1237">false</stringProp>
+          </collectionProp>
         </collectionProp>
-        <collectionProp name="ProxyControlGui.include_list"/>
-        <boolProp name="ProxyControlGui.capture_http_headers">true</boolProp>
-        <intProp name="ProxyControlGui.grouping_mode">4</intProp>
-        <boolProp name="ProxyControlGui.add_assertion">false</boolProp>
-        <stringProp name="ProxyControlGui.sampler_type_name"></stringProp>
-        <boolProp name="ProxyControlGui.sampler_redirect_automatically">false</boolProp>
-        <boolProp name="ProxyControlGui.sampler_follow_redirects">true</boolProp>
-        <boolProp name="ProxyControlGui.use_keepalive">true</boolProp>
-        <boolProp name="ProxyControlGui.sampler_download_images">false</boolProp>
-        <boolProp name="ProxyControlGui.regex_match">true</boolProp>
-        <stringProp name="ProxyControlGui.content_type_include"></stringProp>
-        <stringProp name="ProxyControlGui.content_type_exclude"></stringProp>
-        <boolProp name="ProxyControlGui.notify_child_sl_filtered">true</boolProp>
-        <stringProp name="ProxyControlGui.proxy_prefix_http_sampler_name"></stringProp>
-      </ProxyControl>
-      <hashTree>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>true</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>true</responseData>
-              <samplerData>true</samplerData>
-              <xml>true</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>true</responseHeaders>
-              <requestHeaders>true</requestHeaders>
-              <responseDataOnError>true</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <url>true</url>
-              <fileName>true</fileName>
-              <hostname>true</hostname>
-              <threadCounts>true</threadCounts>
-              <sampleCount>true</sampleCount>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename">C:\Users\ukribrag\Downloads\apache-jmeter-3.1\apache-jmeter-3.1\bin\Low_Threads_uk01_CHOX.jtl</stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
+        <stringProp name="prefix_label">Java 8</stringProp>
+      </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">/Users/john/Projects/Netbeans/chox/jmeter/loadTests/results/java7-5.9-test1/CHOX_Load_INS_CHO_TEST_5.9-java7.jtl</stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.LatenciesOverTimeGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Response Latencies Over Time" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">/Users/john/Projects/Netbeans/chox/jmeter/loadTests/results/java7-5.9-test1/CHOX_Load_INS_CHO_TEST_5.9-java7.jtl</stringProp>
+        <longProp name="interval_grouping">500</longProp>
+        <boolProp name="graph_aggregated">false</boolProp>
+        <stringProp name="include_sample_labels"></stringProp>
+        <stringProp name="exclude_sample_labels"></stringProp>
+        <stringProp name="start_offset"></stringProp>
+        <stringProp name="end_offset"></stringProp>
+        <boolProp name="include_checkbox_state">false</boolProp>
+        <boolProp name="exclude_checkbox_state">false</boolProp>
+      </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
