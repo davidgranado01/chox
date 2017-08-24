@@ -20,7 +20,7 @@
     var FILES_UPLOADED_IN_LAST_7_DAYS_TITLE = 'Files Uploaded In Last 7 Days';
     var FILES_UPLOADED_IN_LAST_30_DAYS_TITLE = 'Files Uploaded In Last 30 Days';
     var ALL_UPLOADED_FILES_TITLE = 'All Uploaded Files';
-    
+    var timer = null;
 
     Ext.onReady(function(){
         
@@ -54,7 +54,11 @@
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                         totalRecordLoaded=0;
-                        setTimeout(loadLiveClaimData, 1000);
+                        if (timer !== null) {
+                            clearTimeout(timer);
+                            timer = null;
+                        }
+                        timer = setTimeout(loadLiveClaimData, 1500);
                         
                     }else{
                         xmlClaimsStatusData.removeAll();
@@ -151,7 +155,11 @@
                                         }
                                     }
                                 });
-                                setTimeout(loadLiveClaimData, 1000);
+                                if (timer !== null) {
+                                    clearTimeout(timer);
+                                    timer = null;
+                                }
+                                timer = setTimeout(loadLiveClaimData, 1500);
                             }else{
 
                                 if(sm.getSelected().get('valid')===false){
@@ -475,14 +483,18 @@
         xmlClaimsStatusData = new choxDataStore({
             id : 'xmlClaimsStatusDataId',
             url: '/prv/p/getUploadedClaimsDetails.action', 
-            timeout:60000,
+            timeout:20000,
             reader:xmlClaimsStatusJsonReader,
             listeners:  {load: function( store, records, options){
                     totalRecordLoaded = store.getCount();
                     if(processing===true){
                         setGridHeight(totalRecordLoaded);
                         xmlClaimsStatusGrid.setTitle(totalRecordLoaded + ' of '+selectedFileTotalClaims+' Claims have been processed');
-                    } }}
+                        timer = setTimeout(loadLiveClaimData, 2000);
+                    } else {
+                        timer = null;
+                    }
+                    }}
         });
 
         xmlClaimsStatusGrid = new Ext.grid.GridPanel({
@@ -566,7 +578,6 @@
         if(selectedFileTotalClaims>totalRecordLoaded){
             processing = true;
             loadLiveProcessedClaimDetails(selectedFileId);
-            setTimeout(loadLiveClaimData, 1500);
         }else{
             setGridHeight(totalRecordLoaded);
             processing = false;
