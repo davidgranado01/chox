@@ -1,0 +1,741 @@
+2017-08-19 16:20:32,756 INFO o.a.j.u.JMeterUtils: Setting Locale to en_US
+2017-08-19 16:20:32,773 INFO o.a.j.JMeter: Loading user properties from: /home/chox/Software/apache-jmeter-3.2/bin/user.properties
+2017-08-19 16:20:32,773 INFO o.a.j.JMeter: Loading system properties from: /home/chox/Software/apache-jmeter-3.2/bin/system.properties
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: Copyright (c) 1998-2017 The Apache Software Foundation
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: Version 3.2 r1790748
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: java.version=1.8.0_131
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: os.name=Linux
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: os.arch=amd64
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: os.version=2.6.18-308.1.1.el5
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: file.encoding=UTF-8
+2017-08-19 16:20:32,779 INFO o.a.j.JMeter: Max memory     =2147483648
+2017-08-19 16:20:32,780 INFO o.a.j.JMeter: Available Processors =8
+2017-08-19 16:20:32,785 INFO o.a.j.JMeter: Default Locale=English (United States)
+2017-08-19 16:20:32,785 INFO o.a.j.JMeter: JMeter  Locale=English (United States)
+2017-08-19 16:20:32,785 INFO o.a.j.JMeter: JMeterHome=/home/chox/Software/apache-jmeter-3.2
+2017-08-19 16:20:32,785 INFO o.a.j.JMeter: user.dir  =/home/chox/choxLoadTests
+2017-08-19 16:20:32,785 INFO o.a.j.JMeter: PWD       =/home/chox/choxLoadTests
+2017-08-19 16:20:32,796 INFO o.a.j.JMeter: IP: 81.187.97.167 Name: dev-uk02.idasnetwork.com FullName: dev-uk02.idasnetwork.com
+2017-08-19 16:20:32,798 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'/home/chox/choxLoadTests/results/java7-5.9-test1/dashboard'
+2017-08-19 16:20:32,800 INFO o.a.j.s.FileServer: Default base='/home/chox/choxLoadTests'
+2017-08-19 16:20:32,800 INFO o.a.j.s.FileServer: Set new base='/home/chox/choxLoadTests'
+2017-08-19 16:20:32,923 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2017-08-19 16:20:32,939 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2017-08-19 16:20:32,945 INFO o.a.j.s.SaveService: Using SaveService properties version 3.2
+2017-08-19 16:20:32,952 INFO o.a.j.s.SaveService: Loading file: CHOX_Load_INS_CHO_TEST_5.9.jmx
+2017-08-19 16:20:33,007 INFO o.a.j.p.h.c.CacheManager: Will only cache the following methods: [GET]
+2017-08-19 16:20:33,009 INFO o.a.j.p.h.c.CookieManager: Settings: Delete null: true Check: true Allow variable: true Save: false Prefix: COOKIE_
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2017-08-19 16:20:33,033 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:33,912 INFO o.a.j.JMeter: Creating summariser <summary>
+2017-08-19 16:20:33,918 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2017-08-19 16:20:33,918 INFO o.a.j.r.d.ReportGenerator: Will generate report at end of test from  results file: results/java7-5.9-test1/CHOX_Load_INS_CHO_TEST_5.9-java7.jtl
+2017-08-19 16:20:33,919 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: /home/chox/Software/apache-jmeter-3.2/bin/reportgenerator.properties
+2017-08-19 16:20:33,920 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2017-08-19 16:20:33,926 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2017-08-19 16:20:33,929 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2017-08-19 16:20:33,929 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction : {} is empty, not APDEX per transaction customization
+2017-08-19 16:20:33,929 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2017-08-19 16:20:33,930 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2017-08-19 16:20:33,930 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2017-08-19 16:20:33,930 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2017-08-19 16:20:33,930 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2017-08-19 16:20:33,931 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2017-08-19 16:20:33,936 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,936 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,937 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,937 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,937 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,937 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,937 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,938 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,938 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2017-08-19 16:20:33,939 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2017-08-19 16:20:33,939 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2017-08-19 16:20:33,939 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2017-08-19 16:20:33,946 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2017-08-19 16:20:33,947 INFO o.a.j.s.SampleEvent: List of sample_variables: [jsessionid, bordereauFileId, username]
+2017-08-19 16:20:33,947 INFO o.a.j.s.SampleEvent: List of sample_variables: [jsessionid, bordereauFileId, username]
+2017-08-19 16:20:33,953 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2017-08-19 16:20:33,953 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2017-08-19 16:20:34,330 INFO o.a.j.JMeter: Running test (1503156034330)
+2017-08-19 16:20:34,422 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : CHO Action Thread Group
+2017-08-19 16:20:34,422 INFO o.a.j.e.StandardJMeterEngine: Starting 20 threads for group CHO Action Thread Group.
+2017-08-19 16:20:34,422 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-08-19 16:20:34,422 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=20 ramp-up=900 perThread=45000.0 delayedStart=false
+2017-08-19 16:20:34,456 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2017-08-19 16:20:34,457 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2017-08-19 16:20:34,457 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2017-08-19 16:20:34,457 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2017-08-19 16:20:34,476 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-1
+2017-08-19 16:20:34,486 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv Alias: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv@93740343
+2017-08-19 16:20:34,604 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2017-08-19 16:20:34,604 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 2 : Bordereau Upload Thread Group
+2017-08-19 16:20:34,604 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group Bordereau Upload Thread Group.
+2017-08-19 16:20:34,604 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-08-19 16:20:34,605 INFO o.a.j.t.ThreadGroup: Starting thread group... number=2 threads=1 ramp-up=60 perThread=60000.0 delayedStart=false
+2017-08-19 16:20:34,606 INFO o.a.j.t.ThreadGroup: Started thread group number 2
+2017-08-19 16:20:34,606 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 3 : Activity Monitoring Users
+2017-08-19 16:20:34,606 INFO o.a.j.e.StandardJMeterEngine: Starting 35 threads for group Activity Monitoring Users.
+2017-08-19 16:20:34,606 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-08-19 16:20:34,606 INFO o.a.j.t.ThreadGroup: Starting thread group... number=3 threads=35 ramp-up=900 perThread=25714.285 delayedStart=false
+2017-08-19 16:20:34,607 INFO o.a.j.t.JMeterThread: Thread started: Bordereau Upload Thread Group 2-1
+2017-08-19 16:20:34,608 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/uploaders.csv Alias: /home/chox/choxLoadTests/uploaders.csv@1252643051
+2017-08-19 16:20:34,607 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-1
+2017-08-19 16:20:34,631 INFO o.a.j.t.ThreadGroup: Started thread group number 3
+2017-08-19 16:20:34,631 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 4 : Check Viewing Status Users
+2017-08-19 16:20:34,631 INFO o.a.j.e.StandardJMeterEngine: Starting 30 threads for group Check Viewing Status Users.
+2017-08-19 16:20:34,631 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-08-19 16:20:34,631 INFO o.a.j.t.ThreadGroup: Starting thread group... number=4 threads=30 ramp-up=900 perThread=30000.0 delayedStart=false
+2017-08-19 16:20:34,639 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-1
+2017-08-19 16:20:34,639 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv Alias: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv@1408279755
+2017-08-19 16:20:34,881 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = dev-uk02.idasnetwork.com
+2017-08-19 16:20:34,888 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2017-08-19 16:20:34,910 INFO o.a.j.t.ThreadGroup: Started thread group number 4
+2017-08-19 16:20:34,910 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 5 : Insurer Action Thread Group
+2017-08-19 16:20:34,910 INFO o.a.j.e.StandardJMeterEngine: Starting 20 threads for group Insurer Action Thread Group.
+2017-08-19 16:20:34,910 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2017-08-19 16:20:34,910 INFO o.a.j.t.ThreadGroup: Starting thread group... number=5 threads=20 ramp-up=900 perThread=45000.0 delayedStart=false
+2017-08-19 16:20:34,942 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-1
+2017-08-19 16:20:34,947 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/INS_Files/InsUsers.csv Alias: /home/chox/choxLoadTests/INS_Files/InsUsers.csv@1390301622
+2017-08-19 16:20:35,017 INFO o.a.j.p.h.s.LazySchemeSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2017-08-19 16:20:35,030 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2017-08-19 16:20:35,030 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2017-08-19 16:20:35,342 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2017-08-19 16:20:35,344 INFO o.a.j.u.SSLManager: KeyStore created OK
+2017-08-19 16:20:35,344 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2017-08-19 16:20:35,347 INFO o.a.j.t.ThreadGroup: Started thread group number 5
+2017-08-19 16:20:35,347 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2017-08-19 16:20:37,689 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:37,689 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:37,689 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:37,690 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:37,691 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2017-08-19 16:20:37,751 INFO o.a.j.p.h.s.ResourcesDownloader: Creating ResourcesDownloader with keepalive_inseconds : 60
+2017-08-19 16:20:38,055 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:38,056 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:38,055 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:38,056 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:38,055 INFO o.a.j.p.h.p.BaseParser: Created org.apache.jmeter.protocol.http.parser.CssParser
+2017-08-19 16:20:38,510 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv Alias: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv@1642679791
+2017-08-19 16:20:42,935 WARN c.h.c.r.e.LoggingCSSParseErrorHandler: [1426:17] Unexpected rule '@charset': charset rule in the middle of the file is not allowed!
+2017-08-19 16:20:49,499 INFO o.a.j.s.FileServer: Stored: CHO_Files/e298kq-2017-07-12-JT-A.xml
+2017-08-19 16:21:00,326 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-2
+2017-08-19 16:21:01,181 INFO o.a.j.r.Summariser: summary +     22 in 00:00:27 =    0.8/s Avg:  1968 Min:    12 Max:  5592 Err:     0 (0.00%) Active: 6 Started: 6 Finished: 0
+2017-08-19 16:21:04,648 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-2
+2017-08-19 16:21:19,478 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-2
+2017-08-19 16:21:19,956 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-2
+2017-08-19 16:21:26,041 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-3
+2017-08-19 16:21:30,214 INFO o.a.j.r.Summariser: summary +     47 in 00:00:29 =    1.6/s Avg:  2221 Min:     9 Max: 30006 Err:     2 (4.26%) Active: 10 Started: 10 Finished: 0
+2017-08-19 16:21:30,215 INFO o.a.j.r.Summariser: summary =     69 in 00:00:56 =    1.2/s Avg:  2140 Min:     9 Max: 30006 Err:     2 (2.90%)
+2017-08-19 16:21:34,654 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-3
+2017-08-19 16:21:51,756 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-4
+2017-08-19 16:22:00,094 INFO o.a.j.r.Summariser: summary +     48 in 00:00:30 =    1.6/s Avg:  1160 Min:     8 Max: 30004 Err:     1 (2.08%) Active: 12 Started: 12 Finished: 0
+2017-08-19 16:22:00,094 INFO o.a.j.r.Summariser: summary =    117 in 00:01:26 =    1.4/s Avg:  1738 Min:     8 Max: 30006 Err:     3 (2.56%)
+2017-08-19 16:22:04,481 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-3
+2017-08-19 16:22:04,660 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-4
+2017-08-19 16:22:04,971 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-3
+2017-08-19 16:22:17,472 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-5
+2017-08-19 16:22:30,589 INFO o.a.j.r.Summariser: summary +    120 in 00:00:30 =    3.9/s Avg:  1667 Min:     4 Max: 97607 Err:     2 (1.67%) Active: 16 Started: 16 Finished: 0
+2017-08-19 16:22:30,589 INFO o.a.j.r.Summariser: summary =    237 in 00:01:56 =    2.0/s Avg:  1702 Min:     4 Max: 97607 Err:     5 (2.11%)
+2017-08-19 16:22:34,667 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-5
+2017-08-19 16:22:43,187 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-6
+2017-08-19 16:22:48,219 INFO o.a.j.s.FileServer: Stored: CHO_Files/jl1-chox.xml
+2017-08-19 16:22:49,493 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-4
+2017-08-19 16:22:49,986 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-4
+2017-08-19 16:23:00,123 INFO o.a.j.r.Summariser: summary +    149 in 00:00:30 =    5.0/s Avg:  1799 Min:     5 Max: 90262 Err:     4 (2.68%) Active: 20 Started: 20 Finished: 0
+2017-08-19 16:23:00,123 INFO o.a.j.r.Summariser: summary =    386 in 00:02:26 =    2.6/s Avg:  1740 Min:     4 Max: 97607 Err:     9 (2.33%)
+2017-08-19 16:23:04,674 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-6
+2017-08-19 16:23:08,902 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-7
+2017-08-19 16:23:13,835 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=_zC1zxeVT5I-pjJJl0ux8w4fN5wgNPe-CHdI0xvaeJPRXhU6POQ3vHa0ul69naSvZdOrzmCjNFWElcSRw7HXa2We9CdWrSrW1mcSOk44tS5NXtXF6L5nfCAtZ3LQNwGYc0ZZ9RNTQarnftAE9JqggVxr_U4RvSk55ED8eVqQJUBBYVi6SGtEZO3lYzS06N8zgWOPZ7Q6U-OdTp3VEKThZVtHBUDC5wUQSoYDbiDtr7upcaz2DzK98WW-l7gmvzEAPrg_qGkBsq9xRAhvs97-4dbIsye4q9EVTPKBrRt6jwTMgmtl8ZEKWKU_HmGiTe8gyfaU82-tAEgZ113kG_divA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:23:19,432 INFO o.a.j.s.FileServer: Stored: INS_Files/lv22358-HH_notifications_13072017.xml
+2017-08-19 16:23:30,005 INFO o.a.j.r.Summariser: summary +    188 in 00:00:30 =    6.3/s Avg:  1350 Min:     5 Max: 102759 Err:     3 (1.60%) Active: 22 Started: 22 Finished: 0
+2017-08-19 16:23:30,006 INFO o.a.j.r.Summariser: summary =    574 in 00:02:56 =    3.3/s Avg:  1612 Min:     4 Max: 102759 Err:    12 (2.09%)
+2017-08-19 16:23:34,498 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-5
+2017-08-19 16:23:34,617 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-8
+2017-08-19 16:23:34,680 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-7
+2017-08-19 16:23:34,999 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-5
+2017-08-19 16:23:53,880 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-5
+2017-08-19 16:23:53,880 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-5
+2017-08-19 16:24:00,035 INFO o.a.j.r.Summariser: summary +    330 in 00:00:30 =   11.0/s Avg:   478 Min:     5 Max: 29998 Err:     1 (0.30%) Active: 25 Started: 26 Finished: 1
+2017-08-19 16:24:00,035 INFO o.a.j.r.Summariser: summary =    904 in 00:03:26 =    4.4/s Avg:  1198 Min:     4 Max: 102759 Err:    13 (1.44%)
+2017-08-19 16:24:00,332 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-9
+2017-08-19 16:24:04,687 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-8
+2017-08-19 16:24:05,592 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/INS_Files/LoadTestAtt.jpg
+2017-08-19 16:24:17,641 INFO o.a.j.s.FileServer: Stored: INS_Files/ijb1-Auxillis_13072017.xml
+2017-08-19 16:24:19,509 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-6
+2017-08-19 16:24:20,038 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-6
+2017-08-19 16:24:26,046 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-10
+2017-08-19 16:24:30,010 INFO o.a.j.r.Summariser: summary +    327 in 00:00:30 =   10.9/s Avg:   371 Min:     4 Max: 24754 Err:     0 (0.00%) Active: 30 Started: 31 Finished: 1
+2017-08-19 16:24:30,011 INFO o.a.j.r.Summariser: summary =   1231 in 00:03:56 =    5.2/s Avg:   978 Min:     4 Max: 102759 Err:    13 (1.06%)
+2017-08-19 16:24:34,694 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-9
+2017-08-19 16:24:51,761 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-11
+2017-08-19 16:25:00,087 INFO o.a.j.r.Summariser: summary +    382 in 00:00:30 =   12.7/s Avg:   339 Min:     5 Max: 20644 Err:     0 (0.00%) Active: 32 Started: 33 Finished: 1
+2017-08-19 16:25:00,088 INFO o.a.j.r.Summariser: summary =   1613 in 00:04:26 =    6.1/s Avg:   827 Min:     4 Max: 102759 Err:    13 (0.81%)
+2017-08-19 16:25:04,520 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-7
+2017-08-19 16:25:04,700 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-10
+2017-08-19 16:25:05,029 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-7
+2017-08-19 16:25:09,066 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-2
+2017-08-19 16:25:09,066 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-2
+2017-08-19 16:25:17,477 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-12
+2017-08-19 16:25:30,428 INFO o.a.j.r.Summariser: summary +    365 in 00:00:30 =   12.0/s Avg:   378 Min:     5 Max: 10616 Err:     0 (0.00%) Active: 35 Started: 37 Finished: 2
+2017-08-19 16:25:30,428 INFO o.a.j.r.Summariser: summary =   1978 in 00:04:56 =    6.7/s Avg:   744 Min:     4 Max: 102759 Err:    13 (0.66%)
+2017-08-19 16:25:34,707 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-11
+2017-08-19 16:25:39,601 INFO o.a.j.s.FileServer: Stored: CHO_Files/jack.singleton3-13.07.2017_Invoices.xml
+2017-08-19 16:25:43,191 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-13
+2017-08-19 16:25:49,524 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-8
+2017-08-19 16:25:50,047 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-8
+2017-08-19 16:25:53,818 INFO o.a.j.s.FileServer: Stored: /home/chox/choxLoadTests/CHO_Files/TestImage.jpg
+2017-08-19 16:26:00,044 INFO o.a.j.r.Summariser: summary +    466 in 00:00:30 =   15.7/s Avg:   518 Min:     4 Max: 46671 Err:     0 (0.00%) Active: 39 Started: 41 Finished: 2
+2017-08-19 16:26:00,045 INFO o.a.j.r.Summariser: summary =   2444 in 00:05:26 =    7.5/s Avg:   701 Min:     4 Max: 102759 Err:    13 (0.53%)
+2017-08-19 16:26:03,215 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-9
+2017-08-19 16:26:03,216 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-9
+2017-08-19 16:26:04,713 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-12
+2017-08-19 16:26:08,906 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-14
+2017-08-19 16:26:10,152 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=ct-VD5UothkbF8mAU1MTgjqashtXbiw9fSpZH2j4hY0GURklowATLQ8vFbHa7isvZGalxzs3-tSgUVLS1U9VOQ4gKB0XWdwNRzjdsMLEXe1QdyDka63Y_ud3BiEcXV1PRyzfAC-mWG8OH_aSx2Yh_wWOfH05d3kfUSVON1PkLv9ms8qhmOILc8WuMCD_jsHA4V_feDwbPmGvaSW_b-6De88D_bY2PD1KKqfDJ0KTD8u511gV4yIY1j0h29W-5mXto2WIIV0Q0y-oNeuO8itNfWLEc1KM-q9Bfcdpt08-orjX9PtgtJTZSvzxH4f7i6-v2o4W3FdrVzheL8kxKtwplA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:26:23,073 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-1
+2017-08-19 16:26:23,074 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-1
+2017-08-19 16:26:30,007 INFO o.a.j.r.Summariser: summary +    457 in 00:00:30 =   15.3/s Avg:   320 Min:     4 Max: 20627 Err:     0 (0.00%) Active: 39 Started: 43 Finished: 4
+2017-08-19 16:26:30,008 INFO o.a.j.r.Summariser: summary =   2901 in 00:05:56 =    8.2/s Avg:   641 Min:     4 Max: 102759 Err:    13 (0.45%)
+2017-08-19 16:26:34,534 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-9
+2017-08-19 16:26:34,622 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-15
+2017-08-19 16:26:34,719 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-13
+2017-08-19 16:26:35,063 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-9
+2017-08-19 16:26:35,106 INFO o.a.j.s.FileServer: Stored: INS_Files/a46230-201703032268.xml
+2017-08-19 16:26:37,226 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=oofLLFKUBRUemPQSjvz5Yk6qAIEIM7o4frh2M14blDRQqi1AIozk14fhIoUM8UChO_Os_99XvUZvAd9JhL14R7dGHZUaMGRM3VxL0xijLRNug11pu_aUsqquXtDDhBlXmsC-XnamyBuGSpRmS8y_AvAMGvRUvdl6KDm3LqhwsBuxcMLhb07FZfk0RYyj0USJgYjAMlrORDoh2923J03fz19g6LCg1S7SmAIOzbDMn1z64dbB1MtFLdBLa9ccTL_6_B-sz-vHLWhcNvlowP5M989nuS3CHEEynYuxMOe9sFKZyi_GtQUqD6h8jhvZS6Zph6IZKYbJBQkYe_cYLY0amw2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:27:00,181 INFO o.a.j.r.Summariser: summary +    445 in 00:00:30 =   14.7/s Avg:   451 Min:     4 Max: 21720 Err:     0 (0.00%) Active: 43 Started: 47 Finished: 4
+2017-08-19 16:27:00,181 INFO o.a.j.r.Summariser: summary =   3346 in 00:06:26 =    8.7/s Avg:   616 Min:     4 Max: 102759 Err:    13 (0.39%)
+2017-08-19 16:27:00,336 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-16
+2017-08-19 16:27:01,430 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-2
+2017-08-19 16:27:01,430 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-2
+2017-08-19 16:27:04,726 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-14
+2017-08-19 16:27:07,639 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=vb30bOqwVQ_yHKIyI73i3EhRxD2m6YOHyHsA7gkvodQlUPC2n8WTeqe_PUpRgxmE6RxH4lcz24kun3gRHQDquomWojMbOKqEHheLE4Rth4T3FMLZ_XdHwwxNDBgkC8-T0mN4f2QrlRpyc2LKJJkl4FKrtxMYwx4VtMkdkZ-72-vtK2SyqTlJisT0EpHUsWyJXSGAFZOjP-xfUE73pcVHMMh0KhY0Md3_755tm4qRU832UYiKXkR9RxEVp90vxXsgYJNMLcVo8szXlo0kmKbwUSjcBpA_8unFwqt2WqyyQC2IE5YRsR8He202Ao2shMTcCC_HoVazVJQLUit1M6ZoaA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:27:09,760 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-3
+2017-08-19 16:27:09,760 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-3
+2017-08-19 16:27:13,248 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=f_yjcBuWq2v8xG16iNc4fkyXdjD7NAbeG9ujHDbu2tvTI4pD3oaWfUeD0qdYwurxkdjt8eOvMf76czWK08SMDnWsxHBHht7vJk0BZ9C8fbhLCPjwNNmOEk9bm8PXYzmzxXwLeba6RbimySBZ7cX3uKP-8KZDsb1hEDfBkCpvjdktxfeaglHgB_TYX_pgYHvedWeEh_IvTLo6RZd_IVRajgsPnfZigtK95xCpob1jr7PBp78KHZX4C7NNWQFmWzPv-k9zcwIfNvr8WAfvqJIw8md2h3NAsbJ-Rxc1SgvW5yW-c4Hms29Hs_CzWBveZGYuoTfvIZn-ldmtshXC7nDUNw2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:27:19,540 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-10
+2017-08-19 16:27:20,078 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-10
+2017-08-19 16:27:23,493 INFO o.a.j.s.FileServer: Stored: INS_Files/lv21513-1107_HH_master_attempt.xml
+2017-08-19 16:27:24,068 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-4
+2017-08-19 16:27:24,068 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-4
+2017-08-19 16:27:26,051 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-17
+2017-08-19 16:27:30,050 INFO o.a.j.r.Summariser: summary +    425 in 00:00:30 =   14.2/s Avg:   491 Min:     4 Max: 25214 Err:     0 (0.00%) Active: 45 Started: 52 Finished: 7
+2017-08-19 16:27:30,050 INFO o.a.j.r.Summariser: summary =   3771 in 00:06:56 =    9.1/s Avg:   602 Min:     4 Max: 102759 Err:    13 (0.34%)
+2017-08-19 16:27:34,456 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-4
+2017-08-19 16:27:34,456 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-4
+2017-08-19 16:27:34,733 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-15
+2017-08-19 16:27:48,739 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-4
+2017-08-19 16:27:48,739 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-4
+2017-08-19 16:27:51,765 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-18
+2017-08-19 16:27:56,490 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=aqW2oosObYzUhuF2B1zA2KRf2Mpoew20vUQs0QNptTaZGeYqvoq_ARQcEfMcXSl-mT5LrnsyBJhnme96XB4maJgbdzioW0jremsPQMwNn2dut2CMZHY71jaD3NOAMesl18Q4rHzQhPqQWbcwFd0rZ8wY4S70Lo5opbl6uJD9NW0xGaZubH7W_f1CyB_8mnHBw_Ptes7pQekS0CdO48gLr6d2aKBMhuBMarTeThwY9X2ezxGh_wOSXFXfOzeYXuTuf79vbFkLFJiQecSxeXqvbFp683iqbUMUb4oF0lh-ELkU2jmRjAJoGFK6SrLO4GaKzdh17z7Pb-niypBf2WvIeA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:28:00,043 INFO o.a.j.r.Summariser: summary +    464 in 00:00:30 =   15.5/s Avg:   413 Min:     4 Max: 23161 Err:     0 (0.00%) Active: 45 Started: 54 Finished: 9
+2017-08-19 16:28:00,043 INFO o.a.j.r.Summariser: summary =   4235 in 00:07:26 =    9.5/s Avg:   581 Min:     4 Max: 102759 Err:    13 (0.31%)
+2017-08-19 16:28:04,550 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-11
+2017-08-19 16:28:04,741 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-16
+2017-08-19 16:28:05,094 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-11
+2017-08-19 16:28:05,745 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-5
+2017-08-19 16:28:05,745 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-5
+2017-08-19 16:28:17,481 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-19
+2017-08-19 16:28:24,011 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-10
+2017-08-19 16:28:24,011 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-10
+2017-08-19 16:28:30,117 INFO o.a.j.r.Summariser: summary +    437 in 00:00:30 =   14.5/s Avg:   475 Min:     3 Max: 39725 Err:     0 (0.00%) Active: 47 Started: 58 Finished: 11
+2017-08-19 16:28:30,118 INFO o.a.j.r.Summariser: summary =   4672 in 00:07:56 =    9.8/s Avg:   571 Min:     3 Max: 102759 Err:    13 (0.28%)
+2017-08-19 16:28:30,347 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-6
+2017-08-19 16:28:30,347 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-6
+2017-08-19 16:28:33,674 INFO o.a.j.s.FileServer: Stored: CHO_Files/stephen.gilligan-04-07-17.xml
+2017-08-19 16:28:34,746 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-17
+2017-08-19 16:28:43,195 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-20
+2017-08-19 16:28:49,554 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-12
+2017-08-19 16:28:50,106 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-12
+2017-08-19 16:29:00,033 INFO o.a.j.r.Summariser: summary +    447 in 00:00:30 =   14.9/s Avg:   616 Min:     4 Max: 131187 Err:     0 (0.00%) Active: 50 Started: 62 Finished: 12
+2017-08-19 16:29:00,034 INFO o.a.j.r.Summariser: summary =   5119 in 00:08:26 =   10.1/s Avg:   575 Min:     3 Max: 131187 Err:    13 (0.25%)
+2017-08-19 16:29:04,753 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-18
+2017-08-19 16:29:08,910 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-21
+2017-08-19 16:29:19,083 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-7
+2017-08-19 16:29:19,083 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-7
+2017-08-19 16:29:30,018 INFO o.a.j.r.Summariser: summary +    473 in 00:00:30 =   15.8/s Avg:   427 Min:     3 Max: 23144 Err:     0 (0.00%) Active: 51 Started: 64 Finished: 13
+2017-08-19 16:29:30,018 INFO o.a.j.r.Summariser: summary =   5592 in 00:08:56 =   10.4/s Avg:   562 Min:     3 Max: 131187 Err:    13 (0.23%)
+2017-08-19 16:29:34,564 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-13
+2017-08-19 16:29:34,626 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-22
+2017-08-19 16:29:34,760 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-19
+2017-08-19 16:29:35,122 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-13
+2017-08-19 16:29:37,614 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=TXUv2l0rT6TFjUt4uBlI_v5sSP0Rm0g8HiOBdPU_6EI0v_M85NDZg-uyvRBHnjECB57XQT4YQsE7en2W581UdNnZ9T14UC9ZrRLVTec3REjnZvvwHs6IYRayAWDYg5rW9okqislovdKAtno4d8ntvqTNwqtHUrMb-PP1zS0tKzm4HpMu1VtAV7fG9mmu_DEg2HeXmSDfex0CR0ay3hskBhcibm0cEiNgDDWgTxSd42zV3l0MTwoTIAdYQw-gGIoz_Xu-C4QiPMusMWWN3hFzZH6lNp_nybD1iD8WBvSzP8r-XjYwx5d224A-UZeLh8BBF5Rl5bDt_r3NAqS9-Q8UtA2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:30:00,082 INFO o.a.j.r.Summariser: summary +    416 in 00:00:30 =   13.8/s Avg:   490 Min:     3 Max: 11743 Err:     0 (0.00%) Active: 55 Started: 68 Finished: 13
+2017-08-19 16:30:00,082 INFO o.a.j.r.Summariser: summary =   6008 in 00:09:26 =   10.6/s Avg:   557 Min:     3 Max: 131187 Err:    13 (0.22%)
+2017-08-19 16:30:00,340 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-23
+2017-08-19 16:30:04,767 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-20
+2017-08-19 16:30:19,570 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-14
+2017-08-19 16:30:20,136 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-14
+2017-08-19 16:30:26,055 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-24
+2017-08-19 16:30:30,004 INFO o.a.j.r.Summariser: summary +    477 in 00:00:30 =   15.9/s Avg:   881 Min:     4 Max: 48223 Err:     0 (0.00%) Active: 60 Started: 73 Finished: 13
+2017-08-19 16:30:30,004 INFO o.a.j.r.Summariser: summary =   6485 in 00:09:56 =   10.9/s Avg:   581 Min:     3 Max: 131187 Err:    13 (0.20%)
+2017-08-19 16:30:31,736 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-7
+2017-08-19 16:30:31,737 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-7
+2017-08-19 16:30:34,774 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-21
+2017-08-19 16:30:51,769 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-25
+2017-08-19 16:31:00,109 INFO o.a.j.r.Summariser: summary +    512 in 00:00:30 =   17.0/s Avg:   493 Min:     3 Max: 54063 Err:     0 (0.00%) Active: 61 Started: 75 Finished: 14
+2017-08-19 16:31:00,109 INFO o.a.j.r.Summariser: summary =   6997 in 00:10:26 =   11.2/s Avg:   575 Min:     3 Max: 131187 Err:    13 (0.19%)
+2017-08-19 16:31:04,580 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-15
+2017-08-19 16:31:04,824 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-22
+2017-08-19 16:31:05,152 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-15
+2017-08-19 16:31:17,485 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-26
+2017-08-19 16:31:30,074 INFO o.a.j.r.Summariser: summary +    531 in 00:00:30 =   17.7/s Avg:   703 Min:     3 Max: 41694 Err:     0 (0.00%) Active: 65 Started: 79 Finished: 14
+2017-08-19 16:31:30,074 INFO o.a.j.r.Summariser: summary =   7528 in 00:10:56 =   11.5/s Avg:   584 Min:     3 Max: 131187 Err:    13 (0.17%)
+2017-08-19 16:31:34,837 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-23
+2017-08-19 16:31:37,038 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-5
+2017-08-19 16:31:37,038 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-5
+2017-08-19 16:31:43,200 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-27
+2017-08-19 16:31:49,593 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-16
+2017-08-19 16:31:50,302 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-16
+2017-08-19 16:32:00,018 INFO o.a.j.r.Summariser: summary +    624 in 00:00:30 =   20.8/s Avg:   787 Min:     3 Max: 239986 Err:     1 (0.16%) Active: 68 Started: 83 Finished: 15
+2017-08-19 16:32:00,018 INFO o.a.j.r.Summariser: summary =   8152 in 00:11:26 =   11.9/s Avg:   599 Min:     3 Max: 239986 Err:    14 (0.17%)
+2017-08-19 16:32:04,841 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-24
+2017-08-19 16:32:08,914 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-28
+2017-08-19 16:32:13,230 WARN o.a.j.p.h.c.HC4CookieHandler: Not storing invalid cookie: <ASP.NET_Token=dLG5CVlAhHysfrKKY-ZnPlVrtDH1JUpuVZ0XPAxsYq8WtMuTQAbnK6culQJyII3NDoMV41nOfzxsP2Xj2xdGwckU4qfDT8RcaSLxvILxay8iqo05B-reVPcvVvzw1mLFBOj7Yg5eX-_qWj6NH4o-hHN2vKhsDeZyB_C9Zxs9StWRk9Ye6KUksUzgoGgxDbLlchQsk_CcftedTWC1Pz2Y_Qy5BaYaQ50DyVvNOvs6RQdutvUtg2Wl1TKAzaWxj-iJCR6hWsgIA7fALgoLRPV0gd3oyCf1rs0Gwc-XJFv3yAvM54FB0Z4zFVYdt0aZ-s45ASdbq1VEhhs7sX9TGdR3cQ2; Domain=idaschox.com; Path=/; Secure; HttpOnly> for URL https://internal.chox-uk01.idasnetwork.com:8443/j_spring_security_check (Illegal 'domain' attribute "idaschox.com". Domain of origin: "internal.chox-uk01.idasnetwork.com")
+2017-08-19 16:32:23,998 INFO o.a.j.s.FileServer: Stored: INS_Files/lv21513-1307_HH-master.xml
+2017-08-19 16:32:30,024 INFO o.a.j.r.Summariser: summary +    584 in 00:00:30 =   19.5/s Avg:  1013 Min:     3 Max: 190844 Err:     0 (0.00%) Active: 70 Started: 85 Finished: 15
+2017-08-19 16:32:30,024 INFO o.a.j.r.Summariser: summary =   8736 in 00:11:56 =   12.2/s Avg:   627 Min:     3 Max: 239986 Err:    14 (0.16%)
+2017-08-19 16:32:34,598 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-17
+2017-08-19 16:32:34,630 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-29
+2017-08-19 16:32:34,847 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-25
+2017-08-19 16:32:35,319 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-17
+2017-08-19 16:33:00,019 INFO o.a.j.r.Summariser: summary +    540 in 00:00:30 =   18.0/s Avg:  1263 Min:     3 Max: 58892 Err:     0 (0.00%) Active: 74 Started: 89 Finished: 15
+2017-08-19 16:33:00,020 INFO o.a.j.r.Summariser: summary =   9276 in 00:12:26 =   12.4/s Avg:   664 Min:     3 Max: 239986 Err:    14 (0.15%)
+2017-08-19 16:33:00,344 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-30
+2017-08-19 16:33:04,216 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-2
+2017-08-19 16:33:04,216 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-2
+2017-08-19 16:33:04,853 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-26
+2017-08-19 16:33:19,603 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-18
+2017-08-19 16:33:20,333 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-18
+2017-08-19 16:33:24,684 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-10
+2017-08-19 16:33:24,684 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-10
+2017-08-19 16:33:26,059 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-31
+2017-08-19 16:33:30,068 INFO o.a.j.r.Summariser: summary +    558 in 00:00:30 =   18.6/s Avg:  1070 Min:     2 Max: 239983 Err:     1 (0.18%) Active: 77 Started: 94 Finished: 17
+2017-08-19 16:33:30,068 INFO o.a.j.r.Summariser: summary =   9834 in 00:12:56 =   12.7/s Avg:   687 Min:     2 Max: 239986 Err:    15 (0.15%)
+2017-08-19 16:33:34,861 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-27
+2017-08-19 16:33:51,773 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-32
+2017-08-19 16:34:00,079 INFO o.a.j.r.Summariser: summary +    334 in 00:00:30 =   11.1/s Avg:  2029 Min:     3 Max: 18395 Err:     0 (0.00%) Active: 79 Started: 96 Finished: 17
+2017-08-19 16:34:00,079 INFO o.a.j.r.Summariser: summary =  10168 in 00:13:26 =   12.6/s Avg:   731 Min:     2 Max: 239986 Err:    15 (0.15%)
+2017-08-19 16:34:04,616 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-19
+2017-08-19 16:34:04,882 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-28
+2017-08-19 16:34:05,347 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-19
+2017-08-19 16:34:17,490 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-33
+2017-08-19 16:34:30,093 INFO o.a.j.r.Summariser: summary +    217 in 00:00:30 =    7.2/s Avg:  7454 Min:     2 Max: 56167 Err:     0 (0.00%) Active: 83 Started: 100 Finished: 17
+2017-08-19 16:34:30,093 INFO o.a.j.r.Summariser: summary =  10385 in 00:13:56 =   12.4/s Avg:   872 Min:     2 Max: 239986 Err:    15 (0.14%)
+2017-08-19 16:34:34,895 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-29
+2017-08-19 16:34:43,204 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-34
+2017-08-19 16:34:49,615 INFO o.a.j.t.JMeterThread: Thread started: CHO Action Thread Group 1-20
+2017-08-19 16:34:50,360 INFO o.a.j.t.JMeterThread: Thread started: Insurer Action Thread Group 5-20
+2017-08-19 16:35:00,003 INFO o.a.j.r.Summariser: summary +    318 in 00:00:30 =   10.6/s Avg:  4519 Min:     4 Max: 129807 Err:     1 (0.31%) Active: 87 Started: 104 Finished: 17
+2017-08-19 16:35:00,003 INFO o.a.j.r.Summariser: summary =  10703 in 00:14:26 =   12.4/s Avg:   980 Min:     2 Max: 239986 Err:    16 (0.15%)
+2017-08-19 16:35:04,912 INFO o.a.j.t.JMeterThread: Thread started: Check Viewing Status Users 4-30
+2017-08-19 16:35:08,918 INFO o.a.j.t.JMeterThread: Thread started: Activity Monitoring Users 3-35
+2017-08-19 16:35:30,071 INFO o.a.j.r.Summariser: summary +    342 in 00:00:30 =   11.4/s Avg:  5448 Min:     3 Max: 124038 Err:     1 (0.29%) Active: 89 Started: 106 Finished: 17
+2017-08-19 16:35:30,072 INFO o.a.j.r.Summariser: summary =  11045 in 00:14:56 =   12.3/s Avg:  1118 Min:     2 Max: 239986 Err:    17 (0.15%)
+2017-08-19 16:36:00,005 INFO o.a.j.r.Summariser: summary +    337 in 00:00:30 =   11.3/s Avg:  7358 Min:     3 Max: 136057 Err:     1 (0.30%) Active: 89 Started: 106 Finished: 17
+2017-08-19 16:36:00,005 INFO o.a.j.r.Summariser: summary =  11382 in 00:15:26 =   12.3/s Avg:  1303 Min:     2 Max: 239986 Err:    18 (0.16%)
+2017-08-19 16:36:21,532 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-13
+2017-08-19 16:36:21,532 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-13
+2017-08-19 16:36:30,054 INFO o.a.j.r.Summariser: summary +    766 in 00:00:30 =   25.5/s Avg:  1105 Min:     3 Max: 88429 Err:     0 (0.00%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:36:30,054 INFO o.a.j.r.Summariser: summary =  12148 in 00:15:56 =   12.7/s Avg:  1291 Min:     2 Max: 239986 Err:    18 (0.15%)
+2017-08-19 16:37:31,098 INFO o.a.j.r.Summariser: summary +    713 in 00:01:01 =   11.7/s Avg:  2421 Min:     3 Max: 29999 Err:     5 (0.70%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:37:31,099 INFO o.a.j.r.Summariser: summary =  12861 in 00:16:57 =   12.6/s Avg:  1353 Min:     2 Max: 239986 Err:    23 (0.18%)
+2017-08-19 16:38:04,815 INFO o.a.j.r.Summariser: summary +    102 in 00:00:34 =    3.0/s Avg:  7747 Min:     4 Max: 99994 Err:     2 (1.96%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:38:04,815 INFO o.a.j.r.Summariser: summary =  12963 in 00:17:30 =   12.3/s Avg:  1404 Min:     2 Max: 239986 Err:    25 (0.19%)
+2017-08-19 16:38:30,020 INFO o.a.j.r.Summariser: summary +    238 in 00:00:25 =    9.4/s Avg: 12300 Min:     4 Max: 92347 Err:     4 (1.68%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:38:30,020 INFO o.a.j.r.Summariser: summary =  13201 in 00:17:56 =   12.3/s Avg:  1600 Min:     2 Max: 239986 Err:    29 (0.22%)
+2017-08-19 16:39:00,021 INFO o.a.j.r.Summariser: summary +    377 in 00:00:30 =   12.6/s Avg:  8254 Min:     4 Max: 239986 Err:    11 (2.92%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:39:00,021 INFO o.a.j.r.Summariser: summary =  13578 in 00:18:26 =   12.3/s Avg:  1785 Min:     2 Max: 239986 Err:    40 (0.29%)
+2017-08-19 16:39:34,262 INFO o.a.j.r.Summariser: summary +     15 in 00:00:34 =    0.4/s Avg: 14705 Min:     8 Max: 141239 Err:     2 (13.33%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:39:34,262 INFO o.a.j.r.Summariser: summary =  13593 in 00:19:00 =   11.9/s Avg:  1799 Min:     2 Max: 239986 Err:    42 (0.31%)
+2017-08-19 16:40:00,311 INFO o.a.j.r.Summariser: summary +    425 in 00:00:26 =   16.3/s Avg: 10267 Min:     3 Max: 211740 Err:     6 (1.41%) Active: 88 Started: 106 Finished: 18
+2017-08-19 16:40:00,312 INFO o.a.j.r.Summariser: summary =  14018 in 00:19:26 =   12.0/s Avg:  2056 Min:     2 Max: 239986 Err:    48 (0.34%)
+2017-08-19 16:40:06,180 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-11
+2017-08-19 16:40:06,180 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-11
+2017-08-19 16:40:16,190 INFO o.a.j.s.FileServer: Stored: CHO_Files/thomas.beech-12-07-17.xml
+2017-08-19 16:40:16,490 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-14
+2017-08-19 16:40:16,490 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-14
+2017-08-19 16:40:17,817 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-3
+2017-08-19 16:40:17,817 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-3
+2017-08-19 16:40:30,933 INFO o.a.j.r.Summariser: summary +    591 in 00:00:31 =   19.3/s Avg:  1297 Min:     3 Max: 59009 Err:     0 (0.00%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:40:30,933 INFO o.a.j.r.Summariser: summary =  14609 in 00:19:57 =   12.2/s Avg:  2025 Min:     2 Max: 239986 Err:    48 (0.33%)
+2017-08-19 16:41:00,038 INFO o.a.j.r.Summariser: summary +    552 in 00:00:29 =   19.0/s Avg:  1294 Min:     3 Max: 29193 Err:     0 (0.00%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:41:00,038 INFO o.a.j.r.Summariser: summary =  15161 in 00:20:26 =   12.4/s Avg:  1998 Min:     2 Max: 239986 Err:    48 (0.32%)
+2017-08-19 16:41:30,912 INFO o.a.j.r.Summariser: summary +    430 in 00:00:31 =   13.9/s Avg:  1321 Min:     3 Max: 99996 Err:     2 (0.47%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:41:30,912 INFO o.a.j.r.Summariser: summary =  15591 in 00:20:57 =   12.4/s Avg:  1980 Min:     2 Max: 239986 Err:    50 (0.32%)
+2017-08-19 16:42:00,898 INFO o.a.j.r.Summariser: summary +    210 in 00:00:30 =    7.0/s Avg:  3338 Min:     2 Max: 48757 Err:     4 (1.90%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:42:00,898 INFO o.a.j.r.Summariser: summary =  15801 in 00:21:27 =   12.3/s Avg:  1998 Min:     2 Max: 239986 Err:    54 (0.34%)
+2017-08-19 16:42:33,876 INFO o.a.j.r.Summariser: summary +    268 in 00:00:33 =    8.1/s Avg:  5128 Min:     2 Max: 99997 Err:     3 (1.12%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:42:33,876 INFO o.a.j.r.Summariser: summary =  16069 in 00:22:00 =   12.2/s Avg:  2050 Min:     2 Max: 239986 Err:    57 (0.35%)
+2017-08-19 16:43:00,128 INFO o.a.j.r.Summariser: summary +      1 in 00:00:26 =    0.0/s Avg: 50509 Min: 50509 Max: 50509 Err:     0 (0.00%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:43:00,128 INFO o.a.j.r.Summariser: summary =  16070 in 00:22:26 =   11.9/s Avg:  2053 Min:     2 Max: 239986 Err:    57 (0.35%)
+2017-08-19 16:43:30,076 INFO o.a.j.r.Summariser: summary +    159 in 00:00:30 =    5.3/s Avg: 15299 Min:     4 Max: 99030 Err:     0 (0.00%) Active: 85 Started: 106 Finished: 21
+2017-08-19 16:43:30,076 INFO o.a.j.r.Summariser: summary =  16229 in 00:22:56 =   11.8/s Avg:  2183 Min:     2 Max: 239986 Err:    57 (0.35%)
+2017-08-19 16:43:35,283 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-32
+2017-08-19 16:43:35,283 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-32
+2017-08-19 16:44:03,513 INFO o.a.j.r.Summariser: summary +    128 in 00:00:33 =    3.8/s Avg: 27460 Min:     4 Max: 157058 Err:     3 (2.34%) Active: 84 Started: 106 Finished: 22
+2017-08-19 16:44:03,514 INFO o.a.j.r.Summariser: summary =  16357 in 00:23:29 =   11.6/s Avg:  2381 Min:     2 Max: 239986 Err:    60 (0.37%)
+2017-08-19 16:44:30,222 INFO o.a.j.r.Summariser: summary +    210 in 00:00:27 =    7.9/s Avg: 15369 Min:     3 Max: 240252 Err:     1 (0.48%) Active: 84 Started: 106 Finished: 22
+2017-08-19 16:44:30,223 INFO o.a.j.r.Summariser: summary =  16567 in 00:23:56 =   11.5/s Avg:  2545 Min:     2 Max: 240252 Err:    61 (0.37%)
+2017-08-19 16:45:38,808 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-20
+2017-08-19 16:45:38,808 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-20
+2017-08-19 16:46:26,640 INFO o.a.j.t.JMeterThread: Thread is done: Bordereau Upload Thread Group 2-1
+2017-08-19 16:46:26,640 INFO o.a.j.t.JMeterThread: Thread finished: Bordereau Upload Thread Group 2-1
+2017-08-19 16:46:28,362 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-16
+2017-08-19 16:46:28,362 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-16
+2017-08-19 16:46:32,160 INFO o.a.j.r.Summariser: summary +    757 in 00:02:02 =    6.2/s Avg: 12831 Min:     3 Max: 300224 Err:    18 (2.38%) Active: 81 Started: 106 Finished: 25
+2017-08-19 16:46:32,160 INFO o.a.j.r.Summariser: summary =  17324 in 00:25:58 =   11.1/s Avg:  2995 Min:     2 Max: 300224 Err:    79 (0.46%)
+2017-08-19 16:46:36,379 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-16
+2017-08-19 16:46:36,379 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-16
+2017-08-19 16:46:36,419 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-30
+2017-08-19 16:46:36,419 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-30
+2017-08-19 16:47:00,230 INFO o.a.j.r.Summariser: summary +    499 in 00:00:28 =   17.8/s Avg:  1977 Min:     3 Max: 105860 Err:     0 (0.00%) Active: 79 Started: 106 Finished: 27
+2017-08-19 16:47:00,231 INFO o.a.j.r.Summariser: summary =  17823 in 00:26:26 =   11.2/s Avg:  2966 Min:     2 Max: 300224 Err:    79 (0.44%)
+2017-08-19 16:47:00,418 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-31
+2017-08-19 16:47:00,418 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-31
+2017-08-19 16:47:30,003 INFO o.a.j.r.Summariser: summary +    577 in 00:00:30 =   19.4/s Avg:   946 Min:     3 Max: 40022 Err:     0 (0.00%) Active: 78 Started: 106 Finished: 28
+2017-08-19 16:47:30,003 INFO o.a.j.r.Summariser: summary =  18400 in 00:26:56 =   11.4/s Avg:  2903 Min:     2 Max: 300224 Err:    79 (0.43%)
+2017-08-19 16:47:34,970 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-8
+2017-08-19 16:47:34,970 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-8
+2017-08-19 16:48:00,012 INFO o.a.j.r.Summariser: summary +    426 in 00:00:30 =   14.2/s Avg:  1168 Min:     3 Max: 49381 Err:     0 (0.00%) Active: 77 Started: 106 Finished: 29
+2017-08-19 16:48:00,013 INFO o.a.j.r.Summariser: summary =  18826 in 00:27:26 =   11.4/s Avg:  2864 Min:     2 Max: 300224 Err:    79 (0.42%)
+2017-08-19 16:48:30,846 INFO o.a.j.r.Summariser: summary +    476 in 00:00:31 =   15.4/s Avg:  1961 Min:     2 Max: 106299 Err:     1 (0.21%) Active: 77 Started: 106 Finished: 29
+2017-08-19 16:48:30,846 INFO o.a.j.r.Summariser: summary =  19302 in 00:27:57 =   11.5/s Avg:  2841 Min:     2 Max: 300224 Err:    80 (0.41%)
+2017-08-19 16:48:30,900 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-1
+2017-08-19 16:48:30,900 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-1
+2017-08-19 16:49:00,106 INFO o.a.j.r.Summariser: summary +    396 in 00:00:29 =   13.5/s Avg:  2815 Min:     3 Max: 42891 Err:     1 (0.25%) Active: 76 Started: 106 Finished: 30
+2017-08-19 16:49:00,106 INFO o.a.j.r.Summariser: summary =  19698 in 00:28:26 =   11.5/s Avg:  2841 Min:     2 Max: 300224 Err:    81 (0.41%)
+2017-08-19 16:49:24,667 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-2
+2017-08-19 16:49:24,667 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-2
+2017-08-19 16:49:24,830 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-15
+2017-08-19 16:49:24,830 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-15
+2017-08-19 16:49:25,863 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-10
+2017-08-19 16:49:25,863 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-10
+2017-08-19 16:49:26,587 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-3
+2017-08-19 16:49:26,587 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-3
+2017-08-19 16:49:30,031 INFO o.a.j.r.Summariser: summary +    515 in 00:00:30 =   17.2/s Avg:  1444 Min:     3 Max: 108429 Err:     0 (0.00%) Active: 72 Started: 106 Finished: 34
+2017-08-19 16:49:30,031 INFO o.a.j.r.Summariser: summary =  20213 in 00:28:56 =   11.6/s Avg:  2805 Min:     2 Max: 300224 Err:    81 (0.40%)
+2017-08-19 16:49:34,539 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-18
+2017-08-19 16:49:34,539 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-18
+2017-08-19 16:49:35,604 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-33
+2017-08-19 16:49:35,604 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-33
+2017-08-19 16:49:38,131 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-19
+2017-08-19 16:49:38,131 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-19
+2017-08-19 16:49:41,562 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-18
+2017-08-19 16:49:41,562 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-18
+2017-08-19 16:49:47,900 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-11
+2017-08-19 16:49:47,900 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-11
+2017-08-19 16:49:54,221 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-35
+2017-08-19 16:49:54,221 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-35
+2017-08-19 16:50:00,903 INFO o.a.j.r.Summariser: summary +    500 in 00:00:31 =   16.2/s Avg:   600 Min:     3 Max: 19335 Err:     0 (0.00%) Active: 66 Started: 106 Finished: 40
+2017-08-19 16:50:00,904 INFO o.a.j.r.Summariser: summary =  20713 in 00:29:27 =   11.7/s Avg:  2752 Min:     2 Max: 300224 Err:    81 (0.39%)
+2017-08-19 16:50:09,201 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-12
+2017-08-19 16:50:09,201 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-12
+2017-08-19 16:50:17,246 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-4
+2017-08-19 16:50:17,246 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-4
+2017-08-19 16:50:28,689 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-5
+2017-08-19 16:50:28,689 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-5
+2017-08-19 16:50:30,017 INFO o.a.j.r.Summariser: summary +    489 in 00:00:29 =   16.8/s Avg:  1003 Min:     3 Max: 65040 Err:     5 (1.02%) Active: 63 Started: 106 Finished: 43
+2017-08-19 16:50:30,017 INFO o.a.j.r.Summariser: summary =  21202 in 00:29:56 =   11.8/s Avg:  2712 Min:     2 Max: 300224 Err:    86 (0.41%)
+2017-08-19 16:51:03,141 INFO o.a.j.r.Summariser: summary +    290 in 00:00:33 =    8.8/s Avg:  3906 Min:     4 Max: 242519 Err:     3 (1.03%) Active: 63 Started: 106 Finished: 43
+2017-08-19 16:51:03,141 INFO o.a.j.r.Summariser: summary =  21492 in 00:30:29 =   11.8/s Avg:  2728 Min:     2 Max: 300224 Err:    89 (0.41%)
+2017-08-19 16:51:28,409 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-3
+2017-08-19 16:51:28,409 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-3
+2017-08-19 16:51:30,109 INFO o.a.j.r.Summariser: summary +    406 in 00:00:27 =   15.1/s Avg:  1811 Min:     3 Max: 31900 Err:     4 (0.99%) Active: 62 Started: 106 Finished: 44
+2017-08-19 16:51:30,110 INFO o.a.j.r.Summariser: summary =  21898 in 00:30:56 =   11.8/s Avg:  2711 Min:     2 Max: 300224 Err:    93 (0.42%)
+2017-08-19 16:51:46,637 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-8
+2017-08-19 16:51:46,637 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-8
+2017-08-19 16:51:55,315 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-6
+2017-08-19 16:51:55,316 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-6
+2017-08-19 16:51:55,524 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-7
+2017-08-19 16:51:55,524 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-7
+2017-08-19 16:51:55,710 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-12
+2017-08-19 16:51:55,710 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-12
+2017-08-19 16:52:00,351 INFO o.a.j.r.Summariser: summary +    439 in 00:00:30 =   14.5/s Avg:  1699 Min:     3 Max: 239986 Err:     2 (0.46%) Active: 58 Started: 106 Finished: 48
+2017-08-19 16:52:00,351 INFO o.a.j.r.Summariser: summary =  22337 in 00:31:26 =   11.8/s Avg:  2691 Min:     2 Max: 300224 Err:    95 (0.43%)
+2017-08-19 16:52:00,727 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-8
+2017-08-19 16:52:00,728 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-8
+2017-08-19 16:52:30,084 INFO o.a.j.r.Summariser: summary +    484 in 00:00:30 =   16.3/s Avg:   685 Min:     3 Max: 29998 Err:     1 (0.21%) Active: 57 Started: 106 Finished: 49
+2017-08-19 16:52:30,084 INFO o.a.j.r.Summariser: summary =  22821 in 00:31:56 =   11.9/s Avg:  2648 Min:     2 Max: 300224 Err:    96 (0.42%)
+2017-08-19 16:52:39,390 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-17
+2017-08-19 16:52:39,390 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-17
+2017-08-19 16:52:50,911 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-15
+2017-08-19 16:52:50,911 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-15
+2017-08-19 16:52:56,200 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-9
+2017-08-19 16:52:56,200 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-9
+2017-08-19 16:53:00,011 INFO o.a.j.r.Summariser: summary +    459 in 00:00:30 =   15.3/s Avg:   156 Min:     3 Max: 15099 Err:     0 (0.00%) Active: 54 Started: 106 Finished: 52
+2017-08-19 16:53:00,011 INFO o.a.j.r.Summariser: summary =  23280 in 00:32:26 =   12.0/s Avg:  2599 Min:     2 Max: 300224 Err:    96 (0.41%)
+2017-08-19 16:53:20,474 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-17
+2017-08-19 16:53:20,475 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-17
+2017-08-19 16:53:33,380 INFO o.a.j.r.Summariser: summary +    368 in 00:00:33 =   11.0/s Avg:   954 Min:     3 Max: 239986 Err:     1 (0.27%) Active: 53 Started: 106 Finished: 53
+2017-08-19 16:53:33,380 INFO o.a.j.r.Summariser: summary =  23648 in 00:32:59 =   11.9/s Avg:  2574 Min:     2 Max: 300224 Err:    97 (0.41%)
+2017-08-19 16:53:33,535 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-13
+2017-08-19 16:53:33,535 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-13
+2017-08-19 16:54:00,004 INFO o.a.j.r.Summariser: summary +    444 in 00:00:27 =   16.7/s Avg:  1802 Min:     3 Max: 207808 Err:     0 (0.00%) Active: 52 Started: 106 Finished: 54
+2017-08-19 16:54:00,004 INFO o.a.j.r.Summariser: summary =  24092 in 00:33:26 =   12.0/s Avg:  2559 Min:     2 Max: 300224 Err:    97 (0.40%)
+2017-08-19 16:54:15,744 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-12
+2017-08-19 16:54:15,744 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-12
+2017-08-19 16:54:30,082 INFO o.a.j.r.Summariser: summary +    357 in 00:00:30 =   11.9/s Avg:   503 Min:     3 Max: 29998 Err:     1 (0.28%) Active: 51 Started: 106 Finished: 55
+2017-08-19 16:54:30,082 INFO o.a.j.r.Summariser: summary =  24449 in 00:33:56 =   12.0/s Avg:  2529 Min:     2 Max: 300224 Err:    98 (0.40%)
+2017-08-19 16:54:35,324 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-10
+2017-08-19 16:54:35,324 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-10
+2017-08-19 16:54:36,589 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-11
+2017-08-19 16:54:36,589 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-11
+2017-08-19 16:54:48,787 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-15
+2017-08-19 16:54:48,787 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-15
+2017-08-19 16:55:00,041 INFO o.a.j.r.Summariser: summary +    400 in 00:00:30 =   13.4/s Avg:  1153 Min:     3 Max: 165651 Err:     0 (0.00%) Active: 48 Started: 106 Finished: 58
+2017-08-19 16:55:00,041 INFO o.a.j.r.Summariser: summary =  24849 in 00:34:26 =   12.0/s Avg:  2507 Min:     2 Max: 300224 Err:    98 (0.39%)
+2017-08-19 16:55:04,348 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-13
+2017-08-19 16:55:04,348 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-13
+2017-08-19 16:55:04,841 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-14
+2017-08-19 16:55:04,841 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-14
+2017-08-19 16:55:25,405 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-20
+2017-08-19 16:55:25,405 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-20
+2017-08-19 16:55:32,688 INFO o.a.j.r.Summariser: summary +    361 in 00:00:33 =   11.1/s Avg:   591 Min:     3 Max: 119289 Err:     0 (0.00%) Active: 45 Started: 106 Finished: 61
+2017-08-19 16:55:32,688 INFO o.a.j.r.Summariser: summary =  25210 in 00:34:58 =   12.0/s Avg:  2480 Min:     2 Max: 300224 Err:    98 (0.39%)
+2017-08-19 16:55:38,782 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-9
+2017-08-19 16:55:38,782 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-9
+2017-08-19 16:56:00,053 INFO o.a.j.r.Summariser: summary +    346 in 00:00:27 =   12.6/s Avg:  1224 Min:     3 Max: 42098 Err:     0 (0.00%) Active: 44 Started: 106 Finished: 62
+2017-08-19 16:56:00,053 INFO o.a.j.r.Summariser: summary =  25556 in 00:35:26 =   12.0/s Avg:  2463 Min:     2 Max: 300224 Err:    98 (0.38%)
+2017-08-19 16:56:04,473 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-22
+2017-08-19 16:56:04,473 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-22
+2017-08-19 16:56:07,090 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-16
+2017-08-19 16:56:07,090 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-16
+2017-08-19 16:56:17,119 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-15
+2017-08-19 16:56:17,119 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-15
+2017-08-19 16:56:30,020 INFO o.a.j.r.Summariser: summary +    362 in 00:00:30 =   12.1/s Avg:   392 Min:     3 Max: 17667 Err:     0 (0.00%) Active: 41 Started: 106 Finished: 65
+2017-08-19 16:56:30,020 INFO o.a.j.r.Summariser: summary =  25918 in 00:35:56 =   12.0/s Avg:  2434 Min:     2 Max: 300224 Err:    98 (0.38%)
+2017-08-19 16:57:00,099 INFO o.a.j.r.Summariser: summary +    355 in 00:00:30 =   11.8/s Avg:   245 Min:     3 Max: 13343 Err:     0 (0.00%) Active: 41 Started: 106 Finished: 65
+2017-08-19 16:57:00,100 INFO o.a.j.r.Summariser: summary =  26273 in 00:36:26 =   12.0/s Avg:  2404 Min:     2 Max: 300224 Err:    98 (0.37%)
+2017-08-19 16:57:01,783 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-17
+2017-08-19 16:57:01,783 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-17
+2017-08-19 16:57:10,635 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-13
+2017-08-19 16:57:10,636 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-13
+2017-08-19 16:57:17,012 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-18
+2017-08-19 16:57:17,012 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-18
+2017-08-19 16:57:25,847 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-17
+2017-08-19 16:57:25,847 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-17
+2017-08-19 16:57:30,018 INFO o.a.j.r.Summariser: summary +    322 in 00:00:30 =   10.8/s Avg:   171 Min:     3 Max:  5685 Err:     0 (0.00%) Active: 37 Started: 106 Finished: 69
+2017-08-19 16:57:30,018 INFO o.a.j.r.Summariser: summary =  26595 in 00:36:56 =   12.0/s Avg:  2377 Min:     2 Max: 300224 Err:    98 (0.37%)
+2017-08-19 16:58:00,053 INFO o.a.j.r.Summariser: summary +    326 in 00:00:30 =   10.9/s Avg:   204 Min:     2 Max: 10913 Err:     0 (0.00%) Active: 37 Started: 106 Finished: 69
+2017-08-19 16:58:00,053 INFO o.a.j.r.Summariser: summary =  26921 in 00:37:26 =   12.0/s Avg:  2351 Min:     2 Max: 300224 Err:    98 (0.36%)
+2017-08-19 16:58:21,171 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-19
+2017-08-19 16:58:21,171 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-19
+2017-08-19 16:58:22,070 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-20
+2017-08-19 16:58:22,070 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-20
+2017-08-19 16:58:30,618 INFO o.a.j.r.Summariser: summary +    324 in 00:00:31 =   10.6/s Avg:   667 Min:     3 Max: 20025 Err:     0 (0.00%) Active: 35 Started: 106 Finished: 71
+2017-08-19 16:58:30,618 INFO o.a.j.r.Summariser: summary =  27245 in 00:37:56 =   12.0/s Avg:  2331 Min:     2 Max: 300224 Err:    98 (0.36%)
+2017-08-19 16:58:32,505 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-23
+2017-08-19 16:58:32,505 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-23
+2017-08-19 16:59:00,013 INFO o.a.j.r.Summariser: summary +    292 in 00:00:29 =    9.9/s Avg:   291 Min:     3 Max: 16755 Err:     0 (0.00%) Active: 34 Started: 106 Finished: 72
+2017-08-19 16:59:00,013 INFO o.a.j.r.Summariser: summary =  27537 in 00:38:26 =   11.9/s Avg:  2309 Min:     2 Max: 300224 Err:    98 (0.36%)
+2017-08-19 16:59:16,221 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-21
+2017-08-19 16:59:16,221 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-21
+2017-08-19 16:59:30,010 INFO o.a.j.r.Summariser: summary +    293 in 00:00:30 =    9.8/s Avg:   175 Min:     3 Max:  6179 Err:     0 (0.00%) Active: 33 Started: 106 Finished: 73
+2017-08-19 16:59:30,010 INFO o.a.j.r.Summariser: summary =  27830 in 00:38:56 =   11.9/s Avg:  2287 Min:     2 Max: 300224 Err:    98 (0.35%)
+2017-08-19 17:00:00,206 INFO o.a.j.r.Summariser: summary +    303 in 00:00:30 =   10.0/s Avg:   233 Min:     3 Max: 13626 Err:     0 (0.00%) Active: 33 Started: 106 Finished: 73
+2017-08-19 17:00:00,206 INFO o.a.j.r.Summariser: summary =  28133 in 00:39:26 =   11.9/s Avg:  2265 Min:     2 Max: 300224 Err:    98 (0.35%)
+2017-08-19 17:00:13,192 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-12
+2017-08-19 17:00:13,192 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-12
+2017-08-19 17:00:16,135 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-1
+2017-08-19 17:00:16,135 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-1
+2017-08-19 17:00:23,164 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-24
+2017-08-19 17:00:23,165 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-24
+2017-08-19 17:00:30,051 INFO o.a.j.r.Summariser: summary +    294 in 00:00:30 =    9.9/s Avg:   364 Min:     3 Max: 14354 Err:     0 (0.00%) Active: 30 Started: 106 Finished: 76
+2017-08-19 17:00:30,051 INFO o.a.j.r.Summariser: summary =  28427 in 00:39:56 =   11.9/s Avg:  2245 Min:     2 Max: 300224 Err:    98 (0.34%)
+2017-08-19 17:00:40,248 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-22
+2017-08-19 17:00:40,248 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-22
+2017-08-19 17:00:43,193 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-23
+2017-08-19 17:00:43,193 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-23
+2017-08-19 17:01:00,449 INFO o.a.j.r.Summariser: summary +    202 in 00:00:30 =    6.6/s Avg:   150 Min:     3 Max:  3207 Err:     0 (0.00%) Active: 28 Started: 106 Finished: 78
+2017-08-19 17:01:00,450 INFO o.a.j.r.Summariser: summary =  28629 in 00:40:26 =   11.8/s Avg:  2230 Min:     2 Max: 300224 Err:    98 (0.34%)
+2017-08-19 17:01:09,739 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-25
+2017-08-19 17:01:09,740 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-25
+2017-08-19 17:01:17,158 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-24
+2017-08-19 17:01:17,158 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-24
+2017-08-19 17:01:30,153 INFO o.a.j.r.Summariser: summary +    134 in 00:00:30 =    4.5/s Avg:   623 Min:     3 Max: 19090 Err:     0 (0.00%) Active: 26 Started: 106 Finished: 80
+2017-08-19 17:01:30,154 INFO o.a.j.r.Summariser: summary =  28763 in 00:40:56 =   11.7/s Avg:  2223 Min:     2 Max: 300224 Err:    98 (0.34%)
+2017-08-19 17:01:54,044 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-9
+2017-08-19 17:01:54,044 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-9
+2017-08-19 17:02:00,129 INFO o.a.j.r.Summariser: summary +    168 in 00:00:30 =    5.6/s Avg:  1878 Min:     3 Max: 67948 Err:     0 (0.00%) Active: 25 Started: 106 Finished: 81
+2017-08-19 17:02:00,129 INFO o.a.j.r.Summariser: summary =  28931 in 00:41:26 =   11.6/s Avg:  2221 Min:     2 Max: 300224 Err:    98 (0.34%)
+2017-08-19 17:02:00,499 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-14
+2017-08-19 17:02:00,499 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-14
+2017-08-19 17:02:02,002 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-11
+2017-08-19 17:02:02,002 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-11
+2017-08-19 17:02:10,298 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-21
+2017-08-19 17:02:10,298 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-21
+2017-08-19 17:02:16,413 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-18
+2017-08-19 17:02:16,413 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-18
+2017-08-19 17:02:30,423 INFO o.a.j.r.Summariser: summary +    185 in 00:00:30 =    6.1/s Avg:   171 Min:     3 Max:  3120 Err:     0 (0.00%) Active: 21 Started: 106 Finished: 85
+2017-08-19 17:02:30,423 INFO o.a.j.r.Summariser: summary =  29116 in 00:41:56 =   11.6/s Avg:  2208 Min:     2 Max: 300224 Err:    98 (0.34%)
+2017-08-19 17:02:30,425 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-34
+2017-08-19 17:02:30,425 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-34
+2017-08-19 17:02:45,272 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-29
+2017-08-19 17:02:45,272 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-29
+2017-08-19 17:02:49,144 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-19
+2017-08-19 17:02:49,145 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-19
+2017-08-19 17:02:50,144 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-27
+2017-08-19 17:02:50,144 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-27
+2017-08-19 17:03:00,389 INFO o.a.j.r.Summariser: summary +    147 in 00:00:30 =    4.9/s Avg:   505 Min:     3 Max: 25722 Err:     0 (0.00%) Active: 17 Started: 106 Finished: 89
+2017-08-19 17:03:00,389 INFO o.a.j.r.Summariser: summary =  29263 in 00:42:26 =   11.5/s Avg:  2199 Min:     2 Max: 300224 Err:    98 (0.33%)
+2017-08-19 17:03:23,499 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-30
+2017-08-19 17:03:23,499 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-30
+2017-08-19 17:03:30,502 INFO o.a.j.r.Summariser: summary +    112 in 00:00:30 =    3.7/s Avg:   203 Min:     2 Max: 10764 Err:     0 (0.00%) Active: 16 Started: 106 Finished: 90
+2017-08-19 17:03:30,502 INFO o.a.j.r.Summariser: summary =  29375 in 00:42:56 =   11.4/s Avg:  2192 Min:     2 Max: 300224 Err:    98 (0.33%)
+2017-08-19 17:04:00,089 INFO o.a.j.r.Summariser: summary +    127 in 00:00:30 =    4.3/s Avg:  1739 Min:     3 Max: 196021 Err:     0 (0.00%) Active: 16 Started: 106 Finished: 90
+2017-08-19 17:04:00,089 INFO o.a.j.r.Summariser: summary =  29502 in 00:43:26 =   11.3/s Avg:  2190 Min:     2 Max: 300224 Err:    98 (0.33%)
+2017-08-19 17:04:00,234 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-1
+2017-08-19 17:04:00,234 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-1
+2017-08-19 17:04:30,144 INFO o.a.j.r.Summariser: summary +    133 in 00:00:30 =    4.4/s Avg:  2347 Min:     3 Max: 239984 Err:     1 (0.75%) Active: 15 Started: 106 Finished: 91
+2017-08-19 17:04:30,144 INFO o.a.j.r.Summariser: summary =  29635 in 00:43:56 =   11.2/s Avg:  2190 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:04:52,489 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-26
+2017-08-19 17:04:52,489 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-26
+2017-08-19 17:05:00,199 INFO o.a.j.r.Summariser: summary +    127 in 00:00:30 =    4.2/s Avg:   423 Min:     2 Max:  4466 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:05:00,199 INFO o.a.j.r.Summariser: summary =  29762 in 00:44:26 =   11.2/s Avg:  2183 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:05:30,024 INFO o.a.j.r.Summariser: summary +     99 in 00:00:30 =    3.3/s Avg:  1118 Min:     2 Max: 28619 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:05:30,024 INFO o.a.j.r.Summariser: summary =  29861 in 00:44:56 =   11.1/s Avg:  2179 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:06:00,115 INFO o.a.j.r.Summariser: summary +    104 in 00:00:30 =    3.5/s Avg:   440 Min:     2 Max: 27055 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:06:00,115 INFO o.a.j.r.Summariser: summary =  29965 in 00:45:26 =   11.0/s Avg:  2173 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:06:30,481 INFO o.a.j.r.Summariser: summary +    103 in 00:00:30 =    3.4/s Avg:   217 Min:     3 Max:  3563 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:06:30,481 INFO o.a.j.r.Summariser: summary =  30068 in 00:45:56 =   10.9/s Avg:  2166 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:07:00,519 INFO o.a.j.r.Summariser: summary +     94 in 00:00:30 =    3.1/s Avg:   260 Min:     2 Max:  4549 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:07:00,519 INFO o.a.j.r.Summariser: summary =  30162 in 00:46:26 =   10.8/s Avg:  2161 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:07:30,005 INFO o.a.j.r.Summariser: summary +     87 in 00:00:29 =    3.0/s Avg:   754 Min:     3 Max: 42463 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:07:30,005 INFO o.a.j.r.Summariser: summary =  30249 in 00:46:56 =   10.7/s Avg:  2157 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:08:00,011 INFO o.a.j.r.Summariser: summary +    107 in 00:00:30 =    3.6/s Avg:  1606 Min:     2 Max: 145848 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:08:00,012 INFO o.a.j.r.Summariser: summary =  30356 in 00:47:26 =   10.7/s Avg:  2155 Min:     2 Max: 300224 Err:    99 (0.33%)
+2017-08-19 17:08:30,331 INFO o.a.j.r.Summariser: summary +    111 in 00:00:30 =    3.7/s Avg:   182 Min:     2 Max:  2875 Err:     0 (0.00%) Active: 14 Started: 106 Finished: 92
+2017-08-19 17:08:30,331 INFO o.a.j.r.Summariser: summary =  30467 in 00:47:56 =   10.6/s Avg:  2147 Min:     2 Max: 300224 Err:    99 (0.32%)
+2017-08-19 17:08:39,342 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-16
+2017-08-19 17:08:39,342 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-16
+2017-08-19 17:09:00,238 INFO o.a.j.r.Summariser: summary +    125 in 00:00:30 =    4.2/s Avg:   204 Min:     3 Max:  2658 Err:     0 (0.00%) Active: 13 Started: 106 Finished: 93
+2017-08-19 17:09:00,238 INFO o.a.j.r.Summariser: summary =  30592 in 00:48:26 =   10.5/s Avg:  2139 Min:     2 Max: 300224 Err:    99 (0.32%)
+2017-08-19 17:09:10,197 INFO o.a.j.t.JMeterThread: Thread is done: Insurer Action Thread Group 5-20
+2017-08-19 17:09:10,197 INFO o.a.j.t.JMeterThread: Thread finished: Insurer Action Thread Group 5-20
+2017-08-19 17:09:30,461 INFO o.a.j.r.Summariser: summary +    107 in 00:00:30 =    3.5/s Avg:   260 Min:     3 Max:  3301 Err:     0 (0.00%) Active: 12 Started: 106 Finished: 94
+2017-08-19 17:09:30,461 INFO o.a.j.r.Summariser: summary =  30699 in 00:48:56 =   10.5/s Avg:  2133 Min:     2 Max: 300224 Err:    99 (0.32%)
+2017-08-19 17:09:33,964 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-14
+2017-08-19 17:09:33,964 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-14
+2017-08-19 17:10:00,187 INFO o.a.j.r.Summariser: summary +     67 in 00:00:30 =    2.3/s Avg:  3781 Min:     3 Max: 239984 Err:     1 (1.49%) Active: 11 Started: 106 Finished: 95
+2017-08-19 17:10:00,187 INFO o.a.j.r.Summariser: summary =  30766 in 00:49:26 =   10.4/s Avg:  2136 Min:     2 Max: 300224 Err:   100 (0.33%)
+2017-08-19 17:10:30,015 INFO o.a.j.r.Summariser: summary +     73 in 00:00:30 =    2.4/s Avg:   486 Min:     3 Max:  9273 Err:     0 (0.00%) Active: 11 Started: 106 Finished: 95
+2017-08-19 17:10:30,015 INFO o.a.j.r.Summariser: summary =  30839 in 00:49:56 =   10.3/s Avg:  2133 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:11:00,382 INFO o.a.j.r.Summariser: summary +     67 in 00:00:30 =    2.2/s Avg:   191 Min:     3 Max:  4249 Err:     0 (0.00%) Active: 11 Started: 106 Finished: 95
+2017-08-19 17:11:00,382 INFO o.a.j.r.Summariser: summary =  30906 in 00:50:26 =   10.2/s Avg:  2128 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:11:30,305 INFO o.a.j.r.Summariser: summary +     73 in 00:00:30 =    2.4/s Avg:  1019 Min:     3 Max: 31867 Err:     0 (0.00%) Active: 11 Started: 106 Finished: 95
+2017-08-19 17:11:30,305 INFO o.a.j.r.Summariser: summary =  30979 in 00:50:56 =   10.1/s Avg:  2126 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:12:01,089 INFO o.a.j.r.Summariser: summary +     74 in 00:00:31 =    2.4/s Avg:   174 Min:     4 Max:  5389 Err:     0 (0.00%) Active: 11 Started: 106 Finished: 95
+2017-08-19 17:12:01,089 INFO o.a.j.r.Summariser: summary =  31053 in 00:51:27 =   10.1/s Avg:  2121 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:12:14,991 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-6
+2017-08-19 17:12:14,991 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-6
+2017-08-19 17:12:30,000 INFO o.a.j.r.Summariser: summary +     74 in 00:00:29 =    2.6/s Avg:   158 Min:     3 Max:  4781 Err:     0 (0.00%) Active: 10 Started: 106 Finished: 96
+2017-08-19 17:12:30,000 INFO o.a.j.r.Summariser: summary =  31127 in 00:51:56 =   10.0/s Avg:  2116 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:13:00,171 INFO o.a.j.r.Summariser: summary +     65 in 00:00:30 =    2.2/s Avg:  3639 Min:     3 Max: 228550 Err:     0 (0.00%) Active: 10 Started: 106 Finished: 96
+2017-08-19 17:13:00,171 INFO o.a.j.r.Summariser: summary =  31192 in 00:52:26 =    9.9/s Avg:  2120 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:13:30,591 INFO o.a.j.r.Summariser: summary +     83 in 00:00:30 =    2.7/s Avg:   351 Min:     3 Max: 10081 Err:     0 (0.00%) Active: 10 Started: 106 Finished: 96
+2017-08-19 17:13:30,592 INFO o.a.j.r.Summariser: summary =  31275 in 00:52:56 =    9.8/s Avg:  2115 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:13:53,884 INFO o.a.j.t.JMeterThread: Thread is done: Check Viewing Status Users 4-28
+2017-08-19 17:13:53,884 INFO o.a.j.t.JMeterThread: Thread finished: Check Viewing Status Users 4-28
+2017-08-19 17:13:54,171 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-7
+2017-08-19 17:13:54,171 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-7
+2017-08-19 17:13:57,131 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-6
+2017-08-19 17:13:57,131 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-6
+2017-08-19 17:14:01,222 INFO o.a.j.r.Summariser: summary +     71 in 00:00:31 =    2.3/s Avg:   782 Min:     3 Max: 22014 Err:     0 (0.00%) Active: 7 Started: 106 Finished: 99
+2017-08-19 17:14:01,223 INFO o.a.j.r.Summariser: summary =  31346 in 00:53:27 =    9.8/s Avg:  2112 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:14:22,935 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-8
+2017-08-19 17:14:22,935 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-8
+2017-08-19 17:14:30,696 INFO o.a.j.r.Summariser: summary +     53 in 00:00:29 =    1.8/s Avg:   147 Min:     4 Max:  2708 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:14:30,697 INFO o.a.j.r.Summariser: summary =  31399 in 00:53:56 =    9.7/s Avg:  2109 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:15:00,244 INFO o.a.j.r.Summariser: summary +     49 in 00:00:30 =    1.7/s Avg:   175 Min:     4 Max:  2306 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:15:00,244 INFO o.a.j.r.Summariser: summary =  31448 in 00:54:26 =    9.6/s Avg:  2106 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:15:30,415 INFO o.a.j.r.Summariser: summary +     58 in 00:00:30 =    1.9/s Avg:   278 Min:     3 Max:  2648 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:15:30,415 INFO o.a.j.r.Summariser: summary =  31506 in 00:54:56 =    9.6/s Avg:  2102 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:16:01,150 INFO o.a.j.r.Summariser: summary +     48 in 00:00:31 =    1.6/s Avg:   217 Min:     3 Max:  2634 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:16:01,150 INFO o.a.j.r.Summariser: summary =  31554 in 00:55:27 =    9.5/s Avg:  2099 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:16:31,422 INFO o.a.j.r.Summariser: summary +     31 in 00:00:30 =    1.0/s Avg:  1351 Min:     3 Max: 41626 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:16:31,422 INFO o.a.j.r.Summariser: summary =  31585 in 00:55:57 =    9.4/s Avg:  2099 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:17:00,959 INFO o.a.j.r.Summariser: summary +     46 in 00:00:30 =    1.6/s Avg:   425 Min:     4 Max:  7849 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:17:00,959 INFO o.a.j.r.Summariser: summary =  31631 in 00:56:27 =    9.3/s Avg:  2096 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:17:30,237 INFO o.a.j.r.Summariser: summary +     43 in 00:00:29 =    1.5/s Avg:   672 Min:     3 Max: 17117 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:17:30,237 INFO o.a.j.r.Summariser: summary =  31674 in 00:56:56 =    9.3/s Avg:  2094 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:18:00,258 INFO o.a.j.r.Summariser: summary +     54 in 00:00:30 =    1.8/s Avg:   415 Min:     4 Max:  3899 Err:     0 (0.00%) Active: 6 Started: 106 Finished: 100
+2017-08-19 17:18:00,258 INFO o.a.j.r.Summariser: summary =  31728 in 00:57:26 =    9.2/s Avg:  2091 Min:     2 Max: 300224 Err:   100 (0.32%)
+2017-08-19 17:18:14,469 INFO o.a.j.t.JMeterThread: Thread is done: CHO Action Thread Group 1-19
+2017-08-19 17:18:14,470 INFO o.a.j.t.JMeterThread: Thread finished: CHO Action Thread Group 1-19
+2017-08-19 17:18:30,211 INFO o.a.j.r.Summariser: summary +     38 in 00:00:30 =    1.3/s Avg:   121 Min:     4 Max:  3088 Err:     0 (0.00%) Active: 5 Started: 106 Finished: 101
+2017-08-19 17:18:30,211 INFO o.a.j.r.Summariser: summary =  31766 in 00:57:56 =    9.1/s Avg:  2089 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:19:00,162 INFO o.a.j.r.Summariser: summary +     35 in 00:00:30 =    1.2/s Avg:    78 Min:     3 Max:  1437 Err:     0 (0.00%) Active: 5 Started: 106 Finished: 101
+2017-08-19 17:19:00,163 INFO o.a.j.r.Summariser: summary =  31801 in 00:58:26 =    9.1/s Avg:  2087 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:19:30,924 INFO o.a.j.r.Summariser: summary +     32 in 00:00:31 =    1.0/s Avg:    50 Min:     4 Max:  1293 Err:     0 (0.00%) Active: 5 Started: 106 Finished: 101
+2017-08-19 17:19:30,924 INFO o.a.j.r.Summariser: summary =  31833 in 00:58:57 =    9.0/s Avg:  2085 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:19:36,671 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-26
+2017-08-19 17:19:36,671 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-26
+2017-08-19 17:20:00,310 INFO o.a.j.r.Summariser: summary +     34 in 00:00:29 =    1.2/s Avg:   244 Min:     3 Max:  1651 Err:     0 (0.00%) Active: 4 Started: 106 Finished: 102
+2017-08-19 17:20:00,311 INFO o.a.j.r.Summariser: summary =  31867 in 00:59:26 =    8.9/s Avg:  2083 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:20:31,161 INFO o.a.j.r.Summariser: summary +     25 in 00:00:31 =    0.8/s Avg:     5 Min:     5 Max:     9 Err:     0 (0.00%) Active: 4 Started: 106 Finished: 102
+2017-08-19 17:20:31,161 INFO o.a.j.r.Summariser: summary =  31892 in 00:59:57 =    8.9/s Avg:  2081 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:21:00,830 INFO o.a.j.r.Summariser: summary +     25 in 00:00:30 =    0.8/s Avg:    57 Min:     5 Max:  1182 Err:     0 (0.00%) Active: 4 Started: 106 Finished: 102
+2017-08-19 17:21:00,830 INFO o.a.j.r.Summariser: summary =  31917 in 01:00:27 =    8.8/s Avg:  2080 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:21:30,292 INFO o.a.j.r.Summariser: summary +     26 in 00:00:29 =    0.9/s Avg:   101 Min:     3 Max:  2377 Err:     0 (0.00%) Active: 4 Started: 106 Finished: 102
+2017-08-19 17:21:30,292 INFO o.a.j.r.Summariser: summary =  31943 in 01:00:56 =    8.7/s Avg:  2078 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:21:32,928 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-25
+2017-08-19 17:21:32,928 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-25
+2017-08-19 17:21:51,887 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-29
+2017-08-19 17:21:51,887 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-29
+2017-08-19 17:21:55,435 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-28
+2017-08-19 17:21:55,435 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-28
+2017-08-19 17:22:02,418 INFO o.a.j.r.Summariser: summary +     18 in 00:00:32 =    0.6/s Avg:     5 Min:     5 Max:     9 Err:     0 (0.00%) Active: 1 Started: 106 Finished: 105
+2017-08-19 17:22:02,418 INFO o.a.j.r.Summariser: summary =  31961 in 01:01:28 =    8.7/s Avg:  2077 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:22:32,231 INFO o.a.j.r.Summariser: summary +      6 in 00:00:30 =    0.2/s Avg:     6 Min:     5 Max:     9 Err:     0 (0.00%) Active: 1 Started: 106 Finished: 105
+2017-08-19 17:22:32,231 INFO o.a.j.r.Summariser: summary =  31967 in 01:01:58 =    8.6/s Avg:  2076 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:23:02,164 INFO o.a.j.r.Summariser: summary +      6 in 00:00:30 =    0.2/s Avg:     6 Min:     5 Max:     9 Err:     0 (0.00%) Active: 1 Started: 106 Finished: 105
+2017-08-19 17:23:02,164 INFO o.a.j.r.Summariser: summary =  31973 in 01:02:28 =    8.5/s Avg:  2076 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:23:02,166 INFO o.a.j.t.JMeterThread: Thread is done: Activity Monitoring Users 3-27
+2017-08-19 17:23:02,166 INFO o.a.j.t.JMeterThread: Thread finished: Activity Monitoring Users 3-27
+2017-08-19 17:23:02,166 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2017-08-19 17:23:02,166 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/activityUsers.csv@1642679791
+2017-08-19 17:23:02,167 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/uploaders.csv@1252643051
+2017-08-19 17:23:02,167 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/INS_Files/InsUsers.csv@1390301622
+2017-08-19 17:23:02,167 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/CHO_USERS.csv@93740343
+2017-08-19 17:23:02,167 INFO o.a.j.s.FileServer: Close: /home/chox/choxLoadTests/CHO_Files/checkUsers.csv@1408279755
+2017-08-19 17:23:02,168 INFO o.a.j.r.Summariser: summary =  31973 in 01:02:28 =    8.5/s Avg:  2076 Min:     2 Max: 300224 Err:   100 (0.31%)
+2017-08-19 17:23:02,168 INFO o.a.j.JMeter: Generating Dashboard
+2017-08-19 17:23:02,168 INFO o.a.j.r.d.ReportGenerator: Flushing result collector before report Generation
+2017-08-19 17:23:02,184 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2017-08-19 17:23:04,392 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2017-08-19 17:23:04,392 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2017-08-19 17:23:04,393 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2017-08-19 17:23:04,393 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2017-08-19 17:23:04,422 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2017-08-19 17:23:04,423 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2017-08-19 17:23:04,423 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2017-08-19 17:23:04,423 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2017-08-19 17:23:04,670 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2017-08-19 17:23:04,673 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2017-08-19 17:23:04,674 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2017-08-19 17:23:04,674 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2017-08-19 17:23:04,852 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2017-08-19 17:23:04,854 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 223811 samples
+2017-08-19 17:23:04,854 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2017-08-19 17:23:04,855 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2017-08-19 17:23:04,868 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2017-08-19 17:23:04,873 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2017-08-19 17:23:04,877 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2017-08-19 17:23:04,906 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2017-08-19 17:23:04,989 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2017-08-19 17:23:04,991 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2017-08-19 17:23:04,993 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2017-08-19 17:23:04,994 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 450422 samples
+2017-08-19 17:23:04,995 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 96519 samples
+2017-08-19 17:23:04,995 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 32173 samples
+2017-08-19 17:23:04,995 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 32173 samples produced in 2s 772 ms on channel 0
+2017-08-19 17:23:04,995 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2017-08-19 17:23:04,998 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: /home/chox/choxLoadTests/results/java7-5.9-test1/dashboard
+2017-08-19 17:23:05,269 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: /home/chox/choxLoadTests/results/java7-5.9-test1/dashboard, creating folder structure
+2017-08-19 17:23:05,684 INFO o.a.j.JMeter: Dashboard generated

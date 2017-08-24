@@ -1,0 +1,108 @@
+19 Aug 2017 16:38:18 WARN catalina-exec-64 Rigby, Liz 3005 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-13 Hohne, Clare 5843 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-70 Hateley, Justin 1242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 ERROR catalina-exec-13 Hohne, Clare 5843 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36359ms.
+19 Aug 2017 16:38:18 ERROR catalina-exec-70 Hateley, Justin 1242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 39702ms.
+19 Aug 2017 16:38:18 WARN catalina-exec-37 Brady, Jason 2262 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-102 Higgins, Anthony 5694 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-24 Hammond, Matthew 3948 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-48 Tillett, Stephen 4945 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-27 Bell, Brona 3116 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-16 Axon, Tony 2246 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-34 Taylor, Gemma 1099 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-73 Wareham, Steven 6061 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-19 Davis, Donna 2715 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 WARN catalina-exec-76 Collins, Wayne 2388 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:38:18 ERROR catalina-exec-64 Rigby, Liz 3005 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36361ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-27 Bell, Brona 3116 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 38759ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-102 Higgins, Anthony 5694 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 41132ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-73 Wareham, Steven 6061 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 39374ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-16 Axon, Tony 2246 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36359ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-76 Collins, Wayne 2388 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 38764ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-24 Hammond, Matthew 3948 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 40582ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-48 Tillett, Stephen 4945 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 41040ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-37 Brady, Jason 2262 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 40638ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-19 Davis, Donna 2715 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36361ms.
+19 Aug 2017 16:38:19 ERROR catalina-exec-34 Taylor, Gemma 1099 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36353ms.
+19 Aug 2017 16:39:38 WARN catalina-exec-68 Dyer, Samantha 2303 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:39:38 ERROR catalina-exec-68 Dyer, Samantha 2303 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 38365ms.
+19 Aug 2017 16:42:51 WARN catalina-exec-39 Knowles, Rita 5770 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:42:51 WARN catalina-exec-62 Booth, Alex 2369 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:42:51 WARN catalina-exec-18 Page, Emma 5860 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:42:51 ERROR catalina-exec-39 Knowles, Rita 5770 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 38954ms.
+19 Aug 2017 16:42:51 ERROR catalina-exec-62 Booth, Alex 2369 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 36334ms.
+19 Aug 2017 16:42:51 WARN catalina-exec-27 Taylor, Gemma 1099 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:42:51 ERROR catalina-exec-18 Page, Emma 5860 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 37073ms.
+19 Aug 2017 16:42:51 ERROR catalina-exec-27 Taylor, Gemma 1099 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 40106ms.
+19 Aug 2017 16:45:43 WARN catalina-exec-128 Dallas, Michael 5013 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-128 Dallas, Michael 5013 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 34081ms.
+19 Aug 2017 16:45:43 WARN catalina-exec-31 Dyer, Samantha 2303 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-31 Dyer, Samantha 2303 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31738ms.
+19 Aug 2017 16:45:43 WARN catalina-exec-77 Sharman, Chris 4667 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:43 WARN catalina-exec-43 Manning, Kim 5246 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-77 Sharman, Chris 4667 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31511ms.
+19 Aug 2017 16:45:44 ERROR catalina-exec-43 Manning, Kim 5246 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30649ms.
+19 Aug 2017 16:45:43 WARN catalina-exec-129 Hogan, Glynis 5147 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-129 Hogan, Glynis 5147 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30569ms.
+19 Aug 2017 16:45:43 WARN catalina-exec-25 Whitehurst, Guy 4680 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-25 Whitehurst, Guy 4680 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30121ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-119 Reddy, Vishwanath 2615 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 WARN catalina-exec-20 Brady, Jason 2262 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-20 Brady, Jason 2262 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30616ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-55 Gill, Satinder 4242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-55 Gill, Satinder 4242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30000ms.
+19 Aug 2017 16:45:44 ERROR catalina-exec-119 Reddy, Vishwanath 2615 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30232ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-106 Marlowe-Norris,  Karen  5892 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-106 Marlowe-Norris,  Karen  5892 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30708ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-120 George, Giovanni 2362 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-120 George, Giovanni 2362 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30092ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-19 giannattasio, dean. 4502 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-19 giannattasio, dean. 4502 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31005ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-143 Booth, Alex 2369 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-143 Booth, Alex 2369 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30074ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-47 Bell, Brona 3116 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-47 Bell, Brona 3116 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30115ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-127 Router, Claim 7 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-127 Router, Claim 7 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30129ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-6 ERAC, Sub 6056 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-6 ERAC, Sub 6056 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30149ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-145 Smith, Geoff 3986 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-145 Smith, Geoff 3986 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30158ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-100 Davis, Donna 2715 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-100 Davis, Donna 2715 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30171ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-141 Ambrose, Carla 4854 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-141 Ambrose, Carla 4854 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30324ms.
+19 Aug 2017 16:45:44 WARN catalina-exec-85 Prasad, Jagandev 2965 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:45:44 ERROR catalina-exec-85 Prasad, Jagandev 2965 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30188ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-20 Whitehurst, Guy 4680 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 WARN catalina-exec-70 Siddall, Ian 3745 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-20 Whitehurst, Guy 4680 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30463ms.
+19 Aug 2017 16:46:18 ERROR catalina-exec-70 Siddall, Ian 3745 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30570ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-81 Morris, Danielle 5202 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 WARN catalina-exec-38 Tinkler, Lyndsey 3839 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-38 Tinkler, Lyndsey 3839 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30785ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-132 Tillett, Stephen 4945 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-132 Tillett, Stephen 4945 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30863ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-33 Knowles, Rita 5770 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-33 Knowles, Rita 5770 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30301ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-84 Gill, Satinder 4242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-84 Gill, Satinder 4242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31168ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-77 Sharman, Chris 4667 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-77 Sharman, Chris 4667 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31191ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-133 ERAC, Sub 6056 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 WARN catalina-exec-107 Hateley, Justin 1242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-133 ERAC, Sub 6056 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31639ms.
+19 Aug 2017 16:46:18 ERROR catalina-exec-107 Hateley, Justin 1242 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30640ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-27 Pennington, Rachael 1893 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-27 Pennington, Rachael 1893 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 32052ms.
+19 Aug 2017 16:46:18 ERROR catalina-exec-81 Morris, Danielle 5202 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 30744ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-103 George, Giovanni 2362 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-103 George, Giovanni 2362 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31602ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-57 Prasad, Jagandev 2965 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-57 Prasad, Jagandev 2965 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 31974ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-75 Nubley, Amy 4730 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 WARN catalina-exec-102 Siuzdak, Pawel 5821 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-102 Siuzdak, Pawel 5821 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 32522ms.
+19 Aug 2017 16:46:18 ERROR catalina-exec-75 Nubley, Amy 4730 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 32541ms.
+19 Aug 2017 16:46:18 WARN catalina-exec-115 Wareham, Steven 6061 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: null
+19 Aug 2017 16:46:18 ERROR catalina-exec-115 Wareham, Steven 6061 org.hibernate.engine.jdbc.spi.SqlExceptionHelper - hikariCP - Connection is not available, request timed out after 32589ms.
