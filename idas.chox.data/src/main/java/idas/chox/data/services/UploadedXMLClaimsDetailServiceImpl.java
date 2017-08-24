@@ -17,6 +17,7 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 public class UploadedXMLClaimsDetailServiceImpl extends SecureDataService implements UploadedXMLClaimsDetailService {
 
     @Override
+    @Transactional(readOnly = true, value="transactionManager")
     public List<UploadedXMLClaimsDetail> getUploadedXMLClaimsDetailByBordereauId(int bordereauId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(UploadedXMLClaimsDetail.class);
         criteria.add(Restrictions.eq("bordereauId", bordereauId));
@@ -24,6 +25,7 @@ public class UploadedXMLClaimsDetailServiceImpl extends SecureDataService implem
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveUploadedXMLClaimsDetail(UploadedXMLClaimsDetail claimsDetail) {
         save(claimsDetail);
     }
