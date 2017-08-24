@@ -169,7 +169,7 @@
                 <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->
                 <prop key="hibernate.hikari.maxLifetime">1800000</prop> <!-- default 1800000 (30mins) -->
                 <prop key="hibernate.hikari.connectionTimeout">30000</prop> <!-- default  30000 (10mins) -->
-                <prop key="hibernate.hikari.leakDetectionThreshold">15000</prop> <!-- default  0 (disabled) -->
+                <prop key="hibernate.hikari.leakDetectionThreshold">60000</prop> <!-- default  0 (disabled) -->
                 <!--prop key="hibernate.hikari.registerMbeans">true</prop-->
                 <!--prop key="hibernate.connection.release_mode">after_statement</prop--> <!-- auto (default), after_transaction, after_statement  -->
                 <!--prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop-->
