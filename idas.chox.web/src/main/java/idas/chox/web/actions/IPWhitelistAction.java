@@ -148,8 +148,7 @@ public class IPWhitelistAction extends BaseAction implements ModelDriven<IPWhite
                 } catch (JsonProcessingException ex) {
                     LOG.error("Error converting IPWhitelist to json string.");
                 }
-//                setJsonData("{totalCount:" + this.ipWhitelistViewData.size() + ",results:" + JSONArray.fromObject(ipWhitelistViewData).toString() + "}");
-                setJsonData("{\"totalCount\":\"" + this.ipWhitelistViewData.size() + "\",\"results\":\"" + jsonString + "\"}");
+                setJsonData("{totalCount:" + this.ipWhitelistViewData.size() + ",results:" + jsonString + "}");
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown when getting whitelist", ex);
