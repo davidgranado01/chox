@@ -25,9 +25,9 @@ public final class Hpi {
 
     private static final Logger LOG = LoggerFactory.getLogger(Hpi.class);
     private static String today;
-    private static final String productCodeParam = "HPI11";
-    private static final String functionParam = "SEARCH";
-    private static final String deviceTypeParam = "XM";
+    private static final String PRODUCT_CODE_PARAM = "HPI11";
+    private static final String FUNCTION_PARAM = "SEARCH";
+    private static final String DEVICE_TYPE_PARAM = "XM";
     private static final Hpi INSTANCE = new Hpi();
     private Map<String, String> params;
     private String session;
@@ -37,7 +37,7 @@ public final class Hpi {
     private String passwordParam;
     private String initialsParam;
     private boolean active = false;
-    private static final Integer lock =  0;
+    private static final Object LOCK =  new Object();
     
     private Hpi() {
         if (INSTANCE != null) {
@@ -125,12 +125,12 @@ public final class Hpi {
             params.put("efxid", efxidParam);
             params.put("password", passwordParam);
             params.put("initials", initialsParam);
-            params.put("function", functionParam);
-            params.put("product", productCodeParam);
-            params.put("deviceType", deviceTypeParam);
+            params.put("function", FUNCTION_PARAM);
+            params.put("product", PRODUCT_CODE_PARAM);
+            params.put("deviceType", DEVICE_TYPE_PARAM);
         }
         
-        synchronized (lock) {
+        synchronized (LOCK) {
             if (today == null || !getDate().equals(today)) {
                 // initialize sessions
                 today = getDate();
