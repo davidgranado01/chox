@@ -124,7 +124,7 @@
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
                 <div class="chox-form-item-button">
-                    <input type="button" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" onclick="return addNewHireMonitoringEcd()"/>&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" onclick="return addNewHireMonitoringEcd();"/>&nbsp;&nbsp;&nbsp;
                     <s:if test="isInsurer">
                         <s:checkbox disabled='true' id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                     </s:if>

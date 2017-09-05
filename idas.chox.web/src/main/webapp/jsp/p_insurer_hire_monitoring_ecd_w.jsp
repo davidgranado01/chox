@@ -180,7 +180,7 @@
                     <textarea class="chox-tta" id="insurerECDSupportingNote" cols="30" rows="5" name="insurerSupportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
                 <div class="chox-form-item-button">
-                    <input type="button" id="insurerHireMonitoringEcdSubmitButtonId" value="Save Changes" onclick="return addNewInsurerHireMonitoringEcd()"/>&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="insurerHireMonitoringEcdSubmitButtonId" value="Save Changes" onclick="return addNewInsurerHireMonitoringEcd();"/>&nbsp;&nbsp;&nbsp;
                 </div>
                 <div id="insurerECDMessageBox" class="action-error-msg"></div>
             </s:if>
