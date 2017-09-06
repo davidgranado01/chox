@@ -38,7 +38,7 @@ public class SubscriberAcquisitionFeeCheck implements IBusinessRule {
 
             LOG.debug("SubscriberAcquisitionFeeCheck is activated");
 
-            if (claimService.isSubscriberClaimRejectedAndAgreed(claim.getId())) {
+            if (claimService.isSubscriberClaimRejectedAndAgreed(claim)) {
                 if (claim.getInvoice().getMiscellaneousFee() != null && claim.getInvoice().getMiscellaneousFee().compareTo(BigDecimal.ZERO) !=0) {
                     success = false;
                     narrative = "The CHO is charging an Acquisition Fee however the Subscriber rejection was accepted and therefore this charge should not be made.";

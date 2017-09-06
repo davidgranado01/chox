@@ -40,7 +40,7 @@ public class SubscriberAdminFeeCheck implements IBusinessRule {
             LOG.debug("SubscriberAdminFeeCheck is activated");
             boolean managingRepair = claim.getManagingRepair();
 
-            if (claimService.isSubscriberClaimRejectedAndAgreed(claim.getId())) {
+            if (claimService.isSubscriberClaimRejectedAndAgreed(claim)) {
                 if (claim.getInvoice().getAdminFee() != null && claim.getInvoice().getAdminFee().compareTo(BigDecimal.ZERO) !=0) {
                     success = false;
                     narrative = "The CHO is charging an Admin Fee however the Subscriber rejection was accepted and therefore this charge should not be made.";

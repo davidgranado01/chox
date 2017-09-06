@@ -40,7 +40,7 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
 
             LOG.debug("SubscriberCheckRejectedClaims is activated");
 
-            if (claimService.isSubscriberClaimRejectedAndAgreed(claim.getId())) {
+            if (claimService.isSubscriberClaimRejectedAndAgreed(claim)) {
                 int hireDays = claim.getVehicleHire().getDays();
                 int numDays = claimService.getSubscriberClaimRejectedDays(claim.getId());
 
