@@ -35,15 +35,14 @@
         <hibernate-ehcache.version>4.3.11.Final</hibernate-ehcache.version>
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         
-        <!-- For Java 7 use the following driver -->
-        <!--postgresql-jdbc.version>42.1.4.jre7</postgresql-jdbc.version-->
-        <!-- For Java 8 use the following driver -->
+        <!-- Java 8 Official Postgres Driver -->
         <postgresql-jdbc.version>42.1.4</postgresql-jdbc.version>
-        <!-- For Java 8, pgjdbc-ng driver -->
+
+        <!-- Java 8, pgjdbc-ng driver -->
         <!--postgresql-jdbc-ng.version>0.7.1</postgresql-jdbc-ng.version--> <!-- use 0.7 for Java 7 -->
 
         <!-- Hikari CP -->
-        <hikari.version>2.6.2</hikari.version> <!-- 2.6.2 for java 8 -->
+        <hikari.version>2.6.2</hikari.version>
 
         <h2database.version>1.3.164</h2database.version>
         <spring-core.version>4.1.9.RELEASE</spring-core.version>
@@ -62,7 +61,7 @@
         <spring-security-config.version>3.2.10.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.2.10.RELEASE</spring-security-web.version>
 
-        <struts.version>2.5.10.1</struts.version> <!-- latest is 2.5.12 -->
+        <struts.version>2.5.13</struts.version>
        
         <quartz-scheduler.version>2.3.0</quartz-scheduler.version>
         
