@@ -63,7 +63,7 @@
     		$('#newTotalInterim').show();
     		$('#additionalInterimPayment').val('');
     	}
-        return false;
+        return true;
     }
     
     function setAdditionalInterimInfo(){
@@ -72,7 +72,7 @@
     		$('#additionalInterimPaymentInfo').text(<s:property value="interimPaymentMade" /> + aip);
     	else
     		$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />');
-        return false;
+        return true;
     }
     
     function submitInterim(action){
@@ -123,7 +123,7 @@
         
         return false;
     }
-    
+
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
