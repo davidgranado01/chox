@@ -97,6 +97,7 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             choxJqueryHttpSubmit($("form#routeUnacknowledgedUnroutedClaim"));
         }
+        return false;
     }
 
     function rejectClaim(btn) {
@@ -221,8 +222,8 @@
                         </tr>
                         <tr>
                             <td colspan="3" class="choice" nowrap>
-                                <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                                <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="return doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                             </td>
                         </tr>
                     </table>

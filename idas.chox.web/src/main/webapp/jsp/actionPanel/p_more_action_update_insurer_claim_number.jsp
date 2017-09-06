@@ -61,6 +61,7 @@
                 checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
             }
         }
+        return false;
     }
 
 </script>
@@ -77,7 +78,7 @@
                             <td>
                                 <label>Claim Number<span class="mandatory">*</span>:</label></td><td nowrap>
                                 <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                                <input type="button" id="MAUICNUpdateClaimNumberButtonId"value="Update Claim Number" onclick="javascript: return doSubmitClaimNumber()"/>
+                                <input type="button" id="MAUICNUpdateClaimNumberButtonId"value="Update Claim Number" onclick="return doSubmitClaimNumber();"/>
                             </td>
                             <td></td><td></td>
                         </tr>

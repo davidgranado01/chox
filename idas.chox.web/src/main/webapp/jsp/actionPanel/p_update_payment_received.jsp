@@ -133,6 +133,7 @@ function confirmNotFullPayRec(){
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
         }
+        return false;
     }
 </script> 
 
@@ -179,16 +180,16 @@ function confirmNotFullPayRec(){
                     <tr>
                         <td colspan="3">
                             <s:if test='status.equals("InvoicePaymentLogged")'>
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="return doUpdatePaymentReceived('invoicePaymentReceived');" />
                             </s:if>
                             <s:else>
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="return doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
                             </s:else>
                             <s:if test="atInvoicePaymentLogged">
-                                <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
+                                <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="return doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
                             </s:if>
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
-                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('paymentNotReceived');" />
+                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="return doUpdatePaymentReceived('paymentNotReceived');" />
                             </s:if>
                         </td>
                     </tr>

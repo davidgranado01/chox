@@ -46,16 +46,16 @@ function doUpdateManualInvoice(action){
                                             <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
                                         </s:if>
                                         <s:else>
-                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
+                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
                                         </s:else>   
-                                        <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="doUpdateManualInvoice('updateManualInvoiceContested');" />
+                                        <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="return doUpdateManualInvoice('updateManualInvoiceContested');" />
                                     </td>
                                 </s:if>
                                 <s:elseif test="invoiceSavingActive">
                                     <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  /></td>
                                 </s:elseif>
                                 <s:else>
-                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" /></td>
+                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" /></td>
                                 </s:else>   
                                 </tr>
                         </table>

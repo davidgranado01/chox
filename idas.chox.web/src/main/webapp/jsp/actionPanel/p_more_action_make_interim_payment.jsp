@@ -63,6 +63,7 @@
     		$('#newTotalInterim').show();
     		$('#additionalInterimPayment').val('');
     	}
+        return false;
     }
     
     function setAdditionalInterimInfo(){
@@ -71,6 +72,7 @@
     		$('#additionalInterimPaymentInfo').text(<s:property value="interimPaymentMade" /> + aip);
     	else
     		$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />');
+        return false;
     }
     
     function submitInterim(action){
@@ -118,6 +120,8 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             choxJqueryHttpSubmit($("form#formMakeInterimPayment"));
         }
+        
+        return false;
     }
     
 </script>
@@ -140,10 +144,10 @@
                 <br/>
             </s:if>
             <div class="chox-form-item" id="radioBox">
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onClick="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onClick="return setPaymentField();"/> 
                     This interim payment is an addition to the current interim payment.</span>
                 <br/>
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onClick="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onClick="return setPaymentField();"/> 
                     This interim payment is a new total interim payment.</span>
             </div>
             <div>
@@ -152,8 +156,8 @@
                         <tr id="additionalInterim">
                             <td><label>Additional Interim Payment Amount<span class="mandatory">*</span></label></td>
                             <td nowrap="nowrap">
-                                £&nbsp;<input type="text" class="chox-ttxt" id="additionalInterimPayment" name="additionalInterimPayment" onkeyup="javascript: setAdditionalInterimInfo()" value="<s:property value="additionalInterimPayment" />" />
-                                <input type="button" onclick="javascript: submitInterim('additional')" value="Confirm Interim Payment" id="additionalInterimButton"/>
+                                £&nbsp;<input type="text" class="chox-ttxt" id="additionalInterimPayment" name="additionalInterimPayment" onkeyup="return setAdditionalInterimInfo();" value="<s:property value="additionalInterimPayment" />" />
+                                <input type="button" onclick="return submitInterim('additional');" value="Confirm Interim Payment" id="additionalInterimButton"/>
                             </td>
                             <td></td>
                             <td></td>

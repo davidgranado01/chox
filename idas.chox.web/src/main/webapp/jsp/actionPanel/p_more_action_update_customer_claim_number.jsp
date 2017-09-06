@@ -46,6 +46,8 @@
                 choxJqueryHttpSubmit(form);
             }
         });
+        
+        return false;
 
     }
 
@@ -61,6 +63,7 @@
                 checkCustomerClaimNumberDuplicationAndSubmit(customerClaimNumber, claimId, form);
             }
         }
+        return false;
     }
 
 </script>
@@ -77,7 +80,7 @@
                             <td>
                                 <label>Customer Claim Number<span class="mandatory">*</span></label></td><td nowrap>
                                 <input type="text" class="chox-ttxt" id="customerClaimNumber" name="customerClaimNumber" value="<s:property value="customerClaimNumber" />"/>
-                                <input type="button" id="MAUICNUpdateCustomerClaimNumberButtonId"value="Update Customer Claim Number" onclick="javascript: return doSubmitCustomerClaimNumber()"/>
+                                <input type="button" id="MAUICNUpdateCustomerClaimNumberButtonId"value="Update Customer Claim Number" onclick="return doSubmitCustomerClaimNumber();"/>
                             </td>
                             <td></td><td></td>
                         </tr>

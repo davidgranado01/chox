@@ -20,27 +20,22 @@ var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeduc
 var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
 
     function doUpdateManualInvoice(action){
-    
         $('form#logInvoicePayment input[id="name"]').val(action);
-
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         choxJqueryHttpSubmit($("form#logInvoicePayment"));
         return false;
     }
 
     function confirmPaymentLog(action){
-    
         $('form#logInvoicePayment input[id="name"]').remove();
         return confirmPaymentLogAction();
-    
     }
 
     function switchToClaimsHandler(){
-    
         $('form#logInvoicePayment input[id="name"]').val('switchFromPaymentsTeam');
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         choxJqueryHttpSubmit($("form#logInvoicePayment"));
-    
+        return false;
     }
 
     function callInterimPayment(){
@@ -50,6 +45,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
          ajax.loadHtml2(url,param,function(data){
              $(target).html(data);
          }); 
+        return false;
     }
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -94,14 +90,14 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                         <tr>
                             <td>
                                 <s:if test="isInsurerManual">
-                                    <input type="button" id="UMIPFormId2" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
+                                    <input type="button" id="UMIPFormId2" value="Insurer Invoice Paid" onclick="return doUpdateManualInvoice('updateManualInvoicePaid');" />
                                 </s:if>
                                 <s:else>
-                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLog('invoicePaymentLogged');"/>
-                                    <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/>
+                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="return confirmPaymentLog('invoicePaymentLogged');"/>
+                                    <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="return callInterimPayment();"/>
                                 </s:else>
                                 <s:if test="invoiceWithPaymentsTeam">
-                                    <input type="button" id="switchClaimsHandlerButtonId"value="Switch To Claims Handler" onclick="switchToClaimsHandler();"/>
+                                    <input type="button" id="switchClaimsHandlerButtonId"value="Switch To Claims Handler" onclick="return switchToClaimsHandler();"/>
                                 </s:if>
                               </td>
                         </tr>

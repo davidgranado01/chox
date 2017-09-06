@@ -42,6 +42,7 @@
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             choxJqueryHttpSubmit($("form#formClaimReviewByEngAction"));
         }
+        return false
     }
     
     function createHelpNote(){
@@ -175,7 +176,7 @@
 
                             <tr>
                                 <td colspan="2" class="choice">
-                                    <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
+                                    <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="return doClaimReviewByEngFormSubmit('updatedByEng');"  />
                                 </td>
                             </tr>
                         </table>
