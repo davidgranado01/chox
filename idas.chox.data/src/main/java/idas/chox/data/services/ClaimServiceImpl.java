@@ -236,9 +236,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     LOG.debug("claim invoice set to null");
                     delete(oldInvoice);
                     List<History> histories = claim.getHistories();
-                    for (History history : histories) {
+                    histories.forEach((history) -> {
                         delete(history);
-                    }
+                    });
                     histories.clear();
                     LOG.debug("claim invoice and BRE history deleted");
                 }
@@ -550,9 +550,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         List<Claim> claims = new ArrayList<>();
 
-        for (HashMap m : resultMap) {
+        resultMap.forEach((m) -> {
             claims.add((Claim) m.get("this"));
-        }
+        });
 
         LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
         return new SearchResult(claims, totalCount, null);
@@ -667,9 +667,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", workgroupId));
 
-        for ( String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
+        ClaimStatus.getInsurerClosedStatus(true).forEach((sStatus) -> {
             criteria.add(Restrictions.ne("status", sStatus));
-        }
+        });
 
         return findByCriteria(criteria).size() > 0;
 
@@ -707,9 +707,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("claimOwner.id", UserId));
         }
 
-        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
+        ClaimStatus.getInsurerClosedStatus(true).forEach((sStatus) -> {
             criteria.add(Restrictions.ne("status", sStatus));
-        }
+        });
 
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
@@ -728,17 +728,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (isInsurer) {
             criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-            for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
+            ClaimStatus.getInsurerClosedStatus(true).forEach((sStatus) -> {
                 criteria.add(Restrictions.ne("status", sStatus));
-            }
+            });
 
         }
         else {
             criteria.add(Restrictions.eq("supplierClaimOwner.id", userId));
 
-            for (String sStatus : ClaimStatus.getCompletedStatus(false)) {
+            ClaimStatus.getCompletedStatus(false).forEach((sStatus) -> {
                 criteria.add(Restrictions.ne("status", sStatus));
-            }
+            });
         }
        
         if (findByCriteria(criteria).size() > 0) {
@@ -1019,17 +1019,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getWorkgroupIds() != null && !searchCriteria.getWorkgroupIds().isEmpty()) {
             criteria.add(Restrictions.in("wg.id", searchCriteria.getWorkgroupIds().toArray()));
         }
-/**
-        if (searchCriteria.isAnomalies()) {
-            DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
-            criteria.add(Subqueries.propertyIn("id", inSubclause));
-        }
 
-        if (searchCriteria.isLiabilityStatusUpdated()) {
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).add(Restrictions.eq("deleted", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
-            criteria.add(Subqueries.propertyIn("id", noti));
-        }
-**/
         if (searchCriteria.isAnomalies()) {
             DetachedCriteria subQuery = DetachedCriteria.forClass(Notification.class, "notif")
                     .add(Restrictions.eqProperty("this.id", "notif.claim.id"))
@@ -1228,9 +1218,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isShowOpenClaimsOnly()) {
-            for (String status : ClaimStatus.getCompletedStatus(true)) {
+            ClaimStatus.getCompletedStatus(true).forEach((status) -> {
                 criteria.add(Restrictions.ne("status", status));
-            }
+            });
         }
 
         if (searchCriteria.getClaimTypes() != null && !searchCriteria.getClaimTypes().isEmpty()) {
@@ -1606,11 +1596,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isSubscriberClaimRejectedAndAgreed(int claimId) {
-        Claim claim = getClaim(claimId);
-
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
-            return auditTrailService.isSubscriberClaimRejectedAndAgreed(claimId);
+    public boolean isSubscriberClaimRejectedAndAgreed(Claim claim) {
+        if (claim.getId() != null && ClaimType.isSubscriber(claim.getClaimType())) {
+            return auditTrailService.isSubscriberClaimRejectedAndAgreed(claim.getId());
         }
 
         return false;
@@ -1847,10 +1835,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private boolean isClaimInInsurerClosedStatus(Claim claim) {
-        for (String status : ClaimStatus.getInsurerClosedStatus(true)) {
-            if (claim.getStatus().equalsIgnoreCase(status)) {
-                return true;
-            }
+        if (ClaimStatus.getInsurerClosedStatus(true).stream().anyMatch((status) -> (claim.getStatus().equalsIgnoreCase(status)))) {
+            return true;
         }
 
         return false;

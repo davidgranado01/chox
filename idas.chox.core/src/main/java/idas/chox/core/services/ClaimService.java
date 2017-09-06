@@ -59,8 +59,8 @@ public interface ClaimService extends DataService {
 
     boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set workgroupIds, String status);
 
-    boolean isSubscriberClaimRejectedAndAgreed(int claimId);
-        
+    boolean isSubscriberClaimRejectedAndAgreed(Claim claim);
+    
     boolean isOpenClaimByWorkgroupExist(int workgroupId);
 
     boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set workgroupIds, int userId);
