@@ -52,12 +52,13 @@ public class ClaimObjectService {
 
     public Claim cloneClaimForSupplementaryInvoice(Claim claim) {
 
-        Claim newClaim = null;
+        Claim newClaim;
         try {
             // Create a shallow copy (see http://commons.apache.org/beanutils/api/org/apache/commons/beanutils/BeanUtilsBean.html)
             newClaim = (Claim) BeanUtils.cloneBean(claim);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
             LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
+            return null;
         }
 
         newClaim.setLiability(claim.getLiabilityStatus());
@@ -77,21 +78,39 @@ public class ClaimObjectService {
         newClaim.setInsurerVehicleHire(null);
         newClaim.setHireMonitoringDetail(null);
         newClaim.setInsurerHireMonitoringDetail(null);
-        if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE || claim.getClaimType() == ClaimType.INSURER_INVOICE) {
-            newClaim.setClaimType(ClaimType.INSURER_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL || claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE);
-        } else {
+        if (null == claim.getClaimType()) {
             LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
             newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
+        } else switch (claim.getClaimType()) {
+            case GTA:
+            case GTA_ORIGINAL_INVOICE:
+                newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
+                break;
+            case INSURER_CLAIM:
+            case INSURER_ORIGINAL_INVOICE:
+            case INSURER_INVOICE:
+                newClaim.setClaimType(ClaimType.INSURER_SUPPLEMENTARY_INVOICE);
+                break;
+            case INSURER_VS_INSURER:
+            case INSURER_VS_INSURER_ORIGINAL_INVOICE:
+                newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
+                break;
+            case SUBSCRIBER:
+            case SUBSCRIBER_ORIGINAL_INVOICE:
+                newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
+                break;
+            case COLLABORATION_PROTOCOL:
+            case COLLABORATION_PROTOCOL_ORIGINAL_INVOICE:
+                newClaim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE);
+                break;
+            case FIXED_FEE:
+            case FIXED_FEE_ORIGINAL_INVOICE:
+                newClaim.setClaimType(ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE);
+                break;
+            default:
+                LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
+                break;
         }
         // Updates for Insurer vs Insurer claims
         newClaim.setClaimOwnerOriginal(null);

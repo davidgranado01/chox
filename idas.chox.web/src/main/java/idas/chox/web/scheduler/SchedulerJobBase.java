@@ -41,10 +41,9 @@ import idas.chox.data.services.SecureDataService;
  */
 public abstract class SchedulerJobBase implements Scheduler, ApplicationContextAware {
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerJobBase.class);
-    protected static final String email_date_format = "dd MMMM yyyy";
-    protected final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
-    private final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
-//    private final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$";
+    protected static final String EMAIL_DATE_FORMAT = "dd MMMM yyyy";
+    protected static final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
+    private static final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
     protected MailSecurityAthenticator mailSecurityAthenticator;
     protected MailUtil mailUtil;
     private String smtpHostName;

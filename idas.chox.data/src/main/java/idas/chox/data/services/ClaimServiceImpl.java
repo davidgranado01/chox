@@ -1835,11 +1835,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private boolean isClaimInInsurerClosedStatus(Claim claim) {
-        if (ClaimStatus.getInsurerClosedStatus(true).stream().anyMatch((status) -> (claim.getStatus().equalsIgnoreCase(status)))) {
-            return true;
-        }
-
-        return false;
+        return ClaimStatus.getInsurerClosedStatus(true).stream().anyMatch((status) -> (claim.getStatus().equalsIgnoreCase(status)));
     }
 
     @Override

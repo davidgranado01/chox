@@ -228,7 +228,7 @@ public class AdminUserService extends SecureDataService {
         boolean isAllowUpdate = true;
         
 
-        if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId(), webUser.getInsurer() != null ? true : false)) {
+        if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId(), (webUser.getInsurer() != null))) {
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
             isAllowUpdate = false;
         }
@@ -322,7 +322,7 @@ public class AdminUserService extends SecureDataService {
                 } else {
 
                     if (webUser.getInsurer().isClaimOwnershipEnable()) {
-                        if (claimService.isUserHasOpenClaim(webUser.getId(), webUser.getInsurer() != null ? true : false)) {
+                        if (claimService.isUserHasOpenClaim(webUser.getId(), (webUser.getInsurer() != null))) {
                             this.actionResponse.AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
                         }
                     }
@@ -384,7 +384,7 @@ public class AdminUserService extends SecureDataService {
         if (webUser.getInsurer().isClaimOwnershipEnable()) {
 
             // CLAIM OWNERSHIP ENABLED
-            if (claimService.isUserHasOpenClaim(webUser.getId(), webUser.getInsurer() != null ? true : false)) {
+            if (claimService.isUserHasOpenClaim(webUser.getId(), (webUser.getInsurer() != null))) {
                 this.actionResponse.AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
             }
 
@@ -412,9 +412,9 @@ public class AdminUserService extends SecureDataService {
         WebUser webUser = userService.getWebUser(webUserId);
         List<Workgroup> availableWorkgroups = workgroupService.getAvailableUserWorkgroupsByInsurer(webUser.getInsurer().getId(), webUserId);
 
-        for (Workgroup s : availableWorkgroups) {
+        availableWorkgroups.forEach((s) -> {
             items.add(new IdLookupItem(s.getId(), s.getName()));
-        }
+        });
 
         return items;
     }
@@ -447,9 +447,7 @@ public class AdminUserService extends SecureDataService {
 
             String userRoles = "";
 
-            for (String s : userRolesWithError) {
-                userRoles += s + ", ";
-            }
+            userRoles = userRolesWithError.stream().map((s) -> s + ", ").reduce(userRoles, String::concat);
 
             if (!userRoles.isEmpty()) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User '"

@@ -57,7 +57,7 @@ public final class Event implements Serializable {
     
     public Event (final String name, final int id, final int insurerId, final int choId, final int claimId, int claimType) {
         this.name = name; this.id = id; this.insurerId = insurerId; this.choId = choId; this.claimId = claimId; this.claimType = claimType;
-        parameters = new HashMap<String, Object>(10);
+        parameters = new HashMap<>(10);
     }
     
     public void addParameter(String name, Object value) {

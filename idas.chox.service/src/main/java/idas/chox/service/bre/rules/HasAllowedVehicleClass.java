@@ -62,7 +62,6 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     customerVehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), customerVehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
                     LOG.warn("Customer's Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getCustomer().getVehicleClass(), claim.getChoReference());
-                    customerVehicleClassPrice = BigDecimal.ZERO;
                 }
                 // Add in the hire-rate tolerance - No!! Not Needed
 //                customerVehicleClassPrice = customerVehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());

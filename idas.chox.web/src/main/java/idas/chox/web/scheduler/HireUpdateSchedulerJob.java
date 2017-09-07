@@ -156,7 +156,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By Email: ").append(email).append("\n");
-        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format)).append("\n");
+        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(EMAIL_DATE_FORMAT)).append("\n");
         emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
