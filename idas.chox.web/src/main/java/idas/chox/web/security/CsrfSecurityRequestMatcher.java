@@ -11,12 +11,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class CsrfSecurityRequestMatcher implements RequestMatcher {
     private static final Logger LOG = LoggerFactory.getLogger(CsrfSecurityRequestMatcher.class);
     // Do not apply csrf filter for the following http methods
-    private final Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
+    private static final Pattern ALLOWED_METHODS = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
     // Do not apply csrf filter for the web service call.
-    private final String WEB_SERVICE_URL_STRING = "/services";
+    private static final String WEB_SERVICE_URL_STRING = "/services";
     // Do not apply csrf filter for the Logback call.
-    private final String LOGBACK_LOGGING_URL_STRING = "/logBack";
-//    private RegexRequestMatcher unprotectedMatcher = new RegexRequestMatcher("/services", null);
+    private static final String LOGBACK_LOGGING_URL_STRING = "/logBack";
 
     @Override
     public boolean matches(HttpServletRequest request) {
@@ -26,11 +25,9 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
          * if the http request method is one of (GET|HEAD|TRACE|OPTIONS) then return false.
          * returning false will not apply csrf filter for this request. 
          */
-        if (allowedMethods.matcher(request.getMethod()).matches()) {
+        if (ALLOWED_METHODS.matcher(request.getMethod()).matches()) {
             result = false;
         }
-//        return !unprotectedMatcher.matches(request);
-//        return !request.getServletPath().contains(WEB_SERVICE_URL_STRING);
         else if (request.getServletPath().contains(WEB_SERVICE_URL_STRING)) {
             result = false;
         } else {

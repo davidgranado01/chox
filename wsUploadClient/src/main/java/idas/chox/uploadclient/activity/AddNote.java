@@ -1,22 +1,25 @@
 package idas.chox.uploadclient.activity;
 
-import com.idaschox.services.chox.Note;
-import com.idaschox.services.chox.Result;
-import com.idaschox.services.chox.UploadService;
-import idas.chox.uploadclient.utility.XlsFileParser;
 import java.io.FileInputStream;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.idaschox.services.chox.Note;
+import com.idaschox.services.chox.Result;
+import com.idaschox.services.chox.UploadService;
+
+import idas.chox.uploadclient.utility.XlsFileParser;
 
 public class AddNote {
 
     private static final Logger LOG = LoggerFactory.getLogger(AddNote.class);
-    private static String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
+    private static final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
 
     public static void process(UploadService uploadService, String file) {
 
@@ -24,7 +27,7 @@ public class AddNote {
         LOG.info("Processing file '{}'", file);
         try {
             FileInputStream fstream = new FileInputStream(file);
-            Map<Integer, List<String>> xlsDataMap = null;
+            Map<Integer, List<String>> xlsDataMap;
             XlsFileParser xlsFileParser = new XlsFileParser();
             try {
                 xlsDataMap = xlsFileParser.readExcelFile(fstream);
@@ -92,7 +95,7 @@ public class AddNote {
     }
 
     public static void addNote(UploadService uploadService, Note note) {
-        Result result = null;
+        Result result;
 
         LOG.debug("Calling Add Note Web Service for claim with CHO reference '{}'...", note.getSupplierReference());
         try {

@@ -33,10 +33,15 @@ public final class NodeHelper {
     private static final String INCORRECT_INSURER_ALIAS = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
     private static final String INCORRECT_CHORGANISATION_ALIAS = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
+    private static final Pattern PATTERN_REG_TIMESTAMP = Pattern.compile(REG_TIMESTAMP);
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
+    private static final Pattern PATTERN_REG_DATETIME = Pattern.compile(REG_DATETIME);
     public static final String REG_BOOLEAN = "^[ynYN]";
+    private static final Pattern PATTERN_REG_BOOLEAN = Pattern.compile(REG_BOOLEAN);
     public static final String REG_INTEGER = "^[0-9]+$";
+    private static final Pattern PATTERN_REG_INTEGER = Pattern.compile(REG_INTEGER);
     public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
+    private static final Pattern PATTERN_REG_BIGDECIMAL = Pattern.compile(REG_BIGDECIMAL);
 
     private NodeHelper() {
     }
@@ -381,28 +386,32 @@ public final class NodeHelper {
         try {
 
             String regExpression = "";
-
+            Pattern p = null;
             if (regExp.trim().equalsIgnoreCase("")) {
 
                 if (dataType.equalsIgnoreCase("date")) {
                     regExpression = REG_TIMESTAMP;
+                    p = PATTERN_REG_TIMESTAMP;
                 } else if (dataType.equalsIgnoreCase("char")) {
                     regExpression = REG_BOOLEAN;
+                    p = PATTERN_REG_BOOLEAN;
                 } else if (dataType.equalsIgnoreCase("int")) {
                     regExpression = REG_INTEGER;
+                    p = PATTERN_REG_INTEGER;
                 } else if (dataType.equalsIgnoreCase("numeric")) {
                     regExpression = REG_BIGDECIMAL;
+                    p = PATTERN_REG_BIGDECIMAL;
                 } else if (dataType.equalsIgnoreCase("datetime")) {
                     regExpression = REG_DATETIME;
+                    p = PATTERN_REG_DATETIME;
                 }
 
             } else {
                 regExpression = regExp;
+                p = Pattern.compile(regExpression);
             }
 
-            if (!regExpression.equalsIgnoreCase("")) {
-
-                Pattern p = Pattern.compile(regExpression);
+            if (p != null) {
                 Matcher m = p.matcher(dataValue);
 
                 if (!m.find()) {
