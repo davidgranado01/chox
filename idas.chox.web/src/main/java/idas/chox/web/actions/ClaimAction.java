@@ -1135,13 +1135,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateSaveLiabilityStatus() {
         LOG.debug("updateSaveLiabilityStatus");
-        String note;
-        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-            note = "Liability status changed to '" + fLiabilityStatus + "'";
-        } else {
-            note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus + "'";
-        }
-        LOG.debug("note : " + note);
         try {
             if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
                 if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
@@ -1150,12 +1143,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     throw new Exception("Total liability is not 100%");
                 }
 
-                Comment comment = Comment.newComment(0, note);
-                comment.setClaim(claim);
-                claim.addComment(comment);
                 claim.setLiabilityPercentages(fPercentageLiabilityAccepted, fPercentageLiabilityCho);
                 claim.setLiabilityAgreedDate(fLiabilityAgreedDate);
                 claimService.setLiability(claim, fLiabilityStatus);
+                claimService.updateLiabilityPayment(claim);
                 claimService.save(claim);
 
             }

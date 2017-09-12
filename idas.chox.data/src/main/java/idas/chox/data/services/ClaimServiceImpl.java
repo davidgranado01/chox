@@ -1783,8 +1783,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             ClaimType claimType = claim.getClaimType();
             // When excluding some 'Claim Type' Please exclude it from applyAutoPenaltyCharge Stored Procedure as well.
             if (!ClaimType.isInsurerVsInsurer(claimType)
-                    && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType)
+//                    && !ClaimType.isSubscriber(claimType)
+//                    && !ClaimType.isFixedFee(claimType)
                     && !ClaimType.isCollaborationProtocol(claimType)
                     && liabilityStatus != null
                     && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
@@ -1794,8 +1794,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated: {}", invoice.getTotalToPay());
             } else if (!ClaimType.isInsurerVsInsurer(claimType)
-                    && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType)
+//                    && !ClaimType.isSubscriber(claimType)
+//                    && !ClaimType.isFixedFee(claimType)
                     && liabilityStatus != null
                     && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);

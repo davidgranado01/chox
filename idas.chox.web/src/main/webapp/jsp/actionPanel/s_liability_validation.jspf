@@ -348,9 +348,6 @@
                 liabilityStatusModified=true;
         }
 
-        var subscriberLiability = <s:property value="fullLiability"/>;
-        var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
-
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
                 required: true,
@@ -374,33 +371,13 @@
                 required: true,
                 messages: {required: "You must supply a value for 'Claim Number'"}
             });
-            if(subscriberLiability){
-                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
-                    mustBeFullLiabilityAcepted: true,
-                    messages: {mustBeFullLiabilityAcepted: "Subscriber Claims Can Only Be Accepted When Liability Is Either Full Liability Accepted Or Proceed Without Prejudice."}
-                });         
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                range:[1,6],
+                messages: {range: "You must select a liability status"}
+            });
                 
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
-                
-
-            } else if (fixedFeeLiability){
-                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
-                    mustBeFullLiabilityOrSplit: true,
-                    messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted, Proceed Without Prejudice or Liability Split."}
-                }); 
-                
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
-                if (isLiabilitySplit() && liabilityStatusModified)
-                    addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-            } else {
-                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
-                    range:[1,6],
-                    messages: {range: "You must select a liability status"}
-                });
-                
-                if(liabilityStatusModified){
-                    addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-                }
+            if(liabilityStatusModified){
+                addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }
         }else if(action=='referEng'){
             $("form#formAcknowledgeAction #claimNumber").rules("add", {
