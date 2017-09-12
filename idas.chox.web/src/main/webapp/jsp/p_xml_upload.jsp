@@ -889,7 +889,7 @@
 
 <div class="claim-detail-tab">
 
-    <form id="uploadClaimForm" name="uploadClaimForm" action="<%= request.getContextPath()%>/prv/p/uploadNewClaimsFile.action?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data">
+    <form id="uploadClaimForm" name="uploadClaimForm" action="<%= request.getContextPath()%>/prv/p/uploadNewClaimsFile.action" method="POST" enctype="multipart/form-data">
         <div class="form-container">
             <fieldset class="x-fieldset">
                 <legend>Upload XML File&nbsp;</legend>

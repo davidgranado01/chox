@@ -342,7 +342,7 @@
 
 <div class="claim-detail-tab">
 
-    <form id="attachmentForm" name="attachmentForm" action="<%= request.getContextPath()%>/prv/p/createNewAttachment.action?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data">
+    <form id="attachmentForm" name="attachmentForm" action="<%= request.getContextPath()%>/prv/p/createNewAttachment.action" method="POST" enctype="multipart/form-data">
         <div class="form-container">
             <input type="hidden" name="claimId" id="claimId" value='<s:property value="claimId" />'>
             <input type="hidden" name="uploadFileName" id="uploadFileName">
