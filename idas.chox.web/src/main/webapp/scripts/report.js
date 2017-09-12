@@ -94,7 +94,8 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
                     Ext.MessageBox.hide();
                     if (!cancelled && !resp.exportCancelled){
 //                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action").attr("name", csrfParameterName).val(csrfTokenValue);
-                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action?" + csrfParameterName + "=" + csrfTokenValue);
+//                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action?" + csrfParameterName + "=" + csrfTokenValue);
+                        var $form=$(document.createElement('form')).css({display:'none'}).attr("method","POST").attr("action",contextPath+"/prv/p/downloadExcelReport.action");
                         $("body").append($form);
                         $form.submit();
                     }
