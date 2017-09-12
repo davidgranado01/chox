@@ -2,7 +2,7 @@ package idas.chox.web.ws;
 
 import javax.jws.WebService;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
 import org.slf4j.Logger;

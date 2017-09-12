@@ -13,6 +13,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
@@ -24,8 +27,6 @@ import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.HandlerActionsReportObject;
 import idas.chox.service.reports.viewdata.HandlerActionsStatusLineItem;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NewIncomingHandlerActionsReport implements Report {
 
@@ -53,7 +54,7 @@ public class NewIncomingHandlerActionsReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
             WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
@@ -120,7 +121,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
             }
 
-            List<HandlerActionsReportObject> handlerActionReportObjects = new ArrayList<HandlerActionsReportObject>();
+            List<HandlerActionsReportObject> handlerActionReportObjects = new ArrayList<>();
             if (isWorkgroupEnabled && isClaimOwnershipEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
@@ -146,15 +147,18 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = reportDataService.getReportData(sb.toString(), queryParameters);
-                for (Object o : result) {
-                    Map data = (Map) o;
+                List<Map> result = (List<Map>)reportDataService.getReportData(sb.toString(), queryParameters);
+                result.stream().map((data) -> {
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
                     actionReportObject.setWorkgroup(data.get("name").toString());
                     actionReportObject.setId((Integer) data.get("id"));
+                    return actionReportObject;
+                }).map((actionReportObject) -> {
                     handlerActionReportObjects.add(actionReportObject);
+                    return actionReportObject;
+                }).forEachOrdered((actionReportObject) -> {
                     LOG.debug("Workgroup added: {}", actionReportObject.getWorkgroup());
-                }
+                });
             } else if (isWorkgroupEnabled) {
                 
                 HashMap queryParameters = new HashMap();
@@ -167,15 +171,18 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = reportDataService.getReportData(sb.toString(), queryParameters);
-                for (Object o : result) {
-                    Map data = (Map) o;
+                List<Map> result = (List<Map>)reportDataService.getReportData(sb.toString(), queryParameters);
+                result.stream().map((data) -> {
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
                     actionReportObject.setWorkgroup(data.get("name").toString());
                     actionReportObject.setId((Integer) data.get("id"));
+                    return actionReportObject;
+                }).map((actionReportObject) -> {
                     handlerActionReportObjects.add(actionReportObject);
+                    return actionReportObject;
+                }).forEachOrdered((actionReportObject) -> {
                     LOG.debug("Workgroup added: {}", actionReportObject.getWorkgroup());
-                }
+                });
                 
             } else if (isClaimOwnershipEnabled) { // this condition can be replaced with just else {} but having isClaimOwnershipEnabled check ensure this report will not work when both workgroup and claimOwner disabled.
                 HandlerActionsReportObject workflowReportObject = new HandlerActionsReportObject();
@@ -659,7 +666,7 @@ public class NewIncomingHandlerActionsReport implements Report {
          * 2 different template. Further investigation needed to work around. 
          */
         short[] columnsToHide = null;
-        ArrayList<Short> columnsToHideList = new ArrayList<Short>();
+        ArrayList<Short> columnsToHideList = new ArrayList<>();
         WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
         if (user.getInsurer().isWorkgroupEnable() && user.getInsurer().isClaimOwnershipEnable()) { // if both claimownership and workgroup enabled
             if (!user.getInsurer().isEngineersEnable()) {

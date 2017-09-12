@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

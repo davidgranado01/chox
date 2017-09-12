@@ -3,7 +3,7 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +36,6 @@ public class InboxAction extends BaseAction {
     private ClaimService claimService;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList = new ArrayList<>();
-    ;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;

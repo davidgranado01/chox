@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.jsoup.Jsoup;
@@ -177,10 +177,11 @@ public final class XMLUtils {
         TransformerFactory tf=TransformerFactory.newInstance();
         Transformer t=tf.newTransformer();
 
-        StringWriter sw=new StringWriter();
-        t.transform(new DOMSource(xmlDocument),new StreamResult(sw));
-        String xmlText=sw.toString();
-        sw.close();
+        String xmlText;
+        try (StringWriter sw = new StringWriter()) {
+            t.transform(new DOMSource(xmlDocument),new StreamResult(sw));
+            xmlText = sw.toString();
+        }
         return xmlText;
     }
 
@@ -200,11 +201,11 @@ public final class XMLUtils {
         f.setLineWidth(132);
         f.setIndenting(true);
         f.setIndent(1);
-        FileOutputStream fos=new FileOutputStream(outputFile);
-        XMLSerializer s=new XMLSerializer(fos,f);
-        s.serialize(xmlDocument);
-        fos.flush();
-        fos.close();
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            XMLSerializer s=new XMLSerializer(fos,f);
+            s.serialize(xmlDocument);
+            fos.flush();
+        }
     }
 
     public static void toGZipFile(Document xmlDocument,File outputFile)
@@ -220,14 +221,15 @@ public final class XMLUtils {
         s.serialize(xmlDocument);
 
         byte [] buffer=new byte[65536];
-        GZIPOutputStream os=new GZIPOutputStream(new FileOutputStream(outputFile));
-        FileInputStream is=new FileInputStream(tmp);
-        int r=is.read(buffer);
-        while(r!=-1){
-            os.write(buffer, 0, r);
-            r=is.read(buffer);
+        FileInputStream is;
+        try (GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(outputFile))) {
+            is = new FileInputStream(tmp);
+            int r=is.read(buffer);
+            while(r!=-1){
+                os.write(buffer, 0, r);
+                r=is.read(buffer);
+            }
         }
-        os.close();
         is.close();
 
         tmp.delete();
@@ -382,7 +384,7 @@ public final class XMLUtils {
             return null;
         }
         NodeList nl=parent.getElementsByTagName(tag);
-        ArrayList<Element> nodes=new ArrayList<Element>();
+        ArrayList<Element> nodes=new ArrayList<>();
         for(int i=0;i<nl.getLength();i++)   {
             nodes.add((Element)nl.item(i));
         }
@@ -393,7 +395,7 @@ public final class XMLUtils {
     throws DOMException,XPathExpressionException
     {
         NodeList nl=parent.getElementsByTagName(tag);
-        ArrayList<Element> nodes=new ArrayList<Element>();
+        ArrayList<Element> nodes=new ArrayList<>();
         for(int i=0;i<nl.getLength();i++)   {
             nodes.add((Element)nl.item(i));
         }

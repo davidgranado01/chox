@@ -2,7 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -132,9 +132,9 @@ public class HireUpdate extends BaseActivity {
     protected void afterProcess(Claim claim) {
         getDataService().save(claim);
 //        activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
         if (isHireStartUpdate) {
             claimService.addOnHireTask(claim);
         }

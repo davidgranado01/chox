@@ -3,18 +3,18 @@ package idas.chox.data;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 /**
  *
  * @author John
  */
 public class ExcelComment {
 
-    private String choReference;
-    private String createdBy;
-    private Date createdDate;
-    private String comment;
-    private int visibilityType;
+    private final String choReference;
+    private final String createdBy;
+    private final Date createdDate;
+    private final String comment;
+    private final int visibilityType;
     
     public ExcelComment(Map data) {
         choReference = (String) data.get("choreference");

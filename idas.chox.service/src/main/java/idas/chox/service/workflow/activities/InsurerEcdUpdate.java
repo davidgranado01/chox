@@ -7,7 +7,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jsoup.nodes.Document.OutputSettings;
