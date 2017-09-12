@@ -165,8 +165,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             eventService.generate(task.getClaim(), ChoxEvent.TASK_COMPLETED_EVENT, task);
         }
         if (task.getRelatedTask() != null) {
-            LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
-            markTaskAsComplete(task.getRelatedTask());
+            try {
+                LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
+                markTaskAsComplete(task.getRelatedTask());
+            } catch (Exception ex) {
+                LOG.error("Exception marking related task {} for original task {} as complete: {}", new Object[]{
+                    task.getRelatedTask().getId(), task.getId(), ex.getMessage(), ex});
+                task.setRelatedTask(null);
+            }
         }
     }
 
