@@ -1498,14 +1498,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return claimAge;
         }
         if (ClaimType.isSubscriber(claim.getClaimType())) {
+            int remainingSLADays = claim.getRemainingSlaDaysInt();
             BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             int subscriberSlaDays = breBand.getSubscriberSlaDays();
             String subscriberCutOffTime = breBand.getSubscriberTimeCutOff();
-            claimAge = auditTrailService.getSubscriberClaimDays(id, breBand.isPauseSubscriberSlaClock());
+            claimAge = subscriberSlaDays + claim.getSlaExtDays() - remainingSLADays;
             LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
                     new Object[]{claimAge, subscriberSlaDays, subscriberCutOffTime, claim.getSlaExtDays()});
 
-            if (subscriberSlaDays != 0 && (claimAge > (subscriberSlaDays + claim.getSlaExtDays()) || (claimAge == (subscriberSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
+            if (subscriberSlaDays != 0 && (remainingSLADays < 0 || (remainingSLADays==0 && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
                 boolean addComment = true;
                 List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
                 for (Comment comment : comments) {
@@ -1522,8 +1523,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     }
                     comment.setRaisedBy(userService.getWebUser(999));
                     claim.addComment(comment);
-                    save(claim);
-                    LOG.debug("Comment added and claim saved.");
+//                    save(claim);
+                    LOG.debug("Comment added.");
                 }
             }
         }
@@ -1561,14 +1562,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.error("Cannot get Fixed Fee days for claim with id={}: no such claim", id);
             return claimAge;
         } else if (ClaimType.isFixedFee(claim.getClaimType())) {
-
+            int remainingSLADays = claim.getRemainingSlaDaysInt();
             BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             int fixedFeeSlaDays = breBand.getFixedFeeSlaDays();
             String fixedFeeCutOffTime = breBand.getFixedFeeTimeCutOff();
 
-            claimAge = auditTrailService.getFixedFeeClaimDays(id, breBand.isPauseFixedFeeSlaClock());
+            claimAge = fixedFeeSlaDays + claim.getSlaExtDays() - remainingSLADays;
 
-            if (fixedFeeSlaDays != 0 && (claimAge > (fixedFeeSlaDays + claim.getSlaExtDays()) || (claimAge == (fixedFeeSlaDays + claim.getSlaExtDays()) && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
+            if (fixedFeeSlaDays != 0 && (remainingSLADays < 0 || (remainingSLADays == 0 && !DateHelper.isBeforeCutOffTime(fixedFeeCutOffTime)))) {
                 boolean addComment = true;
                 List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
                 for (Comment comment : comments) {
@@ -1585,8 +1586,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     }
                     comment.setRaisedBy(userService.getWebUser(999));
                     claim.addComment(comment);
-                    save(claim);
-                    LOG.debug("Comment added and claim saved.");
+//                    save(claim);
+                    LOG.debug("Comment added.");
                 }
             }
         }
