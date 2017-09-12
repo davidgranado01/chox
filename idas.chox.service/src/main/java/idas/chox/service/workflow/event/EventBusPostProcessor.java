@@ -1,11 +1,15 @@
 package idas.chox.service.workflow.event;
 
-import com.google.common.eventbus.Subscribe;
 import java.lang.reflect.Method;
+
+import com.google.common.eventbus.Subscribe;
+
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -15,6 +19,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 public class EventBusPostProcessor implements BeanPostProcessor {
     private static final Logger log = LoggerFactory.getLogger(EventBusPostProcessor.class);
     private boolean useGuava;
+    private EventBusWrapper eventBus;
+        
+    public void setEventBus(EventBusWrapper eventBus) {
+        this.eventBus = eventBus;
+    }
 
     public void setUseGuava(boolean useGuava) {
         this.useGuava = useGuava;
@@ -47,17 +56,14 @@ public class EventBusPostProcessor implements BeanPostProcessor {
         }
         return false;
     }
+    
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName)
-                  throws BeansException
-    {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName)
-                  throws BeansException
-    {
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if(!useGuava && containsListener(bean)) {
             eventBus.registerListener(bean);
             log.info("Listener Bean registered to MBassador eventBus: {}", beanName);
@@ -71,9 +77,4 @@ public class EventBusPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private EventBusWrapper eventBus;
-        
-    public void setEventBus(EventBusWrapper eventBus) {
-        this.eventBus = eventBus;
-    }
 }
