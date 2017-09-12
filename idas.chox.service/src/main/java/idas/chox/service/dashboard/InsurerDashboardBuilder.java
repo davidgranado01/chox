@@ -165,7 +165,7 @@ public class InsurerDashboardBuilder {
         return build(queryParameters, sb.toString());
     }
 
-    private DashBoardViewData build(Map queryParameters, String query) {
+    private DashBoardViewData build(Map<String, Object> queryParameters, String query) {
 
         DashBoardViewData viewData = new DashBoardViewData();
         List result = baseDataService.externalQuery(query, queryParameters);
@@ -176,7 +176,7 @@ public class InsurerDashboardBuilder {
     }
 
     private Map getQueryParameters() {
-        Map queryParameters = new HashMap();
+        Map<String, Object> queryParameters = new HashMap();
 
         List<Integer> choIds = new ArrayList<>();
         List<Integer> workgroupIds = new ArrayList<>();

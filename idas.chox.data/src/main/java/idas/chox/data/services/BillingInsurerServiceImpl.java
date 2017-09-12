@@ -95,7 +95,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         
         String query = sb.toString();
         
-        Map extParameters = new HashMap();
+        Map<String, Object> extParameters = new HashMap();
         extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
         extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
         extParameters.put("pInsurerId", insurerId);

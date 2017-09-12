@@ -434,7 +434,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (choBand.isBreInvoiceSavingActive() && (auditTrailService.hasBeenContestedInvoiceReferredToInsurer(claim.getId())
                 || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
                 || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
-            List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
+            List<BreRules> breRules = historyService.getBreRuleFailuresByClaim(claim);
             if (!breRules.isEmpty()) {
                 BigDecimal totalGross = claim.getInvoice().getTotalGross();
                 BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();
@@ -3378,8 +3378,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getJsonBreRuleFailures() {
-        List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
-//        this.jObject = JSONArray.fromObject(breRules);
+        List<BreRules> breRules = historyService.getBreRuleFailuresByClaim(claim);
         jObjectStringSize = breRules.size();
         ObjectMapper mapper = new ObjectMapper();
         try {

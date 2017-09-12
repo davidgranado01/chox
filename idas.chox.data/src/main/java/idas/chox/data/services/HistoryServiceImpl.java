@@ -13,55 +13,22 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.BreRules;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.History;
 import idas.chox.core.services.HistoryService;
 
 public class HistoryServiceImpl extends SecureDataService implements HistoryService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryServiceImpl.class);
 
-    /*
-     * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO
-     * isShowAll : false > SHOW ALL RECORDS WITH TYPE IS ERROR ONLY
-     * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
-     * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
-     */
     @Override
-    public List<History> getHistoryByClaim(int claimId, Boolean isShowAll, Boolean isPublic) {
-
-        List<History> histories;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
-        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-
-        // if (!isShowAll) {
-        criteria.add(Restrictions.eq("type", "ERROR"));
-        // }
-
-        // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
-        if (isPublic) {
-            criteria.add(Restrictions.eq("isPublic", true));
-        }
-
-        criteria.addOrder(Order.desc("processDate"));
-        criteria.addOrder(Order.asc("ruleId"));
-
-        histories = findByCriteriaFlushCommit(criteria);
-
-        return histories;
-    }
-
-    @Override
-    public List<BreRules> getBreRuleFailuresByClaimId(int claimId) {
+    public List<BreRules> getBreRuleFailuresByClaim(Claim claim) {
         List<BreRules> breRules;
-        List<History> breRuleFailures = getHistoryByClaim(claimId, false, false);
 
-        if (!breRuleFailures.isEmpty()) {
-            Set<String> breRuleFailureIds = new HashSet<>(breRuleFailures.size());
-            for (History history : breRuleFailures) {
-                breRuleFailureIds.add(history.getRuleId());
-            }
+        Set<String> breRuleFailureIds = new HashSet<>();
+        claim.getHistories().stream().filter((history) -> ("ERROR".equals(history.getType()))).forEachOrdered((history) -> {
+            breRuleFailureIds.add(history.getRuleId());
+        });
 
+        if (!breRuleFailureIds.isEmpty()) {
             DetachedCriteria criteria = DetachedCriteria.forClass(BreRules.class);
             criteria.add(Restrictions.in("ruleName", breRuleFailureIds.toArray()));
             criteria.addOrder(Order.asc("ruleName"));
@@ -78,14 +45,9 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
     @Override
     public void markHistoryAsOldByClaim(Claim claim) {
         if (claim.getId() != null) {
-            List<History> histories = getHistoryByClaim(claim.getId(), true, false);
-
-            for (History history : histories) {
-                if (!history.getIsOld()) {
-                    history.setIsOld(true);
-                    saveFlushCommit(history);
-                }
-            }
+            claim.getHistories().stream().filter((history) -> (!history.getIsOld())).forEachOrdered((history) -> {
+                history.setIsOld(true);
+            });
         }
     }
 }

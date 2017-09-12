@@ -10,7 +10,6 @@ import idas.chox.core.model.Entity;
 public interface DataService {
 
     void save(final Object object);
-    void saveFlushCommit(final Object object);
     void delete(final Object object);
     void evict(Object object);
     void flush();

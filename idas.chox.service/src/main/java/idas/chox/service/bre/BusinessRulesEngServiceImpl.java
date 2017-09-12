@@ -62,17 +62,8 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-        if (ClaimType.isTPI(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType())) {
-            LOG.debug("Claim is a TPI or Insurer Upload claim (i.e. new) ...");
-            if (claimService.getCountOfClaimByVRNforNewClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
+        if (claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
-            }
-        } else if (claim.getId() != null) { // here we assume  that the claim Id is not null
-            if (claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId()) > 0) {
-                claim.getCustomer().setIsVehicleRegistrationExist(true);
-            }
-        } else {
-            LOG.error("Cannot check if VRN exists or not as claim Id is null");
         }
     }
 
@@ -129,24 +120,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         }
 
         return validationResult;
-    }
-
-    private List<History> processBreErrorMessage(List<RuleEvaluation> results, ClaimResult claimResult) {
-
-        List<History> histories = new ArrayList<>();
-
-        for (int iCount = 0; iCount < results.size(); iCount++) {
-
-            RuleEvaluation rv = results.get(iCount);
-            if (rv.getIsVisibleToCHO() && rv.getResult() == RuleEvaluationResult.RULE_FAILED) {
-                claimResult.getMessage().add(rv.toString());
-            }
-
-            histories.add(History.New(rv));
-        }
-
-        return histories;
-
     }
 
     @Override

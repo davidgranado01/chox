@@ -373,7 +373,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
                 sb.append("and status=true ");
             }
             sb.append("order by site");
-            Map extParameters = new HashMap();
+            Map<String, Object> extParameters = new HashMap();
 
             extParameters.put("pInsurerId", insurerId);
 
@@ -396,7 +396,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         LOG.debug("Getting teams for insurerId={} and site='{}'", insurerId, site);
         List<String> teams = null;
         try {
-            Map extParameters = new HashMap();
+            Map<String, Object> extParameters = new HashMap();
 
             teams = new ArrayList<>();
 
@@ -461,7 +461,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id ");
             sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId order by a.name");
 
-            Map extParameters = new HashMap();
+            Map<String, Object> extParameters = new HashMap();
 
             extParameters.put("pChorganisationId", choId);
 
@@ -510,7 +510,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
             sb.append("order by a.name");
 
-            Map extParameters = new HashMap();
+            Map<String, Object> extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
             result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
 

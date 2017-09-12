@@ -341,10 +341,10 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
    }
 
     private int getNoBankHolidays(Date startDate, Date endDate) {
-        Map extParameters = new HashMap();
+        Map<String, Object> extParameters = new HashMap();
         extParameters.put("pStartDate", startDate);
         extParameters.put("pEndDate", endDate);
-        int noBankHolidays =  externalQueryCount("select * from bank_holidays where bank_holiday >= :pStartDate and bank_holiday <= :pEndDate", extParameters);
+        int noBankHolidays =  externalQueryCount("select count(*) from bank_holidays where bank_holiday >= :pStartDate and bank_holiday <= :pEndDate", extParameters);
         LOG.debug("Returning {} bank holidays between '{}' and '{}'", new Object[]{noBankHolidays, startDate, endDate});
         return noBankHolidays;
     }

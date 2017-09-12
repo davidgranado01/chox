@@ -2828,7 +2828,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (choBand.isBreInvoiceSavingActive() && (auditTrailService.hasBeenContestedInvoiceReferredToInsurer(claim.getId())
                                                     || ClaimStatus.MANUAL_INVOICE_REJECTED.equals(claim.getStatus())
                                                     || ClaimStatus.MANUAL_INVOICE_CONTESTED.equals(claim.getStatus()))) {
-            List<BreRules> breRules = historyService.getBreRuleFailuresByClaimId(claim.getId());
+            List<BreRules> breRules = historyService.getBreRuleFailuresByClaim(claim);
             if (!breRules.isEmpty()) {
                 BigDecimal totalGross = claim.getInvoice().getTotalGross();
                 BigDecimal totalGrossOriginal = claim.getInvoice().getInvoiceOriginal().getTotalGrossOriginal();

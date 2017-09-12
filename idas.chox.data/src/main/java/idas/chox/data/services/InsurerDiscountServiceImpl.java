@@ -171,7 +171,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         String query = sb.toString();
         LOG.debug("checkScheduleOverlap query is: {}", query);
 
-        Map extParameters = new HashMap();
+        Map<String, Object> extParameters = new HashMap();
         extParameters.put("pDateFrom", DateHelper.getDBDateFormat().format(dateFrom));
         extParameters.put("pDateTo", DateHelper.getDBDateFormat().format(dateTo));
         extParameters.put("pChoId", choId);
@@ -217,7 +217,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         String query = sb.toString();
         LOG.debug("getting discount percentage query is: {}", query);
         
-        Map extParameters = new HashMap();
+        Map<String, Object> extParameters = new HashMap();
         extParameters.put("pInvoiceCreatedDate", DateHelper.getDBDateFormat().format(invoiceCreatedDate));
         extParameters.put("pChoId", choId);
         extParameters.put("pInsurerId", insId);

@@ -22,9 +22,8 @@ public interface ClaimService extends DataService {
 
     int getECDCountByClaimId(int claimId);
 
-    Integer getCountOfClaimByVRN(String strVRN, int claimId);
+    Integer getCountOfClaimByVRN(String strVRN, Claim claim);
 
-    Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim);
 
     Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
 

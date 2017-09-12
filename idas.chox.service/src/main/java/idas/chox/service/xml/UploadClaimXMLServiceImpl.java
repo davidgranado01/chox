@@ -206,6 +206,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
+                        claim.addHistory(history);
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
                         }
@@ -224,6 +225,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
+                        claim.addHistory(history);
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
                         }
@@ -241,6 +243,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
+                        claim.addHistory(history);
                         if (history.getType().equals("ERROR") && history.getIsPublic()) {
                             claimResult.getBreMessage().add(history.getNarrative());
                         }
@@ -271,6 +274,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
                         for (History history : History.New(breResponse)) {
+                            claim.addHistory(history);
                             if (history.getType().equals("ERROR") && history.getIsPublic()) {
                                 claimResult.getBreMessage().add(history.getNarrative());
                             }
@@ -283,6 +287,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
                         for (History history : History.New(breResponse)) {
+                            claim.addHistory(history);
                             if (history.getType().equals("ERROR")) {
                                 claimResult.getBreMessage().add(history.getNarrative());
                             }
@@ -323,6 +328,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
                     for (History history : History.New(breResponse)) {
+                        claim.addHistory(history);
                         if (history.getType().equals("ERROR")) {
                             claimResult.getBreMessage().add(history.getNarrative());
                         }

@@ -368,32 +368,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
+    public Integer getCountOfClaimByVRN(String strVRN, Claim claim) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
-        criteria.add(Restrictions.ne("id", claimId));
-        List result = findByCriteriaFlushCommit(criteria);
-        return ((Long) result.get(0)).intValue();
-    }
-
-    // this method has been implemented for TPI claim as there is no claim id already exist in the database.
-    // and it will still check if there is any claim which has customer with same vrn number in some other claim.
-    // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
-    @Override
-    public Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.setProjection(Projections.rowCount());
-        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
-        // at some point this method need to be removed and use the getCountOfClaimByVRN(String strVRN, int claimId) above method.
-        // instead checking claim.getAvailableStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
-        // depricated hibernate method should be removed.
-        if (claim.getStatus() != null) {
+        if (claim.getId() != null) {
             criteria.add(Restrictions.ne("id", claim.getId()));
         }
         List result = findByCriteria(criteria);
         return ((Long) result.get(0)).intValue();
-
     }
 
     @Override
@@ -577,7 +560,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
-        List result = findByCriteriaFlushCommit(criteria);
+        List result = findByCriteria(criteria);
 
         Integer totalCount = ((Long) result.get(0)).intValue();
 
@@ -605,10 +588,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
             return false;
         }
-        Map extParameters = new HashMap();
+        Map<String, Object> extParameters = new HashMap();
         extParameters.put("pChoRef", sClaimReferenceNumber);
         extParameters.put("pChoId", choId);
-        int totalCount = externalQueryCount("select id from claim where cho_reference = :pChoRef and chorganisation_id = :pChoId", extParameters);
+        int totalCount = externalQueryCount("select count(*) from claim where cho_reference = :pChoRef and chorganisation_id = :pChoId", extParameters);
         return totalCount > 0;
     }
 
@@ -1479,7 +1462,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         } else if (getSecurityInfoProvider().getIsINS()) {
             criteria.add(Restrictions.eq("insurer.id", getSecurityInfoProvider().getCurrentUser().getInsurer().getId()));
         }
-        List<Claim> claims = findByCriteriaFlushCommit(criteria);
+        List<Claim> claims = findByCriteria(criteria);
         if (claims.size() > 0) {
             return claims.get(0);
         } else {
@@ -1870,7 +1853,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
 
             LOG.debug("Overlapping query is: {}", criteria.toString());
-            List<Claim> claims = this.findByCriteriaFlushCommit(criteria);
+            List<Claim> claims = this.findByCriteria(criteria);
             if (claims.size() > 0) {
                 insurerClaimNumber = claims.get(0).getClaimNumber();
             }

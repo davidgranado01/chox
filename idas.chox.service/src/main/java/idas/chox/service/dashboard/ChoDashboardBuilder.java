@@ -121,7 +121,7 @@ public class ChoDashboardBuilder {
         return build(queryParameters, sb.toString());
     }
 
-    private DashBoardViewData build(Map queryParameters, String query) {
+    private DashBoardViewData build(Map<String, Object> queryParameters, String query) {
         DashBoardViewData viewData = new DashBoardViewData();
         List result = baseDataService.externalQuery(query, queryParameters);
         if (!result.isEmpty()) {
@@ -140,12 +140,12 @@ public class ChoDashboardBuilder {
     }
 
     private Map getQueryParameters() {
-        Map queryParameters = new HashMap();
+        Map<String, Object> queryParameters = new HashMap();
 
-        List<Integer> insurerIds = new ArrayList<Integer>();
-        List<Integer> claimOwnerIds = new ArrayList<Integer>();
+        List<Integer> insurerIds = new ArrayList<>();
+        List<Integer> claimOwnerIds = new ArrayList<>();
 
-        String insurerIdRaw = ((String[]) this.extParameters.get("insurerId"))[0].toString();
+        String insurerIdRaw = ((String[]) this.extParameters.get("insurerId"))[0];
         if (!insurerIdRaw.isEmpty()) {
             for (String insId : insurerIdRaw.split(",")) {
                 insurerIds.add(Integer.parseInt(insId));
@@ -154,7 +154,7 @@ public class ChoDashboardBuilder {
             insurerIds.add(-1);
         }
 
-        String choClaimOwnerIdRaw = ((String[]) this.extParameters.get("choClaimOwnerId"))[0].toString();
+        String choClaimOwnerIdRaw = ((String[]) this.extParameters.get("choClaimOwnerId"))[0];
         if (!choClaimOwnerIdRaw.isEmpty()) {
             for (String ownerId : choClaimOwnerIdRaw.split(",")) {
                 claimOwnerIds.add(Integer.parseInt(ownerId));

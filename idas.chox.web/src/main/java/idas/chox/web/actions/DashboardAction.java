@@ -45,7 +45,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public String getLastProcessDate() {
 
         String query = "select to_char(max(process_date), 'YYYY-MM-DD HH24:MI:SS') as last_process_date from dashboard";
-        List result = baseDataService.externalQuery(query, new HashMap());
+        List result = baseDataService.externalQuery(query);
 
         if (!result.isEmpty()) {
             Map data = (Map) result.get(0);

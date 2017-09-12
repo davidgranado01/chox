@@ -106,7 +106,6 @@ public class History extends Entity implements Serializable {
         history.setType(sType);
         history.setRuleId(rBusinessRule.getRuleId());
         history.setIsSystem(true);
-
         return history;
 
     }
