@@ -1252,7 +1252,7 @@
                             </div>
                             
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label1">Restrict Export Functions For User Manager roles?</label>
+                                <label class="chox-form-std-label1">Restrict Export Functions To User Manager Roles?</label>
                                 <s:checkbox name="restrictExport" value="restrictExport" />
                             </div>
                             <br>

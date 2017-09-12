@@ -393,7 +393,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean getCanExport() {
         boolean result = true;
-        if (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER_MNG)) {
+        if (getIsInsurer() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
             result = !getAuthenticatedUser().getInsurer().isRestrictExport();
         } else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_OPR)) {
             result = !getAuthenticatedUser().getChorganisation().isRestrictExport();
