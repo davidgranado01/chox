@@ -157,13 +157,13 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By Claim Type">
     private Short checkAccessibilityForClaimType(String accessibilityKey, WebUser user, Claim claim) {
-        LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
-        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+        LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim == null ? "claim is null" : claim.getStatus());
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey) && claim != null) {
             Accessibility accessibility = (Accessibility) getAccessibilityByClaimTypeMap().get(accessibilityKey);
             Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("    Access is {}", accessRight);
-            if (accessRight > 0 && claim != null && !canAccess(accessibility, claim)) {
+            if (accessRight > 0 && !canAccess(accessibility, claim)) {
                 accessRight = 0;
             }
             LOG.debug("    Returning Access of {}", accessRight);
@@ -197,57 +197,57 @@ public class ApplicationAccessibility {
     }
 
     private Map<String, Accessibility> getAccessibilityMap() {
+        Map<String, Accessibility> localMap = this.accessibilityMap;
 
-        if (accessibilityMap == null) {
-// We shouldn't need to synchronize this map as it will be read only
-//            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
+        if (localMap == null) {
             synchronized(LOCK) {
-                if (accessibilityMap == null) {
-                    accessibilityMap = accessibilityService.getAccessibilityMap();
+                localMap = this.accessibilityMap;
+                if (localMap == null) {
+                    this.accessibilityMap = localMap = accessibilityService.getAccessibilityMap();
                 }
             }
         }
-        return accessibilityMap;
+        return localMap;
     }
 
     private Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
+        Map<String, Accessibility> localMap = this.accessibilityByClaimTypeMap;
 
-        if (accessibilityByClaimTypeMap == null) {
-// We shouldn't need to synchronize this map as it will be read only
-//            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
+        if (localMap == null) {
             synchronized(LOCK) {
-                if (accessibilityByClaimTypeMap == null) {
-                    accessibilityByClaimTypeMap = accessibilityService.getAccessibilityByClaimTypeMap();
+                localMap = this.accessibilityByClaimTypeMap;
+                if (localMap == null) {
+                    this.accessibilityByClaimTypeMap = localMap = accessibilityService.getAccessibilityByClaimTypeMap();
                 }
             }
         }
-        return accessibilityByClaimTypeMap;
+        return localMap;
     }
 
     private Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
+        Map<String, List<Accessibility>> localMap = this.batchUpdateAccessibilityMap;
 
-        if (batchUpdateAccessibilityMap == null) {
-// We shouldn't need to synchronize this map as it will be read only
-//            batchUpdateAccessibilityMap = Collections.synchronizedMap(accessibilityService.getBatchUpdateAccessibilityMap());
+        if (localMap == null) {
             synchronized(LOCK) {
-                if (batchUpdateAccessibilityMap == null) {
-                    batchUpdateAccessibilityMap = accessibilityService.getBatchUpdateAccessibilityMap();
+                localMap = this.batchUpdateAccessibilityMap;
+                if (localMap == null) {
+                    this.batchUpdateAccessibilityMap = localMap = accessibilityService.getBatchUpdateAccessibilityMap();
                 }
             }
         }
-        return batchUpdateAccessibilityMap;
+        return localMap;
     }
 
     private Map<String, Short> restrictAccess(Map<String, Short> map, Accessibility accessibility, WebUser user) {
-        Map<String, Short> results = new HashMap<String, Short>(map.size());
+        Map<String, Short> results = new HashMap<>(map.size());
 
-        for (String key : map.keySet()) {
+        map.keySet().forEach((key) -> {
             if (map.get(key) > 0 && canAccess(accessibility, user)) {
                 results.put(key, map.get(key));
             } else {
                 results.put(key, (short) 0);
             }
-        }
+        });
         return results;
     }
 

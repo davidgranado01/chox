@@ -24,9 +24,10 @@ import idas.chox.core.util.DateHelper;
 
 public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware {
 
+    private final Object LOCK = new Object();
     private static final Logger LOG = LoggerFactory.getLogger(DBInterceptor.class);
     private SecurityInfoProvider securityInfoProvider;
-    private FullAuditService fullAuditService;
+    private volatile FullAuditService fullAuditService;
     private BeanFactory bf;
 
     @Override
@@ -711,16 +712,22 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
     }
 
 
-    public synchronized FullAuditService getFullAuditService() {
-        if (fullAuditService == null) {
+    public FullAuditService getFullAuditService() {
+        FullAuditService myAuditService = this.fullAuditService;
+        if (myAuditService == null) {
             /*
              * This is a bit of a hack....
              * Letting spring inject this bean causes a circular dependency error,
              * so we'll make this class BeanFactoryAware and get the bean ourselves
              */
-            fullAuditService = (FullAuditService) bf.getBean("fullAuditService");
+            synchronized (LOCK) {
+                myAuditService = this.fullAuditService;
+                if (myAuditService == null) {
+                    this.fullAuditService = myAuditService = (FullAuditService) bf.getBean("fullAuditService");
+                }
+            }
         }
-        return fullAuditService;
+        return myAuditService;
     }
 
     
