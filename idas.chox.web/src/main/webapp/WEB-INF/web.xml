@@ -9,7 +9,7 @@
     </context-param>
     <context-param>
         <param-name>nr-chox_executors</param-name>
-        <param-value>20</param-value>
+        <param-value>10</param-value>
     </context-param>
    
     <!-- Listeners -->
@@ -53,10 +53,11 @@
         <filter-name>struts-execute</filter-name>
         <filter-class>org.apache.struts2.dispatcher.filter.StrutsExecuteFilter</filter-class>
     </filter>
-    <filter>
+<!--    <filter>
 	<filter-name>request-dumper</filter-name>
 	<filter-class>idas.chox.web.RequestDumpFilter</filter-class>
     </filter>
+-->
 <!--    <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -73,10 +74,10 @@
         <filter-name>MultipartFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>-->
-    <filter-mapping>
+<!--    <filter-mapping>
 	<filter-name>request-dumper</filter-name>
 	<url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> -->
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
