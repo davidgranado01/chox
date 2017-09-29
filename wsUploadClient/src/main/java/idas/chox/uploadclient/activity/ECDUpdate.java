@@ -26,16 +26,16 @@ import idas.chox.uploadclient.utility.XlsFileParser;
 public class ECDUpdate {
 
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdate.class);
-    private static SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-    private static String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
+    private static final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
 
     public static void process(UploadService uploadService, String file) {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         // Argument is a file containing CHO reference numbers
         LOG.info("Processing file '{}'", file);
         try {
             FileInputStream fstream = new FileInputStream(file);
-            Map<Integer, List<String>> xlsDataMap = null;
+            Map<Integer, List<String>> xlsDataMap;
             XlsFileParser xlsFileParser = new XlsFileParser();
             try {
                 xlsDataMap = xlsFileParser.readExcelFile(fstream);
@@ -43,7 +43,7 @@ public class ECDUpdate {
 
                 for (Integer row : rowNumbers) {
                     // first row is header
-                    if (row.intValue() != 0) { // ignore first row - should contain header
+                    if (row != 0) { // ignore first row - should contain header
                         List<String> cells = xlsDataMap.get(row);
 
                         if (cells.size() < 4) {
@@ -61,14 +61,14 @@ public class ECDUpdate {
                         }
 
                         Date ecdDate = null;
-                        dateFormate.setLenient(false);
+                        dateFormat.setLenient(false);
                         if (cells.get(1).trim().isEmpty()) {
                             statusString.append(" No ECD Date Provided.");
-                        } else if (cells.get(1).trim().length() != dateFormate.toPattern().length()) {
+                        } else if (cells.get(1).trim().length() != dateFormat.toPattern().length()) {
                             statusString.append(" Invalid Format For ECD Date.");
                         } else {
                             try {
-                                ecdDate = dateFormate.parse(cells.get(1).trim());
+                                ecdDate = dateFormat.parse(cells.get(1).trim());
                             } catch (ParseException ex) {
                                 statusString.append(" Invalid Format For ECD Date.");
                                 LOG.error("could not parse the given date string to java date {}", cells.get(1).trim());
@@ -120,12 +120,11 @@ public class ECDUpdate {
         } catch (Exception e) {//Catch exception if any
             LOG.error("Error processing input file '{}': ", file, e.getMessage());
         }
-
-
     }
 
+    
     public static void updateECD(UploadService uploadService, EcdParam ecdParam) {
-        Result result = null;
+        Result result;
 
         LOG.debug("Calling ECD update Web Service for claim with CHO reference '{}'...", ecdParam.getSupplierReference());
         try {

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,9 +21,9 @@ public class ReportToExcel {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportToExcel.class);
     private List<Report> reports = new ArrayList<>();
-    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    private static final DateFormat dateFormatInput1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final DateFormat dateFormatInput2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DateFormat dateFormatInput1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateFormat dateFormatInput2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     
     private Report readReport(BufferedReader br) throws IOException, ReportNotFoundException {
         String[] headers;
@@ -125,29 +124,47 @@ public class ReportToExcel {
         }
     }
 
+    
     public void exportReports() {
-        for (Report report : reports) {
+        reports.stream().map((report) -> {
             if (report.getName() != null) {
                 System.out.println("Report for '" + report.getName() + "'");
                 System.out.println();
             }
+            return report;
+        }).map((report) -> {
             System.out.println(report.getHeaders()[0]);
+            return report;
+        }).map((report) -> {
             for (int i = 1; i < report.getHeaders().length; i++) {
                 System.out.print("\t" + report.getHeaders()[i]);
             }
+            return report;
+        }).map((report) -> {
             System.out.println();
-
-            for (Object[] bodyLine : report.getBody()) {
+            return report;
+        }).map((report) -> {
+            report.getBody().stream().map((bodyLine) -> {
                 System.out.println(bodyLine[0]);
+                return bodyLine;
+            }).map((bodyLine) -> {
                 for (int i = 1; i < bodyLine.length; i++) {
                     System.out.print("\t" + bodyLine[i]);
                 }
+                return bodyLine;
+            }).forEachOrdered((_item) -> {
                 System.out.println();
-            }
+            });
+            return report;
+        }).map((_item) -> {
             System.out.println();
+            return _item;
+        }).map((_item) -> {
             System.out.println();
+            return _item;
+        }).forEachOrdered((_item) -> {
             System.out.println("==============================================================");
-        }
+        });
     }
 
     public final Object[] convertBody(String[] bodyLine) {
