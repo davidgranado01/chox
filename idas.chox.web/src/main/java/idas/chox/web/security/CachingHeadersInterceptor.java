@@ -14,6 +14,8 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
 /**
  * @author John
+ * This interceptor is no longer used (removed from struts.xml).
+ * Please see idas.chox.web.CachingResponseFilter
  */
 public class CachingHeadersInterceptor extends AbstractInterceptor implements
         Serializable {

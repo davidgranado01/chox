@@ -10,22 +10,14 @@
     <constant name="struts.codebehind.action.defaultMethodName" value="index"/>
     <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
     <constant name="struts.action.extension" value="action" />
-
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
-            <interceptor name="sessionAwareInterceptor" class="idas.chox.web.security.SessionAwareInterceptor" />
-            <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor name="choxExceptionLogger" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
-            <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
-            <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="acegi"/>
-                <!-- Add interceptor to prevent caching -->
-                <interceptor-ref name="cachingHeadersInterceptor"/>
                 <interceptor-ref name="alias"/>
-                <interceptor-ref name="i18n"/>
                 <interceptor-ref name="checkbox"/>
                 <interceptor-ref name="multiselect"/>
                 <interceptor-ref name="params">
@@ -35,28 +27,26 @@
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="modelDriven"/>
-                <interceptor-ref name="fileUpload"/>
                 <interceptor-ref name="staticParams"/>
                 <interceptor-ref name="actionMappingParams"/>
                 <interceptor-ref name="params">
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
             <interceptor-stack name="activityMonitoring">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="acegi"/>
-                <!-- Add interceptor to prevent caching -->
-                <interceptor-ref name="cachingHeadersInterceptor"/>
                 <interceptor-ref name="alias"/>
-                <interceptor-ref name="i18n"/>
-                <interceptor-ref name="servletConfig"/>
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="staticParams"/>
                 <interceptor-ref name="actionMappingParams"/>
                 <interceptor-ref name="params">
                     <param name="excludeParams">dojo\..*,^struts\..*</param>
                 </interceptor-ref>
+                <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
         </interceptors>
