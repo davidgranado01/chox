@@ -49,7 +49,7 @@ public class TeamWorkflowReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
             Integer insurerId = -1;
@@ -108,10 +108,10 @@ public class TeamWorkflowReport implements Report {
                 LOG.debug("serviceCommencingDate={}", serviceCommencingDate.toString());
             }
 
-            List<TeamWorkflowReportObject> teamReportObjects = new ArrayList<TeamWorkflowReportObject>();
+            List<TeamWorkflowReportObject> teamReportObjects = new ArrayList<>();
             HashMap queryParameters = new HashMap();
             queryParameters.put("pInsurerId", insurerId);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder(200);
             sb.append("select distinct site from workgroup where insurer_id = :pInsurerId and status = true ");
             if (selectedSite != null) {
                 sb.append("and site = :pSite ");
@@ -122,9 +122,8 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = reportDataService.getReportData(sb.toString(), queryParameters);
-            for (Object o : result) {
-                    Map data = (Map) o;
+            List<Map> result = reportDataService.getReportData(sb.toString(), queryParameters);
+            for (Map data : result) {
                     TeamWorkflowReportObject teamReportObject = new TeamWorkflowReportObject();
                     teamReportObject.setSite(data.get("site").toString());
                     teamReportObjects.add(teamReportObject);
@@ -134,7 +133,7 @@ public class TeamWorkflowReport implements Report {
             for (TeamWorkflowReportObject obj: teamReportObjects) {
                 LOG.debug("Getting teams of site: {}", obj.getSite());
                 queryParameters = new HashMap();
-                sb = new StringBuffer();
+                sb = new StringBuilder(200);
                 queryParameters.put("pSite", obj.getSite());
                 queryParameters.put("pInsurerId", insurerId);
                 sb.append("select distinct site, team from workgroup where site = :pSite and insurer_id = :pInsurerId and status = true ");
@@ -149,8 +148,7 @@ public class TeamWorkflowReport implements Report {
                     teamReportObjects.remove(obj);
                 }
                 else {
-                    for (Object o : result) {
-                      Map data = (Map) o;
+                    for (Map data : result) {
                       if (!first) {
                             data.remove("site");
                         }
@@ -160,7 +158,7 @@ public class TeamWorkflowReport implements Report {
                       TeamWorkflowLineItem workflowLineItem = TeamWorkflowLineItem.getObject(data);
                       LOG.debug("Getting stats for site='{}', team='{}'", workflowLineItem.getSite(), workflowLineItem.getTeam());
                       // Now construct query to get team stats
-                      sb = new StringBuffer();
+                      sb = new StringBuilder(10000);
                       sb.append("select ");
 
                       /*

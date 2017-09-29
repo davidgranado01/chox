@@ -194,7 +194,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 LOG.debug("Getting members of workgroup: {}",
                         obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 if (isWorkgroupEnabled && isClaimOwnershipEnabled && selectedOwnerId == -1) {
                     // Workgroup enabled, no Claim Owner selected
                     queryParameters.put("pWorkgroupId", obj.getId());
@@ -269,7 +269,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     HandlerActionsStatusLineItem handlerActionItem = HandlerActionsStatusLineItem.getObject(data);
 //                    LOG.debug("Getting stats for user: {}", handlerActionItem.getName());
                     // Now construct query to get claim owner stats
-                    sb = new StringBuffer();
+                    sb = new StringBuilder();
                     sb.append("select ");
 
                     /*

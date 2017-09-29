@@ -1,9 +1,11 @@
 package idas.chox.web.actions;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.services.LookupService;
-import java.util.List;
 
 public class TeamDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(TeamDropDownAction.class);
@@ -58,10 +60,10 @@ public class TeamDropDownAction extends BaseAction {
     public String getJsonData() {
         LOG.debug("Returning json data from teams: {}", teams);
 
-        StringBuffer jsonString = new StringBuffer();
+        StringBuilder jsonString = new StringBuilder();
         jsonString.append("[");
         for (String team : teams) {
-            jsonString.append("{\"team\":\"" + team + "\"},");
+            jsonString.append("{\"team\":\"").append(team).append("\"},");
         }
         jsonString.deleteCharAt(jsonString.length()-1); // remove trailing semi-colon
         jsonString.append("]");

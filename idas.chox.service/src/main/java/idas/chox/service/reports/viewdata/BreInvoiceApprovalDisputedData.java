@@ -5,7 +5,6 @@ import idas.chox.core.model.ReasonOfRejection;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,37 +37,37 @@ public class BreInvoiceApprovalDisputedData {
         result.setHeaderName((String) data.get("month_header".toLowerCase()));
         LOG.debug("Column: {}", result.getHeaderName());
         result.setNoInvoicesUploaded(((BigInteger) data.get("invoice_uploaded_current_total".toLowerCase())).intValue());
-        LOG.debug("NoInvoicesApprovedUploaded: {}", result.getNoInvoicesUploaded().intValue());
+        LOG.debug("NoInvoicesApprovedUploaded: {}", result.getNoInvoicesUploaded());
         result.setNoInvoicesApprovedByBusinessRules(((BigInteger) data.get("invoice_approved_by_bre_current".toLowerCase())).intValue());
-        LOG.debug("NoInvoicesApprovedByBusinessRules: {}", result.getNoInvoicesApprovedByBusinessRules().intValue());
+        LOG.debug("NoInvoicesApprovedByBusinessRules: {}", result.getNoInvoicesApprovedByBusinessRules());
         result.setNoInvoicesApprovedByBusinessRulesDisputed(((BigInteger) data.get("invoice_approved_by_bre_disputed_current".toLowerCase())).intValue());
-        LOG.debug("NoInvoicesApprovedByBusinessRulesDisputed: {}", result.getNoInvoicesApprovedByBusinessRulesDisputed().intValue());
+        LOG.debug("NoInvoicesApprovedByBusinessRulesDisputed: {}", result.getNoInvoicesApprovedByBusinessRulesDisputed());
         LOG.debug(" number not disputed paid within 15 days: {}", data.get("invoice_approved_by_bre_not_disputed_paid_within_15days_current"));
         LOG.debug(" number not disputed paid within 30 days: {}", data.get("invoice_approved_by_bre_not_disputed_paid_within_30days_current"));
         LOG.debug(" number disputed paid within 15 days: {}", data.get("invoice_approved_by_bre_disputed_paid_within_15days_current"));
         LOG.debug(" number disputed paid within 30 days: {}", data.get("invoice_approved_by_bre_disputed_paid_within_30days_current"));
-        if(result.getNoInvoicesApprovedByBusinessRules().intValue() != 0){
+        if(result.getNoInvoicesApprovedByBusinessRules() != 0){
             result.setPerInvoicesApprovedByBusinessRulesDisputed(new BigDecimal((result.getNoInvoicesApprovedByBusinessRulesDisputed() * 1.0) / result.getNoInvoicesApprovedByBusinessRules()).setScale(4, RoundingMode.HALF_UP));
             if (result.getNoInvoicesApprovedByBusinessRules() - result.getNoInvoicesApprovedByBusinessRulesDisputed() != 0) {
                 result.setPerInvoicesApprovesByBusinessRulesNotDisputedPaid15Days(new BigDecimal(getIntegerValue(data.get("invoice_approved_by_bre_not_disputed_paid_within_15days_current")) * 1.0 / (result.getNoInvoicesApprovedByBusinessRules() - result.getNoInvoicesApprovedByBusinessRulesDisputed())).setScale(4, RoundingMode.HALF_UP));
                 result.setPerInvoicesApprovedByBusinessRulesNotDisputedPaid30Days(new BigDecimal(getIntegerValue(data.get("invoice_approved_by_bre_not_disputed_paid_within_30days_current")) * 1.0 / (result.getNoInvoicesApprovedByBusinessRules() - result.getNoInvoicesApprovedByBusinessRulesDisputed())).setScale(4, RoundingMode.HALF_UP));
             }
-            if (result.getNoInvoicesApprovedByBusinessRulesDisputed().intValue() != 0) {
+            if (result.getNoInvoicesApprovedByBusinessRulesDisputed() != 0) {
                 result.setPerInvoicesApprovedByBusinessRulesDisputedPaid15Days(new BigDecimal(getIntegerValue(data.get("invoice_approved_by_bre_disputed_paid_within_15days_current")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputed()).setScale(4, RoundingMode.HALF_UP));
                 result.setPerInvoicesApprovedByBusinessRulesDisputedPaid30Days(new BigDecimal(getIntegerValue(data.get("invoice_approved_by_bre_disputed_paid_within_30days_current")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputed()).setScale(4, RoundingMode.HALF_UP));
             }
         }
-        if(result.getNoInvoicesApprovedByBusinessRulesDisputed().intValue() !=0){
-            Map<Integer, BigDecimal> drorMap = new HashMap<Integer, BigDecimal>();
-            for (ReasonOfRejection ror : reasonsOfRejection) {
+        if(result.getNoInvoicesApprovedByBusinessRulesDisputed() !=0){
+            Map<Integer, BigDecimal> drorMap = new HashMap<>();
+            reasonsOfRejection.forEach((ror) -> {
                 drorMap.put(ror.getId(), new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_" + ror.getRorName().toLowerCase())) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputed()).setScale(4, RoundingMode.HALF_UP));
-            }
+            });
             result.setDisputedApprovalReasonsMap(drorMap);
         } else {
-            Map<Integer, BigDecimal> drorMap = new HashMap<Integer, BigDecimal>();
-            for (ReasonOfRejection ror : reasonsOfRejection) {
+            Map<Integer, BigDecimal> drorMap = new HashMap<>();
+            reasonsOfRejection.forEach((ror) -> {
                 drorMap.put(ror.getId(), (BigDecimal.ZERO));
-            }
+            });
             result.setDisputedApprovalReasonsMap(drorMap);
         }
         
@@ -153,10 +152,10 @@ public class BreInvoiceApprovalDisputedData {
     public void setHeaderName(String headerName) {
 
         String tgt = headerName;
-        StringBuffer s=new StringBuffer(tgt.toLowerCase());
+        StringBuilder s=new StringBuilder(tgt.toLowerCase());
         s.setCharAt(0,Character.toUpperCase(s.charAt(0)));
 
-        String ns=new String(s);
+        String ns=s.toString();
 
         LOG.debug("header value"+ns);
         this.headerName = ns;

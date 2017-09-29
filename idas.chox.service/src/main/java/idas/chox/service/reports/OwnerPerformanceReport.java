@@ -138,7 +138,7 @@ public class OwnerPerformanceReport implements Report {
             for (OwnerPerformanceReportObject obj : performanceReportObjects) {
                 LOG.debug("Getting members of workgroup: {}", obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
                     // Workgroup enabled, no Claim Owner selected
                     queryParameters.put("pWorkgroupId", obj.getId());
@@ -205,7 +205,7 @@ public class OwnerPerformanceReport implements Report {
                     }
                     LOG.debug("Getting stats for user: {}", performanceLineItem.getName());
                     // Now construct query to get claim owner stats
-                    sb = new StringBuffer();
+                    sb = new StringBuilder();
                     sb.append("select ");
 
 

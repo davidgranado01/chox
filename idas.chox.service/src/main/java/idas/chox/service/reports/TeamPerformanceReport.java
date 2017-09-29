@@ -48,7 +48,7 @@ public class TeamPerformanceReport implements Report{
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         try {
             Integer insurerId = -1;
             String selectedSite = "";
@@ -101,10 +101,10 @@ public class TeamPerformanceReport implements Report{
            // baseDataService.query("select update_user_service(" + insurerId + ")");
            // baseDataService.callUpdateWorkgroupService(insurerId);
 
-            List<TeamPerformanceReportObject> teamReportObjects = new ArrayList<TeamPerformanceReportObject>();
+            List<TeamPerformanceReportObject> teamReportObjects = new ArrayList<>();
             HashMap queryParameters = new HashMap();
             queryParameters.put("pInsurerId", insurerId);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select distinct site from workgroup where insurer_id = :pInsurerId and status = true ");
             if (selectedSite != null && selectedSite.length() > 0) {
                 sb.append("and site = :pSite ");
@@ -115,9 +115,8 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = reportDataService.getReportData(sb.toString(), queryParameters);
-            for (Object o : result) {
-                    Map data = (Map) o;
+            List<Map> result = reportDataService.getReportData(sb.toString(), queryParameters);
+            for (Map data : result) {
                     TeamPerformanceReportObject teamReportObject = new TeamPerformanceReportObject();
                     teamReportObject.setSite(data.get("site").toString());
                     teamReportObjects.add(teamReportObject);
@@ -127,7 +126,7 @@ public class TeamPerformanceReport implements Report{
             for (TeamPerformanceReportObject obj: teamReportObjects) {
                 LOG.debug("Getting teams of site: {}", obj.getSite());
                 queryParameters = new HashMap();
-                sb = new StringBuffer();
+                sb = new StringBuilder(200);
                 queryParameters.put("pSite", obj.getSite());
                 queryParameters.put("pInsurerId", insurerId);
                 sb.append("select distinct site, team from workgroup where site = :pSite and insurer_id = :pInsurerId and status = true ");
@@ -142,8 +141,7 @@ public class TeamPerformanceReport implements Report{
                     teamReportObjects.remove(obj);
                 }
                 else {
-                    for (Object o : result) {
-                      Map data = (Map) o;
+                    for (Map data : result) {
                       if (!first) {
                             data.remove("site");
                         }
@@ -153,7 +151,7 @@ public class TeamPerformanceReport implements Report{
                       TeamPerformanceLineItem performanceLineItem = TeamPerformanceLineItem.getObject(data);
                       LOG.debug("Getting stats for site='{}', team='{}'", performanceLineItem.getSite(), performanceLineItem.getTeam());
                       // Now construct query to get team stats
-                      sb = new StringBuffer();
+                      sb = new StringBuilder(10000);
                       sb.append("select ");
 
                       /*

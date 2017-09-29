@@ -2,10 +2,10 @@ package idas.chox.web.actions;
 
 import java.util.List;
 
-import idas.chox.core.services.LookupService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.services.LookupService;
 
 public class SiteDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(SiteDropDownAction.class);
@@ -50,10 +50,10 @@ public class SiteDropDownAction extends BaseAction {
     public String getJsonData() {
         LOG.debug("Returning json data from sites: {}", sites);
 
-        StringBuffer jsonString = new StringBuffer();
+        StringBuilder jsonString = new StringBuilder();
         jsonString.append("[");
         for (String site : sites) {
-            jsonString.append("{\"site\":\"" + site + "\"},");
+            jsonString.append("{\"site\":\"").append(site).append("\"},");
         }
         jsonString.deleteCharAt(jsonString.length()-1); // remove trailing semi-colon
         jsonString.append("]");

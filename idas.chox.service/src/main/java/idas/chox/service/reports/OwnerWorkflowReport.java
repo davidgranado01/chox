@@ -50,7 +50,7 @@ public class OwnerWorkflowReport implements Report {
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         try {
             boolean isWorkgroupEnabled = true;
             Integer hasStarred = 0;
@@ -108,7 +108,7 @@ public class OwnerWorkflowReport implements Report {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
-            List<OwnerWorkflowReportObject> workflowReportObjects = new ArrayList<OwnerWorkflowReportObject>();
+            List<OwnerWorkflowReportObject> workflowReportObjects = new ArrayList<>();
             if (isWorkgroupEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
@@ -133,15 +133,18 @@ public class OwnerWorkflowReport implements Report {
                     queryParameters.put("pEndDate", endDate);
                 }
                 sb.append("order by name");
-                List result = reportDataService.getReportData(sb.toString(), queryParameters);
-                for (Object o : result) {
-                    Map data = (Map) o;
+                List<Map> result = reportDataService.getReportData(sb.toString(), queryParameters);
+                result.stream().map((data) -> {
                     OwnerWorkflowReportObject workflowReportObject = new OwnerWorkflowReportObject();
                     workflowReportObject.setWorkgroup(data.get("name").toString());
                     workflowReportObject.setId((Integer)data.get("id"));
+                    return workflowReportObject;
+                }).map((workflowReportObject) -> {
                     workflowReportObjects.add(workflowReportObject);
+                    return workflowReportObject;
+                }).forEachOrdered((workflowReportObject) -> {
                     LOG.debug("Workgroup added: {}", workflowReportObject.getWorkgroup());
-                }
+                });
             }
             else {
                 OwnerWorkflowReportObject workflowReportObject = new OwnerWorkflowReportObject();
@@ -152,7 +155,7 @@ public class OwnerWorkflowReport implements Report {
             for (OwnerWorkflowReportObject obj: workflowReportObjects) {
                 LOG.debug("Getting members of workgroup: {}", obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
                     // Workgroup enabled, no Claim Owner selected
                     queryParameters.put("pWorkgroupId", obj.getId());
@@ -219,7 +222,7 @@ public class OwnerWorkflowReport implements Report {
                     OwnerWorkflowLineItem workflowLineItem = OwnerWorkflowLineItem.getObject(data);
                     LOG.debug("Getting stats for user: {}", workflowLineItem.getName());
                     // Now construct query to get claim owner stats
-                    sb = new StringBuffer();
+                    sb = new StringBuilder();
                     sb.append("select ");
 
                     /*

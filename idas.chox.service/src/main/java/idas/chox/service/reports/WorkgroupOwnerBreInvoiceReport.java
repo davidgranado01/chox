@@ -57,7 +57,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     public Map<String, Object> getReportParameters() throws Exception {
 
         LOG.debug("getReportParameters '{}' ");
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
             String supplierId;
@@ -132,7 +132,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
-            List<WorkgroupOwnerBreReportObject> workflowReportObjects = new ArrayList<WorkgroupOwnerBreReportObject>();
+            List<WorkgroupOwnerBreReportObject> workflowReportObjects = new ArrayList<>();
             if (isWorkgroupEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
@@ -147,15 +147,18 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = reportDataService.getReportData(sb.toString(), queryParameters);
-                for (Object o : result) {
-                    Map data = (Map) o;
+                List<Map> result = reportDataService.getReportData(sb.toString(), queryParameters);
+                result.stream().map((data) -> {
                     WorkgroupOwnerBreReportObject workflowReportObject = new WorkgroupOwnerBreReportObject();
                     workflowReportObject.setWorkgroup(data.get("name").toString());
                     workflowReportObject.setId((Integer) data.get("id"));
+                    return workflowReportObject;
+                }).map((workflowReportObject) -> {
                     workflowReportObjects.add(workflowReportObject);
+                    return workflowReportObject;
+                }).forEachOrdered((workflowReportObject) -> {
                     LOG.debug("Workgroup added: {}", workflowReportObject.getWorkgroup());
-                }
+                });
             } else {
                 WorkgroupOwnerBreReportObject workflowReportObject = new WorkgroupOwnerBreReportObject();
                 workflowReportObjects.add(workflowReportObject);
@@ -165,7 +168,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             for (WorkgroupOwnerBreReportObject obj : workflowReportObjects) {
                 LOG.debug("Getting members of workgroup: {}", obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId", obj.getId());
@@ -186,11 +189,10 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = reportDataService.getReportData(sb.toString(), queryParameters);
+                List<Map> result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
-                for (Object o : result) {
-                    Map data = (Map) o;
+                for (Map data : result) {
                     if (!first) {
                         data.remove("workgroup");
                     } else {
@@ -199,7 +201,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     WorkgroupOwnerBreLineItem workflowLineItem = WorkgroupOwnerBreLineItem.getObject(data);
                     LOG.debug("Getting stats for user: {}", workflowLineItem.getName());
                     // Now construct query to get claim owner stats
-                    sb = new StringBuffer();
+                    sb = new StringBuilder();
                     sb.append("select ");
 
                     /*
@@ -369,10 +371,10 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pInsurerId", insurerId);
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
-                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
+                    List<Map> detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
-                        workflowLineItem.updateObject((Map) detailData.get(0), reasonsOfRejection);
+                        workflowLineItem.updateObject(detailData.get(0), reasonsOfRejection);
                         obj.getOwner().add(workflowLineItem);
                     }
                 }
@@ -443,8 +445,8 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     }
     
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayForHeader) {
-        List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
-        List result;
+        List<ReasonOfRejection> reportRows = new ArrayList<>();
+        List<Map> result;
         if(currentUser.getInsurer() != null){
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice Rejection' " +
@@ -465,8 +467,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             result = reportDataService.getReportData(query, paramMap);
         }
         
-        for (Object o : result) {
-            Map data = (Map) o;
+        result.stream().map((data) -> {
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
             if(!displayForHeader){
@@ -474,8 +475,10 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             } else {
                 reportRow.setRorName(data.get("name").toString());
             }
+            return reportRow;
+        }).forEachOrdered((reportRow) -> {
             reportRows.add(reportRow);
-        }
+        });
 
         return reportRows;
     }
