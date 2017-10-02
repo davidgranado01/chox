@@ -17,7 +17,7 @@ RETURNS TABLE(
     "Volume of Audits Completed" integer,
     "Total No. of audits (rolling total)" integer,
     "Hire Volume" integer,
-    "Average Hire Days" numeric(4,0),
+    "Average Hire Days" numeric(4,1),
     "Average Hire Cost" numeric(10,2),
     "No. of cases with Penalties Paid" bigint,
     "Amount of Penalties Paid" numeric(10,2),
@@ -78,7 +78,7 @@ $BODY$
                               and (workgroups is null or (c.workgroup_id is not null and c.workgroup_id = ANY(workgroups)))
                               and ar.audit_completed_date >= weeklyBreakDownDatesRecord.week_start and ar.audit_completed_date <= weeklyBreakDownDatesRecord.week_end
                               and (claimTypes is null or array_length(claimTypes, 1) < 1 or c.claim_type = ANY(claimTypes))) as "Hire Volume",
-                           (select avg(ar.hire_duration)
+                           (select round(avg(ar.hire_duration)::numeric, 1)
                             from claim c, claim_audit_review ar
                             where c.audit_review_id = ar.id and ar.total_hire_cost > 0
                               and c.insurer_id = insId
@@ -86,8 +86,8 @@ $BODY$
                               and (choIds is null or c.chorganisation_id = ANY(choIds))
                               and (workgroups is null or (c.workgroup_id is not null and c.workgroup_id = ANY(workgroups)))
                               and ar.audit_completed_date >= weeklyBreakDownDatesRecord.week_start and ar.audit_completed_date <= weeklyBreakDownDatesRecord.week_end
-                              and (claimTypes is null or array_length(claimTypes, 1) < 1 or c.claim_type = ANY(claimTypes)))::numeric(4,0) as "Average Hire Days",
-                           (select avg(ar.total_hire_cost)
+                              and (claimTypes is null or array_length(claimTypes, 1) < 1 or c.claim_type = ANY(claimTypes)))::numeric(4,1) as "Average Hire Days",
+                           (select round(avg(ar.total_hire_cost)::numeric, 2)
                             from claim c, claim_audit_review ar
                             where c.audit_review_id = ar.id and ar.total_hire_cost > 0
                               and c.insurer_id = insId
@@ -141,7 +141,7 @@ $BODY$
                               and (workgroups is null or (c.workgroup_id is not null and c.workgroup_id = ANY(workgroups)))
                               and ar.audit_completed_date >= weeklyBreakDownDatesRecord.week_start and ar.audit_completed_date <= weeklyBreakDownDatesRecord.week_end
                               and (claimTypes is null or array_length(claimTypes, 1) < 1 or c.claim_type = ANY(claimTypes))) as "Repair Volume",
-                           (select avg(total_repair_cost)
+                           (select round(avg(total_repair_cost)::numeric, 2)
                             from claim c, claim_audit_review ar
                             where c.audit_review_id = ar.id and ar.total_repair_cost > 0
                               and c.insurer_id = insId
