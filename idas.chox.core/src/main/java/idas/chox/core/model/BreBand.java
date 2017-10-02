@@ -179,6 +179,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean pauseSubscriberSlaClock;
     private boolean pauseFixedFeeSlaClock;
     private boolean storageRecoveryNetCeilingCheck;
+    private boolean ecdVsRepairCompletionDateCheck;
     private BigDecimal storageRecoveryNetCeiling = BigDecimal.ZERO;
     private boolean enableGtaDiscount;
     private boolean fraudCheckEnable;
@@ -227,6 +228,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setStorageRecoveryNetCeilingCheck(boolean storageRecoveryNetCeilingCheck) {
         this.storageRecoveryNetCeilingCheck = storageRecoveryNetCeilingCheck;
+    }
+
+    public boolean isEcdVsRepairCompletionDateCheck() {
+        return ecdVsRepairCompletionDateCheck;
+    }
+
+    public void setEcdVsRepairCompletionDateCheck(boolean ecdVsRepairCompletionDateCheck) {
+        this.ecdVsRepairCompletionDateCheck = ecdVsRepairCompletionDateCheck;
     }
 
     public BigDecimal getStorageRecoveryNetCeiling() {

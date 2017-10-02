@@ -3140,6 +3140,11 @@
                             <label class="chox-form-check-label">Total Loss / Storage & Recovery Fee Net Check</label>
                             <div class="chox-form-check-description">Flag a claim when the CHO is charging a Total Loss Fee and a Storage & Recovery Fee on the same invoice.</div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="ecdVsRepairCompletionDateCheck" value="ecdVsRepairCompletionDateCheck" /></div>
+                            <label class="chox-form-check-label">ECD vs Repair Completion Date Check</label>
+                            <div class="chox-form-check-description">Flag a claim when the latest ECD (last one added by the CHO) is older than the Repair Completion Date.</div>
+                        </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>

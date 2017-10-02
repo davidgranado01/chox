@@ -179,6 +179,7 @@
         <property column="pause_fixedfee_sla_clock" name="pauseFixedFeeSlaClock"/>
         <property column="storage_recovery_net_ceiling_check" name="storageRecoveryNetCeilingCheck"/>
         <property column="storage_recovery_net_ceiling" name="storageRecoveryNetCeiling"/>
+        <property column="ecd_vs_repair_completion_date_check" name="ecdVsRepairCompletionDateCheck"/>
         <property column="enable_gta_discount" name="enableGtaDiscount" not-null="true"/>
         <property column="fraud_check_enable" name="fraudCheckEnable" not-null="true"/>
         <property column="enable_claim_matching" name="claimMatchingEnable"/>
