@@ -14,6 +14,7 @@ public class MakeInterimPayment extends BaseActivity {
     
     private BigDecimal newTotalInterimPayment;
     private BigDecimal additionalInterimPayment;
+    private String supportingInterimNotes;
 
     public BigDecimal getAdditionalInterimPayment() {
         return additionalInterimPayment;
@@ -31,6 +32,14 @@ public class MakeInterimPayment extends BaseActivity {
         this.newTotalInterimPayment = newTotalInterimPayment;
     }
 
+    public String getSupportingInterimNotes() {
+        return supportingInterimNotes;
+    }
+
+    public void setSupportingInterimNotes(String supportingInterimNotes) {
+        this.supportingInterimNotes = supportingInterimNotes;
+    }
+
 
     @Override
     public boolean needsClaimLockedCheck() {
@@ -39,6 +48,9 @@ public class MakeInterimPayment extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        if (supportingInterimNotes == null || supportingInterimNotes.isEmpty()) {
+            throw new Exception("You must supply 'Supporting Interim Payment Notes'");
+        }
         Comment comment = null;
         if (newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0
                 && additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
@@ -68,6 +80,8 @@ public class MakeInterimPayment extends BaseActivity {
             comment = Comment.newComment(0, "An additional interim payment of £" + additionalInterimPayment.toString() + " has been made."
                     + " The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
         }
+        claim.addComment(comment);
+        comment = Comment.newComment(0, supportingInterimNotes);
         claim.addComment(comment);
     }
 

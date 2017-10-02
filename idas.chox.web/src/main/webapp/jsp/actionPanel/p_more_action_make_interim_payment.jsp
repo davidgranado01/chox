@@ -12,7 +12,15 @@
 	</s:if>
 	
     Ext.onReady(function() {
-    	
+    	var supportingNotesField = new Ext.form.TextArea({
+            name             : 'supportingInterimNotes',
+            id               : 'supportingNotesId',
+            width            :  350,
+            height           :  40,
+            allowBlank       :  false,
+            renderTo         : 'interimPaymentNotesDivId'
+        });
+
     	$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />');
     	if(interimPayMade){
     		$('#radioBox').show();
@@ -35,23 +43,31 @@
                 newTotalInterimInput:{
                     required:true,
                     number:true
+                },
+                supportingInterimNotes:{
+                    required:true
                 }
             },
             messages: {
-                additionalInterimInput: {
+                additionalInterimPayment: {
                     required:"You must supply a value for 'Additional Interim Payment'",
                     number:"Invalid 'Interim Payment' Format"
                 },
                 newTotalInterimInput: {
                     required:"You must supply a value for 'New Total Interim Payment'",
                     number:"Invalid 'Interim Payment' Format"
+                },
+                supportingInterimNotes: {
+                    required:"You must supply 'Supporting Interim Payment Notes'"
                 }
-            }
+            },
         });
+        
     });
     
     function setPaymentField(){
     	$('#ACKmMakeInterimPaymentMessageBox').empty();
+    	$('#supportingNotesId').empty();
     	if($('#interimPayAdd').attr('checked') !== undefined){
     		$('#additionalInterim').show();
     		$('#additionalInterimInfo').show();
@@ -153,6 +169,14 @@
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
+                        <tr id="supportingInterimPaymentNote">
+                            <td nowrap="nowrap"><label>Supporting Interim Payment Notes (Public)<span class="mandatory">*</span></label></td>
+                            <td>
+                                <div id="interimPaymentNotesDivId"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         <tr id="additionalInterim">
                             <td><label>Additional Interim Payment Amount<span class="mandatory">*</span></label></td>
                             <td nowrap="nowrap">
@@ -163,7 +187,7 @@
                             <td></td>
                         </tr>
                         <tr id="additionalInterimInfo">
-                            <td><label>New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
+                            <td><label>New Total Interim Payment Amount</label></td>
                             <td nowrap="nowrap">
                                 £&nbsp;<label id="additionalInterimPaymentInfo"></label>
                             </td>
@@ -171,7 +195,7 @@
                             <td></td>
                         </tr>
                         <tr id="newTotalInterim" style="display: none;">
-                            <td><label id="newPayLabel">New Total Interim Payment Amount</label></td>
+                            <td><label id="newPayLabel">New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
                             <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="newTotalInterimPayment" name="newTotalInterimPayment" value="<s:property value="newTotalInterimPayment" />" />
                                 <input type="button" onclick="javascript: submitInterim('newTotal')" value="Confirm Interim Payment" id="newTotalInterimButton"/>
