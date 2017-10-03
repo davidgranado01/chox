@@ -170,7 +170,6 @@ public class ExcelClaim {
     private final Date claimHireMonitoringDetailTotalLossOfferAcceptedDate;
     private final Date claimHireMonitoringDetailTotalLossOfferCheckIssuedDate;
     private final Date claimHireMonitoringDetailTotalLossOfferCheckReceivedDate;
-    private final Date claimInsHMDCopleyOfferMadeDate;
     private final BigDecimal claimHireMonitoringDetailLabourRate;
     private final BigDecimal claimHireMonitoringDetailLabourHour;
     private final String claimRepairOnlyCheck;
@@ -194,6 +193,7 @@ public class ExcelClaim {
     private final Date claimInsHMDTotalLossOfferAcceptedDate;
     private final Date claimInsHMDTotalLossOfferCheckIssuedDate;
     private final Date claimInsHMDTotalLossOfferCheckReceivedDate;
+    private final Date claimInsHMDCopleyOfferMadeDate;
     private final BigDecimal claimInsHMDLabourRate;
     private final BigDecimal claimInsHMDLabourHour;
     private final BigDecimal claimInsHMDLabourCost;

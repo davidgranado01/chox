@@ -175,7 +175,7 @@
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
                 totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
-                copleyOfferMadeDate:: {dateITA:"Invalid date format for the 'Copley Offer Made' date."},
+                copleyOfferMadeDate: {dateITA:"Invalid date format for the 'Copley Offer Made' date."},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
                 labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
                 labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", min : "Labour Cost must not be negative."},
@@ -188,7 +188,7 @@
 
         $('select[name="claimantImpecunious"]').val('<s:property value='claimantImpecunious'/>');
         $('select[name="whoManagedRepair"]').val('<s:property value='whoManagedRepair'/>');
-
+        $('select[name="copleyOfferMade"]').val('<s:property value='copleyOfferMade'/>');
 
     });
         
@@ -233,70 +233,69 @@
         <legend>Hire Monitoring</legend>
         <div class="form-container" id="insurerHireMonitoringWId">
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Inspection Booked Date</label>
-                    <span id="insurerInspectionBookedDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Inspection Booked Date</label>
+                <span id="insurerInspectionBookedDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Inspection Date</label>
-                    <span id="insurerInspectionDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Inspection Date</label>
+                <span id="insurerInspectionDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised</label>
-                    <span id="insurerRepairAuthorisedDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Authorised</label>
+                <span id="insurerRepairAuthorisedDatePH"></span>
+            </div>
 
-                <div class="chox-form-item" >
-                    <label class="chox-form-std-label2">Repair Book In Date</label>
-                    <span id="insurerRepairBookInDatePH"></span>
-                </div>
+            <div class="chox-form-item" >
+                <label class="chox-form-std-label2">Repair Book In Date</label>
+                <span id="insurerRepairBookInDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Commenced</label>
-                    <span id="insurerRepairCommencedDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Commenced</label>
+                <span id="insurerRepairCommencedDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Repair Completion Date</label>
-                    <span id="insurerRepairCompletionDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Repair Completion Date</label>
+                <span id="insurerRepairCompletionDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Made</label>
-                    <span id="insurerTotalLossOfferMadeDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Offer Made</label>
+                <span id="insurerTotalLossOfferMadeDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted</label>
-                    <span id="insurerTotalLossOfferAcceptedDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Offer Accepted</label>
+                <span id="insurerTotalLossOfferAcceptedDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
-                    <span id="insurerTotalLossOfferCheckIssuedDatePH"></span>
-                </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
+                <span id="insurerTotalLossOfferCheckIssuedDatePH"></span>
+            </div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
-                    <span id="insurerTotalLossOfferCheckReceivedDatePH"></span>
-                </div>
-
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
+                <span id="insurerTotalLossOfferCheckReceivedDatePH"></span>
+            </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Labour Rate (Per Hour)</label>
-                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourRateId" name="labourRate" value="<s:property value="labourRate" />"/>
+                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourRateId" name="labourRate" value='<s:property value="labourRate" />'/>
             </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Labour Hours</label>
-                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourHourId" name="labourHour" value="<s:property value="labourHour" />"/>
+                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourHourId" name="labourHour" value='<s:property value="labourHour" />'/>
             </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Total Labour Cost</label>
-                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourCostId" name="labourCost" value="<s:property value="labourCost" />"/>
+                <input type="text" class="chox-ttxt" id="insurerHireMonitoringlabourCostId" name="labourCost" value='<s:property value="labourCost" />'/>
             </div>
 
             <div class="chox-form-item">
@@ -333,10 +332,12 @@
 
             <div class="chox-form-item-button">
                 <input type="button" id="insurerHireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return insurerHireMonitoringSubmit();"/>
-           </div>
+            </div>
+            
             <div id="insurerHMmessageBox" style="text-align:center" class="action-error-msg">
                 <s:property value="actionError" />
             </div>
+            
             <div id="insurerHMsuccessBox" class="chox-form-submit-result">
                 <s:property value="actionResult" />
             </div>
