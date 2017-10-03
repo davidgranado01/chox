@@ -170,6 +170,7 @@ public class ExcelClaim {
     private final Date claimHireMonitoringDetailTotalLossOfferAcceptedDate;
     private final Date claimHireMonitoringDetailTotalLossOfferCheckIssuedDate;
     private final Date claimHireMonitoringDetailTotalLossOfferCheckReceivedDate;
+    private final Date claimInsHMDCopleyOfferMadeDate;
     private final BigDecimal claimHireMonitoringDetailLabourRate;
     private final BigDecimal claimHireMonitoringDetailLabourHour;
     private final String claimRepairOnlyCheck;
@@ -197,6 +198,7 @@ public class ExcelClaim {
     private final BigDecimal claimInsHMDLabourHour;
     private final BigDecimal claimInsHMDLabourCost;
     private final Boolean claimInsHMDClaimantImpecunious;
+    private final Boolean claimInsHMDCopleyOfferMade;
     private final String claimInsHMDWhoManagedRepair;
     private final String claimInsHMDReplacementVehicleClass;
     private final Date claimInsHMDRentalStart;
@@ -471,10 +473,12 @@ public class ExcelClaim {
         claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
         claimInsHMDTotalLossOfferCheckIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
         claimInsHMDTotalLossOfferCheckReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
+        claimInsHMDCopleyOfferMadeDate = (Date) data.get("ihmd_copley_offer_made_date");
         claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
         claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
         claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
         claimInsHMDClaimantImpecunious = (Boolean) data.get("ihmd_claimant_impecunious");
+        claimInsHMDCopleyOfferMade = (Boolean) data.get("ihmd_copley_offer_made");
         claimInsHMDWhoManagedRepair = (String) data.get("ihmd_who_managed_repair");
         claimInsHMDReplacementVehicleClass = (String) data.get("ihmd_replacement_vehicle_class");
         claimInsHMDRentalStart = (Date) data.get("ihmd_rental_start");
@@ -1228,4 +1232,12 @@ public class ExcelClaim {
         return claimInsHMDRentalStart;
     }
 
+    public Date getClaimInsHMDCopleyOfferMadeDate() {
+        return claimInsHMDCopleyOfferMadeDate;
+    }
+
+     public String getClaimInsHMDCopleyOfferMade() {
+        return claimInsHMDCopleyOfferMade == null ? "" : claimInsHMDCopleyOfferMade ? "Yes" : "No";
+    }
+  
 }

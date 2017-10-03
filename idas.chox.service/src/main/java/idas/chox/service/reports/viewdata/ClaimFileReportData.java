@@ -311,10 +311,12 @@ public class ClaimFileReportData {
     private String insurerHireMonTotalLossChequeIssuedDate;
     private String insurerHireMonTotalLossChequeReceivedDate;
     private String insurerHireMonRepairCompletionDate;
+    private String insurerHireMonCopleyOfferMadeDate;
     private BigDecimal insurerHireMonLabourRate;
     private BigDecimal insurerHireMonLabourHours;
     private BigDecimal insurerHireMonTotalLabourCost;
     private String insurerHireMonClaimantImpecunious;
+    private String insurerHireMonCopleyOfferMade;
     private String insurerHireMonWhoManagedRepair;
     private String insurerHireMonReplacementVehicleClass;
     private String insurerHireMonHireStart;
@@ -407,6 +409,10 @@ public class ClaimFileReportData {
                         insurerHireMonLabourHours = hmd.getLabourHour();
                         insurerHireMonTotalLabourCost = hmd.getLabourCost();
                         insurerHireMonClaimantImpecunious = hmd.getClaimantImpecuniousDesc();
+                        insurerHireMonCopleyOfferMade = hmd.getCopleyOfferMadeDesc();
+                        if (hmd.getCopleyOfferMadeDate() != null) {
+                            insurerHireMonCopleyOfferMadeDate = DateHelper.getLocalDateFormat().format(hmd.getCopleyOfferMadeDate());
+                        }
                         if (hmd.getWhoManagedRepair() != null) {
                             insurerHireMonWhoManagedRepair = hmd.getWhoManagedRepair();
                         } else {
@@ -3050,6 +3056,22 @@ public class ClaimFileReportData {
 
     public String getInsurerHireMonHireStart() {
         return insurerHireMonHireStart;
+    }
+
+    public String getInsurerHireMonCopleyOfferMadeDate() {
+        return insurerHireMonCopleyOfferMadeDate;
+    }
+
+    public void setInsurerHireMonCopleyOfferMadeDate(String insurerHireMonCopleyOfferMadeDate) {
+        this.insurerHireMonCopleyOfferMadeDate = insurerHireMonCopleyOfferMadeDate;
+    }
+
+    public String getInsurerHireMonCopleyOfferMade() {
+        return insurerHireMonCopleyOfferMade;
+    }
+
+    public void setInsurerHireMonCopleyOfferMade(String insurerHireMonCopleyOfferMade) {
+        this.insurerHireMonCopleyOfferMade = insurerHireMonCopleyOfferMade;
     }
 
 }

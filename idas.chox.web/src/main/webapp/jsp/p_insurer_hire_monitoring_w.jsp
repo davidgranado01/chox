@@ -125,6 +125,18 @@
             renderTo: 'insurerTotalLossOfferCheckReceivedDatePH'
         });
         
+        var copleyOfferMadeDatePicker = new Ext.form.DateField({
+            name: 'copleyOfferMadeDate',
+            id: 'copleyOfferMadeDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="copleyOfferMadeDate" />',
+            renderTo: 'copleyOfferMadeDatePH'
+        });
+        
         var form = $("form#formUpdateInsurerHireMonitoringDetail");
 
         var fsets =  $('legend',form);
@@ -146,6 +158,7 @@
                 totalLossOfferAcceptedDate:{dateITA:true},
                 totalLossOfferCheckIssuedDate:{dateITA:true},
                 totalLossOfferCheckReceivedDate:{dateITA:true},
+                copleyOfferMadeDate:{dateITA:true},
                 labourRate :{number:true, min : 0}, //,max: 100000
                 labourHour :{number:true, min : 0}, //,max: 100000
                 labourCost :{number:true, min : 0}, //,max: 100000
@@ -162,6 +175,7 @@
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
                 totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
+                copleyOfferMadeDate:: {dateITA:"Invalid date format for the 'Copley Offer Made' date."},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
                 labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
                 labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", min : "Labour Cost must not be negative."},
@@ -305,6 +319,16 @@
                     <option value="CHO Total Loss">CHO Total Loss</option>
                     <option value="CHO Repair">CHO Repair</option>
                 </select>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Has Copley offer been made?</label>
+                <s:checkbox name="copleyOfferMade" id="copleyOfferMadeId" />
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">If yes, when was the offer made?</label>
+                <span id="copleyOfferMadeDatePH"></span>
             </div>
 
             <div class="chox-form-item-button">
