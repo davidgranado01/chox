@@ -59,7 +59,7 @@
 
             if (action==='rejectInvoice') {
                 if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#invoiceReferredByEngForm"));}else{return false;}})){
-                    return;
+                    return false;
                 }
             }
             else{
@@ -68,6 +68,7 @@
             }
             
         }
+        return false;
     }
     
     var reasonOfRejectionDescReader = new Ext.data.JsonReader({

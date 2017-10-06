@@ -202,7 +202,7 @@
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } 
-        
+        return false;
     }
 
 </script>
