@@ -79,7 +79,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     protected ActivityEventGenerator activityEventGenerator;
     private EventBusWrapper eventBus;
     private String clamscanLocation;
-    
+
     @Override
     public String getErrorMessage() {
         return errorMessage;
@@ -210,8 +210,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }).filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                         claimResult.getBreMessage().add(history.getNarrative());
                     });
-                    
-                    
+
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
@@ -394,7 +393,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return true;
     }
 
-    
     @Override
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
         Element root = document.getDocumentElement();
@@ -499,13 +497,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
 
-        InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer());
+        try (InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer())) {
 
-        try {
-            document = DocumentHelper.getDocumentFromStream(inputStream);
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
-            setErrorMessage("Error occurred while processing Bordereau.");
+            try {
+                document = DocumentHelper.getDocumentFromStream(inputStream);
+            } catch (ParserConfigurationException | SAXException | IOException ex) {
+                LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
+                setErrorMessage("Error occurred while processing Bordereau.");
+                return false;
+            }
+        } catch (IOException ex) {
+            LOG.error("Error thrown while getting claims from brodereau input stream with id={} ", bordereau.getId(), ex);
+            setErrorMessage("An unexpected error occurred while processing this Bordereau.");
+            setBordreauProcessFailureStatus(bordereau);
             return false;
         }
 
@@ -642,9 +646,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         } catch (AccessDeniedException ex) {
             throw ex;
         } catch (Exception ex) {
-                LOG.error("Error checking xml bordereau for malware : {}", ex.getMessage());
-                setErrorMessage("Internal error checking xml for malware.");
-                return false;
+            LOG.error("Error checking xml bordereau for malware : {}", ex.getMessage());
+            setErrorMessage("Internal error checking xml for malware.");
+            return false;
         }
         bordereau.setValid(true);
         bordereauSchemaValidation.validate(document, bordereau, getCurrentUser());
@@ -803,7 +807,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.debug("claim and histories is not null");
             String historiesMessage = "";
 
-           for (History h : claimResult.getClaim().getHistories()) {
+            for (History h : claimResult.getClaim().getHistories()) {
 
                 if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
                     String narrative = h.getNarrative().trim();
@@ -812,8 +816,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }
                     historiesMessage += narrative;
                 }
-            xmlClaimsDetail.setBreFailureMessages(historiesMessage);
-           }
+                xmlClaimsDetail.setBreFailureMessages(historiesMessage);
+            }
         } else {
             LOG.debug("claim and histories is null");
             xmlClaimsDetail.setBreFailureMessages("");

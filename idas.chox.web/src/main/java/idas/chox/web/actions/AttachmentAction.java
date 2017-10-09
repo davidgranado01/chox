@@ -32,7 +32,6 @@ import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
 
-
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     private static final Logger LOG = LoggerFactory.getLogger(AttachmentAction.class);
@@ -146,7 +145,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 jObjectSize = viewDatas.size();
             } catch (JsonProcessingException ex) {
                 LOG.error("Error converting claimTypesList to json string.");
-                jObject = null; jObjectSize=0;
+                jObject = null;
+                jObjectSize = 0;
             }
             return SUCCESS;
         } catch (Exception ex) {
@@ -308,18 +308,19 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 LOG.warn("Cannot read attachment file: {}", uploadFileName);
                 this.getActionResponse().AddError("Unknown Error occurred, please try again.");
             } else {
-                InputStream streamIn = new FileInputStream(attachmentFile);
+                try (InputStream streamIn = new FileInputStream(attachmentFile)) {
 
-                String result = attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
-                        category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated());
-                if (result != null) {
-                    this.getActionResponse().AddError(result);
-                } else {
-                    updateModelInSession(Arrays.asList(claim));
-                    if (notifyTask) {
-                        this.getActionResponse().AssignMessageResult("File has been uploaded successfully and " + getIsChoOrIns() + " informed");
+                    String result = attachmentService.addAttachment(claim, streamIn, uploadFileName, attachmentFile.length(),
+                            category, remark, notifyTask, this.getIsInsurer(), this.getWhoCreated());
+                    if (result != null) {
+                        this.getActionResponse().AddError(result);
                     } else {
-                        this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
+                        updateModelInSession(Arrays.asList(claim));
+                        if (notifyTask) {
+                            this.getActionResponse().AssignMessageResult("File has been uploaded successfully and " + getIsChoOrIns() + " informed");
+                        } else {
+                            this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
+                        }
                     }
                 }
             }

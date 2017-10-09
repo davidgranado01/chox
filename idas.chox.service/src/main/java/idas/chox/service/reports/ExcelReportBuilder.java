@@ -22,7 +22,7 @@ import org.springframework.core.io.ClassPathResource;
 public class ExcelReportBuilder implements ReportBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
-    private static final String reportTemplatePath = "/reports/";
+    private static final String REPORT_TEMPLATE_PATH = "/reports/";
 
     @Override
     public ByteArrayOutputStream buildReport(Report report) throws Exception {
@@ -40,25 +40,24 @@ public class ExcelReportBuilder implements ReportBuilder {
         return doCreateReport(reportParameters, templeteName, addLogo, columnsToHide, report.isBrandingReportFormat());
     }
 
-    
     public Workbook appendImage(Workbook resultWorkbook, boolean brandingLogo) {
 
         int col = 1, row = 0;
 
+        InputStream fis = null;
+        ByteArrayOutputStream img_bytes = null;
         try {
-            InputStream fis;
             if (brandingLogo) {
-                fis = new ClassPathResource(reportTemplatePath + "erac.jpg").getInputStream();
+                fis = new ClassPathResource(REPORT_TEMPLATE_PATH + "erac.jpg").getInputStream();
             } else {
-                fis = new ClassPathResource(reportTemplatePath + "choxLogo.jpg").getInputStream();
+                fis = new ClassPathResource(REPORT_TEMPLATE_PATH + "choxLogo.jpg").getInputStream();
             }
-            
-            ByteArrayOutputStream img_bytes = new ByteArrayOutputStream();
+
+            img_bytes = new ByteArrayOutputStream();
             int b;
             while ((b = fis.read()) != -1) {
                 img_bytes.write(b);
             }
-            fis.close();
 
             HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) col, row, (short) ++col, ++row);
             int index = resultWorkbook.addPicture(img_bytes.toByteArray(), HSSFWorkbook.PICTURE_TYPE_JPEG);
@@ -69,23 +68,33 @@ public class ExcelReportBuilder implements ReportBuilder {
 
         } catch (IOException ioe) {
             LOG.error("Exception adding image to report: " + ioe.getMessage(), ioe);
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+                if (img_bytes != null) {
+                    img_bytes.close();
+                }
+            } catch (IOException ex) {
+                LOG.error("Exception closing streams: " + ex.getMessage());
+            }
         }
 
         return resultWorkbook;
     }
 
-    
     protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide, boolean brandingLogo) {
         ByteArrayOutputStream out = null;
         try {
-            InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
+            InputStream templateIS = new ClassPathResource(REPORT_TEMPLATE_PATH + templateFileName).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
             if (columnsToHide != null) {
                 transformer.setColumnsToHide(columnsToHide);
             }
             Workbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
-            
+
             if (addLogo) {
                 resultWorkbook = appendImage(resultWorkbook, brandingLogo);
             }

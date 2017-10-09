@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -97,31 +96,34 @@ public class UploadServiceBean {
             LOG.debug("Marshaller created.");
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            StringBuilderOutputStream st = new StringBuilderOutputStream();
+            UploadedXMLClaimsDetail uploadResult;
+            try (StringBuilderOutputStream st = new StringBuilderOutputStream()) {
 
-            LOG.debug("Marshalling...");
-            m.marshal(chox, st);
+                LOG.debug("Marshalling...");
+                m.marshal(chox, st);
 
-            // If no @XmlRootElement is generated in java code, we'll need to wrap in a JAXBElement
+                // If no @XmlRootElement is generated in java code, we'll need to wrap in a JAXBElement
 //            m.marshal(new JAXBElement<Chox>(new QName("uri","local"), Chox.class, chox), st);
-            LOG.info("Received file for upload :\n{}", st.toString());
+                LOG.info("Received file for upload :\n{}", st.toString());
 
-            byte[] byteArray = st.toString().getBytes(ENCODING); // choose a charset
-            webBordereau.setFileBuffer(byteArray);
-            webBordereau.setFileSize((long) byteArray.length);
-            ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
-            UploadedXMLClaimsDetail uploadResult = uploadClaimXMLService.processWebServiceClaim(bais);
-            try {
-                bais.close();
-            } catch (IOException ex) {
-                LOG.error("Exception thrown closing web-service bordereau input stream: {}", ex.getMessage(), ex);
-            }
-            try {
-                st.close();
+                byte[] byteArray = st.toString().getBytes(ENCODING); // choose a charset
+                webBordereau.setFileBuffer(byteArray);
+                webBordereau.setFileSize((long) byteArray.length);
+                try (ByteArrayInputStream bais = new ByteArrayInputStream(byteArray)) {
+                    uploadResult = uploadClaimXMLService.processWebServiceClaim(bais);
+                }
+                LOG.info("File uploaded status: {}", uploadResult.isValid());
             } catch (IOException ex) {
                 LOG.error("Exception thrown closing web-service bordereau stringbuilder output stream: {}", ex.getMessage(), ex);
+                result.setUploadStatus(ClaimUploadStatus.ERROR);
+                result.setClaimStatus(ClaimStatus.N_A);
+                result.setProcessStatus(ClaimProcessStatus.FAILED);
+                result.setStatus(false);
+                Messages messages = new Messages();
+                messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
+                result.setMessages(messages);
+                return result;
             }
-            LOG.info("File uploaded status: {}", uploadResult.isValid());
 
             // Convert uploadResult
             switch (uploadResult.getRemark()) {
@@ -397,24 +399,6 @@ public class UploadServiceBean {
             webBordereau.setChoReference(null);
             webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
-        } catch (UnsupportedEncodingException ex) {
-            LOG.error("UnsupportedEncodingException: {}", ex.getMessage());
-            result.setUploadStatus(ClaimUploadStatus.ERROR);
-            result.setClaimStatus(ClaimStatus.N_A);
-            result.setProcessStatus(ClaimProcessStatus.FAILED);
-            result.setStatus(false);
-            Messages messages = new Messages();
-            messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
-            result.setMessages(messages);
-
-            webBordereau.setClaimStatus("N/A");
-            webBordereau.setUploadStatus(result.getUploadStatus().toString());
-            webBordereau.setHireState("unknown"); // uploadResult.getHireState()
-            webBordereau.setProcessStatus("Failed");
-            webBordereau.setStatus(false);
-            webBordereau.setChoReference(null);
-            webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
-
         } finally {
             webBordereauService.saveBordereau(webBordereau);
         }
@@ -669,11 +653,14 @@ public class UploadServiceBean {
 
     private static byte[] readFully(InputStream input) throws IOException {
         byte[] buffer = new byte[8192];
+        byte[] result;
         int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        while ((bytesRead = input.read(buffer)) != -1) {
-            output.write(buffer, 0, bytesRead);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+            result = output.toByteArray();
         }
-        return output.toByteArray();
+        return result;
     }
 }

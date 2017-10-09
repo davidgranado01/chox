@@ -109,7 +109,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         //     Manager can delete from organisation,
         //     CHOX Admin can delete all
         //     owners can delete
-        if (attachment.getCreatedBy().getId().intValue() == webUserId || userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN)) {
+        if (attachment.getCreatedBy().getId() == webUserId || userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN)) {
             canDelete = true;
         } else if (userInRole(webUser, WebUserRole.ROLE_CHO_MNG) && attachment.getCreatedBy().getChorganisation() != null
                 && attachment.getCreatedBy().getChorganisation().getId().intValue() == webUser.getChorganisation().getId().intValue()) {
@@ -140,15 +140,19 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         try {
             fileContent = new byte[safeLongToInt(length)];
             streamIn.read(fileContent);
-            streamIn.close();
             if (VirusCheckerUtility.isVirusPresent(fileContent, clamscanLocation)) {
                 return "Error - Malware found in attachment";
             }
             result = addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
         } catch (Exception ex) {
             LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
+        } finally {
+            try {
+                streamIn.close();
+            } catch (IOException ex) {
+                LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
+            }
         }
-
         return result;
     }
 
@@ -226,11 +230,6 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
 
         List<WebUserUserRole> webUserUserRoles = webUserUserRoleService.getMappedUserRole(user.getId());
 
-        for (WebUserUserRole webUserUserRole : webUserUserRoles) {
-            if (webUserUserRole.getWebUserRole().getName().equals(roleName)) {
-                return true;
-            }
-        }
-        return false;
+        return webUserUserRoles.stream().anyMatch((webUserUserRole) -> (webUserUserRole.getWebUserRole().getName().equals(roleName)));
     }
 }

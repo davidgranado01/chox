@@ -19,7 +19,7 @@ public class VirusCheckerUtility {
     public static boolean isVirusPresent(byte[] content, String clamscanLocation) throws Exception {
 
         boolean fileDirty = true;
-        Process clamscanProcess;
+        Process clamscanProcess = null;
         
         // Succeed if clamscan not present
         if (clamscanLocation == null || !Files.exists(Paths.get(clamscanLocation))) {
@@ -40,7 +40,6 @@ public class VirusCheckerUtility {
                 clamscanProcess.getOutputStream().write(content);
                 clamscanProcess.getOutputStream().close();
                 int exitState = clamscanProcess.waitFor();
-
                 switch (exitState) {
                 case 0:
                     fileDirty = false;
@@ -53,7 +52,21 @@ public class VirusCheckerUtility {
                 }
             } catch (IOException | InterruptedException e) {
                 throw new Exception(e.getMessage());
+            } finally {
+                if (clamscanProcess != null) {
+                    try {
+                        clamscanProcess.getInputStream().close();
+                    } catch (IOException ex) { // do nothing
+                        LOG.error("Exception closing input stream: {}", ex.getMessage());
+                    }
+                    try {
+                        clamscanProcess.getErrorStream().close();
+                    } catch (IOException ex) { // do nothing
+                        LOG.error("Exception closing error stream: {}", ex.getMessage());
+                    }
+                }
             }
+
         return fileDirty;
     }
 

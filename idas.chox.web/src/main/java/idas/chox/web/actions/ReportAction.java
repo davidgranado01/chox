@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,7 +56,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
     private boolean exportCanceled;
     private boolean exceptionThrown;
     private boolean directDownload;
-    
+
     public boolean isDirectDownload() {
         return directDownload;
     }
@@ -133,40 +134,36 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
             LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
-        
+
         report.setExternalParameter(parametersMap);
         report.setBaseDataService(baseDataService);
         report.setReportDataService(reportDataService);
 
         File reportFile = null;
-        FileOutputStream fos = null;
         try {
             reportFile = File.createTempFile("report_", ".xls");
             reportFile.deleteOnExit();
             LOG.info("Generating report '{}' to file '{}'...", reportName, reportFile.getAbsolutePath());
-            fos = new FileOutputStream(reportFile);
-            synchronized (getSessionLock()) {
-                Map<String, Object> session = getSession();
-                session.put("reportFileLocation", reportFile.getAbsolutePath());
+            try (FileOutputStream fos = new FileOutputStream(reportFile)) {
+                synchronized (getSessionLock()) {
+                    Map<String, Object> session = getSession();
+                    session.put("reportFileLocation", reportFile.getAbsolutePath());
+                }
+                try (ByteArrayOutputStream baos = report.build()) {
+                    baos.writeTo(fos);
+//                fos.flush();
+                }
             }
-            report.build().writeTo(fos);
-            fos.flush();
-            fos.close();
             LOG.trace("Report generation complete");
         } catch (IOException ex) {
             LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            if (fos != null) {
-                try {
-                    fos.close();
-                    if (reportFile != null) reportFile.delete();
-                } catch (IOException ex2) {
-                    LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
-                }
+            if (reportFile != null) {
+                reportFile.delete();
             }
             synchronized (getSessionLock()) {
                 Map<String, Object> session = getSession();
-                if (session == null || session.get("reportFileLocation")==null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+                if (session == null || session.get("reportFileLocation") == null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
                     LOG.info("Report generation '{}' threw exception but cancelled - not updating session", reportFile);
                 } else {
                     session.put("exceptionThrown", true);
@@ -175,17 +172,9 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
             return ERROR;
         } catch (Exception ex) {
             LOG.error("Exception in generation of report {}, error message='{}'\n", new Object[]{reportName, ex.getMessage(), ex});
-            if (fos != null) {
-                try {
-                    fos.close();
-                    if (reportFile != null) reportFile.delete();
-                } catch (IOException ex2) {
-                    LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
-                }
-            }
             synchronized (getSessionLock()) {
                 Map<String, Object> session = getSession();
-                if (session == null || session.get("reportFileLocation")==null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+                if (session == null || session.get("reportFileLocation") == null || reportFile == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
                     LOG.info("Report generation '{}' threw exception but cancelled - not updating session", reportFile);
                 } else {
                     session.put("exceptionThrown", true);
@@ -197,7 +186,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
         // If reportFile in session is different tha the one we are using, the report has been cancelled and we can ignore
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
-            if (session == null || session.get("reportFileLocation")==null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
+            if (session == null || session.get("reportFileLocation") == null || !session.get("reportFileLocation").equals(reportFile.getAbsolutePath())) {
                 LOG.info("Report generation '{}' finished but cancelled - not updating session", reportFile);
                 reportFile.delete();
                 return SUCCESS;
@@ -206,7 +195,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
             session.put("cancelExportOperation", false);
             session.put("isExportFinished", true);
         }
- 
+
         return SUCCESS;
     }
 
@@ -248,7 +237,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
         synchronized (getSessionLock()) {
             LOG.trace("Getting report file details from session...");
             Map<String, Object> session = getSession();
-            String reportFileLocation = (String)session.get("reportFileLocation");
+            String reportFileLocation = (String) session.get("reportFileLocation");
             if (reportFileLocation != null) {
                 LOG.debug("Creating stream for report file '{}'", reportFileLocation);
                 try {
@@ -344,7 +333,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
 
     @Override
     public void setParameters(HttpParameters httParameters) {
-        parametersMap = new HashMap<>(httParameters.size()+1);
+        parametersMap = new HashMap<>(httParameters.size() + 1);
         for (String key : httParameters.keySet()) {
             parametersMap.put(key, httParameters.get(key).getObject());
         }
@@ -391,7 +380,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
     public void setReportDataService(ReportDataService reportDataService) {
         this.reportDataService = reportDataService;
     }
-   
+
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }

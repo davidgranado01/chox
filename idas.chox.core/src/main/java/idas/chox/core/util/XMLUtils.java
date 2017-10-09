@@ -221,17 +221,13 @@ public final class XMLUtils {
         s.serialize(xmlDocument);
 
         byte [] buffer=new byte[65536];
-        FileInputStream is;
-        try (GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(outputFile))) {
-            is = new FileInputStream(tmp);
+        try (GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(outputFile)); FileInputStream is = new FileInputStream(tmp)) {
             int r=is.read(buffer);
             while(r!=-1){
                 os.write(buffer, 0, r);
                 r=is.read(buffer);
             }
         }
-        is.close();
-
         tmp.delete();
     }
 

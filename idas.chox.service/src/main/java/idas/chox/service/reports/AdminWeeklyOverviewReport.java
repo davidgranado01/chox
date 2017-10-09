@@ -69,13 +69,13 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     public AdminWeeklyOverviewReport() {
-        reportParameterNames = new ArrayList<String>();
+        reportParameterNames = new ArrayList<>();
     }
 
     @Override
     public Map<String, Object> getReportParameters() throws Exception {
 
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         Date startDate = null;
         Date endDate = null;
         WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
@@ -166,7 +166,7 @@ public class AdminWeeklyOverviewReport implements Report {
             c2.setTime(endDate);
             Date dateLastSunday = c2.getTime();
             
-            List<WeekSummary> weekSummaries = new ArrayList<WeekSummary>();
+            List<WeekSummary> weekSummaries = new ArrayList<>();
 
             Integer iClaimsInvoicedHis = 0;
             Integer iInvoicePaidByInsurerHis = 0;
