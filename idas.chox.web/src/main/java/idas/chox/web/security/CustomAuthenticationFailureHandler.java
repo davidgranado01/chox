@@ -70,27 +70,33 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
             try {
                 user = userService.findByUserName(username);
-            } catch (Exception ex) {
-                LOG.warn("No such user: '{}'", username);
-            }
 
-            if (user != null && user.getMaxFailedLoginAttempts() > 0) {
-                /*
-                 * Here we need to increment the failed log-in attempt count
-                 * and block if this is now >= the maxLoginAttempts of the organisation
-                 */
-                if (user.isBlocked() || userService.failedLogin(user.getId())) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    String blockedMessage = null;
-                    if (user.isCHO()) {
-                        blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(), "UTF-8");
-                    } else if (user.isAnInsurer()) {
-                        blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(), "UTF-8");
+                if (user != null && user.getMaxFailedLoginAttempts() > 0) {
+                    /*
+                     * Here we need to increment the failed log-in attempt count
+                     * and block if this is now >= the maxLoginAttempts of the organisation
+                     */
+                    if (user.isBlocked() || userService.failedLogin(user.getId())) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        String blockedMessage = null;
+                        if (user.isCHO()) {
+                            blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(), "UTF-8");
+                        } else if (user.isAnInsurer()) {
+                            blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(), "UTF-8");
+                        }
+                        getRedirectStrategy().sendRedirect(request, response, defaultBlockedUrl + "&message=" + blockedMessage);
+                        return;
                     }
-                    getRedirectStrategy().sendRedirect(request, response, defaultBlockedUrl + "&message=" + blockedMessage);
-                    return;
+                }
+            } catch (Exception ex) {
+                if (user == null) {
+                    LOG.warn("No such user: '{}'", username);
+                } else {
+                    LOG.error("Exception thrown on login failure for user '{}' (id={}) with chorganisation_id={} and insurer_id={}",
+                            new Object[]{username, user.getId(), user.getChorganisation() == null ? "" : user.getChorganisation().getId(), user.getInsurer() == null ? "" : user.getInsurer().getId()});
                 }
             }
+
         }
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         getRedirectStrategy().sendRedirect(request, response, defaultFailureUrl);
