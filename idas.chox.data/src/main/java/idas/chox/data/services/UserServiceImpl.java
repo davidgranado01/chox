@@ -270,15 +270,15 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
             List<HashMap> resultMap = criteria.list();
 
-            for (HashMap m : resultMap) {
+            resultMap.forEach((m) -> {
                 users.add((WebUser) m.get("this"));
-            }
+            });
         } else {
             List<WebUser> userData = criteria.list();
 
-            for (WebUser m : userData) {
+            userData.forEach((m) -> {
                 users.add(m);
-            }
+            });
 
         }
 
@@ -479,7 +479,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     HttpPost httppost = new HttpPost(KBBS_INVALIDATE_URL);
                     Map paramMap = new HashMap();
                     paramMap.put("AuthenticationToken", token);
-//                    JSONObject jsonObject = JSONObject.fromObject(paramMap);
                     ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
                     String jsonString = ow.writeValueAsString(paramMap);
                     StringEntity requestEntity = new StringEntity(jsonString);
@@ -505,7 +504,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                         if (statusCode == HttpStatus.SC_OK) {
                             ResponseHandler<String> responseHandler = new BasicResponseHandler();
                             String content = responseHandler.handleResponse(kbbsResponse);
-//                            JSONObject json = JSONObject.fromObject(content);
                             String result = ow.writeValueAsString(content);
                             LOG.debug("KBBS Invalidate Token Result: {}", result);
                             return result;
