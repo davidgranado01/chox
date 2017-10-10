@@ -64,6 +64,7 @@ public class VirusCheckerUtility {
                     } catch (IOException ex) { // do nothing
                         LOG.error("Exception closing error stream: {}", ex.getMessage());
                     }
+                    clamscanProcess.destroy();
                 }
             }
 
