@@ -4,7 +4,6 @@ import java.util.Set;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.common.OrganisationType;
@@ -24,19 +23,17 @@ public class WebUser extends Entity implements Serializable {
     private Chorganisation chorganisation;
     private Insurer insurer;
     private Boolean isExpired;
-//    private WebUserRole webUserRole;
-    private Set roles;
-    private Set workgroups;
+    private Set<WebUserRole> roles;
+    private Set<Workgroup> workgroups;
     private String organisationName;
     private boolean claimHandler = false;
-    private Set workgroupRelatedRoles;
+    private Set<WebUserRole> workgroupRelatedRoles;
     private boolean showSplash;
     private boolean blocked;
     private int failedLoginAttempts;
     private Date blockedDate;
-    
-    // </editor-fold>
 
+    // </editor-fold>
     public WebUser() {
         isExpired = false;
         showSplash = true;
@@ -203,26 +200,21 @@ public class WebUser extends Entity implements Serializable {
 
     public Set<Integer> getWorkgroupIds() {
         Set<Integer> ids = new HashSet<>();
-        Iterator itr = workgroups.iterator();
-
-        while (itr.hasNext()) {
-            Workgroup workgroup = (Workgroup) itr.next();
+        workgroups.forEach((workgroup) -> {
             ids.add(workgroup.getId());
-        }
+        });
         return ids;
     }
 
     public int getMaxFailedLoginAttempts() {
-        if (getOrganisationType().equals(OrganisationType.INS)) {
+        if (getOrganisationType().equals(OrganisationType.INS) && insurer != null) {
             return insurer.getMaxLoginAttempts();
-        }
-        else if (getOrganisationType().equals(OrganisationType.CHO)) {
+        } else if (getOrganisationType().equals(OrganisationType.CHO) && chorganisation != null) {
             return chorganisation.getMaxLoginAttempts();
         }
-        
+
         return 0;
     }
-
 
     public String getDisplayName() {
         return String.format("%1$s, %2$s", this.getLastName(), this.getFirstName());
@@ -253,21 +245,11 @@ public class WebUser extends Entity implements Serializable {
 
         boolean bFlag = false;
 
-        if (this.roles != null) {
-
-            if (this.roles.size() > 0) {
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
-                        bFlag = true;
-                        break;
-                    }
-
+        if (this.roles != null && this.roles.size() > 0) {
+            for (WebUserRole webUserrole : roles) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
+                    bFlag = true;
+                    break;
                 }
             }
         }
@@ -279,47 +261,27 @@ public class WebUser extends Entity implements Serializable {
 
         boolean bFlag = false;
 
-        if (this.roles != null) {
-
-            if (this.roles.size() > 0) {
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
-                        bFlag = true;
-                        break;
-                    }
-
+        if (this.roles != null && this.roles.size() > 0) {
+            for (WebUserRole webUserrole : roles) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
+                    bFlag = true;
+                    break;
                 }
             }
         }
 
         return bFlag;
     }
-    
+
     public boolean isCHO() {
 
         boolean bFlag = false;
 
-        if (this.roles != null) {
-
-            if (this.roles.size() > 0) {
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO)) {
-                        bFlag = true;
-                        break;
-                    }
-
+        if (this.roles != null && this.roles.size() > 0) {
+            for (WebUserRole webUserrole : roles) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO)) {
+                    bFlag = true;
+                    break;
                 }
             }
         }
@@ -330,14 +292,8 @@ public class WebUser extends Entity implements Serializable {
     public boolean isClaimHandler() {
 
         boolean bFlag = false;
-
-        if (this.roles.size() > 0) {
-            Iterator itr = roles.iterator();
-
-            while (itr.hasNext()) {
-
-                WebUserRole webUserrole = (WebUserRole) itr.next();
-
+        if (this.roles != null && this.roles.size() > 0) {
+            for (WebUserRole webUserrole : roles) {
                 if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS_CH)) {
                     bFlag = true;
                     break;
@@ -348,33 +304,24 @@ public class WebUser extends Entity implements Serializable {
         return bFlag;
 
     }
-    
+
     public boolean isInRoleOf(String role) {
 
         boolean bFlag = false;
 
-        if (this.roles != null) {
+        if (this.roles != null && this.roles.size() > 0) {
 
-            if (this.roles.size() > 0) {
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (webUserrole.getName().equalsIgnoreCase(role)) {
-                        bFlag = true;
-                        break;
-                    }
-
+            for (WebUserRole webUserrole : roles) {
+                if (webUserrole.getName().equalsIgnoreCase(role)) {
+                    bFlag = true;
+                    break;
                 }
             }
         }
 
         return bFlag;
     }
-        
+
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHOX;
@@ -389,7 +336,7 @@ public class WebUser extends Entity implements Serializable {
         return orgType;
     }
 
-    public Set getWorkgroupRelatedRoles() {
+    public Set<WebUserRole> getWorkgroupRelatedRoles() {
 
         if (workgroupRelatedRoles == null) {
             setWorkgroupRelatedRoles();
@@ -402,24 +349,12 @@ public class WebUser extends Entity implements Serializable {
 
         workgroupRelatedRoles = new HashSet();
 
-        if (this.roles != null) {
+        if (this.roles != null && this.roles.size() > 0) {
 
-            if (this.roles.size() > 0) {
-
-                Iterator itr = this.roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (webUserrole.isWorkgroupRelated()) {
-                        workgroupRelatedRoles.add(webUserrole);
-                    }
-
-                }
-            }
+            roles.stream().filter((webUserrole) -> (webUserrole.isWorkgroupRelated())).forEachOrdered((webUserrole) -> {
+                workgroupRelatedRoles.add(webUserrole);
+            });
         }
     }
 
-    
 }
