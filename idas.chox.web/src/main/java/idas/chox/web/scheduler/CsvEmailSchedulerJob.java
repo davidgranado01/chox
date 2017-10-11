@@ -29,7 +29,6 @@ public abstract class CsvEmailSchedulerJob extends EmailSchedulerJob {
 
     @Override
     public void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException {
-        CSVReader reader;
         LOG.debug("Getting attachment streams....");
         List<EmailAttachment> attachmentStreams;
         try {
@@ -42,9 +41,8 @@ public abstract class CsvEmailSchedulerJob extends EmailSchedulerJob {
         Map<Integer, List<String>> xlsDataMap;
         if (attachmentStreams.size() > 0) {
             for (EmailAttachment attachment : attachmentStreams) {
-                try {
+                try (CSVReader reader = new CSVReader(new InputStreamReader(attachment.getIs(), "UTF-8"))) {
                     LOG.info("Processing attachment stream");
-                    reader = new CSVReader(new InputStreamReader(attachment.getIs(), "UTF-8"));
                     List<String[]> entries = reader.readAll();
                     LOG.info("We have {} entries - processing in doJob", entries.size());
                     List<String[]> resultMap = doJob(entries, sender);
