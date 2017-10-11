@@ -127,6 +127,7 @@
                 <bean class="idas.chox.service.bre.rules.EcdVsRepairCompletionDate" scope="prototype">
                     <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.FullTotalRequestedDoesNotExceedCeiling" scope="prototype"></bean>
             </list>
         </property>
     </bean>

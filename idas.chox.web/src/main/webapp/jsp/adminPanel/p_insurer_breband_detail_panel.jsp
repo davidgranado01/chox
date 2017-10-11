@@ -2589,6 +2589,13 @@
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Full Total Requested Tolerances</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Full Total Requested Ceiling (£)</label>
+                            <input type="text" class="chox-ttxt" id="fullTotalRequestedCeilingToleranceId" name="fullTotalRequestedCeilingTolerance" value="<s:property value="fullTotalRequestedCeilingTolerance" />" />
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Protocol Vehicle Class Ceilings</div>
                         <div class="status-info">
                             The maximum protocol ceiling limits for both the Hire Net and Repair Net for the specific vehicle classes is managed here. If a CHO submits an invoice where the Hire Net or Repair Net value(s) exceed the values held in the below table for the specific vehicle class in question, (non-fault vehicle's vehicle class) then the rule will fail.
@@ -3128,12 +3135,12 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="engineerNetFeeCheck" value="engineerNetFeeCheck" /></div>
                             <label class="chox-form-check-label">Engineers Fee Net Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified maximum Engineers Fee charge as detailed above.</div>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified Maximum Engineers Fee Charge as detailed above.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossFeeNetCeilingCheck" value="totalLossFeeNetCeilingCheck" /></div>
                             <label class="chox-form-check-label">Total Loss Fee Net Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified maximum Total Loss Fee charge as detailed above.</div>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified Maximum Total Loss Fee Charge as detailed above.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossAndStorageFeeCheck" value="totalLossAndStorageFeeCheck" /></div>
@@ -3144,6 +3151,11 @@
                             <div class="chox-form-checkbox"><s:checkbox name="ecdVsRepairCompletionDateCheck" value="ecdVsRepairCompletionDateCheck" /></div>
                             <label class="chox-form-check-label">ECD vs Repair Completion Date Check</label>
                             <div class="chox-form-check-description">Flag a claim when the latest ECD (last one added by the CHO) is older than the Repair Completion Date.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="fullTotalRequestedCeilingCheck" value="fullTotalRequestedCeilingCheck" /></div>
+                            <label class="chox-form-check-label">Full Total Requested Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Full Total Requested billed by the CHO does not exceed the Maximum Full Total Requested Ceiling as detailed above.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

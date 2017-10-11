@@ -141,6 +141,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal repairVatTolerance;
     private BigDecimal totalVatTolerance;
     private BigDecimal nonStandardInsurancePremiumCeilingTolerance;
+    private BigDecimal fullTotalRequestedCeilingTolerance;
     private String nameOfRepairer = "Autorestore ltd";
     private boolean subscriberCheckRejectedClaims;
     private boolean subscriberAcquisitionFeeCheck;
@@ -180,6 +181,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean pauseFixedFeeSlaClock;
     private boolean storageRecoveryNetCeilingCheck;
     private boolean ecdVsRepairCompletionDateCheck;
+    private boolean fullTotalRequestedCeilingCheck;
     private BigDecimal storageRecoveryNetCeiling = BigDecimal.ZERO;
     private boolean enableGtaDiscount;
     private boolean fraudCheckEnable;
@@ -236,6 +238,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setEcdVsRepairCompletionDateCheck(boolean ecdVsRepairCompletionDateCheck) {
         this.ecdVsRepairCompletionDateCheck = ecdVsRepairCompletionDateCheck;
+    }
+
+    public boolean isFullTotalRequestedCeilingCheck() {
+        return fullTotalRequestedCeilingCheck;
+    }
+
+    public void setFullTotalRequestedCeilingCheck(boolean fullTotalRequestedCeilingCheck) {
+        this.fullTotalRequestedCeilingCheck = fullTotalRequestedCeilingCheck;
     }
 
     public BigDecimal getStorageRecoveryNetCeiling() {
@@ -1408,6 +1418,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setNonStandardInsurancePremiumCeilingTolerance(BigDecimal nonStandardInsurancePremiumCeilingTolerance) {
         this.nonStandardInsurancePremiumCeilingTolerance = nonStandardInsurancePremiumCeilingTolerance;
+    }
+
+    public BigDecimal getFullTotalRequestedCeilingTolerance() {
+        return fullTotalRequestedCeilingTolerance;
+    }
+
+    public void setFullTotalRequestedCeilingTolerance(BigDecimal fullTotalRequestedCeilingTolerance) {
+        this.fullTotalRequestedCeilingTolerance = fullTotalRequestedCeilingTolerance;
     }
 
     public boolean isMobileVehicleTotalLossCheck() {
