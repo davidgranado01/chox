@@ -274,7 +274,7 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                 }
 
                 /* If validation passed add the new hire monitoring ECD.*/
-                if (statusString.toString().isEmpty() && update) {
+                if (statusString.toString().isEmpty() && update && claim != null) {
                     try {
                         activity.process(claim);
                         statusString.append("Success: Updated.");
@@ -286,8 +286,10 @@ public class LouUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                         statusString.append("Failed: An Internal Error Occurred.");
                         LOG.warn("Exception occurred when updating hire start via email scheduler job: {}", ex.getMessage());
                     }
-                } else if (statusString.toString().isEmpty() && !update) {
+                } else if (statusString.toString().isEmpty() && !update && claim != null) {
                     statusString.insert(0, "Nothing to update.");
+                } else if (claim == null) {
+                    statusString.insert(0, "Failed - No Such Claim: ");
                 } else {
                     statusString.insert(0, "Failed: ");
                 }

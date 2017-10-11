@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.model.Claim;
 import java.util.List;
 
 import javax.mail.Message;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.SchedulerJob;
 
 /**

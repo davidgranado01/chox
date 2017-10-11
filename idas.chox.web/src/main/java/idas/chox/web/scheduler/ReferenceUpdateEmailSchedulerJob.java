@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,23 +41,25 @@ public class ReferenceUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
                 if (oldReference != null && !oldReference.isEmpty() && newReference != null && !newReference.isEmpty()) {
                     int status = claimService.updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
                     String statusString;
-                    if (status == 0) {
-                        statusString = "Updated";
-                    }
-                    else if (status == 1) {
-                        statusString = "Failed - Ticket number already exists";
-                    }
-                    else if (status == 2) {
-                        statusString = "Failed - Reservation number doesn't exist";
-                    }
-                    else if (status == 3) {
-                        statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
-                    }
-                    else if (status == 4) {
-                        statusString = "Failed - Ticket number already exists for Linked CHO";
-                    }
-                    else {
-                        statusString = "Failed - an internal error occurred";
+                    switch (status) {
+                        case 0:
+                            statusString = "Updated";
+                            break;
+                        case 1:
+                            statusString = "Failed - Ticket number already exists";
+                            break;
+                        case 2:
+                            statusString = "Failed - Reservation number doesn't exist";
+                            break;
+                        case 3:
+                            statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
+                            break;
+                        case 4:
+                            statusString = "Failed - Ticket number already exists for Linked CHO";
+                            break;
+                        default:
+                            statusString = "Failed - an internal error occurred";
+                            break;
                     }
                     
                 

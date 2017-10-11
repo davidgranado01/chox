@@ -120,7 +120,7 @@ public class XlsFileParser {
                     if (myCell.getCellStyle().getDataFormatString().equals("m/d/yy")) {
                         cellStringList.add(DateHelper.getLocalDateFormat().format(date));
                     } else { // assume we have a datetime
-LOG.debug("Date has a time component: {} : {}", new SimpleDateFormat("HH:mm:ss").format(date), myCell.getCellStyle().getDataFormatString());
+                        LOG.debug("Date has a time component: {} : {}", new SimpleDateFormat("HH:mm:ss").format(date), myCell.getCellStyle().getDataFormatString());
                         cellStringList.add(DateHelper.getLocalDateTimeFormat().format(date));
                     }
                 } else if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
