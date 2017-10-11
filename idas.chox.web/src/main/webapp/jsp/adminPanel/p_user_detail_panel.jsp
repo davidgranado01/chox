@@ -47,9 +47,8 @@
                 confirmNewPassword:{equalTo: "Your passwords do not match"}
             }
         });
- <s:if test="isNew">
-
-        if (currentUserOrganisationId===1) {
+<s:if test="isNew">
+        if (currentUserOrganisationId==='1') {
             $.validator.addMethod("comboSelection",
                 function(value) {
                     if(value < 0) {
@@ -59,14 +58,14 @@
             }, "Please check your input.");
 
             // We are CHOX Admin, so add validation to Insurer or CHO name field/drop-down
-            if (selectedOrganisationTypeId===2) {
+            if (selectedOrganisationTypeId==='2') {
                 // Insurer
                 $("form#formUpdateUserDetail #insurerId").rules("add", {
                     comboSelection: true,
                     messages: {comboSelection: "Please select an 'Insurer Company'"}
                 });
             }
-            else if (selectedOrganisationTypeId===3) {
+            else if (selectedOrganisationTypeId==='3') {
                 //CHO
                 $("form#formUpdateUserDetail #supplierId").rules("add", {
                     comboSelection: true,
