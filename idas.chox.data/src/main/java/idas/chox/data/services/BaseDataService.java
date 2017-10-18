@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
@@ -289,6 +291,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void save(final Object object) {
         getHibernateTemplate().saveOrUpdate(object);
     }
@@ -299,6 +302,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void delete(final Object object) {
         getHibernateTemplate().delete(object);
     }
@@ -313,6 +317,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void saveCollections(List<? extends Object> objects) {
         for (Iterator it = objects.iterator(); it.hasNext();) {
             getHibernateTemplate().saveOrUpdate(it.next());
@@ -320,6 +325,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void deleteAll(List<? extends Entity> objects) {
         getHibernateTemplate().deleteAll(objects);
     }

@@ -388,6 +388,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
 
+    @Override
+    public List<Claim> getClaimByCHOReferenceAndClaimNumber(String sClaimReferenceNumber, String sClaimNumber) {
+        Claim claim;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        criteria.add(Restrictions.eq("claimNumber", sClaimNumber.trim()).ignoreCase());
+        return findByCriteria(criteria);
+    }
+
     private Claim getClaimByVehicleHireId(Integer vehicleHireId) {
         Claim claim;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);

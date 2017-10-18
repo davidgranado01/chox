@@ -11,7 +11,7 @@ import idas.chox.core.model.ClaimMatchingImportEntry;
  *
  * @author john
  */
-public interface ClaimMatchingService  extends DataService {
+public interface ClaimMatchingService extends DataService {
     List<ClaimMatchingImportEntry> getClaimMatchingImportEntries(String insurerName);
     Claim getClaimMatch(Date incidentDate, String thirdPartyVehicleRehistration);
     ClaimMatchingEntry getClaimMatchingEntry(Date incidentDate, String thirdPartyVehicleRehistration);

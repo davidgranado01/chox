@@ -58,6 +58,24 @@
         <property name="claimMatchingService" ref="claimMatchingService" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
+    <!--  Paid Invoices Job -->
+    <bean id="paidInvoicesDbJob" class="idas.chox.web.scheduler.PaidInvoicesSchedulerJob">
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="insurerName" value="LV=" />
+        <property name="paidInvoiceService" ref="paidInvoiceService" />
+        <property name="claimService" ref="claimService" />
+        <property name="activityFactory" ref="activityFactory" />
+    </bean>
     <!--  Reference update from queued token -->
     <bean id="referenceUpdateDbJob" class="idas.chox.web.scheduler.ReferenceUpdateDbSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -314,6 +332,12 @@
         <property name="concurrent" value="false" />
     </bean>
         
+    <bean id="paidInvoicesDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="paidInvoicesDbJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
     <bean id="referenceUpdateDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="referenceUpdateDbJob" />
         <property name="targetMethod" value="execute" />
@@ -429,6 +453,10 @@
         <property name="jobDetail" ref="claimMatchingDbJobDetail" /> 
         <property name="cronExpression" value="0 3 7-19 ? * 1-7" /> 
     </bean>
+    <bean id="cronPaidInvoicesDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="paidInvoicesDbJobDetail" /> 
+        <property name="cronExpression" value="0 4 7-19 ? * 1-7" /> 
+    </bean>
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="imsChaseDbJobDetail" /> 
         <property name="cronExpression" value="0 25 7 ? * 1-7" /> 
@@ -540,6 +568,7 @@
                 <ref bean="referenceUpdateMailJobDetail" />
                 <ref bean="keoghsDbJobDetail" />
                 <ref bean="claimMatchingDbJobDetail" />
+                <ref bean="paidInvoicesDbJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
                 <ref bean="imsChaseDbJobDetail" />
                 <ref bean="imsStopChaseEmailJobDetail" />
@@ -565,6 +594,7 @@
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
                 <ref bean="cronClaimMatchingDbTriggerDaily" />
+                <ref bean="cronPaidInvoicesDbTriggerDaily" />
                 <ref bean="cronKeoghsDbTriggerDaily" />
                 <ref bean="cronImsChaseTriggerDaily" />
                 <ref bean="cronImsStopChaseTriggerDaily" />

@@ -51,6 +51,7 @@ public interface ClaimService extends DataService {
     Boolean isClaimSupplierReferenceNumberExistForChoExternal(String sClaimReferenceNumber, int choId);
 
     Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
+    List<Claim> getClaimByCHOReferenceAndClaimNumber(String sClaimReferenceNumber, String sClaimNumber);
 
     Boolean isObjectExist(int workgroupId);
 
