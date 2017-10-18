@@ -17,6 +17,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.LongType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
+import java.math.BigInteger;
 
 /**
  *
@@ -63,7 +65,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             }
         });
 
-        return Math.toIntExact((Long)q.uniqueResult());
+        return ((BigInteger)q.uniqueResult()).intValue();
     }
 
     public List externalQuery(final String query, final Map<String, Object> parameters) {
@@ -237,7 +239,6 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public List findByCriteria(final DetachedCriteria c) {
-//        return findByCriteriaFlushCommit(c);
         return getHibernateTemplate().findByCriteria(c);
     }
 

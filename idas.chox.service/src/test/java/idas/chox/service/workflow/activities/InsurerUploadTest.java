@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import junit.framework.Assert;
@@ -21,7 +22,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
-import java.util.HashMap;
 
 public class InsurerUploadTest extends BaseTest {
 

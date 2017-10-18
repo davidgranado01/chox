@@ -44,7 +44,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void markHistoryAsOldByClaim(Claim claim) {
-        if (claim.getId() != null) {
+        if (claim.getId() != null && claim.getHistories() != null) {
             claim.getHistories().stream().filter((history) -> (!history.getIsOld())).forEachOrdered((history) -> {
                 history.setIsOld(true);
             });

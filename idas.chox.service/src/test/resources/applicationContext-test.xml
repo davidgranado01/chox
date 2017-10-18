@@ -123,6 +123,7 @@
                 <value>hbm/ClaimMatchingBand.hbm.xml</value>
                 <value>hbm/ClaimMatchingEntry.hbm.xml</value>
                 <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
+                <value>hbm/PaidInvoiceEntry.hbm.xml</value>
                 <value>hbm/events/BaseActivityEvent.hbm.xml</value>
                 <value>hbm/events/ClaimRoutedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimAcknowledgedEvent.hbm.xml</value>

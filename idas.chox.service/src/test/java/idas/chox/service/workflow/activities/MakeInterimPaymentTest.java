@@ -40,6 +40,7 @@ public class MakeInterimPaymentTest extends BaseTest {
         MakeInterimPayment activity = (MakeInterimPayment) activityFactory.getActivity("makeInterimPayment");
         activity.setNewTotalInterimPayment(BigDecimal.TEN);
         activity.setAdditionalInterimPayment(BigDecimal.ZERO);
+        activity.setSupportingInterimNotes("testMakeNewTotalInterimPayment");
         activity.process(claim);
 
         Assert.assertEquals(claim.getInvoice().getInterimPaymentMade(), BigDecimal.TEN);
@@ -62,8 +63,34 @@ public class MakeInterimPaymentTest extends BaseTest {
         MakeInterimPayment activity = (MakeInterimPayment) activityFactory.getActivity("makeInterimPayment");
         activity.setNewTotalInterimPayment(null);
         activity.setAdditionalInterimPayment(BigDecimal.TEN);
+        activity.setSupportingInterimNotes("testMakeAdditionalInterimPayment");
         activity.process(claim);
 
         Assert.assertEquals(claim.getInvoice().getInterimPaymentMade(), new BigDecimal(20));
+    }
+
+    @Test
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void testNoSupportingNotesProvided() throws Throwable {
+
+        Invoice invoice = invoiceService.getInvoice(999);
+        invoice.setInterimPaymentMade(BigDecimal.TEN);
+
+        Claim claim = new Claim();
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        invoice.setTotalToPay(BigDecimal.valueOf(20.00));
+        claim.setInvoice(invoice);
+        claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
+
+        MakeInterimPayment activity = (MakeInterimPayment) activityFactory.getActivity("makeInterimPayment");
+        activity.setNewTotalInterimPayment(null);
+        activity.setAdditionalInterimPayment(BigDecimal.TEN);
+        try {
+            activity.process(claim);
+            Assert.assertFalse("No Exception thrown when supporting notes not provided", true);
+        } catch (Exception ex) {
+            Assert.assertEquals("Incorrect error message provided when no supporting notes provided ", "You must supply 'Supporting Interim Payment Notes'", ex.getMessage());
+        }
     }
 }

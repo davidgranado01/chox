@@ -669,10 +669,12 @@ public class Claim extends Entity implements Serializable {
             this.histories = new ArrayList<>();
         }
 
-        for (History history : histories) {
+        histories.stream().map((history) -> {
             history.setClaim(this);
+            return history;
+        }).forEachOrdered((history) -> {
             this.histories.add(history);
-        }
+        });
     }
 
     public WebUser getClaimOwner() {
@@ -691,9 +693,10 @@ public class Claim extends Entity implements Serializable {
         this.remainingSlaDays = remainingSlaDays;
     }
 
-    public Integer getRemainingSlaDaysInt() {
-        return remainingSlaDaysInt;
+    public int getRemainingSlaDaysInt() {
+        return remainingSlaDaysInt == null ? 0 : remainingSlaDaysInt;
     }
+
 
     public void setRemainingSlaDaysInt(Integer remainingSlaDaysInt) {
         this.remainingSlaDaysInt = remainingSlaDaysInt;
