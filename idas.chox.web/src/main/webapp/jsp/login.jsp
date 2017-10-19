@@ -21,7 +21,7 @@
     </head>
     <body class="modal login">
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/Valexa-Logo.gif" style="display: inline; float: center; width: 250px; height: 110px"/>
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/Audatex-Logo.png" style="display: inline; float: center; width: 250px; height: 74px"/>
         </div>
 
         <div class="modal-container">
@@ -52,7 +52,7 @@
                                     <p><span id="login-error">Incorrect Username and/or Password </span></p>
                                 </s:if>
                                 <s:elseif test="#parameters.iperror[0] == 'true'">
-                                    <p><span id="login-error">Due to your current IP address, you are not authorised to access CHOX.<br/> Please contact CHOX Support on 03333 404327.</span></p>
+                                    <p><span id="login-error">Due to your current IP address, you are not authorised to access CHOX.<br/> Please contact Audatex Support on 03333 404327.</span></p>
                                 </s:elseif>
                                 <s:elseif test="#parameters.blocked[0] == 'true'">
                                     <p><span id="login-error"><%= request.getParameter("message") %></span></p>
@@ -68,8 +68,8 @@
             <span class="note" style="font-size:11px">
                 <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
-        <div class="footerText">This is a Valexa Technologies Limited proprietary system. No use is allowed without appropriate authorisation.<br/>
-Unauthorised use of this system will constitute a breach of Valexa Technologies Limited policy and<br/>
+        <div class="footerText">This is a Audatex (UK) Limited proprietary system. No use is allowed without appropriate authorisation.<br/>
+Unauthorised use of this system will constitute a breach of Audatex (UK) Limited policy and<br/>
 prosecution under pertinent legislation will apply. This system uses cookies, signing into this system will<br/>
 be taken as consent to use cookies, for details on how cookies are used see ‘Terms of Service’ above.<br/>
 This system has been penetration certified by Digital Assurance. View certificate <a  href="javascript:openFile('<%= request.getContextPath()%>/download/CHOXCertificate.pdf');">here</a>.</div>

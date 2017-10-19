@@ -1,26 +1,27 @@
 package idas.chox.web.viewdata;
 
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.util.DateHelper;
 import java.util.Iterator;
 import java.util.Set;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.util.DateHelper;
+
 public class UserViewData {
 
-    private int id;
+    private final int id;
     private String userName;
-    private String email;
-    private String name;
-    private boolean status;
-    private String statusDesc;
-    private String createdBy;
-    private String lastLoginDate;
-    private String createdDate;
-    private String orgName;
-    private int orgType;
-    private String role;
-    private String isExpired;
+    private final String email;
+    private final String name;
+    private final boolean status;
+    private final String statusDesc;
+    private final String createdBy;
+    private final String lastLoginDate;
+    private final String createdDate;
+    private final String orgName;
+    private final int orgType;
+    private final String role;
+    private final String isExpired;
 
     public UserViewData(WebUser object) {
 
@@ -47,7 +48,7 @@ public class UserViewData {
         if (object.isCHOXAdmin()) {
 
             this.orgType = 1;
-            this.orgName = "Valexa";
+            this.orgName = "Audatex";
 
         } else {
 
@@ -134,13 +135,6 @@ public class UserViewData {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    /**
-     * @return the isExpired
-     */
     public String getIsExpired() {
         return isExpired;
     }

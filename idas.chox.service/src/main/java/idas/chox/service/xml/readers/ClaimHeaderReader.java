@@ -319,7 +319,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Valexa support.");
+                claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Audatex support.");
                 claim.setChoReference(choReferenceNumber);
         } else {
             LOG.debug("Valid Insurer invoice found.");
@@ -584,7 +584,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             LOG.info("Insurer trying to upload a manual claim that already exists: '{}'.", choReferenceNumber);
                             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Valexa support.");
+                            claimResult.getMessage().add("This supplier reference number already exists in the system. Please contact Audatex support.");
                             claim.setChoReference(choReferenceNumber);
                         }
                     } else {
