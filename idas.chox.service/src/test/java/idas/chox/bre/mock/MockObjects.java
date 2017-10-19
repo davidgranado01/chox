@@ -8,6 +8,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.ReasonOfRejection;
@@ -214,6 +215,19 @@ public class MockObjects {
         hireMonitoringDetail.setTotalLossInspectionReport("ABC");
 
         return hireMonitoringDetail;
+    }
+    
+    public HireMonitoringEcd getTestHireMonitoringEcd(){
+        
+        HireMonitoringEcd hireMonitoringEcd = new HireMonitoringEcd();
+
+        hireMonitoringEcd.setEcdDate(DateHelper.parse("27/02/2011"));
+        hireMonitoringEcd.setSequence(0);
+        hireMonitoringEcd.setReason("Mock ECD reason");
+        hireMonitoringEcd.setSupportingNote("Mock supporting note for ECD");
+        hireMonitoringEcd.setUpdateInsurer(false);
+    
+        return hireMonitoringEcd;
     }
     
     public Invoice getTestInvoice(){
