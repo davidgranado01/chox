@@ -2554,8 +2554,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getPaymentDetailsCHODiscount() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getDiscount();
             } else {
                 return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2567,8 +2566,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getPaymentDetailsClaimHandInvAmt() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getClaimsHandlingInvoiceAmount();
             } else {
                 return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2580,8 +2578,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getDeductionForClaimsHandlingFee();
             } else {
                 return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2593,8 +2590,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getPaymentDetailsInsurerDiscount() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getInsurerDiscount();
             } else {
                 return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2614,8 +2610,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getEngineerFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getEngineerFeeGross();
             } else {
                 return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2627,8 +2622,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount());
             } else {
                 return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2640,8 +2634,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHirePenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getHirePenaltyCharge();
             } else {
                 return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2657,8 +2650,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // For e.g see claim 394433/Papa . 
     public BigDecimal getTotalPenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getTotalPenaltyCharge();
             } else {
                 return claim.getInvoice().getTotalPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2670,8 +2662,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getRepairGross();
             } else {
                 return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2683,8 +2674,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairPenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getRepairPenaltyCharge();
             } else {
                 return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2696,8 +2686,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getStorageRecoveryGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getStorageRecoveryGross();
             } else {
                 return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -2709,8 +2698,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getTotalLossFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getTotalLossFeeGross();
             } else {
                 return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);

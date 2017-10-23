@@ -1,8 +1,10 @@
 package idas.chox.web;
 
-import idas.chox.core.model.LiabilityStatus;
 import java.util.Map;
+
 import org.apache.struts2.util.StrutsTypeConverter;
+
+import idas.chox.core.model.LiabilityStatus;
 
 /**
  *
@@ -25,7 +27,6 @@ public class LiabilityStatusConverter extends StrutsTypeConverter{
     public String convertToString(Map context, Object o) {
         if ( o instanceof LiabilityStatus){
             return ((LiabilityStatus)o).toString();
-            //return Integer.toString(((LiabilityStatus)o).ordinal());
         }
         return "";
     }

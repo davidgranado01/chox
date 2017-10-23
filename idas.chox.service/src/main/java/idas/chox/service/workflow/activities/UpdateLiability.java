@@ -71,8 +71,6 @@ public class UpdateLiability extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("claim status='{}'", claim.getLiabilityStatus());
         if ( !ClaimType.isInsurerVsInsurer(claim.getClaimType())
-//                && !ClaimType.isSubscriber(claim.getClaimType())
-//                && !ClaimType.isFixedFee(claim.getClaimType())
                 && ( claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
                         || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
                         || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL

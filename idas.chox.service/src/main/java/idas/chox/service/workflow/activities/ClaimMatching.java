@@ -13,7 +13,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ClaimMatchingBandService;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 /**
@@ -153,9 +152,9 @@ public class ClaimMatching extends BaseActivity {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
 
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
     }
 
     public void setClaimNumber(String claimNumber) {

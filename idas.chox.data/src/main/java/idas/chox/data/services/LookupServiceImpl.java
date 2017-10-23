@@ -32,10 +32,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
             boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
         List<LookupItem> items = new ArrayList<>();
-        for (String s : ClaimStatus.getAvailableStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
-                isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed, isSubscriberActivated)) {
-            items.add(new LookupItem(s, s));
-        }
+        ClaimStatus.getAvailableStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
+                isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed, isSubscriberActivated).forEach((s) -> {
+                    items.add(new LookupItem(s, s));
+        });
         Collections.sort(items,new LookupItemTextComparator());
         return items;
     }
@@ -264,20 +264,17 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
-        List result = findByCriteria(criteria, true);
+        List<WebUserWorkgroup> result = findByCriteria(criteria, true);
 
-        for (Object o : result) {
-
-            WebUserWorkgroup a = (WebUserWorkgroup) o;
-
+        result.forEach((webUserWorkgroup) -> {
             if (isActiveOnly) {
-                if (a.getWorkgroup().isStatus()) {
-                    workgroups.add((Workgroup) a.getWorkgroup());
+                if (webUserWorkgroup.getWorkgroup().isStatus()) {
+                    workgroups.add(webUserWorkgroup.getWorkgroup());
                 }
             } else {
-                workgroups.add((Workgroup) a.getWorkgroup());
+                workgroups.add(webUserWorkgroup.getWorkgroup());
             }
-        }
+        });
 
         return workgroups;
     }

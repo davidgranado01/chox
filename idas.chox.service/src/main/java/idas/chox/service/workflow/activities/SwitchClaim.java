@@ -128,9 +128,9 @@ public class SwitchClaim extends BaseActivity {
          * This prevents the claim being saved and the transaction logged
          */
 //        activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
         claim.setStatus(null);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

@@ -1,8 +1,9 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.LiabilityStatus;
 import java.util.HashMap;
 import java.util.Map;
+
+import idas.chox.core.model.LiabilityStatus;
 
 /**
  *
@@ -24,15 +25,15 @@ public class LiabilityStatusDropDownAction extends BaseAction{
         if ( dropDownMap == null ){
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
-            for (int i = 0; i < arr.length; i++) {
-                dropDownMap.put(arr[i].getLiablityValue(),arr[i]);
+            for (LiabilityStatus arr1 : arr) {
+                dropDownMap.put(arr1.getLiablityValue(), arr1);
             }            
         }
         return dropDownMap;
     }
 
     /**
-     * @param dropDownList the dropDownList to set
+     * @param dropDownMap the dropDownList to set
      */
     public void setDropDownMap(Map dropDownMap) {
         this.dropDownMap = dropDownMap;

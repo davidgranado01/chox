@@ -22,10 +22,6 @@ public class ClaimObjectService {
     private Map<Integer,String> dropDownMapWithNulls;
     private Map<Integer,String> dropDownMap;
 
-    /**
-     * @return the dropDownList
-     */
-
     public Map<Integer,String> getLiabilityStatusMap(boolean withNulls) {
         if (!withNulls && dropDownMap == null) {
             dropDownMap = new HashMap();

@@ -84,8 +84,7 @@ public class AssignOwner extends BaseActivity {
         } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getTpiClaimStatus())
                 && claim.getInvoice().isPaymentTeam()) {
             if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType()) &&
-                   (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {

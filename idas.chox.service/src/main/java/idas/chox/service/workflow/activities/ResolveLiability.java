@@ -61,24 +61,18 @@ public class ResolveLiability extends BaseActivity {
 
 
     @Override
-    protected void beforeProcess(Claim claim) throws Exception {
+    protected void doProcess(Claim claim) {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
         claimService.setLiability(claim, liabilityStatus);
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);        
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
-    }
-
-
-    @Override
-    protected void doProcess(Claim claim) {
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
         }
-        if ( !ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType()) &&
+        if ( !ClaimType.isInsurerVsInsurer(claim.getClaimType()) &&
             ( claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
              || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
              || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN

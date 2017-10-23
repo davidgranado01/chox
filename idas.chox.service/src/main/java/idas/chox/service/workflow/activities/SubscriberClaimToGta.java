@@ -22,17 +22,26 @@ public class SubscriberClaimToGta extends BaseActivity {
         claim.setStatus(auditTrailService.getStateBeforeRejection(claim.getId()));
         claim.setRemainingSlaDays(null);
         claim.setRemainingSlaDaysInt(null);
-        if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.FIXED_FEE) {
-            claim.setClaimType(ClaimType.GTA);
-        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
-                    || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
-            claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE
-                    || claim.getClaimType() == ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE ) {
-            claim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
-        } else { // not possible
+        if (null == claim.getClaimType()) { // not possible
             LOG.error("Attempt to switch a non-subcriber claim to GTA: {}", claim.getChoReference());
             throw new IllegalStateException("Claim not a Subscriber or Fixed-Fee claim.");
+        } else switch (claim.getClaimType()) {
+            case SUBSCRIBER:
+            case FIXED_FEE:
+                claim.setClaimType(ClaimType.GTA);
+                break;
+            case SUBSCRIBER_ORIGINAL_INVOICE:
+            case FIXED_FEE_ORIGINAL_INVOICE:
+                claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
+                break;
+            case SUBSCRIBER_SUPPLEMENTARY_INVOICE:
+            case FIXED_FEE_SUPPLEMENTARY_INVOICE:
+                claim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
+                break;
+            default:
+                // not possible
+                LOG.error("Attempt to switch a non-subcriber claim to GTA: {}", claim.getChoReference());
+                throw new IllegalStateException("Claim not a Subscriber or Fixed-Fee claim.");
         }
         claim.addComment(Comment.newComment(0, comment));
     }

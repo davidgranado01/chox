@@ -11,7 +11,6 @@ import idas.chox.core.hpi.*;
 import idas.chox.core.model.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.keoghs.Keoghs;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
@@ -229,8 +228,7 @@ public class NewInvoice extends BaseActivity {
             setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(getCurrentStatus());
             if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType()) &&
-                   (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
@@ -254,9 +252,9 @@ public class NewInvoice extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
         getDataService().save(claim);
 //        activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
         // If this is a TPI claim, we now need to process the chained NewTpiClaim activity
         if (getChainActivity() != null && ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Processing next chain activity.");
