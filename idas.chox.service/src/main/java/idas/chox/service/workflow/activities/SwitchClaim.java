@@ -16,7 +16,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.NotificationService;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 public class SwitchClaim extends BaseActivity {

@@ -166,10 +166,12 @@ public class NewInvoice extends BaseActivity {
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         breResponse = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
-        for (History history : History.New(breResponse)) {
+        History.New(breResponse).stream().map((history) -> {
             LOG.debug("Adding BRE history to claim '{}': {} - {}", new Object[]{claim.getChoReference(), history.getRuleId(), history.getNarrative()});
+            return history;
+        }).forEachOrdered((history) -> {
             claim.addHistory(history);
-        }
+        });
 
         /*
          * newComment task creation for new invoice if repair gross is not 0.00 
