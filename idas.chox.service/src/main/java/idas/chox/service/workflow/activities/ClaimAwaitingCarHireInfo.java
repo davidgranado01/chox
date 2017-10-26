@@ -27,7 +27,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
         // VALIDATE HIRE MORNITORING ECD, MUST HAVE AT LEAST ONE ECD (initial or added)
         if (!ClaimType.isInsurerUpload(claim.getClaimType()) && (claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) && claim.getHireMonitoringEcds().isEmpty()) {
-                sb.append("* You need to provide an Estimated Completion Date (ECD) in order to proceed this claim.\n");
+                sb.append("* You need to provide an Estimated Completion Date (ECD) in order to proceed this claim.");
         }
         
 
