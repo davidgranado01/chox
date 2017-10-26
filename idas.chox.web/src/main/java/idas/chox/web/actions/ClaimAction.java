@@ -829,10 +829,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return bFlag;
     }
+    
     public boolean getMatchedClaimRequiringReview() {
         boolean bFlag = false;
 
-        if (claim.getMatchStatus() == 3 && claim.getInsurer().isEnableClaimMatching() && (getIsChoxAdmin() || this.getIsInsurer())) {
+        if (claim.getMatchStatus() == 3 && claim.getInsurer().isEnableClaimMatching() && (getIsChoxAdmin() || this.getIsInsurer())
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_PAID)
+                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
             bFlag = true;
         }
 
