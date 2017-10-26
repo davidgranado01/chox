@@ -549,13 +549,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim = claimService.getClaim(getModelIdFromSession(Claim.class));
                 id = claim.getId();
                 claimVersion = claim.getVersion();
-                LOG.debug("No claim id provided - retrieved from session: {}", id);
+                LOG.debug("No claim id provided - retrieved from session: id={},version={}", id, claimVersion);
             } else if (LOG.isDebugEnabled()) {
                 LOG.debug("No claim id provided and no claim in session.");
             }
         } else {
             claim = claimService.getClaim(id);
+            claimVersion = claim.getVersion();
+            LOG.debug("Claim retrieved from provided Id:: id={},version={}", id, claimVersion);
         }
+
         if (claim == null) {
             LOG.warn("An attempt to retrieve claim by id failed due to invalid id provided: {}", id);
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
@@ -566,13 +569,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setBreBand(choBand);
         }
 
-        LOG.trace("Claim retrieved in prepare() with id={}", id);
-        addModelToSession(Arrays.asList(claim));
+        LOG.debug("Claim retrieved in prepare() with claim.id={}, claim.version={} [id={}]",
+                new Object[]{claim.getId(), claim.getVersion(), id});
+        addModelToSession(claim);
     }
 
     @Override
     public String execute() throws Exception {
-        updateModelInSession(Arrays.asList(claim));
+        updateModelInSession(claim);
         // If this action is called by the redirectAction from another action class then perform the below update. 
         if (getSession().containsKey("redirect") && getSession().get("redirect") != null) {
             HashMap<String, String> map = (HashMap) getSession().get("redirect");
@@ -699,7 +703,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String updateInvoiceReviewRequired() {
         try {
-            checkVersion(Arrays.asList(claim));
+            checkVersion(claim);
             this.claimService.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the Invoice Review Required for claim '{}': ", claim.getChoReference(), ex);
@@ -2231,7 +2235,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      to the claim so need to update the claim version in the session.*/
     private int getFixedFeeClaimDays() {
         claimDays = claimService.getFixedFeeClaimDays(claim.getId());
-        updateModelInSession(Arrays.asList(claim));
+        updateModelInSession(claim);
         return claimDays;
     }
     // </editor-fold>
@@ -3367,7 +3371,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setCustomerClaimNumber(String customerClaimNumber) {
-        LOG.debug("Setting customer claim number to '{}'", customerClaimNumber);
         this.customerClaimNumber = customerClaimNumber;
     }
 

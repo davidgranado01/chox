@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -62,7 +61,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
-        updateModelInSession(Arrays.asList(model));
+        updateModelInSession(model);
         return SUCCESS;
     }
 
@@ -129,7 +128,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getBreBand(Integer.valueOf(this.objectId));
-                    addModelToSession(Arrays.asList(model));
+                    addModelToSession(model);
                 }
             }
             
@@ -177,7 +176,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 adminInsurerService.evict(model);
                 model = newModel;
             } else {
-                checkVersion(Arrays.asList(model));
+                checkVersion(model);
             }
             ActionResponse response;
             if (asCopy || !protocolVehicleClassCeilingRecords.isEmpty()) {
@@ -200,7 +199,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 model.setClaimMatchingWorkgroup(null);
             }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
         } catch (Exception ex) {
             LOG.error("Error updating Insurer BRE Band: {}", ex.getMessage(), ex);
@@ -357,7 +356,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 throw new AccessDeniedException("Trying to delete an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             if (model != null) {
-                checkVersion(Arrays.asList(model));
+                checkVersion(model);
                 ActionResponse response;
                 response = adminInsurerService.deleteInsurerBreBand(model);
                 setActionResponse(response);

@@ -199,15 +199,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
                         throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
                     }
+                    
                     LOG.debug("Processing newInvoice activity.");
                     claim.setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
-                    History.New(breResponse).stream().map((history) -> {
-                        claim.addHistory(history);
-                        return history;
-                    }).filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                         claimResult.getBreMessage().add(history.getNarrative());
                     });
 

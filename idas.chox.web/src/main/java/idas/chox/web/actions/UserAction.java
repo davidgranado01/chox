@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -149,7 +148,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String doRenderActionPage() {
-        updateModelInSession(Arrays.asList(model));
+        updateModelInSession(model);
         return SUCCESS;
     }
 
@@ -187,7 +186,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminUserService.getUser(Integer.valueOf(objectId));
                     originalUserStatus = model.getStatus();
-                    addModelToSession(Arrays.asList(model));
+                    addModelToSession(model);
                 }
             }
         } catch (Exception ex) {
@@ -318,7 +317,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
             
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             
             ActionResponse response;
             
@@ -338,7 +337,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                     response = adminUserService.updateUser(model);
                 }
             }
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
         
         } catch (Exception ex) {
@@ -364,9 +363,9 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             }
             LOG.debug("Passed access validation");
 
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             ActionResponse response = adminUserService.updateUserPassword(model);
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -386,9 +385,9 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             throw new AccessDeniedException("Trying to update the triggerUserAccountStatus of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
         }
         try {
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             ActionResponse response = adminUserService.triggerUserStatus(model);
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -408,9 +407,9 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             throw new AccessDeniedException("Trying to update the triggerPasswordExpiredStatus of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
         }
         try {
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             ActionResponse response = adminUserService.triggerPasswordExpiredStatus(model);
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
 
         } catch (Exception ex) {

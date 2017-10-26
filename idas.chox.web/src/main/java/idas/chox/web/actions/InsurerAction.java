@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -84,7 +83,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
-        updateModelInSession(Arrays.asList(model));
+        updateModelInSession(model);
         return SUCCESS;
     }
 
@@ -105,7 +104,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
-                    addModelToSession(Arrays.asList(model));
+                    addModelToSession(model);
                 }
             }
             if (model == null) {
@@ -168,7 +167,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         }
 
         try {
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
             model.setAutomaticRoutingStrategy(autoRoutingStrategy);
             if (this.adminInsurerService.getWebuserById(claimOwnerIdField) != null) {
@@ -179,7 +178,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             }
             
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew(), originalName);
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             setActionResponse(response);
         } catch (Exception ex) {
             handleException(ex);

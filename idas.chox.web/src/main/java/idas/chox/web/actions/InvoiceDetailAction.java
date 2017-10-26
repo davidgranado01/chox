@@ -40,16 +40,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private ApplicationAccessibility applicationAccessibility;
     private Claim claim = null;
     private int actionSelected;
-    private int submit = 10;
-    private int recalculate = 20;
-    private int reset = 30;
+    private final int submit = 10;
+    private final int recalculate = 20;
+    private final int reset = 30;
     private static final String READ_ONLY = "r";
     private static final String EDITABLE = "w";
     private static final String DECLINE = "decline";
     private VehicleClassService vehicleClassService;
     private VehicleClassPriceService vehicleClassPriceService;
     private VehicleClass vehicleClass;
-    private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
+    private final BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
     private BigDecimal hire_vat_used;
     private BigDecimal repair_vat_used;
     private BigDecimal engineerFee_vat_used;
@@ -2315,65 +2315,67 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public String updateModel() {
         boolean isHireStartUpdate = false;
         LOG.debug("Updating invoice detail...");
-        if (actionSelected == reset) {
-            this.setActionResult("Invoice Reset");
-        } else if (actionSelected == recalculate) {
-            LOG.debug("Recalculating the invoice...");
-            try {
-                recalculate(claim);
-                LOG.debug("Invoice has been re-calculated.");
-            } catch (Exception ex) {
-                handleException(ex);
-                LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
+        switch (actionSelected) {
+            case reset:
+                this.setActionResult("Invoice Reset");
+                break;
+            case recalculate:
+                LOG.debug("Recalculating the invoice...");
+                try {
+                    recalculate(claim);
+                    LOG.debug("Invoice has been re-calculated.");
+                } catch (Exception ex) {
+                    handleException(ex);
+                    LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
+                    return ERROR;
+                }   break;
+            case submit:
+                LOG.debug("Saving....");
+                try {
+                    checkVersion(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
+                    claim.setEngineerReport(engineerReport);
+                    if ((claim.getVehicleHire() == null && vehicleHire != null && vehicleHire.getRentalStart() != null)
+                            || (claim.getVehicleHire() != null && claim.getVehicleHire().getRentalStart() == null && vehicleHire.getRentalStart() != null)) {
+                        isHireStartUpdate = true;
+                    }
+                    claim.setVehicleHire(vehicleHire);
+                    claim.setInvoice(invoice);
+                    claimService.updateLiabilityPayment(claim);
+                    addModifiedFieldsComment();
+                    updateHpi();
+                    for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
+                        if (getCanAddTotalGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue()) {
+                            BigDecimal totalGrossInsurerDiscountPercentage = getTotalGrossInsurerDiscountPercentage(claim);
+                            insurerDiscountService.addInsurerDiscountComment(claim, getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), totalGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        }
+                        if (getCanAddRepairGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue()) {
+                            BigDecimal repairGrossInsurerDiscountPercentage = getRepairGrossInsurerDiscountPercentage(claim);
+                            insurerDiscountService.addInsurerDiscountComment(claim, getRepairGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), repairGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        }
+                        if (getCanAddHireGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue()) {
+                            BigDecimal hireGrossInsurerDiscountPercentage = getHireGrossInsurerDiscountPercentage(claim);
+                            insurerDiscountService.addInsurerDiscountComment(claim, getHireGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), hireGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        }
+                    }
+                    
+                    claimService.updateClaim(claim);
+                    updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
+                    modelSaved = true;
+                    
+                    if (isHireStartUpdate) {
+                        LOG.debug ("Rental Start Added checking to raise On Hire task...");
+                        claimService.addOnHireTask(claim);
+                    }
+                    this.setActionResult("Your Changes Have Been Saved");
+                    activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
+                } catch (Exception ex) {
+                    LOG.warn("Exception is thrown and passing to baseAction ", ex);
+                    handleException(ex);
+                    return ERROR;
+                }   break;
+            default:
+                LOG.debug("No action defined!");
                 return ERROR;
-            }
-        } else if (actionSelected == submit) {
-            LOG.debug("Saving....");
-            try {
-                checkVersion(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
-                claim.setEngineerReport(engineerReport);
-                if ((claim.getVehicleHire() == null && vehicleHire != null && vehicleHire.getRentalStart() != null)
-                    || (claim.getVehicleHire() != null && claim.getVehicleHire().getRentalStart() == null && vehicleHire.getRentalStart() != null)) {
-                    isHireStartUpdate = true;
-                }
-                claim.setVehicleHire(vehicleHire);
-                claim.setInvoice(invoice);
-                claimService.updateLiabilityPayment(claim);
-                addModifiedFieldsComment();
-                updateHpi();
-                for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
-                    if (getCanAddTotalGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue()) {
-                        BigDecimal totalGrossInsurerDiscountPercentage = getTotalGrossInsurerDiscountPercentage(claim);
-                        insurerDiscountService.addInsurerDiscountComment(claim, getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), totalGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
-                    }
-                    if (getCanAddRepairGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue()) {
-                        BigDecimal repairGrossInsurerDiscountPercentage = getRepairGrossInsurerDiscountPercentage(claim);
-                        insurerDiscountService.addInsurerDiscountComment(claim, getRepairGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), repairGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
-                    }
-                    if (getCanAddHireGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue()) {
-                        BigDecimal hireGrossInsurerDiscountPercentage = getHireGrossInsurerDiscountPercentage(claim);
-                        insurerDiscountService.addInsurerDiscountComment(claim, getHireGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), hireGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
-                    }
-                }
-                
-                claimService.updateClaim(claim);
-                updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
-                modelSaved = true;
-                
-                if (isHireStartUpdate) {
-                    LOG.debug ("Rental Start Added checking to raise On Hire task...");
-                    claimService.addOnHireTask(claim);
-                }
-                this.setActionResult("Your Changes Have Been Saved");
-                activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
-            } catch (Exception ex) {
-                LOG.warn("Exception is thrown and passing to baseAction ", ex);
-                handleException(ex);
-                return ERROR;
-            }
-        } else {
-            LOG.debug("No action defined!");
-            return ERROR;
         }
         LOG.debug("Done in updateModel");
         return SUCCESS;

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -315,7 +314,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                     if (result != null) {
                         this.getActionResponse().AddError(result);
                     } else {
-                        updateModelInSession(Arrays.asList(claim));
+                        updateModelInSession(claim);
                         if (notifyTask) {
                             this.getActionResponse().AssignMessageResult("File has been uploaded successfully and " + getIsChoOrIns() + " informed");
                         } else {

@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -73,9 +72,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
         if (getModelIdFromSession(Claim.class) != null) {
             claim = claimService.getClaim(getModelIdFromSession(Claim.class));
-            addModelToSession(Arrays.asList(claim));
+            LOG.debug("Claim retrieved using session ID: id={}, version={}", claim.getId(), claim.getVersion());
+            addModelToSession(claim);
         } else if (selectedClaimIdList == null || selectedClaimIdList.isEmpty()) {
             LOG.error("No claimId in session");
+        } else if (LOG.isDebugEnabled() && claim != null) {
+            LOG.debug("Using already loaded claim with id={}, version={}", claim.getId(), claim.getVersion());
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("No claim!!!!!!!!!!");
         }
 
         // Make sure we have a BRE Band (for non-batch requests)
@@ -156,9 +160,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             LOG.debug("Executing Activity '{}' (with class {}) on claim with id={}, cho_reference='{}'",
                 new Object[]{name, activity.getClass().getSimpleName(), claim.getId(), claim.getChoReference()});
             try {
-                checkVersion(Arrays.asList(claim));
+                checkVersion(claim);
                 activity.process(claim);
-                updateModelInSession(Arrays.asList(claim));
+                updateModelInSession(claim);
                 setMessage(activity.getMessage());
             } catch (AccessDeniedException ex) {
                 LOG.error("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",

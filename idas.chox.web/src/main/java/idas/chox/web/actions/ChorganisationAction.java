@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -104,7 +103,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
-        updateModelInSession(Arrays.asList(model));
+        updateModelInSession(model);
         return SUCCESS;
     }
 
@@ -135,7 +134,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminChorganisationService.getChorganisation(objectId);
-                    addModelToSession(Arrays.asList(model));
+                    addModelToSession(model);
                 }
             }
 
@@ -204,7 +203,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                     }
                 }
             }
-            checkVersion(Arrays.asList(model));
+            checkVersion(model);
             Chorganisation oldLinkedCho = null;
             if (model.getLinkedCho() != null && model.getLinkedCho().getId() != linkedChoId) {
                 oldLinkedCho = model.getLinkedCho();
@@ -226,7 +225,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                 adminChorganisationService.updateChorganisation(newLinkedCho);
             }
             
-            updateModelInSession(Arrays.asList(model));
+            updateModelInSession(model);
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
                 chorganisationAliasService.createDefaultRecord(model);

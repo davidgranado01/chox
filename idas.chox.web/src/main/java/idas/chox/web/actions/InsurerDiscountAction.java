@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +156,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
             result.put("errors",error);
         } else {
             try {
-                checkVersion(Arrays.asList(model));
+                checkVersion(model);
                 result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, model);
             } catch (Exception ex) {
                 Map error = new HashMap();
@@ -213,7 +212,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
                 if (getIsInsurer() && model.getInsurer().getId() != getAuthenticatedUser().getInsurer().getId().intValue()) {
                     throw new AccessDeniedException("Cannot delete Insurer Discount that does not belong to you.");
                 }
-                checkVersion(Arrays.asList(model));
+                checkVersion(model);
                 Map hm = insurerDiscountService.deleteInsurerDiscount(model);
                 ObjectMapper mapper = new ObjectMapper();
                 String jsonString = null;
@@ -248,7 +247,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
             model = new InsurerDiscount();
             if (discountId > 0) {
                 model = insurerDiscountService.getInsurerDiscount(discountId);
-                addModelToSession(Arrays.asList(model));
+                addModelToSession(model);
             }
         } catch (Exception ex) {
             handleException(ex);
