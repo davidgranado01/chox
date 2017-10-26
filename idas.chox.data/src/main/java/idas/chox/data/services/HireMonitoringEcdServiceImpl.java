@@ -23,6 +23,7 @@ import idas.chox.data.notifications.NotificationType;
  * @author Emmanuel
  */
 public class HireMonitoringEcdServiceImpl extends SecureDataService implements HireMonitoringEcdService {
+
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringEcdServiceImpl.class);
 
     private NotificationService notificationService;
@@ -56,7 +57,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return (HireMonitoringEcd) get(HireMonitoringEcd.class, id);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public void saveHireMonitoringEcd(HireMonitoringEcd object) {
         save(object);
@@ -66,17 +67,18 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
     public Date getLatestHireMonitoringECDDate(Claim claim) {
 
         Date returnECD;
-        List<HireMonitoringEcd> hireMonitoringEcds;
-        
+        List<HireMonitoringEcd> hireMonitoringEcds = null;
+
         Date originalEcd = claim.getCustomer().getInitialECD();
-        try {
-            hireMonitoringEcds = getHireMonitoringEcdsByClaimIdFilter(claim.getId(), false, "createdDate");
-        } catch (Exception ex) {
-            LOG.error("Exception thrown getting HireMonitoringEcdsByClaimIdFilter on claim {} (id={}): {}",
-                    new Object[]{claim.getChorganisation(), claim.getId(), ex.getMessage()});
-            hireMonitoringEcds = claim.getHireMonitoringEcds();
+        if (claim.getId() != null) { // New claims and TPI uploads will have no id and this no ECDs
+            try {
+                hireMonitoringEcds = getHireMonitoringEcdsByClaimIdFilter(claim.getId(), false, "createdDate");
+            } catch (Exception ex) {
+                LOG.error("Exception thrown getting HireMonitoringEcdsByClaimIdFilter on claim {} (id={}): {}",
+                        new Object[]{claim.getChoReference(), claim.getId(), ex.getMessage()});
+                hireMonitoringEcds = claim.getHireMonitoringEcds();
+            }
         }
-        
         if (hireMonitoringEcds != null && hireMonitoringEcds.size() > 0) {
             returnECD = hireMonitoringEcds.get(0).getEcdDate();
         } else {
@@ -85,26 +87,26 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
 
         return returnECD;
     }
-    
+
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd) {
-        
+
         claim.addHireMonitoringEcd(ecd);
         try {
             LOG.debug("Checking for ECD anomalies...");
             notificationService.checkForAnomalies(claim, NotificationType.EcdAnomalousNotification.getType());
         } catch (Exception ex) {
             LOG.error("Exception thrown adding notifications of type '{}' to claim={} [v{}]: {}", new Object[]{
-                        NotificationType.EcdAnomalousNotification.getType(), claim.getId(), claim.getVersion(), ex.getMessage(), ex});
+                NotificationType.EcdAnomalousNotification.getType(), claim.getId(), claim.getVersion(), ex.getMessage(), ex});
         }
-        
+
         if (ecd.isUpdateInsurer() || claim.getInsurer().isAllowDefaultHMUpdates()) {
             try {
                 notificationService.addNotification(claim, new EcdUpdatedNotification());
             } catch (Exception ex) {
                 LOG.error("Exception thrown adding EcdUpdatedNotification to claim={} [v{}]: {}", new Object[]{
-                            claim.getId(), claim.getVersion(), ex.getMessage(), ex});
+                    claim.getId(), claim.getVersion(), ex.getMessage(), ex});
             }
         }
     }
