@@ -66,11 +66,18 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
     public Date getLatestHireMonitoringECDDate(Claim claim) {
 
         Date returnECD;
-
+        List<HireMonitoringEcd> hireMonitoringEcds;
+        
         Date originalEcd = claim.getCustomer().getInitialECD();
-        List<HireMonitoringEcd> hireMonitoringEcds = getHireMonitoringEcdsByClaimIdFilter(claim.getId(), false, "createdDate");
-
-        if (hireMonitoringEcds.size() > 0) {
+        try {
+            hireMonitoringEcds = getHireMonitoringEcdsByClaimIdFilter(claim.getId(), false, "createdDate");
+        } catch (Exception ex) {
+            LOG.error("Exception thrown getting HireMonitoringEcdsByClaimIdFilter on claim {} (id={}): {}",
+                    new Object[]{claim.getChorganisation(), claim.getId(), ex.getMessage()});
+            hireMonitoringEcds = claim.getHireMonitoringEcds();
+        }
+        
+        if (hireMonitoringEcds != null && hireMonitoringEcds.size() > 0) {
             returnECD = hireMonitoringEcds.get(0).getEcdDate();
         } else {
             returnECD = originalEcd;
