@@ -133,71 +133,22 @@ function loadHome() {
     choxJqueryHttpSubmit($(form));
 }
 
-// Extjs way of submitting http form. This can be shortened as loadHome() method.
 function loadClaimDetail(claimId) {
-    isCsrfParamPresent();
-    var claimDetailPageUrl = contextPath + '/prv/openClaimDetail.action';
-    var tempParams = {};
-    if (claimId) {
-        tempParams['id'] = claimId;
-    }
-    if (Ext.get('claimDetailScreenDiv')) {
-        Ext.get('claimDetailScreenDiv').mask("Loading Please Wait...");
-    }
-    if (isCsrfParamActive()){
-        tempParams = Ext.apply(tempParams, csrfParam);
-    }
-    var claimForm = new Ext.FormPanel({
-        standardSubmit: true,
-        baseParams: tempParams,
-        url: claimDetailPageUrl,
-        renderTo : Ext.getBody( ),
-        listeners:  {
-            afterrender:function(form){
-                for (i in form.baseParams) {
-                    form.add({
-                        xtype: 'hidden',
-                        name: i,
-                        value: form.baseParams[i]
-                    });
-                }
-            }
-        }
-    });
-    claimForm.doLayout();
-    claimForm.getForm().submit();
+    var claimDetailURL = contextPath + '/prv/claimDetails.action?id=' + claimId;
+    var form = $('<form action="' + claimDetailURL + '" method="post"> </form>');
+    $('body').append(form);
+    choxJqueryHttpSubmit($(form));
 }
 
-// Extjs way of submitting http form. This can be shortened as loadHome() method.
+
 function loadInbox(loadPreviouslyOpenedTabFromSession) {
-    isCsrfParamPresent();
     var inboxPageUrl = contextPath + '/prv/inbox.action';
-    var tempParams = {};
     if (loadPreviouslyOpenedTabFromSession) {
-        tempParams['showHistory'] = 1;
+        inboxPageUrl = inboxPageUrl + '?showHistory=1'
     } 
-    if (isCsrfParamActive()){
-        tempParams = Ext.apply(tempParams, csrfParam);
-    }
-    var inboxForm = new Ext.FormPanel({
-        standardSubmit: true,
-        baseParams: tempParams,
-        url: inboxPageUrl,
-        renderTo : Ext.getBody( ),
-        listeners:  {
-            afterrender:function(form){
-                for (i in form.baseParams) {
-                    form.add({
-                        xtype: 'hidden',
-                        name: i,
-                        value: form.baseParams[i]
-                    });
-                }
-            }
-        }
-    });
-    inboxForm.doLayout();
-    inboxForm.getForm().submit();
+    var form = $('<form action="' + inboxPageUrl + '" method="post"> </form>');
+    $('body').append(form);
+    choxJqueryHttpSubmit($(form));
 }
 
 function choxExtAjaxRequest(extAjaxconfig) {
