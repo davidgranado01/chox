@@ -220,13 +220,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
-                    History.New(breResponse).stream().map((history) -> {
-                        claim.addHistory(history);
-                        return history;
-                    }).filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                         claimResult.getBreMessage().add(history.getNarrative());
                     });
-                    LOG.debug("newInvoice activity completed.");
+                    LOG.debug("NewSupplementaryInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
                     // Check we have a BRE band
                     if (breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()) == null) {
@@ -238,13 +235,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("supplementaryInsurerInvoice");
                     activity.processInBatch(claim);
                     RulesEngineResponse breResponse = ((NewSupplementaryInvoice) activity).getBreResponse();
-                    History.New(breResponse).stream().map((history) -> {
-                        claim.addHistory(history);
-                        return history;
-                    }).filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                         claimResult.getBreMessage().add(history.getNarrative());
                     });
-                    LOG.debug("supplementaryInsurerInvoice activity completed.");
+                    LOG.debug("NewSupplementaryInvoice activity completed for Insurer invoice.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
                     // Check we have a BRE band
@@ -269,10 +263,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity = activityFactory.getActivity("newInvoice");
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((NewInvoice) activity).getBreResponse();
-                        History.New(breResponse).stream().map((history) -> {
-                            claim.addHistory(history);
-                            return history;
-                        }).filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
+                        History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                             claimResult.getBreMessage().add(history.getNarrative());
                         });
                         LOG.debug("NewInvoice activity completed.");
@@ -282,10 +273,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activity.setXmlActivityProcessing(true);
                         activity.processInBatch(claim);
                         RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
-                        History.New(breResponse).stream().map((history) -> {
-                            claim.addHistory(history);
-                            return history;
-                        }).filter((history) -> (history.getType().equals("ERROR"))).forEachOrdered((history) -> {
+                        History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                             claimResult.getBreMessage().add(history.getNarrative());
                         });
 
@@ -323,10 +311,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.setXmlActivityProcessing(true);
                     activity.processInBatch(claimResult.getClaim());
                     RulesEngineResponse breResponse = ((InsurerUpload) activity).getBreResponse();
-                    History.New(breResponse).stream().map((history) -> {
-                        claim.addHistory(history);
-                        return history;
-                    }).filter((history) -> (history.getType().equals("ERROR"))).forEachOrdered((history) -> {
+                    History.New(breResponse).stream().filter((history) -> (history.getType().equals("ERROR") && history.getIsPublic())).forEachOrdered((history) -> {
                         claimResult.getBreMessage().add(history.getNarrative());
                     });
 
@@ -339,7 +324,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         activityEventGenerator.getEvents(claim, this).forEach((event) -> {
                             eventBus.post(event);
                         });
-//                        activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
                     }
                 }
 
