@@ -364,6 +364,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
         if (suppliers == null) {
             if (reportName.equals(ReportFactory.BRE_INVOICE_APPROVAL_DISPUTE_RPT)
                     || reportName.equals(ReportFactory.TEAM_SITE_BRE_INVOICE_RPT)
+                    || reportName.equals(ReportFactory.INSURER_PAYMENT_RPT)
                     || reportName.equals(ReportFactory.WORKGROUP_OWNER_BRE_RPT)) {
                 suppliers = this.lookupService.getSuppliers(true); // exclude manual CHO.
             } else {

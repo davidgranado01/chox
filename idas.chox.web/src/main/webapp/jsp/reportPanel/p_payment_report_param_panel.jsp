@@ -7,7 +7,7 @@
 
     Ext.onReady(function(){
 
-        <s:if test="insurerIsWorkgroupEnabled" >
+<s:if test="insurerIsWorkgroupEnabled" >
 
             var choPaymentWorkgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
@@ -46,7 +46,7 @@
                                 }
             });
             choPaymentWorkgroupStore.load();
-        </s:if>
+</s:if>
 
         $("form#formReportParam").validate(
         {
@@ -65,7 +65,7 @@
             }
         });
         
-        <s:if test="!isCHO">
+<s:if test="!isCHO">
         var suppliersJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -107,7 +107,7 @@
             }
         });
     
-        </s:if>
+</s:if>
 
     }); 
 
@@ -146,7 +146,7 @@
 
                 <table class="report-form">
 
-                    <s:if test="!isCHO && !isCH && insurerIsWorkgroupEnabled">
+                    <s:if test="!isCHO && insurerIsWorkgroupEnabled">
                         <tr>
                             <td nowrap><label>Workgroup</label></td>
                             <td>

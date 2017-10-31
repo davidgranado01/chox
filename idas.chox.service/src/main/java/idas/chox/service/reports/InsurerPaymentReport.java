@@ -37,7 +37,7 @@ public class InsurerPaymentReport implements Report {
     }
 
     public InsurerPaymentReport() {
-        reportParameterNames = new ArrayList<String>();
+        reportParameterNames = new ArrayList<>();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class InsurerPaymentReport implements Report {
     @Override
     public Map<String, Object> getReportParameters() {
 
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
 
         try {
 
@@ -138,7 +138,7 @@ public class InsurerPaymentReport implements Report {
 
             List result = reportDataService.getReportData(query, paramMap);
 
-            List<PaymentReport> payments = new ArrayList<PaymentReport>();
+            List<PaymentReport> payments = new ArrayList<>();
 
             for (Object o : result) {
                 Map data = (Map) o;
