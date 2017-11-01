@@ -22,7 +22,6 @@ import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.events.ChoxEvent;
 
-
 /**
  *
  * @author John
@@ -47,12 +46,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         return getTasks(webUserId, false, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     @Override
-    public int getAllVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    public int getAllVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -70,12 +69,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         return getTasks(webUserId, true, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     @Override
-    public int getIncompleteVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    public int getIncompleteVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -108,7 +107,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void markTaskAsComplete(int webUserId, int taskId) {
         Task task = (Task) get(Task.class, taskId);
         if (task == null) {
@@ -126,9 +125,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("No such user.");
             }
         } else {
-                throw new IllegalArgumentException("No such user.");
+            throw new IllegalArgumentException("No such user.");
         }
-        
+
         // Check that if the task is on a claim, then the webuser belongs to the same org as that of the claim
         if (task.getClaim() != null) {
             if ((webUser.isCHO() && webUser.getChorganisation().getId().intValue() != task.getClaim().getChorganisation().getId())
@@ -137,7 +136,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("You are not authorised to mark this task as complete.");
             }
         }
-        
+
         // Check that user can mark task as complete:
         //       true if user created task
         //       true if no visibility role defined
@@ -148,7 +147,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         if (task.getCreatedBy().getId().intValue() == webUser.getId()) {
             canComplete = true;
-        } else if ((task.getVisibilityRole() == null || task.getVisibilityRole().length() == 0) && task.getVisibility()!= 1) {
+        } else if ((task.getVisibilityRole() == null || task.getVisibilityRole().length() == 0) && task.getVisibility() != 1) {
             canComplete = true;
         } else if (userInRole(webUser, task.getVisibilityRole())) {
             canComplete = true;
@@ -164,31 +163,34 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         if (task.getClaim() != null) {
             eventService.generate(task.getClaim(), ChoxEvent.TASK_COMPLETED_EVENT, task);
         }
-        if (task.getRelatedTask() != null) {
-            try {
-                LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
-                markTaskAsComplete(task.getRelatedTask());
-            } catch (Exception ex) {
-                LOG.error("Exception marking related task {} for original task {} as complete: {}", new Object[]{
-                    task.getRelatedTask().getId(), task.getId(), ex.getMessage(), ex});
-                task.setRelatedTask(null);
+
+        // Check related task
+        try {
+            if (task.getRelatedTask() != null) {
+                Task relatedTask = (Task) get(Task.class, task.getRelatedTask().getId());
+                if (relatedTask != null) {
+                    LOG.debug("Marking related task as complete: {}", relatedTask.getId());
+                    markTaskAsComplete(relatedTask);
+                } else {
+                    LOG.warn("Exception marking related task {} for original task {} as complete.", new Object[]{
+                        task.getRelatedTask().getId(), task.getId()});
+                    task.setRelatedTask(null);
+                }
             }
+        } catch (Exception ex) {
+            LOG.warn("Exception marking related task {} for original task {} as complete: {}", new Object[]{
+                task.getRelatedTask().getId(), task.getId(), ex.getMessage(), ex});
+            task.setRelatedTask(null);
         }
     }
 
     private boolean userInRole(WebUser user, String roleName) {
         List<WebUserUserRole> webUserUserRoles = webUserUserRoleService.getMappedUserRole(user.getId());
-
-        for (WebUserUserRole webUserUserRole : webUserUserRoles) {
-            if (webUserUserRole.getWebUserRole().getName().equals(roleName)) {
-                return true;
-            }
-        }
-        return false;
+        return webUserUserRoles.stream().anyMatch((webUserUserRole) -> (webUserUserRole.getWebUserRole().getName().equals(roleName)));
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void createNewTask(Task task) {
         task.setComplete(Boolean.FALSE);
         if (task.getClaim() != null) {
@@ -203,11 +205,11 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 }
             }
         }
-        
+
         if (task.getRaisedBy() == null) {
             task.setRaisedBy(this.getSecurityInfoProvider().getCurrentUser());
         }
-        
+
         if (!task.getInsurer() && task.getVisibility() == 3) {
             // Need to set visibility role depending upon the claim status for CHO external tasks
             if (task.getClaim() == null) {
@@ -215,25 +217,24 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             }
             String claimStatus = task.getClaim().getStatus();
             switch (claimStatus) {
-                case ClaimStatus.AWAITING_INVOICE_PAYMENT:
-                    {
-                        task.setVisibilityRole(WebUserRole.ROLE_INS_PC);
-                        //Also create a new task visible by CH
-                        Task taskCH = new Task();
-                        taskCH.setComplete(Boolean.FALSE);
-                        taskCH.setDescription(task.getDescription());
-                        taskCH.setDueDate(task.getDueDate());
-                        taskCH.setType(task.getType());
-                        taskCH.setVisibility(task.getVisibility());
-                        taskCH.setInsurer(task.getInsurer());
-                        taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                        taskCH.setRelatedTask(task);
-                        taskCH.setClaim(task.getClaim());
-                        taskCH.setRaisedBy(task.getRaisedBy());
-                        task.setRelatedTask(taskCH);
-                        this.save(taskCH);
-                        break;
-                    }
+                case ClaimStatus.AWAITING_INVOICE_PAYMENT: {
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_PC);
+                    //Also create a new task visible by CH
+                    Task taskCH = new Task();
+                    taskCH.setComplete(Boolean.FALSE);
+                    taskCH.setDescription(task.getDescription());
+                    taskCH.setDueDate(task.getDueDate());
+                    taskCH.setType(task.getType());
+                    taskCH.setVisibility(task.getVisibility());
+                    taskCH.setInsurer(task.getInsurer());
+                    taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    taskCH.setRelatedTask(task);
+                    taskCH.setClaim(task.getClaim());
+                    taskCH.setRaisedBy(task.getRaisedBy());
+                    task.setRelatedTask(taskCH);
+                    this.save(taskCH);
+                    break;
+                }
                 case ClaimStatus.AWAITING_LIABILITY_RESOLUTION:
                     task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
                     break;
@@ -271,25 +272,24 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
                     break;
                 case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED:
-                case ClaimStatus.INVOICE_UNASSIGNED:
-                    {
-                        task.setVisibilityRole(WebUserRole.ROLE_INS_CR);
-                        //Also create a new task visible by CH
-                        Task taskCH = new Task();
-                        taskCH.setComplete(Boolean.FALSE);
-                        taskCH.setDescription(task.getDescription());
-                        taskCH.setDueDate(task.getDueDate());
-                        taskCH.setType(task.getType());
-                        taskCH.setVisibility(task.getVisibility());
-                        taskCH.setInsurer(task.getInsurer());
-                        taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                        taskCH.setRelatedTask(task);
-                        taskCH.setClaim(task.getClaim());
-                        taskCH.setRaisedBy(task.getRaisedBy());
-                        task.setRelatedTask(taskCH);
-                        this.save(taskCH);
-                        break;
-                    }
+                case ClaimStatus.INVOICE_UNASSIGNED: {
+                    task.setVisibilityRole(WebUserRole.ROLE_INS_CR);
+                    //Also create a new task visible by CH
+                    Task taskCH = new Task();
+                    taskCH.setComplete(Boolean.FALSE);
+                    taskCH.setDescription(task.getDescription());
+                    taskCH.setDueDate(task.getDueDate());
+                    taskCH.setType(task.getType());
+                    taskCH.setVisibility(task.getVisibility());
+                    taskCH.setInsurer(task.getInsurer());
+                    taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+                    taskCH.setRelatedTask(task);
+                    taskCH.setClaim(task.getClaim());
+                    taskCH.setRaisedBy(task.getRaisedBy());
+                    task.setRelatedTask(taskCH);
+                    this.save(taskCH);
+                    break;
+                }
                 case ClaimStatus.CLAIM_UPDATE_BY_ENG:
                     task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
                     break;
@@ -358,13 +358,13 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
     }
 
-    private int getTaskCount(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    private int getTaskCount(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         SearchResult result = getTasks(user, incompleteOnly, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
-        
+
         return result.getTotalCount();
     }
-    
-    private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+
+    private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
 
         boolean isCHO = false;
         List<Task> results = new ArrayList<>();
@@ -413,7 +413,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             .add(Restrictions.eq("visibility", 2))
                             .add(Restrictions.isNull("claim"))
                             .add(Subqueries.propertyIn("createdBy", choUsers));
-                    
+
                     // declare default Criterion restriction to avoid null value when below if condition not passed. 
                     Criterion internalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
                     Criterion externalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
@@ -421,13 +421,13 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     Criterion externalTasksOnClaimsBelongsToUserOrg = Restrictions.eq("id", -1);
                     Criterion internalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
                     Criterion externalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
-                    
+
                     if (showAssignedTasksOnly) {
-                        
+
                         DetachedCriteria claimsUserOwns = DetachedCriteria.forClass(Claim.class)
-                            .setProjection(Property.forName("id"))
-                            .add(Restrictions.eq("supplierClaimOwner", user));
-                        
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.eq("supplierClaimOwner", user));
+
                         // Add CHO internal tasks on claims user owns
                         internalTasksOnClaimsUserOwns = Restrictions.conjunction()
                                 .add(Restrictions.eq("insurer", Boolean.FALSE))
@@ -466,13 +466,13 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 break;
                             }
                         }
-                        
+
                     } else { // show tasks belongs to user organisation.
-                        
+
                         DetachedCriteria claimsBelongsToUserCho = DetachedCriteria.forClass(Claim.class)
-                            .setProjection(Property.forName("id"))
-                            .add(Restrictions.eq("chorganisation", user.getChorganisation()));
-                        
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.eq("chorganisation", user.getChorganisation()));
+
                         // Add CHO internal tasks on claims belongs to user organisation.
                         internalTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
                                 .add(Restrictions.eq("insurer", Boolean.FALSE))
@@ -517,8 +517,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     Criterion extTskAssingedToRole = Restrictions.eq("id", -1);
                     Criterion intTskAssingedToClaimBelongsToUserInsurer = Restrictions.eq("id", -1);
                     Criterion extTskAssingedToClaimBelongsToUserInsurer = Restrictions.eq("id", -1);
-                    
-
 
                     // declare subqueries which will be used in Criterion.
                     DetachedCriteria insurerUsers = DetachedCriteria.forClass(WebUser.class)
@@ -528,8 +526,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     DetachedCriteria claimsBelongsToUserInsurer = DetachedCriteria.forClass(Claim.class)
                             .setProjection(Property.forName("id"))
                             .add(Restrictions.eq("insurer", user.getInsurer()));
-                    
-                    
+
                     if (showAssignedTasksOnly) {
 
                         DetachedCriteria claimsUserOwns = DetachedCriteria.forClass(Claim.class)
@@ -604,7 +601,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                         .add(Restrictions.in("visibilityRole", visibilityRole1))
                                         .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
 
-
                                 // Add all CHO external tasks assigned to role on claims user owns
                                 externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.FALSE))
@@ -665,7 +661,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                         }
                     } else {
-                        
+
                         // Add all Insurer internal tasks with no claim assigned to the task
                         internalTasksWithNoClaimsAssigned = Restrictions.conjunction()
                                 .add(Restrictions.eq("insurer", Boolean.TRUE))
@@ -712,23 +708,23 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
             // remove any related tasks
             criteria.createAlias("relatedTask", "t2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
-            
+
             Criterion relatedTaskRestriction;
-            
+
             if (visibilityRole.size() > 0) {
                 relatedTaskRestriction = Restrictions.disjunction()
-                    .add(Restrictions.gtProperty("id", "t2.id"))
-                    .add(Restrictions.isNull("t2.id"))
-                    .add(Restrictions.in("visibilityRole", visibilityRole));
+                        .add(Restrictions.gtProperty("id", "t2.id"))
+                        .add(Restrictions.isNull("t2.id"))
+                        .add(Restrictions.in("visibilityRole", visibilityRole));
             } else {
                 relatedTaskRestriction = Restrictions.disjunction()
-                    .add(Restrictions.gtProperty("id", "t2.id"))
-                    .add(Restrictions.isNull("t2.id"));
+                        .add(Restrictions.gtProperty("id", "t2.id"))
+                        .add(Restrictions.isNull("t2.id"));
             }
-            
+
             criteria.add(relatedTaskRestriction);
             totalCount = totalCount(criteria);
-            
+
             Date minDueDate = getTaskMinDueDate(criteria);
             if (minDueDate != null) {
                 int days = DateHelper.getNumberOfDaysBetween(new Date(), minDueDate);
@@ -738,12 +734,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             }
 
             LOG.debug("Found {} tasks", totalCount);
-            
+
             if (sort != null && sort.equalsIgnoreCase("choReference")) {
                 // left join on claim used here to sort the task by choReference.
                 criteria.createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
-            
+
             if (sort != null && sort.equalsIgnoreCase("raisedBy")) {
                 // left join on claim used here to sort the task by choReference.
                 criteria.createAlias("this.raisedBy", "w", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
@@ -758,16 +754,16 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 criteria.createAlias("this.claim", "c", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
                 criteria.createAlias("c.supplierClaimOwner", "w", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
             }
-            
+
             criteria.setFirstResult(start);
             criteria.setMaxResults(limit);
             criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
             sortTasks(criteria, sort, dir);
             resultMap = criteria.list();
-            
-            for (HashMap m : resultMap) {
+
+            resultMap.forEach((m) -> {
                 results.add((Task) m.get("this"));
-            }
+            });
 
             LOG.debug("Returning {} tasks", results.size());
 
@@ -776,10 +772,10 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
         return new SearchResult(results, totalCount, colorCode);
     }
-    
+
     private void sortTasks(Criteria criteria, String sort, String dir) {
 
-        if (sort != null && dir !=null && !sort.isEmpty() && !dir.isEmpty()) {
+        if (sort != null && dir != null && !sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("choReference")) {
                 addSort(criteria, "c.choReference", dir);
             } else if (sort.equalsIgnoreCase("dueDate")) {
@@ -793,7 +789,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             } else if (sort.equalsIgnoreCase("raisedBy")) {
                 addSort(criteria, "w.lastName", dir);
                 addSort(criteria, "w.firstName", dir);
-            }  else if (sort.equalsIgnoreCase("insurerOwner") || sort.equalsIgnoreCase("choOwner")) {
+            } else if (sort.equalsIgnoreCase("insurerOwner") || sort.equalsIgnoreCase("choOwner")) {
                 addSort(criteria, "w.lastName", dir);
                 addSort(criteria, "w.firstName", dir);
             }
@@ -801,7 +797,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             criteria.addOrder(Order.desc("dueDate"));
         }
     }
-    
+
     private List<Integer> getUserWorkgroupIds(WebUser user) {
         // return a list of roles allocated to the user
         List<Integer> userWorkgroupIds = new ArrayList<>();
@@ -809,16 +805,15 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         workgroupCriteria.createCriteria("user").add(Restrictions.eq("id", user.getId()));
         List<WebUserWorkgroup> webUserWorkgroups = findByCriteria(workgroupCriteria);
         LOG.debug("Found {} user workgroups", webUserWorkgroups.size());
-        for (WebUserWorkgroup webUserWorkgroup : webUserWorkgroups) {
+        webUserWorkgroups.forEach((webUserWorkgroup) -> {
             userWorkgroupIds.add(webUserWorkgroup.getWorkgroup().getId());
-            LOG.debug("User in workgroup with id={}", webUserWorkgroup.getWorkgroup().getId());
-        }
+        });
 
         LOG.debug("User belongs to {} workgroups", userWorkgroupIds.size());
         return userWorkgroupIds;
     }
 
-    private SearchResult getTasks(int webUserId, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean  showAssignedTasksOnly) {
+    private SearchResult getTasks(int webUserId, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -927,7 +922,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             results = findByCriteria(criteria);
             LOG.debug("Found {} tasks", results.size());
         }
-        
+
         return results;
     }
 
@@ -955,29 +950,23 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     private boolean isTaskInList(int taskId, List<Task> tasks) {
-        for (Task task : tasks) {
-            if (task.getId() == taskId) {
-                return true;
-            }
-        }
-
-        return false;
+        return tasks.stream().anyMatch((task) -> (task.getId() == taskId));
     }
 
     @Override
     public void autoCompleteTasksForClaim(int claimId) {
         List<Task> tasks = getIncompleteTasksByClaim(claimId);
-        for (Task task : tasks) {
+        tasks.forEach((task) -> {
             markTaskAsAutoComplete(task);
-        }
+        });
     }
 
     @Override
     public void autoUndoCompleteTasksForClaim(int claimId) {
         List<Task> tasks = getAutoCompletedTasksByClaim(claimId);
-        for (Task task : tasks) {
+        tasks.forEach((task) -> {
             markTaskAsOpen(task);
-        }
+        });
     }
 
     private List<Task> getAutoCompletedTasksByClaim(int claimId) {
@@ -989,7 +978,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         return results;
     }
-    
+
     @Override
     public void deleteAllTasksByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
