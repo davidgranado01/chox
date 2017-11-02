@@ -1906,7 +1906,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean isRejectButtonEnabled() {
         boolean rejectEnabled = applicationAccessibility.checkActivityAccessibility(
                 ApplicationAccessibility.CLAIM_REJECTION,
@@ -1952,7 +1951,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean getCanShowSlaExtensionButton() {
 
         boolean slaExtensionEnabled = applicationAccessibility.checkActivityAccessibility(
@@ -2057,7 +2055,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection());
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean isSubscriberClaimUnderSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
@@ -2085,7 +2082,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claimDays < (subscriberSlaDays + claim.getSlaExtDays());
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public boolean isSubscriberClaimAtSlaDays() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
@@ -2119,7 +2115,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      to the claim so need to update the claim version in the session.*/
     private int getSubscriberClaimDays() {
         claimDays = claimService.getSubscriberClaimDays(claim.getId());
-//        updateModelInSession(Arrays.asList(claim));
+        updateModelInSession(claim);
         return claimDays;
     }
     // </editor-fold>
