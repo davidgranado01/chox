@@ -134,7 +134,7 @@ function loadHome() {
 }
 
 function loadClaimDetail(claimId) {
-    var claimDetailURL = contextPath + '/prv/claimDetails.action?id=' + claimId;
+    var claimDetailURL = contextPath + '/prv/openClaimDetail.action?id=' + claimId;
     var form = $('<form action="' + claimDetailURL + '" method="post"> </form>');
     $('body').append(form);
     choxJqueryHttpSubmit($(form));
