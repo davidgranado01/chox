@@ -1515,12 +1515,12 @@ public class Invoice extends Entity implements Serializable {
         this.interimPaymentMade = interimPaymentMade;
     }
 
-    public Boolean isInterimPaymentOutstanding() {
+    public boolean isInterimPaymentOutstanding() {
         if (interimPaymentReceived == null) {
             interimPaymentReceived = BigDecimal.ZERO;
         }
         if (interimPaymentMade == null) {
-            interimPaymentReceived = BigDecimal.ZERO;
+            interimPaymentMade = BigDecimal.ZERO;
         }
         return interimPaymentMade.compareTo(interimPaymentReceived) > 0;
     }
