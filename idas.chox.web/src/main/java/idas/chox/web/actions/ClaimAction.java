@@ -1912,7 +1912,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 getAuthenticatedUser(), claim) > 0;
 
         // If we have a subscriber or fixed-fee claim, we need to check the age of the claim
-        if (rejectEnabled && ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+        if (rejectEnabled && (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType()))) {
             int maxDays = 0;
             BreBand breBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             String cutOffTime = null;
