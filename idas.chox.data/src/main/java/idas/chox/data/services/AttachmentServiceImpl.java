@@ -145,12 +145,12 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             }
             result = addAttachment(claim, fileContent, filename, length, category, remark, notify, isInsurer, whoCreated);
         } catch (Exception ex) {
-            LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
+            LOG.error("Error processing file '{}' with length={}: ", new Object[]{filename, length, ex.getMessage(), ex});
         } finally {
             try {
                 streamIn.close();
             } catch (IOException ex) {
-                LOG.error("Error processing file with length={}: ", length, ex.getMessage(), ex);
+                LOG.error("Error processing file '{}' with length={}: ", new Object[]{filename, length, ex.getMessage(), ex});
             }
         }
         return result;
