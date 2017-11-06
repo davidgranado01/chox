@@ -3,11 +3,6 @@
 
 <script type="text/javascript">
 
-    Ext.onReady(function() {
-        var form = $("form#formRegisterFNOL");
-        choxJqueryHttpSubmit(form, doFnolFormSubmit);
-    });
-    
     function doFnolFormSubmit(){
 
         $("form#formRegisterFNOL #registerByFnolMessageBox").html("");

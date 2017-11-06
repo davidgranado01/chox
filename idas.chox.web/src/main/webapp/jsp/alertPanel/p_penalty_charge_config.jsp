@@ -21,9 +21,6 @@
             value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
             showWeekNumber: true
         });
-        var form = $("form#doAdjustAutoPenalty");
-        choxJqueryHttpSubmit(form, function(){});
-
     });
 
         function updatePenaltyChargeConfig() {

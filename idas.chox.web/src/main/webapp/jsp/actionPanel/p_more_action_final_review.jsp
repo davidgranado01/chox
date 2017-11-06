@@ -29,9 +29,6 @@
                 }
             });
         }
-        
-        choxJqueryHttpSubmit(form, function(){});
-
     });
 </script>
 
@@ -44,7 +41,7 @@
             <div class="status-info">
                 Once you have made a final decision on this claim/invoice and do not wish to review this
                 claim/invoice again, please tick the box then select the relevant ‘Final Review Reason’ from the
-                dropdown box and click ‘Update’. This will add a Private Note to the claim and move
+                drop-down menu and click ‘Update’. This will add a Private Note to the claim and move
                 the claim from the ‘Approved Invoices Awaiting Liability Resolution’ queue to the
                 ‘Invoices With Final Review’ queue.
             </div>

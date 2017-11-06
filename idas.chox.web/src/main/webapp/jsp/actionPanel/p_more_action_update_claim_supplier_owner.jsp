@@ -117,16 +117,7 @@
                     }
             }
         });
-        
-        choxJqueryHttpSubmit($("form#formSupplierOwnershipAction"), function() {
-            if ($("#supplierClaimOwnerComboId").val() !== "--- Please Select ---") {
-              $("#supplierOwnershipAssignmentMessageBox").text("").show();
-              return true;
-            }
-            $("#supplierOwnershipAssignmentMessageBox").text("You must supply a value for 'Claim Owner test'").show();
-            return false;
-        });
-     
+             
     });
     
     

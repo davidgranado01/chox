@@ -145,9 +145,7 @@
                 }
             }
         });
-        
-        choxJqueryHttpSubmit(form, function(){});
-        
+                
         $("#tHirePenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay();
         });

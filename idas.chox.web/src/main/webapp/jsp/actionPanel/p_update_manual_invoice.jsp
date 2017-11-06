@@ -136,10 +136,6 @@ Ext.onReady(function(){
         });
         workgroupStore.load({ params : {"claimId":<s:property value="id"/>}});
     }
-    
-    var form = $("form#updateManualInvoicePaymentForm");
-    choxJqueryHttpSubmit(form, assignManualInvoiceSubmit);
-
 });
 
 function doRenderClaimHandlerDropDown(selectedWorkgroupId){
