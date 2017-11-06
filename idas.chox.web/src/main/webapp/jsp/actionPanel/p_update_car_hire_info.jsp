@@ -5,8 +5,6 @@
     Ext.onReady(function(){
         openTab(1);
         expandHireMonitoringDetails(true);
-        var form = $("form#awaitingcarHireInfoForm");
-        choxJqueryHttpSubmit(form, doMaskClaimDetailPage);
     });
         
     function doMaskClaimDetailPage() {
