@@ -114,7 +114,17 @@ public class UploadServiceBean {
                 }
                 LOG.info("File uploaded status: {}", uploadResult.isValid());
             } catch (IOException ex) {
-                LOG.error("Exception thrown closing web-service bordereau stringbuilder output stream: {}", ex.getMessage(), ex);
+                LOG.error("IOException thrown uploading web-service bordereau: {}", ex.getMessage(), ex);
+                result.setUploadStatus(ClaimUploadStatus.ERROR);
+                result.setClaimStatus(ClaimStatus.N_A);
+                result.setProcessStatus(ClaimProcessStatus.FAILED);
+                result.setStatus(false);
+                Messages messages = new Messages();
+                messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
+                result.setMessages(messages);
+                return result;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown uploading web-service bordereau: {}", ex.getMessage(), ex);
                 result.setUploadStatus(ClaimUploadStatus.ERROR);
                 result.setClaimStatus(ClaimStatus.N_A);
                 result.setProcessStatus(ClaimProcessStatus.FAILED);
@@ -399,6 +409,23 @@ public class UploadServiceBean {
             webBordereau.setChoReference(null);
             webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
 
+        } catch (Exception ex) {
+            LOG.error("Exception processing web-service call: {}", ex.getMessage(), ex);
+            result.setUploadStatus(ClaimUploadStatus.ERROR);
+            result.setClaimStatus(ClaimStatus.N_A);
+            result.setProcessStatus(ClaimProcessStatus.FAILED);
+            result.setStatus(false);
+            Messages messages = new Messages();
+            messages.getMessages().add("An internal error has occurred processing this request: please contact Support");
+            result.setMessages(messages);
+
+            webBordereau.setClaimStatus("N/A");
+            webBordereau.setUploadStatus(result.getUploadStatus().toString());
+            webBordereau.setHireState("unknown"); // uploadResult.getHireState()
+            webBordereau.setProcessStatus("Failed");
+            webBordereau.setStatus(false);
+            webBordereau.setChoReference(null);
+            webBordereau.setMessage("An internal error has occurred processing this request: " + ex.getMessage());
         } finally {
             webBordereauService.saveBordereau(webBordereau);
         }
