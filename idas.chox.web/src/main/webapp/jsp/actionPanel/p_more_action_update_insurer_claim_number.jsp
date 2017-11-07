@@ -23,32 +23,6 @@
 
     });
 
-    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
-    {
-        var url = "/prv/p/checkIsClaimNumberDuplicated.action";
-        var param = {
-            claimNumber: claimNumber,
-            claimId: claimId
-        };
-
-        ajax.loadJson2(url, param, function(data){
-            if(data.result && data.resultType==='YesNo'){
-                Ext.MessageBox.confirm('Confirm', data.result,function(btn){
-                if(btn==='yes')
-                {
-                    Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                    choxJqueryHttpSubmit(form);
-                }
-                });
-            }
-            else {
-                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                choxJqueryHttpSubmit(form);
-            }
-        });
-
-    }
-
     function doSubmitClaimNumber(){
 
         if($("form#formUpdateInsurerClaimNumber").valid()){
