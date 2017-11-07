@@ -131,8 +131,8 @@
     
     function attachmentUploadAfterSubmit(responseText, statusText, form, responseType){
         
+        Ext.get('claimDetailScreenDiv').unmask();
         onFormSubmitCompleted(responseText, statusText, form, responseType);
-        Ext.get('attachmentForm').unmask();
         loadAttachments();
         $("#formSubmitResultId").fadeOut(10000);
     }
@@ -198,7 +198,7 @@
     }
 
     function onBeforeSubmit(){
-        Ext.get('attachmentForm').mask('Please wait, file is being uploaded...');
+        Ext.get('claimDetailScreenDiv').mask('Please wait, file is being uploaded...');
         return true;
     }
 
