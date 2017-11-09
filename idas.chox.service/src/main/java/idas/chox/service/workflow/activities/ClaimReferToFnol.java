@@ -135,7 +135,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
-            claimNumber.trim();
+            claimNumber = claimNumber.trim();
         }
         this.claimNumber = claimNumber;
     }
