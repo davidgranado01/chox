@@ -67,7 +67,7 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.events.ChoxEvent;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import idas.chox.data.notifications.NotificationType;
-        
+
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
     public static final String PENDING = "Pending";
@@ -217,7 +217,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {
                 LOG.warn("Cannot revert non-subscriber claim back to 'SubscriberClaimRejected'");
             } else {
-                
+
                 if ((claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
                         || claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_PAID)) && claim.getClaimAuditReview() != null) {
                     LOG.debug("This claim has auditReview and will be deleted as reverting the status");
@@ -226,9 +226,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     delete(oldClaimAuditReview);
                     LOG.debug("auditReview deleted!!!");
                 }
-                
+
                 claim.setStatus(auditTrail.getOriginalStatus());
-                
+
                 if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
                     LOG.debug("This claim has invoice and will be deleted as reverting the status");
                     Invoice oldInvoice = claim.getInvoice();
@@ -262,7 +262,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
                     claim.getInvoice().setFinalPayment(null);
                 }
-                
+
                 /*
                  *  To-do item 7.2.2 - If the claim is moved out of either one of these 
                  *  closed states('ClaimClosed','InvoiceRejectionAccepted') then the 'Total To Pay' value
@@ -276,6 +276,34 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 auditTrailService.revertAuditEntry(auditTrail.getId());
                 LOG.debug("Audit entry reverted and saved - saving claim");
+
+                // If this is a subscriber or fixed fee claim and we have reverted to ClaimUnacknowledgedRouted, then we need to recalculate the SLA
+                if (ClaimType.isFixedFee(claim.getClaimType()) && claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
+                    int fixedFeeSlaDays = claim.getBreBand().getFixedFeeSlaDays();
+                    if (fixedFeeSlaDays != 0) {
+                        int claimAge = auditTrailService.getFixedFeeClaimDays(id, claim.getBreBand().isPauseFixedFeeSlaClock());
+                        int remainingSLADays = claim.getBreBand().getFixedFeeSlaDays() + claim.getSlaExtDays() - claimAge;
+                        claim.setRemainingSlaDaysInt(remainingSLADays);
+                        if (remainingSLADays == 0) {
+                            claim.setRemainingSlaDays(claim.getBreBand().getFixedFeeTimeCutOff());
+                        } else {
+                            claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
+                        }
+                    }
+                } else if (ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
+                    int subscriberSlaDays = claim.getBreBand().getSubscriberSlaDays();
+                    if (subscriberSlaDays != 0) {
+                        int claimAge = auditTrailService.getSubscriberClaimDays(id, claim.getBreBand().isPauseSubscriberSlaClock());
+                        int remainingSLADays = claim.getBreBand().getSubscriberSlaDays()+ claim.getSlaExtDays() - claimAge;
+                        claim.setRemainingSlaDaysInt(remainingSLADays);
+                        if (remainingSLADays == 0) {
+                            claim.setRemainingSlaDays(claim.getBreBand().getSubscriberTimeCutOff());
+                        } else {
+                            claim.setRemainingSlaDays(String.valueOf(claim.getRemainingSlaDaysInt()));
+                        }
+                    }
+                }
+                
                 save(claim);
                 flush();
                 // Now we need to set the correct status modified date (bug#1029) - to do this, we need to get the
@@ -724,15 +752,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.ne("status", sStatus));
             });
 
-        }
-        else {
+        } else {
             criteria.add(Restrictions.eq("supplierClaimOwner.id", userId));
 
             ClaimStatus.getCompletedStatus(false).forEach((sStatus) -> {
                 criteria.add(Restrictions.ne("status", sStatus));
             });
         }
-       
+
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
         }
@@ -855,7 +882,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             criteria.add(paymentDisputeRestriction);
         }
-                
+
         if (searchCriteria.getClaimAuditValue() > 0) {
             if (searchCriteria.getClaimAuditValue() == 1) {
                 criteria.add(Restrictions.conjunction()
@@ -886,63 +913,65 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             Criterion noHireAndNoRepair = Restrictions.eq("id", -1);
 
             for (Integer restrictionId : searchCriteria.getHireAndRepairSearchParamIds()) {
-                if (null != restrictionId) switch (restrictionId) {
-                    case 1:
-                        hireOnlyClaims = Restrictions.disjunction()
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNull("iv.id"))
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNull("hmd.id"))
-                                                        .add(Restrictions.eq("this.managingRepair", false)))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNotNull("hmd.id"))
-                                                        .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
-                                                        .add(Restrictions.eq("this.managingRepair", false)))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNotNull("iv.id"))
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.gt("iv.hireNet", BigDecimal.ZERO))
-                                                .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO))));
-                        break;
-                    case 2:
-                        repairOnlyClaims = Restrictions.disjunction()
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNull("iv.id"))
-                                        .add(Restrictions.isNotNull("hmd.id"))
-                                        .add(Restrictions.eq("hmd.isRepairOnlyCheck", true)))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNotNull("iv.id"))
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.le("iv.hireNet", new BigDecimal(37)))
-                                                .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
-                        break;
-                    case 3:
-                        hireAndRepairOnlyClaims = Restrictions.disjunction()
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNull("iv.id"))
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNull("hmd.id"))
-                                                        .add(Restrictions.eq("this.managingRepair", true)))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.isNotNull("hmd.id"))
-                                                        .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
-                                                        .add(Restrictions.eq("this.managingRepair", true)))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.isNotNull("iv.id"))
-                                        .add(Restrictions.conjunction()
-                                                .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
-                                                .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
-                        break;
-                    case 4:
-                        noHireAndNoRepair = Restrictions.conjunction()
-                                .add(Restrictions.isNotNull("iv.id"))
-                                .add(Restrictions.eq("iv.hireNet", BigDecimal.ZERO))
-                                .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO));
-                        break;
-                    default:
-                        break;
+                if (null != restrictionId) {
+                    switch (restrictionId) {
+                        case 1:
+                            hireOnlyClaims = Restrictions.disjunction()
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNull("iv.id"))
+                                            .add(Restrictions.disjunction()
+                                                    .add(Restrictions.conjunction()
+                                                            .add(Restrictions.isNull("hmd.id"))
+                                                            .add(Restrictions.eq("this.managingRepair", false)))
+                                                    .add(Restrictions.conjunction()
+                                                            .add(Restrictions.isNotNull("hmd.id"))
+                                                            .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                            .add(Restrictions.eq("this.managingRepair", false)))))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNotNull("iv.id"))
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.gt("iv.hireNet", BigDecimal.ZERO))
+                                                    .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO))));
+                            break;
+                        case 2:
+                            repairOnlyClaims = Restrictions.disjunction()
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNull("iv.id"))
+                                            .add(Restrictions.isNotNull("hmd.id"))
+                                            .add(Restrictions.eq("hmd.isRepairOnlyCheck", true)))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNotNull("iv.id"))
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.le("iv.hireNet", new BigDecimal(37)))
+                                                    .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+                            break;
+                        case 3:
+                            hireAndRepairOnlyClaims = Restrictions.disjunction()
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNull("iv.id"))
+                                            .add(Restrictions.disjunction()
+                                                    .add(Restrictions.conjunction()
+                                                            .add(Restrictions.isNull("hmd.id"))
+                                                            .add(Restrictions.eq("this.managingRepair", true)))
+                                                    .add(Restrictions.conjunction()
+                                                            .add(Restrictions.isNotNull("hmd.id"))
+                                                            .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                            .add(Restrictions.eq("this.managingRepair", true)))))
+                                    .add(Restrictions.conjunction()
+                                            .add(Restrictions.isNotNull("iv.id"))
+                                            .add(Restrictions.conjunction()
+                                                    .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
+                                                    .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+                            break;
+                        case 4:
+                            noHireAndNoRepair = Restrictions.conjunction()
+                                    .add(Restrictions.isNotNull("iv.id"))
+                                    .add(Restrictions.eq("iv.hireNet", BigDecimal.ZERO))
+                                    .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             criteria.add(Restrictions.disjunction()
@@ -1065,7 +1094,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 bCriteria.setProjection(Projections.property("bbo.chorganisation"));
                 criteria.add(Property.forName("this.chorganisation").notIn(bCriteria));
-                
+
             } else if (OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
                 criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
@@ -1141,10 +1170,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     criteria.add(Restrictions.disjunction()
                             .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
                             .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
-                                            + "where a.claim_id = {alias}.id "
-                                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
-                                            + "and a.reverted = false "
-                                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")")));
+                                    + "where a.claim_id = {alias}.id "
+                                    + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                                    + "and a.reverted = false "
+                                    + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")")));
                 } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
                     criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
                 } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
@@ -1162,10 +1191,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     criteria.add(Restrictions.disjunction()
                             .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getChorganisation().getDaysBeforeEscalated()))
                             .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a "
-                                            + "where a.claim_id = {alias}.id "
-                                            + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
-                                            + "and a.reverted = false "
-                                            + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getChorganisation().getTimesInStatusContested() + ")")));
+                                    + "where a.claim_id = {alias}.id "
+                                    + "and a.new_status = 'ContestedInvoiceReferredToInsurer' "
+                                    + "and a.reverted = false "
+                                    + "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getChorganisation().getTimesInStatusContested() + ")")));
                 } else if (getCurrentUser().getChorganisation().getDaysBeforeEscalated() != null) {
                     criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getChorganisation().getDaysBeforeEscalated()));
                 } else if (getCurrentUser().getChorganisation().getTimesInStatusContested() != null) {
@@ -1402,7 +1431,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
         }
-        
+
         return criteria;
     }
 
@@ -1498,7 +1527,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             LOG.debug("claimAge={}, subscriberSlaDays={}, subscriberCutOffTime={}, SlaExtDays={}",
                     new Object[]{claimAge, subscriberSlaDays, subscriberCutOffTime, claim.getSlaExtDays()});
 
-            if (subscriberSlaDays != 0 && (remainingSLADays < 0 || (remainingSLADays==0 && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
+            if (subscriberSlaDays != 0 && (remainingSLADays < 0 || (remainingSLADays == 0 && !DateHelper.isBeforeCutOffTime(subscriberCutOffTime)))) {
                 boolean addComment = true;
                 List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
                 for (Comment comment : comments) {
@@ -1623,7 +1652,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         int claimAge = -1;
         LOG.debug("Getting days until fixed fee claim rejected with id={}", claimId);
         Claim claim = (Claim) get(Claim.class, claimId);
-        
+
         if (claim == null) {
             LOG.error("Cannot get Fixed Fee  Claim Rejected days for claim with id={}: no such claim", claimId);
             return claimAge;
@@ -1781,7 +1810,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     && !ClaimType.isFixedFee(claimType)
                     && liabilityStatus != null
                     && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
-                        || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+                    || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
@@ -1985,12 +2014,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
                     !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
                     claim.getInvoice()});
-        
+
         // Set Claim BRE band
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
-                                                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+                : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
 
         if (claim.isAutoPenaltyChargeEnabled()
@@ -2000,7 +2029,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && claim.getInvoice() != null
                 && !brePenaltyBand.isUseCommercialDay1()
                 && ((claim.getInvoice().getInvoicedDays() > brePenaltyBand.getHirePeriodStartDay1() && brePenaltyBand.getHirePeriodStartDay1() > 0)
-                    || (claim.getInvoice().getInvoicedDays() > brePenaltyBand.getRepairPeriodStartDay1() && brePenaltyBand.getRepairPeriodStartDay1() > 0))) {
+                || (claim.getInvoice().getInvoicedDays() > brePenaltyBand.getRepairPeriodStartDay1() && brePenaltyBand.getRepairPeriodStartDay1() > 0))) {
 
             try {
                 LOG.debug("Calling stored procedure to update penalty charges...");
@@ -2099,7 +2128,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
     }
 
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     private void setNextPenaltyBand(Claim claim) {
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
@@ -2189,18 +2217,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 invoice.setHirePenaltyPercentage("");
             } else if (hirePenaltyPercentage.startsWith("Commercial")) {
                 invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
-            }
-            else {
-                invoice.setHirePenaltyPercentage(hirePenaltyPercentage+"%");
+            } else {
+                invoice.setHirePenaltyPercentage(hirePenaltyPercentage + "%");
             }
             invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
             if (repairPenaltyChargeAmount.compareTo(BigDecimal.ZERO) == 0) {
                 invoice.setRepairPenaltyPercentage("");
             } else if (repairPenaltyPercentage.startsWith("Commercial")) {
                 invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
-            }
-            else {
-                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage+"%");
+            } else {
+                invoice.setRepairPenaltyPercentage(repairPenaltyPercentage + "%");
             }
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
@@ -2210,7 +2236,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 //            if (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.isAutoPenaltyChargeEnabled()) {
 //                claim.setAutoPenaltyChargeEnabled(false);
 //            }
-            
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
             updateLiabilityPayment(claim);
 
@@ -2253,8 +2278,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             updateClaim(claim);
 //            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
-                // The date has been changed
-                updatePenaltyStartDate(claim, autoPenaltyStart);
+            // The date has been changed
+            updatePenaltyStartDate(claim, autoPenaltyStart);
 //            }
             if (updateAutomaticPenaltyCharge(claim)) {
                 LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
@@ -2288,10 +2313,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && invoice.getPenaltyBand() > -1
                 && ((isCHO && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                                    && !claim.isAutoPenaltyChargeEnabled())))
-                    || !isCHO && ClaimType.isInsurerUpload(claim.getClaimType()))
-            ) {
+                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                && !claim.isAutoPenaltyChargeEnabled())))
+                || !isCHO && ClaimType.isInsurerUpload(claim.getClaimType()))) {
             result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
         }
 //        LOG.debug("canShowPenaltyChargeAlert returning {}: invoicedDays={}, band={}, allowPenaltyCharges={}, isCHO={}",
@@ -2339,7 +2363,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         .setScale(2, RoundingMode.HALF_UP);
             }
         }
-        
+
         return BigDecimal.ZERO.setScale(2);
     }
 
@@ -2349,7 +2373,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
-        
+
         if (brePenaltyBand != null) {
             if (brePenaltyBand.getRepairDay1().toString().equals(percentage)) {
                 return (brePenaltyBand.getRepairDay1().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
@@ -2362,7 +2386,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         .setScale(2, RoundingMode.HALF_UP);
             }
         }
-        
+
         return BigDecimal.ZERO.setScale(2);
     }
 
