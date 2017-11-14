@@ -10,6 +10,8 @@
 <s:else>
         openTab(4);
 </s:else>
+        var form = $("form#resubmitInvoiceForm");
+        choxJqueryHttpSubmit(form, doMaskClaimDetailPage);
     });
         
     function doMaskClaimDetailPage() {

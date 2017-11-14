@@ -2,6 +2,11 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+    
+    Ext.onReady(function() {
+        var form = $("form#formRegisterFNOL");
+        choxJqueryHttpSubmit(form, doFnolFormSubmit);
+    });
 
     function doFnolFormSubmit(){
 

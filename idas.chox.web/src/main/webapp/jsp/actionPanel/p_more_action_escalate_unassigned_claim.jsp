@@ -50,7 +50,17 @@
                                            }
             });
             workgroupStore.load({ params : {"claimId":claimId}});
-    });
+            
+            choxJqueryHttpSubmit($("form#formEscalateClaimAction"), function() {
+                if ($("#escalateWorkgroupComboId").val() !== "--- Please Select ---") {
+                  $("#EscalateClaimMessageBox").text("").show();
+                  return true;
+                }
+                $("#EscalateClaimMessageBox").text("You must supply a value for 'Workgroup'").show();
+                return false;
+             });
+
+});
     
 </script>
 
