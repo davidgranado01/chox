@@ -43,7 +43,6 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         this.clamscanLocation = clamscanLocation;
     }
 
-    
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
@@ -83,7 +82,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         return (Claim) get(Claim.class, claimId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     @Override
     public boolean deleteAtatchment(int webUserId, int attachmentId) {
         LOG.debug("Deleting attachment with id={} for User with id={}", webUserId, attachmentId);
@@ -135,11 +134,23 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     @Override
     public String addAttachment(Claim claim, InputStream streamIn, String filename, long length, String category, String remark, boolean notify, boolean isInsurer, String whoCreated) {
         String result = null;
-
+        LOG.debug("Adding attachment '{}', length={}, catgeory='{}', notify={}", new Object[]{filename, length, category, notify});
         byte fileContent[];
         try {
             fileContent = new byte[safeLongToInt(length)];
+            
             streamIn.read(fileContent);
+            // CHOX-423: For PDFs, the size passed in is not correct. Therefore to get over this, we'll find the correct size to the non-null (0) character
+            if (filename.toLowerCase().endsWith(".pdf")) {
+                // find last non-null character at end of file
+                int position=safeLongToInt(length)-1;
+                while (fileContent[position] == 0) position--;
+                LOG.debug("Length={}, last non-null={},  char={}", length, position, fileContent[position]);
+                length = position+1;
+                byte newFileContent[] = new byte[safeLongToInt(length)];
+                System.arraycopy(fileContent, 0, newFileContent, 0, safeLongToInt(length));
+                fileContent = newFileContent;
+            }
             if (VirusCheckerUtility.isVirusPresent(fileContent, clamscanLocation)) {
                 return "Error - Malware found in attachment";
             }
@@ -169,7 +180,8 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         LOG.debug("Processing file {} of type {}", oldFileName, fileType);
         try {
             saveAttachement(claim, category, newFileName, remark, fileType, fileContent);
-            bFlag = true; result = null;
+            bFlag = true;
+            result = null;
             LOG.debug("Attachment saved.");
             if (notify) {
                 Task task = new Task();

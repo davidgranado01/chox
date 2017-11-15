@@ -82,9 +82,9 @@ public class ImapMailReceiver {
                                 }
                             }
                         } catch (MessagingException ex) {
-                            ex.printStackTrace();
+                            LOG.error("MessagingException in match: {}", ex.getMessage(), ex);
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            LOG.error("Exception in match: {}", ex.getMessage(), ex);
                         }
                     }
                     return false;
@@ -118,7 +118,7 @@ public class ImapMailReceiver {
                 
                 for (int i = 0, n = mp.getCount(); i < n; i++) {
                     BodyPart part = mp.getBodyPart(i);
-                    LOG.debug("Disposition is {}", part.getDisposition());
+                    LOG.debug("Disposition is {} with size {} and type {}", part.getDisposition(), part.getSize(), part.getContentType());
                     
                     if (part.getContent() instanceof Multipart) {
                         // part-within-a-part - recurse
@@ -129,7 +129,7 @@ public class ImapMailReceiver {
                         LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
                                 new Object[]{fileName, mp.getContentType(), fileFormat});
                         if (fileName != null && fileName.endsWith(fileFormat)) {
-                            LOG.debug("Adding attachment {}", fileName);
+                            LOG.debug("Adding attachment {} with length {}", fileName,  part.getSize());
                             listOfAttachements.add(new EmailAttachment(fileName, (InputStream) part.getInputStream(), part.getSize()));
                         }
                     }
