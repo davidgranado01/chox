@@ -20,6 +20,7 @@ import idas.chox.service.workflow.ClaimProcessWorkflowContext;
  * @author john
  */
 public class ClaimMatching extends BaseActivity {
+
     static final Logger LOG = LoggerFactory.getLogger(ClaimMatching.class);
     private String claimNumber;
     private String indemnityStance;
@@ -45,15 +46,15 @@ public class ClaimMatching extends BaseActivity {
             LOG.error("Claim matching not enabled for insurer for claim '{}' ({})", claim.getChoReference(), claim.getId());
             throw new Exception("Claim matching not enabled for insurer");
         }
-        
+
         if (!claim.getBreBand().isClaimMatchingEnable()) {
-               LOG.error("Claim matching not enabled in BreBand for claim '{}' ({})", claim.getChoReference(), claim.getId());
+            LOG.error("Claim matching not enabled in BreBand for claim '{}' ({})", claim.getChoReference(), claim.getId());
             throw new Exception("Claim matching not enabled in BreBand");
         }
 
         claimMatchingBand = claimMatchingBandService.getClaimMatchingBand(
-                    claim.getBreBand().getId(),
-                    claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
+                claim.getBreBand().getId(),
+                claim.getClaimType(), claim.getCustomer().getVehicleClass().getName());
         if (claimMatchingBand == null) {
             LOG.error("No claim matching band found for claim '{}' ({})", claim.getChoReference(), claim.getId());
             throw new Exception("No Claim Matching Band Found");
@@ -64,7 +65,7 @@ public class ClaimMatching extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         // Update Insurer Claim Number and Indemnity Stance
         claim.setMatchStatus(1);
-        if (claim.getClaimNumber()==null || !claim.getClaimNumber().equals(claimNumber)) {
+        if (claim.getClaimNumber() == null || !claim.getClaimNumber().equals(claimNumber)) {
             claim.setClaimNumber(claimNumber);
         }
         if ((claim.getIndemnityStance() == null && indemnityStance != null) || !claim.getIndemnityStance().equals(indemnityStance)) {
@@ -75,10 +76,10 @@ public class ClaimMatching extends BaseActivity {
                 claim.addComment(Comment.newComment(0, "Insurer Indemnity Stance: " + indemnityStance));
             }
         }
-        
+
         if (liabilityInsurer != null && liabilityInsurer.compareTo(claimMatchingBand.getLiabilityPercentage()) >= 0) {
             // Full Claim Matched - set Liability
-            
+
             try {
                 LiabilityStatus liabilityStatus = getLiabilityStatusFromStance(liabilityStance.trim());
                 if (liabilityStatus == LiabilityStatus.LIABILITY_ACCEPTED && liabilityInsurer.compareTo(new BigDecimal("100.00")) != 0) {
@@ -108,22 +109,22 @@ public class ClaimMatching extends BaseActivity {
     }
 
     private String getIndemnityStanceFromString(String stance) {
-        switch(stance) {
-                case "Dealing Under Article 75":
-                case "Dealing Under Road Traffic Act":
-                case "No Involvement":
-                case "Not Indemnifying":
-                case "Pending Indemnity":
-                case "Providing Indemnity":
-                    return stance;
-                default:
-                    return null;
+        switch (stance) {
+            case "Dealing Under Article 75":
+            case "Dealing Under Road Traffic Act":
+            case "No Involvement":
+            case "Not Indemnifying":
+            case "Pending Indemnity":
+            case "Providing Indemnity":
+                return stance;
+            default:
+                return null;
         }
     }
 
     private LiabilityStatus getLiabilityStatusFromStance(String stance) {
         LiabilityStatus liabilityStatus;
-        
+
         try {
             liabilityStatus = LiabilityStatus.getLiabilityStatus(stance);
         } catch (IllegalArgumentException ex) {
@@ -146,14 +147,14 @@ public class ClaimMatching extends BaseActivity {
         }
         return liabilityStatus;
     }
-   
+
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
 
         activityEventGenerator.getEvents(claim, this).forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
+            ((ClaimProcessWorkflowContext) this.getWorkflowContext()).getEventBus().post(event);
         });
     }
 
@@ -188,8 +189,8 @@ public class ClaimMatching extends BaseActivity {
     public void setClaimMatchingBand(ClaimMatchingBand claimMatchingBand) {
         this.claimMatchingBand = claimMatchingBand;
     }
-    
-    private void progressClaim(Claim claim) {
+
+    private void progressClaim(Claim claim) throws Exception {
         switch (claim.getStatus()) {
             case ClaimStatus.CLAIM_REFERRED_TO_FNOL:
                 claim.setStatus(claim.getPreviousStatus());
@@ -198,6 +199,7 @@ public class ClaimMatching extends BaseActivity {
                 progressClaim(claim);
                 break;
             case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED:
+                if (claim.getBreBand().getClaimMatchingWorkgroup() != null) {
                 claim.setWorkgroup(claim.getBreBand().getClaimMatchingWorkgroup());
                 if (claim.getInsurer().isClaimOwnershipEnable()) {
                     claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
@@ -209,22 +211,33 @@ public class ClaimMatching extends BaseActivity {
                     logTransaction(claim);
                     setCurrentStatus(claim.getStatus());
                     progressClaim(claim);
+                }} else {
+                    LOG.error("No Claim matching workgroup found for claim '{}' [{}]", claim.getChoReference(), claim.getId());
+                    throw new Exception("No Claim matching workgroup found for claim '" +  claim.getChoReference() + "' with id=" + claim.getId());
                 }
                 break;
             case ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED:
                 WebUser claimOwner = claim.getBreBand().getClaimMatchingOwner();
-                claim.setClaimOwner(claimOwner);
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-                if (claim.getInsurer().isWorkgroupEnable()) {
-                    claim.setWorkgroup(claim.getBreBand().getClaimMatchingWorkgroup());
+                if (claimOwner != null) {
+                    claim.setClaimOwner(claimOwner);
+                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                    if (claim.getInsurer().isWorkgroupEnable()) {
+                        claim.setWorkgroup(claim.getBreBand().getClaimMatchingWorkgroup());
+                    }
+                    if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+                        Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
+                        claim.addComment(comment);
+                    } else {
+                        Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
+                        claim.addComment(comment);
+                    }
+                    logTransaction(claim);
+                    setCurrentStatus(claim.getStatus());
+                    progressClaim(claim);
+                } else {
+                    LOG.error("No Claim matching owner found for claim '{}' [{}]", claim.getChoReference(), claim.getId());
+                    throw new Exception("No Claim matching owner found for claim '" +  claim.getChoReference() + "' with id=" + claim.getId());
                 }
-                if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-                    Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
-                    claim.addComment(comment);
-                }
-                logTransaction(claim);
-                setCurrentStatus(claim.getStatus());
-                progressClaim(claim);
                 break;
             case ClaimStatus.CLAIM_UPDATE_BY_ENG:
             case ClaimStatus.CLAIM_REJECTION_CONTESTED:
