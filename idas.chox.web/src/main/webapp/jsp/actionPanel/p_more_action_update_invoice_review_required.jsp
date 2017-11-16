@@ -1,6 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
+    Ext.onReady(function() {
+        var form = $("form#formUpdateInvoiceReviewRequired");
+        choxJqueryHttpSubmit(form, function(){});
+    });
+</script>
+
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/updateInvoiceReviewRequired.action" method="post" id="formUpdateInvoiceReviewRequired" name="formUpdateInvoiceReviewRequired">
         <fieldset class="x-fieldset">

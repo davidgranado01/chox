@@ -29,6 +29,7 @@
                 }
             });
         }
+        choxJqueryHttpSubmit(form, function(){});
     });
 </script>
 

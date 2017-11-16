@@ -14,20 +14,21 @@
             format: 'd/m/Y',
             msgTarget : 'qtip',
         <s:if test="addPenaltyChargeConfigValidation" >
-//            invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
             minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
         </s:if>
-                //            hideMode: 'offsets',
             value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
             showWeekNumber: true
         });
+        
+        var form = $("form#doAdjustAutoPenalty");
+        choxJqueryHttpSubmit(form, function(){});
     });
 
-        function updatePenaltyChargeConfig() {
-            if (Ext.getCmp("autoPenaltyStartDateId").isValid())
-                return true;
-            return false;
+    function updatePenaltyChargeConfig() {
+        if (Ext.getCmp("autoPenaltyStartDateId").isValid()) {
+            return true;
         }
+    }
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">

@@ -42,7 +42,8 @@
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
-       doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
+        choxJqueryHttpSubmit(form, function(){});
+        doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
     });
 
     function doUpdateOwnershipWorkgroupChange(){
