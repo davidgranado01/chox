@@ -93,7 +93,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                     LOG.warn("No such user: '{}'", username);
                 } else {
                     LOG.error("Exception thrown on login failure for user '{}' (id={}) with chorganisation_id={} and insurer_id={}",
-                            new Object[]{username, user.getId(), user.getChorganisation() == null ? "" : user.getChorganisation().getId(), user.getInsurer() == null ? "" : user.getInsurer().getId()});
+                            new Object[]{username, user.getId(), user.getChorganisation() == null ? "" : user.getChorganisation().getId(), user.getInsurer() == null ? "" : user.getInsurer().getId(), ex});
                 }
             }
 
