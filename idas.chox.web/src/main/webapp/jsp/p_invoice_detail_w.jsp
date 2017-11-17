@@ -2393,7 +2393,7 @@
                         <input type="submit" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="return recalculateForm();"/>
                     </td>
                     <td>
-                        <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitForm();"/>
+                        <input type="submit" value="Save Changes" id="submitAllChanges" onclick="event.preventDefault(); submitForm();"/>
                     </td>
                     <td>
                         <input type="submit" style="width: 88px; margin-left:30px" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm();"/>

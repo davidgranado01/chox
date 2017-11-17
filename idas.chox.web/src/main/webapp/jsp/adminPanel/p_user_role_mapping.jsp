@@ -143,12 +143,6 @@
                 outputDiv.addClass("submit-error");
             }
         });
-
-
-
-
-
-
     }
 
     function doRemoveWebUserRoleMapping(webUserUserRoleId){
@@ -244,7 +238,7 @@
                             headerKey="-1"
                             headerValue="-- Please Select --"
                             emptyOption="false">
-                        </s:select><input type="button" onclick="javascript: doAddNewWebUserRole();" value="Add New Role"/>
+                        </s:select><input type="button" onclick="event.preventDefault(); doAddNewWebUserRole();" value="Add New Role"/>
                     </td>
                     <td></td>
                 </tr>

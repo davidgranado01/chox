@@ -79,9 +79,9 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice" nowrap>
-                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Resubmit Invoice"  onclick="return resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
-                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Close Invoice" onclick="return resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice');"  />
-                                <input type="submit" id="ROACIAwaitingLitigationOutcomeButtonId"value="Move Claim To Litigation Status"  onclick="return resubmitOrAcceptContestedInvoiceSubmit('awaitingLitigationOutcome');" />
+                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Resubmit Invoice"  onclick="event.preventDefault(); resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
+                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Close Invoice" onclick="event.preventDefault(); resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice');"  />
+                                <input type="submit" id="ROACIAwaitingLitigationOutcomeButtonId"value="Move Claim To Litigation Status"  onclick="event.preventDefault(); resubmitOrAcceptContestedInvoiceSubmit('awaitingLitigationOutcome');" />
                             </td>
                         </tr>
                     </table>

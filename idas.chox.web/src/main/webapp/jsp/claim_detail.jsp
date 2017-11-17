@@ -424,6 +424,7 @@
 
     function removeNotification(notificationId)
     {
+        Ext.get('notificationPanelDivId').mask("Reloading...");
         var url = "/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
@@ -439,6 +440,7 @@
 
     function acknowledgeNotification(notificationId)
     {
+        Ext.get('notificationPanelDivId').mask("Reloading...");
         var url = "/prv/p/acknowledgeNotification.action";
         var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
@@ -672,42 +674,42 @@
                         <td colspan="3" align="right">
                             <s:if test="canShowSwitchClaimButton" >
                         
-                               <input id="mb1" value='Switch Claim To <s:property value="relatedInsurerName"/>' type="button" onclick="return claimChangeOver();"/>
+                               <input id="mb1" value='Switch Claim To <s:property value="relatedInsurerName"/>' type="button" onclick="event.preventDefault(); claimChangeOver();"/>
 
                             </s:if>
                             <s:if test="canShowSwitchClaimToMultipleInsButton" >
                                         
-                               <input id="mb2" value="Switch Insurer" type="button" onclick="return switchClaimToMultipleInsurer();"/>
+                               <input id="mb2" value="Switch Insurer" type="button" onclick="event.preventDefault(); switchClaimToMultipleInsurer();"/>
 
                             </s:if>
                             <s:if test="canShowSwitchChoButton" >
                                         
-                               <input id="mb3" value='Switch CHO To <s:property value="linkedChoName"/>' type="button" onclick="return switchCho();"/>
+                               <input id="mb3" value='Switch CHO To <s:property value="linkedChoName"/>' type="button" onclick="event.preventDefault(); switchCho();"/>
 
                             </s:if>
                             <s:if test="canRevertClaimStatus">
                                         
-                               <input value="Revert Status" type="button" onclick="return revertClaimStatus();"/>
+                               <input value="Revert Status" type="button" onclick="event.preventDefault(); revertClaimStatus();"/>
                        
                             </s:if>
                             <s:if test="canCloseClaim">
                                 
-                               <input value="Close Claim" type="button" onclick="return closeClaimStatus();"/>
+                               <input value="Close Claim" type="button" onclick="event.preventDefault(); closeClaimStatus();"/>
                                         
                             </s:if>
                             <s:if test="canReopenClaim">
                                         
-                               <input value="Re-Open Claim" type="button" onclick="return reopenClaimStatus();"/>
+                               <input value="Re-Open Claim" type="button" onclick="event.preventDefault(); reopenClaimStatus();"/>
                        
                             </s:if>
                             <s:if test="canShowSlaExtensionButton">
 
-                                <input value="Grant Extension" type="button" onclick="return setSlaExtension();"/>
+                                <input value="Grant Extension" type="button" onclick="event.preventDefault(); setSlaExtension();"/>
 
                             </s:if>
                                 <s:if test="canShowLastReviewButton" >
                                         
-                               <input id="lastReviewButtonId" value='Last Review Date' type="button" onclick="return lastReviewDate();"/>
+                               <input id="lastReviewButtonId" value='Last Review Date' type="button" onclick="event.preventDefault(); lastReviewDate();"/>
 
                             </s:if>
                          </td>

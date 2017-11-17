@@ -312,7 +312,7 @@
                 <div id="choBillingTriggerDivId"></div>
             </div>
             <div class="chox-form-button">
-                <input type="submit" value="Add New Billing Band" onclick="return doChoBillingBandSubmit();"/>
+                <input type="submit" value="Add New Billing Band" onclick="event.preventDefault(); doChoBillingBandSubmit();"/>
             </div>
         </form>
         </div>

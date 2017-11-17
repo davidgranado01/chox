@@ -43,19 +43,19 @@ function doUpdateManualInvoice(action){
                                 <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                                     <td colspan="2" class="choice" nowrap="true">
                                         <s:if test="invoiceSavingActive">
-                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
+                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="event.preventDefault(); confirmInvoiceSavingsAction();"  />
                                         </s:if>
                                         <s:else>
-                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
+                                            <input type="button" id="UMIPFormId" value="Agree Quantum" onclick="event.preventDefault(); doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" />
                                         </s:else>   
-                                        <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="return doUpdateManualInvoice('updateManualInvoiceContested');" />
+                                        <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="event.preventDefault(); doUpdateManualInvoice('updateManualInvoiceContested');" />
                                     </td>
                                 </s:if>
                                 <s:elseif test="invoiceSavingActive">
-                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  /></td>
+                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="event.preventDefault(); confirmInvoiceSavingsAction();"  /></td>
                                 </s:elseif>
                                 <s:else>
-                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="return doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" /></td>
+                                    <td><input type="button" id="UMIPFormId" value="Agree Quantum" onclick="event.preventDefault(); doUpdateManualInvoice('updateManualInvoiceAgreeQuantum');" /></td>
                                 </s:else>   
                                 </tr>
                         </table>

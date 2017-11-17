@@ -181,7 +181,7 @@
                             <td><label>Additional Interim Payment Amount<span class="mandatory">*</span></label></td>
                             <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="additionalInterimPayment" name="additionalInterimPayment" onkeyup="return setAdditionalInterimInfo();" value="<s:property value="additionalInterimPayment" />" />
-                                <input type="button" onclick="return submitInterim('additional');" value="Confirm Interim Payment" id="additionalInterimButton"/>
+                                <input type="button" onclick="event.preventDefault(); submitInterim('additional');" value="Confirm Interim Payment" id="additionalInterimButton"/>
                             </td>
                             <td></td>
                             <td></td>
@@ -198,7 +198,7 @@
                             <td><label id="newPayLabel">New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
                             <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="newTotalInterimPayment" name="newTotalInterimPayment" value="<s:property value="newTotalInterimPayment" />" />
-                                <input type="button" onclick="javascript: submitInterim('newTotal')" value="Confirm Interim Payment" id="newTotalInterimButton"/>
+                                <input type="button" onclick="event.preventDefault(); submitInterim('newTotal');" value="Confirm Interim Payment" id="newTotalInterimButton"/>
                             </td>
                             <td></td><td></td>
                         </tr>

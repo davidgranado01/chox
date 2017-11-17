@@ -132,9 +132,9 @@ function doFraudCheckFormSubmit(action){
                             <tr>
                                 <td/>
                                 <td class="choice" nowrap>
-                                    <input type="button" id="FCAcknowledgeButtonId" value="Acknowledge Fraud Result" <s:if test="fraudCheckAcknowledged == true">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('acknowledgeFraudCheck');" />
-                                    <input type="button" id="FCReferButtonId" value="Refer Claim To Keoghs" <s:if test="referredToKeoghs == true">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('referFraudCheck');"  />
-                                    <input type="button" id="FCRerunButtonId" value="Re-Run Fraud Check" <s:if test="canRerunFraudCheck == false">disabled='true'</s:if> onclick="return doFraudCheckFormSubmit('runFraudCheck');" />
+                                    <input type="button" id="FCAcknowledgeButtonId" value="Acknowledge Fraud Result" <s:if test="fraudCheckAcknowledged == true">disabled='true'</s:if> onclick="event.preventDefault(); doFraudCheckFormSubmit('acknowledgeFraudCheck');" />
+                                    <input type="button" id="FCReferButtonId" value="Refer Claim To Keoghs" <s:if test="referredToKeoghs == true">disabled='true'</s:if> onclick="event.preventDefault(); doFraudCheckFormSubmit('referFraudCheck');"  />
+                                    <input type="button" id="FCRerunButtonId" value="Re-Run Fraud Check" <s:if test="canRerunFraudCheck == false">disabled='true'</s:if> onclick="event.preventDefault(); doFraudCheckFormSubmit('runFraudCheck');" />
                                 </td>
                                 <td/>
                             </tr>

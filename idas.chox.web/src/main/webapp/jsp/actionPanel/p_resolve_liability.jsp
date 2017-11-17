@@ -77,7 +77,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="RLUpdateLiabilityButtonId"value="Update Liability" onclick="return doUpdateLiabilityFormSubmit('resolveLiability');" />
+                                    <input type="button" id="RLUpdateLiabilityButtonId"value="Update Liability" onclick="event.preventDefault(); doUpdateLiabilityFormSubmit('resolveLiability');" />
 
                                 </td>
                             </tr>

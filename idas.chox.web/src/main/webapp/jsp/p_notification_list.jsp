@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <s:if test="hasNotifications">
-    <div class="chox-claim-header x-panel-bwrap chox-form-container" >
+    <div class="chox-claim-header x-panel-bwrap chox-form-container" id="notificationPanelDivId">
         <fieldset class="x-fieldset">
             <s:if test="!isCHO">
                 <legend>Hire Update Notification/Warning</legend>

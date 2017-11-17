@@ -26,8 +26,10 @@
 
     function updatePenaltyChargeConfig() {
         if (Ext.getCmp("autoPenaltyStartDateId").isValid()) {
+            choxJqueryHttpSubmit($("form#doAdjustAutoPenalty"));
             return true;
         }
+        return false;
     }
 </script>
 
@@ -66,7 +68,7 @@
                 </tr>
                 <tr>
                     <td colspan="3" align="left">
-                        <input type="submit" id="PCApplyButtonId" value="Apply" onclick="return updatePenaltyChargeConfig();"/>
+                        <input type="submit" id="PCApplyButtonId" value="Apply" onclick="event.preventDefault(); updatePenaltyChargeConfig();"/>
                             
                         <s:if test="showAutoPenaltyCheckbox ">
                             <s:if test="autoPenaltyChargeEnabled">

@@ -258,7 +258,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input id="assign" type="submit" value="Confirm Claim Reviewed and Reserve Set" onclick="return doMatchedClaimReviewSubmit();"/>
+                                    <input id="assign" type="submit" value="Confirm Claim Reviewed and Reserve Set" onclick="event.preventDefault(); doMatchedClaimReviewSubmit();"/>
                                 </td>
                                 <td></td>
                             </tr>

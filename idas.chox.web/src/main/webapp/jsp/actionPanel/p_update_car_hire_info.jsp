@@ -7,8 +7,9 @@
         expandHireMonitoringDetails(true);
     });
         
-    function doMaskClaimDetailPage() {
+    function doMaskClaimDetailPageAndSubmit() {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        choxJqueryHttpSubmit($("form#awaitingcarHireInfoForm"));
     }
 </script>
 
@@ -32,7 +33,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed" /></td>
+                            <td><input type="submit" id="UCHIProceedButtonId" value="Proceed" onclick="event.preventDefault(); doMaskClaimDetailPageAndSubmit();"/></td>
                         </tr>
                     </table>
                 </div>

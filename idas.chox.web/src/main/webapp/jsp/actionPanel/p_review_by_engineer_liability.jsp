@@ -176,7 +176,7 @@
 
                             <tr>
                                 <td colspan="2" class="choice">
-                                    <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="return doClaimReviewByEngFormSubmit('updatedByEng');"  />
+                                    <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="event.preventDefault(); doClaimReviewByEngFormSubmit('updatedByEng');"  />
                                 </td>
                             </tr>
                         </table>

@@ -90,6 +90,7 @@ Ext.onReady(function(){
 	        handler:function(){
 	            paymentDetailsForm.getForm().reset();
 	            confPayRec.hide();
+                    Ext.get('claimDetailScreenDiv').unmask();
 	        }
 	    }]
 	    
@@ -113,21 +114,22 @@ function confirmNotFullPayRec(){
 }
 
     function doUpdatePaymentReceived(action) {
-    	
     	$("#formUpdatePaymentReceivedName").val(action);
     	if (action==='invoicePaymentReceived') {
+            Ext.get('claimDetailScreenDiv').mask();
             if (partialInterimPayment !== undefined &&  partialInterimPayment > 0){
                 Ext.Msg.show({
                     title:'Please Confirm',
                     msg: 'Please note that there is an interim payment on this claim which has not yet been marked as received. Marking the claim as \u2018Full Payment Received\u2018 will also mark this interim payment as received.',
                     buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
-                    fn: function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));}else{return false;}}
+                    fn: function(btn){if(btn==='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));}else{Ext.get('claimDetailScreenDiv').unmask(); return false;}}
                 });
             }else{
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 choxJqueryHttpSubmit($("form#formUpdatePaymentReceived"));
             }
         } else if (action === 'fullPaymentAmountNotReceived') {
+                Ext.get('claimDetailScreenDiv').mask();
         	confirmNotFullPayRec();
         } else {
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
@@ -180,16 +182,16 @@ function confirmNotFullPayRec(){
                     <tr>
                         <td colspan="3">
                             <s:if test='status.equals("InvoicePaymentLogged")'>
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="return doUpdatePaymentReceived('invoicePaymentReceived');" />
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="event.preventDefault(); doUpdatePaymentReceived('invoicePaymentReceived');" />
                             </s:if>
                             <s:else>
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="return doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="event.preventDefault(); doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
                             </s:else>
                             <s:if test="atInvoicePaymentLogged">
-                                <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="return doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
+                                <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="event.preventDefault(); doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
                             </s:if>
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
-                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="return doUpdatePaymentReceived('paymentNotReceived');" />
+                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="event.preventDefault(); doUpdatePaymentReceived('paymentNotReceived');" />
                             </s:if>
                         </td>
                     </tr>

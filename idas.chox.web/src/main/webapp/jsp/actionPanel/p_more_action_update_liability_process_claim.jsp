@@ -111,7 +111,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Update Liability" id="MAULPCUpdateLiabilityButtonId"onclick="return doUpdateLiabilityFormSubmit('updateLiability');" />
+                                    <input type="button" value="Update Liability" id="MAULPCUpdateLiabilityButtonId"onclick="event.preventDefault(); doUpdateLiabilityFormSubmit('updateLiability');" />
 
                                 </td>
                             </tr>

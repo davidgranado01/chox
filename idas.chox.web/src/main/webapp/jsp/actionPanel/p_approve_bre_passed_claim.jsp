@@ -147,10 +147,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" id="ABPCRejectInvoiceButtonId" value="Reject Invoice"  onclick="return doApproveBREPassedClaimSubmit('rejectInvoice');" />
-                                <input type="button" id="ABPCClearForPaymentButtonId" value="Agree Quantum" onclick="return doApproveBREPassedClaimSubmit('acceptInvoice');"  />
+                                <input type="button" id="ABPCRejectInvoiceButtonId" value="Reject Invoice"  onclick="event.preventDefault(); doApproveBREPassedClaimSubmit('rejectInvoice');" />
+                                <input type="button" id="ABPCClearForPaymentButtonId" value="Agree Quantum" onclick="event.preventDefault(); doApproveBREPassedClaimSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" id="ABPCReferToEngineerButtonId" value="Refer To Engineer" onclick="return doApproveBREPassedClaimSubmit('invoiceReferToEng');"  />
+                                    <input type="button" id="ABPCReferToEngineerButtonId" value="Refer To Engineer" onclick="event.preventDefault(); doApproveBREPassedClaimSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

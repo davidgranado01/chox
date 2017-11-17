@@ -331,7 +331,7 @@
             </div>
 
             <div class="chox-form-item-button">
-                <input type="button" id="insurerHireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return insurerHireMonitoringSubmit();"/>
+                <input type="button" id="insurerHireMonitoringIdSubmitButtonId" value="Save Changes" onclick="event.preventDefault(); insurerHireMonitoringSubmit();"/>
             </div>
             
             <div id="insurerHMmessageBox" style="text-align:center" class="action-error-msg">

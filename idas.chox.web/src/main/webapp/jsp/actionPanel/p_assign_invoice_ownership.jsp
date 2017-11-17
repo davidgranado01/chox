@@ -249,7 +249,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="button" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
+                                        <input type="button" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="event.preventDefault(); doAssignOwnershipSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

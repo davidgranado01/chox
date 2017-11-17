@@ -426,7 +426,7 @@ function showEditReasonOfRejection(gridView){
                                     <br/>
                                     <br/>
                                     <div class="chox-form-button">
-                                        <input type="submit" value="Add Reason" onclick="return doAddReasonFormSubmit();"/>
+                                        <input type="submit" value="Add Reason" onclick="event.preventDefault(); doAddReasonFormSubmit();"/>
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="rorErrorMessageBox" class="action-error-msg"></div>

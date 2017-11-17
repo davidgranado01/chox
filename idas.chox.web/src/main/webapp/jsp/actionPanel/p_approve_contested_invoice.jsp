@@ -147,15 +147,15 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" id="ACIRejectInvoiceButtonId" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
+                                <input type="button" id="ACIRejectInvoiceButtonId" value="Reject Invoice"  onclick="event.preventDefault(); docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
 <s:if test="invoiceSavingActive">
-                                <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
+                                <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="event.preventDefault(); confirmInvoiceSavingsAction();"  />
 </s:if>
 <s:else>
-                                <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
+                                <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="event.preventDefault(); docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
 </s:else>
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" id="ACIReferToEngineerButtonId" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
+                                    <input type="button" id="ACIReferToEngineerButtonId" value="Refer To Engineer" onclick="event.preventDefault(); docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

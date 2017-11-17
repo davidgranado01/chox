@@ -400,11 +400,11 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="button" id="ACOAAssignOwnerButtonId" value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
+                                        <input type="button" id="ACOAAssignOwnerButtonId" value="Assign Owner" onclick="event.preventDefault(); doAssignOwnershipSubmit();"/>
                                         <s:if test="insurerIsFnolEnabled">
-                                            <input type="button" id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
+                                            <input type="button" id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="event.preventDefault(); doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="button" id="ACOARejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doAssignOwnershipRejectSubmit();"/>
+                                        <input type="button" id="ACOARejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="event.preventDefault(); doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

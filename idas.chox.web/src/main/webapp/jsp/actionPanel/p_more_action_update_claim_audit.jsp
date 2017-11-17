@@ -1037,6 +1037,7 @@ function saveAuditReview() {
                 settings.rules[rule] = deletedRules[rule];
             }
         }
+        return false;
     }
 
     function submitAuditReview() {
@@ -1045,6 +1046,7 @@ function saveAuditReview() {
             Ext.get('claimDetailScreenDiv').mask("Submitting Claim Audit...");
             choxJqueryHttpSubmit($("form#formClaimAuditReview"));
         }
+        return false;
     }
 
 
@@ -1052,7 +1054,6 @@ function saveAuditReview() {
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formClaimAuditReview" name="formClaimAuditReview">
-    <!--<form action="<%=request.getContextPath()%>/prv/updateClaimAuditReview.action" method="post" id="formClaimAuditReview" name="formClaimAuditReview">-->
         <fieldset class="x-fieldset">
             <legend>Claim Audit</legend>
             <s:hidden id="name" name="name" value="saveOrSubmitClaimAuditReview"/>
@@ -1206,11 +1207,11 @@ function saveAuditReview() {
                     <tr>
                         <td colspan="4" class="choice" nowrap>
                             <s:if test="claimAuditReview == null || !claimAuditReview.claimAuditReviewCompleted">
-                                <input type="button" id="saveAuditReviewButtonId" value="Save" onclick="return saveAuditReview();" />
-                                <input type="button" id="submitAuditReviewButtonId" value="Save and Complete" onclick="return submitAuditReview();" />
+                                <input type="button" id="saveAuditReviewButtonId" value="Save" onclick="event.preventDefault(); saveAuditReview();" />
+                                <input type="button" id="submitAuditReviewButtonId" value="Save and Complete" onclick="event.preventDefault(); submitAuditReview();" />
                             </s:if>
                             <s:else>
-                                <input type="button" id="submitAuditReviewButtonId" value="Save" onclick="return submitAuditReview();" />
+                                <input type="button" id="submitAuditReviewButtonId" value="Save" onclick="event.preventDefault(); submitAuditReview();" />
                             </s:else>
                         </td>
                     </tr>

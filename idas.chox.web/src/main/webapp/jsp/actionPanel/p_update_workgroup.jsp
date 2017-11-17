@@ -102,7 +102,7 @@ function assignClaimOwnershipSubmit(){
                         </tr>
                         <tr>
                             <td colspan="3" class="" nowrap >
-                                <input type="button" id="miAssignButton" value="Update Workgroup" onclick="return assignClaimOwnershipSubmit();"/>
+                                <input type="button" id="miAssignButton" value="Update Workgroup" onclick="event.preventDefault(); assignClaimOwnershipSubmit();"/>
                             </td>
                         </tr>
                             

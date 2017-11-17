@@ -169,10 +169,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" id="abpbchRejectInvoiceButtonId" value="Reject Invoice"  onclick="return doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
-                                <input type="button" id="abpbchClearForPaymentButtonId"  value="Agree Quantum" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
+                                <input type="button" id="abpbchRejectInvoiceButtonId" value="Reject Invoice"  onclick="event.preventDefault(); doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
+                                <input type="button" id="abpbchClearForPaymentButtonId"  value="Agree Quantum" onclick="event.preventDefault(); doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button"  id="abpbchReferToEngineerButtonId" value="Refer To Engineer" onclick="return doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
+                                    <input type="button"  id="abpbchReferToEngineerButtonId" value="Refer To Engineer" onclick="event.preventDefault(); doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

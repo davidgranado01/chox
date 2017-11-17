@@ -142,15 +142,15 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" id="AIRBERejectInvoiceButtonId" value="Reject Invoice"  onclick="return doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
+                                <input type="button" id="AIRBERejectInvoiceButtonId" value="Reject Invoice"  onclick="event.preventDefault(); doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
 <s:if test="invoiceSavingActive">
-                                <input type="button" id="AIRBEClearForPaymentButtonId" value="Agree Quantum" onclick="return confirmInvoiceSavingsAction();"  />
+                                <input type="button" id="AIRBEClearForPaymentButtonId" value="Agree Quantum" onclick="event.preventDefault(); confirmInvoiceSavingsAction();"  />
 </s:if>
 <s:else>
-                                <input type="button" id="AIRBEClearForPaymentButtonId" value="Agree Quantum" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
+                                <input type="button" id="AIRBEClearForPaymentButtonId" value="Agree Quantum" onclick="event.preventDefault(); doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
 </s:else>
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" id="AIRBEReferToEngineerButtonId"value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
+                                    <input type="button" id="AIRBEReferToEngineerButtonId"value="Refer To Engineer" onclick="event.preventDefault(); doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

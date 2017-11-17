@@ -222,8 +222,8 @@
                         </tr>
                         <tr>
                             <td colspan="3" class="choice" nowrap>
-                                <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="return doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                                <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="event.preventDefault(); doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="event.preventDefault(); doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                             </td>
                         </tr>
                     </table>

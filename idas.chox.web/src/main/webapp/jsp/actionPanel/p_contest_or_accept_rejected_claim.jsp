@@ -101,18 +101,18 @@
                             <td>
                                 <s:if test="isFixedFeeClaim">
                                     <s:if test="!claimRejectedMaxAllowed">
-                                        <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer" onclick="return doFormSubmit('contestRejectedClaim')" />
+                                        <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer" onclick="event.preventDefault(); doFormSubmit('contestRejectedClaim')" />
                                     </s:if>
-                                    <input type="button" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
-                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
+                                    <input type="button" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="event.preventDefault(); doFormSubmit('sendClaimGTA');" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="event.preventDefault(); doFormSubmit('acceptRejectedClaim');"  />
                                 </s:if>
                                 <s:elseif test="isInsurerManual">
-                                    <input type="button" id="COARCContestThisClaimButtonId" value="Claim Re-Submitted" onclick="return doFormSubmit('contestRejectedClaim')" />
-                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Rejection Decision Accepted" onclick="return doFormSubmit('acceptRejectedClaim')"  />
+                                    <input type="button" id="COARCContestThisClaimButtonId" value="Claim Re-Submitted" onclick="event.preventDefault(); doFormSubmit('contestRejectedClaim');" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Rejection Decision Accepted" onclick="event.preventDefault(); doFormSubmit('acceptRejectedClaim');"  />
                                 </s:elseif>
                                 <s:else>    
-                                    <input type="button" id="COARCContestThisClaimButtonId" value="Contest This Claim" onclick="return doFormSubmit('contestRejectedClaim')" />
-                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
+                                    <input type="button" id="COARCContestThisClaimButtonId" value="Contest This Claim" onclick="event.preventDefault(); doFormSubmit('contestRejectedClaim');" />
+                                    <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="event.preventDefault(); doFormSubmit('acceptRejectedClaim');"  />
                                 </s:else>    
                             </td>
                         </tr>

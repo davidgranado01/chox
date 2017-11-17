@@ -1727,12 +1727,12 @@
                             <div class="label-block">
                                 <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                                <input type="button" value="Save" onclick="javascript: submitBreBandDetailForm(false);"/>
+                                <input type="button" value="Save" onclick="event.preventDefault(); submitBreBandDetailForm(false);"/>
                                 <s:if test="!isNew">
-                                    <input type="button" value="Copy" onclick="javascript: submitBreBandDetailForm(true);"/>
-                                    <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
+                                    <input type="button" value="Copy" onclick="event.preventDefault(); submitBreBandDetailForm(true);"/>
+                                    <input type="button" value="Delete" onclick="event.preventDefault(); doDeleteBreBand();"/>
                                 </s:if>
-                                <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
+                                <input type="button" value="Cancel" class="cancel" onclick="event.preventDefault(); doInsurerBreBandBack();" />
                             </div>
                             <div id="CDInsurerBreBandmessageBox" class="action-error-msg"></div>
                             <div id="submitMesResult" class="chox-form-submit-result"></div>

@@ -27,6 +27,7 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
     }
 
     function confirmPaymentLog(action){
+        Ext.get('claimDetailScreenDiv').mask();
         $('form#logInvoicePayment input[id="name"]').remove();
         return confirmPaymentLogAction();
     }
@@ -90,14 +91,14 @@ var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
                         <tr>
                             <td>
                                 <s:if test="isInsurerManual">
-                                    <input type="button" id="UMIPFormId2" value="Insurer Invoice Paid" onclick="return doUpdateManualInvoice('updateManualInvoicePaid');" />
+                                    <input type="button" id="UMIPFormId2" value="Insurer Invoice Paid" onclick="event.preventDefault(); doUpdateManualInvoice('updateManualInvoicePaid');" />
                                 </s:if>
                                 <s:else>
-                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="return confirmPaymentLog('invoicePaymentLogged');"/>
-                                    <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="return callInterimPayment();"/>
+                                    <input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="event.preventDefault(); confirmPaymentLog('invoicePaymentLogged');"/>
+                                    <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="event.preventDefault(); callInterimPayment();"/>
                                 </s:else>
                                 <s:if test="invoiceWithPaymentsTeam">
-                                    <input type="button" id="switchClaimsHandlerButtonId"value="Switch To Claims Handler" onclick="return switchToClaimsHandler();"/>
+                                    <input type="button" id="switchClaimsHandlerButtonId"value="Switch To Claims Handler" onclick="event.preventDefault(); switchToClaimsHandler();"/>
                                 </s:if>
                               </td>
                         </tr>

@@ -106,10 +106,10 @@
                         <tr>
                             <td>
                               <s:if test="!claimRejectedMaxAllowed">
-                                <input type="button" id="COARSCContestThisClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doSubscriberFormSubmit('contestRejectedClaim')" />
+                                <input type="button" id="COARSCContestThisClaimButtonId" value="Send Claim Back To Insurer"  onclick="event.preventDefault(); doSubscriberFormSubmit('contestRejectedClaim');" />
                               </s:if>
-                                <input type="button" id="COARSCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doSubscriberFormSubmit('acceptSubscriberChallenge')"  />
-                                <input type="button" id="COARSCSendToGTADecisionButtonId" value="Send Claim Down GTA Route" onclick="return doSubscriberFormSubmit('sendClaimGTA')"  />
+                                <input type="button" id="COARSCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="event.preventDefault(); doSubscriberFormSubmit('acceptSubscriberChallenge');"  />
+                                <input type="button" id="COARSCSendToGTADecisionButtonId" value="Send Claim Down GTA Route" onclick="event.preventDefault(); doSubscriberFormSubmit('sendClaimGTA');"  />
                             </td>
                         </tr>
                     </table>

@@ -401,9 +401,9 @@ Ext.onReady(function(){
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
                     win.hide();
+                    Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                     paymentDetailsForm.getForm().submit({
                         method:'POST',
-//                        url:contextPath +'/prv/p/updatePaymentDetails.action',
                         url:contextPath +'/prv/p/updatePaymentDetails.action?'+$('#logInvoicePayment').formSerialize(),
                         success : function(f, a) {
 
@@ -429,6 +429,7 @@ Ext.onReady(function(){
             handler:function(){
                 paymentDetailsForm.getForm().reset();
                 win.hide();
+                Ext.get('claimDetailScreenDiv').unmask();
             }
         }]
         
