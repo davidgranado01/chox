@@ -157,12 +157,12 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
             } else {
                 LOG.warn("User trying to delete Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
-                this.getActionResponse().AssignMessageResult("No comment id found");
+                this.getActionResponse().AssignMessageResult("No such comment found");
                 return ERROR;
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown deleting comment: {}", ex.getMessage());
-            this.getActionResponse().AssignMessageResult(ex.getMessage());
+            LOG.warn("Exception thrown deleting comment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult("An internal error occurred, please try again. If this errror persists, please contact Audatex support.");
             return ERROR;
         }
         return SUCCESS;
@@ -182,8 +182,8 @@ public class CommentAction extends ClaimModelAction<Comment> {
                 return ERROR;
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown acknowledgeding comment: {}", ex.getMessage());
-            this.getActionResponse().AssignMessageResult(ex.getMessage());
+            LOG.warn("Exception thrown acknowledgding comment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult("An internal error occurred, please try again. If this errror persists, please contact Audatex support.");
             return ERROR;
         }
         return SUCCESS;
