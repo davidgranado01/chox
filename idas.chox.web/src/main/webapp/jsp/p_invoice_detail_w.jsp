@@ -114,11 +114,7 @@
             
             if(!ashow&&!cshow&&!dshow)
             {
-               
-
                 $(form4).toggle();
-                    
-                
             }
         });
         fsets1.mouseover(function(){ $(this).css("cursor","pointer"); });
@@ -599,10 +595,9 @@
  
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
-//                $("form#formUpdateInvoiceRecalculationForm").submit();
+                choxJqueryHttpSubmit($("form#formUpdateInvoiceRecalculationForm"));
             }
-
-//            return false;
+            return false;
         }
 
         function recalculateForm(){
@@ -627,7 +622,7 @@
             document.getElementById('invoiceSubmitAction').value=20;
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
-                $("form#formUpdateInvoiceRecalculationForm").submit();
+                choxJqueryHttpSubmit($("form#formUpdateInvoiceRecalculationForm"));
             }
             return false;
         }
