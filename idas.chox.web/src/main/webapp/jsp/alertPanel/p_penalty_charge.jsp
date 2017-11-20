@@ -146,7 +146,7 @@
             }
         });
                 
-        choxJqueryHttpSubmit(form, function(){});
+        choxJqueryHttpSubmit(form, function(){Ext.get('claimDetailScreenDiv').mask("Applying Penalty Charge...");});
         
         $("#tHirePenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay();
@@ -211,7 +211,7 @@
 
 </script>
 
-<div class="chox-claim-header x-panel-bwrap chox-form-container">
+<div class="chox-claim-header x-panel-bwrap chox-form-container" id="applyPenaltyChargeDivId">
 
     <form action="<%= request.getContextPath()%>/prv/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
 
