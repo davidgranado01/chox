@@ -47,31 +47,31 @@ public class SwitchCho extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
             if (!newCho.isEnableSubscriberClaims()) {
-                LOG.error("The linked CHO '{}' does not allow Subscriber claims.", newCho.getName());
+                LOG.debug("The linked CHO '{}' does not allow Subscriber claims.", newCho.getName());
                 throw new Exception("The linked CHO does not allow Subscriber claims.");
             }
         } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
             if (!newCho.isEnableFixedFeeClaims()) {
-                LOG.error("The linked CHO '{}' does not allow Fixed Fee claims.", newCho.getName());
+                LOG.debug("The linked CHO '{}' does not allow Fixed Fee claims.", newCho.getName());
                 throw new Exception("The linked CHO does not allow Fixed Fee claims.");
             }
         } else if (ClaimType.isTPI(claim.getClaimType())) {
             // Make sure the new Insurer accepts tpi claims
             if (!newCho.isThirdPartyInterventionActivated()) {
-                LOG.error("The linked CHO '{}' does not allow TPI claims.", newCho.getName());
+                LOG.debug("The linked CHO '{}' does not allow TPI claims.", newCho.getName());
                 throw new Exception("The linked CHO does not allow TPI claims.");
             }
         } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
             // Make sure the new Insurer accepts Collaboration Protocol claims
             if (!newCho.isEnableCollaborationProtocolClaims()) {
-                LOG.error("The linked CHO '{}' does not allow Collaboration Protocol claims.", newCho.getName());
+                LOG.debug("The linked CHO '{}' does not allow Collaboration Protocol claims.", newCho.getName());
                 throw new Exception("The linked CHO does not allow Collaboration Protocol claims.");
             }
         }
         
         if (insurerChorganisationService.getInsurerChorganisations(claim.getInsurer().getId(), newCho.getId()).size() <= 0) {
-            LOG.error("The linked CHO '{}' is not mapped to the Insurer '{}'.", newCho.getName(), claim.getInsurer().getName());
+            LOG.warn("The linked CHO '{}' is not mapped to the Insurer '{}'.", newCho.getName(), claim.getInsurer().getName());
             throw new Exception("The linked CHO '" + newCho.getName() + "' is not mapped to the Insurer'" + claim.getInsurer().getName() + "'.");
         }
     }

@@ -46,31 +46,31 @@ public class SwitchClaim extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
             if (!newInsurer.isAllowSubscriberClaims()) {
-                LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
+                LOG.debug("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
         } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
             if (!newInsurer.isAllowFixedFeeClaims()) {
-                LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
+                LOG.debug("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
             }
         } else if (ClaimType.isTPI(claim.getClaimType())) {
             // Make sure the new Insurer accepts tpi claims
             if (!newInsurer.isThirdPartyInterventionActivated()) {
-                LOG.error("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
+                LOG.debug("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow TPI claims.");
             }
         } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
             // Make sure the new Insurer accepts Collaboration Protocol claims
             if (!newInsurer.isAllowCollaborationProtocolClaims()) {
-                LOG.error("The selected Insurer '{}' does not allow Collaboration Protocol claims.", newInsurer.getName());
+                LOG.debug("The selected Insurer '{}' does not allow Collaboration Protocol claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Collaboration Protocol claims.");
             }
         }
         
         if (insurerChorganisationService.getInsurerChorganisations(claim.getInsurer().getRelatedInsurer().getId(), claim.getChorganisation().getId()).size() <= 0) {
-            LOG.error("The selected Insurer '{}' is not mapped to the CHO '{}'.", claim.getInsurer().getRelatedInsurer().getName(), claim.getChorganisation().getName());
+            LOG.warn("The selected Insurer '{}' is not mapped to the CHO '{}'.", claim.getInsurer().getRelatedInsurer().getName(), claim.getChorganisation().getName());
             throw new Exception("The selected Insurer '" + claim.getInsurer().getRelatedInsurer().getName() + "' is not mapped with '" + claim.getChorganisation().getName() + "'.");
         }
     }
