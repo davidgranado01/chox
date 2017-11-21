@@ -37,9 +37,12 @@ public class ActivityMonitoringAction extends BaseAction {
 
         method = "execute";
         int currentUserID = getUserId();
+        if (currentUserID < 0) {
+            return SUCCESS;
+        }
         Integer claimId = getModelIdFromSession(Claim.class);
 
-        if (claimId == null || currentUserID < 0) {
+        if (claimId == null) {
             LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId {} in session.",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
             return SUCCESS;
@@ -134,7 +137,7 @@ public class ActivityMonitoringAction extends BaseAction {
                     LOG.debug("No user is session {}", getSession());
                 }
             } catch (Exception ex) {
-                LOG.error("Exception: {}", ex.getMessage(), ex);
+                LOG.warn("Exception: {}", ex.getMessage(), ex);
             }
         }
         return userId == null ? -1 : userId;
