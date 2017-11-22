@@ -164,7 +164,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
 
             if (blocked) {
-                LOG.error("User '{}' denied access as account is currently blocked.", user.getFullName());
+                LOG.warn("User '{}' denied access as account is currently blocked.", user.getFullName());
                 String blockedMessage = null;
                 if (user.isCHO()) {
                     blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(), "UTF-8");
