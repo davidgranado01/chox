@@ -352,9 +352,21 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             // No visibility role needed for CHOs so make sure its not defined
             task.setVisibilityRole(null);
         }
-        this.save(task);
+        try {
+            this.save(task);
+        } catch (Exception ex) {
+            if (task.getClaim() != null) {
+                LOG.error("Error saving task on claim with id='{}' in status {}: {}", new Object[]{task.getClaim().getId(), task.getClaim().getStatus(), ex.getMessage()});
+            } else {
+                LOG.error("Error saving task not on claim: {}", ex.getMessage());
+            }
+        }
         if (task.getClaim() != null) {
-            eventService.generate(task.getClaim(), ChoxEvent.TASK_CREATED_EVENT, task);
+            try {
+                eventService.generate(task.getClaim(), ChoxEvent.TASK_CREATED_EVENT, task);
+            } catch (Exception ex) {
+                LOG.error("Error generating task created event on claim with id='{}' in status {}: {}", new Object[]{task.getClaim().getId(), task.getClaim().getStatus(), ex.getMessage()});
+            }
         }
     }
 
