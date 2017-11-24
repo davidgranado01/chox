@@ -38,6 +38,7 @@ public class ActivityMonitoringAction extends BaseAction {
         method = "execute";
         int currentUserID = getUserId();
         if (currentUserID < 0) {
+            LOG.warn("No activity monitoring user with id={}", currentUserID);
             return SUCCESS;
         }
         Integer claimId = getModelIdFromSession(Claim.class);
