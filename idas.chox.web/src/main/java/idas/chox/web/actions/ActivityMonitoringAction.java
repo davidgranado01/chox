@@ -39,6 +39,7 @@ public class ActivityMonitoringAction extends BaseAction {
         int currentUserID = getUserId();
         if (currentUserID < 0) {
             LOG.warn("No activity monitoring user with id={}", currentUserID);
+            usersViewingThisClaim = new ArrayList<>(0);
             return SUCCESS;
         }
         Integer claimId = getModelIdFromSession(Claim.class);
@@ -46,6 +47,7 @@ public class ActivityMonitoringAction extends BaseAction {
         if (claimId == null) {
             LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId {} in session.",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
+            usersViewingThisClaim = new ArrayList<>(0);
             return SUCCESS;
         }
 
