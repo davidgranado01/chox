@@ -32,13 +32,13 @@
             var form = $("form#formUpdateInsurerClaimNumber");
 
             if(claimNumber && claimNumber.length > 0){
-                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                checkClaimNumberAndSubmit(claimNumber, claimId, form);
             }
         }
         return false;
     }
 
-    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form) {
+    function checkClaimNumberAndSubmit(claimNumber, claimId, form) {
         var url = "/prv/p/checkIsClaimNumberDuplicated.action";
         var param = {
             claimNumber: claimNumber,
