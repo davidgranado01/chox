@@ -14,6 +14,9 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
     private static final Pattern ALLOWED_METHODS = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
     // Do not apply csrf filter for the web service call.
     private static final String WEB_SERVICE_URL_STRING = "/services";
+    private static final String DOWNLOAD_URL_STRING = "downloadExcelReport";
+    private static final String ATTACHMENT_URL_STRING = "createNewAttachment";
+    private static final String UPLOAD_URL_STRING = "uploadNewClaimsFile";
     // Do not apply csrf filter for the Logback call.
     private static final String LOGBACK_LOGGING_URL_STRING = "/logBack";
 
@@ -28,7 +31,8 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
         if (ALLOWED_METHODS.matcher(request.getMethod()).matches()) {
             result = false;
         }
-        else if (request.getServletPath().contains(WEB_SERVICE_URL_STRING)) {
+        else if (request.getServletPath().contains(WEB_SERVICE_URL_STRING) || request.getServletPath().contains(DOWNLOAD_URL_STRING)
+                || request.getServletPath().contains(ATTACHMENT_URL_STRING) || request.getServletPath().contains(UPLOAD_URL_STRING)) {
             result = false;
         } else {
             result =  !request.getServletPath().contains(LOGBACK_LOGGING_URL_STRING);
