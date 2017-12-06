@@ -91,7 +91,7 @@ public class VirusCheckerUtility {
                     i = is.read();
                 }
             } catch (IOException e) {
-                LOG.error("IOException thrown checking for virus: {}", e.getMessage(), e);
+                LOG.warn("IOException thrown checking for virus: {}", e.getMessage(), e);
             }
         }
 
