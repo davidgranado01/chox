@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -242,7 +241,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
                 LOG.debug("Creating stream for report file '{}'", reportFileLocation);
                 try {
                     File reportFile = new File(reportFileLocation);
-                    reportStream = new FileInputStream(reportFile);
+                    reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (FileNotFoundException ex) {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
