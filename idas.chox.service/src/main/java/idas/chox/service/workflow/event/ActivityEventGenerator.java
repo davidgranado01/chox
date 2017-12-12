@@ -61,6 +61,7 @@ import idas.chox.events.SlaExtensionGrantedEvent;
 import idas.chox.events.SubscriberClaimRejectedToGtaEvent;
 import idas.chox.events.SwitchChoEvent;
 import idas.chox.events.UpdateCaseWithSolicitorEvent;
+import idas.chox.events.UpdateInsurerClaimNumberEvent;
 import idas.chox.service.workflow.activities.AcknowledgeClaim;
 import idas.chox.service.workflow.activities.AddNote;
 import idas.chox.service.workflow.activities.AssignManualInvoiceOwner;
@@ -109,6 +110,7 @@ import idas.chox.service.workflow.activities.SwitchCho;
 import idas.chox.service.workflow.activities.SwitchClaim;
 import idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer;
 import idas.chox.service.workflow.activities.UpdateCaseWithSolicitor;
+import idas.chox.service.workflow.activities.UpdateInsurerClaimNumber;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentReceived;
 import idas.chox.service.workflow.activities.UpdateLiability;
@@ -504,6 +506,10 @@ public class ActivityEventGenerator {
                 
                 case "UpdateCaseWithSolicitor":
                     events.add(new UpdateCaseWithSolicitorEvent(claim, activityName, String.valueOf(((UpdateCaseWithSolicitor) activity).isCaseWithSolicitor())));
+                    break;
+                
+                case "UpdateInsurerClaimNumber":
+                    events.add(new UpdateInsurerClaimNumberEvent(claim, activityName, String.valueOf(((UpdateInsurerClaimNumber) activity).getClaimNumber())));
                     break;
                 
                 case "SaveOrSubmitClaimAuditReview":

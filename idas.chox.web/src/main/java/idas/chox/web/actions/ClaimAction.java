@@ -650,22 +650,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "";
     }
 
-    public String updateClaimNumber() {
-        try {
-            claim.setClaimNumber(StringEscapeUtils.unescapeHtml4(Jsoup.clean(claim.getClaimNumber().trim(), Whitelist.none())));
-            this.claimService.updateClaim(claim);
-            activityEventGenerator.generate(claim, ActivityEvent.CLAIM_NUMBER_ASSIGNED_EVENT);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");
-            updateRedirectionParamInSession();
-            return ERROR;
-        }
-
-        updateRedirectionParamInSession();
-        return SUCCESS;
-    }
-
     public String updateSupplierReferenceNumber() {
         try {
             claim.setChoReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(claim.getChoReference().trim(), Whitelist.none())));

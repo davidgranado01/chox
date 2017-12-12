@@ -207,12 +207,6 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-        <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
-            <result name="success" type="redirectAction">
-                <param name="actionName">claimDetails</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="updateSupplierReferenceNumber" class="idas.chox.web.actions.ClaimAction" method="updateSupplierReferenceNumber">
             <result name="success" type="redirectAction">
                 <param name="actionName">claimDetails</param>
