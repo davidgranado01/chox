@@ -61,7 +61,9 @@ import idas.chox.events.SlaExtensionGrantedEvent;
 import idas.chox.events.SubscriberClaimRejectedToGtaEvent;
 import idas.chox.events.SwitchChoEvent;
 import idas.chox.events.UpdateCaseWithSolicitorEvent;
+import idas.chox.events.UpdateCustomerClaimNumberEvent;
 import idas.chox.events.UpdateInsurerClaimNumberEvent;
+import idas.chox.events.UpdateSupplierReferenceEvent;
 import idas.chox.service.workflow.activities.AcknowledgeClaim;
 import idas.chox.service.workflow.activities.AddNote;
 import idas.chox.service.workflow.activities.AssignManualInvoiceOwner;
@@ -110,6 +112,7 @@ import idas.chox.service.workflow.activities.SwitchCho;
 import idas.chox.service.workflow.activities.SwitchClaim;
 import idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer;
 import idas.chox.service.workflow.activities.UpdateCaseWithSolicitor;
+import idas.chox.service.workflow.activities.UpdateCustomerClaimNumber;
 import idas.chox.service.workflow.activities.UpdateInsurerClaimNumber;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentReceived;
@@ -117,6 +120,7 @@ import idas.chox.service.workflow.activities.UpdateLiability;
 import idas.chox.service.workflow.activities.UpdateManualInvoiceAgreeQuantum;
 import idas.chox.service.workflow.activities.UpdateManualInvoiceContested;
 import idas.chox.service.workflow.activities.UpdateManualInvoicePaid;
+import idas.chox.service.workflow.activities.UpdateSupplierReference;
 import idas.chox.service.workflow.activities.WorkgroupRouting;
 
 /**
@@ -510,6 +514,14 @@ public class ActivityEventGenerator {
                 
                 case "UpdateInsurerClaimNumber":
                     events.add(new UpdateInsurerClaimNumberEvent(claim, activityName, String.valueOf(((UpdateInsurerClaimNumber) activity).getClaimNumber())));
+                    break;
+                
+                case "UpdateSupplierReference":
+                    events.add(new UpdateSupplierReferenceEvent(claim, activityName, String.valueOf(((UpdateSupplierReference) activity).getSupplierReference())));
+                    break;
+                
+                case "UpdateCustomerClaimNumber":
+                    events.add(new UpdateCustomerClaimNumberEvent(claim, activityName, String.valueOf(((UpdateCustomerClaimNumber) activity).getCustomerClaimNumber())));
                     break;
                 
                 case "SaveOrSubmitClaimAuditReview":

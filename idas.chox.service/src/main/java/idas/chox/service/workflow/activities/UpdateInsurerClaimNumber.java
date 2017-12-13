@@ -33,7 +33,6 @@ public class UpdateInsurerClaimNumber extends BaseActivity {
                 || (claimNumber == null) && (claim.getClaimNumber() == null || claim.getClaimNumber().isEmpty())) {
             throw new Exception("Insurer Claim Number has not been updated as it has not changed");
         }
-        claim.setClaimNumber(claimNumber);
     }
     
     @Override

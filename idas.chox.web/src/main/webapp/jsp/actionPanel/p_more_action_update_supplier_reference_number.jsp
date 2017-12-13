@@ -9,12 +9,12 @@
         {
             errorLabelContainer: "#ACKmUpdateSupplierReferenceNumberMessageBox",
             rules: {
-                choReference:{
+                supplierReference:{
                     required:true
                 }
             },
             messages: {
-                choReference: {
+                supplierReference: {
                     required:"You must supply a value for 'Supplier Reference Number'",
                     textDigitOnly:"Invalid 'Supplier Reference' Format"
                 }
@@ -23,12 +23,11 @@
 
     });
 
-    function checkSupplierReferenceNumberDuplicationAndSubmit(choReference, originalChoReference, claimId, form)
+    function checkSupplierReferenceNumberDuplicationAndSubmit(supplierReference, claimId, form)
     {
         var url = "/prv/p/checkIsSupplierReferenceNumberDuplicated.action";
         var param = {
-            choReference: choReference,
-            originalChoReference: originalChoReference,
+            choReference: supplierReference,
             claimId: claimId
         };
 
@@ -55,13 +54,12 @@
 
         if($("form#formUpdateSupplierReferenceNumber").valid()){
 
-            var choReference = $("form#formUpdateSupplierReferenceNumber #choReference").val();
-            var originalChoReference = $("form#formUpdateSupplierReferenceNumber #originalChoReference").val();
+            var supplierReference = $("form#formUpdateSupplierReferenceNumber #supplierReference").val();
             var claimId = $("form#formUpdateSupplierReferenceNumber #claimId").val();
             var form = $("form#formUpdateSupplierReferenceNumber");
 
-            if(choReference && choReference.length > 0){
-                checkSupplierReferenceNumberDuplicationAndSubmit(choReference, originalChoReference, claimId, form);
+            if(supplierReference && supplierReference.length > 0){
+                checkSupplierReferenceNumberDuplicationAndSubmit(supplierReference, claimId, form);
             }
         }
     }
@@ -69,18 +67,18 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/updateSupplierReferenceNumber.action" method="post" id="formUpdateSupplierReferenceNumber" name="formUpdateSupplierReferenceNumber">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdateSupplierReferenceNumber" name="formUpdateSupplierReferenceNumber">
         <fieldset class="x-fieldset">
             <legend>Update Supplier Reference Number</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="originalChoReference" name="originalChoReference" value="%{choReference}"/>
+            <s:hidden id="name" name="name" value="updateSupplierReference" />
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
                         <tr>
                             <td>
                                 <label>Supplier Reference Number<span class="mandatory">*</span>:</label></td><td nowrap>
-                                <input type="text" class="chox-ttxt" id="choReference" name="choReference" value="<s:property value="choReference" />"/>
+                                <input type="text" class="chox-ttxt" id="supplierReference" name="supplierReference" value="<s:property value="choReference" />"/>
                                 <input type="button" id="MAUICNUpdateSupplierReferenceNumberButtonId" value="Update Supplier Reference Number" onclick="event.preventDefault(); doSubmitSupplierReferenceNumber();"/>
                             </td>
                             <td></td><td></td>

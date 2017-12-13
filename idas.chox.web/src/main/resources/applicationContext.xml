@@ -143,6 +143,8 @@
                 <value>hbm/events/SwitchChoEvent.hbm.xml</value>
                 <value>hbm/events/UpdateCaseWithSolicitorEvent.hbm.xml</value>
                 <value>hbm/events/UpdateInsurerClaimNumberEvent.hbm.xml</value>
+                <value>hbm/events/UpdateSupplierReferenceEvent.hbm.xml</value>
+                <value>hbm/events/UpdateCustomerClaimNumberEvent.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>

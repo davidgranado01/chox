@@ -16,9 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,8 +77,6 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
-import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
@@ -171,10 +166,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
-    private ActivityEventGenerator activityEventGenerator;
     private String customerClaimNumber;
     private BrePenaltyBandService brePenaltyBandService;
-    private String originalChoReference;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
@@ -224,10 +217,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
-        this.activityEventGenerator = activityEventGenerator;
-    }
     // </editor-fold>
 
     @Override
@@ -252,10 +241,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 showMessage = true;
             }
         }
-    }
-
-    public void setOriginalChoReference(String originalChoReference) {
-        this.originalChoReference = originalChoReference;
     }
 
     public String getFinalReviewReason() {
@@ -650,40 +635,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "";
     }
 
-    public String updateSupplierReferenceNumber() {
-        try {
-            claim.setChoReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(claim.getChoReference().trim(), Whitelist.none())));
-            claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + originalChoReference + "' to '" + claim.getChoReference() + "'"));
-            this.claimService.updateClaim(claim);
-            activityEventGenerator.generate(claim, ActivityEvent.SUPPLIER_REFERENCE_UPDATED_EVENT);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown updating the supplier reference number for claim '{}': ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred updating the supplier reference number. Please contact CHOX support.");
-            updateRedirectionParamInSession();
-            return ERROR;
-        }
-
-        updateRedirectionParamInSession();
-        return SUCCESS;
-    }
-
-    public String updateCustomerClaimNumber() {
-        try {
-            claim.getCustomer().setClaimReference(StringEscapeUtils.unescapeHtml4(Jsoup.clean(customerClaimNumber.trim(), Whitelist.none())));
-            this.claimService.updateClaim(claim);
-            activityEventGenerator.generate(claim, ActivityEvent.CLAIM_CUSTOMER_NUMBER_ASSIGNED_EVENT);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown updating the customer claim number for claim '{}': ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred updating the customer claim number. Please contact CHOX support.");
-            updateRedirectionParamInSession();
-            return ERROR;
-        }
-
-        updateRedirectionParamInSession();
-        return SUCCESS;
-    }
-
-    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String updateInvoiceReviewRequired() {
         try {

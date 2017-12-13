@@ -69,10 +69,11 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/updateCustomerClaimNumber.action" method="post" id="formUpdateCustomerClaimNumber" name="formUpdateCustomerClaimNumber">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdateCustomerClaimNumber" name="formUpdateCustomerClaimNumber">
         <fieldset class="x-fieldset">
             <legend>Customer Claim Number</legend>
             <s:hidden id="claimId" name="id" />
+            <s:hidden id="name" name="name" value="updateCustomerClaimNumber" />
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
