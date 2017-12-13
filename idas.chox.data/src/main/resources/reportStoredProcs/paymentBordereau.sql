@@ -62,9 +62,9 @@ AS $BODY$
         RETURN QUERY
         SELECT
             ins.name as "Insurer",
-            c.claim_number as "Claim Number",
-            c.cho_reference as "CHO Reference",
-            cu.vehicle_registration as "Claimant VRN",
+            case when c.claim_number='' then null else c.claim_number end as "Claim Number",
+            case when c.cho_reference='' then null else c.cho_reference end as "CHO Reference",
+            case when cu.vehicle_registration='' then null else cu.vehicle_registration end as "Claimant VRN",
             case when inc.date is null then null else to_char(inc.date, 'DD/MM/YYYY') || ' ' || time end as "Loss Date/Time",
             getClaimTypeName(c.claim_type) as "Claim Type",
             cho.name as "CHO Name",
@@ -75,10 +75,10 @@ AS $BODY$
             ((storage_recovery_gross + total_loss_gross)*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Storage Recovery Gross (inc total loss fees)", 
             (total_gross*c.percentage_liability_accepted/100.0)::numeric(8,2) as "Total Gross",
             c.percentage_liability_accepted as "Liability % Agreed (Insurer)",
-            cu.title as "Claimant Title",
-            cu.first_name as "Claimant First Name",
-            cu.last_name as "Claimant Surname",
-            cu.insurer_name as "TP Insurer",
+            case when cu.title='' then null else cu.title end as "Claimant Title",
+            case when cu.first_name='' then null else cu.first_name end as "Claimant First Name",
+            case when cu.last_name='' then null else cu.last_name end as "Claimant Surname",
+            case when cu.insurer_name='' then null else cu.insurer_name end as "TP Insurer",
             cuvc.name as "Claimant Vehicle Class",
             replace(cu.damage, ',', '') as "Damage Description",
             case when cu.is_usable then 'Yes' else 'No' end as "Usable?",
@@ -86,7 +86,7 @@ AS $BODY$
             to_char(vh.rental_start, 'DD/MM/YYYY') as "Hire Start Date",
             to_char(vh.rental_end, 'DD/MM/YYYY') as "Hire End Date",
             vh.days as "No. Days Hire",
-            hmd.name_of_repairer as "Name of Repairer",
+            case when hmd.name_of_repairer='' then null else hmd.name_of_repairer end as "Name of Repairer",
             to_char(hmd.repair_book_in_date, 'DD/MM/YYYY') as "Repair Book-in Date",
             to_char(hmd.repair_authorised_date, 'DD/MM/YYYY') as "Date Repair Authorised",
             to_char(hmd.repair_commenced_date, 'DD/MM/YYYY') as "Date Repair Commenced",
@@ -98,7 +98,7 @@ AS $BODY$
             to_char(hmd.total_loss_check_issued, 'DD/MM/YYYY') as "Date Total Loss Cheque Issued",
             to_char(hmd.total_loss_check_received, 'DD/MM/YYYY') as "Date Total Loss Cheque Received",
             case when ihmd.claimant_impecunious then 'Yes' else 'No' end  as "Is the Claimant Impecunious?",
-            ihmd.who_managed_repair as "Who Managed the Repair?"
+            case when ihmd.who_managed_repair='' then null else ihmd.who_managed_repair end as "Who Managed the Repair?"
         FROM claim c
             LEFT OUTER JOIN hire_monitoring_detail hmd ON (c.hire_monitoring_detail_id = hmd.id)
             LEFT OUTER JOIN insurer_hire_monitoring_detail ihmd ON (c.insurer_hire_monitoring_detail_id = ihmd.id)
