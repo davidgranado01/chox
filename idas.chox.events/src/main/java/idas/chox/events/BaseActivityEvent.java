@@ -19,6 +19,7 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.InsurerHireMonitoringDetail;
+import idas.chox.core.model.InsurerVehicleHire;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.ThirdParty;
@@ -572,6 +573,21 @@ public class BaseActivityEvent extends Entity implements Serializable {
         }
     }
 
+    protected void addClaimInsurerHireVehicleAttributes(final Claim claim) {
+        try {
+            InsurerVehicleHire vehicleHire = claim.getInsurerVehicleHire();
+            if (vehicleHire != null) {
+                addAttribute("insurerHireStart", DateHelper.getLocalDateTimeFormat().format(vehicleHire.getRentalStart()));
+                addAttribute("insurerVehicleClass", vehicleHire.getVehicleClass() != null ? vehicleHire.getVehicleClass().getName() : "");
+            } else {
+                addAttribute("insurerHireStart", null);
+                addAttribute("insurerVehicleClass", null);
+            }
+        } catch (Exception ex) {
+            LOG.error("Exceptin thrown adding claim hire vehicle attributes: {}", ex.getMessage(), ex);
+        }
+    }
+
     protected void addClaimEngineerReportAttributes(final Claim claim) {
         try {
             EngineerReport engineerReport = claim.getEngineerReport();
@@ -714,9 +730,21 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringRepairCompletionDate", null);
                 }
-                addAttribute("hireMonitoringLabourRate", insurerHireMonitoringDetail.getLabourRate().toPlainString());
-                addAttribute("hireMonitoringLabourHours", insurerHireMonitoringDetail.getLabourHour().toPlainString());
-                addAttribute("hireMonitoringLabourCost", insurerHireMonitoringDetail.getLabourCost().toPlainString());
+                if (insurerHireMonitoringDetail.getLabourRate() != null) {
+                    addAttribute("hireMonitoringLabourRate", insurerHireMonitoringDetail.getLabourRate().toPlainString());
+                } else {
+                    addAttribute("hireMonitoringLabourRate", null);
+                }
+                if (insurerHireMonitoringDetail.getLabourHour() != null) {
+                    addAttribute("hireMonitoringLabourHours", insurerHireMonitoringDetail.getLabourHour().toPlainString());
+                } else {
+                    addAttribute("hireMonitoringLabourHours", null);
+                }
+                if (insurerHireMonitoringDetail.getLabourCost() != null) {
+                    addAttribute("hireMonitoringLabourCost", insurerHireMonitoringDetail.getLabourCost().toPlainString());
+                } else {
+                    addAttribute("hireMonitoringLabourCost", null);
+                }
                 if (insurerHireMonitoringDetail.getRepairAuthorisedDate() != null) {
                     addAttribute("hireMonitoringRepairAuthorisedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getRepairAuthorisedDate()));
                 } else {

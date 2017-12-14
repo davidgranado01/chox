@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
+import idas.chox.service.workflow.event.EventBusWrapper;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -52,7 +52,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private Boolean isInsurer;
     private Boolean isWorkgroupEnable;
     private WebUser user;
+    private EventBusWrapper eventBus;
 
+    protected EventBusWrapper getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(EventBusWrapper eventBus) {
+        this.eventBus = eventBus;
+    }
+   
     public Map<String, Object> getSession() {
         if (session == null) {
             // Occasionally no session is injected (don't know why!), so

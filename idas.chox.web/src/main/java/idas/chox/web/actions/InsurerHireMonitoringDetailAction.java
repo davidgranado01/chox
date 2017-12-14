@@ -8,7 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.InsurerHireMonitoringDetail;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
+import org.springframework.aop.support.AopUtils;
 
 /**
  *
@@ -89,8 +89,6 @@ public class InsurerHireMonitoringDetailAction extends ClaimModelAction<InsurerH
             LOG.debug("HireMonitoringDetail to be updated: claim version={}, hmd version={}", claim.getVersion(), model.getVersion());
 
             String result = super.updateModel();
-            
-            activityEventGenerator.generate(claim, ActivityEvent.INSURER_HIRE_MONITORING_UPDATED_EVENT);
 
             return result;
         } catch (Exception ex) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
@@ -13,7 +14,6 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.HireVehicleUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *
@@ -74,8 +74,6 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
             
             claim.setVehicleHire(model);
             String result = super.updateModel();
-
-            activityEventGenerator.generate(claim, ActivityEvent.HIRE_VEHICLE_UPDATED_EVENT);
 
             if (updateInsurer || claim.getInsurer().isAllowDefaultHMUpdates()) {
                 notificationService.addNotification(claim, new HireVehicleUpdatedNotification());

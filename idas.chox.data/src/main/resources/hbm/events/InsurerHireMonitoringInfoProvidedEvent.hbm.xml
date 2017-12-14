@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.events.InsurerHireMonitoringInfoProvidedEvent" table="event_log">
+        <cache usage="read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">event_log_id_seq</param>
+            </generator>
+        </id>
+        <version column="version" name="version" unsaved-value="null"/>
+        <property column="activity_name" name="activityName" not-null="true"/>
+        <property column="event_name" name="eventName" not-null="true"/>
+        <property column="status" name="claimStatus" not-null="true"/>
+        <property column="insurer_id" name="insurerId" not-null="true"/>
+        <property column="chorganisation_id" name="choId" not-null="true"/>
+        <property column="claim_type" name="claimType" type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
+        <property column="created_date" name="createdDate"/>
+        <property column="last_modified_date" name="lastModifiedDate"/>
+        <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim" not-null="true"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+        <map name="attributes" table="event_attributes" cascade="all">  
+            <key column="event_log_id"/>  
+            <map-key column="key" type="string"/>  
+            <element column="value" type="string"/>  
+        </map>
+    </class>
+</hibernate-mapping>

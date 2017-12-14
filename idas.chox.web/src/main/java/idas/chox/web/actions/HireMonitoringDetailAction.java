@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Customer;
@@ -14,7 +15,6 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.data.notifications.HireUpdatedNotification;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
 
 /**
  *
@@ -159,8 +159,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
             String result = super.updateModel();
             
-            activityEventGenerator.generate(claim, ActivityEvent.HIRE_MONITORING_UPDATED_EVENT);
-
             return result;
         } catch (Exception ex) {
             handleException(ex);

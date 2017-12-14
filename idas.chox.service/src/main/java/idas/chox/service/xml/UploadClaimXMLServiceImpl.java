@@ -321,7 +321,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     // If Claim has been updated but no activity has been called, we need to generate a ClaimResubmitted Event
                     if (claimResult.getProcessStatus().equals("Updated")) {
                         LOG.debug("Processed bordereau and no activity ran but claim updated: generating ClaimUpdatedEvent");
-                        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
+                        activityEventGenerator.getEvents(claim, "UploadClaimXMLService").forEach((event) -> {
                             eventBus.post(event);
                         });
                     }

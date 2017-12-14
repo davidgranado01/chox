@@ -395,7 +395,6 @@
         <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
     <bean id="activityEventGenerator" class="idas.chox.service.workflow.event.ActivityEventGenerator" scope="prototype">
-        <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
     <bean id="keoghsRequestService" class="idas.chox.data.services.KeoghsRequestServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>

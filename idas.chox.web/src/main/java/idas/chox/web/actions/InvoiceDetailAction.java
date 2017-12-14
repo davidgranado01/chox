@@ -22,7 +22,6 @@ import idas.chox.core.util.CompareUtil;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
 import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
@@ -2366,8 +2365,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                         LOG.debug ("Rental Start Added checking to raise On Hire task...");
                         claimService.addOnHireTask(claim);
                     }
-                    this.setActionResult("Your Changes Have Been Saved");
-                    activityEventGenerator.generate(claim, ActivityEvent.INVOICE_UPDATED_EVENT);
+                    // Generate an event if the claim has been updated
+                    activityEventGenerator.getEvents(claim, "Invoice").forEach((event) -> {
+                        this.getEventBus().post(event);
+                    });
                 } catch (Exception ex) {
                     LOG.warn("Exception is thrown and passing to baseAction ", ex);
                     handleException(ex);

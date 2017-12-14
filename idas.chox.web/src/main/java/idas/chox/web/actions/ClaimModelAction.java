@@ -17,7 +17,6 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.service.workflow.event.ActivityEvent;
 import idas.chox.service.workflow.event.ActivityEventGenerator;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
@@ -111,17 +110,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             String modelName = AopUtils.getTargetClass(model).getSimpleName();
             LOG.debug("Model class updated is: {}", modelName);
             // Generate an event if the claim has been updated
-            if (modelName.startsWith("Claim")
-                    || modelName.startsWith("Customer")
-                    || modelName.startsWith("Incident")
-                    || modelName.startsWith("ThirdParty")
-                    || modelName.startsWith("Injury")
-                    || modelName.startsWith("Witness")) {
-                activityEventGenerator.generate(claim, ActivityEvent.CLAIM_UPDATED_EVENT);
-            } else if (!modelName.startsWith("VehicleHire") 
-                    && !modelName.startsWith("HireMonitoringDetail")) {
-                LOG.warn("Claim update but event not generated for model: {}", modelName);
-            }
+            activityEventGenerator.getEvents(claim, modelName).forEach((event) -> {
+                this.getEventBus().post(event);
+            });
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
