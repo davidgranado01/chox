@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.events.AwaitingLitigationOutcomeEvent;
@@ -38,6 +37,7 @@ import idas.chox.events.FullPaymentNotReceivedEvent;
 import idas.chox.events.FullPaymentReceivedEvent;
 import idas.chox.events.HireMonitoringInfoProvidedEvent;
 import idas.chox.events.HireVehicleUpdatedEvent;
+import idas.chox.events.InsurerEcdUpdatedEvent;
 import idas.chox.events.InsurerHireMonitoringInfoProvidedEvent;
 import idas.chox.events.InsurerHireVehicleUpdatedEvent;
 import idas.chox.events.InsurerOwnerAssignedEvent;
@@ -77,6 +77,7 @@ import idas.chox.service.workflow.activities.ClaimRegisterByFnol;
 import idas.chox.service.workflow.activities.ClaimRejection;
 import idas.chox.service.workflow.activities.EcdUpdate;
 import idas.chox.service.workflow.activities.FullPaymentNotReceived;
+import idas.chox.service.workflow.activities.InsurerEcdUpdate;
 import idas.chox.service.workflow.activities.InsurerUpload;
 import idas.chox.service.workflow.activities.InvoiceRejection;
 import idas.chox.service.workflow.activities.InvoiceRejectionAccept;
@@ -287,8 +288,17 @@ public class ActivityEventGenerator {
                             ((EcdUpdate) activity).getReason(), ((EcdUpdate) activity).getSupportingNote()));
                     break;
                 
+                case "InsurerEcdUpdate":
+                    events.add(new InsurerEcdUpdatedEvent(claim, activityName, DateHelper.getLocalDateFormat().format(((InsurerEcdUpdate) activity).getEcdDate()),
+                            ((EcdUpdate) activity).getReason(), ((EcdUpdate) activity).getSupportingNote()));
+                    break;
+                
                 case "HireUpdate":
                     events.add(new HireVehicleUpdatedEvent(claim, activityName));
+                    break;
+                
+                case "LouUpdate":
+                    events.add(new HireMonitoringInfoProvidedEvent(claim, activityName));
                     break;
                 
                 case "FullInvoicePaymentReceived":
@@ -503,7 +513,11 @@ public class ActivityEventGenerator {
                 case "SaveOrSubmitClaimAuditReview":
                     events.add(new ClaimAuditReviewUpdatedEvent(claim, activityName));
                     break;
-                
+                    
+                case "InvoiceSaving":
+                case "LastReviewDate":
+                case "ClaimMatchedReview":
+                case "TlTaskCreation":
                 default:
                     events.add(new BaseActivityEvent(claim, activityName));
                     break;

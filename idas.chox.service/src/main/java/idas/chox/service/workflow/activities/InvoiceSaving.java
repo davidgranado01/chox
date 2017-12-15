@@ -11,7 +11,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.InvoiceSavingRule;
 import idas.chox.core.services.InvoiceSavingRuleService;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
@@ -80,10 +79,12 @@ public class InvoiceSaving extends BaseActivity {
         
         invoiceSavingRulesToDelete = invoiceSavingRuleService.getInvoiceSavingRules(claim.getInvoice());
         
-        for (InvoiceSavingRule isr : invoiceSavingRulesToDelete) {
+        invoiceSavingRulesToDelete.stream().map((isr) -> {
             invoiceSavingRuleService.deleteInvoiceSavingRule(isr);
+            return isr;
+        }).forEachOrdered((isr) -> {
             LOG.debug("   removing rule {}", isr.getInvoiceSavingRule());
-        }
+        });
     }
 
     @Override
@@ -97,24 +98,23 @@ public class InvoiceSaving extends BaseActivity {
             throw new Exception("Internal error occured trying to save the selected Invoice Saving Rules.");
         }
 
-        for (InvoiceSavingRule invoiceSavingRule : invoiceSavingRules) {
+        invoiceSavingRules.forEach((invoiceSavingRule) -> {
             try {
                 LOG.debug("   adding rule {}", invoiceSavingRule.getInvoiceSavingRule());
                 invoiceSavingRuleService.saveInvoiceSavingRule(invoiceSavingRule);
             } catch (Exception ex) {
                 LOG.error("Exception thrown saving Invoice saving rule on invoice id={}: rule={}, group={}",
                         new Object[]{invoiceSavingRule.getInvoice().getId(), invoiceSavingRule.getInvoiceSavingRule(),
-                                        invoiceSavingRule.getSavingGroup()});
+                            invoiceSavingRule.getSavingGroup()});
             }
-        }
+        });
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-//        activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
         // If this is a manual claim, we now need to change the chained activity
         // [for non-manual claims, chained activity is acceptInvoice]
         if (ClaimType.isInsurerUpload(claim.getClaimType())) {

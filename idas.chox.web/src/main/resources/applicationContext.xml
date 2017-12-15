@@ -149,6 +149,7 @@
                 <value>hbm/events/InsurerHireMonitoringInfoProvidedEvent.hbm.xml</value>
                 <value>hbm/events/InsurerHireVehicleUpdatedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/InsurerEcdUpdatedEvent.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>
