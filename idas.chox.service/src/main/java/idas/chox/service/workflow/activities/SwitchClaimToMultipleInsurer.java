@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.History;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
@@ -163,19 +165,26 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         taskService.deleteAllTasksByClaimId(claim.getId());
         
         if (claim.getInvoice() != null) {
-            LOG.debug("This claim has invoice and will be deleted as switching the claim to another insurer");
+            LOG.debug("Claim '{}' (id={}) has an invoice which will be deleted as switching the claim to another insurer", claim.getChoReference(), claim.getId());
             Invoice oldInvoice = claim.getInvoice();
             claim.setInvoice(null);
             LOG.debug("claim invoice set to null");
             getDataService().delete(oldInvoice);
-            LOG.warn("claim invoice deleted");
+            LOG.debug("claim invoice deleted");
+            // Delete BRE history
+            List<History> histories = claim.getHistories();
+            if (histories != null) {
+                histories.forEach((h) -> {
+                    getDataService().delete(h);
+                });
+                histories.clear();
+            }
         }
         LOG.debug("Switching Claim: claim details has been updated");
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-//        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });
