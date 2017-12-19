@@ -170,13 +170,13 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 // Lets return an error for now rather than re-throwing the exception
 // Once the reason for this happening so often is determined, the code should be reverted to re-throw the exception
 //                throw (ex);
-                setJsonData("\"success\":\"False\",\"errors\":\"" + ex.getMessage() + "\"");
+                setJsonData("{\"error\":\"False\",\"errors\":\"" + ex.getMessage() + "\"}");
                 handleException(ex);
                 updateRedirectionParamInSession();
                 return ERROR;
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity: {}", ex.getMessage());
-                setJsonData("\"success\":\"False\",\"errors\":\"" + ex.getMessage() + "\"");
+                setJsonData("{\"error\":\"False\",\"errors\":\"" + ex.getMessage() + "\"}");
                 handleException(ex);
                 updateRedirectionParamInSession();
                 return ERROR;
@@ -189,7 +189,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 setJsonData("{\"success\":\"True\"}");
             }
             removeRedirectionParamInSession();
-//            updateRedirectionParamInSession();
             return SUCCESS;
         } else {
             LOG.error("Cannot process null activity for claim '{}'", claim);
