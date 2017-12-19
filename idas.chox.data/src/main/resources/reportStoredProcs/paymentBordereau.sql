@@ -33,7 +33,7 @@ RETURNS TABLE(
     "Hire Start Date" TEXT,
     "Hire End Date" TEXT,
     "No. Days Hire" numeric(4,0) ,
-    "Name of Repairer" VARCHAR,
+    "Name of Repairer" TEXT,
     "Repair Book-in Date" TEXT,
     "Date Repair Authorised" TEXT,
     "Date Repair Commenced" TEXT,
@@ -86,7 +86,7 @@ AS $BODY$
             to_char(vh.rental_start, 'DD/MM/YYYY') as "Hire Start Date",
             to_char(vh.rental_end, 'DD/MM/YYYY') as "Hire End Date",
             vh.days as "No. Days Hire",
-            case when hmd.name_of_repairer='' then null else hmd.name_of_repairer end as "Name of Repairer",
+            case when hmd.name_of_repairer='' then null else replace(hmd.name_of_repairer, ',', '') end as "Name of Repairer",
             to_char(hmd.repair_book_in_date, 'DD/MM/YYYY') as "Repair Book-in Date",
             to_char(hmd.repair_authorised_date, 'DD/MM/YYYY') as "Date Repair Authorised",
             to_char(hmd.repair_commenced_date, 'DD/MM/YYYY') as "Date Repair Commenced",
@@ -122,5 +122,5 @@ GRANT EXECUTE ON FUNCTION paymentBordereau(IN insIds INTEGER, IN choIds INTEGER[
 TO chox_mi;
 
 /* select * from paymentBordereau(26, null, '2017-06-26', '2017-06-27'); */
-/* \copy (select * from paymentBordereau(26, null, '2017-06-26', '2017-06-27')) TO '${DUMPFILE}' (format CSV); */
-/* \copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV); */
+/* \copy (select * from paymentBordereau(26, null, '2017-06-26', '2017-06-27')) TO 'jd.txt' DELIMITER ',' CSV HEADER; */
+/* \copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER; */
