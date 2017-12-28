@@ -16,7 +16,7 @@ var ajax = function() {
     var SHOW_AJAX_GENERAL_ERROR_MSG = true;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
-    var INVALID_CSRF_TOKEN_ERROR_MSG = 'Request can not be completed. Please try again.';
+    var INVALID_CSRF_TOKEN_ERROR_MSG = 'Request can not be completed due to a CSRF violation. Please try again. If this problem persists, please contact CHOX support.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has expired. Please login again.';
     var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 418;
@@ -161,9 +161,7 @@ var ajax = function() {
             else if(checkResponse(textStatus)){
                 lastResponse = 1;
                 if(success){
-
                     success(data);
-
                 }
             }
             else{
