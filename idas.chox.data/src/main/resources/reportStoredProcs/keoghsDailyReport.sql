@@ -37,7 +37,7 @@ RETURN QUERY
     where c.third_party_id = tp.id and c.id = at.claim_id
       and at.reverted = false and at.new_status = reportStatus and at.created_date >= startDate and at.created_date < endDate
       and not exists (select * from audit_trail at2 where at2.claim_id=c.id and at.new_status = reportStatus and at2.created_date < at2.created_date)
-      and c.incident_id = i.id;
+      and c.incident_id = i.id and (c.chorganisation_id = choId or choId is null) and (insurerIds is null or c.insurer_id = ANY(insurerIds));
 
 END;
 $$ LANGUAGE plpgsql;
