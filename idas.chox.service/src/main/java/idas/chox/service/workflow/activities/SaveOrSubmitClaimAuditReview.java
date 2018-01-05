@@ -534,13 +534,10 @@ public class SaveOrSubmitClaimAuditReview extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) {
-//        getDataService().save(claim);
-//        getDataService().save(claimAuditReview);
         if (nameOfActivity.equals("submitClaimAuditReview")) {
-//            activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+            activityEventGenerator.getEvents(claim, this).forEach((event) -> {
                 ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-            }
+            });
         }
     }
 }

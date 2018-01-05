@@ -37,12 +37,12 @@ RETURN QUERY
     where c.third_party_id = tp.id and c.id = at.claim_id
       and at.reverted = false and at.new_status = reportStatus and at.created_date >= startDate and at.created_date < endDate
       and not exists (select * from audit_trail at2 where at2.claim_id=c.id and at.new_status = reportStatus and at2.created_date < at2.created_date)
-      and c.incident_id = i.id;
+      and c.incident_id = i.id and (c.chorganisation_id = choId or choId is null) and (insurerIds is null or c.insurer_id = ANY(insurerIds));
 
 END;
 $$ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION keoghs_daily_report(integer, integer[], character varying(40), text, text) TO chox_user;
 GRANT EXECUTE ON FUNCTION keoghs_daily_report(integer, integer[], character varying(40), text, text) TO chox_mi;
--- select * from keoghs_daily_report(1015, array[6], 'ClaimRejected', '2017-12-01', '2018-01-02');
--- select * from keoghs_daily_report(1015, array[6], 'AwaitingCarHireInfo', '2017-12-01', '2018-01-01');
+-- select * from keoghs_daily_report(1788, array[26], 'ClaimRejected', '2018-01-04', '2018-01-05');
+-- select * from keoghs_daily_report(1788, array[26], 'AwaitingCarHireInfo', '2018-01-04', '2018-01-05');

@@ -25,6 +25,7 @@ import idas.chox.service.xml.readers.BordereauReader;
     "classpath:applicationContext-Filters-test.xml",
     "classpath:applicationContext-Workflow-test.xml",
     "classpath:applicationContext-test.xml",
+    "classpath:applicationContext-events-test.xml",
     "classpath:applicationContext-services-test.xml",
     "classpath:applicationContext-BRE-test.xml", 
     "classpath:applicationContext-IntelligentNote-test.xml",

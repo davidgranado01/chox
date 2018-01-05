@@ -8,13 +8,15 @@
         <property name="businessRulesEngService" ref="businessRulesEngService" />
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="automaticRoutingService" ref="automaticRoutingService"/>
+        <property name="eventBus" ref="eventBus"/>
     </bean>
     <bean id="activityFactory" class="idas.chox.service.workflow.ActivityFactory" scope="prototype">
-        <property name="workflowContext" ref="workflowContext"></property>
+        <property name="workflowContext" ref="workflowContext"/>
     </bean>
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim" scope="prototype">
         <property name="chainActivity" ref="workgroupRouting" />
         <property name="breBandService" ref="breBandService" />
+        <property name="keoghs" ref="keoghs" />
     </bean>
     <bean id="claimMatching" class="idas.chox.service.workflow.activities.ClaimMatching" scope="prototype">
         <property name="claimMatchingBandService" ref="claimMatchingBandService" />
@@ -28,19 +30,15 @@
     <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" scope="prototype"/>
     <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup" scope="prototype"/>
     <bean id="assignManualInvoiceOwner" class="idas.chox.service.workflow.activities.AssignManualInvoiceOwner" scope="prototype"/>
-    <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" scope="prototype">
-        <property name="claimService" ref="claimService" />
-    </bean>
+    <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" scope="prototype"/>
     <bean id="referFNOL" class="idas.chox.service.workflow.activities.ClaimReferToFnol" scope="prototype"/>
     <bean id="registerFNOL" class="idas.chox.service.workflow.activities.ClaimRegisterByFnol" scope="prototype"/>
     <bean id="pending" class="idas.chox.service.workflow.activities.ClaimPending" scope="prototype"/>
     <bean id="referEng" class="idas.chox.service.workflow.activities.ClaimReferToEng" scope="prototype"/>
-    <bean id="rejectClaim" class="idas.chox.service.workflow.activities.ClaimRejection" scope="prototype">
-           <property name="claimService" ref="claimService" />
-    </bean>     
+    <bean id="rejectClaim" class="idas.chox.service.workflow.activities.ClaimRejection" scope="prototype"/>
     <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept" scope="prototype">
-                <property name="taskService" ref="taskService" />
+        <property name="taskService" ref="taskService" />
     </bean>
     <bean id="acceptSubscriberChallenge" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionAccept" scope="prototype">
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService" />
@@ -56,7 +54,7 @@
     <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" scope="prototype"/>
     <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" scope="prototype"/>
     <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" scope="prototype"/>
-	<bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
+    <bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
@@ -69,30 +67,36 @@
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
         <property name="userService" ref="userService" />
         <property name="brePenaltyBandService" ref="brePenaltyBandService" />
+        <property name="keoghs" ref="keoghs" />
     </bean>
     <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
         <property name="breBandService" ref="breBandService" />
+        <property name="insurerDiscountService" ref="insurerDiscountService" />
+        <property name="userService" ref="userService" />
+        <property name="keoghs" ref="keoghs" />
     </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" scope="prototype"/>
     <bean id="closeClaim" class="idas.chox.service.workflow.activities.CloseClaim" scope="prototype"/>
-    <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ReopenClaim" scope="prototype">
-        <property name="claimService" ref="claimService" />
-    </bean>
+    <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ReopenClaim" scope="prototype"/>
     <bean id="resolveLiability" class="idas.chox.service.workflow.activities.ResolveLiability" scope="prototype"/>
     <bean id="updateLiability" class="idas.chox.service.workflow.activities.UpdateLiability" scope="prototype"/>
     <bean id="revertClaim" class="idas.chox.service.workflow.activities.RevertClaim" scope="prototype">
-        <property name="claimService" ref="claimService" />
         <property name="breBandService" ref="breBandService" />
     </bean>
     <bean id="paymentNotReceived" class="idas.chox.service.workflow.activities.PaymentNotReceived" scope="prototype">
-        <property name="claimService" ref="claimService" />
         <property name="breBandService" ref="breBandService" />
+    </bean>
+    <bean id="switchCho" class="idas.chox.service.workflow.activities.SwitchCho" scope="prototype">
+        <!--property name="chainActivity" ref="newClaim" /-->
+        <property name="breBandService" ref="breBandService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
     </bean>
     <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" scope="prototype">
         <property name="chainActivity" ref="newClaim" />
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="notificationService" ref="notificationService" />
-    </bean>
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+   </bean>
     <bean id="switchClaimToMulIns" class="idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer" scope="prototype">
         <property name="chainActivity" ref="newClaim" />
         <property name="insurerService" ref="insurerService" />
@@ -100,6 +104,7 @@
         <property name="commentService" ref="commentService" />
         <property name="taskService" ref="taskService" />
         <property name="notificationService" ref="notificationService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
     </bean>
     <bean id="slaExtensionDaysUpdate" class="idas.chox.service.workflow.activities.SlaExtension" scope="prototype">
     </bean>
@@ -111,7 +116,6 @@
     </bean>
     <bean id="updateInterimPaymentFullAndFinal" class="idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal" scope="prototype">
         <property name="chainActivity" ref="invoicePaymentReceived" />
-        <property name="claimService" ref="claimService" />
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype">
@@ -140,20 +144,40 @@
         <property name="notificationService" ref="notificationService" />
         <property name="claimService" ref="claimService" />
     </bean>
+    <bean id="tlTaskCreation" class="idas.chox.service.workflow.activities.TlTaskCreation" scope="prototype">
+        <property name="taskService" ref="taskService" />
+        <property name="userService" ref="userService" />
+    </bean>
     <bean id="switchFromPaymentsTeam" class="idas.chox.service.workflow.activities.SwitchFromPaymentsTeam" scope="prototype"/>
-    <bean id="switchCho" class="idas.chox.service.workflow.activities.SwitchCho" scope="prototype">
-        <!--property name="chainActivity" ref="newClaim" /-->
-        <property name="breBandService" ref="breBandService" />
-        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+    
+    <bean id="addNote" class="idas.chox.service.workflow.activities.AddNote" scope="prototype">
+        <property name="taskService" ref="taskService" />
     </bean>
-    <bean id="saveOrSubmitClaimAuditReview" class="idas.chox.service.workflow.activities.SaveOrSubmitClaimAuditReview" scope="prototype">
-        <property name="vehicleClassService" ref="vehicleClassService" />
-    </bean>
-    <bean id="lastReviewDate" class="idas.chox.service.workflow.activities.LastReviewDate" scope="prototype"/>
     <bean id="invoiceSaving" class="idas.chox.service.workflow.activities.InvoiceSaving" scope="prototype">
         <property name="chainActivity" ref="acceptInvoice" />
         <property name="activityFactory" ref="activityFactory" />
         <property name="invoiceSavingRuleService" ref="invoiceSavingRuleService" />
     </bean>
+    <bean id="updateCaseWithSolicitor" class="idas.chox.service.workflow.activities.UpdateCaseWithSolicitor" scope="prototype"/>
+    <bean id="updateInsurerClaimNumber" class="idas.chox.service.workflow.activities.UpdateInsurerClaimNumber" scope="prototype"/>
+    <bean id="updateSupplierReference" class="idas.chox.service.workflow.activities.UpdateSupplierReference" scope="prototype"/>
+    <bean id="updateCustomerClaimNumber" class="idas.chox.service.workflow.activities.UpdateCustomerClaimNumber" scope="prototype"/>
+    <bean id="lastReviewDate" class="idas.chox.service.workflow.activities.LastReviewDate" scope="prototype"/>
+    <bean id="saveOrSubmitClaimAuditReview" class="idas.chox.service.workflow.activities.SaveOrSubmitClaimAuditReview" scope="prototype">
+        <property name="vehicleClassService" ref="vehicleClassService" />
+    </bean>
+    <bean id="runFraudCheck" class="idas.chox.service.workflow.activities.RunFraudCheck" scope="prototype">
+        <property name="keoghs" ref="keoghs" />
+    </bean>
+    <bean id="referFraudCheck" class="idas.chox.service.workflow.activities.ReferFraudCheck" scope="prototype">
+        <!--property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="keoghsReceiver" value="${keoghsReceiver}"/>
+        <property name="keoghsBccReceiver" value="${keoghsBccReceiver}"/-->
+
+    </bean>
+    <bean id="acknowledgeFraudCheck" class="idas.chox.service.workflow.activities.AcknowledgeFraudCheck" scope="prototype"/>
 
 </beans>

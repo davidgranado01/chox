@@ -1,5 +1,7 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,7 +11,6 @@ import idas.chox.core.model.ClaimAuditReview;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
-import java.math.BigDecimal;
 
 public class SaveOrSubmitClaimAuditReviewTest extends BaseTest {
 
@@ -27,8 +28,6 @@ public class SaveOrSubmitClaimAuditReviewTest extends BaseTest {
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
 
         SaveOrSubmitClaimAuditReview activity = (SaveOrSubmitClaimAuditReview) activityFactory.getActivity("saveOrSubmitClaimAuditReview");
-        ClaimAuditReview claimAuditReview = new ClaimAuditReview();
-        claim.setClaimAuditReview(claimAuditReview);
 
         activity.setNameOfActivity("saveClaimAuditReview");
         activity.setHireDuration(10);
