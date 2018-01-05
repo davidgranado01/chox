@@ -44,5 +44,5 @@ $$ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION keoghs_daily_report(integer, integer[], character varying(40), text, text) TO chox_user;
 GRANT EXECUTE ON FUNCTION keoghs_daily_report(integer, integer[], character varying(40), text, text) TO chox_mi;
--- select * from keoghs_daily_report(1015, array[6], 'ClaimRejected', '2017-12-01', '2018-01-02');
--- select * from keoghs_daily_report(1015, array[6], 'AwaitingCarHireInfo', '2017-12-01', '2018-01-01');
+-- select * from keoghs_daily_report(1788, array[26], 'ClaimRejected', '2018-01-04', '2018-01-05');
+-- select * from keoghs_daily_report(1788, array[26], 'AwaitingCarHireInfo', '2018-01-04', '2018-01-05');
