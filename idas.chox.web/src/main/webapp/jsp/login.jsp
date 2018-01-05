@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
     <head>
@@ -21,7 +20,8 @@
     </head>
     <body class="modal login">
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/SoleraAudatex_logo.png" style="display: inline; float: center; width: 400px; height: 74px"/>
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/Audatex-Logo.png" style="display: inline; float: center; width: 250px; height: 74px"/>
+            <!--img alt="Logo" src="<%= request.getContextPath()%>/images/SoleraAudatex_logo.png" style="display: inline; float: center; width: 400px; height: 74px"/-->
         </div>
 
         <div class="modal-container">
