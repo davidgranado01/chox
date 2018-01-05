@@ -1,13 +1,17 @@
 package idas.chox.service.workflow.activities;
 
 
+import idas.chox.core.model.Chorganisation;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.InsurerHireMonitoringEcd;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
 
@@ -27,7 +32,32 @@ public class InsurerEcdUpdateTest extends BaseTest {
         fakeSecurityInfoProvider.setCurrentUser(webUser);
         fakeSecurityInfoProvider.setIsINS(true);
     }
-    
+
+    @After
+    public void tearDownClass() throws Exception {
+        fakeSecurityInfoProvider.setIsINS(false);
+         
+        WebUserRole webUserRole = new WebUserRole();
+        webUserRole.setName(WebUserRole.ROLE_CHO_OPR);
+        Set roles = new HashSet();
+        roles.add(webUserRole);
+        
+        WebUser currentUser = new WebUser();
+        currentUser.setId(999);
+        currentUser.setFirstName("UnitTest");
+        currentUser.setLastName("User");
+        currentUser.setVersion(1);
+        currentUser.setRoles(roles);
+        
+
+        // SET CHORGANISATION
+        Chorganisation chorganisation = new Chorganisation();
+        chorganisation.setId(1006);
+        chorganisation.setVersion(1);
+        currentUser.setChorganisation(chorganisation);
+        fakeSecurityInfoProvider.setCurrentUser(currentUser);
+    }
+
     @Test(expected = AccessDeniedException.class)
     public void testInsurerEcdUpdateWithInvalidStatus1() throws Exception {
 

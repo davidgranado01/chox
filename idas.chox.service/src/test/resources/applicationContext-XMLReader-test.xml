@@ -3,10 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
        default-autowire="byName">
-    <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter">
+    <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter" scope="singleton">
          <property name="validateFile" value="/uploadValidation/DataValidationTemplate.xml"/>
     </bean>
-    <bean id="bordereauReaderContext" class="idas.chox.service.xml.BordereauReaderContext">
+    <bean id="bordereauReaderContext" class="idas.chox.service.xml.BordereauReaderContext" scope="prototype">
         <property name="claimService" ref="claimService"/>
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="breBandService" ref="breBandService"/>
@@ -17,15 +17,13 @@
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
         <property name="claimObjectService" ref="claimObjectService"/>
         <property name="insurerDiscountService" ref="insurerDiscountService"/>
-       <!-- <property name="securityInfoProvider" ref="securityInfoProvider"/>
-        <property name="claimObjectService" ref="claimObjectService"/>
-        <property name="businessRuleEngService" ref="businessRuleEngService"/>-->
     </bean>
     <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader" scope="prototype">
         <property name="subEntityReaders">
             <list>
                 <bean class="idas.chox.service.xml.readers.ClaimHeaderReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
+                    <property name="insurerService" ref="insurerService"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.CustomerReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>

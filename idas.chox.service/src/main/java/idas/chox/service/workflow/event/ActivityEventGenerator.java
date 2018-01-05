@@ -290,7 +290,7 @@ public class ActivityEventGenerator {
                 
                 case "InsurerEcdUpdate":
                     events.add(new InsurerEcdUpdatedEvent(claim, activityName, DateHelper.getLocalDateFormat().format(((InsurerEcdUpdate) activity).getEcdDate()),
-                            ((EcdUpdate) activity).getReason(), ((EcdUpdate) activity).getSupportingNote()));
+                            ((InsurerEcdUpdate) activity).getReason(), ((InsurerEcdUpdate) activity).getSupportingNote()));
                     break;
                 
                 case "HireUpdate":

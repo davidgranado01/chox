@@ -3,19 +3,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
        default-autowire="byName">
+
+    <bean id="baseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="quartzBaseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+    </bean>
+    <bean id="config" class="idas.chox.data.services.Config" scope="singleton">
+        <property name="activityMonitorRequestInterval" value="5000"/>
+    </bean>
     <bean id="claimService" class="idas.chox.data.services.ClaimServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
-        <property name="notificationService" ref="notificationService"/>
         <property name="userService" ref="userService"/>
         <property name="taskService" ref="taskService"/>
         <property name="breBandService" ref="breBandService"/>
         <property name="brePenaltyBandService" ref="brePenaltyBandService"/>
+        <property name="notificationService" ref="notificationService"/>
+        <property name="insurerDiscountService" ref="insurerDiscountService"/>
+        <property name="enableActivityMonitor" value="false"/>
+        <property name="activityMonitorRequestInterval" value="5000"/>
         <property name="eventService" ref="eventService" />
-<!--         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/> -->
-<!--         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/> -->
     </bean>
     <bean id="claimMatchingBandService" class="idas.chox.data.services.ClaimMatchingBandServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -36,7 +47,7 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility">
+    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" scope="singleton">
         <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
@@ -46,10 +57,12 @@
         <property name="userService" ref="userService" />
         <property name="taskService" ref="taskService" />
         <property name="eventService" ref="eventService" />
+        <!--property name="clamscanLocation" value="${clamscan.location}"/-->
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
+        <property name="eventService" ref="eventService" />
     </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -57,6 +70,7 @@
     </bean>
     <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="breBandService" ref="breBandService"/>
     </bean>
     <bean id="adminFeeService" class="idas.chox.data.services.AdminFeeServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -155,6 +169,8 @@
     <!-- billing -->
     <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="billingBandService" ref="billingBandService"/>
+        <property name="billingBandMappingService" ref="billingBandMappingService"/>
     </bean>
     <bean id="billingChoService" class="idas.chox.data.services.BillingChoServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -176,7 +192,7 @@
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="insurerService" ref="insurerService" />
     </bean>
-    
+
     <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="insurerService" ref="insurerService" />
@@ -196,7 +212,9 @@
         <property name="taskService" ref="taskService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
+        <property name="activityEventGenerator" ref="activityEventGenerator" />
         <property name="eventBus" ref="eventBus"/>
+        <!--property name="clamscanLocation" value="${clamscan.location}"/-->
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" scope="prototype">
         <property name="insurerService" ref="insurerService" />
@@ -231,6 +249,9 @@
         <property name="insurerIntelligentNoteService" ref="insurerIntelligentNoteService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="emailOnBreBandCreation" value="false"/>
+        <property name="emailReceivers" value="john.dowson@valexa.com"/>
+        <!--property name="hostName" value="${HOSTNAME}"/-->
     </bean>
 
     <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl" scope="prototype">
@@ -242,14 +263,7 @@
                 <ref bean="RejectedSubscriberClaims" />
                 <ref bean="RejectedFixedFeeClaims" />
                 <ref bean="RejectedManualClaims" />
-                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
-                <ref bean="AwaitingInvoiceData" />
                 <ref bean="LiabilityUpdate"/>
-                <ref bean="IncorrectInvoiceDataCalculations" />
-                <ref bean="ContestedInvoicesReferredToCHO" />
-                <ref bean="PenaltyChargesApplied" />
-                <ref bean="InvoicePaymentLogged" />
-                <ref bean="InterimPayment" />
                 <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="NewClaimsToBeRouted" />
                 <ref bean="ClaimUnacknowledgedUnassigned" />
@@ -260,22 +274,32 @@
                 <ref bean="ClaimReferredToEngineer" />
                 <ref bean="ClaimUpdatedByEngineer" />
                 <ref bean="HireUpdateAnomalies" />
+                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
+                <ref bean="AwaitingInvoiceData" />
+                <ref bean="InvoiceUnassigned" />
+                <ref bean="IncorrectInvoiceDataCalculations" />
+                <ref bean="ContestedInvoicesReferredToCHO" />
+                <ref bean="CaseWithClientsSolicitor" />
+                <ref bean="PenaltyChargesApplied" />
                 <ref bean="InvoiceEscalatedToHandler" />
                 <ref bean="InvoicesReferredToEngineer" />
                 <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
                 <ref bean="AwaitingLiabilityResolution" />
+                <ref bean="InterimPayment" />
+                <ref bean="EscalatedInvoicesToSupervisor" />
                 <ref bean="FinalReviewCho" />
                 <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="PaymentTeam" />
-                <ref bean="InvoiceUnassigned" />
+                <ref bean="InvoicePaymentDispute" />
+                <ref bean="PaymentTeamDispute" />
+                <ref bean="InvoicePaymentLogged" />
                 <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
                 <ref bean="ManualInvoiceContested" />
-                <ref bean="EscalatedInvoicesToSupervisor" />
                 <ref bean="ClaimsRequiringAudit" />
                 <ref bean="MatchedClaims" />
             </list>
@@ -294,13 +318,11 @@
     <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" scope="prototype">
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="insurerService" ref="insurerService"/>
+        <property name="breBandService" ref="breBandService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     
-    <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
     
@@ -320,7 +342,7 @@
     </bean>
     
     <bean id="schedulerJobService" class="idas.chox.data.services.SchedulerJobServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
     
     <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" scope="prototype">
@@ -331,7 +353,7 @@
     <bean id="insurerHireMonitoringEcdService" class="idas.chox.data.services.InsurerHireMonitoringEcdServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
+    
     <bean id="insurerIntelligentNoteService" class="idas.chox.data.services.InsurerIntelligentNoteServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="insurerService" ref="insurerService"/>
@@ -340,21 +362,28 @@
     <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="customerServcie" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    
     <bean id="thirdPartyService" class="idas.chox.data.services.ThirdPartyServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    
     <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="choxJmsEventSender" class="idas.chox.events.old.ChoxJmsEventSender" scope="singleton"/>
+    
+    <bean id="brePenaltyBandService" class="idas.chox.data.services.BrePenaltyBandServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
     <bean id="eventRegister" class="idas.chox.events.old.ChoxEventRegister" scope="prototype">
-        <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
         <property name="active" value="false"/>
     </bean>
     <bean id="eventGenerator" class="idas.chox.data.events.EventGenerator" scope="prototype">
@@ -364,22 +393,19 @@
         <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
     <bean id="activityEventGenerator" class="idas.chox.service.workflow.event.ActivityEventGenerator" scope="prototype">
-        <property name="eventGenerator" ref="eventGenerator"/>
     </bean>
-    <bean id="queue1JMSTemplate" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg index="0" value="org.springframework.jms.core.JmsTemplate" />
+    <bean id="keoghsRequestService" class="idas.chox.data.services.KeoghsRequestServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-<!--    <bean id="queue1JMSTemplate" class="org.springframework.jms.core.JmsTemplate"/>-->
-    <bean id="mBassadorEventBus" class="net.engio.mbassy.bus.MBassador" scope="singleton"/>
-    <bean id="guavaEventBus" class="com.google.common.eventbus.EventBus" scope="singleton"/>
-    <bean id="eventBus" class="idas.chox.service.workflow.event.EventBusWrapper" scope="singleton">
-        <property name="useGuava" value="false" />
-        <property name="mBassadorEventBus" ref="mBassadorEventBus"/>
-        <property name="guavaEventBus" ref="guavaEventBus"/>
+    <bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
+        <property name="claimService" ref="claimService" />
+        <property name="keoghsRequestService" ref="keoghsRequestService" />
+        <!--property name="keoghsToken" value="${keoghs.token}" />
+        <property name="keoghsTimeout" value="${keoghs.timeout}" />
+        <property name="keoghsLogSoap" value="${keoghs.logSoap}" />
+        <property name="maxAttempts" value="${keoghs.maxAttempts}" />
+        <property name="maxRequeues" value="${keoghs.maxRequeues}" />
+        <property name="useDebugEndpoint" value="${keoghs.useDebugEndpoint}" /-->
     </bean>
-    <bean id="eventBusPostProcessor" class="idas.chox.service.workflow.event.EventBusPostProcessor">
-        <property name="useGuava" value="false" />
-        <property name="eventBus" ref="eventBus"/>
-    </bean>
-    <bean id="invoiceCreatedListener" class="idas.chox.service.workflow.listeners.InvoiceCreatedListener" scope="singleton"/>
+ 
 </beans>

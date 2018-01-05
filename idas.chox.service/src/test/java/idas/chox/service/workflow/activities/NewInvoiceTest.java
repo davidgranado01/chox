@@ -26,7 +26,7 @@ public class NewInvoiceTest extends BaseTest {
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
             Claim claim = claimResult.getClaim();
-
+   
             claim.setChorganisation(chorganisationService.getChorganisation(1006));
             claim.setInsurer(insurerService.getInsurerByName("RSA"));
 
