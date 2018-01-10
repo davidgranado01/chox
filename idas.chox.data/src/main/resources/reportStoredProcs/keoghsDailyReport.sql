@@ -27,7 +27,7 @@ BEGIN
     endDate = endPeriod::Date;
 RETURN QUERY
 
-    select tp.policy_number, tp.claim_reference, tp.title || ' ' || tp.first_name || ' ' || tp.last_name,
+    select tp.policy_number, c.claim_number, tp.title || ' ' || tp.first_name || ' ' || tp.last_name,
             tp.vehicle_registration, i.date, i.incident_description, tp.insurer_brand, c.indemnity_stance,
             getLiabilityStatus(c.liability_status),
             (select regexp_replace(comment, '[\n\r]+', ' ', 'g' ) from comment co where co.claim_id = c.id and co.comment like 'Supporting Liability%'
