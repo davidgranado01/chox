@@ -108,7 +108,8 @@ AS $BODY$
             LEFT OUTER JOIN vehicle_class cuvc on (cu.vehicle_class_id = cuvc.id)
         WHERE c.insurer_id = ins.id AND c.chorganisation_id = cho.id AND (cho.id = ANY(choIds) OR choIds is null)
           AND ins.id = insId AND c.customer_id = cu.id AND c.incident_id = inc.id AND c.invoice_id = inv.id
-          AND c.id = at.claim_id and at.new_status = 'AwaitingInvoicePayment' and at.reverted = false and at.created_date >= DATE_FROM and at.created_date < DATE_TO;
+          AND c.id = at.claim_id and at.new_status = 'AwaitingInvoicePayment' and at.reverted = false and at.created_date >= DATE_FROM and at.created_date < DATE_TO
+          AND c.claim_number not like '8001%' AND c.claim_number not like '494%';
 
     END;
 $BODY$
