@@ -165,21 +165,17 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateModelInSession(claim);
                 setMessage(activity.getMessage());
             } catch (AccessDeniedException ex) {
-                LOG.error("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",
+                LOG.warn("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",
                         new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
-// Lets return an error for now rather than re-throwing the exception
-// Once the reason for this happening so often is determined, the code should be reverted to re-throw the exception
-//                throw (ex);
                 setJsonData("{\"error\":\"False\",\"errors\":\"" + ex.getMessage() + "\"}");
-                handleException(ex);
                 updateRedirectionParamInSession();
-                return ERROR;
+                return SUCCESS;
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity: {}", ex.getMessage());
-                setJsonData("{\"error\":\"False\",\"errors\":\"" + ex.getMessage() + "\"}");
                 handleException(ex);
+                setJsonData("{\"error\":\"False\",\"errors\":\"" + getActionError() + "\"}");
                 updateRedirectionParamInSession();
-                return ERROR;
+                return SUCCESS;
             }
             LOG.trace("claim activity returning success");
             if (getMessage() != null) {

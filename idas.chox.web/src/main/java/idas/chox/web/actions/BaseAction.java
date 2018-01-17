@@ -576,12 +576,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
         } else if (ex instanceof DataIntegrityViolationException) {
             LOG.warn("Exception thrown: {}", ex.getMessage());
             ex = new Exception("An internal error occurred - please try again. If the problem persists, please contact CHOX support.", ex);
-        } else if (ex instanceof AccessDeniedException) {
-            LOG.warn("AccessDeniedException thrown: {}", ex.getMessage());
-//            throw (AccessDeniedException)ex;
         } else {
             LOG.trace("Exception is: {}", ex.getMessage());
-//            ex = new Exception("An internal error occurred - please try again. If the problem persists, please contact CHOX support.", ex);
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
@@ -648,9 +644,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     /* This will do force update the model in session*/
     public void updateModelInSession(List<? extends Entity> models) {
-        for (Entity model : models) {
+        models.forEach((model) -> {
             updateModelInSession(model);
-        }
+        });
     }
 
     /* This will do force update the model in session*/
@@ -670,9 +666,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
     /* This will put the model in session if it does not already exists or having differnt id than the one already in the session
      in case of different id in the session for the same class it will replace with the new model*/
     public void addModelToSession(List<? extends Entity> models) {
-        for (Entity model : models) {
+        models.forEach((model) -> {
             addModelToSession(model);
-        }
+        });
     }
 
     public void addModelToSession(Entity model) {

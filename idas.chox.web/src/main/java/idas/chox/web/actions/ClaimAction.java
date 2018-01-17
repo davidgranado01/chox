@@ -875,7 +875,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 if (newClaimOwner.getChorganisation().getId() != claim.getChorganisation().getId().intValue()) {
                     throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
-
+                // Check owner is different from current owner
+                if (claim.getSupplierClaimOwner() != null && claim.getSupplierClaimOwner().getId().intValue() == newClaimOwner.getId().intValue()) {
+                    throw new AccessDeniedException("No change to Supplier Claim Owner - not updating.");
+                }
                 Comment comment;
 
                 // SET COMMENT
