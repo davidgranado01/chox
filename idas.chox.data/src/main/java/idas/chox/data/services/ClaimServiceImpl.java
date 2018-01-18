@@ -353,7 +353,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.createCriteria("customer").add(Restrictions.eq("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.eq("chorganisation.id", choId));
         criteria.addOrder(Order.asc("createdDate"));
         return findByCriteria(criteria);
@@ -363,7 +363,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public List getInsurerClaimsByCustomerClaimRef(String customerClaimRef, int insId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.createCriteria("customer").add(Restrictions.eq("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.eq("insurer.id", insId));
         criteria.addOrder(Order.asc("createdDate"));
         return findByCriteria(criteria);
@@ -381,7 +381,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.createCriteria("customer").add(Restrictions.eq("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
         criteria.add(Restrictions.ne("id", claimId));
 
@@ -450,7 +450,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
+            criteria.createCriteria("customer").add(Restrictions.eq("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
                 criteria.add(Restrictions.ne("id", claimId));
             }
@@ -471,7 +471,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
+            criteria.createCriteria("thirdParty").add(Restrictions.eq("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
                 criteria.add(Restrictions.ne("id", claimId));
             }
