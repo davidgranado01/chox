@@ -24,6 +24,15 @@
                 }
             }
         });
+        
+        // Prevent enter/retuen key submitting form
+        $('form#formUpdateInterimPayment').keypress( function( e ) {
+            var code = e.keyCode || e.which;
+            if( code === 13 ) {
+                e.preventDefault();
+                return false; 
+            }
+        });
     });
      
     function updateInterimPaymentAction(action){
@@ -75,7 +84,7 @@
                             <td nowrap>
                                     <label>£&nbsp;</label><input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />"/>
                                     <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="event.preventDefault(); updateInterimPaymentAction('updateInterimPaymentReceived');"/>
-                                	<input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="event.preventDefault(); updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
+                                    <input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="event.preventDefault(); updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
                             </td>
                             <td></td><td></td>
                         </tr>
