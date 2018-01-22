@@ -79,7 +79,7 @@
                             <td>
                                 <label>Supplier Reference Number<span class="mandatory">*</span>:</label></td><td nowrap>
                                 <input type="text" class="chox-ttxt" id="supplierReference" name="supplierReference" value="<s:property value="choReference" />"/>
-                                <input type="button" id="MAUICNUpdateSupplierReferenceNumberButtonId" value="Update Supplier Reference Number" onclick="event.preventDefault(); doSubmitSupplierReferenceNumber();"/>
+                                <input type="submit" id="MAUICNUpdateSupplierReferenceNumberButtonId" value="Update Supplier Reference Number" onclick="event.preventDefault(); doSubmitSupplierReferenceNumber();"/>
                             </td>
                             <td></td><td></td>
                         </tr>
