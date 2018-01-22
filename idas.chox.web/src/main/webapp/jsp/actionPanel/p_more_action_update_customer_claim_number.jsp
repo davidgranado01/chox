@@ -81,7 +81,7 @@
                             <td>
                                 <label>Customer Claim Number<span class="mandatory">*</span></label></td><td nowrap>
                                 <input type="text" class="chox-ttxt" id="customerClaimNumber" name="customerClaimNumber" value="<s:property value="customerClaimNumber" />"/>
-                                <input type="button" id="MAUICNUpdateCustomerClaimNumberButtonId"value="Update Customer Claim Number" onclick="event.preventDefault(); doSubmitCustomerClaimNumber();"/>
+                                <input type="submit" id="MAUICNUpdateCustomerClaimNumberButtonId"value="Update Customer Claim Number" onclick="event.preventDefault(); doSubmitCustomerClaimNumber();"/>
                             </td>
                             <td></td><td></td>
                         </tr>
