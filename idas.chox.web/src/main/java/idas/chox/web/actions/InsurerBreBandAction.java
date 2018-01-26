@@ -159,19 +159,19 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 newModel.setId(null);
                 newModel.setProtocolVehicleClassCeilings(null);
                 List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings = model.getProtocolVehicleClassCeilings();
-                for (ProtocolVehicleClassCeiling protocolVehicleClassCeiling : protocolVehicleClassCeilings) {
+                protocolVehicleClassCeilings.forEach((protocolVehicleClassCeiling) -> {
                     adminInsurerService.evict(protocolVehicleClassCeiling);
-                }
+                });
                 newModel.setBrePenaltyBands(null);
                 List<BrePenaltyBand> brePenaltyBands = model.getBrePenaltyBands();
-                for (BrePenaltyBand brePenaltyBand : brePenaltyBands) {
+                brePenaltyBands.forEach((brePenaltyBand) -> {
                     adminInsurerService.evict(brePenaltyBand);
-                }
+                });
                 newModel.setClaimMatchingBands(null);
                 List<ClaimMatchingBand> claimMatchingBands = model.getClaimMatchingBands();
-                for (ClaimMatchingBand claimMatchingBand : claimMatchingBands) {
+                claimMatchingBands.forEach((claimMatchingBand) -> {
                     adminInsurerService.evict(claimMatchingBand);
-                }
+                });
 
                 adminInsurerService.evict(model);
                 model = newModel;
@@ -190,12 +190,12 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             }
             if (claimMatchingOwnerId > 0 && this.adminInsurerService.getWebuserById(claimMatchingOwnerId) != null) {
                 model.setClaimMatchingOwner(this.adminInsurerService.getWebuserById(claimMatchingOwnerId));
-            } else {
+            } else if (getIsChoxAdmin()) {
                 model.setClaimMatchingOwner(null);
             }
             if (claimMatchingWorkgroupId > 0 && this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId) != null) {
                 model.setClaimMatchingWorkgroup(this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId));
-            } else {
+            } else if (getIsChoxAdmin()) {
                 model.setClaimMatchingWorkgroup(null);
             }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
@@ -214,7 +214,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         List<VehicleClassCeilingViewData> vehicleClassCeilingViewDatas =
                 ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {}.getType()));
         if (vehicleClassCeilingViewDatas != null) {
-            for (VehicleClassCeilingViewData vehicleClassCeilingViewData : vehicleClassCeilingViewDatas) {
+            vehicleClassCeilingViewDatas.forEach((vehicleClassCeilingViewData) -> {
                 ProtocolVehicleClassCeiling pvcc;
                 if (!asCopy && vehicleClassCeilingViewData.getId() > 0) {
                     pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeiling(vehicleClassCeilingViewData.getId());
@@ -234,7 +234,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                         model.addProtocolVehicleClassCeiling(pvcc);
                     }
                 }
-            }
+            });
         }
     }
 
@@ -244,7 +244,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                     = ((List<ClaimMatchingBandViewData>) new Gson().fromJson(claimMatchingRecords, new TypeToken<List<ClaimMatchingBandViewData>>() {
                     }.getType()));
             if (claimMatchingViewDatas != null) {
-                for (ClaimMatchingBandViewData claimMatchingViewData : claimMatchingViewDatas) {
+                claimMatchingViewDatas.forEach((claimMatchingViewData) -> {
                     ClaimMatchingBand cm;
                     if (!asCopy && claimMatchingViewData.getId() > 0) {
                         cm = claimMatchingBandService.getClaimMatchingBand(claimMatchingViewData.getId());
@@ -287,7 +287,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                             model.addClaimMatchingBand(cm);
                         }
                     }
-                }
+                });
             }
         } catch (Exception ex) {
             LOG.error("Exceeption thrown updating BRE Claim Matching bands: {}", ex.getMessage(), ex);
