@@ -166,18 +166,15 @@ public class ExcelGeneratorAction extends BaseAction {
                 
                 c.setStart(0);
                 c.setLimit(MAX_EXPORT_SIZE);
-                // Excel report should be exported as it is sorted in the UI.
-//                c.setSort("created");
-//                c.setDir("desc");
                 
                 SearchResult searchResult = claimService.searchClaims(c);
                 List<Claim> claims = searchResult.getResult();
                 LOG.debug("Total No of Claims : '{}'", claims.size());
                 if (claims.size() > 0 && claims.size() <= 10000) {
                     List<Integer> claimIds = new ArrayList<>(claims.size());
-                    for(Claim claim : claims) {
+                    claims.forEach((claim) -> {
                         claimIds.add(claim.getId());
-                    }
+                    });
                     try {
                         if (!generateXML(claimIds)) {
                             if (getSession().get("tooManyRows") != null) {
@@ -340,29 +337,31 @@ public class ExcelGeneratorAction extends BaseAction {
 
 
         
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    final XLSTransformer transformer = new XLSTransformer();
-                    LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-                    Workbook workbook;
-                    try (InputStream is = new FileInputStream(templateFilePath)) {
-                        workbook = transformer.transformXLS(is, excelMap);
+        Runnable r = () -> {
+            try {
+                final XLSTransformer transformer = new XLSTransformer();
+                // Hide Copley columns where applicable
+                if (getIsInsurer()) {
+                    if (!getAuthenticatedUser().getInsurer().isCopleyQuestion()) {
+                        transformer.setColumnsToHide(new short[]{ (short)117, (short)118} );
                     }
-                    LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
-                    try (OutputStream os = new FileOutputStream(reportFile)) {
-                        workbook.write(os);
-                        os.flush();
-                        LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
-                    }
-                } catch (Exception ex) {
-                    LOG.error("Exception thrown transforming report: {}", ex.getMessage());
-                    LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                    synchronized (getSessionLock()) {
-                        getSession().put("exceptionThrown", true);
-                    }
+                }
+                LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
+                Workbook workbook;
+                try (InputStream is = new FileInputStream(templateFilePath)) {
+                    workbook = transformer.transformXLS(is, excelMap);
+                }
+                LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
+                try (OutputStream os = new FileOutputStream(reportFile)) {
+                    workbook.write(os);
+                    os.flush();
+                    LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown transforming report: {}", ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                synchronized (getSessionLock()) {
+                    getSession().put("exceptionThrown", true);
                 }
             }
         };

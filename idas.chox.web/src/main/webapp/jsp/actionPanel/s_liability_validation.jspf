@@ -177,21 +177,40 @@
     );
 
         $.validator.addMethod(
-        "checkFullAccepted",
-        function(value, element) {
-            if (isFullAccepted()){
-                var ins = parseFloat($("#percentageLiabilityAccepted").val())
-                var cho = parseFloat($("#percentageLiabilityCho").val());
-                if ( ins != 100){
-                    return false;
+            "checkFullAccepted",
+            function(value, element) {
+                if (isFullAccepted()){
+                    var ins = parseFloat($("#percentageLiabilityAccepted").val())
+                    var cho = parseFloat($("#percentageLiabilityCho").val());
+                    if ( ins != 100){
+                        return false;
+                    }
+                    if ( cho != 0){
+                        return false;
+                    }
                 }
-                if ( cho != 0){
-                    return false;
-                }
+                return true;
             }
-            return true;
-        }
-    );
+        );
+
+<s:if test="copleyOfferEnabled">
+        $.validator.addMethod(
+            "checkOfferDate",
+            function(value, element) {
+                var copleyOfferMade = $("#copleyOfferMade").val();
+                if ( copleyOfferMade == "True" ){
+                    var copleyDate = $("form#formAcknowledgeAction #copleyOfferMadeDate").val();
+                    if ( copleyDate == "" ){
+                        return false;
+                    }
+                    if ( !isValidDate(copleyDate) ){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+</s:if>
 
         $.validator.addMethod(
         "mustBeFullLiabilityAcepted",
@@ -287,34 +306,57 @@
 
         if($("#formAcknowledgeAction").valid()){
             $('#ACKmessageBox').text("");
-            var reasonOfRejectionDropDown = $("form#formAcknowledgeAction #reasonOfRejectionId");
-            //TODO: this is a quick solution for reason of rejeciton validation (in case we press "refer to fnol" and then reject)
-            if(action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
-                        && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
-                $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
-            }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
-                    var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
-                    var claimId = $("form#formAcknowledgeAction #claimId").val();
-                    var form = $("form#formAcknowledgeAction");
+            // Display of \copley message, where applicable
+            if (action=='acknowledgeClaim' && $("#copleyOfferMade").val() == 'True') {
+                Ext.MessageBox.alert('Intervention Argument', 'You have confirmed that a Copley offer has been made. Please consider intervention argument.',
+                    function(btn, text){
+                        if (btn == 'ok'){
+                            var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
+                            var claimId = $("form#formAcknowledgeAction #claimId").val();
+                            var form = $("form#formAcknowledgeAction");
 
-                    if(claimNumber && claimNumber.length > 0){
-                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-                    }else{
-                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-                        choxJqueryHttpSubmit(form);
+                            if (claimNumber && claimNumber.length > 0){
+                                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                            } else{
+                                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                                choxJqueryHttpSubmit(form);
+                            }
+                        }
                     }
-                    }else { // btn != 'yes'
-                        return false;}})) {
+                );
                 return false;
             }
-            else{
+            var reasonOfRejectionDropDown = $("form#formAcknowledgeAction #reasonOfRejectionId");
+            //TODO: this is a quick solution for reason of rejection validation (in case we press "refer to fnol" and then reject)
+            if (action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
+                        && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
+                $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
+            } else if (action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',
+                    function(btn){
+                        if (btn=='yes'){
+                            var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
+                            var claimId = $("form#formAcknowledgeAction #claimId").val();
+                            var form = $("form#formAcknowledgeAction");
+
+                            if (claimNumber && claimNumber.length > 0) {
+                                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                            } else {
+                                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                                choxJqueryHttpSubmit(form);
+                            }
+                        } else { // btn != 'yes'
+                            return false;
+                        }
+                    })) {
+                return false;
+            } else {
                 var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
                 var claimId = $("form#formAcknowledgeAction #claimId").val();
                 var form = $("form#formAcknowledgeAction");
 
-                if(claimNumber && claimNumber.length > 0){
+                if (claimNumber && claimNumber.length > 0){
                     checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-                }else{
+                } else{
                     Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                     choxJqueryHttpSubmit(form);
                 }
@@ -375,7 +417,19 @@
                 range:[1,6],
                 messages: {range: "You must select a liability status"}
             });
+
+<s:if test="copleyOfferEnabled">
                 
+            $("form#formAcknowledgeAction #copleyOfferMade").rules("add", {
+                required: true,
+                messages: {required: "You must supply a value for 'Has Copley offer been made?'"}
+            });
+            $("form#formAcknowledgeAction #copleyOfferMadeDate").rules("add", {
+                checkOfferDate: true,
+                messages: {checkOfferDate: "Copley Offer Date cannot be empty and must be in the format DD/MM/YYYY"}
+            });
+</s:if>
+
             if(liabilityStatusModified){
                 addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }

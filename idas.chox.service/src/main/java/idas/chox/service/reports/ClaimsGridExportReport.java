@@ -58,13 +58,13 @@ public class ClaimsGridExportReport {
         sb.append(" order by  choreference, modifieddate");
 
         LOG.debug("Querying for claim cycle details...\n{}", sb.toString());
-        List result = reportDataService.getReportData(sb.toString());
+        List<Map> result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got claim cycle details - building data objects");
 
         List<ExcelClaimCycle> results = new ArrayList<>(result.size());
-        for(Object obj : result) {
-            results.add(new ExcelClaimCycle((Map)obj));
-        }
+        result.forEach((obj) -> {
+            results.add(new ExcelClaimCycle(obj));
+        });
 
         return results;
     }
@@ -83,8 +83,6 @@ public class ClaimsGridExportReport {
             .append(" left outer join insurer ins on (wu.insurer_id = ins.id)")
             .append(" left outer join chorganisation cho on (wu.chorganisation_id = cho.id)")
             .append(" where n.reverted = false")
-
-//            .append(" and c.id in ( :claimIds )");
             .append(" and c.id in (");
 
         boolean first = true;
@@ -100,21 +98,18 @@ public class ClaimsGridExportReport {
         sb.append(") ");
         sb.append(" order by  choreference, createddate");
 
-
         LOG.debug("Querying for BRE history details...\n{}", sb.toString());
-        List result = reportDataService.getReportData(sb.toString());
+        List<Map> result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
         List<ExcelComment> results = new ArrayList<>(result.size());
-        for(Object obj : result) {
-            ExcelComment comment = new ExcelComment((Map)obj);
-            if ((dataService.getCurrentUser().isCHO() && comment.getVisibilityType() == 1)
-                    || (dataService.getCurrentUser().isAnInsurer() && comment.getVisibilityType() == 2)) {
-                continue;
+        result.forEach((obj) -> {
+            ExcelComment comment = new ExcelComment(obj);
+            if (!((dataService.getCurrentUser().isCHO() && comment.getVisibilityType() == 1)
+                    || (dataService.getCurrentUser().isAnInsurer() && comment.getVisibilityType() == 2))) {
+                results.add(new ExcelComment(obj));
             }
-
-            results.add(new ExcelComment((Map)obj));
-        }
+        });
 
         
         return results;
@@ -130,8 +125,6 @@ public class ClaimsGridExportReport {
             .append(" join invoice i on (c.invoice_id = i.id)")
             .append(" join history h on (c.id = h.claim_id)")
             .append(" where h.type != 'INFO'")
-
-//            .append(" and c.id in ( :claimIds )");
             .append(" and c.id in (");
 
         boolean first = true;
@@ -149,16 +142,13 @@ public class ClaimsGridExportReport {
 
 
         LOG.debug("Querying for BRE history details...\n{}", sb.toString());
-        List result = reportDataService.getReportData(sb.toString());
+        List<Map> result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
         List<ExcelHistory> results = new ArrayList<>(result.size());
-        for(Object obj : result) {
-            ExcelHistory history = new ExcelHistory((Map)obj);
-            if (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO()) {
-                results.add(history);
-            }
-        }
+        result.stream().map((obj) -> new ExcelHistory(obj)).filter((history) -> (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO())).forEachOrdered((history) -> {
+            results.add(history);
+        });
 
         return results;
     }
@@ -224,9 +214,9 @@ public class ClaimsGridExportReport {
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got invoice details - building data objects");
 
-        for (Object obj : result) {
+        result.forEach((obj) -> {
             results.add(new ExcelInvoice((Map) obj, dataService.getCurrentUser().isCHO()));
-        }
+        });
 
         LOG.debug("Returning results.");
 
@@ -241,7 +231,7 @@ public class ClaimsGridExportReport {
             .append(" c.indemnity_stance, c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
             .append(" c.final_review_cho, c.final_review_ins, wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner, c.remaining_sla_days_str,")
-            .append(" c.fraud_check_status, kr.total_score as fraud_score, kr.rag_result as fraud_status,")
+            .append(" c.fraud_check_status, c.copley_offer_made, c.copley_offer_made_date, ins.copley_question, kr.total_score as fraud_score, kr.rag_result as fraud_status,")
             .append(" cust.first_name as customer_first_name, cust.last_name as customer_last_name, cust.address1 as customer_address1, cust.address2 as customer_address2,")
             .append(" cust.address3 as customer_address3, cust.address4 as customer_address4, cust.address5 as customer_address5, cust.postcode as customer_postcode,")
             .append(" cust.telephone_day as customer_telephone_day, cust.telephone_evening as customer_telephone_evening, cust.email as customer_email,")
@@ -296,7 +286,6 @@ public class ClaimsGridExportReport {
             .append(" ihmd.total_loss_offer_accepted as ihmd_total_loss_offer_accepted, ihmd.total_loss_check_issued as ihmd_total_loss_check_issued,")
             .append(" ihmd.total_loss_check_received as ihmd_total_loss_check_received, ihmd.labour_rate as ihmd_labour_rate, ihmd.labour_hour as ihmd_labour_hour,")
             .append(" ihmd.labour_cost as ihmd_labour_cost, ihmd.claimant_impecunious as ihmd_claimant_impecunious, ihmd.who_managed_repair as ihmd_who_managed_repair,")
-            .append(" ihmd.copley_offer_made as ihmd_copley_offer_made, ihmd.copley_offer_made_date as ihmd_copley_offer_made_date,")
             .append(" ivh_vc.name as ihmd_replacement_vehicle_class, ivh.rental_start as ihmd_rental_start")
             .append(" from claim c")
             .append("     join chorganisation cho on (c.chorganisation_id = cho.id)")
@@ -307,6 +296,7 @@ public class ClaimsGridExportReport {
             .append("     left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)")
             .append("     left outer join third_party tp on (c.third_party_id = tp.id)")
             .append("     left outer join vehicle_class tp_vc on (cust.vehicle_class_id = tp_vc.id)")
+            .append("     left outer join insurer ins on (c.insurer_id = ins.id)")
             .append("     left outer join insurer tp_insurer on (tp.insurer_id = tp_insurer.id)")
             .append("     left outer join incident inc on (c.incident_id = inc.id)")
             .append("     left outer join witness wit on (inc.id = wit.incident_id)")
@@ -334,12 +324,12 @@ public class ClaimsGridExportReport {
         sb.append(") ");
 
         LOG.debug("Querying for claim details...\n{}", sb.toString());
-        List result = reportDataService.getReportData(sb.toString());
+        List<Map> result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got details - building data objects");
 
-        for(Object obj : result) {
-            results.add(new ExcelClaim((Map)obj, isIns));
-        }
+        result.forEach((obj) -> {
+            results.add(new ExcelClaim(obj, isIns));
+        });
 
         LOG.debug("Returning results.");
         return results;

@@ -56,6 +56,8 @@
     <property column="last_review_date" name="lastReviewDate" />
     <property column="indemnity_stance" name="indemnityStance" />
     <property column="match_status" name="matchStatus" />
+    <property column="copley_offer_made" name="copleyOfferMade"/>
+    <property column="copley_offer_made_date" name="copleyOfferMadeDate"/>
     <many-to-one class="idas.chox.core.model.KeoghsRequest" column="keoghs_request_id" name="keoghsRequest"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_cho" name="finalReviewByCho" />
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_ins" name="finalReviewByIns" />

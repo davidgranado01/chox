@@ -932,6 +932,10 @@
                                     </div>
                                 </td>
                                 <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Copley Question - Manual CHOX</label>
+                                        <s:checkbox name="copleyQuestion" value="copleyQuestion" onclick="doPageLoadCheck(this);"/>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

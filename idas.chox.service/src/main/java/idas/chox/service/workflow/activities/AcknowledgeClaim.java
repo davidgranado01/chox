@@ -34,6 +34,8 @@ public class AcknowledgeClaim extends BaseActivity {
     private boolean liabilityUpdated = false;
     private boolean claimNumberUpdated = false;
     private String indemnityStance;
+    private Boolean copleyOfferMade;
+    private Date copleyOfferMadeDate;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parameter Getters and Setters">
@@ -158,7 +160,12 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-
+        claim.setCopleyOfferMade(copleyOfferMade);
+        if (copleyOfferMade != null && copleyOfferMade) {
+            claim.setCopleyOfferMadeDate(copleyOfferMadeDate);
+        } else {
+            claim.setCopleyOfferMadeDate(null);
+        }
     }
 
     @Override
@@ -239,6 +246,22 @@ public class AcknowledgeClaim extends BaseActivity {
      */
     public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
+    }
+
+    public Boolean getCopleyOfferMade() {
+        return copleyOfferMade;
+    }
+
+    public void setCopleyOfferMade(Boolean copleyOfferMade) {
+        this.copleyOfferMade = copleyOfferMade;
+    }
+
+    public Date getCopleyOfferMadeDate() {
+        return copleyOfferMadeDate;
+    }
+
+    public void setCopleyOfferMadeDate(Date copleyOfferMadeDate) {
+        this.copleyOfferMadeDate = copleyOfferMadeDate;
     }
 
 }

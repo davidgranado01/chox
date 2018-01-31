@@ -3339,4 +3339,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
     }
+
+
+    public boolean isCopleyOfferEnabled() {
+        return ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isCopleyQuestion();
+    }
 }

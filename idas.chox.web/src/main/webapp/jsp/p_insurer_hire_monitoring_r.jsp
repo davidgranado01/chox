@@ -99,16 +99,6 @@
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:property value="whoManagedRepair" /></label></td>
             </tr>
-            <tr>
-                <td><label class="std-label-ro">Has Copley offer been made?</label></td>
-                <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:property value="copleyOfferMadeDesc" /></label></td>
-            </tr>
-            <tr>
-                <td><label class="std-label-ro">If yes, when was the offer made?</label></td>
-                <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:property value="copleyOfferMadeDate" /></label></td>
-            </tr>
         </table>
     </div>
 </fieldset>

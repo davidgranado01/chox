@@ -23,8 +23,6 @@
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>
     <property column="claimant_impecunious" name="claimantImpecunious"/>
-    <property column="copley_offer_made" name="copleyOfferMade"/>
-    <property column="copley_offer_made_date" name="copleyOfferMadeDate"/>
     <property column="who_managed_repair" name="whoManagedRepair"/>
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>

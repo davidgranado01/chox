@@ -193,15 +193,16 @@ public class ExcelClaim {
     private final Date claimInsHMDTotalLossOfferAcceptedDate;
     private final Date claimInsHMDTotalLossOfferCheckIssuedDate;
     private final Date claimInsHMDTotalLossOfferCheckReceivedDate;
-    private final Date claimInsHMDCopleyOfferMadeDate;
     private final BigDecimal claimInsHMDLabourRate;
     private final BigDecimal claimInsHMDLabourHour;
     private final BigDecimal claimInsHMDLabourCost;
     private final Boolean claimInsHMDClaimantImpecunious;
-    private final Boolean claimInsHMDCopleyOfferMade;
     private final String claimInsHMDWhoManagedRepair;
     private final String claimInsHMDReplacementVehicleClass;
     private final Date claimInsHMDRentalStart;
+    private final Boolean claimCopleyOfferMade;
+    private final Date claimCopleyOfferMadeDate;
+    private final boolean isCopleyOffer;
 
     public ExcelClaim(Map data, Boolean isIns) {
         claimStatus = (String) data.get("status");
@@ -259,9 +260,18 @@ public class ExcelClaim {
         if (isIns == null) {
             claimFinalReview = (((Boolean) data.get("final_review_cho")) ? "Yes" : "No") + " (CHO), "
                     + (((Boolean) data.get("final_review_ins")) ? "Yes" : "No") + " (Ins)";
+            claimCopleyOfferMade = null; claimCopleyOfferMadeDate = null; isCopleyOffer=false;
         } else if (isIns) {
             claimFinalReview = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
+            isCopleyOffer = ((boolean) data.get("copley_question"));
+            if (isCopleyOffer) {
+                claimCopleyOfferMade = (Boolean) data.get("copley_offer_made");
+                claimCopleyOfferMadeDate = (Date)data.get("copley_offer_made_date");
+            } else {
+                claimCopleyOfferMade = null; claimCopleyOfferMadeDate = null;
+            }
         }  else { // CHO
+            claimCopleyOfferMade = null; claimCopleyOfferMadeDate = null; isCopleyOffer=false;
             claimFinalReview = ((Boolean) data.get("final_review_cho")) ? "Yes" : "No";
         }
         Boolean canAccessOtherVehicle = (Boolean) data.get("customer_access_other_vehicle");
@@ -473,12 +483,10 @@ public class ExcelClaim {
         claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
         claimInsHMDTotalLossOfferCheckIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
         claimInsHMDTotalLossOfferCheckReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
-        claimInsHMDCopleyOfferMadeDate = (Date) data.get("ihmd_copley_offer_made_date");
         claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
         claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
         claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
         claimInsHMDClaimantImpecunious = (Boolean) data.get("ihmd_claimant_impecunious");
-        claimInsHMDCopleyOfferMade = (Boolean) data.get("ihmd_copley_offer_made");
         claimInsHMDWhoManagedRepair = (String) data.get("ihmd_who_managed_repair");
         claimInsHMDReplacementVehicleClass = (String) data.get("ihmd_replacement_vehicle_class");
         claimInsHMDRentalStart = (Date) data.get("ihmd_rental_start");
@@ -1232,12 +1240,16 @@ public class ExcelClaim {
         return claimInsHMDRentalStart;
     }
 
-    public Date getClaimInsHMDCopleyOfferMadeDate() {
-        return claimInsHMDCopleyOfferMadeDate;
+    public String getClaimCopleyOfferMade() {
+        return claimCopleyOfferMade == null ? "" : claimCopleyOfferMade ? "Yes" : "No";
+    }
+    
+    public Date getClaimCopleyOfferMadeDate() {
+        return claimCopleyOfferMadeDate;
+    }
+    
+    public boolean isIsCopleyOffer() {
+        return isCopleyOffer;
     }
 
-     public String getClaimInsHMDCopleyOfferMade() {
-        return claimInsHMDCopleyOfferMade == null ? "" : claimInsHMDCopleyOfferMade ? "Yes" : "No";
-    }
-  
 }

@@ -94,6 +94,15 @@ public class Insurer extends Entity implements Serializable {
     private boolean enableClaimMatching;
     private String kbbsManagerPassword;
     private String kbbsOperativePassword;
+    private boolean copleyQuestion;
+
+    public boolean isCopleyQuestion() {
+        return copleyQuestion;
+    }
+
+    public void setCopleyQuestion(boolean copleyQuestion) {
+        this.copleyQuestion = copleyQuestion;
+    }
 
     public boolean isEnableClaimMatching() {
         return enableClaimMatching;

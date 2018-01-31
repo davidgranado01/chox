@@ -15,6 +15,22 @@ Ext.onReady(function() {
         disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
     });
 
+<s:if test="copleyOfferEnabled">
+
+        var copleyOfferMadeDatePicker = new Ext.form.DateField({
+            name: 'copleyOfferMadeDate',
+            id: 'copleyOfferMadeDate',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="copleyOfferMadeDate" />',
+            renderTo: 'copleyOfferMadeDatePH'
+        });
+</s:if>
+ 
+
 <s:if test="acceptanceReasosnsEnabled">
 
     var acceptanceReasonsJsonReader = new Ext.data.JsonReader({
@@ -76,6 +92,17 @@ function refreshDesc(id){
     if(id == -1 || id == '')
         Ext.getCmp('rejecDescJspfId').setValue("");
 }
+<s:if test="copleyOfferEnabled">
+function toggelCopleyOfferDate(selectedValue) {
+    if (selectedValue=='True') {
+        document.getElementById("copleyOfferMadeDatePH").style.visibility = "visible";
+        document.getElementById("copleyOfferMadeDateLabel").style.visibility = "visible";
+    } else {
+        document.getElementById("copleyOfferMadeDatePH").style.visibility = "hidden";
+        document.getElementById("copleyOfferMadeDateLabel").style.visibility = "hidden";
+    }
+}
+</s:if>
 
 </script>
 
@@ -208,6 +235,26 @@ function refreshDesc(id){
                                     <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
                                 </td>
                             </tr>
+<s:if test="copleyOfferEnabled">
+                            <tr>
+                                <td>
+                                    <label>Has Copley Offer Been Made?<span class="mandatory">*</span></label>
+                                </td>
+                                <td>
+                                    <select id="copleyOfferMade" name="copleyOfferMade" onchange="toggelCopleyOfferDate(this.options[this.selectedIndex].value)">
+                                        <option value="">-- Please Select--</option>
+                                        <option value="True">Yes</option>
+                                        <option value="False">No</option>
+                                    </select>
+                                </td>
+                                <td align="right">
+                                    <label id="copleyOfferMadeDateLabel" style="visibility:hidden">Please confirm the date the offer was made<span class="mandatory">*</span></label>
+                                </td>
+                                <td>
+                                    <span id="copleyOfferMadeDatePH" style="visibility:hidden"></span>
+                                </td>
+                            </tr>
+</s:if>
                             <tr>
                                 <td>
                                     <label>Invoice Review Required?</label>

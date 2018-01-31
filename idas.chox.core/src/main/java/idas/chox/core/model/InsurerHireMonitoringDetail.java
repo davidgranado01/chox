@@ -18,13 +18,11 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date totalLossOfferAcceptedDate;
     private Date totalLossOfferCheckIssuedDate;
     private Date totalLossOfferCheckReceivedDate;
-    private Date copleyOfferMadeDate;
 
     private BigDecimal labourRate;
     private BigDecimal labourHour;
     private BigDecimal labourCost;
     private Boolean claimantImpecunious;
-    private Boolean copleyOfferMade;
     private String whoManagedRepair;
 
     private Claim claim;
@@ -204,25 +202,4 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     public void setWhoManagedRepair(String whoManagedRepair) {
         this.whoManagedRepair = whoManagedRepair;
     }
-
-    public Date getCopleyOfferMadeDate() {
-        return copleyOfferMadeDate;
-    }
-
-    public void setCopleyOfferMadeDate(Date copleyOfferMadeDate) {
-        this.copleyOfferMadeDate = copleyOfferMadeDate;
-    }
-
-    public Boolean isCopleyOfferMade() {
-        return copleyOfferMade;
-    }
-
-    public String getCopleyOfferMadeDesc() {
-        return copleyOfferMade == null ?  "" : (copleyOfferMade ? "Yes" : "No");
-    }
-
-    public void setCopleyOfferMade(Boolean copleyOfferMade) {
-        this.copleyOfferMade = copleyOfferMade;
-    }
-
 }

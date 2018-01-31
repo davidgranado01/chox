@@ -86,6 +86,8 @@ public class Claim extends Entity implements Serializable {
     private boolean sentToKeoghs;
     private boolean fraudResultAcknowledged;
     private KeoghsRequest keoghsRequest;
+    private Boolean copleyOfferMade;
+    private Date copleyOfferMadeDate;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -718,7 +720,26 @@ public class Claim extends Entity implements Serializable {
         this.lastReviewDate = lastReviewDate;
     }
 
-    
+    public Date getCopleyOfferMadeDate() {
+        return copleyOfferMadeDate;
+    }
+
+    public void setCopleyOfferMadeDate(Date copleyOfferMadeDate) {
+        this.copleyOfferMadeDate = copleyOfferMadeDate;
+    }
+
+    public Boolean isCopleyOfferMade() {
+        return copleyOfferMade;
+    }
+
+    public String getCopleyOfferMadeDesc() {
+        return copleyOfferMade == null ?  "" : (copleyOfferMade ? "Yes" : "No");
+    }
+
+    public void setCopleyOfferMade(Boolean copleyOfferMade) {
+        this.copleyOfferMade = copleyOfferMade;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
     public void setBreBand(BreBand choband) {
         this.choband = choband;
