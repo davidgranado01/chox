@@ -185,6 +185,7 @@
         <property column="enable_gta_discount" name="enableGtaDiscount" not-null="true"/>
         <property column="fraud_check_enable" name="fraudCheckEnable" not-null="true"/>
         <property column="enable_claim_matching" name="claimMatchingEnable"/>
+        <property column="copley_offer_made_check" name="copleyOfferMadeCheck"/>
         <many-to-one class="idas.chox.core.model.Workgroup" column="claim_matching_workgroup" name="claimMatchingWorkgroup"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="claim_matching_owner" name="claimMatchingOwner"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

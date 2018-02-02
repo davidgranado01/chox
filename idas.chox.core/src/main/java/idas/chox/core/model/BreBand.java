@@ -188,6 +188,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean claimMatchingEnable;
     private Workgroup claimMatchingWorkgroup;
     private WebUser claimMatchingOwner;
+    private boolean copleyOfferMadeCheck;
 
     public BreBand() {
     }
@@ -1825,5 +1826,13 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setFraudCheckEnable(boolean fraudCheckEnable) {
         this.fraudCheckEnable = fraudCheckEnable;
+    }
+
+    public boolean isCopleyOfferMadeCheck() {
+        return copleyOfferMadeCheck;
+    }
+
+    public void setCopleyOfferMadeCheck(boolean copleyOfferMadeCheck) {
+        this.copleyOfferMadeCheck = copleyOfferMadeCheck;
     }
 }

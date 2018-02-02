@@ -129,6 +129,7 @@
                     <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.FullTotalRequestedDoesNotExceedCeiling" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.CopleyOfferMadeCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
