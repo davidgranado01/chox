@@ -20,8 +20,8 @@
     </head>
     <body class="modal login">
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/Audatex-Logo.png" style="display: inline; float: center; width: 250px; height: 74px"/>
-            <!--img alt="Logo" src="<%= request.getContextPath()%>/images/SoleraAudatex_logo.png" style="display: inline; float: center; width: 400px; height: 74px"/-->
+            <!--img alt="Logo" src="<%= request.getContextPath()%>/images/Audatex-Logo.png" style="display: inline; float: center; width: 250px; height: 74px"/-->
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/SoleraAudatex_logo.png" style="display: inline; float: center; width: 400px; height: 74px"/>
         </div>
 
         <div class="modal-container">
