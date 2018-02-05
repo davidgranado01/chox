@@ -101,21 +101,16 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
                             LOG.debug("Not adding queue '{}' as payment team is enabled and user is PC only", filter.getName());
                             continue;
-                        }  else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM)
+                        } else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM)
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentsTeamEnable()) {
                             LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
                             continue;
-                        }  else if (filter.getKey().equals(Filter.FILTER_INVOICE_PAYMENT_DISPUTE)
+                        } else if (filter.getKey().equals(Filter.FILTER_INVOICE_PAYMENT_DISPUTE)
                                 && webUser.isAnInsurer() && (!webUser.getInsurer().isPaymentDisputesEnable()
                                             || (webUser.getInsurer().isPaymentsTeamEnable() && !webUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && !webUser.isInRoleOf(WebUserRole.ROLE_INS_CH)))) {
                             // Don't show the Payment Disputes queue if these are disabled or if payments team is active and we dont have CH or MNG role
                             // (as there will be the FILTER_PAYMENT_TEAM_DISPUTE queue for PC role)
                             LOG.debug("Not adding queue '{}' as payment disputes are not enabled", filter.getName());
-                            continue;
-                        }   else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM_DISPUTE)
-                                && webUser.isAnInsurer() && (!webUser.getInsurer().isPaymentDisputesEnable()
-                                || !webUser.getInsurer().isPaymentsTeamEnable())) {
-                            LOG.debug("Not adding queue '{}' as payment disputes or team are not enabled", filter.getName());
                             continue;
                         } else if (filter.getKey().equals(Filter.FILTER_CASE_WITH_SOLICITOR)
                                 && webUser.isCHO() && !webUser.getChorganisation().isSolicitorEnable()) {

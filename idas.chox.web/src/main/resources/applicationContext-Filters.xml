@@ -278,13 +278,6 @@
         <property name="queueDescription" value="Claims where the invoice has been approved for payment by the Payments Team and liability is resolved, a payment awaits"/>
     </bean>
 
-    <bean id="PaymentTeamDispute" class="idas.chox.service.filters.FilterByStatus" >
-        <property name="name" value="Payments Team - Payment Disputes"/>
-        <property name="key" value="PaymentTeamDispute"/>
-        <property name="status" value="AwaitingInvoicePayment"/>
-        <property name="queueDescription" value="Claims where the invoice has been marked as paid by the Insurer Payments Team but the CHO has indicated they have not received the full payment"/>
-    </bean>
-
     <bean id="InvoiceUnassigned" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Invoices To Be Assigned"/>
         <property name="key" value="InvoiceUnassigned"/>

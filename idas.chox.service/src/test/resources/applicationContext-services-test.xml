@@ -294,7 +294,6 @@
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="PaymentTeam" />
                 <ref bean="InvoicePaymentDispute" />
-                <ref bean="PaymentTeamDispute" />
                 <ref bean="InvoicePaymentLogged" />
                 <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />

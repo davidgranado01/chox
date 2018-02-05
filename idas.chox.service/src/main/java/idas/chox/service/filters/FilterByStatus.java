@@ -29,14 +29,11 @@ public class FilterByStatus extends BaseFilter {
                          && (securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()
                  || securityInfoProvider.getCurrentUser().getInsurer().isPaymentDisputesEnable())))) {
             Insurer ins = securityInfoProvider.getCurrentUser().getInsurer();
-            if ((ins == null || ins.isPaymentsTeamEnable()) && !"PaymentTeamDispute".equals(key)) {
+            if ((ins == null || ins.isPaymentsTeamEnable()) && !"InvoicePaymentDispute".equals(key)) {
                 claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
             }
             if ((ins == null || ins.isPaymentDisputesEnable()) && "InvoicePaymentDispute".equals(key)) {
                 claimSearchCriteria.setPaymentDisputeValue(1);
-            } else if ((ins == null || ins.isPaymentDisputesEnable()) && "PaymentTeamDispute".equals(key)) {
-                claimSearchCriteria.setPaymentDisputeValue(1);
-                claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("2")})));
             } else if (ins == null || ins.isPaymentDisputesEnable()) {
                 claimSearchCriteria.setPaymentDisputeValue(2);
             }

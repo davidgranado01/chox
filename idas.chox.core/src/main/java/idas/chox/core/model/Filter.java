@@ -23,7 +23,6 @@ public interface Filter {
     public static final String FILTER_APPROVED_INVOICE_AWAITING_PAYMENT = "ApprovedInvoicesAwaitingPayment";
     public static final String FILTER_INVOICE_PAYMENT_DISPUTE = "InvoicePaymentDispute";
     public static final String FILTER_PAYMENT_TEAM = "PaymentTeam";
-    public static final String FILTER_PAYMENT_TEAM_DISPUTE = "PaymentTeamDispute";
     public static final String FILTER_ESCALATED_INVOICE_TO_CH = "InvoiceEscalatedToHandler";
     public static final String FILTER_CONTESTED_INVOICE_REF_INS = "ContestedInvoicesReferredToInsurer";
     public static final String FILTER_INVOICE_APPROVED_BY_BRE = "InvoicesApprovedByBRE";
