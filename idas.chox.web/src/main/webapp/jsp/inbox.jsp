@@ -184,7 +184,7 @@
             items:[{
                     text:'Export To Excel',
                     id : 'claimsExportToExcelButtonId',
-                    disabled : !<s:property value="canExport" />,
+                    disabled : !<s:property value="canExportGrid" />,
                     handler : function() {
                         doExportExcel();
                     }

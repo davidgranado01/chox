@@ -20,6 +20,7 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 
 import net.sf.jxls.transformer.XLSTransformer;
 
@@ -138,12 +139,14 @@ public class ExcelGeneratorAction extends BaseAction {
         return errorMessage;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN","ROLE_INS_GRIDEXPORT","ROLE_CHO_GRIDEXPORT"})
     public String doExportExcel() throws IOException {
 
-        if (!getCanExport()) {
+        if (!getCanExportGrid()) {
             LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
             throw new AccessDeniedException("Illegal attempt to generate Export file.");
         }
+        
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
             session.put("isExportFinished", false);
