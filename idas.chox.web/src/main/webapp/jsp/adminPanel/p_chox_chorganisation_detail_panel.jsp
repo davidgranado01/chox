@@ -578,7 +578,7 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Restrict Export Functions<br/> For Operative Users?</label>
+                                        <label class="chox-form-std-label">Restrict Claim File Export Function<br/> For Operative Users?</label>
                                         <s:checkbox name="restrictExport" value="restrictExport" />
                                     </div>
                                 </td>

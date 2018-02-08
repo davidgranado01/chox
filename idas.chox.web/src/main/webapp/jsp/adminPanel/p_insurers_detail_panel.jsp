@@ -1256,7 +1256,7 @@
                             </div>
                             
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label1">Restrict Export Functions To Manager Role?</label>
+                                <label class="chox-form-std-label1">Restrict Claim File Export Function To Manager Role?</label>
                                 <s:checkbox name="restrictExport" value="restrictExport" />
                             </div>
                             <br>

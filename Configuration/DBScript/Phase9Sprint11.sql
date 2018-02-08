@@ -36,6 +36,16 @@ INSERT INTO web_user_role (name, created_by, last_modified_by, description,type_
 --
 
 --
+-- CHOX-471: Remove 'Payments Team - Payment Disputes' queue
+--
+DELETE FROM accessibility_item WHERE accessibility_id = (select id from accessibility where name='filter.PaymentTeamDispute');
+DELETE FROM accessibility WHERE name='filter.PaymentTeamDispute';
+--DELETE FROM accessibility_item WHERE accessibility_id = (select id from accessibility where name='filter.InvoicePaymentDispute') and role='ROLE_INS_PC';
+--
+-- End of CHOX-471
+--
+
+--
 -- CHOX-427: Merge and Remove Manual CHOs
 --
 update claim set cho_reference='110010-duplicate' where id=209179;

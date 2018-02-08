@@ -412,22 +412,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean getCanExportGrid() {
         boolean result = false;
-        if (getIsInsurer()) {
-            if (getAuthenticatedUser().getInsurer().isRestrictExport() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                    && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_GRIDEXPORT)) {
+        if ((getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_GRIDEXPORT))
+                || (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_GRIDEXPORT))) {
                 result = true;
-            } else if (!getAuthenticatedUser().getInsurer().isRestrictExport() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_GRIDEXPORT)) {
-                result = true;
-            }
-        } else if (getIsCHO()) {
-            if (getAuthenticatedUser().getChorganisation().isRestrictExport() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_OPR)
-                    && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_GRIDEXPORT)) {
-                result = true;
-            } else if (!getAuthenticatedUser().getChorganisation().isRestrictExport() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_GRIDEXPORT)) {
-                result = true;
-            }
-        } else {
-            result=true; // For CHOX Admin
+        } else if (getIsChoxAdmin()) {
+            result=true;
         }
         return result;
     }

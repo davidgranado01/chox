@@ -142,11 +142,6 @@ public class ExcelGeneratorAction extends BaseAction {
     @Secured({"ROLE_CHOX_ADMIN","ROLE_INS_GRIDEXPORT","ROLE_CHO_GRIDEXPORT"})
     public String doExportExcel() throws IOException {
 
-        if (!getCanExportGrid()) {
-            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
-            throw new AccessDeniedException("Illegal attempt to generate Export file.");
-        }
-        
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
             session.put("isExportFinished", false);
