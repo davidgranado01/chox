@@ -20,7 +20,7 @@ RETURN QUERY
 select ea1.value as "Supplier Reference", cho.name as "CHO Name", ea3.value as "Claim Type", ea4.value as "Insurer Claim Number", el1.status as "Claim Status", ea2.value as "New Insurer", el1.created_date::Date as "Date Switched"
 from claim c, event_log el1, event_log el2, chorganisation cho, event_attributes ea1, event_attributes ea2, event_attributes ea3, event_attributes ea4
 where c.id=el1.claim_id and c.id=el2.claim_id
-  and el1.activity_name in ('SwitchClaim','SwitchClaimToMultipleInsurer') and el1.event_name='ClaimClosedEvent'
+  and el1.activity_name in ('SwitchClaim','SwitchClaimToMultipleInsurer') and el1.event_name in ('ClaimClosedEvent', 'SwitchInsEvent')
   and el1.insurer_id = ANY(insurerIds) and el1.created_date >= startOfPeriod and el1.created_date < endOfPeriod
   and el1.chorganisation_id = cho.id
   and el2.activity_name = 'NewClaim' and el2.event_name='NewClaimEvent'
