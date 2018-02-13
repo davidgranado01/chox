@@ -31,8 +31,33 @@
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
         new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
-<s:if test="subscriberClaimsEnabled">
 
+<s:if test="impecuniosRuleEnabled">
+        var impecuniousRuleDatePicker =  new Ext.form.DateField({
+            name: 'impecuniousStartDate',
+            id: 'impecuniousStartDate',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="impecuniousStartDate" />',
+            renderTo: 'impecuniousDatePH'
+        });
+        $.validator.addMethod(
+        "checkDateFormat",
+        function(value, element) {
+//                var accdate = $("form#formAcknowledgeAction #liabilityAgreedDate").val();
+                if ( !isValidDate(value) ){
+                    return false;
+                }
+            return true;
+        }
+    );
+
+</s:if>
+
+<s:if test="subscriberClaimsEnabled">
         var subscriberTimeCutOffTimePicker = new Ext.form.TimeField({
             name: 'subscriberTimeCutOff',
             id : 'subscriberTimeCutOffPickerHMVId',
@@ -107,6 +132,7 @@
 </s:if>
 
         var form = $("form#formUpdateInsurerBreBandDetail");
+
         form.validate({
             errorLabelContainer: "#CDInsurerBreBandmessageBox",
             rules: {
@@ -119,6 +145,11 @@
                 fixedFeeSlaDays:{required:true, number:true, min:0},
 </s:if>
                 name:{required:true},
+<s:if test="impecuniosRuleEnabled">
+                impecuniousStartDate:{
+                    checkDateFormat: true,
+                },
+</s:if>
                 isMobileDayAllowance:{required:true, number:true, min:0},
                 isNotMobileDayAllowance:{required:true, number:true, min:0},
                 takeVehicleToGarageDaysMobile:{required:true, number:true, min:0},
@@ -154,6 +185,9 @@
                 subscriberSlaDays: {required:"You must supply a value for 'Fixed Fee SLA Days'", number:"'Fixed Fee SLA Days' must be numeric", min:"'Fixed Fee SLA Days' cannot be less than zero" },
 </s:if>
                 name: {required:"You must supply a value for 'Name'" },
+<s:if test="impecuniosRuleEnabled">
+                impecuniousStartDate: {checkDateFormat:"You must supply a valid date for the 'Impecunious Rule'" },
+</s:if>
                 isMobileDayAllowance: {required:"You must supply a value for 'Mobile Day Allowance'", number:"'Mobile Day Allowance' must be numeric", min:"'Mobile Day Allowance' cannot be less than zero"},
                 isNotMobileDayAllowance: {required:"You must supply a value for 'Not Mobile Day Allowance'", number:"'Not Mobile Day Allowance' must be numeric", min:"'>Not Mobile Day Allowance' cannot be less than zero"},
                 takeVehicleToGarageDaysMobile: {required:"You must supply a value for 'Take Vehicle To Garage Days - Mobile'", number:"'Take Vehicle To Garage Days - Mobile' must be numeric", min:"'Take Vehicle To Garage Days - Mobile' cannot be less than zero"},
@@ -611,6 +645,18 @@
         cm_claimOwnerCombo.reset();
         cm_claimOwnerId = - 1;
 </s:elseif>
+    }
+
+    function isValidDate(date) {
+        var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(date);
+        if (matches == null) return false;
+        var d = matches[1];
+        var m = matches[2] - 1;
+        var y = matches[3];
+        var composedDate = new Date(y, m, d);
+        return composedDate.getDate() == d &&
+            composedDate.getMonth() == m &&
+            composedDate.getFullYear() == y;
     }
 
     function createProtocolVehicleCeilingEditWindow() {
@@ -2220,6 +2266,23 @@
                 <div class="admin-bre-band-detail-section">                 
                     <div class="section-heading">Business Rules</div>
 
+<s:if test="impecuniosRuleEnabled">
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Impecunious Rule</div>
+                        <div class="status-info">
+                            This field enables you to select a date of claim upload date from which the rule should be
+                            activated. By selecting a date, you are ensuring that the Impecunious Rule (if activated)
+                            only applies on invoices uploaded where the claim upload date is on or after the date
+                            selected. By not selecting a date, the rule will apply to all invoices received after
+                            activation date.
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Date of claim upload from which rule applies</label>
+                            <span id="impecuniousDatePH"></span>
+                        </div>
+                    </div>
+</s:if>
+
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Total Loss Duration Rule</div>
                         <div class="chox-form-item">
@@ -2652,6 +2715,13 @@
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Additional Invoice Validations</div>
 
+<s:if test="impecuniosRuleEnabled">
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="impecuniousCheck" value="impecuniousCheck" /></div>
+                            <label class="chox-form-check-label">Pecunious Claimant Check</label>
+                            <div class="chox-form-check-description">Check to ensure the CHO is not claiming credit hire or repair where the claimant is considered pecunious.</div>
+                        </div>
+</s:if>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
                             <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BreBand extends Entity implements Serializable, FullAudit {
@@ -189,8 +190,26 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private Workgroup claimMatchingWorkgroup;
     private WebUser claimMatchingOwner;
     private boolean copleyOfferMadeCheck;
+    private boolean impecuniousCheck;
+    private Date impecuniousStartDate;
 
     public BreBand() {
+    }
+
+    public boolean isImpecuniousCheck() {
+        return impecuniousCheck;
+    }
+
+    public void setImpecuniousCheck(boolean impecuniousCheck) {
+        this.impecuniousCheck = impecuniousCheck;
+    }
+
+    public Date getImpecuniousStartDate() {
+        return impecuniousStartDate;
+    }
+
+    public void setImpecuniousStartDate(Date impecuniousStartDate) {
+        this.impecuniousStartDate = impecuniousStartDate;
     }
 
     public boolean isClaimMatchingEnable() {
