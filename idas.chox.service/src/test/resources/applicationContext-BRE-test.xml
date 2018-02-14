@@ -130,6 +130,8 @@
                 </bean>
                 <bean class="idas.chox.service.bre.rules.FullTotalRequestedDoesNotExceedCeiling" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.CopleyOfferMadeCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.ImpecuniousCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.VedChargeCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>

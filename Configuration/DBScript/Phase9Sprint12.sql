@@ -17,3 +17,12 @@ ALTER TABLE invoice_original ADD COLUMN ved_qty smallint NOT NULL DEFAULT 0;
 --
 -- End of CHOX-469
 --
+
+--
+-- CHOX-468: New BRE Rule: VED Charge Check
+--
+ALTER TABLE bre_band ADD COLUMN ved_charge_check boolean NOT NULL DEFAULT false;
+ALTER TABLE bre_band ADD COLUMN ved_charge_ceiling numeric(10,2) NOT NULL DEFAULT 0.00;
+--
+-- End of CHOX-468
+--

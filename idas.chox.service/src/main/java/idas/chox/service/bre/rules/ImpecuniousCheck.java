@@ -30,14 +30,13 @@ public class ImpecuniousCheck implements IBusinessRule {
 
         if (claim.getBreBand().isImpecuniousCheck() && claim.getInsurerHireMonitoringDetail() != null && claim.getInsurerHireMonitoringDetail().getClaimantImpecunious() != null
                 && !claim.getInsurerHireMonitoringDetail().getClaimantImpecunious()
-                && (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableManualLouDates())
-                    || (!ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableLouDates())) {
-
+                && ((ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableManualLouDates())
+                    || (!ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableLouDates()))) {
             if ((claim.getBreBand().getImpecuniousStartDate() == null || (claim.getBreBand().getImpecuniousStartDate() != null
                     && (claim.getCreatedDate().after(claim.getBreBand().getImpecuniousStartDate()) || claim.getCreatedDate().equals(claim.getBreBand().getImpecuniousStartDate()))))
                 && (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) > 0 || claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0)) {
                 success = false;
-                narrative = "The CHO is claiming for Hire and/or Repair and the claim is marked as not Impecunious.";
+                narrative = "The CHO is claiming for Hire and/or Repair and the claimant is flagged as being pecunious.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);

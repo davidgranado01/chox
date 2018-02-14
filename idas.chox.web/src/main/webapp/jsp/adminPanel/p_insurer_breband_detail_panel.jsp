@@ -47,8 +47,7 @@
         $.validator.addMethod(
         "checkDateFormat",
         function(value, element) {
-//                var accdate = $("form#formAcknowledgeAction #liabilityAgreedDate").val();
-                if ( !isValidDate(value) ){
+                if ( value != '' && !isValidDate(value) ){
                     return false;
                 }
             return true;
@@ -146,9 +145,7 @@
 </s:if>
                 name:{required:true},
 <s:if test="impecuniosRuleEnabled">
-                impecuniousStartDate:{
-                    checkDateFormat: true,
-                },
+                impecuniousStartDate:{checkDateFormat: true},
 </s:if>
                 isMobileDayAllowance:{required:true, number:true, min:0},
                 isNotMobileDayAllowance:{required:true, number:true, min:0},
@@ -173,7 +170,8 @@
                 maxAllowedLabourPrestigeRate:{required:true, number:true, min:0},
                 maxAllowedEngineerNetFee:{required:true, number:true, min:0},
                 maxAllowedTotalLossNetFee:{required:true, number:true, min:0},
-                auditProcessPercentage:{required:true, number:true, min:0.01, max:100}
+                auditProcessPercentage:{required:true, number:true, min:0.01, max:100},
+                vedChargeCeiling:{required:true, number:true, min:0}
             },
             messages: {
 <s:if test="isSubscriberEnabled">
@@ -186,7 +184,7 @@
 </s:if>
                 name: {required:"You must supply a value for 'Name'" },
 <s:if test="impecuniosRuleEnabled">
-                impecuniousStartDate: {checkDateFormat:"You must supply a valid date for the 'Impecunious Rule'" },
+                impecuniousStartDate: {checkDateFormat:"You must supply a valid date for the 'Pecunious Rule'" },
 </s:if>
                 isMobileDayAllowance: {required:"You must supply a value for 'Mobile Day Allowance'", number:"'Mobile Day Allowance' must be numeric", min:"'Mobile Day Allowance' cannot be less than zero"},
                 isNotMobileDayAllowance: {required:"You must supply a value for 'Not Mobile Day Allowance'", number:"'Not Mobile Day Allowance' must be numeric", min:"'>Not Mobile Day Allowance' cannot be less than zero"},
@@ -211,7 +209,8 @@
                 maxAllowedLabourPrestigeRate: {required:"You must supply a value for 'Maximum Labour Rate Per Hour For Prestige & Special Vehicles'", number:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' must be numeric", min:"'Maximum Labour Rate Per Hour For Prestige & Special Vehicles' cannot be less than zero"},
                 maxAllowedEngineerNetFee: {required:"You must supply a value for 'Maximum Engineer Fee Net Ceiling'", number:"'Maximum Engineer Fee Net Ceiling' must be numeric", min:"'Maximum Engineer Fee Net Ceiling' cannot be less than zero"},
                 maxAllowedTotalLossNetFee: {required:"You must supply a value for 'Maximum Total Loss Fee Net Ceiling'", number:"'Maximum Total Loss Fee Net Ceiling' must be numeric", min:"'Maximum Total Loss Fee Net Ceiling' cannot be less than zero"},
-                auditProcessPercentage: {required:"You must supply a value for 'Audit Process Percentage %'", number:"'Audit Process Percentage %' must be numeric", min:"'Audit Process Percentage %' must be larger than zero", max: "'Audit Process Percentage %' cannot be more than 100"}
+                auditProcessPercentage: {required:"You must supply a value for 'Audit Process Percentage %'", number:"'Audit Process Percentage %' must be numeric", min:"'Audit Process Percentage %' must be larger than zero", max: "'Audit Process Percentage %' cannot be more than 100"},
+                vedChargeCeiling: {required:"You must supply a value for 'VED Charge Ceiling (per day) (£)'", number:"'VED Charge Ceiling (per day) (£)' must be numeric", min:"'VED Charge Ceiling (per day) (£)' cannot be less than zero"},
             }
         });
         ui.ajaxForm(form, doNewBreBandSaveResult);
@@ -2268,10 +2267,10 @@
 
 <s:if test="impecuniosRuleEnabled">
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Impecunious Rule</div>
+                        <div class="section-name">Pecunious Rule</div>
                         <div class="status-info">
                             This field enables you to select a date of claim upload date from which the rule should be
-                            activated. By selecting a date, you are ensuring that the Impecunious Rule (if activated)
+                            activated. By selecting a date, you are ensuring that the Pecunious Rule (if activated)
                             only applies on invoices uploaded where the claim upload date is on or after the date
                             selected. By not selecting a date, the rule will apply to all invoices received after
                             activation date.
@@ -2649,6 +2648,10 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non Standard Risk Insurance Premium Ceiling (£)</label>
                             <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumCeilingToleranceId" name="nonStandardInsurancePremiumCeilingTolerance" value="<s:property value="nonStandardInsurancePremiumCeilingTolerance" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">VED Charge Ceiling (per day) (£)</label>
+                            <input type="text" class="chox-ttxt" id="vedChargeCeilingId" name="vedChargeCeiling" value="<s:property value="vedChargeCeiling" />" />
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -3070,6 +3073,11 @@
                             <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div>
                             <label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vedChargeCheck" value="vedChargeCheck" /></div>
+                            <label class="chox-form-check-label">VED Charge Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the VED Charge billed by the CHO does not exceed the specified VED Charge Ceiling.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairCommencedChkForNonMobileVehicle" value="dateRepairCommencedChkForNonMobileVehicle" /></div>

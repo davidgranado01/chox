@@ -192,8 +192,26 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean copleyOfferMadeCheck;
     private boolean impecuniousCheck;
     private Date impecuniousStartDate;
+    private boolean vedChargeCheck;
+    private BigDecimal vedChargeCeiling = BigDecimal.ZERO;
 
     public BreBand() {
+    }
+
+    public boolean isVedChargeCheck() {
+        return vedChargeCheck;
+    }
+
+    public void setVedChargeCheck(boolean vedChargeCheck) {
+        this.vedChargeCheck = vedChargeCheck;
+    }
+
+    public BigDecimal getVedChargeCeiling() {
+        return vedChargeCeiling;
+    }
+
+    public void setVedChargeCeiling(BigDecimal vedChargeCeiling) {
+        this.vedChargeCeiling = vedChargeCeiling;
     }
 
     public boolean isImpecuniousCheck() {
