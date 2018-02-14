@@ -19,6 +19,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
     private Integer satNavQty;
     private Integer babySeatQty;
     private Integer towBarsQty;
+    private Integer vedQty;
     private Integer nonStandardInsurancePremiumQty;
     private Integer adminQty;
     private Integer roofRackQty;
@@ -43,6 +44,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
         model.setSatNavQty(satNavQty);
         model.setBabySeatQty(babySeatQty);
         model.setTowBarsQty(towBarsQty);
+        model.setVedQty(vedQty);
         model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
         model.setAdminQty(adminQty);
         model.setRoofRackQty(roofRackQty);
@@ -120,6 +122,14 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
 
     public void setTowBarsQty(Integer towBarsQty) {
         this.towBarsQty = towBarsQty;
+    }
+
+    public Integer getVedQty() {
+        return vedQty;
+    }
+
+    public void setVedQty(Integer vedQty) {
+        this.vedQty = vedQty;
     }
 
     public Integer getNonStandardInsurancePremiumQty() {

@@ -1,6 +1,7 @@
 package idas.chox.service.bre.util;
 
 import java.math.BigDecimal;
+
 import idas.chox.core.model.Invoice;
 
 public final class ExtrasCalcHelper {
@@ -34,6 +35,7 @@ public final class ExtrasCalcHelper {
         total = total.add(invoice.getRoofRackFee());
         total = total.add(invoice.getDualControlFee());
         total = total.add(invoice.getDeliveryCollectionFee());
+        total = total.add(invoice.getVedFee());
         
         return total;
     }

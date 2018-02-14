@@ -900,6 +900,30 @@
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">
+                                            VED Charge</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="vedFee" /></label></td>
+                                    <td>
+                                        <s:if test="vedFee!=vedFeeOriginal&&(vedFeeOriginal!=null)">
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="vedFeeOriginal" />)</label>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">
+                                            VED Charge Qty</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro"><s:property value="vedQty" /></label></td>
+                                    <td>
+                                        <s:if test="vedQty!=vedQtyOriginal&&(vedQtyOriginal!=null)">
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="vedQtyOriginal" />)</label>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">
                                             Cover Note Required For<br/>Customer's Own Insurance Policy?</label></td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="coverNoteRequiredDesc" /></label></td></tr>

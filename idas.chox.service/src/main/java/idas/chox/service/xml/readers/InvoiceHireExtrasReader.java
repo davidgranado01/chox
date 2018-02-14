@@ -93,12 +93,12 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
 
         invoice.setCoverNoteRequired(XmlHelper.getBooleanFromNode(extrasElement, "cover-note-required"));
 
-        for (Element ee : elements) {
+        elements.forEach((ee) -> {
             String sExtra = XmlHelper.getNodeValue(ee, "name");
             Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
             BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
             setExtraItem(invoice, sExtra, iQuantity, dIntemCost);
-        }
+        });
     }
 
     private void setExtraItem(Invoice invoice, String nodeName, Integer iQuantity, BigDecimal dIntemCost) {
@@ -138,6 +138,9 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
+        }  else if (nodeName.equalsIgnoreCase("VED")) {
+            invoice.setVedFee(dIntemCost);
+            invoice.setVedQty(iQuantity);
         } else if (nodeName.equalsIgnoreCase("Collaboration Protocol")) {
             invoice.setCollaborationFee(dIntemCost);
             invoice.setCollaborationQty(iQuantity);

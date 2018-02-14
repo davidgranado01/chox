@@ -52,6 +52,8 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private Integer adminQtyOriginal;
     private BigDecimal roofRackFeeOriginal;
     private Integer roofRackQtyOriginal;
+    private BigDecimal vedFeeOriginal;
+    private Integer vedQtyOriginal;
     private BigDecimal dualControlFeeOriginal;
     private Integer dualControlQtyOriginal;
     private BigDecimal deliveryCollectionFeeOriginal;
@@ -80,6 +82,22 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private boolean paymentTeam;
     private String handlingInvoiceNo;
     private String claimInvoiceNo;
+
+    public BigDecimal getVedFeeOriginal() {
+        return vedFeeOriginal;
+    }
+
+    public void setVedFeeOriginal(BigDecimal vedFeeOriginal) {
+        this.vedFeeOriginal = vedFeeOriginal;
+    }
+
+    public Integer getVedQtyOriginal() {
+        return vedQtyOriginal;
+    }
+
+    public void setVedQtyOriginal(Integer vedQtyOriginal) {
+        this.vedQtyOriginal = vedQtyOriginal;
+    }
 
     public String getClaimInvoiceNo() {
         return claimInvoiceNo;

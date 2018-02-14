@@ -55,6 +55,8 @@
         <property column="tow_bars_qty" name="towBarsQtyOriginal"/>
         <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFeeOriginal"/>
         <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQtyOriginal"/>
+        <property column="ved_fee" name="vedFeeOriginal"/>
+        <property column="ved_qty" name="vedQtyOriginal"/>
         <property column="admin_fee" name="adminFeeOriginal"/>
         <property column="admin_qty" name="adminQtyOriginal"/>
         <property column="roof_rack_fee" name="roofRackFeeOriginal"/>

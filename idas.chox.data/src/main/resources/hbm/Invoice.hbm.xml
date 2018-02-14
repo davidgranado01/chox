@@ -58,6 +58,8 @@
         <property column="tow_bars_qty" name="towBarsQty"/>
         <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee"/>
         <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty"/>
+        <property column="ved_fee" name="vedFee"/>
+        <property column="ved_qty" name="vedQty"/>
         <property column="cover_note_required" name="coverNoteRequired"/>
         <property column="admin_fee" name="adminFee"/>
         <property column="admin_qty" name="adminQty"/>

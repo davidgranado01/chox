@@ -1,13 +1,12 @@
 package idas.chox.data;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Date;
 
 /**
  *
@@ -39,6 +38,8 @@ public class ExcelInvoice {
     private Short towBarsQty;
     private BigDecimal nonStandardInsurancePremiumFee;
     private Short nonStandardInsurancePremiumQty;
+    private BigDecimal vedFee;
+    private Short vedQty;
     private Boolean coverNoteRequired;
     private String coverNoteRequiredDesc;
     private BigDecimal adminFee;
@@ -135,7 +136,9 @@ public class ExcelInvoice {
         towBarsQty = (Short) data.get("towbarsqty");
         nonStandardInsurancePremiumFee = (BigDecimal) data.get("nonstandardinsurancepremiumfee");
         nonStandardInsurancePremiumQty = (Short) data.get("nonstandardinsurancepremiumqty");
-        coverNoteRequired = (Boolean) data.get("covernoterequired");
+        vedFee = (BigDecimal) data.get("vedfee");
+        vedQty = (Short) data.get("vedqty");
+         coverNoteRequired = (Boolean) data.get("covernoterequired");
         if (coverNoteRequired == null) {
             coverNoteRequiredDesc = "";
         } else {
@@ -592,6 +595,14 @@ public class ExcelInvoice {
 
     public Short getTowBarsQty() {
         return towBarsQty;
+    }
+
+    public BigDecimal getVedFee() {
+        return vedFee;
+    }
+
+    public Short getVedQty() {
+        return vedQty;
     }
 
     public BigDecimal getVatAmountCollected() {

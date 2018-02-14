@@ -188,6 +188,8 @@ public class Invoice extends Entity implements Serializable {
     private Integer adminQty;
     private BigDecimal roofRackFee;
     private Integer roofRackQty;
+    private BigDecimal vedFee;
+    private Integer vedQty;
     private BigDecimal dualControlFee;
     private Integer dualControlQty;
     private BigDecimal deliveryCollectionFee;
@@ -242,6 +244,22 @@ public class Invoice extends Entity implements Serializable {
     private Integer collaborationQty;
     private boolean paymentTeam;
     private BigDecimal gtaDiscount = BigDecimal.ZERO;
+
+    public BigDecimal getVedFee() {
+        return vedFee;
+    }
+
+    public void setVedFee(BigDecimal vedFee) {
+        this.vedFee = vedFee;
+    }
+
+    public Integer getVedQty() {
+        return vedQty;
+    }
+
+    public void setVedQty(Integer vedQty) {
+        this.vedQty = vedQty;
+    }
 
     public BigDecimal getGtaDiscount() {
         return gtaDiscount;
@@ -1695,6 +1713,8 @@ public class Invoice extends Entity implements Serializable {
         TOW_BARS_QTY                        ("towBarsQty", "Tow Bars Quantity"),
         NON_STANDARD_INS_PREMIUM_FEE        ("nonStandardInsurancePremiumFee", "Non-standard Risk Ins. Premium Fee"),
         NON_STANDARD_INS_PREMIUM_QTY        ("nonStandardInsurancePremiumQty", "Non-standard Risk Ins. Premium Qty"),
+        VED_FEE                             ("vedFee", "VED Charge"),
+        VED_QTY                             ("vedQty", "VED Charge Quantity"),
         COVER_NOTE_REQUIRED                 ("coverNoteRequired", "Cover Note Required For Customers Own Insurance Policy?"),
         ADMIN_FEE                           ("adminFee", "Admin Fee"),
         ADMIN_QTY                           ("adminQty", "Admin Quantity"),

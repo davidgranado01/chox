@@ -385,6 +385,8 @@
                 towBarsQty:{required:true, digits:true},
                 nonStandardInsurancePremiumFee:{required:true, number:true},
                 nonStandardInsurancePremiumQty:{required:true, digits:true},
+                vedFee:{required:true, number:true},
+                vedQty:{required:true, digits:true},
                 adminFee:{required:true, number:true},
                 adminQty:{required:true, digits:true},
                 roofRackFee:{required:true, number:true},
@@ -446,6 +448,8 @@
                 towBarsQty:{required:"Please supply a valid value for 'Tow-bars Qty'", digits:"Please supply a valid value for 'Tow-bars Qty'"},
                 nonStandardInsurancePremiumFee:{required:"Please supply a valid value for 'Non-Standard Insurance Premium Fee'", number:"Please supply a valid value for 'Non-Standard Insurance Premium Fee'"},
                 nonStandardInsurancePremiumQty:{required:"Please supply a valid value for 'Non-Standard Insurance Premium Qty'", digits:"Please supply a valid value for 'Non-Standard Insurance Premium Qty'"},
+                towBarsFee:{required:"Please supply a valid value for 'VED Charge'", number:"Please supply a valid value for 'VED Charge'"},
+                towBarsQty:{required:"Please supply a valid value for 'VED Charge Qty'", digits:"Please supply a valid value for 'VED Charge Qty'"},
                 adminFee:{required:"Please supply a valid value for 'Admin Fee'", number:"Please supply a valid value for 'Admin Fee'"},
                 adminQty:{required:"Please supply a valid value for 'Admin Qty'", digits:"Please supply a valid value for 'Admin Qty'"},
                 roofRackFee:{required:"Please supply a valid value for 'Roofrack Fee'", number:"Please supply a valid value for 'Roofrack Fee'"},
@@ -2040,6 +2044,38 @@
                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQtyOriginal&&(nonStandardInsurancePremiumQtyOriginal!=null)">
                                                         <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQtyOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">VED Charge<span class="mandatory">*</span></label>
+                                                    <input id="vedFee" type="text" class="chox-ttnum" name="vedFee" value="<s:property value="vedFee" />"  onkeyup="extractNumber(this,2,true);"  />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="vedFee!=vedFeeOriginal&&(vedFeeOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="vedFeeOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="towBarQty">
+                                                    <label class="chox-form-std-label">VED Charge Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatetowBarsQtyId" name="vedQty" value="<s:property value="vedQty" />"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="vedQty!=vedQtyOriginal&&(vedQtyOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="vedQtyOriginal" />)</label>
                                                     </s:if>
                                                 </div>
                                             </td>

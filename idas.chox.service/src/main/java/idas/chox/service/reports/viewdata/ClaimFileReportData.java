@@ -238,6 +238,8 @@ public class ClaimFileReportData {
     private Integer extrasTowBarQuantity;
     private BigDecimal extrasNSRInsPremiumFee;
     private Integer extrasNSRInsPremiumQuantity;
+    private BigDecimal extrasVedFee;
+    private Integer extrasVedQuantity;
     private BigDecimal extrasAdminFee;
     private Integer extrasAdminQuantity;
     private BigDecimal extrasRoofRackFee;
@@ -807,6 +809,8 @@ public class ClaimFileReportData {
                 extrasTowBarQuantity = invoice.getTowBarsQty();
                 extrasNSRInsPremiumFee = invoice.getNonStandardInsurancePremiumFee();
                 extrasNSRInsPremiumQuantity = invoice.getNonStandardInsurancePremiumQty();
+                extrasVedFee = invoice.getVedFee();
+                extrasVedQuantity = invoice.getVedQty();
                 extrasAdminFee = invoice.getAdminFee();
                 extrasAdminQuantity = invoice.getAdminQty();
                 extrasRoofRackFee = invoice.getRoofRackFee();
@@ -1175,6 +1179,14 @@ public class ClaimFileReportData {
 
     public Integer getExtrasTowBarQuantity() {
         return extrasTowBarQuantity;
+    }
+
+    public BigDecimal getExtrasVedFee() {
+        return extrasVedFee;
+    }
+
+    public Integer getExtrasVedQuantity() {
+        return extrasVedQuantity;
     }
 
     public String getHireMonBookedInDate() {

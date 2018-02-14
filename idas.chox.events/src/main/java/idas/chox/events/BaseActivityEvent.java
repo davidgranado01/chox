@@ -901,6 +901,7 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("invoiceBabySeatFee", invoice.getBabySeatFee().toPlainString());
                 addAttribute("invoiceTowBarsFee", invoice.getTowBarsFee().toPlainString());
                 addAttribute("invoiceNonStandardPremiumFee", invoice.getNonStandardInsurancePremiumFee().toPlainString());
+                addAttribute("invoiceVedFee", invoice.getVedFee().toPlainString());
                 addAttribute("invoiceAdminFee", invoice.getAdminFee().toPlainString());
                 addAttribute("invoiceRoofRackFee", invoice.getRoofRackFee().toPlainString());
                 addAttribute("invoiceDualControlFee", invoice.getDualControlFee().toPlainString());

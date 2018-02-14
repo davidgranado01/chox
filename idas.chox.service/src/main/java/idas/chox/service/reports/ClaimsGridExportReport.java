@@ -163,6 +163,7 @@ public class ClaimsGridExportReport {
             .append(" i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,")
             .append(" i.estate_fee as estatefee, i.estate_qty as estateqty, i.baby_seat_fee as babyseatfee, i.baby_seat_qty as babyseatqty,")
             .append(" i.tow_bars_fee as towbarsfee, i.tow_bars_qty as towbarsqty, i.non_standard_insurance_premium_fee as nonstandardinsurancepremiumfee,")
+            .append(" i.ved_fee as vedfee, i.ved_qty as vedqty,")
             .append(" i.non_standard_insurance_premium_qty as nonstandardinsurancepremiumqty, i.cover_note_required as covernoterequired,")
             .append(" i.admin_fee as adminfee, i.admin_qty as adminqty, i.roof_rack_fee as roofrackfee, i.roof_rack_qty as roofrackqty,")
             .append(" i.dual_control_fee as dualcontrolfee, i.dual_control_qty as dualcontrolqty, i.delivery_collection_fee as deliverycollectionfee,")

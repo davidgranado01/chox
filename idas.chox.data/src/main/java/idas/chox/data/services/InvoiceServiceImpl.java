@@ -69,6 +69,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setBabySeatQtyOriginal(inv.getBabySeatQty());
             invOriginal.setTowBarsQtyOriginal(inv.getTowBarsQty());
             invOriginal.setNonStandardInsurancePremiumQtyOriginal(inv.getNonStandardInsurancePremiumQty());
+            invOriginal.setVedQtyOriginal(inv.getVedQty());
             invOriginal.setAdminQtyOriginal(inv.getAdminQty());
             invOriginal.setRoofRackQtyOriginal(inv.getRoofRackQty());
             invOriginal.setDualControlQtyOriginal(inv.getDualControlQty());
@@ -99,6 +100,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setBabySeatFeeOriginal(inv.getBabySeatFee());
             invOriginal.setTowBarsFeeOriginal(inv.getTowBarsFee());
             invOriginal.setNonStandardInsurancePremiumFeeOriginal(inv.getNonStandardInsurancePremiumFee());
+            invOriginal.setVedFeeOriginal(inv.getVedFee());
             invOriginal.setAdminFeeOriginal(inv.getAdminFee());
             invOriginal.setRepairAdminFeeOriginal(inv.getRepairAdminFee());
             invOriginal.setRepairAcquisitionFeeOriginal(inv.getRepairAcquisitionFee());

@@ -1172,6 +1172,26 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getEstateFee();
     }
 
+    public java.math.BigDecimal getVedFee() {
+        return invoice.getVedFee();
+    }
+
+    public void setVedFee(java.math.BigDecimal vedFee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setVedFee(vedFee);
+        }
+    }
+
+    public Integer getVedQty() {
+        return invoice.getVedQty();
+    }
+
+    public void setVedQty(Integer vedQty) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setVedQty(vedQty);
+        }
+    }
+
     public void setEstateFee(java.math.BigDecimal estateFee) {
         if (actionSelected != reset && invoice != null) {
             invoice.setEstateFee(estateFee);
@@ -2642,6 +2662,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalExtras = totalExtras.add(getEstateFee());
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
+        totalExtras = totalExtras.add(getVedFee());
         if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
             totalExtras = totalExtras.add(getCollaborationFee());
         }
