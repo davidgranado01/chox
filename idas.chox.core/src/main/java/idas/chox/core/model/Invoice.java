@@ -188,8 +188,8 @@ public class Invoice extends Entity implements Serializable {
     private Integer adminQty;
     private BigDecimal roofRackFee;
     private Integer roofRackQty;
-    private BigDecimal vedFee;
-    private Integer vedQty;
+    private BigDecimal vedFee = BigDecimal.ZERO; // Need to initialise as not present in some invoice xml
+    private Integer vedQty = 0;  // Need to initialise as not present in some invoice xml
     private BigDecimal dualControlFee;
     private Integer dualControlQty;
     private BigDecimal deliveryCollectionFee;
@@ -501,7 +501,6 @@ public class Invoice extends Entity implements Serializable {
      * @return java.math.BigDecimal
      */
     public java.math.BigDecimal getHireNet() {
-        LOG.debug("getHireNet is being called");
         return hireNet;
     }
 
@@ -511,7 +510,6 @@ public class Invoice extends Entity implements Serializable {
      * @param hireNet
      */
     public void setHireNet(java.math.BigDecimal hireNet) {
-        LOG.debug("setHireNet is being called");
         this.hireNet = hireNet;
     }
 
@@ -1422,35 +1420,16 @@ public class Invoice extends Entity implements Serializable {
         this.repairPenaltyChargeAppliedDate = repairPenaltyChargeAppliedDate;
     }
 
-//    public BigDecimal getOriginalFullTotalToPay() {
-//        return originalFullTotalToPay;
-//    }
-//
-//    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
-//        this.originalFullTotalToPay = originalTotalToPay;
-//    }
-
     public BigDecimal getTotalToPay() {
         return totalToPay;
     }
 
     public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
-        LOG.debug("setTotalToPay() is called with the value of {}", totalToPaySplitLiability);
         this.totalToPay = totalToPaySplitLiability;
     }
 
-//    public BigDecimal getOriginalTotalToPay() {
-//        return originalTotalToPay;
-//    }
-//
-//    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
-//        this.originalTotalToPay = originalTotalToPay;
-//    }
 
     public BigDecimal getAdditionalDriverFee() {
-//        if (additionalDriverFee == null)
-//            return BigDecimal.ZERO;
-//        else
         return additionalDriverFee;
     }
 
@@ -1459,9 +1438,6 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public Integer getAdditionalDriverQty() {
-//        if (additionalDriverQty == null)
-//            return 0;
-//        else
         return additionalDriverQty;
     }
 

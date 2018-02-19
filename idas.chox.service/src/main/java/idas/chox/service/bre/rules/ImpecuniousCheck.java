@@ -29,10 +29,9 @@ public class ImpecuniousCheck implements IBusinessRule {
         boolean success = true;
 
         if (claim.getBreBand().isImpecuniousCheck() && claim.getInsurerHireMonitoringDetail() != null && claim.getInsurerHireMonitoringDetail().getClaimantImpecunious() != null
-                && !claim.getInsurerHireMonitoringDetail().getClaimantImpecunious()
                 && ((ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableManualLouDates())
                     || (!ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isEnableLouDates()))) {
-            if ((claim.getBreBand().getImpecuniousStartDate() == null || (claim.getBreBand().getImpecuniousStartDate() != null
+            if (!claim.getInsurerHireMonitoringDetail().getClaimantImpecunious() && (claim.getBreBand().getImpecuniousStartDate() == null || (claim.getBreBand().getImpecuniousStartDate() != null
                     && (claim.getCreatedDate().after(claim.getBreBand().getImpecuniousStartDate()) || claim.getCreatedDate().equals(claim.getBreBand().getImpecuniousStartDate()))))
                 && (claim.getInvoice().getHireGross().compareTo(BigDecimal.ZERO) > 0 || claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0)) {
                 success = false;

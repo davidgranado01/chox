@@ -9,17 +9,16 @@ public final class ExtrasCalcHelper {
     private Invoice invoice;
     
     private ExtrasCalcHelper(Invoice ex){
-
         invoice = ex;
     }
-    
+
+
     public static ExtrasCalcHelper getInstance(Invoice ex){
-        
         return new ExtrasCalcHelper(ex);
     }
-    
-    public BigDecimal getTotalExtras() {
 
+
+    public BigDecimal getTotalExtras() {
         BigDecimal total = BigDecimal.ZERO;
         
         total = total.add(invoice.getMiscellaneousFee());
@@ -39,6 +38,5 @@ public final class ExtrasCalcHelper {
         
         return total;
     }
-
 }
 

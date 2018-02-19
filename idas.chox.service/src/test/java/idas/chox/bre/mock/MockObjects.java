@@ -10,6 +10,7 @@ import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.InsurerHireMonitoringDetail;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
@@ -213,6 +214,22 @@ public class MockObjects {
         hireMonitoringDetail.setRepairBookInDate(DateHelper.getCurrentDate());
         hireMonitoringDetail.setRepairCompletionDate(DateHelper.getCurrentDate());
         hireMonitoringDetail.setTotalLossInspectionReport("ABC");
+
+        return hireMonitoringDetail;
+    }
+    
+    public InsurerHireMonitoringDetail getTestInsurerHireMonitoringDetail(){
+        
+        InsurerHireMonitoringDetail hireMonitoringDetail = new InsurerHireMonitoringDetail();
+
+        hireMonitoringDetail.setInspectionBookedDate(DateHelper.getCurrentDate());
+        hireMonitoringDetail.setInspectionDate(DateHelper.getCurrentDate());
+        hireMonitoringDetail.setLabourCost(BigDecimal.ZERO);
+        hireMonitoringDetail.setLabourHour(BigDecimal.ZERO);
+        hireMonitoringDetail.setLabourRate(BigDecimal.ZERO);
+        hireMonitoringDetail.setRepairBookInDate(DateHelper.getCurrentDate());
+        hireMonitoringDetail.setRepairCompletionDate(DateHelper.getCurrentDate());
+        hireMonitoringDetail.setClaimantImpecunious(Boolean.TRUE);
 
         return hireMonitoringDetail;
     }

@@ -52,8 +52,8 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private Integer adminQtyOriginal;
     private BigDecimal roofRackFeeOriginal;
     private Integer roofRackQtyOriginal;
-    private BigDecimal vedFeeOriginal;
-    private Integer vedQtyOriginal;
+    private BigDecimal vedFeeOriginal = BigDecimal.ZERO;
+    private Integer vedQtyOriginal = 0;
     private BigDecimal dualControlFeeOriginal;
     private Integer dualControlQtyOriginal;
     private BigDecimal deliveryCollectionFeeOriginal;
