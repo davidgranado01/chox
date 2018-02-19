@@ -1,13 +1,14 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -19,7 +20,7 @@ import idas.chox.core.util.XmlHelper;
 public class InvoiceHireExtrasReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceHireExtrasReader.class);
 
-    private static String sectionName = "Invoice Extra";
+    private static final String SECTION_NAME = "Invoice Extra";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
@@ -27,10 +28,12 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "extras");
 
-        List<Element> elements = null;
+        List<Element> elements;
         
         if (element != null) {
             elements = XMLUtils.getElements(element.getOwnerDocument(), element, "extra");
+        } else {
+            elements = new ArrayList<>();
         }
 
         boolean isAllowToReadData = false;
@@ -48,15 +51,15 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
 
             isAllowToReadData = true;
 
-            claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
+            claimResult = NodeHelper.nodeValidateDefaultDescription(SECTION_NAME, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
             for (Element ee : elements) {
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
                 String strExtraFee = new StringBuilder().append(strExtraName).append(" Fee").toString();
                 String strExtraQty = new StringBuilder().append(strExtraName).append(" Quantity").toString();
                 
-                NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
-                NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
-                NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
+                NodeHelper.nodeValidateDefaultDescription(SECTION_NAME, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
+                NodeHelper.nodeValidateDefaultDescription(SECTION_NAME, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
+                NodeHelper.nodeValidateDefaultDescription(SECTION_NAME, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 
                 /*
                  * Hard-coded check on Collaboration Protocol charges for non-collaboration protocol claims
@@ -66,7 +69,7 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
                         && (strExtraName.equals("Collaboration Protocol"))
                         && BigDecimal.ZERO.compareTo(dIntemCost) != 0) {
                     claimResult.setCheckDataValid(false);
-                    claimResult.getMessage().add(String.format("A '%s' fee is being charged. This charge is only accepted on Collaboration Protocol claims. Please remove and re-submit without this charge.", strExtraName, sectionName));
+                    claimResult.getMessage().add(String.format("A '%s' fee is being charged. This charge is only accepted on Collaboration Protocol claims. Please remove and re-submit without this charge.", strExtraName, SECTION_NAME));
                 }
             }
 
@@ -138,7 +141,7 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
-        }  else if (nodeName.equalsIgnoreCase("VED")) {
+        }  else if (nodeName.equalsIgnoreCase("VED Charge")) {
             invoice.setVedFee(dIntemCost);
             invoice.setVedQty(iQuantity);
         } else if (nodeName.equalsIgnoreCase("Collaboration Protocol")) {
