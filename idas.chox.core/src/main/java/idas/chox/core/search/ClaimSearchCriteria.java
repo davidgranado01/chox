@@ -66,6 +66,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<ClaimType> claimTypes;
     private int finalReviewValue;
     private int paymentDisputeValue;
+    private int paymentReturnsValue;
     private String filterName;
     private Boolean caseWithClientsSolicitor;
     private int claimAuditValue;
@@ -597,6 +598,14 @@ public class ClaimSearchCriteria implements Serializable {
         this.paymentDisputeValue = paymentDisputeValue;
     }
 
+    public int getPaymentReturnsValue() {
+        return paymentReturnsValue;
+    }
+
+    public void setPaymentReturnsValue(int paymentReturnsValue) {
+        this.paymentReturnsValue = paymentReturnsValue;
+    }
+
     public int getClaimAuditValue() {
         return claimAuditValue;
     }
@@ -742,9 +751,9 @@ public class ClaimSearchCriteria implements Serializable {
 
         if (getHireAndRepairSearchParamIds()!= null && !getHireAndRepairSearchParamIds().isEmpty()) {
             StringBuilder returnString = new StringBuilder();
-            for (Integer i : getHireAndRepairSearchParamIds()) {
+            getHireAndRepairSearchParamIds().forEach((i) -> {
                 returnString.append(i.toString()).append(",");
-            }
+            });
             return returnString.toString().substring(0, returnString.length() - 1);
         }
         return "";

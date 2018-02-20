@@ -45,6 +45,7 @@ public interface Filter {
     public static final String FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED = "ManualInvoicesToBeAssigned";
     public static final String FILTER_CLAIMS_REQUIRING_AUDIT = "ClaimsRequiringAudit";
     public static final String FILTER_MATCHED_CLAIMS = "MatchedClaims";
+    public static final String FILTER_PAYMENT_TEAM_RETURNS = "PaymentTeamReturns";
 
     String getKey();
 

@@ -9,6 +9,7 @@ public class SwitchFromPaymentsTeam extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         claim.getInvoice().setPaymentTeam(false);
+        claim.setPaymentsTeamReturn(true);
         claim.addComment(Comment.newComment(0, "Claim Switched From Payments Team to Claims Handler."));
     }
 }

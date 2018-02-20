@@ -367,4 +367,14 @@
         <property name="isFilterOwnership" value="true"/>
         <property name="isCheckClaimMatching" value="true"/>
     </bean>
+
+    <bean id="PaymentTeamReturns" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Payments Team Returns"/>
+        <property name="key" value="PaymentTeamReturns"/>
+        <property name="status" value="AwaitingInvoicePayment"/>
+        <property name="queueDescription" value="Claims where the invoice has been returned from the Payments Team"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+    </bean>
+
 </beans>

@@ -8,7 +8,6 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.search.ClaimSearchCriteria;
 
 public class FilterByStatus extends BaseFilter {
-
     private String status;
     private String name;
     private String key;
@@ -29,14 +28,23 @@ public class FilterByStatus extends BaseFilter {
                          && (securityInfoProvider.getCurrentUser().getInsurer().isPaymentsTeamEnable()
                  || securityInfoProvider.getCurrentUser().getInsurer().isPaymentDisputesEnable())))) {
             Insurer ins = securityInfoProvider.getCurrentUser().getInsurer();
-            if ((ins == null || ins.isPaymentsTeamEnable()) && !"InvoicePaymentDispute".equals(key)) {
+            if ((ins == null || ins.isPaymentsTeamEnable()) && !"InvoicePaymentDispute".equals(key) && !"PaymentTeamReturns".equals(key)) {
                 claimSearchCriteria.setApprovedInvoiceOwnershipSearchParamIds(new HashSet<>(Arrays.asList(new Integer[]{new Integer("1")})));
             }
             if ((ins == null || ins.isPaymentDisputesEnable()) && "InvoicePaymentDispute".equals(key)) {
-                claimSearchCriteria.setPaymentDisputeValue(1);
-            } else if (ins == null || ins.isPaymentDisputesEnable()) {
-                claimSearchCriteria.setPaymentDisputeValue(2);
+                claimSearchCriteria.setPaymentDisputeValue(1);  // paymentDispute=true
+            } else if ((ins == null || ins.isPaymentDisputesEnable()) && !"PaymentTeamReturns".equals(key)) {
+                claimSearchCriteria.setPaymentDisputeValue(2); // paymentDispute=false
+                claimSearchCriteria.setPaymentReturnsValue(2); // paymentReturns=false
+           } else if ((ins == null || ins.isPaymentsTeamEnable()) && "PaymentTeamReturns".equals(key)) {
+                claimSearchCriteria.setPaymentReturnsValue(1);
+                // We do not want payment disputes falling back into the Payment Returns Queue
+                if (ins == null || ins.isPaymentDisputesEnable()) {
+                    claimSearchCriteria.setPaymentDisputeValue(2); // paymentDispute=false
+                }
+
             }
+
         } else if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(status)) {
             if ("CaseWithClientsSolicitor".equals(key)) {
                 claimSearchCriteria.setCaseWithClientsSolicitor(true);

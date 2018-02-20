@@ -27,6 +27,7 @@
     var hireAndRepairSearchParamCombo;
     var approvedInvoiceOwnershipSearchParamCombo;
     var paymentDisputesSearchParamCombo;
+    var paymentReturnsSearchParamCombo;
     var claimAuditSearchParamCombo
     var finalReviewValuesCombo;
     var searchColumsPanel;
@@ -147,11 +148,6 @@
                 checked: <s:property value="showOpenClaimsOnly"/>,
                 tip : 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed, PaymentReceived or ManualInvoicePaid will be excluded from the list of search results.',
                 listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }, 
                     render : function(c) { 
                         new Ext.ToolTip({ target: 'help-open-items-icon', html: c.tip});
                     }
@@ -166,14 +162,7 @@
                 value:'<s:property value="liabilityStatusUpdated"/>',
                 fieldLabel: 'Show Claims With Liability Status Update Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="liabilityStatusUpdated"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="liabilityStatusUpdated"/>
             });
             
             var caseWithClientsSolicitorCheckBox = new Ext.form.Checkbox({
@@ -184,14 +173,7 @@
                 value:'<s:property value="caseWithClientsSolicitor"/>',
                 fieldLabel: 'Show Claims With Clients Solicitor Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="caseWithClientsSolicitorValue"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="caseWithClientsSolicitorValue"/>
             });
             
             var supplementaryInvoicedClaimsCheckBox = new Ext.form.Checkbox({
@@ -200,14 +182,7 @@
                 value:'<s:property value="supplementaryInvoiceOnly"/>',
                 fieldLabel: 'Show Claims With Supp. Invoice(s) Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="supplementaryInvoiceOnly"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="supplementaryInvoiceOnly"/>
             });
 
             var penaltyChargesAppliedCheckBox = new Ext.form.Checkbox({
@@ -216,14 +191,7 @@
                 value:'<s:property value="penaltyChargesAppliedOnly"/>',
                 fieldLabel: 'Show Claims With Penalty Charges Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="penaltyChargesAppliedOnly"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="penaltyChargesAppliedOnly"/>
             });
             
             var penaltyChargesToBeAppliedCheckBox = new Ext.form.Checkbox({
@@ -234,14 +202,7 @@
                 value:'<s:property value="penaltyChargeApplied"/>',
                 fieldLabel: 'Show Claims With Penalty Charges To Be Applied Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="penaltyChargeApplied"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="penaltyChargeApplied"/>
             });
             
             var anomaliesCheckBox = new Ext.form.Checkbox({
@@ -252,14 +213,7 @@
                 hidden : !<s:property value="anomaliesCheckBoxVisible"/>,
                 fieldLabel: 'Show Claims With Hire Updates Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="anomalies"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="anomalies"/>
             });
                         
             var escalatedToSupervisorCheckBox = new Ext.form.Checkbox({
@@ -270,14 +224,7 @@
                 value:'<s:property value="escalatedToSupervisor"/>',
                 fieldLabel: 'Show Claims Escalated To Supervisor Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="escalatedToSupervisor"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="escalatedToSupervisor"/>
             });
             
             var matchedClaimsCheckBox = new Ext.form.Checkbox({
@@ -288,14 +235,7 @@
                 value:'<s:property value="claimMatchValue"/>',
                 fieldLabel: 'Show Matched Claims to be Reviewed Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: (<s:property value="claimMatchActive"/> > 0),
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: (<s:property value="claimMatchActive"/> > 0)
             });
             
             var interimPaymentMadeCheckBox = new Ext.form.Checkbox({
@@ -306,14 +246,7 @@
                 value:'<s:property value="interimPaymentMade"/>',
                 fieldLabel: 'Show Claims With Interim Payments Only',
                 labelStyle: 'width:190px;margin-top:-5px',
-                checked: <s:property value="interimPaymentMade"/>,
-                listeners:{
-                    check:function (el, e) {
-                        if(e.keyCode === e.ENTER) {
-//                            searchClaim(true);
-                        }
-                    }
-                }
+                checked: <s:property value="interimPaymentMade"/>
             });
             
             var claimUploadDateFromPicker = new Ext.form.DateField({
@@ -323,7 +256,6 @@
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
-                //            hideMode: 'offsets',
                 value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
                 showWeekNumber: true,
                 msgTarget : 'qtip',
@@ -334,7 +266,6 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -354,9 +285,6 @@
                         if(e.keyCode === e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -369,7 +297,6 @@
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
-                //            hideMode: 'offsets',
                 value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateFrom" />',
                 showWeekNumber: true,
                 msgTarget : 'qtip',
@@ -378,9 +305,6 @@
                         if(e.keyCode === e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -402,7 +326,6 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -424,7 +347,6 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -447,7 +369,6 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -467,9 +388,6 @@
                         if(e.keyCode === e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -491,12 +409,10 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
 
-            <%--<s:if test="isCHO" >--%>
             var reviewRequiredDateFromPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateFrom',
                 fieldLabel: 'Hire Monitoring Review Required Date From',
@@ -514,9 +430,6 @@
                         if(e.keyCode === e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
@@ -540,16 +453,12 @@
                         }
                     },
                     select : function(){
-//                        searchClaim(true);
                     }
                 }
             });
 
             reviewRequiredDateFromPicker.on('change', onReveiwDateChange);
             reviewRequiredDateToPicker.on('change', onReveiwDateChange);
-            <%--</s:if>--%>
-
-            <%--<s:if test="isInsurer!=true" >--%>
                 // Add insurers drop-down menu
                 var insurersJsonReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
@@ -602,8 +511,6 @@
                             insurerComboNumberOfSelectedRecord ++;
                             doInsurerSearchSelectOnChange();
                             doLayoutSearchPanel();
-//                            loadQueueGrid(true);
-//                            searchClaim(true);
                         },
                         removeitem : function() {
                             if (!this.getValue() && insurerComboNumberOfSelectedRecord >=1) {
@@ -611,22 +518,15 @@
                                 this.reset();
                                 this.clearValue();
                                 doInsurerSearchSelectOnChange();
-//                                loadQueueGrid(true);
-//                                searchClaim(true);
                             } else if (insurerComboNumberOfSelectedRecord>1) {
                                 insurerComboNumberOfSelectedRecord --;
                                 doInsurerSearchSelectOnChange();
-//                                loadQueueGrid(true);
-//                                searchClaim(true);
                             }
                             doLayoutSearchPanel();  
                         }
                     }
                 });
 
-                <%--</s:if>--%> 
-
-                <%--<s:if test="isCHO!=true">--%>
                 // Add supplier/CHO drop-down menu
                 var suppliersJsonReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
@@ -678,9 +578,7 @@
                         select : function(){
                             supplierComboNumberOfSelectedRecord ++;
                             doSupplierSearchSelectOnChange();
-//                            loadQueueGrid(true);
                             doLayoutSearchPanel();
-//                            searchClaim(true);
                         },
                         removeitem : function() {
                             if (!this.getValue() && supplierComboNumberOfSelectedRecord >=1) {
@@ -688,22 +586,15 @@
                                 this.reset();
                                 this.clearValue();
                                 doSupplierSearchSelectOnChange();
-//                                loadQueueGrid(true);
-//                                searchClaim(true);
                             } else if (supplierComboNumberOfSelectedRecord >=1) {
                                 supplierComboNumberOfSelectedRecord --;
                                 doSupplierSearchSelectOnChange();
-//                                loadQueueGrid(true);
-//                                searchClaim(true);
                             }
                             doLayoutSearchPanel(); 
                         }
                     }
                 });
-//                supplierSearchScreenCombo.render('searchScreenSupplierDropDownDiv');
-                <%--</s:if>--%>  
 
-                <%--<s:if test="isInsurer!=true || (isInsurer && insurerIsWorkgroupEnabled)" >--%>
                 // Add Workgroup drop-down menu
                 var wgrpJsonReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
@@ -723,7 +614,6 @@
                         if(selectedWorkgroupValues && workgroupSearchScreenCombo) {workgroupSearchScreenCombo.reset();workgroupSearchScreenCombo.setValue(selectedWorkgroupValues);}    
                     }}
                 });
-//                workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
                 workgroupSearchScreenCombo = new Ext.ux.form.SuperBoxSelect({
                     store : workgroupSearchScreenStore,
                     width: 250,
@@ -769,7 +659,6 @@
                             workgroupComboNumberOfSelectedRecord ++;
                             doSearchWorkgroupOnChange();
                             doLayoutSearchPanel();
-//                            searchClaim(true);
                         },
                         removeitem : function() {
                             if (!this.getValue() && workgroupComboNumberOfSelectedRecord >= 1) {
@@ -777,25 +666,16 @@
                                 this.reset();
                                 this.clearValue();
                                 doSearchWorkgroupOnChange();
-//                                searchClaim(true);
                             } else if (workgroupComboNumberOfSelectedRecord >= 1) {
                                 workgroupComboNumberOfSelectedRecord --;
                                 doSearchWorkgroupOnChange();
-//                                searchClaim(true);
                             }
                             doLayoutSearchPanel();
                         }
                     }
                 });
-            
-//                workgroupSearchScreenCombo.render('searchScreenWorkgroupDropDownDiv');
-                <%--</s:if>--%>
-        
-            // Add claim owner combo box
-       
-
-                <%--<s:if test="isInsurer!=true || (isInsurer && insurerIsClaimOwnershipEnabled)" >--%>
-        
+                    
+            // Add claim owner combo box        
                 var claimOwnerReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
                     root: 'results',
@@ -853,33 +733,22 @@
                         select : function(){
                             claimOwnerComboNumberOfSelectedRecord ++;
                             doLayoutSearchPanel();
-//                            searchClaim(true);
                         },
                         removeitem : function() {
                             if (!this.getValue() && claimOwnerComboNumberOfSelectedRecord >=1) {
                                 claimOwnerComboNumberOfSelectedRecord = 0;
                                 this.reset();
                                 this.clearValue();
-//                                searchClaim(true); 
                             } else if (claimOwnerComboNumberOfSelectedRecord >= 1) {
                                 claimOwnerComboNumberOfSelectedRecord --;
-//                                searchClaim(true); 
                             }
                             doLayoutSearchPanel();
                         }
                     }
                 });
-
-//                claimOwnerSearchScreenCombo.render('searchScreenClaimhandlerDownDiv');
-                <%--</s:if>--%>
-        
         
             // Add CHO claim owner combo box
-      
 
-                <%--<s:if test="isCHO!=true || (isCHO && choIsClaimOwnershipEnabled)" >--%>
-        
-        
                 var supplierClaimOwnerReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
                     root: 'results',
@@ -951,27 +820,19 @@
                         select : function(){
                             supplierClaimOwnerComboNumberOfSelectedRecord ++;
                             doLayoutSearchPanel();
-//                            searchClaim(true);
                         },
                         removeitem : function() {
                             if (!this.getValue() && supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
                                 supplierClaimOwnerComboNumberOfSelectedRecord = 0;
                                 this.reset();
                                 this.clearValue();
-//                                searchClaim(true); 
                             } else if (supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
                                 supplierClaimOwnerComboNumberOfSelectedRecord --;
-//                                searchClaim(true); 
                             }
                             doLayoutSearchPanel();
                         }
                     }
                 });
-
-//                supplierClaimOwnerSearchScreenCombo.render('searchScreenSupplierClaimOwnerDropDownDiv');
-                <%--</s:if>--%>
-        
-        
 
             // Add statuses drop-down menu
             var statusesJsonReader = new Ext.data.JsonReader({
@@ -998,9 +859,6 @@
                         this.insert(0, new Ext.data.Record(actionsForHandlers));
                         
             </s:if>
-            <s:else >
-//                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
-            </s:else>
                     }}
             });
             
@@ -1036,7 +894,6 @@
                         statusComboNumberOfSelectedRecord++;
                         statusChange();
                         doLayoutSearchPanel();
-//                        searchClaim(true);
                     },
                     removeitem : function() { 
                         if (!this.getValue() && statusComboNumberOfSelectedRecord >= 1) {
@@ -1044,11 +901,9 @@
                             this.reset();
                             this.clearValue();
                             statusChange();
-//                            searchClaim(true);
                          } else if (statusComboNumberOfSelectedRecord >= 1) {
                             statusComboNumberOfSelectedRecord --;
                             statusChange();
-//                            searchClaim(true);  
                          }
                          doLayoutSearchPanel();
                     }
@@ -1110,7 +965,6 @@
                         liabilityStatusComboNumberOfSelectedRecord ++;
                         statusChange();
                         doLayoutSearchPanel();
-//                        searchClaim(true);
                     },
                     removeitem : function() {
                         if (!this.getValue() && liabilityStatusComboNumberOfSelectedRecord >= 1) {
@@ -1118,11 +972,9 @@
                             this.reset();
                             this.clearValue();
                             statusChange();
-//                            searchClaim(true);
                             } else if (liabilityStatusComboNumberOfSelectedRecord >= 1){
                                 liabilityStatusComboNumberOfSelectedRecord --;
                                 statusChange();
-//                                searchClaim(true);  
                             }
                             doLayoutSearchPanel();
                     }
@@ -1155,7 +1007,6 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText: '--- N/A ---',
-//                removeValuesFromStore : false,
                 selectOnFocus : true,
                 forceSelection : true,
                 listeners: {
@@ -1173,8 +1024,6 @@
                         }
                     },
                     select : function(){
-//                        doLayoutSearchPanel();
-//                        searchClaim(true);
                     }, blur : function() {
                         if (this.getValue() <= 0) {
                             this.reset();
@@ -1229,7 +1078,6 @@
                         hireAndRepairSearchComboNumberOfSelectedRecord ++;
                         statusChange();
                         doLayoutSearchPanel();
-//                        searchClaim(true);
                     },
                     removeitem : function() {
                         if (!this.getValue() && hireAndRepairSearchComboNumberOfSelectedRecord >=1) {
@@ -1237,11 +1085,9 @@
                             this.reset();
                             this.clearValue();
                             statusChange();
-//                            searchClaim(true);
                         } else if (hireAndRepairSearchComboNumberOfSelectedRecord >= 1){
                             hireAndRepairSearchComboNumberOfSelectedRecord --;
                             statusChange();
-//                            searchClaim(true); 
                         }
                         doLayoutSearchPanel();
                     }
@@ -1294,7 +1140,6 @@
                         approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord ++;
                         statusChange();
                         doLayoutSearchPanel();
-//                        searchClaim(true);
                     },
                     removeitem : function() {
                         if (!this.getValue() && approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord >=1) {
@@ -1302,11 +1147,9 @@
                             this.reset();
                             this.clearValue();
                             statusChange();
-//                            searchClaim(true);
                         } else if (approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord >= 1){
                             approvedInvoiceOwnershipSearchComboNumberOfSelectedRecord --;
                             statusChange();
-//                            searchClaim(true); 
                         }
                         doLayoutSearchPanel();
                     }
@@ -1340,7 +1183,6 @@
                 mode : 'local',
                 triggerAction : 'all',
                 emptyText: '--- N/A ---',
-//                removeValuesFromStore : false,
                 selectOnFocus : true,
                 forceSelection : true,
                 listeners: {
@@ -1358,8 +1200,6 @@
                         }
                     },
                     select : function(){
-//                        doLayoutSearchPanel();
-//                        searchClaim(true);
                     }, blur : function() {
                         if (this.getValue() <= 0) {
                             this.reset();
@@ -1369,6 +1209,58 @@
                 }
             });
             
+            var paymentReturnsSearchParamData = [['Yes', 1], ['No', 2]];
+            
+            var paymentReturnsSearchParamStore = new Ext.data.ArrayStore({
+                    fields: [
+                       {name: 'text', type: 'string'},
+                       {name: 'value', type: 'int'}
+                    ]
+            });
+            
+            paymentReturnsSearchParamStore.loadData(paymentReturnsSearchParamData);
+            // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
+            var paymentReturnsSearchComboNumberOfSelectedRecord = 0;
+            
+            paymentReturnsSearchParamCombo = new Ext.form.ComboBox({
+                store : paymentReturnsSearchParamStore,
+                width: 120,
+                fieldLabel: 'Payments Team Returns',
+                labelStyle: 'width:155px',
+                valueField : 'value',
+                id : 'paymentReturnsSearchParamComboId',
+                disabled : <s:property value="isCHO || (isInsurer && !insurerPaymentsTeamEnabled)"/>,
+                hidden : <s:property value="isCHO || (isInsurer && !insurerPaymentsTeamEnabled)"/>,
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- N/A ---',
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="paymentReturnsValue"/>' > 0) {
+                            this.setValue('<s:property value="paymentReturnsValue"/>'); 
+                        } else {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    },
+                    select : function(){
+                    }, blur : function() {
+                        if (this.getValue() <= 0) {
+                            this.reset();
+                            this.clearValue();
+                        }
+                    }
+                }
+            });
             
             var claimAuditSearchParamData = [['To Be Completed', 1], ['Completed', 2]];
             
@@ -1412,8 +1304,6 @@
                         }
                     },
                     select : function(){
-//                        doLayoutSearchPanel();
-//                        searchClaim(true);
                     }, blur : function() {
                         if (this.getValue() <= 0) {
                             this.reset();
@@ -1476,9 +1366,7 @@
                     select : function(){
                         claimTypesComboNumberOfSelectedRecord ++;
                         statusChange();
-//                        loadQueueGrid(true);
                         doLayoutSearchPanel();
-//                        searchClaim(true);
                     },
                     removeitem : function() {
                         if (!this.getValue() && claimTypesComboNumberOfSelectedRecord >=1) {
@@ -1486,13 +1374,9 @@
                             this.reset();
                             this.clearValue();
                             statusChange();
-//                            loadQueueGrid(true);
-//                            searchClaim(true);
                             } else if (claimTypesComboNumberOfSelectedRecord >= 1){
                                 claimTypesComboNumberOfSelectedRecord --;
                                 statusChange();
-//                                loadQueueGrid(true);
-//                                searchClaim(true); 
                             }
                             doLayoutSearchPanel();
                     }
@@ -1532,9 +1416,6 @@
             var leftColumn = {
                 width:220,
                 height : 'auto',
-//                style: {
-//                    paddingLeft:'10px'
-//                },
                 labelAlign: 'right',
                 labelWidth: 90,
                 layout: 'form',
@@ -1574,6 +1455,7 @@
                         reviewRequiredDateToPicker,
                         finalReviewValuesCombo,
                         paymentDisputesSearchParamCombo,
+                        paymentReturnsSearchParamCombo,
                         claimAuditSearchParamCombo]
             };
 
@@ -1617,11 +1499,6 @@
                 listeners:  {
                     load :  function(store, records, options) {
                                 selectPreviouslySelectedQueue(false);
-                                /*if (options.searchScreenTrigger) { 
-                                    selectPreviouslySelectedQueue(true);
-                                } else { 
-                                    selectPreviouslySelectedQueue(false);
-                                }*/
                             }
                 }
             });
@@ -1644,11 +1521,9 @@
                         dataIndex: 'queueNameWithCount'
                     }
                 ],
-//                stripeRows: true,
                 autoExpandColumn: 'queueNameId',
                 height: 450,// This height should be same as searchAndButtonPanel height
                 width: 275,
-//                tbar : syncWithSearchPanelToolBar,
                 loadMask : {msg:"Loading Queues..."},
                 view : new Ext.grid.GridView({ // this is to hide the vertical bar space when the vertical bar is not shown.
                             forceFit    : true,
@@ -1656,8 +1531,6 @@
                             getTotalWidth: function() {
                                 return "auto";
                             }
-//                            , rowOverCls : ''
-//                            ,selectedRowClass : 'x-btn x-btn-noicon x-column x-btn-pressed x-btn-small x-btn-icon-small-left'
                 })
                 /* 
                  * The below listners are workaround to un-select a selected queue. As there is no unSelect listners in the RowSelectionModel, i come up with this solution.
@@ -1687,10 +1560,7 @@
                 autoScroll : true,
                 items : [leftColumn,middleColumn,rightColumn],
                 headerAsText : true,
-//                headerCfg: {cls: 'search-panel-status-info'},
                 title : '<div class="search-panel-status-info">Search Screen Information Panel</div>'
-//                buttons : [searchButton, resetButton], // moved to separate panel.
-//                buttonAlign : 'center'
             });
             
             var buttonPanel = new Ext.Panel({
@@ -1725,11 +1595,6 @@
         function loadQueueGrid() {
             queueDataStore.baseParams = getSearchParameters();
             queueDataStore.load();
-//            if (searchScreenTrigger === true) {
-//                queueDataStore.load({params: {'searchScreenTrigger' : true, 'syncWithSearchCriteria' : false}});
-//            } else {
-//                queueDataStore.load({params: {'searchScreenTrigger' : false, 'syncWithSearchCriteria' : false}});
-//            }
         }
         
         function deSelectQueue() {
@@ -1856,6 +1721,11 @@
                 paymentDisputesSearchParamCombo.setValue(paymentDisputeValue);
             }
             
+            var paymentReturnsValue = record.get('claimSearchCriteria').paymentReturnsValue;
+            if (paymentReturnsValue) {
+                paymentReturnsSearchParamCombo.setValue(paymentReturnsValue);
+            }
+            
             var claimAuditValue = record.get('claimSearchCriteria').claimAuditValue;
             if (claimAuditValue) {
                 claimAuditSearchParamCombo.setValue(claimAuditValue);
@@ -1962,6 +1832,7 @@
             var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
             var approvedInvoiceOwnershipSearchScreen = Ext.getCmp('approvedInvoiceOwnershipSearchParamComboId').getValue().split(",");
             var paymentDisputeValue = Ext.getCmp('paymentDisputesSearchParamComboId').getValue();
+            var paymentReturnsValue = Ext.getCmp('paymentReturnsSearchParamComboId').getValue();
             var claimAuditValue = Ext.getCmp('claimAuditSearchParamComboId').getValue();
             
 
@@ -2005,6 +1876,7 @@
                 hireAndRepairSearchParamIds : hireAndRepairSearchScreen,
                 approvedInvoiceOwnershipSearchParamIds : approvedInvoiceOwnershipSearchScreen,
                 paymentDisputeValue : (paymentDisputeValue === '') ? 0 : paymentDisputeValue,
+                paymentReturnsValue : (paymentReturnsValue === '') ? 0 : paymentReturnsValue,
                 claimAuditValue : (claimAuditValue === '') ? 0 : claimAuditValue
             };
         }
@@ -2021,7 +1893,6 @@
              */
             var searchBaseParam;
             if (canSearchForData) {
-//                resetQueue(false); // removed as part of removing the 'All Claims' queue.
                 deSelectQueue();
                 searchBaseParam = Ext.apply(getSearchParameters(), {"gridTitle" : 'Custom Search Result'});
                 // set the searchPanel information message
@@ -2034,7 +1905,6 @@
         }
         
         function doDataLoad(baseParams) { 
-//            console.log("doDataLoad method loading the grid");
             claimStore.baseParams = baseParams;
             claimStore.load({params:{start: 0, limit: recordPerPage}});
         }
@@ -2156,6 +2026,8 @@
             approvedInvoiceOwnershipSearchParamCombo.clearValue();
             paymentDisputesSearchParamCombo.reset();
             paymentDisputesSearchParamCombo.clearValue();
+            paymentReturnsSearchParamCombo.reset();
+            paymentReturnsSearchParamCombo.clearValue();
             claimAuditSearchParamCombo.reset();
             claimAuditSearchParamCombo.clearValue();
             statusSearchScreenCombo.reset();
@@ -2217,7 +2089,6 @@
             
             if (canSetDefaultClaimOwner) {
                     setDefaultClaimOwner();
-//                    setDefaultSupplierClaimOwner();
             }
             
         }

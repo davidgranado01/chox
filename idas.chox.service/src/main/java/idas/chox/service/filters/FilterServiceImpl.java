@@ -105,6 +105,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentsTeamEnable()) {
                             LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_PAYMENT_TEAM_RETURNS)
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isPaymentsTeamEnable()) {
+                            LOG.debug("Not adding queue '{}' as payment team is not enabled", filter.getName());
+                            continue;
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_PAYMENT_DISPUTE)
                                 && webUser.isAnInsurer() && (!webUser.getInsurer().isPaymentDisputesEnable()
                                             || (webUser.getInsurer().isPaymentDisputesEnable() && webUser.getInsurer().isPaymentsTeamEnable() && !webUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && !webUser.isInRoleOf(WebUserRole.ROLE_INS_CH)))) {

@@ -883,6 +883,58 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(paymentDisputeRestriction);
         }
 
+        /*
+         * Payments Team Returns
+         */
+        // NB. For CHOX Admin, we also need to check the insurer config flag...
+        if (searchCriteria.getPaymentReturnsValue() > 0) {
+            if (searchCriteria.getPaymentReturnsValue() == 1) {
+               if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    Criterion paymentReturnsRestriction = Restrictions.conjunction().add(Restrictions.eq("paymentsTeamReturn", Boolean.TRUE))
+                                .add(Restrictions.disjunction()
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
+                    criteria.add(paymentReturnsRestriction);
+               } else {
+                    criteria.add(Restrictions.eq("paymentsTeamReturn", Boolean.TRUE));
+               }
+            } else {
+               if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                    Criterion paymentReturnsRestriction = Restrictions.conjunction().add(Restrictions.eq("paymentsTeamReturn", Boolean.FALSE))
+                                .add(Restrictions.disjunction()
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
+                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.TRUE))
+                                                .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
+                    criteria.add(paymentReturnsRestriction);
+               } else {
+                    criteria.add(Restrictions.eq("paymentsTeamReturn", Boolean.FALSE));
+               }
+            }
+        }
+
         if (searchCriteria.getClaimAuditValue() > 0) {
             if (searchCriteria.getClaimAuditValue() == 1) {
                 criteria.add(Restrictions.conjunction()

@@ -293,6 +293,7 @@
                 <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="PaymentTeam" />
+                <ref bean="PaymentTeamReturns" />
                 <ref bean="InvoicePaymentDispute" />
                 <ref bean="InvoicePaymentLogged" />
                 <ref bean="ManualInvoicesToBeAssigned" />

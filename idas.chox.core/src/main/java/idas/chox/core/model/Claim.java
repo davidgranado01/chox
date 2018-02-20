@@ -84,6 +84,7 @@ public class Claim extends Entity implements Serializable {
     private int fraudCheckStatus;
     private int matchStatus;
     private boolean sentToKeoghs;
+    private boolean paymentsTeamReturn;
     private boolean fraudResultAcknowledged;
     private KeoghsRequest keoghsRequest;
     private Boolean copleyOfferMade;
@@ -95,6 +96,14 @@ public class Claim extends Entity implements Serializable {
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
         this.matchStatus = 0;
+    }
+
+    public boolean isPaymentsTeamReturn() {
+        return paymentsTeamReturn;
+    }
+
+    public void setPaymentsTeamReturn(boolean paymentsTeamReturn) {
+        this.paymentsTeamReturn = paymentsTeamReturn;
     }
 
     public int getMatchStatus() {
