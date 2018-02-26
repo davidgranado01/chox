@@ -855,69 +855,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getMatchedClaimReview() {
-//        if (claim != null) {
-//        } else {
-//        }
-        return SUCCESS;
-    }
-
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
-    public String updateClaimSupplierOwner() {
-        LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
-        if (this.supplierClaimOwnerId > 0) {
-            try {
-                WebUser newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
-                // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId()) {
-                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
-                }
-                // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId() != claim.getChorganisation().getId().intValue()) {
-                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
-                }
-                // Check owner is different from current owner
-                if (claim.getSupplierClaimOwner() != null && claim.getSupplierClaimOwner().getId().intValue() == newClaimOwner.getId().intValue()) {
-                    throw new AccessDeniedException("No change to Supplier Claim Owner - not updating.");
-                }
-                Comment comment;
-
-                // SET COMMENT
-                if (claim.getSupplierClaimOwner() != null) {
-                    String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
-
-                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldOwnerName
-                                + "' to '" + newClaimOwner.getFullName()
-                                + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    } else {
-                        comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldOwnerName
-                                + "' to '" + newClaimOwner.getFullName() + "'");
-                    }
-                } else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                    comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
-                            + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                } else {
-                    comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
-                }
-                claim.addComment(comment);
-                claim.setSupplierClaimOwner(newClaimOwner);
-                claimService.updateClaim(claim);
-
-            } catch (Exception ex) {
-                LOG.error("Error updating supplier claim owner for claim {}: ", claim.getChoReference(), ex);
-                handleException(ex);
-                updateRedirectionParamInSession();
-                return ERROR;
-            }
-        } else {
-            LOG.error("Error: no supplierClaimOwnerId supplied to update claim {}: {}", claim.getChoReference(), supplierClaimOwnerId);
-            setActionError("No supplier claim owner selected.");
-            getActionResponse().AddError("No supplier claim owner selected.");
-            updateRedirectionParamInSession();
-            return ERROR;
-        }
-
-        updateRedirectionParamInSession();
         return SUCCESS;
     }
 
@@ -1145,20 +1082,36 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     }
                 }
                 if (canMark) {
-                    if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
-                    } else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
-                    } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
-                    } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
-                    } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.INSURER_ORIGINAL_INVOICE);
-                    } else if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL || claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE) {
-                        claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE);
-                    } else {
+                    if (null == claim.getClaimType()) {
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                    } else switch (claim.getClaimType()) {
+                        case GTA:
+                        case GTA_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
+                            break;
+                        case INSURER_VS_INSURER:
+                        case INSURER_VS_INSURER_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
+                            break;
+                        case SUBSCRIBER:
+                        case SUBSCRIBER_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
+                            break;
+                        case FIXED_FEE:
+                        case FIXED_FEE_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
+                            break;
+                        case INSURER_CLAIM:
+                        case INSURER_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.INSURER_ORIGINAL_INVOICE);
+                            break;
+                        case COLLABORATION_PROTOCOL:
+                        case COLLABORATION_PROTOCOL_ORIGINAL_INVOICE:
+                            claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE);
+                            break;
+                        default:
+                            LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                            break;
                     }
 
                     this.claimService.updateClaim(claim);
@@ -1526,26 +1479,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<Notification> notifications = notificationService.getNotifications(claim.getId());
         LOG.debug("Total list size={} ", notifications.size());
         if (getIsInsurer()) {
-            returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
-
-                @Override
-                public boolean apply(Notification object) {
-                    return NotificationType.getNotificationType(object.getType()).isInsurerType();
-                }
-            });
+            returnList = ListUtils.filter(notifications, (Notification object) -> NotificationType.getNotificationType(object.getType()).isInsurerType());
             LOG.debug("Notification Return List Size Insurer: {}", returnList.size());
             return returnList;
         } else {
-            returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
-
-                @Override
-                public boolean apply(Notification object) {
-                    return !NotificationType.getNotificationType(object.getType()).isInsurerType();
-                }
-            });
+            returnList = ListUtils.filter(notifications, (Notification object) -> !NotificationType.getNotificationType(object.getType()).isInsurerType());
             LOG.debug("Notification Return List Size Cho: {} ", returnList.size());
             return returnList;
-
         }
 
     }
@@ -2183,14 +2123,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityCho().toPlainString());
     }
 
-//    public BigDecimal getFormattedInsLiab() {
-//        return claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityAccepted();
-//    }
-
-//    public BigDecimal getFormattedChoLiab() {
-//        return claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityCho();
-//    }
-
     public int getId() {
         return id;
     }
@@ -2424,9 +2356,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         List<LookupItem> rorItems = new ArrayList<>();
-        for (ReasonOfRejection ror : reasonOfClaimRejections) {
+        reasonOfClaimRejections.forEach((ror) -> {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -2449,9 +2381,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         List<LookupItem> rorItems = new ArrayList<>();
-        for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
+        reasonOfInvoiceRejections.forEach((ror) -> {
             rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -2817,9 +2749,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      */
     public String getInsurersJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getMappedInsurers().size());
-        for (Insurer insurer : mappedInsurers) {
+        mappedInsurers.forEach((insurer) -> {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -2832,9 +2764,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getCloseClaimReasonsJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getCloseClaimReasons().size());
-        for (ReasonOfRejection reason : closeClaimReasons) {
+        closeClaimReasons.forEach((reason) -> {
             luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -2847,9 +2779,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getAcceptanceReasonsJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getAcceptanceReasons().size());
-        for (ReasonOfRejection reason : acceptanceReasons) {
+        acceptanceReasons.forEach((reason) -> {
             luItems.add(new LookupItem(reason.getRorName(), reason.getDescription()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -3001,10 +2933,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     public String getCalculatedHirePenaltyPercentage() {
-//        if (isInsurerClaim()) {
-//            String percentage = claim.getInvoice().getHirePenaltyPercentage();
-//            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
-//        }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -3033,10 +2961,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCalculatedRepairPenaltyPercentage() {
-//        if (isInsurerClaim()) {
-//            String percentage = claim.getInvoice().getRepairPenaltyPercentage();
-//            return (percentage != null && !percentage.isEmpty()) ? percentage : "0.0";
-//        }
         Invoice inv = claim.getInvoice();
         Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
                 : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
@@ -3079,19 +3003,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyAmount() {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("success", Boolean.TRUE);
-//        jsonObject.put("repairPenaltyAmount", claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage));
-//        setJsonData(jsonObject.toString());
         setJsonData("{\"success\":\"True\",\"repairPenaltyAmount\":\"" + claimService.calculateRepairPenaltyChargeVal(claim, repairPenaltyPercentage) + "\"}");
         return SUCCESS;
     }
 
     public String getHirePenaltyAmount() {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("success", Boolean.TRUE);
-//        jsonObject.put("hirePenaltyAmount", claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage));
-//        setJsonData(jsonObject.toString());
         setJsonData("{\"success\":\"True\",\"hirePenaltyAmount\":\"" + claimService.calculateHirePenaltyChargeVal(claim, hirePenaltyPercentage) + "\"}");
         return SUCCESS;
     }

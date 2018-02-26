@@ -179,5 +179,8 @@
 
     </bean>
     <bean id="acknowledgeFraudCheck" class="idas.chox.service.workflow.activities.AcknowledgeFraudCheck" scope="prototype"/>
+    <bean id="updateSupplierClaimOwner" class="idas.chox.service.workflow.activities.UpdateSupplierClaimOwner" scope="prototype">
+        <property name="userService" ref="userService" />
+    </bean>
 
 </beans>

@@ -46,3 +46,17 @@ INSERT INTO accessibility_item(accessibility_id, access_right, role)
 --
 -- End of CHOX-472
 --
+
+--
+-- CHOX-475: More action to update Claim Supplier Owner should be moved to an activity
+--
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    select  'activity.UpdateSupplierClaimOwner' || substring(a.name from 37), false, false
+    from accessibility a where  a.name ilike 'extraAction.updateClaimSupplierOwner%';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_OPR', 2 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_MNG', 2 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
+--
+-- End of CHOX-472
+--

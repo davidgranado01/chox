@@ -189,12 +189,6 @@
         </action>
 
         <!-- MORE ACTION UPDATE - DROP DOWN -->
-        <action name="updateClaimSupplier" class="idas.chox.web.actions.ClaimAction" method="updateClaimSupplierOwner">
-            <result name="success" type="redirectAction">
-                <param name="actionName">claimDetails</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="updateClaimWorkgroupAndOwner">
             <result name="success" type="redirectAction">
                 <param name="actionName">claimDetails</param>

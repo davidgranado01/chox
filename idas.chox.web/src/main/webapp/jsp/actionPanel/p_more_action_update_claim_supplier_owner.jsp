@@ -135,11 +135,12 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/updateClaimSupplier.action" method="post" id="formSupplierOwnershipAction" name="formSupplierOwnershipAction">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formSupplierOwnershipAction" name="formSupplierOwnershipAction">
         <fieldset class="x-fieldset">
             <legend>Update Claim Owner - Action Required</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
+                <s:hidden id="name" name="name" value="updateSupplierClaimOwner" />
                 <div>
                     <div class="status-info">
                         Update the Claim Owner by using the drop down menus provided below.

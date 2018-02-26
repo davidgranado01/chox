@@ -193,11 +193,10 @@ public abstract class BaseActivity implements Activity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
         
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        }
+        });
         
-
         // Warning: nasty hack! With the introduction of the event mechanism, we may not want to perform some chained events
         // as they have been updated via an EventListener. Disable such chained activities here
         if (this.getClass().getSimpleName().equals("NewClaim") && claim.getMatchStatus() == 3) {
