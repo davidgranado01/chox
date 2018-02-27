@@ -13,7 +13,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.events.AwaitingLitigationOutcomeEvent;
 import idas.chox.events.BaseActivityEvent;
-import idas.chox.events.ChoOwnerAssignedEvent;
 import idas.chox.events.ClaimAcknowledgedEvent;
 import idas.chox.events.ClaimAuditReviewUpdatedEvent;
 import idas.chox.events.ClaimClosedEvent;
@@ -199,10 +198,6 @@ public class ActivityEventGenerator {
                 case "AssignManualInvoiceOwner":
                 case "AssignOwner":
                     events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                    break;
-                
-                case "AssignSupplierOwner":
-                    events.add(new ChoOwnerAssignedEvent(claim, activityName));
                     break;
                 
                 case "AwaitingLitigationOutcome":

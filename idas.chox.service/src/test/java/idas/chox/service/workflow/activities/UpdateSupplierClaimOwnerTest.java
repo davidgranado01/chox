@@ -8,10 +8,9 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
 
-public class AssignSupplierOwnerTest extends BaseTest {
+public class UpdateSupplierClaimOwnerTest extends BaseTest {
 
     @Test
     public void testSupplierOwner() throws Throwable {
@@ -23,10 +22,9 @@ public class AssignSupplierOwnerTest extends BaseTest {
         claim.setChorganisation(cho);
         Invoice invoice = invoiceService.getInvoice(999);
         claim.setInvoice(invoice);
-        Activity activity = activityFactory.getActivity("assignSupplierOwner");
+        UpdateSupplierClaimOwner  activity = (UpdateSupplierClaimOwner)activityFactory.getActivity("updateSupplierClaimOwner");
         
-        AssignSupplierOwner assignSupplierOwner = (AssignSupplierOwner) activity;
-        assignSupplierOwner.setSupplierClaimOwnerId(2);
+        activity.setSupplierClaimOwnerId(2);
         
         activity.process(claim);
         Assert.assertEquals("Supplier Claims Handler is 'Operative CHO' (contact number: 009876540987654)", claim.getComments().get(0).getComment());

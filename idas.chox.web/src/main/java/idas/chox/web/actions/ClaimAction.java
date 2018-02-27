@@ -131,7 +131,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<String> intelligentNotes2;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
-    private int supplierClaimOwnerId = -1;
     private int escalateWorkgroupId = -1;
     private int oasWorkgroupId = -1;
     private int uosWorkgroupId = -1;
@@ -2158,14 +2157,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
-    }
-
-    public int getSupplierClaimOwnerId() {
-        return supplierClaimOwnerId;
-    }
-
-    public void setSupplierClaimOwnerId(int supplierClaimOwnerId) {
-        this.supplierClaimOwnerId = supplierClaimOwnerId;
     }
 
     public int getVehicleClassId() {
